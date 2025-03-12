@@ -8,7 +8,8 @@ This is a text mirror of my WordPress site
 [https://newscrewdriver.com](https://newscrewdriver.com)
 , a snapshot as of end of year 2024. It was an experiment to see the tradeoffs
 involved if I should migrate New Screwdriver from WordPress.com to Jekyll on
-GitHub Pages.
+GitHub Pages. Jekyll project that generated this page can be seen at its
+[GitHub Repository](https://github.com/Roger-random/newscrewdriver)
 
 Observations:
 
