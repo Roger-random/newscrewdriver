@@ -1,0 +1,66 @@
+---
+layout: post
+title: FormLabs Form 1+ OLED Burn-In
+date: 2022-09-24 12:30:00.000000000 +00:00
+type: post
+post_id: '32706'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32708'
+  _publicize_job_id: '77059959181'
+  timeline_notification: '1664047805'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/24/formlabs-form-1-oled-burn-in/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been playing with the OLED dot matrix display from a broken FormLabs Form 1+ laser resin 3D printer. After I explored all the functional aspects and <a href="https://newscrewdriver.com/2022/09/23/formlabs-form-1-oled-pinout/">documented its pinout information</a>, I thought I'd explore a side curiosity: is there any visible burn-in on this OLED panel?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A characteristic of OLED technology is that the longer an OLED element has been shining, the dimmer it becomes. Usage pattern is a huge part of whether OLED dimming becomes a problem. If an OLED screen constantly shows static information, certain pixels would be illuminated for disproportionate amount of time relative to their neighbors. In this scenario, constantly illuminated pixels age much faster than their neighbors, and their difference in brightness results in "burning in" the static image. For example, OLED panels used for watching television or movies have working fine for years. But those same panels would show burn-in after a few months if <a rel="noreferrer noopener" href="https://www.zdnet.com/article/lg-oled-burn-in-at-incheon-airport-reignites-controversy/" target="_blank">used as static display for information</a>. Displaying 3D printer status is definitely towards the unfriendly side of the spectrum, which is why I was surprised when I learned FormLabs used an OLED here. Did they make a bad decision? Could I detect signs of burn-in on this Form 1+ display?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32726,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-oled-adafruit-logo.jpg?w=1024" alt="" class="wp-image-32726"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>While running the Adafruit example sketch, I didn't notice anything obvious. This would support the optimistic view that any burn-in is negligible. But since I had the SSD1305 API at hand, I added a bit of code for full-screen white which illuminated all pixels at max power. When I did this, I could see signs of burn-in, but it is subtle. It is certainly very difficult to capture in a photograph, as I'm also fighting OLED refresh rate at the same time as I'm trying to capture a low-contrast effect. The title image for this blog post shows an unmodified picture where the burn-in effect is barely visible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32713,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-oled-burnin.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-oled-burnin.jpg?w=1024" alt="" class="wp-image-32713"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This image has been modified to enhance contrast, making the burn-in a tiny bit more visible. For reference, the information shown by a Form 1+ while printing is in the format of:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Job: "[Filename]"
+HH:MM:SS remaining
+Layer X of Y</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unchanging text "Job", "remaining" and "Layer" are visibly burned in. Remaining variable data end up in a more distributed blur. Pixels between lines of text are rarely illuminated, so those lightly used pixels show up brighter than the rest. Still don't see it? Perhaps it would help to have a set of text overlaid in red:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32716,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-oled-burnin-annoted-text.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-oled-burnin-annoted-text.jpg?w=1024" alt="" class="wp-image-32716"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The unknown variable is how long this printer operated before it retired. If this printer provided many years of service and this is all we see after years of constant display, then I would grudgingly admit burn-in is negligible. If this printer only printed a few jobs before dying, then this is horrible. With these pictures I can conclude OLED burn-in is real, but this incomplete data point is not enough to say whether OLED burn-in is a real problem of concern.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I did notice, though: FormLabs chose an LCD module for their Form 2 printers' front panel display. That might be the most telling sign. I have yet to see a Form 3 in person, but I would expect an LCD for that as well. Maybe an OLED status panel isn't the greatest idea if it would eventually render the machine unusable. Perhaps there are other ways to obtain printer status information? Earlier I noticed what might be a serial port on the mainboard, so <a href="https://newscrewdriver.com/2022/09/25/formlabs-form-1-serial-console-disappointingly-uninformative/">I'm going to look into that</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

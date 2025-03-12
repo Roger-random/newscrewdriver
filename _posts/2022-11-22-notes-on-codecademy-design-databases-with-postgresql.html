@@ -1,0 +1,97 @@
+---
+layout: post
+title: Notes on Codecademy "Design Databases with PostgreSQL"
+date: 2022-11-22 12:30:00.000000000 +00:00
+type: post
+post_id: '33696'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- SQL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33708'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669245831
+  _publicize_job_id: '78972282508'
+  timeline_notification: '1669149003'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/22/notes-on-codecademy-design-databases-with-postgresql/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a <a href="https://newscrewdriver.com/2022/11/21/notes-on-codecademy-learn-node-sqlite/">frustrating experience with the node-sqlite course on Codecademy</a>, I've concluded that their in-browser instruction environment is not well set up for teaching SQL. Or at least, this course is far weaker than others on Codecademy, which I had been generally satisfied up until this point. I considered switching to a different topic but decided there were still a few more things I wanted to learn. But from here on out, when I fail an exercise, I'm more likely to decide my answer was fine. (More willing to hit "View Solution" to see the answer and compare.) And more importantly, I'm going to review the course syllabus beforehand and skip those with frustrating "Code Challenge" sections.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which led me to "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/paths/design-databases-with-postgresql" target="_blank">Design Databases with PostgreSQL</a></em>" which is technically a "Skill Path" offering rather than a course. Like my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/10/notes-on-codecademy-build-a-website-with-html-css-and-github-pages-skill-path/" target="_blank">previous skill path in web development</a>, I started this skill path and was immediately at 50% completion due to material that overlapped with courses I've already taken. One major difference is that all my Codecademy database courses used SQLite to illustrate general SQL concepts, but this skill path has some PostgreSQL-specific details amongst more general database concepts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Initially, I was mildly disappointed that the material was shallower than I had expected based on course description. The sales pitch made it sound like we're going to get into some real detailed nuts-and-bolts, but while the course did indeed to into further depth than other courses to date, there were still many topics that ended with "we're not going into more depth, but at least now you are aware it exists." An example concerns database keys. From my earlier courses I had known about primary, foreign, and composite keys. This course mentioned there are also super, candidate, and secondary keys then proceeded to say nothing more about them. As a starting pointer this is fine, I had just expected more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I adjusted my expectations, this skill path was time well spent. We get more information on database schema and that proper design of a schema can make a difference in database performance. Both at development time (make queries easier and less prone to problems) and at runtime (easier updates and faster queries.) Part of this design process is database normalization, which was covered by starting with a poorly designed database. After covering how a poorly normalized database causes problems in use, we are walked through typical normalization techniques to solve those problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But those solutions usually have a tradeoff. This course has a recurring theme in the form of database tradeoffs. A competent database engineer has to be able to understand the problem domain and usage patterns to properly prioritize certain constraints versus others. A normalized database has a lot of space, performance, and consistency advantages. But it does tend to make updates and queries more complex by requiring database joins. Similarly, a database index can make queries faster, but maintenance means updates are slower. The index also takes up space on disk.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A light complaint I have about this course is that its illustrative examples were surprisingly poor. One example used an email address as a primary key for a list of people, but a person can have multiple email addresses making it a poor primary key. Another example separated ingredients from recipes, but the ingredient is associated with a fixed amount. It is unrealistic for a cookbook to use, say, the same amount of salt for every recipe.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the practice exercises was "Bytes of China", setting up a database that would track information suitable for a restaurant menu. From the starting directions I had looked forward to an open-ended exercise, because it said to: "<em>Create table with columns that make sense based on the description</em>" This came to a screeching halt when we were given information to add to these tables in the form of SQL <code>INSERT </code>clauses that expect a specific database schema. I had to delete the database schema that made sense to me and rebuild a different schema to suit the exercise data. This was annoying. They could have told us to build to suit their sample data upfront instead of letting us waste time designing our own that wouldn't work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Gripes aside, I learned a lot of neat things that I expect to use in future projects that might need a database. I learned how it was possible to represent many-to-many relationships with a "join table" that has a composite primary key that consists of a combination of foreign keys. Beyond "<code>PRIMARY KEY</code>" I learned about constraints like <a rel="noreferrer noopener" href="https://www.postgresql.org/docs/current/ddl-constraints.html" target="_blank"><code>UNIQUE, CHECK</code>, and <code>REFERENCES</code></a>. In the earlier SQLite course I was dismayed to learn it doesn't enforce the schema, calling it a flexible feature instead of a bug. PostgreSQL isn't as free-wheeling but we still need to watch out for times when it becomes inadvertently unhelpful. If I make a mistake trying to put a floating-point number like 1.5 into an integer field, PostgreSQL would round it to 2 without error. Or if I make a mistake putting it into a text field, PostSQL would helpfully convert the number 1.5 to the string "1.5".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every bit of SQL instruction I've come across before only ever joined two tables, this course was the first to teach me how to join more than two. I can see how this would feel obvious to SQL veterans, but every beginner has to see it at least once:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>SELECT table_one.column_one AS alias_one, table_two.column_two AS alias_two, table_three.column_three AS alias_three
+FROM table_one
+INNER JOIN table_two
+ON table_one.primary_key = table_two.foreign_key
+INNER JOIN table_three
+ON table_two.primary_key = table_three.foreign_key;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think all of the remaining nifty tricks are PostgreSQL-only, but I'm not sure. The course doesn't make a lot of distinction between thing we can use in other databases versus PostgreSQL-only. So I don't know if I can extract just the date from a timestamp (<a rel="noreferrer noopener" href="https://www.postgresql.org/docs/15/functions-datetime.html" target="_blank"><code>DATE_PART()</code></a>) with other databases, or if I can make this query to examine constraints on record for a table:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>SELECT
+  constraint_name, table_name, column_name
+FROM
+  information_schema.key_column_usage
+WHERE
+  table_name = 'fill in table name';</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the <code>pg_</code> prefix, the following query is likely PostgreSQL specific way to list every index built for a table.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>SELECT *
+FROM pg_Indexes
+WHERE tablename = 'fill in table name';</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Also with the prefix is a query to show size of a table, which includes space consumed by storing data and all associated index.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>SELECT pg_size_pretty (pg_total_relation_size('products'));</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, we get a few starting points for performance analysis. Like prepending <code><a rel="noreferrer noopener" href="https://www.postgresql.org/docs/current/sql-explain.html" target="_blank">EXPLAIN</a> <a rel="noreferrer noopener" href="https://www.postgresql.org/docs/current/sql-analyze.html" target="_blank">ANALYZE</a></code> in front of a query to get information on how the database plans out its execution. Or <code>SELECT <a rel="noreferrer noopener" href="https://www.postgresql.org/docs/8.2/functions-datetime.html" target="_blank">NOW()</a>;</code> to print out a timestamp before and after an operation so we can see how long it took.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's a lot of information packed into a single Skill Path. I wished for more, but I can understand there's a tradeoff against making the course too long. Maybe this is the perfect length after all, and just enough for me to learn more on my own later. I can spend years learning all the intricacies of relational databases, but right now I'm more curious to explore something <a href="https://newscrewdriver.com/2022/11/23/notes-on-codecademy-learn-mongodb/">a little different</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

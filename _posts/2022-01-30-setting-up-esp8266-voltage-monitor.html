@@ -1,0 +1,57 @@
+---
+layout: post
+title: Setting Up ESP8266 Voltage Monitor
+date: 2022-01-30 12:30:00.000000000 +00:00
+type: post
+post_id: '28381'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- ESP8266
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28374'
+  _publicize_job_id: '68361263760'
+  timeline_notification: '1643574609'
+  _edit_last: '98499281'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667291721
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/30/setting-up-esp8266-voltage-monitor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've decided to <a href="https://newscrewdriver.com/2022/01/29/hello-wemos-d1-mini-clone/">start playing with an ESP8266</a> in a wireless data monitoring role. I plan to use it to measure power output of my little Harbor Freight solar array and log data into an InfluxDB database. The first draft will only deal with voltage, since I want to start with minimal hardware and the ESP8266 has only a single ADC channel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to the restriction of a single channel, the ESP8266 has an additional restriction that the voltage on this pin can only be from zero to one volt, a small sub range of its standard 3.3V signal. Since the analog in pin can't be used for anything else, I learned many ESP8266 development boards went ahead and put a pair of voltage dividing resistors on board. Using my multi-meter I probed the lowest-bidder <a rel="noreferrer noopener" href="https://amzn.to/3tZ8VY1" target="_blank">Wemos D1 Mini clone I purchased on Amazon</a> (*) and found 220KΩ from the A0 pin on the dev board to ADC0 on the ESP8266 module then another 100KΩ to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In a perfect world we would have 230KΩ and 100KΩ to divide 0-3.3V into 0-1V, but this is as close as we can get with commodity resistor values. Assuming going slightly over 1V would not damage the ESP8266, this just means we lose a little bit range if input voltage goes above 3.2V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will add to this, because I want to measure output of my solar panel, which has a much higher open circuit voltage. I've measured at a little over 20V. Reading online, the commonly quoted maximum voltage is 22V, which seems like a good target to design for. This means ideal additional resistance of 1880KΩ before connecting to A0 input pin. In the interest of keeping things simple with commodity resistor values, I'll use two 1MΩ resistors in series and sacrifice a bit of resolution.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I want to power my sensor node from the same solar power it is measuring, which again can go up to &gt;20V. The Wemos D1 Mini board has an onboard voltage regulator to take 5V USB power down to 3.3V required by the ESP8266. I can't tell exactly what module it is, but I will assume it does not handle input voltage up to 22V. Instead I will pull another <a rel="noreferrer noopener" href="https://amzn.to/3okudMr" target="_blank">MP1584EN buck converter from the last batch I bought on Amazon</a>.(*) I will configure it to output 3.3V and connect that to the 3.3V voltage plane on the Wemos D1 Mini.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which leaves a problem: If I'm getting 3.3V supplied from the solar panel, it is important we do not connect to 5V USB power at the same time. Perhaps <a href="https://newscrewdriver.com/2022/01/31/power-source-selection-jumper/">a switch is in order</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

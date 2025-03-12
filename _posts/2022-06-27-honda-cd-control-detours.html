@@ -1,0 +1,68 @@
+---
+layout: post
+title: Honda CD Control Detours
+date: 2022-06-27 12:30:00.000000000 +00:00
+type: post
+post_id: '31012'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Arduino
+- Backlight
+- Honda CD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31032'
+  _publicize_job_id: '74105625383'
+  timeline_notification: '1656358217'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/27/honda-cd-control-detours/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I finally <a href="https://newscrewdriver.com/2022/06/26/honda-cd-lcd-driver-mystery-problems-solved/">found my mistake</a> reading a Honda CD control panel's input (I had left the reset pin floating) I think I have a pretty good handle on communicating with it. The CD audio side, at least, as I had no interest in figuring out the HVAC side. But before I <a href="https://newscrewdriver.com/2022/06/28/lcd-driver-pinout-for-honda-cd/" target="_blank" rel="noreferrer noopener">wrap up with a summary</a> and demo, this page describes two additional experiments for future reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31032,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-arduino-with-quadrature-encoder.jpg?w=1024" alt="" class="wp-image-31032"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2>External Quadrature Encoder</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I realized my problem was a floating reset pin, I wired in an external quadrature encoder to determine if the problem might be with the Honda circuit board or if it was my code. There was an added bonus that this particular quadrature encoder was designed so that every detent would be high/high. I knew the problem of LCD blanking out was related to grounding various controls (buttons or this knob) to ground, so with its four transitions per detent, this knob would quickly blitz through the problematic states as a workaround.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Successful use of the external knob also meant I now know the LCD wasn't blanking out due to something in my code, or even something in the Arduino as related to a quadrature encoder. The LCD would blank out if the onboard knob was in the wrong position, even if none of its wired connected to my Arduino. This observation was consistent with the actual cause of a floating reset pin. I removed this external knob once the reset pin was no longer left floating, making room for the next experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31033,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-arduino-with-boost-converter.jpg?w=1024" alt="" class="wp-image-31033"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2>Boost Converter for LCD Backlight</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I had illuminated the LCD backlight using my bench power supply, it indicated the backlight drew 0.2A at 14.4V ~= 3W. I thought that would be within reasonable range for a USB power bank, so I dug up a <a rel="noreferrer noopener" href="https://amzn.to/39xffhN" target="_blank">DC voltage boost converter</a> (*) from a batch I had bought for an earlier project. I connected the voltage input to Arduino V<sub>IN</sub> pin and adjusted the converter to 14.4V open-circuit output voltage. But when I connected that output to the LCD backlight, voltage sagged and the USB power bank went into a continuous reset loop consistent with overload response.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wasn't sure if the overload was a startup issue, a transient issue, or a continuous power issue. As an experiment I soldered 220μF capacitors to both input and output. This did not change the behavior: the USB power bank still enters a continuous reset loop. I added a <a href="https://amzn.to/3A1GiN3">USB power meter</a> (*) between my power bank and the Arduino and it said the circuit tried to draw 3 amps. Yikes! That explains the reset when I had expected only 0.6 amps (3 watts / 5 volts) to be drawn.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll revisit the LCD backlight power supply issue later, if I decide to reuse this LCD for something fun. At least this failed experiment let me know boost converter power draw is more complex than (Power) = (Voltage)*(Current). It is also another checkmark next to "I should learn how boost converters work" on my to-do list, I hope with such knowledge I could properly diagnose this failure to verify I understand the situation correctly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

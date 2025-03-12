@@ -1,0 +1,58 @@
+---
+layout: post
+title: Nexus 5 BL-T9 Battery Teardown
+date: 2022-01-21 12:30:00.000000000 +00:00
+type: post
+post_id: '28258'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Nexus 5
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28269'
+  _publicize_job_id: '67978427870'
+  timeline_notification: '1642797033'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/21/nexus-5-bl-t9-battery-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Sitting in my pile of old electronics, my Nexus 5 battery's internal chemistry has started doing something that made it puff up like a balloon. I <a href="https://newscrewdriver.com/2022/01/20/degraded-nexus-5-battery-demands-immediate-removal/">removed the battery</a> as soon as I noticed the symptom and thought it might be fun to take a look inside the battery module. The module might be just some packaging around a bare lithium polymer pouch, or it might be something more. It was the latter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I peeled away the external plastic sheet and saw a small circuit board between battery terminal tabs and the phone. Looking at the phone connector, I see four electrical contacts. The two larger contacts are likely to be power and ground, two smaller pins would be consistent with data and clock for I2C or another communication protocol. However, looking closer I saw the bottom center contact is electrically connected to the large right contact, for three usable pins leaving one for communication.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28262,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/01/nexus-5-battery-pcb-front.jpg?w=1024" alt="" class="wp-image-28262"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This side of the circuit board also had a few bits of information silkscreened on it. BL-T9 is the name of this battery pack. UL94V-O probably refers to <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/UL_94" target="_blank">Underwriters Laboratories standard for device flammability</a>. The remainder of information "NXCT 50 31" are a mystery, possibly PCB design revision numbers. The black ink printed "F9 DA" is probably a manufacturing lot number or identifier of similar purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28263,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/01/nexus-5-battery-pcb-back.jpg?w=1024" alt="" class="wp-image-28263"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the other side of the circuit board, there are only three soldering points on the phone connector which is consistent with what we saw earlier. To its left is a silkscreened "LI176AH" and in this context it's tempting to think it means "Lithium Ion" battery of a particular "Amp-Hour" rating, but 176 doesn't correspond to the 2.2AH printed on the outside label so it must mean something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Further left on this circuit board, I see a small chip labeled "SP45AE A41711" but a search on that designation came up empty. Continuing left we see a few test points, and something I don't recognize labeled with a "P". It looks like a tiny circuit board with visible traces, soldered to the larger circuit board. Probing contacts accessible on either side of the "P" gave a resistance reading of 0.2Ω. My best guess is a shunt resistor for measuring electrical current flow, or possibly a fuse. (Which is also a sensor for electrical current, technically speaking.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was all very interesting, but retiring this battery also meant I had a phone with no battery. So I will <a href="https://newscrewdriver.com/2022/01/22/convert-nexus-5-to-use-external-dc-power/">convert it to run on external DC power</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

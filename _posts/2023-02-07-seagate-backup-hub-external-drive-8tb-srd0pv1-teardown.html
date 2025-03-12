@@ -1,0 +1,124 @@
+---
+layout: post
+title: Seagate Backup+ Hub External Drive 8TB (SRD0PV1) Teardown
+date: 2023-02-07 12:30:00.000000000 +00:00
+type: post
+post_id: '34907'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Shucking
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34909'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675892571
+  _publicize_job_id: '81297145298'
+  timeline_notification: '1675801813'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/07/seagate-backup-hub-external-drive-8tb-srd0pv1-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've owned and taken apart several USB external hard drives to <a href="https://newscrewdriver.com/2021/05/28/western-digital-my-book-1tb-wdbacw0010hbk-01-teardown/">extract their standard form factor SATA hard drive within</a>. Today another drive shall undergo an extraction process. This is a <a rel="noreferrer noopener" href="https://www.seagate.com/support/external-hard-drives/desktop-hard-drives/backup-plus-hub/" target="_blank">Seagate Backup Plus Hub</a> (SRD0PV1) I had used to back up my TrueNAS disk array. I used a Raspberry Pi as TrueNAS replication host and this drive as storage. I paid a few extra bucks for the version with an integrated USB hub hoping to power my Raspberry Pi from one of the ports and simplify my wiring. Unfortunately, I learned that when the drive initially spins up, all power goes to the drive and these USB ports become momentarily disconnected. Shutting down the Pi sank my plan. I shrugged, chalked the few extra bucks to lesson learned and ignored its integrated USB ports. I powered my Pi conventionally and used the drive for TrueNAS replication back up storage. That daily backup setup worked for about two years before TrueNAS started reporting replication failures: "Device not found." Where did it go? Looks like my Raspberry Pi would acknowledge the drive existed as a USB device but couldn't use it as one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34914,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/ubuntu-usb-cannot-enable-seagate-drive.jpg?w=1000" alt="" class="wp-image-34914"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running Ubuntu's <code>dmesg </code>command and querying for all the lines that have USB in it, I found a trail ending with an error message "Cannot enable. Maybe the USB cable is bad?" Following that advice, I tried several different cables but that didn't make a difference, so it wasn't the cable. I tried plugging the drive into my Windows machine with similar results: New USB device? Yes. New hard drive? No.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34916,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-intact.jpg?w=1024" alt="" class="wp-image-34916"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thus it was time for another <a rel="noreferrer noopener" href="https://www.ifixit.com/News/46724/how-to-find-useful-discounted-disks-inside-an-external-hard-drive" target="_blank">hard drive shucking</a> session. Since my TrueNAS array is running well, the data within isn't critical right now. But it's a low-pressure opportunity to learn if my data backup would survive such an episode of hardware failure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34918,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-ifixit-tools.jpg?w=1024" alt="" class="wp-image-34918"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found no external fasteners (not even under its rubber feet) so I started attacking visible seams with iFixit <a href="https://www.ifixit.com/products/ifixit-opening-picks-set-of-6" target="_blank" rel="noreferrer noopener">opening pick</a> and <a href="https://www.ifixit.com/products/ifixit-opening-tool" target="_blank" rel="noreferrer noopener">opening tool</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34909,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/seagate-backup-plus-hub-8tb-lid-removed.jpg?w=1024" alt="" class="wp-image-34909"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After a symphony of snapping sounds announcing death of many plastic clips, top lid came free. We can see a <a rel="noreferrer noopener" href="https://www.seagate.com/products/hard-drives/barracuda-hard-drive/" target="_blank">Seagate BarraCuda</a> 3.5" HDD. It is from their "Compute" product line for general personal storage usage. Usually with a two-year warranty, so we're right on time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34923,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-hdd-warranty-void-if-removed-from-oem-solution.jpg?w=1024" alt="" class="wp-image-34923"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of warranty, there was an interesting piece of text on the label that I don't think I've seen elsewhere before. "<em>HDD sold as component of OEM solution and not for resale. The product warranty does not cover HDD if removed from OEM solution.</em>" If the warranty hadn't already expired, I guess I've just voided it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34926,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-enclosure-externals.jpg?w=1024" alt="" class="wp-image-34926"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Many more snapping of clips later, the external enclosure has been separated into three plastic pieces: top, bottom, and a frame sandwiched between them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34927,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-clips-destroyed.jpg?w=1024" alt="" class="wp-image-34927"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>RIP, plastic clips.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34929,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-vibration-dampers.jpg?w=1024" alt="" class="wp-image-34929"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Vibration dampening rubber knobs sit between the external frame and screws fastening the HDD to a folded sheet metal tray.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34931,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-pcb-and-tray.jpg?w=1024" alt="" class="wp-image-34931"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once those screws were removed, the drive could be slid off the tray. I was surprised to see such a large expanse of circuit board; I had expected two small boards with a ribbon cable to bridge them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34933,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-pcb-top.jpg?w=1024" alt="" class="wp-image-34933"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Removing two screws allowed the circuit board to be removed. All physical connectors (SATA, power, USB) are on this side, as are a few through-hole electrolytic capacitors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34935,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-pcb-bottom.jpg?w=1024" alt="" class="wp-image-34935"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other side is sparsely populated with surface-mount components.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't see any visible signs of damage that might explain why Ubuntu "cannot enable" this device. Not that I would necessarily know how to fix it, anyway. This was just for curiosity. I might as well look around now that I have this in my hands.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34937,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-pcb-bottom-three-copies-of-mystery.jpg?w=1024" alt="" class="wp-image-34937"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I noticed three identical copies of a circuit, but beyond that, I don't know what it does. Why would the circuit board for an external hard drive need three of something?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34939,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-genesys-logic-gl3520.jpg?w=636" alt="" class="wp-image-34939"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The largest chip on this board is a GL3520 by <a rel="noreferrer noopener" href="https://www.genesyslogic.com.tw/en/index.php" target="_blank">Genesys Logic</a>, a Taiwan company specializing in USB solutions. The GL3520 is no longer listed on their website, but <a rel="noreferrer noopener" href="https://www.genesyslogic.com.tw/en/product_view.php?show=67" target="_blank">their GL3523</a> (which I infer to be its successor based on model number) is listed as a USB3 hub controller. This is consistent with integrated USB hub functionality.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34941,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/seagate-backup-plus-hub-8tb-asmedia-asm1153.jpg?w=429" alt="" class="wp-image-34941"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next largest chip is the <a href="https://www.asmedia.com.tw/product/995Yq54sX2YI1th2/d1Eyq85QN8GhBwRC" target="_blank" rel="noreferrer noopener">ASM1153 by ASMedia</a>, another Taiwan company. ASM1153 is a USB to SATA bridge and its presence is completely expected within an external USB hard drive product.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But now with the enclosure removed, this Seagate BarraCuda Compute 8TB drive has been transferred to the PC with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/10/14/rosewill-hard-disk-drive-cage-rsv-sata-cage-34/" target="_blank">a Rosewill hard disk drive cage</a> so it is now an internal drive. It was successfully detected as a SATA device, and by running "<a rel="noreferrer noopener" href="https://docs.oracle.com/cd/E36784_01/html/E36835/gazuf.html" target="_blank"><code>zpool import</code></a>" I was able to mount it to my Ubuntu filesystem. I copied a few files as tests, and they all seemed intact. Then I ran "<a rel="noreferrer noopener" href="https://docs.oracle.com/cd/E19253-01/819-5461/gbbxi/index.html" target="_blank"><code>zpool scrub</code></a>", and no errors were detected. I take this to mean that my data has survived which is great news. I want to keep using it as my TrueNAS replication backup, but I don't want to dedicate my PC tower to this task. Fortunately, I have <a href="https://newscrewdriver.com/2023/02/08/dusting-off-dell-optiplex-960-sff-pc/">an old Dell Optiplex 960</a> that should suit.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

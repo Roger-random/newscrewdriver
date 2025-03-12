@@ -1,0 +1,49 @@
+---
+layout: post
+title: Arduino Mozzi Space Core Exercise
+date: 2020-01-14 12:46:40.000000000 +00:00
+type: post
+post_id: '20236'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Projects
+tags: []
+meta:
+  _thumbnail_id: '20239'
+  _oembed_747700e301f56c30ddcda7a2dcd81939: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Dip
+    me in flour and call me a biscuit ... It&#39;s got batteries! <a href="https://t.co/40w7n5tvmJ">pic.twitter.com/40w7n5tvmJ</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1213581397333426176?ref_src=twsrc%5Etfw">January
+    4, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1579034804'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '39546260759'
+  _oembed_time_747700e301f56c30ddcda7a2dcd81939: '1579124437'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/14/arduino-mozzi-space-core-exercise/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Temporarily stymied <a href="https://newscrewdriver.com/2020/01/13/first-experiment-in-teensy-audio-foiled-by-cpu-instruction-set/">in my Teensy adventures</a>, I dropped back to Arduino for a Mozzi exercise. I've helped Emily through bits and pieces of putting sampled audio on an Arduino using Mozzi, but I had yet to run through the whole process myself.</p>
+<p>The hardware side was kept as simple as possible: there's only a single switch wired to be normally open and momentarily closed. For audio output, I used the wire salvaged from the <a href="https://amzn.to/2st5BHw">Project MC2 Pixel Purse</a>(*) that was briefly a hacker darling due to its clearance-sale price. (As of this writing, the price is up to $39.58, far above the $6 - $8 leading to its "buy to take it apart" fame.) Since this cable was designed to be plugged into a cell phone, it had <a href="https://en.wikipedia.org/wiki/Phone_connector_(audio)#Mono_and_stereo_compatibility">a TRRS plug that I rewired into an imitation of a monophonic TS plug</a> by using the T wire and connecting RRS together into another wire.</p>
+<p>With hardware sorted out, I dived into the software tasks. There were more than a few annoyances that make this task not very beginner-friendly. The <a href="https://github.com/sensorium/Mozzi/blob/master/extras/python/audio2huff.py">Huffman audio compression utility <code>audio2huff.py</code></a> had dependencies listed only in a comment block easily overlooked by beginners. They didn't all install in the same way (<code>purehuff</code> required a download and install, while the others were installed via <code>pip</code>.) And since they are a few years old and not actively maintained, they were all written for Python 2.</p>
+<p>This will become more and more of a problem as we go, since Python 2 support has just officially ended at the start of 2020. Older Linux distributions would launch Python 2 when the user runs <code>python</code> at the command line, and those that want to use Python 3 would need to run <code>python3</code>. This is getting flipped around and some environments now launch Python 3 when the user runs <code>python</code> and those that need the old stuff has to run <code>python2</code>.</p>
+<p>What happens when we run these utilities under Python 3? It'd be nice if the error message is "Hey, this needs Python 2" but that's not the reality. It is more likely to be something like "foobar is not iterable" completely bewildering to beginners.</p>
+<p>To be fair, none of these are problems specific to Mozzi, there's a large body of work online that were written for Python 2 and waiting for someone motivated enough to bring them up to date.</p>
+<p>Anyway, after those problems are sorted out, I got my Arduino to play a sound when the button is pressed. My test sound clip was <a href="https://theportalwiki.com/wiki/Core_voice_lines">from the game Portal 2</a>: the ecstatic "SPAAACE!" emitted by the corrupted Space Core when it finally got its wish to go flying through space.</p>
+<p>This Arduino Mozzi exercise <a href="https://github.com/Roger-random/mozzi_spacecore">is publicly available on Github</a>.</p>
+<p>[UPDATE]: <a href="https://newscrewdriver.com/2020/01/20/arduino-mozzi-wilhelm-exercise/">"Wilhelm" exercise (round 2) has some improvements</a>.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases. But you shouldn't buy a Pixel Purse until it drops back down to clearance prices.</body></html></p>

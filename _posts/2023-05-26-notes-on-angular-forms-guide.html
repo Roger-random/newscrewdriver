@@ -1,0 +1,71 @@
+---
+layout: post
+title: Notes on Angular "Forms" Guide
+date: 2023-05-26 12:30:00.000000000 +00:00
+type: post
+post_id: '36834'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22766'
+  timeline_notification: '1685129408'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685219759
+  _publicize_job_id: '84390911608'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/26/notes-on-angular-forms-guide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A quick survey of Google App Engine and other options for hosting Node.js web applications <a href="https://newscrewdriver.com/2023/05/25/window-shopping-google-app-engine-and-some-competitors/">found a few free resources</a> if I should start venturing into web projects that require running server-side code. That survey was motivated by the <a href="https://newscrewdriver.com/2023/05/22/notes-on-getting-started-with-standalone-components-code-lab/"><em>Getting Started with Angular Standalone Components</em> code lab</a> which included instructions to host our Angular app on Google App Engine. That example application also made use of form input, an Angular topic that I knew I needed to study if I were to build useful Angular apps.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As it's such a big part of web development, Angular's developer guide naturally included a section on forms. The first time I read the <a href="https://angular.io/guide/forms-overview">forms overview</a>, I got as far as learning there were two paths to building forms on Angular: "Reactive Forms" and "Template-Driven Forms". At the time, I didn't know enough Angular to understand how they differ, so I put the topic aside for later. I almost managed to forget about it, because the Angular "Tour of Heroes" tutorial (which I took twice) didn't use any forms at all! The standalone components code lab reminded me it's something I needed to get back into.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This time around, I understood their difference: Reactive forms are almost entirely specified in TypeScript code, whereas template-driven forms are mostly specified via directives in HTML markup template. Template-driven forms resemble what I saw in Vue.js with <code>v-model</code> directives, allowing simple forms to be built with very little work. As scenarios get more complex, though, template-driven forms become limiting, and some features (like <a href="https://angular.io/guide/dynamic-form">dynamic forms</a> and strictly <a href="https://angular.io/guide/typed-forms">typed forms</a>) are only available in reactive forms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both approaches use the <a href="https://angular.io/api/forms/FormControl"><code>FormControl </code>class</a> for underlying code functionality. Each instance corresponds to a single input field in the HTML form. As forms usually have more than one input field, they are collected in a <code>FormControlGroup</code>. A <code>FormControlGroup </code>can nest inside another as desired to represent a logical structure in the form. <code>FormControlArray </code>is an alternative way to group several <code>FormControl </code>together, focused on dynamic organization at runtime.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To validate data user has entered into the form, Angular has <a href="https://angular.io/api/forms/Validators">a <code>Validators </code>library</a> that covers common data validation activities. Where equivalent <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation">HTML validation functionality</a> exist, the Angular <code>Validators </code>code replaces them by default. Custom data validation logic would naturally have to be written in code, but they can be attached either programmatically in a reactive form or via directives in template-driven forms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Common control status like valid, invalid, etc. can be accessed programmatically as boolean properties on <a href="https://angular.io/api/forms/AbstractControl"><code>AbstractControl</code></a> (common base class for <code>FormControl</code>, <code>FormControlGroup</code>, etc.) They are also <a href="https://angular.io/guide/form-validation#control-status-css-classes">automatically reflected on the CSS classes</a> of associated HTML input control with <code>.ng-valid</code>, <code>.ng-invalid</code>, etc. Handy for styling.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After reading through this developer guide, I've decided to focus on <a href="https://angular.io/guide/reactive-forms">reactive forms</a> for my projects in the near future based on the following reasons:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>The sample applications I've already looked at for reference use reactive forms. This includes the recently-completed standalone components code lab and the <a href="https://angular.io/start">starter e-commerce project</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>My brain usually has an easier time reasoning about code than markup, and reactive forms are more code-centric or the two.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Data updates in reactive forms are synchronous, versus asynchronous updates in template-driven forms. If given the choice, synchronous code is usually easier for me to debug.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I like data type enforcement of TypeScript, and strictly-typed forms are exclusive to reactive forms. I like the ability to explicitly list expected data types (plus a null for when form is reset) via <code>&lt;type|null&gt;</code> and declare fields expected to be optional with the "?" suffix.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I understood this developer guide a lot better than the first time I tried reading it, there are still a lot of information I don't understand yet. Features like asynchronous validators are topics I'll postpone until the time when I need to learn them. I've already got too much theoretical Angular stuff in my head and I need to <a href="https://newscrewdriver.com/2023/05/27/compass-project-updated-to-angular-16-standalone-components/">get some hands-on practice</a> before I forget them all.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

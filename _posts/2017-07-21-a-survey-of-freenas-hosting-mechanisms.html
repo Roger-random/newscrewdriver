@@ -1,0 +1,44 @@
+---
+layout: post
+title: A Survey of Hosting Mechanisms in FreeNAS
+date: 2017-07-21 09:12:38.000000000 +00:00
+type: post
+post_id: '8575'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7333688057'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/21/a-survey-of-freenas-hosting-mechanisms/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After getting Plex plug-in up and running, I started researching the FreeNAS features for hosting other code. I plan to keep my FreeNAS box up and running at all times, as is typical NAS usage, to ensure files are available whenever I want them.  I wanted to know what else I can run on the box at the same time since it is going to be on and consuming electricity anyway.</p>
+<p>From highest and most user-friendly level to the lowest, they are:</p>
+<p><strong>1) FreeNAS Plug-in</strong>: This is how I got started with Plex media server, as it is one of the few plug-ins on the default list. Some flaws with this system were visible immediately. The version of Plex on the default plug-in library is several versions out of date, and there is no user-friendly update mechanism. The user has to go into the FreeBSD jail and update manually. Similarly, in order to access the media files hosted on the same FreeNAS box, the user has to know about manually mapping storage into FreeBSD jails.</p>
+<p>It feels like the FreeNAS plug-in ecosystem never matured as much as the creators had hoped. A sentiment confirmed by <a href="https://forums.plex.tv/discussion/263720/migrating-from-freenas-9-plugin-to-freenas-corral-docker">this page</a>. It explained the reasoning behind the push in FreeNAS 10 (Corral) to move to a system based on Docker containers. Unfortunately, when FreeNAS 10 was abandoned, that push was also put on hold.</p>
+<p><em>Summary</em>: It looks like FreeNAS plug-ins are a dead-end for a deprecated architecture.</p>
+<p><strong>2) FreeBSD Jail</strong>: Since a FreeNAS plug-in user basically had to know about running a <a href="https://en.wikipedia.org/wiki/FreeBSD_jail">FreeBSD Jail</a> anyway, they might as well learn to work at this more hands-on level rather than depending on the FreeNAS plug-in architecture to sugar-coat it. There are a lot more steps involved, but for popular things, somebody would have posted the list of steps. For example, here's <a href="https://forums.plex.tv/discussion/102532/how-to-install-plex-in-a-freenas-jail">how to install Plex in a jail</a>. (<em>UPDATE</em>: I've learned Plex media server is part of the standard package system and therefore even easier to install: Create a jail, open shell to the jail, type '<code>pkg install plexmediaserver</code>', done.)</p>
+<p><em>Upside</em>: FreeBSD jails' isolation protects FreeNAS from some security exploits. The resources consumed by a jail is managed by the same system that manages the rest of FreeNAS and automatically gains all the benefits thereof. Storage in a jail can be mapped to a FreeNAS storage volume to allow (optionally read-only) access.</p>
+<p><em>Downside</em>: FreeBSD jails offers no protection against the nastier kernel-level security exploits.</p>
+<p><em>Summary</em>: FreeBSD Jail makes sense for running relatively trustworthy code that integrates with the volumes on FreeNAS. Plex media server is a good example.</p>
+<p><strong>3) Virtual Machine</strong>: New in FreeNAS 11 is a feature to create and run virtual machines alongside FreeNAS using the FreeBSD <a href="http://bhyve.org/">bhyve </a>hypervisor. As of FreeNAS-11-0-U1, this new feature is quite immature. For example, trying to stop a VM in the FreeNAS UI seems to have no effect. I have to go into the administrative shell and use the "<a href="https://www.freebsd.org/cgi/man.cgi?query=bhyvectl&amp;apropos=0&amp;sektion=8&amp;manpath=FreeBSD+11.0-RELEASE&amp;arch=default&amp;format=html">bhyvectl</a>' command-line utility to stop the VM. As another example, the virtual UEFI boot sequence doesn't act as some operating systems expect, which can result in the user getting dumped into the UEFI shell. (Something normal users should never see!)</p>
+<p><img class="alignnone size-full wp-image-8650" src="https://newscrewdriver.com/wp-content/uploads/2017/07/uefi-shell.png" alt="UEFI Shell" width="926" height="298"></p>
+<p>Google pointed me to <a href="https://forums.freenas.org/index.php?threads/how-to-how-to-boot-linux-vms-using-uefi.54039/">this page</a> which will help with most Linux distributions that encounter this problem. Thanks to this tip, I got my Ubuntu test server up and running on a FreeNAS VM.</p>
+<p><em>Upside</em>: Full virtual machine isolation will protect against most security exploits.</p>
+<p><em>Downside</em>: Full virtual machine isolation consumes more system resources. Most significantly, the storage is not shared: Space dedicated to a VM is not available to the rest of FreeNAS. And there is no storage mapping so a VM could only access FreeNAS shares over the network interface as if it is physically a different machine.</p>
+<p><em>Summary</em>: Virtual machines make sense for things that do not interact with the rest of FreeNAS, and a good alternative to setting up another physical machine.</p>
+<p></body></html></p>

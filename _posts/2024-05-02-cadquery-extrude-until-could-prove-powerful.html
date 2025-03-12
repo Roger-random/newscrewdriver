@@ -1,0 +1,45 @@
+---
+layout: post
+title: CadQuery "Extrude Until" Could Prove Powerful
+date: 2024-05-02 14:43:10.000000000 +00:00
+type: post
+post_id: '43259'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: u:wpcom-ufa-v4:1714769191
+  firehose_sent: '1714686192'
+  _thumbnail_id: '43260'
+  timeline_notification: '1714686193'
+  _publicize_job_id: '94199858169'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-03 20:48:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/02/cadquery-extrude-until-could-prove-powerful/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As I'm slowly chewing through CadQuery examples (<a href="https://newscrewdriver.com/2024/05/01/exploring-cadquery-errors-via-examples/">with a side of CadQuery error handling</a>) I am mostly learning CadQuery syntax for familiar CAD concepts. But "<em><a href="https://cadquery.readthedocs.io/en/latest/examples.html#extruding-until-a-given-face">Extruding until a given face</a></em>" showed something novel I hadn't seen before. Instead of extruding a 2D profile out to a specified distance, this option allows specifying an extrusion operation to go until it reaches an existing face. This is especially powerful when that destination face is irregularly shaped.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The example showed this to good effect: a circle is extruded out to a half-torus, then a rectangle is extruded until it reaches that doughnut shape. Without this tool, the rectangle would need to have been extruded then trimmed with a cylinder to fit doughnut curvature. This CadQuery "extrude until" option skips the intermediate cylinder shape and associated trim operation. This allows for simpler CadQuery command list and captures design intent, which I see as a good thing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hadn't noticed any counterparts to this capability during my time with Fusion 360, Onshape, or FreeCAD. If it exists in any of those tools, it would have been hidden away in a menu option I had not explored. Perhaps it's not a mainstream option because it has some "Here be Dragons" edge cases when the extrusion profile (rectangle in example above) could not be fully projected onto an existing face (half-doughnut.) There is a small Warning text box within CadQuery documentation explaining the result may be unpredictable. What does that mean? I increased the example rectangle size so it is larger than doughnut profile, and it extruded a flat shape out beyond the doughnut. From this experiment I think "unpredictable" only means "your shape will be wrong" and not "crash CadQuery and lose all of your recent unsaved changes".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So it could cause problems in parametric designs if certain values go beyond others. Another downside of using a novel capability absent from other CAD packages is added work if I want to translate it to another CAD package. I rarely try to perform a direct translation, though, given it has rarely worked out well. When Sawppy project moved from Fusion 360 to Onshape, my first export/import effort was a disaster so I redrew from scratch. Given this precedent I think I'll be fine to use "extrude until" in my CadQuery projects. It's just something to keep in mind as I explore <a href="https://newscrewdriver.com/2024/05/03/cadquery-natural-code-cad-advantages/">CadQuery advantages as a code CAD platform</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

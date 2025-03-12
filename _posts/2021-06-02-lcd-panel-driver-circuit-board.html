@@ -1,0 +1,85 @@
+---
+layout: post
+title: LCD Panel Driver Circuit Board
+date: 2021-06-02 12:30:00.000000000 +00:00
+type: post
+post_id: '26923'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- LCD Panel
+- LP133WF2(SP)(A1)
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26876'
+  _publicize_job_id: '59134210676'
+  timeline_notification: '1622662210'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/02/lcd-panel-driver-circuit-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm <a href="https://newscrewdriver.com/2021/06/01/lg-lcd-panel-lp133wf2spa1-teardown/">taking apart a broken laptop LCD panel</a>, a LG LP133WF2(SP)(A1) from a Toshiba Chromebook 2. I started with the very fancy tape surrounding the edges. Once the tape was gone, its top edge started unfolding into two parts. But they're still held together on the bottom edge with the integrated driver board for this display. So I should figure out what that's about before trying to completely separate the two parts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The front side of this board had three sets of extremely high density connectors to carry signal for all 1920x1080 pixels on this module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26873,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-03-pcb-front.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-03-pcb-front.jpg?w=1024" alt="" class="wp-image-26873"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The back side of this board had all of the integrated circuits and a lower density connector for the backlight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26874,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-04-pcb-back.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-04-pcb-back.jpg?w=1024" alt="" class="wp-image-26874"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A single cable carried both power and data from the laptop mainboard. The chip closest to that connector was the largest IC on this board and probably mastermind in charge of this operation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26875,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-05-anx2804.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-05-anx2804.jpg?w=500" alt="" class="wp-image-26875"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A search for "LG ANX2804" came up empty, which is not a huge surprise for a chip designed and built by LG for internal consumption by their display division. There's no reason for them to distribute specifications or datasheets. On the other side of the board we see a connector for the backlight. The connector has nine pins, but in the ribbon we see six thin wires plus a wider seventh wire. This wider wire consumes two of the nine pins, making it a good candidate for either a common anode or cathode for LEDs. This left one pin in the connector seemingly unused.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26877,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-07-candidate-backlight-fpc.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-07-candidate-backlight-fpc.jpg?w=1024" alt="" class="wp-image-26877"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had expected just two wires for a simple string of LEDs, but the backlight is evidently more complicated than that. I'm optimistic I can get this figured out because the IC closest to this connector is clearly marked as a <a rel="noreferrer noopener" href="https://www.ti.com/product/TPS61187" target="_blank">TPS 61187</a> by Texas Instruments, and I hope the information available online will help me sort it out later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26887,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-17-ti-tps-61187-backlight-driver.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-17-ti-tps-61187-backlight-driver.jpg?w=1024" alt="" class="wp-image-26887"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Returning to the front of this board, these high density data connectors are fascinating but I don't understand everything that's going on here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26876,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-06-fine-pitched-data-lines.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-06-fine-pitched-data-lines.jpg?w=1024" alt="" class="wp-image-26876"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I count somewhere between four and five contacts within a millimeter. This is definitely beyond my soldering skill, but they aren't soldered anyway. Whatever this type of connection is, it is clearly single use. Once I detach it (it peeled off like tape) there's no way for me to reattach it. I see nothing to help me align the connector. I'm also curious about the fact the copper contacts area is wider than what we see actually used. I'm sure it's a provision for something but I don't know what. For today it doesn't matter, as the screen is already cracked and nonfunctional so I lose nothing by peeling them off before I <a href="https://newscrewdriver.com/2021/06/03/layers-of-glass-in-lg-laptop-lcd/">explore its intricate layers of glass</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'Notes on "Tour of Heroes" Tutorial: Setting up for CRUD'
+date: 2020-10-22 12:30:00.000000000 +00:00
+type: post
+post_id: '23116'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22766'
+  timeline_notification: '1603395079'
+  _publicize_job_id: '50224872954'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/22/notes-on-tour-of-heroes-tutorial-setting-up-for-crud/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was very novel for me to learn how single page applications (SPA) written in Angular <a href="https://newscrewdriver.com/2020/10/21/notes-on-tour-of-heroes-tutorial-5-in-app-navigation/">handle navigation with help of a router</a>. In contrast, the final section 6 of Tour of Heroes tutorial is more of a review. "<a rel="noreferrer noopener" href="https://angular.io/tutorial/toh-pt6" target="_blank">Get Data from Server</a>" is certainly a very important part of any web app, but it isn't as novel for me as the concepts have been covered in other contexts before. For example, the <em><a rel="noreferrer noopener" href="https://newscrewdriver.com/2016/06/27/ruby-on-rails-tutorial-notes/" target="_blank">Ruby on Rails Tutorial</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The pattern here is something I know as Create+Read+Update+Delete or CRUD. The vast majority of applications can be fit into a CRUD mold, it just depends on how far we're willing to stretch the concepts. It's popular enough that many frameworks like Ruby on Rails have scaffolding scripts optimized to make it easy to build CRUD applications. In fact, some projects fit CRUD so perfectly they don't need any coding at all, and can be done with tools like <a rel="noreferrer noopener" href="https://aws.amazon.com/blogs/aws/introducing-amazon-honeycode-build-web-mobile-apps-without-writing-code/" target="_blank">Amazon's Honeycode</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Because CRUD pattern pops up so often, this final section of the Angular tutorial prescribes how to implement them with tools of the Angular framework. Again RxJS features prominently here, helping to deal with the asynchronous nature of network communications.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The functionality here is also getting complex enough we can't always get a warning about problems at compile time. I saw multiple error messages that were not particularly helpful in tracing to the underlying cause. One of them was "cannot GET" which is not specific enough about why the data retrieval operation failed. And even at compile time, less-than-helpful errors have also started popping up. "File does not exist" is frustrating when the named file actually does exist, but I eventually learned this actually indicates a compile error. When is an error in the file causing it to fail one of the compilation steps, that file would be unavailable to later steps which then complains of "File does not exist".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Some of these errors were of my own doing, because I choose to specify <code>--strict</code> when creating this project. Unfortunately the copy-and-pasted tutorial code does not following strict TypeScript rules, and so I will be on my own for fixes. I'll revisit that topic for later, in the meantime I just fix things up just enough to avoid "File does not exist" problems, even though that meant living with a lot of warning messages in the build window. On the upside, I'm starting to learn to identify which errors are <code>--strict</code> violations and which errors I need to fix as I <a href="https://newscrewdriver.com/2020/10/23/notes-on-tour-of-heroes-tutorial-r-and-u-of-crud/">get started with (R)ead and (U)pdate operations</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

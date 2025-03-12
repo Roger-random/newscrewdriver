@@ -1,0 +1,115 @@
+---
+layout: post
+title: Analog TV Tuning Effect with ESP_8_BIT_Composite
+date: 2022-07-01 12:30:00.000000000 +00:00
+type: post
+post_id: '31187'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31188'
+  _oembed_447d5871334d48f003c7a35e9a39d535: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Yesterday,
+    <a href="https://twitter.com/RealTimeKodi?ref_src=twsrc%5Etfw">@RealTimeKodi</a>
+    suggested I should try mapping that effect to a potentiometer so I can dial the
+    image in like it&#39;s an old TV or something. <br><br>Here it is <a href="https://t.co/Wjy9TgCDbr">pic.twitter.com/Wjy9TgCDbr</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1536463544475979776?ref_src=twsrc%5Etfw">June
+    13, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_447d5871334d48f003c7a35e9a39d535: '1656624744'
+  _oembed_881383a6bf757f7a60fcebff4f4e51b7: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Okay,
+    I added the code that makes the image lose vertical sync when it&#39;s out of
+    tune, and this is the last thing I&#39;m doing today because I&#39;m going to
+    go work on my truck <a href="https://t.co/nxfWXddw7m">pic.twitter.com/nxfWXddw7m</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1538999891116011520?ref_src=twsrc%5Etfw">June
+    20, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_881383a6bf757f7a60fcebff4f4e51b7: '1656624744'
+  _publicize_job_id: '74252634475'
+  timeline_notification: '1656703824'
+  _oembed_fe1bcf651770ee6c0f526302385c45e7: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Yesterday,
+    <a href="https://twitter.com/RealTimeKodi?ref_src=twsrc%5Etfw">@RealTimeKodi</a>
+    suggested I should try mapping that effect to a potentiometer so I can dial the
+    image in like it&#39;s an old TV or something. <br><br>Here it is <a href="https://t.co/Wjy9TgCDbr">pic.twitter.com/Wjy9TgCDbr</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1536463544475979776?ref_src=twsrc%5Etfw">June
+    13, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_fe1bcf651770ee6c0f526302385c45e7: '1656703856'
+  _oembed_87b4937086d502fc30a743da5a28ad2c: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Okay,
+    I added the code that makes the image lose vertical sync when it&#39;s out of
+    tune, and this is the last thing I&#39;m doing today because I&#39;m going to
+    go work on my truck <a href="https://t.co/nxfWXddw7m">pic.twitter.com/nxfWXddw7m</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1538999891116011520?ref_src=twsrc%5Etfw">June
+    20, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_87b4937086d502fc30a743da5a28ad2c: '1656703856'
+  wordads_ufa: u:wpcom-ufa-v3-beta:1667378151
+  _oembed_502a3ba73c6710bf72d6f27290dad53c: "{{unknown}}"
+  _oembed_79b58a3614782977860a59ebfb375b59: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/01/analog-tv-tuning-effect-with-esp_8_bit_composite/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/06/30/esp_8_bit_composite-version-1-3-1/">addressing my backlog of issues</a> with the ESP_8_BIT_Composite video output library, I felt that I have "eaten my vegetables" and earned some "have a dessert" fun time with my own library. On Twitter I saw that Emily Velasco had taken a programming bug and turned it into a feature, and I wanted to try taking that concept further.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When calling Adafruit GFX library's <code>drawBitmap()</code> command, we have to pass in a pointer to bytes that make up the bitmap. Since that is only a buffer of raw bytes, we also have to tell <code>drawBitmap()</code> how to interpret those bytes by sending in dimensions for width and height. If we accidentally pass in a wrong width value, the resulting output would be garbled. If I had seen that behavior, I would have thought "Oops, my bad, let me fix the bug" and moved on. But not Emily, instead she saw a fun effect to play with.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/MLE_Online/status/1536463544475979776","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/MLE_Online/status/1536463544475979776
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is pretty amazing, using the wrong width value messes up the stride length used to copy image data, and it does vaguely resemble tuning an analog TV when it is just barely out of horizontal sync. Pushing the concept further, she added a vertical scrolling offset to emulate going out of vertical sync.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/MLE_Online/status/1538999891116011520","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/MLE_Online/status/1538999891116011520
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, applying the tuning effect to animations required an arduous image conversion workload and <a href="https://github.com/emilyvelasco/imagetuner" target="_blank" rel="noreferrer noopener">complex playback code</a>. I was quite surprised when I learned this, as I had wrongly assumed she used the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/25/cat-and-galactic-squid/" target="_blank">animated GIF support I had added</a> to my library. In hindsight I should have remembered <code>drawBitmap()</code> was only monochrome and thus incompatible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hence this project: combine my animated GIF support with Emily's analog TV tuning effect in order to avoid tedious image conversion and complex playback.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started with my animated GIF example, which uses Larry Bank's AnimatedGIF library to decode directly into ESP_8_BIT_Composite back buffer. For this tuning effect, I needed to decode animation frames into an intermediate buffer, which I could then selectively copy into ESP_8_BIT_Composite back buffer with the appropriate horizontal &amp; vertical offsets to simulate tuning effect. Since I am bypassing <code>drawBitmap()</code>  to copy memory myself, I switched from the Adafruit GFX API to the lower-level raw byte buffer API exposed by my library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my library I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/21/allocating-frame-buffer-memory-4kb-at-a-time/" target="_blank">allocated the frame buffer in 15 separate 4KB allocations</a>, which was a tradeoff between "ability to fit in fragmented memory spaces" and "memory allocation overhead". Dividing up buffer memory was possible because rendering is done line by line and it didn't matter if one line was contiguous with the next in memory or not. However, this tuning effect will be copying data across line boundaries, so I had to allocate the intermediate buffer as one single block of memory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My original example also asked the AnimatedGIF library to handle the wait time in between animation frames. However, since that delay could vary in an animation, and I have a user-interactive component. In order to remain responsive to knob movement faster than animation frame rate, I took over frame timing in a non-blocking fashion. Now every run of <code>loop()</code> reads the potentiometer knob position and update horizontal/vertical offsets without having to wait for the next frame of the animation, resulting in more immediate feedback to the user.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Animated GIF Tuner Effect with <em>Cat and Galactic Squid</em> is <a href="https://github.com/Roger-random/animated_gif_tuner_effect" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

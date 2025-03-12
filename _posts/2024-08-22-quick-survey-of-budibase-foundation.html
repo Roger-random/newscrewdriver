@@ -1,0 +1,70 @@
+---
+layout: post
+title: Quick Survey of Budibase Foundation
+date: 2024-08-22 12:30:00.000000000 +00:00
+type: post
+post_id: '44846'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- budibase
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  firehose_sent: '1724355040'
+  _publicize_job_id: '97233671473'
+  timeline_notification: '1724355042'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-21 21:57:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/22/quick-survey-of-budibase-foundation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm playing with <a href="https://newscrewdriver.com/2024/08/21/self-hosting-budibase-docker-compose/">Budibase on a self-hosted instance</a> courtesy of Docker Compose. I didn't edit the <code>docker-compose.yaml</code> file provided by Budibase but I did open it up to look around to see what Budibase was built atop of. Later I found answers within Budibase documentation which included <a href="https://docs.budibase.com/docs/budibase-architecture">a page on its system architecture</a> and other scattered information on how it was built. Most of these building blocks are things I might use in my own future projects, with one major exception.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">CouchDB</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew <a href="https://couchdb.apache.org/">CouchDB</a> is one of the "NoSQL" databases out there, but not much more than that. My own NoSQL database adventure <a href="https://newscrewdriver.com/2022/11/23/notes-on-codecademy-learn-mongodb/">was with MongoDB</a> and I don't yet know enough to tell when I might use one versus another. Budibase uses CouchDB for its own internal operational data like user accounts. It is also available as the default store for client app data if I don't want to connect to an external database. My to-do list includes better understanding the tradeoffs between those two paths.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Redis</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Not everything involved in running an application needs to be written to disk. Sometimes an in-memory data storage system like <a href="https://redis.io/">Redis</a> is the right tool for the job, because it is far faster than any disk. I've known Redis existed but never had a project that needed its capabilities. Budibase says it uses Redis as a high performance cache store.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">MinIO</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing that caught my eye about Budibase is file-handling ability. Meaning data entries aren't limited to classic database types like dates or numbers or text, I can also upload file attachments. I had guessed it was implemented using something like <a href="https://www.postgresql.org/docs/16/datatype-binary.html">PostgreSQL binary data format</a>, but I was wrong. Attachments are actually stored in an instance of <a href="https://min.io/">MinIO</a> which I knew nothing about until now. A quick skim of documentation looks like MinIO is a way to get much of the functionality of AWS S3 but on my own data storage instead of AWS datacenter hardware. Like CouchDB, MinIO also used to store files for Budibase internal operation in addition to storing client app data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Svelte</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was curious how Budibase built the HTML UI I had been looking at, and part of the answer is <a href="https://svelte.dev/">Svelte</a>. This was on my "maybe look into later" list due to its connection with <a href="https://vitejs.dev/">Vite</a>, which I <a href="https://newscrewdriver.com/2023/05/05/trying-vite-and-its-ie11-legacy-option/">briefly looked at</a> earlier. It's all layers upon layers, and there appears to be yet another layer on top: <a href="https://kit.svelte.dev/">SvelteKit</a>. I didn't see any mention of SvelteKit, though, so I think Budibase is using things at Svelte level.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Adobe Spectrum</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another component of Budibase HTML UI is <a href="https://spectrum.adobe.com/">Adobe's Spectrum design system</a>. I don't recall ever coming across Spectrum before, but in hindsight it made sense Adobe would create its own interface design. Several years ago I became infatuated with Google's Material Design system, and it was a big motivation for me to learn Google's Angular platform. Since then Google corporate behavior turned me from a fan into a skeptic, and I'm not inclined to further pursue either Angular or Material Design. Adobe Spectrum Design would be an alternative... if it weren't for the fact I'm <em>even less </em>fond of Adobe business practices. The fact Budibase uses Adobe Spectrum is not a deal-breaker against Budibase, but I'm never going to use Spectrum for my own web development projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of my own projects, I need to pick something interesting I can use to learn Budibase as I try to turn idea into reality. Fortunately I have no shortage of project ideas and have a long standing "Excel is not a database" problem I've wanted to solve: <a href="https://newscrewdriver.com/2024/08/23/resurrecting-project-idea-personal-finance-software/">personal finance tracking</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

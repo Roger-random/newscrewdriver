@@ -1,0 +1,56 @@
+---
+layout: post
+title: Window Shopping Marko JS
+date: 2023-10-01 12:30:00.000000000 +00:00
+type: post
+post_id: '39240'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39393'
+  wordads_ufa: s:wpcom-ufa-v4:1696279352
+  _publicize_job_id: '88106592459'
+  timeline_notification: '1696188617'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/01/window-shopping-marko-js/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While I'm window-shopping <a href="https://newscrewdriver.com/2023/09/30/window-shopping-godot-engine/">open-source software like Godot Game Engine</a>, I might as well jot down a few notes in another open-source package. <a rel="noreferrer noopener" href="https://markojs.com/" target="_blank">Marko</a> is a web app framework for building user interfaces. Many web development frameworks are free open source so, unlike Godot, that wasn't why Marko got on my radar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The starting point was <a href="https://hachyderm.io/@grigs@front-end.social/111099992943671077">this Mastodon post</a> boosted by someone on my follow list, linking to an article "<a rel="noreferrer noopener" href="https://dev.to/tigt/why-not-react-2f8l" target="_blank">Why not React?</a>" explaining how React (another client-side web development framework) was built to solve certain problems but solved them in a way that made it very hard to build a high performance React application.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The author asserted that React was built so teams at Facebook can work together to ship features, isolating each team from the implementation details of components created by other teams. This was an important feature for Facebook, because it also meant teams are isolated from each other's organizational drama. However, such isolation meant many levels of runtime indirection that takes time every time some little event happens.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was also a brief mention of Angular, the web framework I've occasionally put time into learning. And here the author asserted that Angular was built so Google can build large-scale desktop applications that run in a web browser. Born into a world where code lives and runs in an always-open browser tab on a desktop computer, Angular grew up in an environment of high bandwidth and plentiful processing power. Then Google realized more of the world's internet access are done from phones than from desktop computers, and Angular doesn't work as well in such environments of limited bandwidth and processing power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What's the solution? The author is <a rel="noreferrer noopener" href="https://dev.to/tigt/the-weirdly-obscure-art-of-streamed-html-4gc2" target="_blank">a proponent of streamed HTML</a>, a feature so obscure that it doesn't even get called a consistent name. The underlying browser support has existed for most of the history of browsers, yet it hasn't been commonly used. Perhaps (this is my guess) the fact it is so old made it hard to stand out in the "oh new shiny!" nature of web evolution and the ADHD behavior it forces on web developers. It also breaks the common path pattern for many popular web frameworks, roughly analogous to Unity DOTS or entity component systems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What's the solution? Use a framework that supports streamed HTML at its core. <a rel="noreferrer noopener" href="https://markojs.com/" target="_blank">Marko</a> was originally developed by eBay to help make browsing auctions fast and responsive. While it has evolved from there (here's <a href="https://innovation.ebayinc.com/tech/engineering/the-future-of-marko/">a history of Marko</a> up to the publishing date in 2017) it has maintained that focus on keeping things responsive for users. One of the more recent evolutions is allowing <a href="https://web.dev/app-like-pwas/">Progressive Web Apps (PWA)</a> to be built with Marko.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It all sounds very good, but Marko is incompatible with one of my usage scenarios. Marko's magic comes from server-side and client-side runtime components working together. They minimize the computational requirements on the client browser (friendlier to phones) and also to minimize the amount of data transmitted (friendlier to data plans.) However, this also means Marko is not compatible with static web servers where there is no server-side computation at all. (Well, not impossible. But if Marko is built for static serving, it loses much of its advantages.) This means when I build a web app to be served from an ESP32, Marko might not be the best option. Marko grew up in an environment where the server-side resources (of eBay) is vastly greater than whatever is on the client. When I'm serving from an ESP32, the situation is reversed: the phone browser has more memory, storage, and computing power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm going to keep Marko on my mind if I ever build a web app that can take benefit from Marko's advantages, but from this cursory glance I already know it won't be the right hammer for every nail. As opposed to today's web browsers, which try to do it all and hence have grown to become Swiss Army Knife of software packed with <a href="https://newscrewdriver.com/2023/10/02/make-firefox-pdf-viewer-default-to-page-fit-zoom/">capabilities like PDF document viewers</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,86 @@
+---
+layout: post
+title: Canon Pixma MX340 Cover Switch and Power Supply
+date: 2023-11-29 12:30:00.000000000 +00:00
+type: post
+post_id: '40703'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40716'
+  timeline_notification: '1701289814'
+  wordads_ufa: s:wpcom-ufa-v4:1703391325
+  _publicize_job_id: '89829028818'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/29/canon-pixma-mx340-cover-switch-and-power-supply/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to <a href="https://newscrewdriver.com/2023/11/28/canon-pixma-mx340-electronics-plan/">probe the electronic guts</a> of this Canon Pixma MX340 multi-function inkjet and see what I can learn. Before I dive in, though, there were a few bits of preparatory work to be done.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40719,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-cover-open-switch-and-salvaged-switch.jpg?w=1024" alt="" class="wp-image-40719"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is a small switch in the device to detect if the cover (which includes automatic document feeder + scanner modules) has been lifted. This is usually a sign the user intends to either replace ink cartridges or clear a paper jam, so the printer goes into a non-printing standby state. It is spring-loaded to the open state. When the cover is closed, it presses on the lever and closes the circuit. In order to control state of this circuit without the weight of the cover pressing on the lever, I'm unsoldering its wires and moving them over to a large switch I salvaged from an earlier teardown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40716,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-mainboard-cn701-from-power-supply.jpg?w=1024" alt="" class="wp-image-40716"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also wanted to see what's going on with the power supply wires plugged into the mainboard. The label says 24V DC but there are three wires. From <a href="https://newscrewdriver.com/2019/04/03/hp-inkjet-printer-power-supply-for-nec-vsl0010-a-vfd/">prior experience</a> I expected them to be ground wire, power wire, and a signal wire to toggle low-power sleep mode. Thankfully, this connector exposed enough metal for my volt meter to reach them without fancy tools, and it was easy to probe the voltage level of each wire in the powered-up "ON" state and the standby "OFF" state. Looking on the circuit board silkscreen, I see this was designated CN701 and there's an arrow pointing to pin 1, corresponding to the white wire.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true,"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Printer State</th>
+<th class="has-text-align-center" data-align="center">Pin 1 (White)</th>
+<th class="has-text-align-center" data-align="center">Pin 2 (Blue)</th>
+<th class="has-text-align-center" data-align="center">Pin 3 (Blue)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">On</td>
+<td class="has-text-align-center" data-align="center">0.00</td>
+<td class="has-text-align-center" data-align="center">3.24</td>
+<td class="has-text-align-center" data-align="center">24.21</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">Standby/"Off"</td>
+<td class="has-text-align-center" data-align="center">0.00</td>
+<td class="has-text-align-center" data-align="center">0.00</td>
+<td class="has-text-align-center" data-align="center">8.50 </td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like pin 1 is ground, pin 3 delivers either 8.50V or 24.21V DC depending on the state of pin 2. The 3.24V I see on pin 2 in full-power mode is likely the logic high voltage, implying a circuit board primarily built around 3.3V DC components.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also measured continuity (or at least minimal resistance) between pin 1 ground and the metal chassis. This will make electrical probing easier, because I can do things like putting oscilloscope probes' ground reference alligator clip on the metal chassis instead of having to solder a separate wire to the circuit board ground plane. This was useful when I <a href="https://newscrewdriver.com/2023/11/30/canon-pixma-mx340-adf-sensors/">probed the automatic document feeder (ADF) sensors</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

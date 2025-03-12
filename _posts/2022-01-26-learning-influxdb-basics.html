@@ -1,0 +1,66 @@
+---
+layout: post
+title: Learning InfluxDB Basics
+date: 2022-01-26 12:30:00.000000000 +00:00
+type: post
+post_id: '28335'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28326'
+  _publicize_job_id: '68193758645'
+  timeline_notification: '1643229063'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/26/learning-influxdb-basics/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've decided to <a href="https://newscrewdriver.com/2022/01/25/investigating-time-series-data/">learn InfluxDB in a project</a> using it to track some statistics about my little toy solar array. And despite looking at some super-overkill high end solutions, I have to admit that even InfluxDB is more high-end than I would strictly need for a little toy project. It will probably be fine with MySQL, but the learning is the point and the <em><a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/reference/key-concepts/" target="_blank">InfluxDB key concepts</a></em> document was what I needed to start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was harder than I had expected to get to that "key concept" document. When someone visits the InfluxDB web site, the big "Get InfluxDB" button highlighted on the home page sends me to their "InfluxDB Cloud" service. Clicking "Developers" and the section titled "InfluxDB fundamentals" is a quick-start guide to... InfluxDB Cloud. They really want me to use their cloud service! I don't particularly object to a business trying to make money, but their eagerness has overshadowed an actual basic getting started guide. Putting me on their cloud service doesn't do me any good if I don't know the basics of InfluxDB!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know some relational database basics, but because of its time-series focus, InfluxDB has slightly different concepts described using slightly different terminology. Here are the key points, paraphrased from the "key concepts" document, that I used to make the mental transition.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>
+<strong>Bucket</strong>: An InfluxDB instance can host multiple buckets, each of which are independent of the others. I think of these as multiple databases hosted on the same database server.</li>
+<li>
+<strong>Measurement</strong>: This is the one that confused me the most. When I see "measurement" I think of a single quantified piece of data, but in InfluxDB parlance that is called a "Point". In InfluxDB a "measurement" is a collection of related data. "<em>A measurement acts as a container for tags, fields, and timestamps.</em>" In my mind an InfluxDB "Measurement" is roughly analogous to a table in SQL.</li>
+<li>
+<strong>Timestamp</strong>: Time is obviously very important in a time-series database, and every "Point" has a timestamp. All query operations will typically be time-related in some way, or else why are we bothering with a time-series database? I don't think timestamps are required to be unique, but since they form the foundation for all queries, they have become de-facto primary keys.</li>
+<li>
+<strong>Tags</strong>: This is where we start venturing further away from SQL. InfluxDB tags are part of a Point and this information is indexed. When we query for data within a time range, we specify the subset of data we want using tags. But even though tags are used in queries for identification, tags are not required to be unique. In fact, there shouldn't be too many different unique tag values, because that degrades InfluxDB performance. This is a problem called "high series cardinality" and it gets a lot of talk whenever InfluxDB performance is a topic. As I understand it, it is a sign the database layout design was not aligned with strengths of InfluxDB.</li>
+<li>
+<strong>Fields</strong>: Unlike Tags, Fields are not indexed. I think of these as the actual "data" in a Point. This is the data we want to retrieve when we make an InfluxDB query.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the above understanding, I'm aiming in the direction of:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>One bucket for a single measurement.</li>
+<li>One measurement for all my points.</li>
+<li>"At 10AM today, solar panel output was 21.4 Watts" is a single point. It has a <strong>timestamp</strong> of 10AM, it is <strong>tagged</strong> with "panel output" and a <strong>field</strong> of "21.4 Watts"</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that goal in mind, I'm ready to fire up my own instance of InfluxDB. But first I have to <a href="https://newscrewdriver.com/2022/01/27/influxdb-investigation-skipping-1-x-going-straight-to-2-x/">decide which version to run</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

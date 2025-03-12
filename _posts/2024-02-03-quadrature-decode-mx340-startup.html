@@ -1,0 +1,73 @@
+---
+layout: post
+title: Quadrature Decode MX340 Startup
+date: 2024-02-03 12:30:00.000000000 +00:00
+type: post
+post_id: '41832'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  timeline_notification: '1706992442'
+  wordads_ufa: s:wpcom-ufa-v4:1707086584
+  firehose_sent: '1706992440'
+  _publicize_job_id: '91657766864'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/03/quadrature-decode-mx340-startup/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Whenever I turn on my Canon Pixma MX340 multi-function inkjet, I immediately hear motors whirring and I had always been curious: I haven't even tried to print anything yet. What is it doing? Now that I've retired the machine and slowly taking it apart, I want to get some information hopefully leading to some answers. I have attached an Arduino Nano to two photo interrupter sensors and the quadrature encoder reporting position of the paper feed motor gearbox assembly. The Nano <a href="https://newscrewdriver.com/2024/02/02/quadrature-decoding-with-periodic-output/">watches those sensors and report on their status every 10 milliseconds</a> to a serial port as a list of comma-separated values. Thanks to the "everything is a file" nature of Linux, I could run "<code>cat /dev/ttyUSB0 &gt; capture.csv</code>" and I had a file I could import into Excel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41834,"sizeSlug":"large","linkDestination":"media","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup.png?w=1024" alt="" class="wp-image-41834"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is the startup sequence that has long intrigued me, in the form of an Excel scatter chart. Horizontal axis is the time stamp. This graph covered about 9 seconds with a data point every 10ms, resulting in dots densely packed into a line. Vertical axis is the encoder counter value, with the encoder as a gray line maxing out at almost 32000 counts. (Getting a number for count per rotation is on the to-do list.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two photo interrupter sensors did not change state throughout startup.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Due to the way I wired up the quadrature decoder, positive values on on this counter correspond to rotating the paper feed backwards. I usually think of printing as advancing forwards on the Y-axis, so this is reversed from that I would have chosen if I had known. But now that it is connected, I don't care enough to fix this minor issue. If it starts causing problems I can flip the two wires and reverse their direction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The fact this plot appears to be a series of straight lines tells me the motor does not vary its speed (significantly) once it is in motion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41837,"sizeSlug":"large","linkDestination":"media","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup-closeup-on-initial-move.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup-closeup-on-initial-move.png?w=1024" alt="" class="wp-image-41837"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming on the initial set of movements, I see an acceleration curve before it reaches that speed, and there's a deceleration curve at the end of each movement. My eyes did not perceive acceleration and deceleration, so this exercise is already telling me things I couldn't pick up with my own eyes. I can also see the first two movements here are both backwards, but the second movement has a gentler slope reflecting a slower speed. Another difference I could not see with eyeballs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41839,"sizeSlug":"large","linkDestination":"media","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup-closeup-on-peak-rearmost-position.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup-closeup-on-peak-rearmost-position.png?w=1024" alt="" class="wp-image-41839"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming in on a different part of the graph, this is the point of maximum backwards travel. On the big graph I saw a small bump on either side of the peak, now I see the motor decelerated to a stop before immediately accelerating back up in the same direction, only to decelerate to a stop again before going in the opposite direction. It then slowed down again to a stop before resuming in the same direction at a different speed. Both of these pauses are extremely short, only a few milliseconds if that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What did that motion accomplish? In fact, what did any of these motions accomplish? I don't have answers yet, but I'm excited I'm peeling back at least the first layer of this onion. Next: <a href="https://newscrewdriver.com/2024/02/04/quadrature-decode-mx340-standby/">power down standby sequence</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

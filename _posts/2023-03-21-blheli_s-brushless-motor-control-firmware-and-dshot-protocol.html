@@ -1,0 +1,69 @@
+---
+layout: post
+title: BLHeli_S Brushless Motor Control Firmware and DShot Protocol
+date: 2023-03-21 12:30:00.000000000 +00:00
+type: post
+post_id: '35812'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35805'
+  timeline_notification: '1679427073'
+  wordads_ufa: s:wpcom-ufa-v4:1701741083
+  _publicize_job_id: '82513483082'
+  _oembed_664190d33e1adf970dc16bb7971d468a: "{{unknown}}"
+  _oembed_dac50b9db6d626c824432ec4013af75b: "{{unknown}}"
+  _oembed_582aa83b53675e44eb5d7314b7da7a70: "{{unknown}}"
+  _oembed_f4e76aae58b58d55d45c9f637b83ddd1: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/21/blheli_s-brushless-motor-control-firmware-and-dshot-protocol/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>For curiosity and learning, I wanted to poke at a commercial brushless motor controller. Thanks to the current popularity of multirotor aircraft, the cheapest option on Amazon that day was a four-pack designed for small quadcoptor drones. Among the listing description is a string "BLHeli_S" that meant nothing to me at the time. Once <a href="https://newscrewdriver.com/2023/03/20/brushless-motor-controller-for-multirotor-aircraft/">I received the product and looked it over</a>, I saw "BLHeli_S" written on the label as well, I thought I should at least do a web search to learn more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>BLHeli_S is a development of BLHeli motor control firmware, <a href="https://github.com/bitdump/BLHeli">whose source code is on GitHub</a>. From what I can understand, BLHeli_S is a port to SiLabs 16-bit microcontrollers offering higher performance than original BLHeli 8-bit hardware target. At first, I was thrilled there might be another brushless motor algorithm I could try to learn from, but my enthusiasm quickly cooled when I realized BLHeli_S was written in assembly language for maximum performance. That's hard core. Understanding that codebase might take more work than I'm willing to put in.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found additional information on Ardupilot website, which supports <a href="https://ardupilot.org/copter/docs/common-blheli32-passthru.html">BLHeli_S and the even newer BLHeli32</a> motor controller firmware. In addition to standard RC servo control signal, these controllers also support a more advanced protocol <a href="https://ardupilot.org/copter/docs/common-dshot-escs.html">called DShot</a>. It allows higher bandwidth and lower latency, as well as digital checksum to detect and discard corrupted control signals. The most fascinating feature is <a href="https://ardupilot.org/copter/docs/common-blheli32-passthru.html#bidir-dshot">bidirectional communication</a>, which allows the motor controller to send back information like motor RPM. BLHeli_S also supports <a href="https://ardupilot.org/copter/docs/common-brushless-escs.html">OneShot and OneShot125 protocols</a>, but they offer neither the wide compatibility of RC servo style PWM nor the advanced features of DShot. I'm probably never going to touch those.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could find scattered reviews of BLHeli_S <a href="https://blog.dronetrest.com/what-is-blheli_s-and-why-is-it-better/">like this one</a>. The most interesting page I stumbled cross was <em><a href="https://oscarliang.com/dshot/">What is DShot ESC Protocol</a></em> which pointed me to Betaflight. Skimming through <a href="https://github.com/betaflight/betaflight">Betaflight's GitHub repository</a>, I found its <a href="https://github.com/betaflight/betaflight/blob/master/src/main/drivers/dshot_command.c">DShot command driver</a>. It was much easier than trying to find Ardupilot's implementation. (<a href="https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_HAL_ChibiOS/RCOutput_bdshot.cpp">This is as close as I got</a>. [UPDATE: According to comment by David, the RCOutput_bdshot.cpp file I found handles telemetry coming back from the ESC. Outbound DShot control is handled by <a href="https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_HAL_ChibiOS/RCOutput_serial.cpp" target="_blank" rel="noreferrer noopener">RCOutput_serial.cpp</a> in the same directory.])</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for implementations outside of those large flight controller projects, I found several GitHub repositories of people taking a stab at it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>https://github.com/bird-sanctuary/arduino-bi-directional-dshot runs on Atmel AVR Arduino as a diagnostics and debug tool.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>https://github.com/gueei/DShot-Arduino with a writeup on https://arduino.stackexchange.com/questions/43851/dshot-implementation-on-arduino-esc-protocol</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>https://github.com/derdoktor667/DShotRMT proclaims to implement bidirectional DShot using <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html">ESP32 RMT peripheral</a> and reusable as an Arduino library.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also found an Arduino forum thread of someone <a href="https://forum.arduino.cc/t/how-does-bidirectional-dshot-work-on-a-protocol-level/631270">asking about bidirectional DShot protocol</a>, and the answer was a link to <em><a href="https://brushlesswhoop.com/dshot-and-bidirectional-dshot/">DShot - the missing Handbook</a></em>. I doubt I would learn SiLabs assembly to dig into BLHeli firmware itself, but it might be interesting to talk to my new BLHeli_S brushless controllers via bidirectional DShot.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For <a href="https://newscrewdriver.com/2023/03/22/prepare-salvaged-cd-dvd-motor-for-test/">my first experiment</a>, though, I'm going with the tried-and-true RC servo PWM.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,73 @@
+---
+layout: post
+title: 'Aborted Attempt At Arduino Accelerometer: Mozzi + MMA7660'
+date: 2019-07-23 11:57:57.000000000 +00:00
+type: post
+post_id: '18966'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags:
+- Accelerometer
+- Mozzi
+meta:
+  _thumbnail_id: '18964'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1563908281'
+  _publicize_job_id: '33190806649'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/23/aborted-attempt-at-arduino-accelerometer-mozzi-mma7660/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Every tool has its use, and for quick prototype of electronic ideas, it's hard to beat an Arduino. A huge community of users has generated an equally huge selection of libraries to get any hardware up and running quickly. The downside is that there's no way to ensure they all work together. Playing with a single library is easy, but getting more than one to play nicely together is a hit-or-miss affair. Today's story is a miss.</p>
+<p><a href="https://github.com/sensorium/Mozzi">Mozzi</a> is an Arduino library for sound synthesis. It allows Arduino creations to audibly react to external input, and is the brains behind <a href="https://www.youtube.com/watch?v=4TlchgzKW18">the Rackety Raccoon</a> project. Its inputs were potentiometers connected to an Arduino's analog pins. To follow up that project, Rackety Raccoon creator <a href="https://twitter.com/MLE_Online">Emily</a> wanted to use an accelerometer chip as input.</p>
+<p>The device Emily had on hand was a <a href="http://wiki.seeedstudio.com/Grove-3-Axis_Digital_Accelerometer-1.5g/">small breakout board for the MMA7660FC</a>. It communicates via I2C and there's <a href="https://github.com/Seeed-Studio/Accelerometer_MMA7660">an Arduino library</a> available. But when it was added into a Mozzi sketch, verification fails with the following error:</p>
+<blockquote><p>
+<code>libraries/Wire/utility/twi.c.o (symbol from plugin): In function `twi_init':</code><br />
+<code>(.text+0x0): multiple definition of `__vector_24'</code><br />
+<code>libraries/Mozzi/twi_nonblock.cpp.o (symbol from plugin):(.text+0x0): first defined here</code><br />
+<code>collect2: error: ld returned 1 exit status</code><br />
+<code>exit status 1</code>
+</p></blockquote>
+<p>This error message is <strong><em>spectacularly unhelpful</em></strong> even though it is technically correct on all counts. There is indeed a collision in defining <a href="https://en.wikipedia.org/wiki/Interrupt_vector_table">interrupt vector table</a> entries, but Arduino's target user demographic would have no idea what that means. At a higher level, the problem is that we have two chunks of code both trying to perform I2C communication. MMA7660 sample code uses the <a href="https://www.arduino.cc/en/reference/wire">standard Arduino Wire library</a>, Mozzi has its own I2C communication library. They both use the same hardware resources and hence the collision. Only one of them may exist in an Arduino sketch.</p>
+<p>Why would Mozzi have its own I2C library? The hint comes from the name: "<code>twi_nonblock</code>". Mozzi is an audio library and it is critically important for Mozzi to run nonstop. Any interruptions would become audible glitches! This is a problem for receiving I2C data using the Wire library because it would wait ("block") for the I2C peripheral (accelerometer in this case) to respond.</p>
+<p>Mozzi can't wait, hence the <code>twi_nonblock</code> I2C communication library as a replacement for Arduino's standard Wire library. In order to use MMA7660 with Mozzi on an Arduino, the portions dependent on Wire library must be replaced with counterparts in Mozzi's <code>twi_nonblock</code>. Mozzi includes <a href="https://github.com/sensorium/Mozzi/blob/master/examples/11.Communication/TwoWire_Read_ADXL345/TwoWire_Read_ADXL345.ino">sample code to communicate with another I2C accelerometer, the ADXL345</a>.</p>
+<p>Examining the sample, we see it is a straightforward line-by-line replacement when sending I2C data. The sample function <code>acc_writeTo()</code> includes comments explaining the Wire equivalent for each line.</p>
+<blockquote><p>
+<code>// Writes val to address register on device</code><br />
+<code>void acc_writeTo(byte address, byte val) {</code><br />
+<code>  // Wire.beginTransmission(ADXL345_DEVICE); // start transmission to device</code><br />
+<code>  twowire_beginTransmission(ADXL345_DEVICE); // start transmission to device</code><br />
+<code>  // Wire.send(address); // send register address</code><br />
+<code>  twowire_send( address );</code><br />
+<code>  // Wire.send(val); // send value to write</code><br />
+<code>  twowire_send( val );</code><br />
+<code>  // Wire.endTransmission(); // end transmission</code><br />
+<code>  twowire_endTransmission();</code><br />
+<code>}</code>
+</p></blockquote>
+<p>Which would serve as an excellent guide to rewrite <code>MMA7660::write()</code> from its current Wire format.</p>
+<blockquote><p>
+<code>void MMA7660::write(uint8_t _register, uint8_t _data) {</code><br />
+<code>  Wire.begin();</code><br />
+<code>  Wire.beginTransmission(MMA7660_ADDR);</code><br />
+<code>  Wire.write(_register);</code><br />
+<code>  Wire.write(_data);</code><br />
+<code>  Wire.endTransmission();</code><br />
+<code>}</code>
+</p></blockquote>
+<p>In contrast, receiving I2C data would not be a trivial line-by-line replacement. The nature of <code>twi_nonblock</code> meant we have to change a lot more code in order to convert it from a simple synchronous blocking procedure to an asynchronous non-blocking process. If the MMA7660 module and associated library were well-executed, it would not be technically challenging, just time-consuming. And it might be something good we can do to contribute back to the Arduino community.</p>
+<p><img class=" size-full wp-image-18973 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/07/mma7660-demo-code-says-it-is-bad-and-uses-goto.png" alt="MMA7660 demo code says it is bad and uses goto" width="670" height="726"></p>
+<p>Sadly <a href="https://github.com/Seeed-Studio/Accelerometer_MMA7660/blob/master/MMA7660.cpp">it was <em>not</em> a shining example of excellence</a>. A comment saying "it is bad" raised warning flags about weird behavior from the chip. Then a few lines later, we see a <code>goto</code> statement as an ugly hack around the chip's behavior. This is when we decided to "Nope!" out of there and abort this particular investigation.</p>
+<p><em><strong>UPDATE</strong></em>: A week later I took another look, and <a href="https://newscrewdriver.com/2019/07/30/second-attempt-success-mozzi-mma7660/">the second try was successful</a>.</body></html></p>

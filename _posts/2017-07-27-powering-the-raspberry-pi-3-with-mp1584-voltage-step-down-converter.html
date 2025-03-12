@@ -1,0 +1,44 @@
+---
+layout: post
+title: Powering the Raspberry Pi 3 With MP1584 Voltage Step-Down Converter
+date: 2017-07-27 09:00:37.000000000 +00:00
+type: post
+post_id: '8705'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Raspberry Pi
+tags:
+- MP1584
+meta:
+  _thumbnail_id: '8742'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7555154318'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The Raspberry Pi 3 is a very impressive piece of hardware for the price, but it has its flaws. One challenge is supplying power to a Pi 3. Like all the Pi boards, power is supplied via a standard micro USB plug. This implies the Pi only needs <a href="https://en.wikipedia.org/wiki/USB#Power">USB level power</a> with its specified maximum of 0.5 amp @ 5 volts = 2.5 watts. In reality, this USB port is abused beyond the specified range. The Raspberry Pi foundation <a href="https://www.raspberrypi.org/help/faqs/#powerReqs">recommends</a> the power supply for a Pi 3 should supply up to 2.5 amp @ 5 volt = 12.5 watts. <em><strong>Five times</strong></em> the USB specification maximum.</p>
+<p>None of the USB power sources I already had could handle this workload. I originally had ideas about running a Pi 3 off of a portable USB charger, but that failed under the vastly greater power draw. I went looking online for solutions.</p>
+<p>I needed an efficient DC to DC voltage regulator that can handle the maximum power draw of a Raspberry Pi 3 without consuming a lot of power itself. Since the voltage of a battery changes as it drains, the converter needs to handle a range of input voltages while holding the output voltage steady.</p>
+<p>The <a href="https://www.monolithicpower.com/Portals/0/Documents/Products/Documents/datasheet/MP1584_r1.0.pdf">MP1584 chip from Monolithic Power Systems</a> fit the bill, but I didn't want to deal with a tiny surface mount IC, nor do I have the skill to design the supporting circuit required. Consulting with a few electronics hardware hobbyists, I got the recommendation to take the reference design out of the datasheet and build that.</p>
+<p>And then, an even better recommendation: If it's a popular chip, and its reference design is good enough, somebody would have mass-produced it and put it on Amazon. And indeed, <a href="https://amzn.to/2nVQO5x" target="_blank" rel="noopener">they have</a> (*). A lot of vendors, in fact, from all around the world.</p>
+<p>I scrolled through a few of the listings but didn't really have a good feel on how to judge one vendor against another. So I took the easy way out: I clicked on the "Amazon's Choice" link to <a href="https://amzn.to/2md9q0t" target="_blank" rel="noopener">this offering</a> (*).</p>
+<p>Once the module arrived, I soldered battery connectors to the input and a micro USB plug to the output. I adjusted the output voltage to 5 volts, and connected everything to power up my Raspberry Pi 3.</p>
+<p>So far it has worked very well. The Raspberry Pi 3 stayed running through tasks that demanded extra power, that would previously trigger a low-power brownout with my existing USB power sources. The output voltage held steady as the battery drained.</p>
+<p>Functional, inexpensive, and I didn't even have to deal with surface mount components! This was a win.</p>
+<p>[UPDATE: Need more power? I found <a href="https://amzn.to/2mngDeg" target="_blank" rel="noopener">another regulator module</a> (*), this one advertises a higher capacity of 5 amps. I successfully used it in <a href="https://newscrewdriver.com/2019/08/01/glow-flow-power-regulator/">my LED project "Glow Flow"</a>]</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

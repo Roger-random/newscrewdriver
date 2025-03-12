@@ -1,0 +1,78 @@
+---
+layout: post
+title: FormLabs Form 1+ Laser Galvanometer Control
+date: 2022-09-11 12:30:00.000000000 +00:00
+type: post
+post_id: '32511'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32512'
+  _oembed_8969dcd256fc00f88effff63d469c65e: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Exploring
+    the guts of a dead Form 1+ laser resin printer. Looks like galvanometer commands
+    are analog voltage level: oscilloscope plot on XY mode resembles laser beam path.
+    <a href="https://t.co/7FvrgSRF1k">pic.twitter.com/7FvrgSRF1k</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1568322147017433088?ref_src=twsrc%5Etfw">September
+    9, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_8969dcd256fc00f88effff63d469c65e: '1663621762'
+  _oembed_ca453c4e3fc545c0dde0701ca86d8a43: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Exploring
+    the guts of a dead Form 1+ laser resin printer. Looks like galvanometer commands
+    are analog voltage level: oscilloscope plot on XY mode resembles laser beam path.
+    <a href="https://t.co/7FvrgSRF1k">pic.twitter.com/7FvrgSRF1k</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1568322147017433088?ref_src=twsrc%5Etfw">September
+    9, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '76631779868'
+  timeline_notification: '1662924626'
+  _oembed_time_ca453c4e3fc545c0dde0701ca86d8a43: '1662924634'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669714784
+  _oembed_48012fd610744bd15ec3dd21fe8ff463: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Exploring
+    the guts of a dead Form 1+ laser resin printer. Looks like galvanometer commands
+    are analog voltage level: oscilloscope plot on XY mode resembles laser beam path.
+    <a href="https://t.co/7FvrgSRF1k">pic.twitter.com/7FvrgSRF1k</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1568322147017433088?ref_src=twsrc%5Etfw">September
+    9, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_48012fd610744bd15ec3dd21fe8ff463: '1708471250'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/11/formlabs-form-1-laser-galvanometer-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Despite <a href="https://newscrewdriver.com/2022/09/10/considerations-exploring-formlabs-form-1-while-powered-up/">some concerns</a>, I've decided to poke around inside a broken FormLabs Form 1+ laser resin 3D printer while it is running. I think it'll tell me more about how it was supposed to work, because I didn't learn very much from <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/09/09/form-1-galvanometer-control-board-ic-roll-call/" target="_blank">just a roster of ICs</a>. But it still wouldn't tell me everything, because some of its current behavior would be as intended while other behavior would be wrong because the printer is broken. And as my only example of the species, it might be hard to tell which is which.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I powered it up, I probed around for all the ground wires. Since the printer is powered by 24V DC delivered through a standard barrel jack, it was least easy to probe for continuity to ground. There was even an exposed pad on the main processor board labeled <code>GND</code>. Knowing which wire is ground for each connector established a baseline for voltage measurements once I turned the printer on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first surprise was on the <code>GALVO POWER</code> connector. It had three wires colored red, black, and purple. Black was known to be ground. Red was expected to be +24V DC, which was confirmed. I didn't know what to expect for purple, and it turned out to be -24V DC. Negative voltage! Something I rarely see but it would be consistent with the presence of a ST Micro L79 negative voltage regulator delivering -15V. Which is a mirror match for the L78 positive regulator taking +24V DC and delivering +15V DC. Separately there is an On Semi NCP1117 delivering 3.3V for digital logic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As for <code>GALVO SIGNAL</code>, it had three wires colored black, white, and red. Again I knew black was ground from earlier probing. Once the system was powered on, I saw white wire voltage stayed pretty consistent at 2.5V DC. The red wire was where interesting things happened: It varied between 0V to 5V relative to ground (or -2.5V to +2.5V relative to white wire) while this printer went through the motion of printing, blissfully unaware its galvanometer control system was fried. Plotting X and Y galvo signals against each other on my oscilloscope's XY mode, it sure looks like a laser draw path. That is, as long as we ignore that diagonal noise I blame on my beginner level oscilloscope skill. Anyway, noise aside, it shows this 0-5V (Or -2.5 to +2.5V) analog voltage is how mainboard commands galvo position. This scorched control board couldn't translate those commands into galvanometer movement, but I wanted to see <a href="https://newscrewdriver.com/2022/09/12/formlabs-form-1-laser-galvanometer-voltages/">if anything is getting to those galvanometers</a> at all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/Regorlas/status/1568322147017433088","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1568322147017433088
+</div>
+</figure>
+<p><!-- /wp:embed --><br />
+</body></html></p>

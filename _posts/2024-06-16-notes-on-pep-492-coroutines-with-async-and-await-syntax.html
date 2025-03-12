@@ -1,0 +1,56 @@
+---
+layout: post
+title: Notes on PEP 492 Coroutines with async and await syntax
+date: 2024-06-16 12:30:00.000000000 +00:00
+type: post
+post_id: '43807'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  _publicize_job_id: '95489149261'
+  firehose_sent: '1718566225'
+  timeline_notification: '1718566226'
+  wordads_ufa: u:wpcom-ufa-v4:1718672552
+  _elasticsearch_data_sharing_indexed_on: '2024-06-18 01:04:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/16/notes-on-pep-492-coroutines-with-async-and-await-syntax/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As I'm reading through several Python Enhancement Proposal (PEP) documents, I have to keep in mind that I don't have to understand everything on my first read through. And I also have to keep a goal in mind so I don't get too distracted. For this session, the motivation was copy/pasting "<code>async with</code>" from example code without having any idea what those keywords meant. <a href="https://newscrewdriver.com/2024/06/15/notes-on-pep-380-syntax-for-delegating-to-a-subgenerator/">PEP 380</a> was the last in my list of self-assigned prerequisite readings, but now it's time for the main attraction: <a href="https://peps.python.org/pep-0492/">PEP 492 <em>Coroutines with async and await syntax</em></a>. After completing this study session, I have a much better understanding of what "<code>async with</code>" does.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was interesting to follow Python evolution on this front. My prerequisite PEP reading all discussed generators and coroutines as a specific type of generator. In PEP 492 they laid out the reasons for separating out coroutines as its own concept. The underlying implementation of coroutines still uses many pieces of generator infrastructure, but the language will now treat them as different things. As part of this evolution, a large part of this document discussed is devoted to "Design Considerations" of alternative approaches, and "Transition Plan" for maintaining compatibility with pre-492 coroutine syntax.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One decision I found disappointing was that <a href="https://peps.python.org/pep-0492/#debugging-features">debugging features</a> are disabled by default. I understand the motivation to ensure debugging features do not impact production code, but I think leaving them out completely is going too far. Beginners who most need feedback from Python runtime are not going to know they need to set an OS environment variable <code>PYTHONASYNCIODEBUG</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I am in full support of another decision: there's <a href="https://peps.python.org/pep-0492/#comprehensions">no comprehension shorthand</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><em>Syntax for asynchronous comprehensions could be provided, but this construct is outside of the scope of this PEP.</em></p>
+<p><!-- /wp:paragraph -->
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://newscrewdriver.com/2024/06/13/not-a-fan-of-python-succinct-syntax/">I don't like Python comprehension</a> shorthands and I'm glad there to see this PEP did not add one. It's possible this text meant only exactly what it says, but in my professional career I've used "out of scope" as a polite rephrase of "I don't like this idea and I'm not doing it." It made me smile to think the PEP author might be doing the same here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading through PEP 492 concludes this particular study session, and the knowledge informed <a href="https://newscrewdriver.com/2024/06/17/updated-goals-for-mx340-circuitpython-project/">updated goals for my MX340 CircuitPython project</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

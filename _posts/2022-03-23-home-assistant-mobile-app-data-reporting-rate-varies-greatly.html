@@ -1,0 +1,63 @@
+---
+layout: post
+title: Home Assistant Mobile App Data Reporting Rate Varies Greatly
+date: 2022-03-23 12:30:00.000000000 +00:00
+type: post
+post_id: '29133'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Home Assistant
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29134'
+  _publicize_job_id: '70537035954'
+  timeline_notification: '1648063818'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/23/home-assistant-mobile-app-data-reporting-rate-varies-greatly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted to use Home Assistant and ESPHome to automate periodic charging for a less-used cell phone. When I was <a href="https://newscrewdriver.com/2022/03/22/dedicated-buck-converter-for-usb-charging-port/">working through the hardware</a>, I had thought I would just use a time-based system. "Charge daily for [X] hours" and fine-tune the value of X as I go. This can easily be done, but as I learned more about Home Assistant, I realized an even smarter option is possible: turn off charging once the battery surpasses a threshold.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had originally dismissed doing any decision based on battery state of charge because I thought I would have to open up the phone and probe battery voltage directly. Or if I want to do it in software, I'd have to write my own Android app to <a rel="noreferrer noopener" href="https://developer.android.com/training/monitoring-device-state/battery-monitoring" target="_blank">listen for battery status events</a>. But that's before I installed the Home Assistant mobile app on my Pixel 5a primary phone. When I connected the app to my server, I saw that it reported battery level as one of its entities. Here is a graph for 30 hours:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29136,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/home-assistant-app-battery-level-reporting-pixel-5a.jpg?w=1024" alt="" class="wp-image-29136"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My normal daily phone usage only occasionally interacted with the app, so most of these reports came while it was running in the background. This is enough to receive updates once every 20-30 minutes. When installed on a little-used phone, however, something inside the Pixel 3a (probably Android's internal power management algorithms) decided Home Assistant app doesn't need to run as often. As a result, there were far less frequent reports on battery level. This is within the same 30-hour window as the above graph. (But with slightly different Y-axis because of Home Assistant dashboard scaling.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29135,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/home-assistant-app-battery-level-reporting-pixel-3a.jpg?w=1024" alt="" class="wp-image-29135"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>While the phone is charging, battery level is reported more frequently, but they can be as much as half an hour apart. It gets worse when the phone is not charging, the middle of this graph has a period where we went almost 14 hours without a single update!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite this low frequency, I can write a Home Assistant automation that would still be better than doing it blind on a time-based basis. I wouldn't be able to stop charging exactly at 80%, but I should still be able to catch it surpassing 80% sometime afterwards and still stop charging before battery is full.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: I've found that I could improve update frequency by telling Android 12 that I grant the Home Assistant app more leeway on battery use. In the Android settings menu, under Apps/Home Assistant/Battery the option defaults to "Optimized". We can change it to "Unrestricted" which has the explanation "Allow battery usage in the background without restrictions. May use more battery."]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm only mildly disappointed the battery level reporting rate is infrequent when running on a less-used Android phone, because it is still good enough for my purpose of keeping the battery in its most effective center band. (Avoiding full charge and also avoiding full discharge.) Besides, these infrequent updates are still more useful than the Home Assistant iOS app, which I installed on my iPad and saw no updates for this entire 30-hour period.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29134,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/home-assistant-app-battery-level-reporting-all.jpg?w=1024" alt="" class="wp-image-29134"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll let my Pixel 3a charging logic run and see how well it works (or not) as I work on the next automation: <a href="https://newscrewdriver.com/2022/03/24/power-control-board-for-truenas-replication-raspberry-pi/">power for a Raspberry Pi</a> dedicated to NAS replication.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

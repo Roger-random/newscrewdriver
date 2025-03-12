@@ -1,0 +1,71 @@
+---
+layout: post
+title: Observations on ESP_8_BIT Nintendo and Sega Colors
+date: 2021-05-01 12:30:00.000000000 +00:00
+type: post
+post_id: '26344'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26323'
+  timeline_notification: '1619897412'
+  _publicize_job_id: '57848831843'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/01/observations-on-esp_8_bit-nintendo-and-sega-colors/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have only scratched the surface of rossumur's ESP_8_BIT project, but I got far enough for a quick test. I rendered the color palette available <a href="https://newscrewdriver.com/2021/04/30/studying-nes-section-of-esp_8_bit/">while in Nintendo emulation mode</a>, and found that it roughly <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/List_of_video_game_console_palettes#NES" target="_blank">tracks with the palette</a> shown on its corresponding Wikipedia page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"ids":[26350,26324],"linkTo":"none"} --></p>
+<figure class="wp-block-gallery columns-2 is-cropped">
+<ul class="blocks-gallery-grid">
+<li class="blocks-gallery-item">
+<figure><img src="https://newscrewdriver.com/wp-content/uploads/2021/04/wikipedia-nintendo-palette.jpg?w=1024" alt="" data-id="26350" class="wp-image-26350"></figure>
+</li>
+<li class="blocks-gallery-item">
+<figure><img src="https://newscrewdriver.com/wp-content/uploads/2021/04/nintendo-palette.jpg?w=1024" alt="" data-id="26324" class="wp-image-26324"></figure>
+</li>
+</ul>
+</figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>I say "roughly" because the colors seem a lot less vibrant than I would have expected from a video game. These colors are more pastel, or maybe like a watercolor painting. For whatever reason the color saturation wasn't as high as I had expected. But judging color is a tricky thing, our vision system is not a precision instrument. What I needed was a reference point, and I found one with the OSD (on-screen display) for this TV's menu system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26323,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/04/nintendo-palette-with-osd.jpg?w=1024" alt="" class="wp-image-26323"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This menu is fairly primitive, using basic colors at full saturation. I can see the brilliant red I expected for Mario, alongside the brilliant green I expected for Luigi. These colors are more vibrant than what I got out of the Nintendo emulator palette. What causes this? I have no idea. NTSC colorburst math is voodoo magic to me, and rossumur's description of how ESP_8_BIT performs it went high over my head. For the moment I choose to not worry about the saturation. I am thankful that I have colors at all as it is a far superior situation than earlier grayscale options.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point I felt confident enough to look at the Sega emulator code path, and was encouraged to see the table returned by its <code>ntsc_palette()</code> method had 256 entries instead of the 64 in the Nintendo path. Switching ESP_8_BIT into Sega mode, I can see a wider range of colors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26326,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/04/sega-palette.jpg?w=1024" alt="" class="wp-image-26326"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Not only are there four times the number of colors available, some of the saturation looks pretty good, too.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26325,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/04/sega-palette-with-osd.jpg?w=1024" alt="" class="wp-image-26325"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The red (partially truncated by overscan in the lower left) is much closer to the red seen on OSD, the yellow and blue looks pretty good, too. The green is still a bit weak, but I like what I see here. With its wider range of colors in its palette, I decided to <a href="https://newscrewdriver.com/2021/05/02/extracting-esp_8_bit-sega-color-video/">focus on ESP_8_BIT Sega emulator code path</a> from this point onwards.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

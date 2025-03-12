@@ -1,0 +1,49 @@
+---
+layout: post
+title: Hello Proxmox Virtual Environment
+date: 2023-04-22 12:30:00.000000000 +00:00
+type: post
+post_id: '36291'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36301'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682281082
+  _publicize_job_id: '83432107542'
+  timeline_notification: '1682191805'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/22/hello-proxmox-virtual-environment/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Last time <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/">I played with virtualization</a>, my motivation was to run Home Assistant Operating System (HAOS) within a hypervisor that can reliably reboot my virtual machines. I was successful running HAOS under <a href="https://www.linux-kvm.org/page/Main_Page">KVM (kernel-based virtual machine)</a> on an old laptop. A bonus feature of KVM was <a href="https://www.linux-kvm.org/page/USB_Host_Device_Assigned_to_Guest">USB passthrough</a>, allowing a virtual machine to access USB hardware. This allowed ESPHome to perform initial firmware flash. (After that initial flash, ESPHome can update wirelessly, but that first flash must use an USB cable.) Once I had a taste of USB passthrough, it has been promoted from a "bonus" to a "must-have" feature.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wasn't up for learning the full suite of command-line tools for managing KVM so I installed <a href="https://virt-manager.org/download">Virtual Machine Manager</a> for a friendlier graphical user interface. Once everything was setup for HAOS, it was easy for me to add virtual machines for experiments. Some quick and fleeting, others lasting weeks or months. And when I'm done with the experiment, I could delete those virtual machines just as easily. I could install software within a VM without risk of interference from earlier experiments, because they were isolated in entirely different VMs. I now understand the appeal of having a fleet of disposable virtual machines!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With growing VM use, it was inevitable I'd start running into limitations of an old laptop. I had expected the processor to be the first barrier, as it was a meager <a href="https://ark.intel.com/content/www/us/en/ark/products/64896/intel-core-i53320m-processor-3m-cache-up-to-3-30-ghz.html">Core i5-3320M</a> with two hyperthreaded cores. But I hadn't been running processor-intensive experiments so that CPU was actually fine. A standard 2.5" laptop hard drive slot made for easy upgrades in SSD capacity. The biggest barrier turned out to be RAM: there was only 4GB of it, and it doesn't make much economic sense to buy DDR3 SODIMM to upgrade this old laptop. Not when I already have more capable machines on hand I could allocate to the task.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This laptop screen has only 1388x768 resolution, which was a minor impediment. In its use as KVM host, I only ever have to look at that screen when I bring up Virtual Machine Manager to perform VM housekeeping. (Those I have yet to learn to do remotely with <code><a href="https://www.libvirt.org/manpages/virsh.html">virsh</a></code> commands over <code>ssh</code>.) For such usage, the screen is serviceable but also cramped. I frequently wished I could manage KVM remotely from my desktop with large monitor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I'm contemplating setting up a dedicated computer, I decided to try something more task-focused than Ubuntu Desktop + Virtual Machine Manager combination I have been using. My desire to dedicate a computer to host a small number of virtual machines under KVM hypervisor, managed over local network, led me to <a href="https://www.proxmox.com/en/">Proxmox Virtual Environment</a>. I learned about Proxmox VE when an acquaintance <a href="https://mastodon.social/@talldarknweirdo/109888703750822413">posted about setting it up on their machine</a> a few weeks ago. As I read through Promox website I thought "That would be interesting to investigate later."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://newscrewdriver.com/2023/04/23/my-first-proxmox-vm/">It is time.</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

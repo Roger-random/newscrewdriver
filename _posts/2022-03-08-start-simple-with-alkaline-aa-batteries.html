@@ -1,0 +1,42 @@
+---
+layout: post
+title: Start Simple with Alkaline AA Batteries
+date: 2022-03-08 12:30:00.000000000 +00:00
+type: post
+post_id: '28882'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28902'
+  _publicize_job_id: '69927008680'
+  timeline_notification: '1646771405'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/08/start-simple-with-alkaline-aa-batteries/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I thought I'd whip up a circuit to run exclusively on solar power. Growing around solar-powered electronics like desktop calculators, I knew it was a solved problem. But after <a href="https://newscrewdriver.com/2022/03/07/solar-startup-still-tricky/">running into obstacles</a>, I have been humbled by the challenges involved and decided to fall back to battery power. A lot of solar power projects have a rechargeable battery somewhere in the mix, and I'm going to follow that precedence in the hopes of simplified energy management.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But as an intermediate stepping stone, I will adapt my circuit to run on batteries without worrying about the charging circuit just yet. I have the components I need on hand: a pile of alkaline AA batteries and a tray for 5*AA batteries in series.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A fresh AA alkaline battery has an open-circuit voltage just over 1.5V, and four of those in series would deliver more than 6V. Plenty for an ESP8266, but I'm not using fresh batteries for this project. My fresh AA batteries go into devices with motors or other high drain use. Once those devices complain the batteries were too weak, I move them into purely electronic devices with lower amperage demands. (TV remote controls, <a rel="noreferrer noopener" href="https://newscrewdriver.com/category/hardware-platforms/hackaday-retrocomputing-basic-badge/" target="_blank">Hackaday badges</a>, Xbox wireless controllers, etc.) When they are deemed too weak again, they go into my pile of AA batteries awaiting <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/10/30/building-a-compact-joule-thief/" target="_blank">Joule thief LED</a> duty. Open-circuit voltage for veteran batteries in this pile hover around 1.1V, thus I needed five of them in series instead of just four.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These 5-ish volts are too low to activate my modified MP1584 buck converter, which would no longer activate until input voltage of at least 13V. But that's not a problem, because the Wemos D1 Mini clone board I'm using could run on 5V USB power. These batteries are pretty close to that voltage level, so I bypassed the MP1584 and connected the battery tray to existing "5V" pin on this module and used its onboard voltage regulator (which I didn't trust to handle solar power directly) to deliver 3.3V to the ESP8266 and INA219. This <a href="https://newscrewdriver.com/2022/03/09/running-esp8266-on-tired-alkaline-aa-batteries/">worked pretty well</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

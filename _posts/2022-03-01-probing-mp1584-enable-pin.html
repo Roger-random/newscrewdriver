@@ -1,0 +1,69 @@
+---
+layout: post
+title: Probing MP1584 Enable Pin
+date: 2022-03-01 12:30:00.000000000 +00:00
+type: post
+post_id: '28806'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28712'
+  _publicize_job_id: '69633141485'
+  timeline_notification: '1646166604'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/01/probing-mp1584-enable-pin/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to <a href="https://newscrewdriver.com/2022/02/28/investigating-mp1584-for-solar-power/">use a MP1584 buck converter module for a solar-powered project</a>, and to explore its behavior I used a bench power supply to vary volage input from zero volts up to expected operating voltage. I heard an audible screech from the circuit within the 3-5 volt range and decided not to go further until I better understood what's going on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first step to problem solving is always to <a href="https://en.wikipedia.org/wiki/RTFM" target="_blank" rel="noreferrer noopener">Read The Fine Manual</a>, in this case <a rel="noreferrer noopener" href="https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP1584EN-LF-Z/document_id/204/" target="_blank">MP1584 data sheet published by Monolithic Power Systems</a>. The first surprise was the big read "NOT RECOMMENDED FOR NEW DESIGNS REFER TO MP2338" stamped across every page. I guess this chip is getting phased out by Monolithic, and at some point I will have to learn about a different chip. But that doesn't matter today so I proceeded to read about its startup behavior. Specifically the EN (Enable) pin on this chip. According to this document, MP1584 will start up when EN is above 1.5V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Great, what does that mean for my little board, purchased from Amazon from the lowest bidder that day? I laid the board flat and started probing. From what I can tell, the EN pin is connected to a straightforward voltage divider ladder, using two resistors of equal value. These little surface mount resistors have "104" printed on them, indicating they are 100kΩ plus or minus some percentage of tolerance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28711,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584en-board-close-up-original.jpg?w=1024" alt="" class="wp-image-28711"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is the same image in light grayscale, and I filled some color into the relevant areas.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28710,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584en-board-close-up-en-blue.jpg?w=1024" alt="" class="wp-image-28710"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>EN trace is in blue, and its circuit board trace immediately goes under the chip to emerge to the left moving up. Running between the two poles of a capacitor(?) it reaches the two voltage dividing resistors. The top resistor bridges between EN and ground, which I filled in black. The lower resistor bridges between EN and voltage input, which I filled in red. Vin can be seen connecting to the Vin solder pads to the upper right.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A voltage divider with two equal value resistors means voltage of EN will be half of input voltage. To test this hypothesis, I soldered a wire to this pin so I could measure its voltage as I vary the input voltage. A small 5mm LED module was connected to MP1584 output. This is a self-cycling unit that <a rel="noreferrer noopener" href="https://amzn.to/3va9O0G" target="_blank">quickly flashes through different colors from</a><a href="https://amzn.to/3va9O0G" target="_blank" rel="noreferrer noopener"> </a><a rel="noreferrer noopener" href="https://amzn.to/3va9O0G" target="_blank">RGB mixes</a>.(*) I used it here because it tolerates a slightly wider range of input voltage and current than just a single diode, plus it is inexpensive and disposable in case something went wrong with this experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28712,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584en-board-close-with-blue-wire-on-en-pin.jpg?w=1024" alt="" class="wp-image-28712"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Clipping a voltage meter to the blue wire, I quickly confirmed the hypothesis is correct. EN voltage is approximately half of input. Therefore, if a MP1584 activates at 1.5V, this circuit will activate with 3V input. This is a problem when the potentiometer has been adjusted for 3.3V output. This is a buck converter. It lowers voltage and could not raise it! No wonder it was unhappy and screeched its displeasure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But now that I have a basic understanding of how this module decides to come alive, I could <a href="https://newscrewdriver.com/2022/03/02/raising-mp1584-enable-voltage-by-replacing-resistor/">modify it to suit</a> the project at hand.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

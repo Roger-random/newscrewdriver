@@ -1,0 +1,52 @@
+---
+layout: post
+title: Window Shopping Cool Retro Term
+date: 2023-07-07 12:30:00.000000000 +00:00
+type: post
+post_id: '37828'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37829'
+  _publicize_job_id: '85546234826'
+  timeline_notification: '1688758206'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688758405
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/07/window-shopping-cool-retro-term/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I experimented with <a href="https://newscrewdriver.com/2023/07/06/faux-vfd-experiment-on-codepen/">building a faux VFD effect</a> on modern screens. Just a quick prototype without a lot of polish. Certainly not nearly as much as some other projects out there putting a retro look on modern screens. One of those I've been impressed with is <code><a href="https://github.com/Swordfish90/cool-retro-term">cool-retro-term</a></code>. (Mentioned as almost an aside in this <a href="https://hackaday.com/2019/03/31/a-weather-station-fit-for-a-pdp-11/">Hackaday article about a mini PDP-11 project</a>.) I installed it on my Ubuntu machine and was very amused to see a window pop up looking like an old school amber CRT computer monitor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37829,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/cool-retro-term.jpg?w=1024" alt="" class="wp-image-37829"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The amber color looks perfect, and the text received a coordinate transform to make the text area look like a curved surface. Not visible in a screenshot are bits of randomness added to the coordinate transform emulating the fact CRT pixels aren't as precisely located as LCD pixels. There is also a slight visual flicker effect simulating CRT vertical refresh.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37834,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/cool-retro-term-reflection-closeup.jpg?w=800" alt="" class="wp-image-37834"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The detail I found most impressive is the fact effects aren't limited to the "glass" area: there is even a slight reflection of text on the "bezel" area!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So how was all this done? Poking around the GitHub repository I think this was written using <a href="https://www.qt.io/product/framework">Qt native UI framework</a>. Qt was something I had ambition to learn, but I've put more time into learning web development because of all the free online resources out there. I see a lot of files with the <code>*.qml</code> extension, indicating this is a newer way to create Qt interfaces: QML markup versus API calls from code. Looking around for something that looks like the core of emulating imperfect CRTs, the most promising candidate for a starting point is the file <a href="https://github.com/Swordfish90/cool-retro-term/blob/master/app/qml/ShaderTerminal.qml"><code>ShaderTerminal.qml</code></a>. I see mentions of CRT visual attributes like static noise, curvature, flickering, and more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It should be possible to make an online browser version of this effect. If the vertex shaders in <code>cool-retro-term</code> are too complex for WebGL, it should be possible to port them to <a href="https://newscrewdriver.com/2023/05/17/notes-on-google-i-o-2023-advanced-web-browser-capabilities/">WebGPU</a>. Turning that theory into practice would require me to <a href="https://newscrewdriver.com/2023/05/20/notes-on-your-first-webgpu-app-code-lab/">actually get proficient with WebGPU</a>, and learn enough Qt to understand all the nuts and bolts of how <code>cool-retro-term</code> works so I can translate them. Given my to-do list of project ideas, this is unlikely to rise to the top unless some other motivation surfaces.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Phoebe''s Nemesis: Office Chair'
+date: 2018-09-23 09:00:25.000000000 +00:00
+type: post
+post_id: '16807'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1537718673'
+  _publicize_job_id: '22451383828'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/23/phoebes-nemesis-office-chair/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A little real-world experience with Phoebe has revealed several problems with my first rough draft chassis design. The second problem on the list is Phoebe's LIDAR height: It sits too high to detect certain obstacles like an office chair. In the picture below, Phoebe has entered a perilous situation without realizing it. The LIDAR's height meant Phoebe only sees the chair's center post, thinking it is a safe distance away, blissfully ignorant of chair legs that have completely blocked its path.</p>
+<p><img class=" size-full wp-image-16813 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-faces-office-chair.jpg" alt="Phoebe Faces Office Chair" width="1024" height="707"></p>
+<p>Here is the RViz plot of the situation, representing Phoebe's perspective. A red arrow indicates Phoebe's position and direction. Light gray represents cells in the map occupancy grid thought to be open space, and black are cells that are occupied by an obstacle. Office chair's center post is represented by two black squares at the tip of the red arrow, and the chair's legs are absent because Phoebe never saw them with LIDAR.</p>
+<p><img class=" size-full wp-image-16808 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-and-office-chair-post.png" alt="Phoebe and Office Chair Post" width="992" height="669"></p>
+<p>This presents obvious problems in collision avoidance as Phoebe can't avoid chair legs that it can't see. Mounting height for Phoebe's LIDAR has to be lowered in order to detect office chair legs.</p>
+<p>Now that I've seen this problem firsthand, I realize it would also be an issue for <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/specifications/#data-of-turtlebot3-burger">TurtleBot 3 Burger</a>. It has a compact footprint, and its parts are built upwards. This meant it couldn't see office chair legs, either. But that's OK as long as the robot is constrained to environments where walls are vertical and tall, like the maze seen in <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/navigation/#navigation">TurtleBot 3 Navigation demo</a>. Phoebe would work well in such constrained environments too, but I'm not interested in constrained environments. I want Phoebe to roam my house.</p>
+<p>Which leads us to <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/specifications/#data-of-turtlebot3-waffle">Waffle Pi, the other TurtleBot 3 model</a>. it has a larger footprint than the Burger, but it is a squat shape allowing LIDAR to be mounted lower and still have a clear view all around the top of the robot.</p>
+<p>So I need to raise the bottom of Phoebe for ground clearance, and also lower the top for LIDAR mount. If the LIDAR can be low enough to look <em>just</em> over the top of the wheels, that should be good enough to see an office chair's legs. Will I find a way to fit all of Phoebe's components into this reduced height range? That's the challenge at hand.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/153243-phoebes-nemesis-office-chair">Hackaday.io</a>)</p>
+<p></body></html></p>

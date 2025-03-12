@@ -1,0 +1,43 @@
+---
+layout: post
+title: A Fresh Start for SGVHAK Rover UI
+date: 2018-04-30 22:40:56.000000000 +00:00
+type: post
+post_id: '16120'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1525153259'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17362009058'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/30/a-fresh-start-for-sgvhak-rover-ui/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16113 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/sgvhak-rover-chassis-config.png" alt="SGVHAK Rover Chassis Config" width="953" height="387">When our SGVHAK rover project started moving beyond individual units of our custom wheel gearbox design and towards a multiple wheel chassis, it was happening on both the hardware and software fronts. Our Flask-based control UI has worked well up to this point, allowing us to tune <a href="http://www.ionmc.com/">RoboClaw motor controller</a> parameters to suit our wheel design. Building this first draft UI taught us a lot, and as we learned we also realized how it reflected our ignorance at the beginning of this project.</p>
+<p>And so we bid goodbye to our first draft rover UI <a href="https://github.com/Roger-random/RogerPiBot">RogerPiBot</a> to start a new project <a href="https://github.com/Roger-random/SGVHAK_Rover">SGVHAK_Rover</a>. This way we retain all the testing &amp; tuning capabilities of the existing software, leaving that as-is. Freeing us to create a new user experience.</p>
+<p>The major changes are:</p>
+<ol>
+<li>
+<strong>Simple touch-friendly controls</strong> instead of HTML forms with a lot of fields. The form was a very powerful tool for tuning parameters from a desktop workstation, but we're getting out of the engineering test phase. All interfaces will now be tailored towards operation from a small touchscreen.</li>
+<li>
+<strong>Rover as a unit</strong> instead of wheel as a unit. We need to start treating all six travel motors and four steering motors aboard our chassis as a single unit, as the user expects the software to do. Target audience for this software will not be interested in poke and prod at motors individually.</li>
+<li>
+<strong>Configuration files</strong> instead of source code edits. The new software is built on the assumption that will be people who want to use it but is not familiar with Python or code in particular. Part of this meant configuration information will now be stored in human-readable JSON files at the root directory instead of asking people to go in and edit Python source code.</li>
+</ol>
+<p>There were various other changes big and small. One of the larger changes was separate from the rover itself: we chose to switch away from using <a href="https://getbootstrap.com/">Bootstrap</a> purely for the sake of HTML creation exercise. This time around we're using a different library called <a href="http://materializecss.com/">Materialize</a> to help create our responsive UI.</body></html></p>

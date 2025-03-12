@@ -1,0 +1,60 @@
+---
+layout: post
+title: Window Shopping TB6612 DC Motor Driver IC
+date: 2021-03-02 12:30:00.000000000 +00:00
+type: post
+post_id: '25334'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+- Window Shopping
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25387'
+  _oembed_5799de2cb26165bf80df902c8162a1a8: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">One
+    of these gearboxes sound... grouchy. <a href="https://t.co/qDIJ0mbNLT">pic.twitter.com/qDIJ0mbNLT</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1350972987407814659?ref_src=twsrc%5Etfw">January
+    18, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1614717053'
+  _publicize_job_id: '55466628929'
+  _oembed_time_5799de2cb26165bf80df902c8162a1a8: '1614741193'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/02/window-shopping-tb6612-dc-motor-driver-ic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The <a href="https://newscrewdriver.com/2021/03/01/jumper-wire-headaches-try-cardboard/">cardboard backing for my latest experiment</a> was never going to be the final arrangement, and neither are the L298 motor driver mounted using twist ties. I started experimenting with them because they were the classic, a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/25/notes-on-l298-dual-full-bridge-driver/" target="_blank">known quantity, and widely available</a>. But I would have expected technology to move on, and I found confirmation <a rel="noreferrer noopener" href="https://hackaday.com/2019/12/29/fet-based-motor-driver-is-better-than-l298n/" target="_blank">in this Hackaday article</a> talking about the TB6612 motor driver IC as a replacement for those venerable L298.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I pulled up the <a rel="noreferrer noopener" href="https://toshiba.semicon-storage.com/us/semiconductor/product/motor-driver-ics/brushed-dc-motor-driver-ics/detail.TB6612FNG.html" target="_blank">data sheet published by manufacturer Toshiba</a> because I wanted to learn where its specifications differed from the L298. As the article stated, this chip is not a direct drop-in replacement. In some respects this is good, for example the diodes to absorb back-EMF from inductive loads. The L298 required external support diodes, but the TB6612 has them built in, reducing parts count in our projects. In other respects the differences were limiting, such as a voltage range that only went up to 13.5V maximum which is far lower than the L298's 45V. But since I'm looking to drive TT gearmotors which have a recommended voltage range of 3-6V, this limitation is not a problem here. And the smaller size of TB6612 would be quite welcome in a micro rover.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining the control signals, I see TB6612 allows us to specify motor direction using IN1 and IN2 pins. To control velocity, we send PWM signal to a pin explicitly named PWM. For applications that control a L298 using its IN1 and IN2 pins to control direction and control velocity by PWM controlling the enable (EN) pin, the TB6612 would be a direct logical replacement. However, my L298 breakout board tied EN to high by default implying speed control by PWM pulsing IN1 and IN2. I guess this is also valid for L298 but such a control scheme would not be compatible with TB6612.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking around, I can see the TB6612 used in a few other maker-friendly products including <a rel="noreferrer noopener" href="https://www.adafruit.com/product/1438" target="_blank">Adafruit product #1438</a> which is an Arduino motor shield built around this motor control chip. <a rel="noreferrer noopener" href="https://www.sparkfun.com/products/14451" target="_blank">SparkFun #14451 offers it in a more compact breakout board</a> instead of the Arduino shield form factor, <a href="https://www.adafruit.com/product/2448" target="_blank" rel="noreferrer noopener">Adafruit #2448</a> is another similar option. I haven't built up my own equipment and skill to work with surface mount components directly, so I will need such breakout boards or <a rel="noreferrer noopener" href="https://jlcpcb.com/parts/componentSearch?searchTxt=TB6612FNG" target="_blank">pay someone else</a> to assemble a board with it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining <a rel="noreferrer noopener" href="https://amzn.to/3ub5bk5" target="_blank">my options on Amazon</a> (*) I was surprised at how slim my selections were. Perhaps this is a temporary thing due to the current worldwide semiconductor shortage? Whatever the reason, the majority of my search results today were actually breakout boards for a different chip, the DRV8833, while claiming TB6612 compatibility. Since I'm in the research stage, I might as well <a href="https://newscrewdriver.com/2021/03/03/tb6612-vs-drv8833-dc-motor-driver-ics-for-esp32-micro-sawppy/">take a look at that chip</a>, too.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

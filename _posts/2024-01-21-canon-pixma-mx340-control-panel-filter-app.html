@@ -1,0 +1,55 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Filter App
+date: 2024-01-21 14:38:31.000000000 +00:00
+type: post
+post_id: '41670'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41609'
+  firehose_sent: '1705876713'
+  wordads_ufa: s:wpcom-ufa-v4:1705956876
+  timeline_notification: '1705876714'
+  _publicize_job_id: '91291641435'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/21/canon-pixma-mx340-control-panel-filter-app/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I think I have a pretty good understanding of communication between main board and control panel of a Canon Pixma MX340 multi-function inkjet. To help me see if I've missed anything, I connected two serial adapters to listen to traffic in both directions, and wrote a Python script to match incoming data against patterns I've seen to date starting with <a href="https://newscrewdriver.com/2024/01/20/canon-pixma-mx340-control-panel-command-sequence-lookup/">the data burst to update what's shown on its LCD screen</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Along with the code to recognize a LCD update, I also had code to print out any sequences it didn't understand. I thought it was better to copy/paste that data and double-checking it against my earlier notes, eliminating the risk of data entry errors if I try to type them back in by hand. This presented a unique challenge: when does "a sequence" start and end? The most obvious answer seemed to be waiting for some set time period, but trying to find the perfect timeout value was doomed to fail. From logic analyzer traces, I knew there were pauses of up to several hundred milliseconds in these sequences, and some sequences follow each other quickly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another twist to the puzzle was the <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/" target="_blank" rel="noreferrer noopener">LED status update command</a>, where I want to parse the parameter and check the bits corresponding to each LED instead of matching fixed values in a dictionary. This needs to be handled with a special case different from a dictionary lookup. The code could live alongside the code looking for a bulk transfer, but LED updates are buried inside several of these long sequences.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I decided the easiest thing to do was to break up long sequences like "startup" into multiple shorter patterns. So instead of a single line telling me it matched the startup sequence, I will get multiple lines "startup 1", "startup 2", etc. Not elegant, but sufficient for the quick-and-dirty nature of this project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that adaptation in place, I was able to set this script running and run through various scenarios on my MX340. Scan and copy a page, scan a document to PDF, try to send or receive a fax (which fails as I had no landline) and such. With every action I glance over to my console output. All communication traffic matched known patterns, and nothing new popped up. This gives me confidence I've mapped out all data traffic between main board and control panel, <a href="https://newscrewdriver.com/2024/01/12/going-diy-route-for-serial-data-filter-tool/" target="_blank" rel="noreferrer noopener">meeting the success criteria I set out for my data filter script project</a>. It's very rough, but it did the job, and that makes it version 1.0 ("good enough") for this side quest and more than sufficient for me <a href="https://newscrewdriver.com/2024/01/22/canon-pixma-mx340-control-panel-lcd-is-next-target/">to move on</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this quick-and-dirty data parsing project is <a href="https://github.com/Roger-random/canon_mx340/tree/main/control_panel_io_filter_python" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

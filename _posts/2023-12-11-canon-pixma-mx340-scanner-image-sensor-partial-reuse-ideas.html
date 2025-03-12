@@ -1,0 +1,83 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner Image Sensor Partial Reuse Ideas
+date: 2023-12-11 12:30:00.000000000 +00:00
+type: post
+post_id: '40972'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40870'
+  timeline_notification: '1702326605'
+  firehose_sent: '1702326603'
+  wordads_ufa: s:wpcom-ufa-v4:1703391484
+  _publicize_job_id: '90197549740'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/11/canon-pixma-mx340-scanner-image-sensor-partial-reuse-ideas/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Thinking over what I now know about the scanner image sensor bar from a Canon Pixma MX340, I've decided <a href="https://newscrewdriver.com/2023/12/10/canon-pixma-mx340-scanner-image-sensor-reuse-challenges/">using the sensor properly</a> is beyond the reach of my current electronics projects skill level. My biggest problem is that I don't have the tools/skills to keep up with a data clock signal running at 2.375MHz. But what if I just ignore that clock signal? For digital data, ignoring clock pulses would mean we just get gibberish. But this sensor bar communicates image data in analog voltage values. Theoretically, it is a valid option to sample that analog line at a lower rate to obtain a lower resolution image. The "new line is starting" pulse is still there at 425Hz to separate one line from the next, and keeping up with a 425Hz signal is a more tractable problem if I can get the analog sampling side figured out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Arduino (ATmega328P)</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Can an old school Arduino Nano on a ATmega328P chip keep up with the 425Hz line sync signal? I don't know. Suppose that it could, the analog sample limit of 10k/second means (10000/425=) 23-ish samples per line or (23/8.5)=2.77 dots per inch. That's worse resolution than a row of photo-resistors and probably not worth the effort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ESP32</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>How about the ESP32 chip? It's a much faster processor but higher core processing speed doesn't necessarily correlate with faster ADC peripheral performance. I found this page <em><a href="https://www.toptal.com/embedded/esp32-audio-sampling" target="_blank" rel="noreferrer noopener">Working with ESP32 Audio Sampling</a></em> describing one effort to run the ESP32 ADC at high speed. This particular author found ESP Arduino layer to be limiting and went deeper to make some ESP-IDF calls directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Audio Hardware</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>That page got me thinking about hardware peripherals that sample an audio signal. Unlike high speed ADC chips for the industrial market, an audio-in peripheral is something available to the hobbyist market. Audio sampling usually tops out at either 44.1kHz or 48kHz, and has the advantage of being tailored for consistent performance at that sampling rate. Another advantage of the scanner image sensor pretending to be a microphone is that it's pretty common for audio ADC to measure signal relative to a base reference ground, something I can take advantage of with the sensor pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The challenge of using an audio-in peripheral is splitting the incoming "audio" sample data into lines using the 425Hz line sync signal. At the moment I have no idea how I'd go about it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">I2S ADC Mode</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>One common protocol for communicating audio data to/from an external peripheral is I2S. Not only does ESP32 support the I2S protocol, its I2S hardware peripheral can be adapted to other high speed signal tasks unrelated to communicating audio data. At one point, Espressif offered a way to use the I2S peripheral to transfer data directly from ADC peripheral to memory at high speed. (A maximum sampling rate of 150kHz, as per old documentation for <code>i2s_set_adc_mode</code>.) Unfortunately, they've since moved <code>i2s_adc_enable</code>, <code>i2s_adc_disable</code>, and related APIs off to the "legacy" portions of ESP-IDF. The latest ESP-IDF documentation only has <a href="https://docs.espressif.com/projects/esp-idf/en/v5.1.2/esp32/api-reference/peripherals/i2s.html#adc-dac-mode" target="_blank" rel="noreferrer noopener">a short paragraph</a> acknowledging it once existed and spoke no more of it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even if it was still a supported API, I saw several complaints on the ESP32 forums that the ADC is very noisy. Something <a href="https://newscrewdriver.com/2022/02/27/a-tale-of-two-adcs-esp32-versus-ina219/" target="_blank" rel="noreferrer noopener">I've found out firsthand</a>, and apparently that limitation gets worse as we go faster. Looks like using ESP32's onboard ADC peripheral wouldn't be a great way to go, suggesting an external peripheral. I've already determined it's not really practical to get those high-quality high-speed industrial ADCs, but maybe another microcontroller has better onboard ADC peripherals?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">STM32</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching for discussions on microcontroller ADC, I found references to chips in the <em>very large</em> STM32 family of products. Some have superior ADC capabilities, at least on paper. The most promising lead is ST Application Note AN5354 <em><a href="https://www.st.com/resource/en/application_note/dm00628458-getting-started-with-the-stm32h7-series-mcu-16bit-adc-stmicroelectronics.pdf" target="_blank" rel="noreferrer noopener">Getting started with the STM32H7 Series MCU 16-bit ADC</a></em>. Figure 1 shows ADC behavior while sampling at 16-bit in differential mode @ 2.5 million samples per second. That's the kind of speed needed for the scanner sensor bar!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And what's this "differential mode"? I found a ST forum thread <em><a href="https://community.st.com/t5/stm32cubemx-mcus/adc-input-voltage-range-in-differential-mode/td-p/287638" target="_blank" rel="noreferrer noopener">ADC input voltage range in differential mode</a></em> where the explanation says it is a STM32 configuration using two hardware ADC channels together. The hardware will generate a single data stream from the difference between them. In other words, exactly what I want to evaluate signal+ against signal- voltage levels. Even better!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This sounds perfect. but I don't know how the STM32H7 chips relate to the STM32F103 chips commonly available to hobbyists as the "Blue Pill" board. This is something I will need to research. I knew the "Blue Pill" is very popular with some circles of electronics hobbyists, and I've had requests for a STM32 Sawppy brain. If I try to do build a project around this Canon MX340 scanner sensor, it might be the motivation I need to get into STM32 development. But that's far too big of a project for me to undertake as a side detour, so I'm going to set that aside and resume examining the electrical behavior of this inkjet. <a href="https://newscrewdriver.com/2023/12/12/canon-pixma-mx340-motors-for-print-carriage-and-paper-feed/">Next up: the DC motors</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

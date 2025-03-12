@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Window Shopping: ElectronJS'
+date: 2020-03-31 12:30:19.000000000 +00:00
+type: post
+post_id: '21022'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '21025'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42460348103'
+  timeline_notification: '1585683031'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/31/window-shopping-electronjs/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The <a href="https://newscrewdriver.com/2020/03/30/window-shopping-universal-windows-platform-fluent-design/">Universal Windows Platform</a> allows Windows application developers to create UI that can dynamically adapt to different screen sizes and resolutions, as well as adapting to different input methods like mouse vs. touchscreen. The selling point is to make it as easy and robust as a web page.</p>
+<p>So... why not have a web page? Web developers were the pioneers in solving these problems and we might want to adapt existing solutions instead of Microsoft's effort to replicate them on Windows. But a web page has limitations relative to native applications, and hardware access is definitely one such category. (For USB specifically, there is <a href="https://caniuse.com/#feat=webusb">web USB</a>, but that is not a general hardware access solution.)</p>
+<p>Thus occasionally developers familiar with web technology had a need to build platform native applications. Some of them decided to build their own native application framework to support web-style interfaces across multiple platforms. This is why we have <a href="https://www.electronjs.org/">Electron</a>. (Sometimes ElectronJS to differentiate it from its namesake.)</p>
+<p>All the x86_64 operating systems are supported: Windows, MacOS, and Linux are first tier platforms. There's no fundamental reason Electron won't work elsewhere, but apparently users need to be prepared to deal with various headaches to <a href="https://github.com/electron/electron/issues/10468">run it on platforms like a Raspberry Pi</a>. And that's just getting it to run, that doesn't even touch on the most interesting part of running on a Raspberry Pi: <a href="https://stackoverflow.com/questions/57947550/how-to-use-gpio-of-raspberry-pi-in-electron-app">its GPIO pins</a>.</p>
+<p>Like UWP, given graphical capabilities of modern websites, I have no doubt I can display arbitrary data visualization under Electron. My favorite demo of what modern WebGL is capable of is <a href="https://paveldogreat.github.io/WebGL-Fluid-Simulation/">this fluid dynamics simulation</a>.</p>
+<p>The attention then turns to serial communication, and a web search quickly pointed me to <a href="https://github.com/serialport/electron-serialport">electron-serialport</a> Github repo. At first glance this looks promising, though I have to be careful when building it into an Electron app. <span style="color:var(--color-text);">The tricky part is that this serial support is native code and must be compiled to match the version in a particular release of Electron. It appears the tool <code>electron-rebuild</code> <a href="https://stackoverflow.com/questions/32537151/node-serialport-does-not-work-with-electron">can take care of this particular case</a>. However, it sets expectation that anything Electron app dealing with hardware would likely also require a native code component.</span></p>
+<p>If I ever need to build a graphically dynamic application that needs to run across multiple operating systems, plus hardware access that is restricted to native applications, I'll come back and take a closer look at Electron. But it's not the only game in town for a offline local application based on web technology. For applications whose purpose is less about local hardware and more about online connectivity, we also have the option of <a href="https://newscrewdriver.com/2020/04/06/window-shopping-progressive-web-app/">Progressive Web Applications</a>.</p>
+<p></body></html></p>

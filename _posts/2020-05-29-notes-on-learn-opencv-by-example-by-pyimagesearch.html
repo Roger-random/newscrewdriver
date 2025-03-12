@@ -1,0 +1,43 @@
+---
+layout: post
+title: Notes On "Learn OpenCV by Example" By PyImageSearch
+date: 2020-05-29 12:30:51.000000000 +00:00
+type: post
+post_id: '21597'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- OpenCV
+- Python
+meta:
+  _thumbnail_id: '21590'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44848838895'
+  timeline_notification: '1590780768'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/29/notes-on-learn-opencv-by-example-by-pyimagesearch/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once <a href="https://newscrewdriver.com/2020/05/28/notes-on-opencv-installation-guide-by-pyimagesearch/">basic prebuilt binaries of OpenCV has been installed</a> in an Anaconda environment on my Windows PC, Step #2 of <a href="https://www.pyimagesearch.com/start-here/">PyImageSearch Start Here Guide</a> goes into command line arguments. This section was an introduction for people who have little experience with the command line, so I was able to skim through it quickly.</p>
+<p>Step #3 <a href="https://www.pyimagesearch.com/2018/07/19/opencv-tutorial-a-guide-to-learn-opencv/"><em>Learn OpenCV by Example (Beginner)</em></a> is where I finally got some hands-on interaction with basic OpenCV operations. Starting with basic image manipulation routines like scale, rotate, and crop. These are pretty common with any image library, and illustrated with a still frame from the movie Jurassic Park.</p>
+<p>The next two items were more specific to OpenCV: Edge detection attempts to extract edges from am image, and thresholding drops detail above and below certain thresholds. I've seen thresholding (or close relative) in some image libraries, but edge detection is new to me.</p>
+<p>Then we return to relatively common image manipulation routines, like drawing operations on an image. This is not unique to OpenCV but very useful because it allows us to annotate an image for human-readable interpretation. Most commonly drawing boxes to mark regions of interest, but also masking out areas not of interest.</p>
+<p>Past those operations, the tutorial concludes with a return to OpenCV specialties in the form of contour and shape detection algorithms, executed on a very simple image with a few Tetris shapes.</p>
+<p>After following along through these exercises, I wanted to try those operations on one of my own pictures. I selected a recent image on this blog that I thought would be ideal: high contrast with clear simple shapes.</p>
+<p><img class=" size-full wp-image-21524 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/05/xbox-one.jpg" alt="Xbox One" width="1920" height="1080"></p>
+<p>As expected, my first OpenCV run was not entirely successful. I thought this would be an easy image for edge detection and I learned I was wrong. There were false negatives caused by the shallow depth of field. Vents on the left side of the Xbox towards the rear was out of focus and edges were not picked up. False positives in areas of sharp focus came from two major categories: molded texture on the front of the Xbox, and little bits of lint left by the towel I used to wipe off dust. In hindsight I should have taken a picture before dusting so I could compare how dust vs. lint behaved in edge detection. I could mitigate false positives somewhat by adjusting the threshold parameters of the edge detection algorithm, but I could not eliminate them completely.</p>
+<p><img class="alignnone size-full wp-image-21590" src="https://newscrewdriver.com/wp-content/uploads/2020/05/xbox-canny-edge-detect-30-175.jpg" alt="Xbox Canny Edge Detect 30 175" width="2880" height="1615"></p>
+<p>With such noisy results, a naive application of contour and shape detection algorithms used in the tutorial returned a lot of data I don't yet know how to process. It is apparent those algorithms require more processing and I still have a lot to learn to deliver what they needed. But still, it was a fun first run! I look forward to <a href="https://newscrewdriver.com/2020/05/30/skimming-build-opencv-mini-projects-by-pyimagesearch-colors/">learning more in Step 4</a>: Build OpenCV Mini-Projects.</p>
+<p></body></html></p>

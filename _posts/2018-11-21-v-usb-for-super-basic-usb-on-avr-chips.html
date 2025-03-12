@@ -1,0 +1,38 @@
+---
+layout: post
+title: V-USB For Super Basic USB On AVR Chips
+date: 2018-11-21 09:00:17.000000000 +00:00
+type: post
+post_id: '17225'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- AVR
+- USB
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '24506808108'
+  timeline_notification: '1542819706'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/21/v-usb-for-super-basic-usb-on-avr-chips/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the gifts to Supercon attendees was a <a href="https://www.sparkfun.com/products/14130">Sparkfun Roshamglo badge</a>. While reading documentation on <a href="https://learn.sparkfun.com/tutorials/hack-your-roshamglo-badge">writing software for it</a>, one detail that stood out about this Arduino-compatible board was the lack of a USB-to-serial bridge. Such a component is common on Arduino boards. The only exceptions I'm aware of are the <a href="https://www.arduino.cc/en/Main/Arduino_BoardLeonardo">Arduino Leonardo</a> line using the <a href="https://www.microchip.com/wwwproducts/en/ATmega32U4">ATmega32u4</a> chip which has an integrated USB module.</p>
+<p>The ATtiny84 on the Roshamglo is far too humble of a chip to have an integrated USB functionality, so that deviation from standard Arduino caught my interest. In fact, not only does the board lack a serial-to-USB bridge, the ATtiny84 itself doesn't even have a UART peripheral for serial communication with a serial-to-USB bridge. Now we're missing not one but <em><strong>two</strong></em> things commonly found in Arduino-compatible boards.</p>
+<p>What's the magic?</p>
+<p><img class=" size-full wp-image-17227 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/11/vusb-teaser.png" alt="vusb-teaser" width="328" height="212">The answer is something called <a href="https://www.obdev.at/products/vusb/index.html">V-USB</a>, a software-only implementation of basic USB fundamentals. It is not a complete implementation, most notably it does not handle all the error conditions a full implementation must gracefully handle. But it does enough USB to support the <a href="https://github.com/micronucleus/micronucleus">Micronucleus</a> boot loader. Which creates a very basic way to upload Arduino sketches to an ATtiny84 without an USB serial interface engine (SIE), or even a UART, on the ATtiny84 chip.</p>
+<p>Yes, it requires its own custom device driver and upload tool, but <a href="https://learn.sparkfun.com/tutorials/how-to-install-an-attiny-bootloader-with-virtual-usb">there are instructions</a> on how to make all that happen. The point is minimizing hardware requirements - no modification on the host computer, and minimal supporting components for the ATtiny84.</p>
+<p>It looks like a huge hack, and even though SparkFun cautions that it is not terribly reliable and won't work on every computer, it is still impressive what the V-USB people have done under such limits.</p>
+<p></body></html></p>

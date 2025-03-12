@@ -1,0 +1,75 @@
+---
+layout: post
+title: Xbox One X SSD Upgrade
+date: 2023-02-20 12:30:00.000000000 +00:00
+type: post
+post_id: '35225'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Xbox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35258'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677020179
+  _publicize_job_id: '81679948057'
+  timeline_notification: '1676925012'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/20/xbox-one-x-ssd-upgrade/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Using Linux disk tool "dd" I <a href="https://newscrewdriver.com/2023/02/19/xbox-one-ssd-upgrade-successful/">successfully migrated data on my Xbox One HDD to an SSD with identical capacity</a>. The SSD upgrade made the nine-year old console much more responsive to game loading and in-game navigation, incurring less waits before the action starts. (It didn't do anything once the game is up and running, obviously.) With this success, I eyed its successor: my Xbox One X which is also gathering dust since the time I upgraded to the latest Xbox Series X.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The SSD-upgraded Xbox One was mostly just for fun, as it is still likely to sit on a shelf collecting dust after its SSD upgrade. In contrast, an SSD-upgraded Xbox One X may actually see some use. Or at least this was the justification I used to spend money on a <a rel="noreferrer noopener" href="https://amzn.to/3S6fFO8" target="_blank">1TB Crucial MX500 SSD</a> (*) for this project. I also skipped the system reset this time around, curious to see if it makes a difference. As for a quick-and-dirty performance benchmark, I timed the duration between selecting "Restart Console" to the time I'm back at the Xbox home menu. On the factory hard drive, that took 90 seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>iFixit doesn't have an explicit guide for HDD replacement on an Xbox One X (referred to by its codename Project Scorpio) but it does have <a rel="noreferrer noopener" href="https://www.ifixit.com/Guide/Xbox+One+X+Project+Scorpio+Edition+BD-ROM+Drive+Replacement/103019" target="_blank">a guide for BD-ROM drive replacement</a>. Looking at pictures, I judged that was close enough as the HDD is right next to the BD-ROM drive. Once I followed instructions to reach the BD-ROM drive, I could indeed lift the hard drive cage to access four screws necessary to remove the original drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Disk capacity details as shown by command "fdisk -l":</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"fontSize":"small"} --></p>
+<p class="has-small-font-size"><code>Disk /dev/sdb: 903.57 GiB, 970199064576 bytes, 1894920048 sectors<br>Disk model: ST1000LM035-1RK1<br>Units: sectors of 1 * 512 = 512 bytes<br>Sector size (logical/physical): 512 bytes / 4096 bytes<br>I/O size (minimum/optimal): 4096 bytes / 4096 bytes</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Crucial MX500 SSD is slightly larger, allowing me to copy all the bytes and leave almost 30GB available for wear levelling and other SSD housekeeping.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Disk /dev/sdc: 931.51 GiB, 1000204886016 bytes, 1953525168 sectors
+Disk model: CT1000MX500SSD1
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This time I'm going to use a 512KB block size for dd. That may have been the key to faster copy, as the drives are double the size yet copied in less time than for Xbox One's 500GB drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>~$ sudo dd if=/dev/sdb of=/dev/sdc bs=512K status=progress
+970164011008 bytes (970 GB, 904 GiB) copied, 9115 s, 106 MB/s
+1850507+1 records in
+1850507+1 records out
+970199064576 bytes (970 GB, 904 GiB) copied, 9120.85 s, 106 MB/s</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reassembling the console, I retested the "Restart Console" scenario. It took just 49 seconds with the new SSD compared to 90 seconds with the HDD. Almost half the wait or in other words, almost doubled the speed! This is awesome, and I didn't have to reset the console, but there may be <a href="https://newscrewdriver.com/2023/02/21/notes-after-xbox-one-x-ssd-upgrade/">an asterisk or two quantifying this success</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,100 @@
+---
+layout: post
+title: Home Assistant OS in KVM Hypervisor
+date: 2022-05-27 12:30:00.000000000 +00:00
+type: post
+post_id: '30492'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Dell
+- E6230
+- Home Assistant
+- TrueNAS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30493'
+  _publicize_job_id: '73010385571'
+  timeline_notification: '1653679812'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666864503
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/27/home-assistant-os-in-kvm-hypervisor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I encountered some problems running Home Assistant Operating System (HAOS) <a href="https://newscrewdriver.com/2022/05/26/home-assistant-os-in-truenas-core-virtual-machine/">as a virtual machine on a TrueNAS CORE server</a>, which is based on FreeBSD and its bhyve hypervisor. I wanted to solve these problems and, given my good experience with Home Assistant, I was willing to give it dedicated hardware. A lot of people use a Raspberry Pi, but in these times of hardware scarcity a Raspberry Pi is rarer and more valuable than an old laptop. I pulled out a refurbished <a href="https://newscrewdriver.com/2020/02/15/refurbished-dell-latitude-e6230-first-impressions/" target="_blank" rel="noreferrer noopener">Dell Latitude E6230</a> I had originally intended to use as robot brain. Now it shall be my Home Assistant server, which is a robot brain of sorts. This laptop's <a rel="noreferrer noopener" href="https://ark.intel.com/content/www/us/en/ark/products/64896/intel-core-i53320m-processor-3m-cache-up-to-3-30-ghz.html" target="_blank">Core i5-3320M CPU</a> launched ten years ago, but as a x86_64 capable CPU designed for power-saving laptop usage, it should suit Home Assistant well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Using Ubuntu KVM Because Direct Installation Failed Boot</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was willing to run HAOS directly on the machine, but the UEFI boot process failed for reasons I can't decipher. I couldn't even copy down an error message due to scrambled text on screen. HAOS 8.0 moved to a new boot procedure as per its <a rel="noreferrer noopener" href="https://www.home-assistant.io/blog/2022/05/16/home-assistant-os-release-8/" target="_blank">release announcement</a>, and the comments thread on that page had lots of users reporting boot problems. [UPDATE: A few days later, HAOS 8.1 was released with several boot fixes.] Undeterred, I tried a different tack: install Ubuntu Desktop 22.04 LTS and run HAOS as a virtual machine under <a rel="noreferrer noopener" href="https://ubuntu.com/blog/kvm-hyphervisor" target="_blank">KVM Hypervisor</a>. This is the hypervisor used by the Linux-based <a rel="noreferrer noopener" href="https://www.truenas.com/truenas-scale/" target="_blank">TrueNAS SCALE</a>, to which I might migrate in the future. Whether it works with HAOS would be an important data point in that decision.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though I expect this computer to run as an unattended server most of the time, I installed Ubuntu Desktop instead of Ubuntu Server for two reasons:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Ubuntu Server has no knowledge of laptop components, so I'd be stuck with default hardware behavior that are problematic. First is that the screen will always stay on, which wastes power. Second is that closing the lid will put the machine to sleep, which defeats the point of a server. With Ubuntu Desktop I've found how to solve both problems: <a rel="noreferrer noopener" href="https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid" target="_blank">edit <code>/etc/systemd/logind.conf</code> and change lid switch behavior to <code>lock</code></a>, which turns off the screen but leaves the computer running. I don't know how to do this with Ubuntu Server or Home Assistant OS direct installation.</li>
+<li>KVM Hypervisor is a huge piece of software with many settings. Given enough time I'm sure I could learn all of the command line tools I need to get things up and running, but I have a faster option with Ubuntu Desktop: Use <a rel="noreferrer noopener" href="https://virt-manager.org/" target="_blank">Virtual Machine Manager</a> to help me make sense of KVM.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2>KVM Network Bridge</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Home Assistant instructions for <a rel="noreferrer noopener" href="https://www.home-assistant.io/installation/linux" target="_blank">installing HAOS as a KVM virtual machine</a> was fairly straightforward except for lack of details on how to set up a network bridge. This is required so HAOS is a peer on my home network, capable of communicating with ESPHome devices. (Equivalent to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/02/20/notes-on-home-assistant-core-docker-compose-file/" target="_blank">the <code>network_mode: host</code> option when running Home Assistant Docker container</a>.) HAOS instruction page merely says "Select your bridge" so I had to search elsewhere for details.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A promising search hit was <em><a rel="noreferrer noopener" href="https://linuxconfig.org/how-to-use-bridged-networking-with-libvirt-and-kvm" target="_blank">How to use bridged networking with libvirt and KVM</a> </em><a rel="noreferrer noopener" href="https://linuxconfig.org/how-to-use-bridged-networking-with-libvirt-and-kvm" target="_blank">on linuxconfig.org</a>. It gave a lot of good background information, but I didn't care for the actual procedure due to this excerpt: "<em>Notice that you can’t use your main ethernet interface [...] we will use an additional interface [...] provided by an ethernet to usb adapter attached to my machine.</em>" I don't want to add another Ethernet adapter to my machine. I know network bridging is possible on the existing adapter, because Docker does it with <code>network_mode:host</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My next stop was <a rel="noreferrer noopener" href="https://www.linux-kvm.org/page/Networking" target="_blank"><em>Configuring Guest Networking</em> page of KVM documentation</a>. It offered several options corresponding to different scenarios, helping me confirm I wanted "Public Bridge". This page had a few Linux distribution-specific scripts, including one for Debian. Unfortunately, it wanted me to edit a file <code>/etc/network/interfaces</code> which doesn't exist on Ubuntu 22.04. Fortunately, that page gave me enough relevant keywords for me to find <a href="https://ubuntu.com/server/docs/network-configuration"><em>Network Configuration</em> page of Ubuntu documentation</a> which has a section "Bridging" pointing me to <code>/etc/netplan</code>. I had to change their example to match Ethernet hardware names on my computer, but once done I had a public network bridge upon my existing network adapter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>USB Device Redirection</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though I'm still running HAOS under a virtual machine hypervisor, ESPHome could access USB hardware thanks to KVM device redirection.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30493,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/virtual-machine-manager-redirect-usb-device.png?w=1024" alt="" class="wp-image-30493"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First I plug in my ESP32 development board. Then, I open the Home Assistant virtual machine instance and select "Redirect USB device" under "Virtual Machine" menu.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30505,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/virtual-machine-manager-select-usb-device-for-redirection.png?w=1024" alt="" class="wp-image-30505"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That will bring up a list of plugged-in USB devices, where I could select the USB to UART bridge device on my ESP32 development board. Once selected, the ESPHome add-on running within this instance of HAOS could see the ESP32 board and flash its firmware via USB. This process is not as direct as it would have been for HAOS running directly on the computer, but it's far better than what I had to do before.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the moment, surfacing KVM capability for USB device redirection is not available on TrueNAS SCALE but <a rel="noreferrer noopener" href="https://jira.ixsystems.com/browse/NAS-111020" target="_blank">it is a requested feature</a>. Now that I see the feature working, it has become a must-have for me. Until this is done, I probably won't bother migrating my TrueNAS server from CORE (FreeBSD/bhyve) to SCALE (Linux/KVM) because I want this feature when I consolidate HAOS back onto my TrueNAS hardware. (And probably send this Dell Latitude E6230 back into the storage closet.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Start on Boot</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, I had to tell KVM to launch Home Assistant automatically upon boot. By checking "Start virtual machine on host boot up" under "Boot Options" setting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30507,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/virtual-machine-manager-boot-options.png?w=1024" alt="" class="wp-image-30507"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In time I expect that I'll learn the KVM command lines to accomplish what I'm doing today with Virtual Machine Manager, but today I'm glad VMM helps me get everything up and running quickly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: <code>virsh autostart</code> is the command line tool to launch a virtual machine upon system startup. Haven't yet figured out command line procedure for USB redirection.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

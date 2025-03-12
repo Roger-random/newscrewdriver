@@ -1,0 +1,68 @@
+---
+layout: post
+title: Initial Lessons on ESP8266 Arduino Sketch for InfluxDB
+date: 2022-02-03 12:30:00.000000000 +00:00
+type: post
+post_id: '28425'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- Arduino
+- ESP8266
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28326'
+  _publicize_job_id: '68530077781'
+  timeline_notification: '1643920221'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/03/initial-lessons-on-esp8266-arduino-sketch-for-influxdb/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Dipping my toes in <a href="https://newscrewdriver.com/2022/02/02/setting-up-esp8266-arduino-sketch-for-influxdb/">building a data monitoring system</a>, I have an ESP8266 Arduino sketch that reads its analog input pin, converts it to original input voltage, and log that information to InfluxDB. Despite the simplicity of the sketch, I've already learned some very valuable lessons.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="the-good">The Good</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Arduino libraries do a very good job of recovering from problems on their own, taking care of it so my Arduino sketch does not. The ESP8266 Arduino WiFi library can reconnect lost WiFi as long as I call <code>WiFiMulti.run()</code> periodically. And the InfluxDB library doesn't need me to do anything special at all. I call <code>InfluxDbClient.writePoint()</code> whenever I want to write data. If the connection was lost since initial connection, it will be re-established and the data point written with no extra work on my part. I've had this sketch up and running as I've taken the InfluxDB docker container offline to upgrade to newer versions, or performed firmware updates WiFI access point which takes wireless offline for a few minutes. This sketch recovered and resume logging data, no sweat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="the-bad">The Bad</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESP8266 ADC (analog-to-digital converter) is pretty darned noisy when asked to measure within a narrow range of its full range of voltages as I am. The full range is 0-22V, and I'm typically only within a narrow band between 12-14V. I tried taking multiple measurements and averaging them, but that didn't seem to help very much.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This noisiness also made it hard to calibrate readings against voltage values as measured by my multi-meter. It's not difficult to take a meter reading and calculation a conversion factor for an ADC reading taken at the same time. But if the ADC value can drift even as the actual voltage is held steady, the conversion factor is unreliable. Even worse, since the conversion is done in my Arduino sketch, every time I want to refine this value, I had to hook up a computer and re-upload my Arduino sketch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I expect to add more data sources to this system, I also expected to query by source to see data returned by each. For this first iteration, I tagged points with the MAC address of my ESP8266. This is a pretty good guarantee of uniqueness, but it is not very human-friendly. Or at least not to me, as I'm not in the habit of memorizing MAC addresses of my devices.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="the-ugly">The Ugly</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>As typical of Arduino sketches, this sketch is running <code>loop()</code> as fast as it could. Functionally speaking, this is fine. But it means the ESP8266 is always in a state of high power draw, with the WiFi stack always active and the CPU running as fast as it could. When the objective is merely to record measurements every minute or so, I could be far more energy efficient here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Addressing these issues (and much more I'm sure) will be topic of future iterations. In the meantime, I have some data points and <a href="https://newscrewdriver.com/2022/02/04/using-grafana-despite-chronograf-integration/">I want to graph them</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Source code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP8266Tests/tree/main/VoltageLogger" target="_blank">publicly accessible on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

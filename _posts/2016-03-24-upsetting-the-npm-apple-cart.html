@@ -1,0 +1,47 @@
+---
+layout: post
+title: Upsetting the NPM apple cart
+date: 2016-03-24 14:38:34.000000000 +00:00
+type: post
+post_id: '921'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Business
+- JavaScript
+- Node.js
+- NodeSchool
+- TIL
+tags: []
+meta:
+  _oembed_62b7e9f603ea76adff9b4fcb554b579d: "{{unknown}}"
+  _oembed_440ec3e50645cf75e8f1d80b30f38f7e: "{{unknown}}"
+  _edit_last: '98499281'
+  geo_public: '0'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21098023465'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/03/24/upsetting-the-npm-apple-cart/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Decades-old words of wisdom from a computer science pioneer, proven true once again.</p>
+<blockquote><p>A distributed system is one in which the failure of a computer you didn't even know existed can render your own computer unusable.</p>
+<p style="text-align:right;">- <em><a href="http://amturing.acm.org/award_winners/lamport_1205376.cfm">Leslie Lamport</a></em></p>
+</blockquote>
+<p>In a coincidence of perfect timing, my education of NPM yesterday came just in time for me to understand <a href="http://www.theregister.co.uk/2016/03/23/npm_left_pad_chaos/">the left-pad incident</a>. The short version is simple enough to understand: unhappy programmer <a href="https://medium.com/@azerbike/i-ve-just-liberated-my-modules-9045c06be67c">took his ball and went home</a>, causing a lot of other people grief in the process. The bigger picture, though, needed a bit more knowledge to understand.</p>
+<p>While going through the NodeSchool.io NPM workshop I had noticed a few things. The workshop used a dummy placeholder registry but there was really no technical or policy reason why every Jane and Jack can't run the same lesson against the global registry. Up to and including the fact that they can clean up (un-publish) their NPM package when the workshop is over.</p>
+<p>I found that fact curious. Such open accessibility felt fragile and I was wondering about the mechanisms to make sure the mechanism is fortified against accidents or abuse. It wouldn't be something covered in a workshop, so I thought I'd see more details of this protection elsewhere.</p>
+<p>Nope, I was wrong.</p>
+<p>The left-pad story proved that there wasn't any mechanism in place at all. A hilariously trivial package was yanked, causing many houses of cards to fall down.</p>
+<p>For all the wonders of NPM, there are downsides that had <a href="http://www.jongleberry.com/why-i-hate-npm.html">its share of critics</a>. This incident <a href="http://resir014.github.io/2016/03/23/npms-single-point-of-failure/">kicked the criticism into high gear</a>. The NPM registry owner received a lot of fire from all sides and have <a href="http://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm">pledged to update their procedure</a> to avoid a repeat in the future. But I'm not sure that's enough for the famously anti-authoritarian OSS purists. For every "conflict resolution policy" there will be some who see "<a href="https://medium.com/@3rdeden/an-attack-on-publisher-freedom-271013ff33c5">ruling with an iron fist</a>."</p>
+<p> </body></html></p>

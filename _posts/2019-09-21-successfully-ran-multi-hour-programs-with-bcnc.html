@@ -1,0 +1,40 @@
+---
+layout: post
+title: Successfully Ran Multi Hour Programs With bCNC
+date: 2019-09-21 12:30:19.000000000 +00:00
+type: post
+post_id: '19613'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19631'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '35532613335'
+  timeline_notification: '1569094253'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/21/successfully-ran-multi-hour-programs-with-bcnc/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once we added a crude but functioning third axis to our primordial CNC machine, we started testing it by running longer and longer G-code programs. Once we got to a test program that took roughly 25 minutes to complete, we encountered our first system failure: our computer running UGS (Universal G-code Sender) would <a href="https://newscrewdriver.com/2019/09/19/unreliable-serial-communication-with-ugs-try-bcnc-next/">lose its serial communication connection</a> at unpredictable times.</p>
+<p>As we intend to eventually run programs much longer than 25 minutes, this was unacceptable and UGS was removed from contention. We returned to the list of G-code senders in Grbl documentation and chose <a href="https://github.com/vlachoudis/bCNC">bCNC</a> as our next candidate.</p>
+<p>We are definitely giving up some nice features by moving from UGS to bCNC. We lose the ability to customize the arrangement of our control elements, and we lose the ability to preview our tool path from arbitrary directions. (We're restricted to a few fixed projections.) But reliability is more important than eye candy, so we're happy to give them up if it means a system that we can rely upon to run for hours.</p>
+<p>To test bCNC, we take advantage of the fact this is an open loop system: the control board will run exactly the same whether it is attached to the salvaged industrial XY stage or not. This allowed me to run long duration tests using just the laptop and the prototype control board, away from the workshop where the machine hardware resides.</p>
+<p>To establish our baseline: UGS is brought up to run this 25 minute test program again in the test configuration without hardware. Two attempts both failed with serial connection dropping offline at different times.</p>
+<p>Then, using the same desktop test configuration, bCNC is brought up to run the same 25 minute test program. Five attempts ran to successful completion without losing serial connection.</p>
+<p>Then we moved on to the challenge level: a G-code program that takes over 7 hours to execute. I would leave the laptop and prototype board running over most of a week. Every time I noticed the program had succeeded, I press "Cycle Start" again. This netted roughly ten attempts, and they were all successful. No serial connections were lost.</p>
+<p>It looks like bCNC is the way to go. And with the new candidate software in place, attention <a href="https://newscrewdriver.com/2019/09/23/mounting-parker-zeta4-under-table/">returns to machine hardware</a>.</p>
+<p></body></html></p>

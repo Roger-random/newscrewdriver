@@ -1,0 +1,42 @@
+---
+layout: post
+title: Dedicated Buck Converter for USB Charging Port
+date: 2022-03-22 12:30:00.000000000 +00:00
+type: post
+post_id: '29122'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- USB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29123'
+  _publicize_job_id: '70496188720'
+  timeline_notification: '1647977448'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/22/dedicated-buck-converter-for-usb-charging-port/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A M5Stack ESP32Cam has a type C connector for USB connection, and it was <a href="https://newscrewdriver.com/2022/03/21/successful-quick-esphome-test-m5stack-esp32-camera/">perfectly happy to run with just +5V on V<sub>bus</sub> relative to GND</a> on a hacked-up USB-C cable. However, my Pixel 3a phone did not recognize it as a valid power source. Even though when I do (what I thought was) the exact same thing with a USB type A connector, then use one of my USB-A to USB-C cables, the Pixel 3a is happy to charge at baseline (2.5W) USB power. There's a subtlety I failed to grasp here which I hope to decipher after I obtain a USB-C breakout board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another thing I failed to anticipate was the power surge when an USB peripheral is plugged in. This board has a MP1584 buck converter providing +5V to the ESP32 dev board running ESPHome. My first draft of the USB-A connector tapped directly to that +5V bus. When I plugged in the ESP32Cam, everything was fine. But when I plugged in the Pixel 3a, the ESP32 would reset and reboot. The voltage level looked fine so I'm not sure what's going on, it is potentially another data point for the unsolved puzzle. As a workaround, I will dedicate a separate buck converter just for the Pixel charging port. And this time I'll use <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/" target="_blank">the buck converter with an enable pin</a> so Home Assistant could control charging.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29124,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/usb-a-port-with-dedicated-buck-converter-top.jpg?w=1024" alt="" class="wp-image-29124"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since it was a very compact module, it was pretty easy for me to have it piggyback behind the USB-A connector board. Another 220uF capacitor is here to buffer +5V output, and I used its legs to make the power connection to correct pins on the USB-A board. Two more wires were needed: a thicker one to tap into the main ~11V voltage bus as input, and a thinner one connected to an ESP32 pin via a 1kΩ resistor. A quick test with Home Assistant proved I could toggle charging on and off from a switch in the UI, but the real fun is in <a href="https://newscrewdriver.com/2022/03/23/home-assistant-mobile-app-data-reporting-rate-varies-greatly/">automating that switch</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

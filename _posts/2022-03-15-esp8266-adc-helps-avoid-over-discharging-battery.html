@@ -1,0 +1,73 @@
+---
+layout: post
+title: ESP8266 ADC Helps Avoid Over-Discharging Battery
+date: 2022-03-15 12:30:00.000000000 +00:00
+type: post
+post_id: '29005'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- DU7169
+- ESP8266
+- ESPHome
+- INA219
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29020'
+  timeline_notification: '1647372628'
+  _publicize_job_id: '70218113985'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/15/esp8266-adc-helps-avoid-over-discharging-battery/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took apart a USB power bank so I could bypass its problematic power output circuit and <a href="https://newscrewdriver.com/2022/03/14/running-wemos-d1-mini-esp8266-on-single-lithium-ion-18650-cell/">run a Wemos D1 Mini module directly on the single lithium-ion battery cell</a>. But bypassing the output circuit also means losing its protection against battery over-discharge. This could permanently damage a lithium-ion battery cell, so it is something I have to reimplement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can to use the only ADC (analog-to-digital conversion) peripheral on an ESP8266 to monitor battery voltage. The ESP8266 ADC is limited to sensing voltage in the range of zero to one volt, so a voltage divider is necessary to bring the battery's maximum voltage level of 4.2V down to 1V. The Wemos D1 Mini module has a voltage divider already on board, using 220kΩ and 100kΩ resistors to (almost) bring 3.3V down to 1V. To supplement this, I added another 100kΩ resistor between battery positive and Wemos D1 Mini analog input pin.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For an initial test, I connected the analog input pin to my bench power supply and started adjusting power. It did not quite work as expected, reaching maximum value at a little over 4.1 volts. I suspect one or more of the resistors involved have actual resistance values different than advertised, which is normal with cheap resistors of 15% tolerance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a result, I could not sense voltage above 4.1V, which is probably fine for the purpose of over-discharge protection. But I was willing to put in a little extra effort to sense the entire range, and added another 10kΩ resistor in series for a total of 110kΩ between battery positive and the Wemos D1 Mini analog pin. This was enough to compensate for resistor tolerance and allow me to distinguish voltage all the way up to 4.2V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To translate this divided voltage back to original input voltage, I recorded values from two voltage levels. I recorded what the ESP8266 ADC reported for each, and what I measured with my voltmeter. These data points allow me to use ESPHome Sensor component's <a href="https://esphome.io/components/sensor/index.html#calibrate-linear"><code>calibrate_linear</code> filter</a> to obtain values good enough to watch for battery over-discharge.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are the relevant excerpts from my ESPHome configuration YAML:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  - platform: adc
+    pin: A0
+    name: "Battery Voltage"
+    filters:
+      - calibrate_linear:
+          - 0.84052 -&gt; 3.492
+          - 0.99707 -&gt; 4.113
+    on_value:
+      then:
+        - if:
+            condition:
+              sensor.in_range:
+                id: battery_voltage
+                below: 3.0
+            then:
+              - logger.log: "Battery critically low"
+              - deep_sleep.enter:</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ideally, I would never reach this point. I should make sure the battery is adequately charged each day. I will need to drop voltage output of solar panel (up to 24V) down to the 5V input voltage expected by an USB power bank's lithium-ion battery charging circuit, and I want to <a href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/">try a new-to-me buck converter module</a> for the task.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

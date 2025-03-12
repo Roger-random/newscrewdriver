@@ -1,0 +1,53 @@
+---
+layout: post
+title: Trying Generic L298N Driver Board
+date: 2021-01-26 12:30:00.000000000 +00:00
+type: post
+post_id: '24733'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- TT Gearmotor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24738'
+  timeline_notification: '1611693029'
+  _publicize_job_id: '53940179070'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/26/trying-generic-l298n-driver-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I started researching using a L298 as motor driver because it is an established known quantity. After <a href="https://newscrewdriver.com/2021/01/25/notes-on-l298-dual-full-bridge-driver/">looking over its specifications</a>, I realized it is not the best match for the TT gearbox DC motors I plan to use: the L298 is specified to work anywhere from 4 to 45 volts, but the little 130 DC motors used in a TT gearbox are usually listed with a nominal operating voltage of three to six volts. I should be able to avoid damaging the little motors as long as I keep the PWM duty cycle low. So I'll continue investigation. Even if these aren't the best drivers to use for my micro Sawppy, they might be useful for larger motors in larger Sawppy rovers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>During my research of L298 I came across reference to an <a href="https://store.arduino.cc/usa/arduino-motor-shield-rev3" target="_blank" rel="noreferrer noopener">Arduino motor control shield</a> built around one of those drivers. It looks great, but a single shield with a single L298 can only drive two motors at different speeds. A six-wheel drive rover will have six motors. I could pair up front and back wheel motors if my rover chassis is front-back symmetric, but that still requires four different speed controls. I looked to see if the Arduino shield is stackable, but unfortunately the motor control pins are fixed so stacking them would only result in more motors running at the same two speeds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both Adafruit and Sparkfun appears to have moved beyond the classic L298 for their motor driver boards. I'll look at those drivers modules later, for now I'm focusing on L298 so I headed to the cutthroat market of lowest-bidder generics, just as I looked there for my micro-servos and TT gear motors. A <a rel="noreferrer noopener" href="https://amzn.to/2XnI06W" target="_blank">query for L298 on Amazon</a> (*) returned many vendors all selling what looks like clones of the same product. A pattern <a rel="noreferrer noopener" href="https://www.aliexpress.com/wholesale?SearchText=L298" target="_blank">repeated on AliExpress</a> as well. I purchased from the <a href="https://amzn.to/38vKdn4">Amazon lowest bidder du jour</a> (*) for a closer look.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And just like with micro servos and TT gear motors, I couldn't find much on the history of this particular driver module design. Somebody must have built and sold the first one, but now that it has since been copied infinitely I had no luck finding the source. Since this has become a generic fungible item, none of the vendors I checked bothered to supply documentation. They probably assumed a people can find it online somewhere and I'm sure I could. However, I've made a conscious decision not to. As an educational exercise I'll try to decipher this module on my own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Alrighty, <a href="https://newscrewdriver.com/2021/01/27/components-of-generic-l298n-motor-driver-module/">what's on this thing</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

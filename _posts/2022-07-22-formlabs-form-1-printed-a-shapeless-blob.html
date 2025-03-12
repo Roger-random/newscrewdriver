@@ -1,0 +1,64 @@
+---
+layout: post
+title: FormLabs Form 1+ Printed a Shapeless Blob
+date: 2022-07-22 12:30:00.000000000 +00:00
+type: post
+post_id: '31552'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31558'
+  _publicize_job_id: '75003540943'
+  timeline_notification: '1658518225'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/22/formlabs-form-1-printed-a-shapeless-blob/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had been given a FormLabs Form 1+ resin printer that's been sitting unused for years and requested to get it back up and running. Working with FormLabs equipment isn't cheap, and this "free as-is" printer <a href="https://newscrewdriver.com/2022/07/21/formlabs-form-1-resin-printer-in-unknown-condition/">required nearly $300 of stuff</a> just so I could see if it even runs. With the hardware in hand, I moved on to the software side of things.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All FormLabs equipment require <a rel="noreferrer noopener" href="https://formlabs.com/software/" target="_blank">their PreForm software</a> to run, and the current version (3.25.2 as of writing) no longer supports the Form 1+. I dug through FormLabs support to find this page <em><a rel="noreferrer noopener" href="https://support.formlabs.com/s/article/Using-PreForm-with-the-Form-1?language=en_US" target="_blank">Using PreForm with the Form 1+</a></em> which provides a link to download PreForm 2.20. That was the final release before PreForm dropped support for this old printer. PreForm 2.20 is also available for download from the page <a rel="noreferrer noopener" href="https://support.formlabs.com/s/article/PreForm-Release-Notes?language=en_US" target="_blank">listing PreForm versions and their equipment compatibility</a>. If someone wants to go even older because they have a need for 32-bit edition, PreForm 2.16.0 was the final 32-bit release and available on that same page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Installing and launching PreForm activated an introduction to the software, which guides us through printing the FormLabs test object: a (hair?) clip in the shape of FormLabs butterfly logo. I followed through the tutorial to properly orient the shape and generate supports. I installed the Form 1+ compatible aftermarket <a rel="noreferrer noopener" href="https://www.zvatindustries.com/store/c3/Z-Vat_1_Amber_.html" target="_blank">resin vat from Z-Vat industries</a>, and poured in Form 1+ compatible aftermarket <a rel="noreferrer noopener" href="https://applylabwork.com/prototype-engineering-series-robust-champagne-formlabs-printers-compatible/" target="_blank">resin from ApplyLabWork</a>. I hit print and started hearing the buzzing of the Z-axis stepper motor. A good sign! Given the upside-down printing nature of resin printers, the metal printing platform blocked my view of what it was doing. I left the machine alone to do its thing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Roughly half an hour later, the print height has risen enough I could see between the print platform and the vat. I had hoped to see a sturdy print raft forming the foundation of my test clip, but I saw only a lumpy misshapen blob. This is not good.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31556,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/form-1-beam-never-moved.jpg?w=1024" alt="" class="wp-image-31556"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Watching the machine work, I could see the laser illuminated only a single spot instead of sweeping through the shape as I had expected. I didn't see movement from the resin vat, either, which was supposed to move as part of peeling process between layers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":31558,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/form-1-printed-shapeless-blob.jpg?w=1024" alt="" class="wp-image-31558"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I cancelled the print job, the build platform was raised to its maximum height where I can confirm the misshapen blob. This is definitely not the intended test clip object. It isn't even in the right place. The test clip was supposed to be close to the peeling hinge edge. (Right side edge in picture above.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":31557,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/form-1-burned-hole-in-pdms-layer.jpg?w=1024" alt="" class="wp-image-31557"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The unmoving laser beam is what hardened the blob. It also hardened various bits of resin which are now floating amongst still-liquid resin. I drained all of that contaminated resin into a disposal container that I will leave out in direct sunlight to harden. Wiping the resin vat clean of residue, I see a hole burned in the precious PDMS layer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that all the aftermarket hardware I bought for this printer worked: the aftermarket AC power supply brick seemed to deliver enough power, the aftermarket resin hardened in response to the laser, and the aftermarket resin vat's PDMS layer allowed the hardened resin to separate between layers. That's great! But there is something wrong with the printer itself and I'll <a href="https://newscrewdriver.com/2022/07/23/formlabs-form-1-galvanometer-power-failure/">take it apart to look for hints</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

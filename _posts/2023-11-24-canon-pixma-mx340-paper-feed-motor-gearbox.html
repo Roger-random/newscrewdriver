@@ -1,0 +1,64 @@
+---
+layout: post
+title: Canon Pixma MX340 Paper Feed Motor Gearbox
+date: 2023-11-24 12:30:00.000000000 +00:00
+type: post
+post_id: '40583'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40594'
+  wordads_ufa: s:wpcom-ufa-v4:1703391439
+  _publicize_job_id: '89664386314'
+  timeline_notification: '1700857826'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/24/canon-pixma-mx340-paper-feed-motor-gearbox/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I know I haven't uncovered all of the paper handling mechanisms of this Canon Pixma MX340 I'm taking apart, but I'm already impressed with the <a href="https://newscrewdriver.com/2023/11/23/canon-pixma-mx340-paper-path/">partial overview I've got so far</a>. Right now my focus is tracing those paper feed rollers back to the motor gearbox driving them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40594,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-paper-feed-roller-motor-gears.jpg?w=1024" alt="" class="wp-image-40594"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are two paper feed rollers visible here, one before and one after the printing area. Each of those roller shafts are attached to a large white gear. A smaller intermediate gear sits between them to drive both. Earlier I had thought the motor must be behind that center gear, but it turned out the motor was actually a little lower.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40597,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-paper-feed-roller-motor-gears-closeup.jpg?w=1024" alt="" class="wp-image-40597"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The motor output shaft has a small black plastic gear, almost blending into the shadows. I traced only two wires leading into this area, implying it's a brushed DC motor down there. Some of the older inkjet printers I took apart earlier <a href="https://newscrewdriver.com/2018/07/22/learning-how-to-use-pololu-stepper-driver-modules/" target="_blank" rel="noreferrer noopener">used stepper motors</a> for <a href="https://en.wikipedia.org/wiki/Open-loop_controller" target="_blank" rel="noreferrer noopener">open-loop control</a>. In this printer, precise control is accomplished with a <a href="https://en.wikipedia.org/wiki/Closed-loop_controller" target="_blank" rel="noreferrer noopener">closed-loop control system</a>: the gear on the left has an encoder wheel and a sensor reading its motion providing feedback.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40599,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-paper-feed-roller-encoder-wheel-closeup.jpg?w=800" alt="" class="wp-image-40599"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping my camera lens to "super macro" mode, I got this close-up picture of the encoder ring. It is series of very fine evenly spaced radial lines, consistent with an <a href="https://en.wikipedia.org/wiki/Incremental_encoder">incremental encoder</a>. I see four wires leading to the sensor, consistent with things I expect to see: power, ground, A, and B. I'll hook them up to my oscilloscope later to verify this deduction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40543,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-discolored-gears-under-print-carriage.jpg?w=1024" alt="" class="wp-image-40543"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This motor drives a lot more than the two paper feed rollers immediately adjacent to the print area. One of the paper feed rollers transmit its power all the way across the printer to a gearbox behind the print head parking area. It's likely involved in feeding paper from the input tray, and others I look forward to deciphering later. Right now, though, <a href="https://newscrewdriver.com/2023/11/25/canon-pixma-mx340-paper-output-tray-door/">another interesting feature of this printer</a> is immediately adjacent and accessible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: Notes on ESP32 RMT Peripheral For Receiving RC PWM
+date: 2021-04-05 12:30:00.000000000 +00:00
+type: post
+post_id: '25849'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '19200'
+  _publicize_job_id: '56813007280'
+  timeline_notification: '1617651037'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/05/notes-on-esp32-rmt-peripheral-for-receiving-rc-pwm/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want my micro Sawppy rover's ESP32 brain to be capable of accepting control input from multiple sources. One of them will be my Spektrum SR300 radio control receiver. I <a href="https://newscrewdriver.com/2021/04/04/spektrum-sr300-signals-under-saleae-logic-8-analyzer/">examined its output control signal</a> with a Saleae Logic 8 to make sure I understood what I will be working with, and the next step is to figure out how to interpret those signals with an ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With no shortage of hardware peripherals, including multiple options to generate PWM signals for servo control, I was confident an ESP had something to accept input. A bit of research quickly pointed me to <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html" target="_blank">its RMT peripheral</a>, which was primarily designed to interface with infrared remote controls like our living room TV. But right in the documentation it also said "<em>Due to flexibility of RMT module, the driver can also be used to generate or receive many other types of signals</em>" and it looks like interpreting RC PWM is one of those "many other types of signals."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Espressif pointed to several examples, but most of them only demonstrated how to send signals. Only one demonstrated how to interpret received signals, and it was for infrared remote control. I went out to the internet community of ESP32 users to find an example interpreting RC PWM signals, and I first came across <a rel="noreferrer noopener" href="https://www.reddit.com/r/esp32/comments/bivbz1/can_a_esp32_read_the_pwm_signal_of_a_rc_receiver/" target="_blank">this Reddit question</a>, which was answered by [Justin Ong] with "I've done it <a rel="noreferrer noopener" href="https://github.com/JustinOng/sumo/blob/master/software/sumo/src/configure_rmt.c" target="_blank">and here's my code</a>." I love forum threads with answers like this.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't try to download and run this code, but it was a valuable resource for me to cross-reference against Espressif documentation. From this I understood how RMT is used to sample the input signal at a particular rate, looking for rising and falling edges and reporting the time that has transpired between those edges. Once all the pieces came together in my head I understood why it is the perfect tool for interpreting pulse-width signals for hobby servo control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After reading this example I think I have a good grasp of RMT configuration parameters and how the code interpreted the measured time durations. The part I'm still fuzzy about is the ISR (interrupt service routine.) This is the code that actually responds to an rising or falling edge event, and retrieves data from RMT peripheral hardware registers for later processing elsewhere. There were several pieces of bitwise manipulation code that I struggled to follow due to its tie with ESP32 hardware. This is not easy for people to grasp, the code comments <a rel="noreferrer noopener" href="https://www.esp32.com/viewtopic.php?t=7116#p32383" target="_blank">referenced this one</a> out of many forum threads from people confused about what they are expected to do. I see this as a warning flag that it's very easy to make mistakes writing a RMT ISR, so I was glad to <a href="https://newscrewdriver.com/2021/04/06/micro-sawppy-rc-input-via-esp32-rmt/">learn that I didn't have to</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

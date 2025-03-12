@@ -1,0 +1,162 @@
+---
+layout: post
+title: Running Angular Unit Tests (ng test) in VSCode Dev Container
+date: 2023-03-09 12:30:00.000000000 +00:00
+type: post
+post_id: '35563'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+- TIL
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22766'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1678506556
+  _publicize_job_id: '82170906361'
+  timeline_notification: '1678393812'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/09/running-angular-unit-tests-ng-test-in-vscode-dev-container/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I knew web development frameworks like Angular proclaim to offer a full package, but it's always enlightening to find out what "full" does and doesn't mean in each context. I had expected Angular to have its own layout engine and was mildly surprised (but also delighted) <a href="https://newscrewdriver.com/2023/03/08/hello-angular-layout/">to learn the official recommendation is to use standard CSS</a>, migrating off Angular-specific interim solutions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another area I knew Angular offered is a packaged set of testing tools: a combination of generic JavaScript testing tools and Angular-specific components already set up to work together as a part of Angular application boilerplate. We can kick off a test pass by running "ng test" and when I did so, I saw the following error message:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>✔ Browser application bundle generation complete.
+28 02 2023 09:17:22.259:WARN [karma]: No captured browser, open http://localhost:9876/
+28 02 2023 09:17:22.271:INFO [karma-server]: Karma v6.4.1 server started at http://localhost:9876/
+28 02 2023 09:17:22.272:INFO [launcher]: Launching browsers Chrome with concurrency unlimited
+28 02 2023 09:17:22.277:INFO [launcher]: Starting browser Chrome
+28 02 2023 09:17:22.279:ERROR [launcher]: No binary for Chrome browser on your platform.
+  Please, set "CHROME_BIN" env variable.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Test runner <a href="https://karma-runner.github.io/latest/index.html">Karma</a> looked for Chrome browser and didn't find it. This is because I'm running my Angular development environment inside a VSCode Dev Container, and <a href="https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-a-git-repository-or-github-pr-in-an-isolated-container-volume">this isolated environment</a> couldn't access the Chrome browser on my Windows 11 development desktop. It needs its own installation of Chrome browser and be configured to run in <a href="https://developer.chrome.com/blog/headless-chrome/">headless mode</a>. (Which is itself <a href="https://developer.chrome.com/articles/new-headless/">undergoing an update</a> but that's not important right now.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From <a href="https://itsfoss.com/install-chrome-debian-kali-linux/">these directions</a> I installed Chrome in the container via command line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>sudo apt update
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then Karma needs to be configured to run Chrome in headless mode. However, default Angular app boilerplate did not include <code>karma.conf.js</code> file which we need to edit. We need to <a href="https://angular.io/guide/testing">tell Angular to create one</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>ng generate config karma</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now we can edit the newly created file <code>karma.conf.js</code> following <a href="https://ievgen.de/2020/11/06/running-angular-unit-tests-in-docker-container">directions from here</a>. Inside the call to <code>config.set()</code>, we need to define a custom launcher called "ChromeHeadless" then use that launcher in the <code>browsers</code> array. <a href="https://github.com/Roger-random/angular-tour-of-heroes/commit/c54dcda6ab13e145f0bedd9abff92de27108daef">The results</a> will look something like the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>module.exports = function (config) {
+  config.set({
+<mark style="background-color:#fcb900" class="has-inline-color">    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--headless',
+          '--remote-debugging-port=9222'
+        ]
+      }
+    },
+</mark>    basePath: '',
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    plugins: [
+@@ -33,7 +44,7 @@ module.exports = function (config) {
+      ]
+    },
+    reporters: ['progress', 'kjhtml'],
+<mark style="background-color:#fcb900" class="has-inline-color">    browsers: ['ChromeHeadless'],</mark>
+    restartOnFileChange: true
+  });
+};</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these changes I can run "ng test" inside my dev container without any errors about running Chrome browser. Now I have <a href="https://newscrewdriver.com/2023/03/10/notes-on-angular-developer-guide-to-testing/">an entirely different set of errors</a> about object creation!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Appendix: Error Messages</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are error messages I saw during this process, in order to help people to find these instructions by searching for the error message they saw.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Immediately after installing Chrome, running "ng test" will try launching Chrome but not in headless mode which will show these errors:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>✔ Browser application bundle generation complete.
+28 02 2023 17:50:43.190:WARN [karma]: No captured browser, open http://localhost:9876/
+28 02 2023 17:50:43.202:INFO [karma-server]: Karma v6.4.1 server started at http://localhost:9876/
+28 02 2023 17:50:43.202:INFO [launcher]: Launching browsers Chrome with concurrency unlimited
+28 02 2023 17:50:43.205:INFO [launcher]: Starting browser Chrome
+28 02 2023 17:50:43.271:ERROR [launcher]: Cannot start Chrome
+        Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted
+[0228/175043.258978:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq: No such file or directory (2)
+[0228/175043.259031:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory (2)
+
+28 02 2023 17:50:43.271:ERROR [launcher]: Chrome stdout: 
+28 02 2023 17:50:43.272:ERROR [launcher]: Chrome stderr: Failed to move to new namespace: PID namespaces supported, Network namespace supported, 
+but failed: errno = Operation not permitted                                                                                                      [0228/175043.258978:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq: No such file or directory (2)
+[0228/175043.259031:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory (2)
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This has nothing to do with Karma because if I run Chrome directly from the command line, I see the same errors:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>$ google-chrome
+Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted
+[0228/175538.625191:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq: No such file or directory (2)
+[0228/175538.625244:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory (2)
+Trace/breakpoint trap
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running Chrome with just the "headless" flag is not enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>$ google-chrome --headless
+Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted
+[0228/175545.785551:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq: No such file or directory (2)
+[0228/175545.785607:ERROR:file_io_posix.cc(144)] open /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory (2)
+[0228/175545.787163:ERROR:directory_reader_posix.cc(42)] opendir /tmp/Crashpad/attachments/9114d20a-6c9e-451e-be47-353fb54f28be: No such file or 
+directory (2)                                                                                                                                    Trace/breakpoint trap
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>We have to <a href="https://stackoverflow.com/questions/59087200/google-chrome-failed-to-move-to-new-namespace">disable sandbox</a> to get further, though that's not the full solution yet either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>$ google-chrome --headless --no-sandbox
+[0228/175551.357814:ERROR:bus.cc(399)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or dir
+ectory                                                                                                                                           [0228/175551.361002:ERROR:bus.cc(399)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or dir
+ectory                                                                                                                                           [0228/175551.361035:ERROR:bus.cc(399)] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or dir
+ectory                                                                                                                                           [0228/175551.365695:WARNING:bluez_dbus_manager.cc(247)] Floss manager not present, cannot set Floss enable/disable.
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>We also have to disable the GPU. Once done as per Karma configuration above, things will finally run inside a Dev Container.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

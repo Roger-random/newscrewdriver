@@ -1,0 +1,47 @@
+---
+layout: post
+title: Changing Project Direction to Use INA219 Power Monitor
+date: 2022-02-15 12:30:00.000000000 +00:00
+type: post
+post_id: '28601'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- INA219
+- MicroPython
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28617'
+  _publicize_job_id: '69043034149'
+  timeline_notification: '1644957011'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/15/changing-project-direction-to-use-ina219-power-monitor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've had fun playing with MicroPython on an ESP8266, <a href="https://newscrewdriver.com/2022/02/14/esp8266-micropython-exception-handling-helps-robustness/">having an exception handling framework</a> was especially welcome. I had originally intended to continue playing with MicroPython, gradually increasing the project complexity at each step, but I've changed my plan. The catalyst of this decision was a little breakout board for the <a href="https://www.ti.com/product/INA219">Texas Instruments INA219</a> chip which measures electrical voltage (up to 26V DC), current (variable range depending on shunt resistor used), plus a built-in calculator for power (in Watts) from those two values. I bought mine off Amazon but I've since learned it was a knockoff of <a rel="noreferrer noopener" href="https://www.adafruit.com/product/904" target="_blank">this Adafruit product</a> so I'll link to the original.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had sat down with reference materials in front of me: the INA219 datasheet and the MicroPython I2C library. Then I felt a familiar sensation: that of my attention and enthusiasm fading. I know this sensation well! It stalled many projects in the past, and it is a warning sign I need to change directions fast or this project will stall as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I realized I was not enthusiastic about writing a MicroPython library for INA219 from scratch. There is educational value in doing so for sure, but for whatever reason right now I don't feel the motivation I needed to reinvent this particular wheel. I went online looking for an existing solution and found <a rel="noreferrer noopener" href="https://forum.micropython.org/viewtopic.php?t=3371" target="_blank">a MicroPython Forum thread</a> from someone who has done this work, pointing to <a href="https://github.com/chrisb2/pyb_ina219">their GitHub repository for the library</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em><strong>Side note</strong>: Reading documentation for <a href="https://github.com/chrisb2/pyb_ina219/tree/master/esp8266">running this library on an ESP8266</a>, I learned something interesting: the ESP8266 may encounter problems translating large MicroPython projects into executable code. The workaround is to use the <a rel="noreferrer noopener" href="https://github.com/micropython/micropython/tree/master/mpy-cross" target="_blank">MicroPython cross-compiler <code>mpy-cross</code></a> on my desktop and copy the resulting bytecode for execution on board the ESP8266.</em></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I could get this library up and running, I could see how to report resulting values to MQTT. Then I could perform calculations in Node-RED, and log calculated results into InfluxDB. Then I could start writing the infrastructure to read this data and make decisions on what to do in response. This is going to be a respectably large project and I don't feel enthusiasm to do that, either! Apparently I'm not in the mood to learn by reinventing wheels, so I started looking to <a href="https://newscrewdriver.com/2022/02/16/window-shopping-adafruit-io/">see what others have already done</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,49 @@
+---
+layout: post
+title: 3D Printer as Serial Communication Test Device
+date: 2020-05-18 12:30:01.000000000 +00:00
+type: post
+post_id: '21531'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- async/await
+- UWP
+meta:
+  _thumbnail_id: '21533'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44403700415'
+  timeline_notification: '1589830265'
+  _oembed_7bcdbe3d5327a0e2d1b7b44efa4e4564: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">New
+    product !: M.A.R.S. Rover for <a href="https://twitter.com/microbit_edu?ref_src=twsrc%5Etfw">@microbit_edu</a>
+    available in very limited quantities from next week. Pre-order now <a href="https://t.co/rgIlXV8PYw">https://t.co/rgIlXV8PYw</a>
+    <a href="https://t.co/ilj3psx2ag">pic.twitter.com/ilj3psx2ag</a></p>&mdash; 4tronix
+    (@4tronix_uk) <a href="https://twitter.com/4tronix_uk/status/1197181259639865345?ref_src=twsrc%5Etfw">November
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_7bcdbe3d5327a0e2d1b7b44efa4e4564: '1589876717'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668069488
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/18/3d-printer-as-serial-communication-test-device/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Reading about <a href="https://newscrewdriver.com/2020/05/16/the-very-informative-c-programming-guide-for-asynchronous-programming/">novel programming patterns</a> and contemplating <a href="https://newscrewdriver.com/2020/05/17/xbox-one-is-part-of-universal-windows-platform/">unexpected hardware platform potential</a> are great... but none of it is real until I sit down and make some code run. Since my motivation centered around controlling external peripherals via serial port, I'll need a piece of hardware to experiment against. In the interest of reducing variables, I didn't want to start with one of my own past projects. I expect to run into enough headaches debugging what went wrong, I don't need to wonder if the problem is my code or my project hardware.</p>
+<p>So what do I have sitting around at home that are serial controlled hardware? The easy answer is the brains of a 3D printer. And the most easily accessible item is my <a href="https://www.matterhackers.com/store/c/Pulse">MatterHackers Pulse</a> XE printer, which is conveniently sitting on the same table as the computer.</p>
+<p>In order to get an idea of what I'm getting into, I connected to the printer via serial port terminal of <a href="https://en.wikipedia.org/wiki/PuTTY">PuTTY</a>. I saw that a greeting message is sent out via serial as soon as I connected. This is great, because it meant I have some data to read immediately upon connect, no need to worry about sending a command before getting a response.</p>
+<p>Moving to the development platform, I loaded up the UWP example program <a href="https://github.com/microsoft/Windows-universal-samples/tree/master/Samples/CustomSerialDeviceAccess">Custom Serial Device Access</a>. After reading the source code to get a rough feel of what the application did, I compiled and ran it. It was able to enumerate the USB serial connection, but when I connect, I did not see the greeting message. Even though the parameters I used for PuTTY (250000 N 8 1) were also used here.</p>
+<p>As tempting as it might have been to blame the example program and say it is wrong, I thought it was more likely that one of the other parameters of <a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication.serialdevice"><code>SerialDevice</code></a> had to be changed from their default value. Flipping settings one by one to see if they change behavior, I eventually figured out that I needed to set <a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication.serialdevice.isdataterminalreadyenabled"><code>IsDataTerminalReadyEnabled</code></a> to <code>true</code> in order to receive data from a Pulse XE. I'm lucky it was only a single boolean value I had to change because if I had to change multiple values to a specific combination, there would have been too many possibilities to find by trial and error.</p>
+<p>It's always good to start as simple as possible because I never know what seemingly basic issue would crop up. <code>IsDataTerminalReadyEnabled</code> wasn't even the only surprise I found, <a href="https://newscrewdriver.com/2020/05/19/unexpected-behavior-serial-device-read-timeout-only-applies-when-theres-data/"><code>ReadTimeout</code> behavior was also unexpected</a>.</p>
+<p></body></html></p>

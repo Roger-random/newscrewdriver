@@ -1,0 +1,42 @@
+---
+layout: post
+title: Sawppy the Rover Needs Wiring Harnesses
+date: 2018-06-02 09:00:00.000000000 +00:00
+type: post
+post_id: '16046'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '18532770965'
+  timeline_notification: '1527956248'
+  _thumbnail_id: '16047'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667810107
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/06/02/sawppy-the-rover-needs-wiring-harnesses/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>With mechanical construction complete for <a href="http://sawppy.com">Sawppy the Rover</a>, the next thing to do is work on an electrical nervous system to drive this skeleton. First up: running wires for all ten <a href="https://amzn.to/2mOAGCL" target="_blank" rel="noopener">LewanSoul LX-16A serial bus servos</a> (*), six driving and four steering.</p>
+<p>From an electrical design perspective this wiring is trivial. Each servo needs three wires: ~7.4V power from the battery, electrical ground, and a data wire over which they all communicate using 5V/ground TTL serial. Electrically they are all wired in parallel, and the physical shape of implementation is up to the builder.</p>
+<p>The first option is daisy-chaining. Each servo has two ports that are electrically parallel so a single three-wire harness can go to one servo, then another harness can connect it to the next servo, and so forth. This works fairly well for small humanoid robots where there are a lot of servos in a line on a single robot limb, but it doesn't scale very well to a rover with rocker-bogie suspension since there isn't a convenient line to daisy-chain along.</p>
+<p>The second option is run a wire from each servo to a central location in the rover's body. This approach has the advantage of allowing us to use thinner wires. In other arrangements where multiple servos are hooked to a single wire, they may all be drawing power so wire gauge has to be beefy enough to meet the worst case power draw scenario even if it is rare. Giving each servo its own wire eliminates this power variability concern.</p>
+<p>Each servo came with a short 10cm segment of wire for daisy chaining, which is not nearly long enough for Sawppy's chassis. For reliability and neatness the best thing to do is to have custom long wiring harnesses built, but first we'll try a few arrangements using parts on hand to figure out what works.</p>
+<p>For the first build, each wire that came with the servo will be cut in half and additional wires spliced in to extend to length we need. A retired ATX PC power supply with lots of 18 gauge wire was scavenged for this project. Given the generous power capacity of 18 gauge wire, there was no need to worry about multiple servos drawing too much power for the wire.</p>
+<p>The topology chosen for the first build is to mimic the topology of each rocker-bogie suspension assembly. When laid out it looks like a tree branch. This involves making a Y-shaped solder joint at each branching point, a task that's just outside my soldering skill comfort zone. The solder joints look terrible to start but each one is a practice opportunity. By the end, the joints are halfway respectable. Or at least, not painful to look at.</p>
+<p>From a physical functionality perspective, mimicking the physical chassis topology made sense. From a soldering task difficulty perspective, I'm not sure this was the best way to go. If I build a future revision I'll try a different arrangement for comparison, but for now we have enough to proceed.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

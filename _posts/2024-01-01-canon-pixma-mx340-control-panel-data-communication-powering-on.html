@@ -1,0 +1,254 @@
+---
+layout: post
+title: 'Canon Pixma MX340 Control Panel Data Communication: Powering On'
+date: 2024-01-01 12:30:00.000000000 +00:00
+type: post
+post_id: '41384'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  timeline_notification: '1704147558'
+  wordads_ufa: s:wpcom-ufa-v4:1706231826
+  firehose_sent: '1704147557'
+  _publicize_job_id: '90740373547'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm using my Saleae Logic 8 logic analyzer to examine internal communication of a Canon Pixma MX340 multi-function inkjet. When the user plugs in the power cord, there was <a href="https://newscrewdriver.com/2023/12/31/canon-pixma-mx340-control-panel-data-communication-plug-in/">a tiny bit of internal activity</a> even though nothing is visible to the user. I will now compare that against the communication traffic triggered by a user press on the power button.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had hoped to see some of the same things I saw during power cord plug-in happen during turn on as well, as that would reinforce the observation they are critical to startup. Indeed, roughly 15ms after enable pin was raised, there was a two-byte report of 0x80 0x40 again. This makes me confident we can look for that as the control panel's first "I'm awake!" response after being enabled.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>About 9.2ms later (another match from earlier observations) another 0x80 0x40 was reported. But it started just after the main board sent its own two-byte sequence 0xFE 0xDC. During plug-in I saw the main board send the same 0xFE 0xDC sequence, but in that case it didn't start until just after the second 0x80 0x40 report from the control panel. Conclusion: Timing of 0xFE 0xDC is not dependent on control panel's second report.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41390,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-control-panel-and-main-board-communication-simultaneously-with-0x20-ack-afterwards.png?w=647" alt="" class="wp-image-41390"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since this 0xFE 0xDC transmission caught the control panel while it was in the middle of making its second 0x80 0x40 report, it appended its 0x20 acknowledgement immediately afterwards. Conclusion: the main board would not be confused if its 0xFE 0xDC transmission is immediately followed by a 0x40, it is still valid to send 0x20 acknowledgement afterwards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that exchange, there were twelve two-byte transmissions from the main board to the control panel, each acknowledged with a 0x20.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Main board to control panel</th>
+<th class="has-text-align-center" data-align="center">Control panel acknowledgement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0E 0xFD</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0D 0x3F</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0C 0xE1</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x07 0xA1</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x03 0x00</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x01 0x00</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0E 0xFC</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xD5</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x85</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x03</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xC5</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x34</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given that the control panel just woke up, these bytes probably set configuration registers on the NEC K13988 chip. I don't know what they all do, but the first observable effect is in the reporting data sent by the control panel every 9.2ms. Before this exchange, it would send two bytes 0x80 0x40. After this exchange, it dropped the second byte and sent just 0x80. Two such reports were sent before the next main board transmission, 0x04 0x74.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>20ms later, a set of four two-byte transmissions were sent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Main board to control panel</th>
+<th class="has-text-align-center" data-align="center">Control panel acknowledgement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xF4</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x44</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x81</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x04</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Again I don't know what these mean exactly, but I noticed these all started with 0x04 as their first byte. Looking at the previous sequence of twelve bytes, the final five also started with 0x04 but none of the second bytes repeated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that, all was quite for about 109ms, just the regular report of 0x80 from the control panel every 9.2ms. Then the main board sent one more two-byte sequence: 0x04 0x42. After that was acknowledged, I saw <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/">a pattern I recognized</a>: a blast of bytes to update LCD screen content starting with 0x04 0x4D, 0x04 0xC8, etc. After the sequence completed, there was one more two-byte sequence I hadn't seen before: 0x04 0xF5. Adding to the pile of unknowns: why did this screen update needed a 0x04 0x42 preamble and 0x04 0xF5 appendix?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another 112ms later, the main board sent 0x0E 0xFD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another 19ms after that, there was another blast of LCD screen content. This time, there were no 0x04 0x42 preamble, nor 0x04 0xF5 suffix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was a relatively long wait of 669ms until the next main board transmission: 0x0E 0xFF acknowledged with 0x20. 145us later, 0x0E 0xFF was sent again and acknowledged again. More unknowns: Why did this need to be sent twice in rapid succession?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Whatever its purpose, another LCD screen update followed 65ms later. No preamble for this one, but it was followed by 0x0E 0xFF yet again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An even longer 1695ms (1.7 seconds) later, there was another LCD screen update transmission. This had had no extra prefix or extra suffix and, after this transmission completed, I saw only the 9.2ms button matrix report for several seconds. I stopped the capture and trimmed the data to end after this transmission.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Summary</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>When the user presses the power button, there were a little over three seconds of activity of data sent by the main board, each acknowledged by the control panel with 0x20:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>(24ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>13 two-byte sequences.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(17ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0x74</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(20ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>4 two-byte sequences.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(109ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0x42</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LCD screen update</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0xF5</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(112ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x0E 0xFD</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(19ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LCD screen update</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(669ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x0E 0xFF twice</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(65ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LCD screen update</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x0E 0xFF</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(1695ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LCD screen update</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(steady state)</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are four LCD screen update sequences in this capture, but the user only sees three distinct display updates. Given there was only 115ms between the first and second update, that first update didn't stay on screen long enough to convey any useful information for human eyes. Hypothesis: the first update is a "clear screen" sequence, something to investigate later. Right now I want to look at the mirror transition of <a href="https://newscrewdriver.com/2024/01/02/canon-pixma-mx340-control-panel-data-communication-stand-by/">dropping from powered-on to standby</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

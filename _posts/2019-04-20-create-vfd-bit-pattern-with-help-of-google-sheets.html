@@ -1,0 +1,43 @@
+---
+layout: post
+title: Create VFD Bit Pattern With Help Of Google Sheets
+date: 2019-04-20 12:30:49.000000000 +00:00
+type: post
+post_id: '18366'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29976130483'
+  timeline_notification: '1555788690'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/20/create-vfd-bit-pattern-with-help-of-google-sheets/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>With a successful integration test of our salvaged vacuum fluorescent display (VFD) we proceed to a few other tasks. On the hardware side, we'll need to simplify our power supply situation. Our test had three separate AC plugs, we only really need one. We'll also need to transfer what's on the breadboard to a prototype circuit board.</p>
+<p>On the software side, things are less clear because we're still coming up with ideas on what to do with a salvaged VFD. Our very simple PIC driver code merely controls a pattern of bits, each bit representing a segment to be illuminated. This gives us a lot of flexibility but so far these bit patterns have been created using pencil and paper and quite time consuming. Once we have a project in mind we can write code specific to a theme, but until then it's wide-open bits.</p>
+<p>Well, at least we can streamline the pencil and paper system somewhat. The logic is not difficult, just time consume, and should be easy to automate. I started by creating a HTML form and laying out checkbox controls. I got as far as designing a JavaScript structure for checkbox click events when I realized everything is on a grid and looks a lot like a spreadsheet.</p>
+<p>That realization led me to put my basic HTML and JavaScript on hold and switch to investigate what I can do in Google Sheets. The key that made it all possible is the <a href="https://support.google.com/docs/answer/3093133?hl=en"><code>BINTOHEX()</code> function</a> that reads a number, interpret it as binary, and translate to hexadecimal. This is the core functionality for my pattern generation and I was able to build everything else around it.</p>
+<p>Here's the initial build, with a fully populated grid of checkboxes and a test pattern for me to verify things were working.</p>
+<p><img class=" size-full wp-image-18369 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/vfd-pattern-tool-full-checkboxes.jpg" alt="VFD Pattern tool - full checkboxes" width="1666" height="1295"></p>
+<p>Once verified, I deleted the checkboxes that didn't have a corresponding segment. This array now properly corresponds to our specific VFD.</p>
+<p><img class=" size-full wp-image-18368 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2019/04/vfd-pattern-tool-customized-checkboxes.jpg" alt="VFD Pattern tool - customized checkboxes" width="1662" height="1299"></p>
+<p>Now creating a bit pattern is as simple as checking on the segments I wish to have illuminated. Here's the pattern for "12:00", the canonical Hello World for a time-based VFD display.</p>
+<p><img class=" size-full wp-image-18367 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/vfd-pattern-tool-12.00.jpg" alt="VFD Pattern tool - 12.00" width="1669" height="1296"></p>
+<p>I thought it would be fun to make this available for anyone to play with, but that requires keeping the sheet and its formulas fixed while allowing people to check and uncheck boxes. Unfortunately "view only" sharing does not allow checkbox manipulation, and "editable" sharing also allows modifying the sheet formula. Until I figure out how to do what I want, it was <a href="https://docs.google.com/spreadsheets/d/1ENuk7oM4pA1yNM83J_-cP9LZN-myc9q3OBTB5-pvEr4/edit?usp=sharing">shared as "View Only" to the general public</a>.</p>
+<p> </p>
+<p></body></html></p>

@@ -1,0 +1,58 @@
+---
+layout: post
+title: Window Shopping Bus Pirate
+date: 2024-01-10 12:30:00.000000000 +00:00
+type: post
+post_id: '41500'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41505'
+  timeline_notification: '1704918710'
+  firehose_sent: '1704918709'
+  wordads_ufa: s:wpcom-ufa-v4:1705041735
+  _publicize_job_id: '90980661835'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/10/window-shopping-bus-pirate/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm looking for tools to help me analyze the communication between the main board and control panel of a Canon Pixma MX340 multi-function inkjet. The data is asynchronous serial 250000-8-E-1 so <a href="https://newscrewdriver.com/2024/01/09/window-shopping-wireshark/">Wireshark was the wrong tool for the job</a>. Wireshark can perform much of the <a href="https://newscrewdriver.com/2024/01/08/canon-pixma-mx340-control-panel-data-filter-wish-list/" target="_blank" rel="noreferrer noopener">data manipulation tasks I wished for</a>, but it works for network packets and not general serial data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Focusing my search on serial data tools for an electronics hobbyist, I came across several mentions of something called <a href="http://dangerousprototypes.com/docs/Bus_Pirate" target="_blank" rel="noreferrer noopener">Bus Pirate</a>. This is something I had been aware of. In fact, I bought one several years ago upon recommendation by another hobbyist, but I have yet to put it to work for any of my own projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The core usage scenario for a Bus Pirate is programmatic access to some basic common electronic interfaces like SPI, I2C, and my current focus: asynchronous serial. The idea is that we can experiment with these interfaces using interactive commands, versus writing a microcontroller program that we have to compile and upload to flash on every change. That's gives us an immediate turnaround time versus 20-30 seconds, time that will really add up when performing rapid iteration. For example, in the tentative early stages of bootstrapping a new piece of hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to the data interfaces, Bus Pirate also provide control over some interface-adjacent tools. The one that caught my eye is the ability to provide 5V and 3.3V DC power, and to <a href="http://dangerousprototypes.com/docs/Bus_Pirate_menu_options_guide#w.2FW_Power_supplies_.28off.2FON.29" target="_blank" rel="noreferrer noopener">turn them on/off on command</a>. Again, this is very useful in early stages of working with new hardware, because if we mess up commands and accidentally put the hardware in a bad state, we can quickly turn it off and back on again with a command instead of unplugging anything and plugging it back in.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In hindsight, a Bus Pirate would have been really useful when I was experimenting with <a href="https://newscrewdriver.com/2022/06/13/pinout-of-lcd-salvaged-from-att-cl84209/">salvaged I2C LCD screens</a>, allowing faster experimentation. At the time, I had forgotten I had a Bus Pirate gathering dust on the shelf. I don't think a Bus Pirate would have been useful for <a href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/">a car audio face plate</a>, though. Due to the fact they used Sanyo's CCB protocol and that's not something Bus Pirate understands.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think Bus Pirate will be useful soon, because after I take this MX340 completely apart I want to try repurposing the control panel. I should be able to impersonate the main board by using my own hardware to play back the command sequences I've captured and analyzed. Getting that up and running should be a perfect opportunity to finally use my Bus Pirate for its designed purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But a Bus Pirate won't be helpful for me right now, because I want to listen in on existing communication and not interfere. Which means I want two UART receive wires, and the Bus Pirate only has a single UART with a single transmit wire and a single receive wire. The type of data filtering I want to perform isn't part of core Bus Pirate functionality, either. As Bus Pirate itself has long been discontinued, I quickly skimmed over the spec sheet for its successors GoodFET (also discontinued) and <a href="https://greatscottgadgets.com/greatfet/one/" target="_blank" rel="noreferrer noopener">GreatFET One (currently active product)</a>, but they don't seem to have added the kind of features I want right now. <a href="https://newscrewdriver.com/2024/01/11/window-shopping-serialtool/">My search continues</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

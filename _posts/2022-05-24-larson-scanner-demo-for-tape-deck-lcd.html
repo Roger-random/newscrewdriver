@@ -1,0 +1,85 @@
+---
+layout: post
+title: Larson Scanner Demo for Tape Deck LCD
+date: 2022-05-24 12:30:00.000000000 +00:00
+type: post
+post_id: '30461'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- 86120-08010
+- Arduino
+- LC75853N
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _oembed_f810dafec72769b51fd332760d611153: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Larson
+    Scanner with LCD of a car tape deck <a href="https://t.co/YmpPyCqaBR">pic.twitter.com/YmpPyCqaBR</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1526424801404850176?ref_src=twsrc%5Etfw">May
+    17, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_f810dafec72769b51fd332760d611153: '1652763251'
+  _thumbnail_id: '30415'
+  _oembed_time_fbf59c94ac4c91effed4b59c60fc4a75: '1653420607'
+  _publicize_job_id: '72896162336'
+  timeline_notification: '1653420607'
+  _oembed_fbf59c94ac4c91effed4b59c60fc4a75: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Larson
+    Scanner with LCD of a car tape deck <a href="https://t.co/YmpPyCqaBR">pic.twitter.com/YmpPyCqaBR</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1526424801404850176?ref_src=twsrc%5Etfw">May
+    17, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_11ecc7d95c442ca3a22304903ce6b650: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Larson
+    Scanner with LCD of a car tape deck <a href="https://t.co/YmpPyCqaBR">pic.twitter.com/YmpPyCqaBR</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1526424801404850176?ref_src=twsrc%5Etfw">May
+    17, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_11ecc7d95c442ca3a22304903ce6b650: '1708471224'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/24/larson-scanner-demo-for-tape-deck-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I am happy with a sense of accomplishment after I <a href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/">deciphered all the information necessary</a> to utilize this circuit board, formerly the faceplate for a salvaged car tape deck. I started this investigation when I found I could <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/03/powering-up-toyota-audio-head-unit-86120-08010/" target="_blank">power it up under control of the original mainboard</a>. Now, I can work with the LCD and read all knobs and buttons with an Arduino, independent of the original mainboard. My original intent was just to see if I could get to this point. I thought I would learn a lot whether I succeeded or failed trying to control this faceplate. I have gained knowledge and experience I didn't have before, and a faceplate I can control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now what?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It <em>feels</em> like I should be able to build something nifty with this faceplate, there's room to be creative in repurposing it. At the moment I don't have any ideas that would creatively utilize the display and button/knob input, but I could build a simple demo. This LCD is wide and not very tall, so I thought I would make it into a simple Larson Scanner. (<a rel="noreferrer noopener" href="https://www.evilmadscientist.com/2007/time-to-make-a-cylon/" target="_blank">a.k.a. Cylon lights a.k.a. K.I.T.T. lights.</a>)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30466,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/lcd-segments.jpg?w=1024" alt="" class="wp-image-30466"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First, I divided the LCD segments into 16 groups of roughly similar size. I started using my segment map to generate the corresponding bit patterns by hand but then decided I should make a software tool to do it instead. I've already written code to light up one segment at a time for generating the segment map, it took only a bit of hacking to make it into a drawing tool. I use the knob to move segments as I did before, but now I could press the knob to toggle the selected segment. Every time I pressed the knob, I print the corresponding bit pattern out to serial terminal in a format that I could copy into C source code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then added a different operating mode to <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sanyo_LC75853N" target="_blank">my Arduino test program</a>. Pressing the Volume knob would toggle between drawing mode and Larson Scanner mode. While in Larson Scanner mode, I would select two of those 16 groups based on scanner position, and bitwise OR them together into my display. This gives me a nice little demo that is completely unrelated to this LCD's original purpose, and confidence I no longer need this tape deck's <a href="https://newscrewdriver.com/2022/05/25/salvage-tape-deck-faceplate-connector-toyota-86120-08010/">original mainboard</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/Regorlas/status/1526424801404850176","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1526424801404850176
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this demo is <a href="https://github.com/Roger-random/Sanyo_LC75853N">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,79 @@
+---
+layout: post
+title: USB Power Bank Charging Looks OK
+date: 2022-03-13 12:30:00.000000000 +00:00
+type: post
+post_id: '28981'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- DU7169
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28960'
+  _publicize_job_id: '70131046880'
+  timeline_notification: '1647199813'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/13/usb-power-bank-charging-looks-ok/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I just <a href="https://newscrewdriver.com/2022/03/12/usb-power-bank-teardown-duracell-du7169/">took apart an old broken USB power bank</a> to see if I can use it as a power source for an ESP8266 project. I needed to get inside to see if the parts I wanted are working properly. Broadly speaking, a USB power bank can be divided into three major pieces of functionality:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>
+<strong>Battery cell</strong> itself.</li>
+<li>
+<strong>Charging circuit</strong>, which typically accepts 5V USB power and charges the battery cell.</li>
+<li>
+<strong>Power delivery circuit</strong>, which takes battery power and boosts it to 5V USB power for delivery.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This particular USB power bank works for little LED trinkets but would shut itself down whenever I plug in something more substantial. I appreciate that it would gracefully shut down instead of doing something spicy like burst into flames, but it is not terribly useful as a USB power bank that way. Each of its major pieces might have caused this behavior:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Battery cell could have gone bad, so as soon as any load is placed on the cell the voltage immediately drops below the low-power cutoff point.</li>
+<li>Charging circuit could have gone bad, failing to properly charge the battery.</li>
+<li>Power delivery circuit could have gone bad and unable to deliver specified power.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hope it is the power delivery circuit, which is unsuitable for microcontroller project power supply even when it is fully functional due to the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>
+<strong>Charge or discharge, not both</strong>. When a power bank is charging through its input port, they usually shut down their output port. This is fine for the designed usage pattern of USB power banks, but it is obviously not good if I want my system to keep running while it is charging.</li>
+<li>
+<strong>Auto-Off</strong>: When a power bank senses that their load has dropped below some threshold, they automatically shut down their output port. Again this is fine for charging power-hungry devices and shutting off when they're full. But when I'm trying to keep my ESP8266 power consumption low, I trigger the automatic shutoff.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the possibility that the boost converter power delivery circuit (which I didn't want anyway) is the broken part, I hacked this one open to see if the battery cell and the charging circuits are still good. The first check is easy: a volt meter confirmed this cell is within the 3V to 4.2V range for healthy lithium-ion cells. (Unlike <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/01/21/dell-xps-m1330-battery-pack-teardown/" target="_blank">some past project</a>.) Then I used another USB power bank to charge this battery. My USB tester measured charging rate at 4.93V * 0.54A = 2.66W. When bucking this down to 3.7V nominal voltage this would work out to 0.72A. Rule of thumb for <a href="https://batteryuniversity.com/article/bu-409-charging-lithium-ion">charging lithium-ion chemistry battery</a> is to charge at a rate no more than "0.5C to 1C". This cell has an advertised capacity of 2600mAh, so "0.5C to 1C" is the range of 1.3A-2.6A. Thus ~0.72A is comfortably under that range and should be a relaxing charge for the battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Charging rate: <strong>check</strong>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next test is whether the charging circuit would stop charging at the correct point, so I left it charging until it stopped. Shortly after it stopped, my voltmeter measured 4.16V across the battery terminals. This is less than the 4.2V absolute maximum for lithium-ion cells.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Charging halt: <strong>check</strong>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these tests, I have some confidence the battery cell still works, and the charging circuit correctly limits the charging rate and maximum voltage. Good enough for me to try <a href="https://newscrewdriver.com/2022/03/14/running-wemos-d1-mini-esp8266-on-single-lithium-ion-18650-cell/">putting them to work</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

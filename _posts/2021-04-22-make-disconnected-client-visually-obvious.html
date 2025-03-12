@@ -1,0 +1,47 @@
+---
+layout: post
+title: Make Disconnected Client Visually Obvious
+date: 2021-04-22 12:30:00.000000000 +00:00
+type: post
+post_id: '26202'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26207'
+  _publicize_job_id: '57478810229'
+  timeline_notification: '1619119809'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/22/make-disconnected-client-visually-obvious/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Testing my server code to <a href="https://newscrewdriver.com/2021/04/21/detect-and-disconnect-inactive-web-sockets/">disconnect inactive websocket clients</a>, I learned a behavior I hadn't known before: when a browser tab is no longer the foreground tab, the page's scripts continue running. This made sense in hindsight, because we need those scripts to run for certain features. Most web mail clients display the number of unread messages in their tab title, and if a new piece of mail arrived, that number couldn't be updated unless scripts were allowed to run.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my scenario, I wanted the opposite. If someone has put my Sawppy rover control page in the background, they are no longer driving and should vacate the position for another. I started looking for HTML DOM events that I could subscribe to and learn if my tab is no longer the foreground, but a few experiments with the "<code><a href="https://www.w3schools.com/jsref/event_onblur.asp">onblur</a></code>" event didn't function as I hoped they would. As a fallback I decided to take advantage of a side effect: modern browsers do keep running scripts for background tabs, but they do so at a much slower rate. I "just" have to shorten the timeout interval and that would disconnect clients running slowly just as it does for those who have lost network connection or stopped. This is fragile as it depends on unspecified browser behavior, but good enough for today.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When testing this, I noticed another problem: for the user, it's not very evident when the server has disconnected from their control client. I have a little bit of text at the bottom saying "Disconnected" but when I'm testing and juggling multiple browsers I started wishing for something more visually obvious. I thought about blanking out the page completely but such a drastic change might be too disorienting for the user. For the best user experience I want an obvious sign but I don't want to club them over the head with it! I decided to change the color of the touchpad to grayscale in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/onclose" target="_blank" rel="noreferrer noopener">websocket.onclose</a> handler. The user can see they're still on the page they expected, but they can also clearly see something is different. This accomplishes my goal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From an accessibility perspective, this isn't great for color-blind users. It'll be fine for certain types of color blindness like red-green color blindness, but not for fully color blind users because it's all gray to them. Thus I do not see this behavior as replacement for the "Disconnect" text. That text still needs to be there for those who could not see the change in color. And knowing connected/disconnected status will become more important as the little rover wanders away from my home, away from the powerful standalone wireless access point, and have to <a href="https://newscrewdriver.com/2021/04/23/sawppy-rover-independence-with-esp32-access-point/">become its own wireless access point</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/lib/wifi" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

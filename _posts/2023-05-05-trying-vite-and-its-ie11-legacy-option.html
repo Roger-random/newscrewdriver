@@ -1,0 +1,51 @@
+---
+layout: post
+title: Trying Vite and Its IE11 Legacy Option
+date: 2023-05-05 12:30:00.000000000 +00:00
+type: post
+post_id: '36540'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36542'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683406710
+  _publicize_job_id: '83807748868'
+  timeline_notification: '1683315029'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/05/trying-vite-and-its-ie11-legacy-option/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While <a href="https://newscrewdriver.com/2023/05/04/notes-on-vue-js-quick-start/">looking over Vue.js's Quick Start example</a>, I noticed its default set of tools included <a href="https://vitejs.dev/">Vite</a>. I understand it plays a role analogous but not identical to webpack in Angular's default tool set. <a href="https://newscrewdriver.com/2023/04/02/webpack-first-look-did-not-go-well/">I found webpack's documentation quite opaque</a>, so I thought I would try to absorb what I can from Vite's documentation. I still don't understand all the history and issues involved in JavaScript build tools, but I was glad to find Vite documentation more comprehensible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The introductory "<a href="https://vitejs.dev/guide/why.html">Why Vite?</a>" page explained Vite takes advantage of modern browser features for JavaScript code modules. As a result, the client's browser can handle some of the work that previously must be done on the developer machine via webpack &amp; friends. However, that still leaves a smaller set of things better done up front by the developer instead of later by the client, and Vite takes care of them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In time I'll learn enough about JavaScript to understand what all that meant, but one section caught my attention. Given Vite's focus on leveraging modern browsers, I was surprised to see "browser compatibility" section included an official plug-in <code><a href="https://github.com/vitejs/vite/tree/main/packages/plugin-legacy">@vitejs/plugin-legacy</a></code> to support legacy browsers. Given my interest in writing web apps that run on my pile of old Windows Phone 8, this could be very useful!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36542,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/05/hello-vite.jpg?w=1024" alt="" class="wp-image-36542"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I opened up my NodeJS test apps repository and followed Vite's "Getting Started" guide to create a new project using the "vanilla TypeScript" template preset. To verify I've got it working as expected, I built and successfully displayed the results on a current build of Google Chrome browser.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36552,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/hello-vite-on-windows-phone-8-nokia-lumia-920.jpg?w=1024" alt="" class="wp-image-36552"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I added the legacy plugin and rebuilt. It bloated the distribution directory up to 80 kilobytes, which is a huge increase but still almost a third of the size of a blank Angular app and quite manageable even in space-constrained situations. And most importantly: yes, it runs on my old Nokia Lumia 920 phone with Windows Phone 8 operating system. Nice! I'm <em><strong>definitely </strong></em>tucking this away in my toolbox for later use. But for right now, I should probably <a href="https://newscrewdriver.com/2023/05/06/notes-on-vue-js-tutorial/">get back to learning Vue</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

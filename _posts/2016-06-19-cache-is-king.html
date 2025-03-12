@@ -1,0 +1,42 @@
+---
+layout: post
+title: Cache is King
+date: 2016-06-19 17:56:18.000000000 +00:00
+type: post
+post_id: '1531'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- C
+- TIL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23997011501'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/06/19/cache-is-king/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignleft size-thumbnail wp-image-1778" src="https://newscrewdriver.com/wp-content/uploads/2016/06/15puzzle.png?w=300" alt="15Puzzle" width="150" height="149"></p>
+<p>C is an old familiar friend, so it is not part of my "new toolbox" push, but I went back to it for a bit of refresher for old time's sake. The exercise is also an old friend - solving the 15-puzzle. The <a href="https://en.wikipedia.org/wiki/Sliding_puzzle">sliding tile puzzle</a> is a problem space that I studied a lot in college looking for interesting things around heuristic search.</p>
+<p>For nostalgia's sake, I rewrote a textbook puzzle solver in C using the <a href="https://en.wikipedia.org/wiki/Iterative_deepening_A*">iterative-deepening A* (IDA*) algorithm</a> employing the <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhattan Distance</a> heuristic. It rubbed off some rust and also let me see how much faster modern computers are. It used to be: most puzzles would take minutes, and the worst case would take over a week. Now most puzzles are solved in seconds, and the worst case topped out at "merely" few tens of hours.</p>
+<p>Looking to further improve performance, I looked online for advances in heuristics research since the time I graduated and found several. I decided to implement one of them named "<a href="http://juropollo.xe0.ru/stp_wd_translation_en.htm">Walking Distance</a>" by the person credited with devising it, <a href="http://www.ic-net.or.jp/home/takaken/nt/slide/solve15.html">Ken'ichiro Takahashi</a>.</p>
+<p>From the perspective of algorithmic effectiveness, Walking Distance is a tremendous improvement over Manhattan Distance. It is a far more accurate estimate of solution length. Solving the sliding tile puzzle with the Walking Distance eliminated over 90% of duplicated work within IDA*.</p>
+<p>On paper, then, Walking Distance should be many orders of magnitude faster... but my implementation was not. Surprised, I dug into what's going on and I think I know the answer: CPU cache. The Manhattan Distance algorithm and lookup table all would easily fit within the 256kb L2 cache of my Intel microprocessor. (It might even fit in L1.) The Walking Distance data structures would not fit and would spill into the much-slower L3 cache. (Or possibly even main memory.) It also takes more logical operations to perform a table lookup with Walking Distance, but I believe that is less important than the location of the lookup table themselves.</p>
+<p>In any case: with my implementation and running on my computer, it takes about 225 processor cycles to examine a node with Manhattan Distance. In contrast, a Walking Distance node averages over 81 thousand cycles. That's 363 times longer!</p>
+<p>Fortunately, the author was not blind to this. While building the Walking Distance lookup table, Takahashi also built a table that tracks how one lookup state transitions to another in response to a tile move. This meant we perform the full Walking Distance calculation <em>only</em> on startup. After the initial calculation, the updates are very fast using the transition link table, effectively a cache of Walking Distance computation.</p>
+<p>Takahashi also incorporated the Inversion Distance heuristic as support. Sometimes the inversion count is higher than the walking distance, and we can use whichever is higher. Like walking distance, there's also a set of optimization so the updates are faster than a full calculation.</p>
+<p>Lastly, I realized that I neglected to compile with the most aggressive optimization settings. With it, the Manhattan Distance implementation dropped from ~225 cycles down to ~75 cycles per node.</p>
+<p>Walking Distance was much more drastic. By implementing lookup into the transition table cache, the per-node average dropped from 81 thousand cycles to ~207 cycles per node. With fully optimized code, that dropped further to ~52 cycles per node. Fewer cycles per node, and only having to explore &lt; 10% of the nodes, makes Walking Distance a huge winner over Manhattan Distance. One test case that took tens of hours with Manhattan Distance takes tens of minutes with Walking Distance.</p>
+<p>That was a fun exercise in low level C programming, a good change of pace from the high-level web tools.</p>
+<p>For the curious, the code for this exercise is up on <a href="https://github.com/Roger-random/15Puzzle">Github</a>, under the /C/ subdirectory.</body></html></p>

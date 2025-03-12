@@ -1,0 +1,40 @@
+---
+layout: post
+title: SGVHAK Rover Steering Trim Adjustment
+date: 2018-05-06 16:33:27.000000000 +00:00
+type: post
+post_id: '16134'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Design
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1525649611'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17559548477'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/06/sgvhak-rover-steering-trim-adjustment/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the changes we made to our SGVHAK Rover relative to <a href="https://opensourcerover.jpl.nasa.gov">the baseline design</a> was a decision to omit absolute encoders for our corner steering motors. The baseline design used absolute encoders so it knows every wheel's steering angle upon system startup, but we decided to sacrifice that ability in exchange for cost savings (~$50/ea * 4 corners = ~$200.) Since there is no free lunch, this decision also means we have additional work to do upon our system startup.</p>
+<p>Our control software launches with the assumption that all steerable wheels are pointed straight front-back, which is of course not always true. We could manually push the wheels to straight front-back orientation before turning on power, but that's not great for the gearbox. Also, the shaft coupler used to connect our motor gearbox to our steering mechanism is liable to slip. (This is considered a bug even though it has a potential feature: in theory sharp jolts to the system would slip the coupler instead of breaking something else in the system. In practice, we found that it didn't slip enough to avoid <a href="https://newscrewdriver.com/2018/04/15/sgvhak-rovers-first-brief-drive-session/">breaking a gearbox</a>.)</p>
+<p>Given both of these scenarios, we need a software-based solution to adjust steering trim on the fly. Once our RoboClaw motor controller is told where zero degree position is, it is quite capable of holding a commanded angle until the coupler slips or the system reboots, whichever comes first.</p>
+<p><img class=" size-full wp-image-16117 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/steering-trim.png" alt="Steering Trim" width="573" height="303"></p>
+<p>Steering trim adjustment took the form of a multi-stage HTML form designed for our specific workflow. First our user chooses a wheel to work with, and they are directed to do so because every other UI element on the page is inactive until one wheel is chosen.</p>
+<p>Once a wheel is chosen, the remaining UI activates and wheel selection UI deactivates to guarantee we're working on a single wheel at a time. In this stage, steering angle can be adjusted in 1- and 5-degree increments. When we're satisfied our wheel has been returned to zero degrees deflection, we can select "Accept Current Angle as New Zero" to commit. We also have the option to abort adjustment and retain previous zero position. Either way, wheel selection activates to allow user to select another wheel, and the rest of the page deactivates until a wheel is chosen.</p>
+<p>We have no scenarios where multiple steering motors need to be trimmed at the same time, so this user experience specifically focus on one wheel at a time makes the process straightforward. It also becomes impossible to make mistakes caused by user thinking they're adjusting wheel when they're actually adjusting another, which is a good thing for positive user experience.</p>
+<p></body></html></p>

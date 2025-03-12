@@ -1,0 +1,49 @@
+---
+layout: post
+title: Logic Analyzer Quadrature Decoder
+date: 2024-01-29 12:30:00.000000000 +00:00
+type: post
+post_id: '41780'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41534'
+  wordads_ufa: s:wpcom-ufa-v4:1706694568
+  firehose_sent: '1706560202'
+  _publicize_job_id: '91511911288'
+  timeline_notification: '1706560204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/29/logic-analyzer-quadrature-decoder/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I would like to record internal behavior of a Canon Pixma MX340 multi-function inkjet, specifically <a href="https://newscrewdriver.com/2024/01/28/canon-pixma-mx340-paper-feed-motion-recording-objectives/">the paper feed roller position encoder and two photo interrupter sensors</a>. The sensors are binary on/off affairs that change relatively infrequently, so they should not be a challenge. The interesting element would be the quadrature encoder, reporting how far and how fast the paper feed roller motor is turning that shaft.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A rough calculation told me I need something that can sample two encoder outputs at a rate of at least 20 kHz. My Saleae Logic 8 hardware is advertised to sample at speeds up to 100 MHz. Maximum sampling rate drops if it needs to cover more channels, but 2 channels should be good for 50MHz for plenty of headroom. Unfortunately Saleae's Logic 2 software does not perform quadrature decoding. I don't know why I had assumed it would be part of the analysis toolkit, but I did, and so I was surprised to find it absent. A quick online search confirmed <a href="https://discuss.saleae.com/t/quadrature-encoder-analyser/877" target="_blank" rel="noreferrer noopener">quadrature decoding is still on their "user requested feature" list</a> for some undefined time in the future. And <a href="https://newscrewdriver.com/2024/01/04/window-shopping-custom-saleae-high-level-analyzer-extension/" target="_blank" rel="noreferrer noopener">as I established earlier</a>, Saleae's analyzer extension framework doesn't support writing my own decoder across multiple channels.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>During this search for quadrature decoding support in logic analyzers, I came across mentions it was a capability in <a href="https://sigrok.org/wiki/Main_Page" target="_blank" rel="noreferrer noopener">sigrok</a>, forwarding to <a href="https://sigrok.org/wiki/Protocol_decoder:Graycode" target="_blank" rel="noreferrer noopener">a terse page in sigrok documentation</a>. I understand sigrok to be (very) roughly analogous to Saleae's Logic 2 software, with support for lots of different hardware performing a wide variety of tasks. Perusing <a href="https://sigrok.org/wiki/Supported_hardware" target="_blank" rel="noreferrer noopener">sigrok hardware support</a> page I saw two names I recognized. Bus Pirate is listed as <a href="https://sigrok.org/wiki/Dangerous_Prototypes_Buspirate" target="_blank" rel="noreferrer noopener">supported, but very limited</a> due to its basic hardware. <a href="https://sigrok.org/wiki/GreatFET_One" target="_blank" rel="noreferrer noopener">GreatFET One</a> is also on the list, and it has a much more robust list of capabilities. I consider this a good reason to add GreatFET One to my investigation list for future purchase. If quadrature decoding analysis becomes a recurring need, it would be enough to motivate me to switch from Saleae's proprietary solution to an open-source alternative.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another advantage of sigrok's open source nature is that, unlike Saleae's proprietary solution, the software is not tied to the hardware. Not even officially supported hardware. It has <a href="https://www.sigrok.org/wiki/SUMP_compatibles" target="_blank" rel="noreferrer noopener">support for documented interface protocols like SUMP</a>, so any hardware can theoretically act as signal acquisition hardware for sigrok. However, this is <a href="https://newscrewdriver.com/2024/01/30/notes-on-arduino-and-sigrok/">apparently easier said than done</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

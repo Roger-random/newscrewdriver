@@ -1,0 +1,65 @@
+---
+layout: post
+title: Solar Monitor Battery Charging Failure
+date: 2023-08-23 12:30:00.000000000 +00:00
+type: post
+post_id: '38572'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Solar Power
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29019'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1692988273
+  _publicize_job_id: '86914502693'
+  timeline_notification: '1692819023'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/08/23/solar-monitor-battery-charging-failure/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I need pause <a href="https://newscrewdriver.com/2023/08/22/miscellaneous-licensed-lego-sets/">my LEGO nostalgia trip</a> and revisit my solar power monitor project, so a quick recap of the story so far: About a year and a half ago, <a href="https://newscrewdriver.com/2022/03/18/initial-logic-for-solar-monitor-project/">I built a project to monitor power output</a> of my cheap Harbor Freight solar panels. Power is measured by an <a href="https://www.adafruit.com/product/904">Adafruit INA219 sensor breakout board</a> controlled by <a href="https://newscrewdriver.com/2022/01/29/hello-wemos-d1-mini-clone/">an ESP8266 microcontroller</a> running software <a href="https://esphome.io/components/sensor/ina219.html">compiled by ESPHome</a> based on my specification YAML. Data is reported to my personal instance of <a href="https://www.home-assistant.io/">Home Assistant</a> running <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/">under KVM hypervisor</a>. I originally wanted to run this device strictly off solar power, but <a href="https://newscrewdriver.com/2022/03/07/solar-startup-still-tricky/">never figured out the analog power bits</a>, so I resigned to incorporating a battery into the device. I had an old USB power bank that could no longer deliver useful USB power, so <a href="https://newscrewdriver.com/2022/03/12/usb-power-bank-teardown-duracell-du7169/">I took it apart</a> to repurpose the still-working battery cell and charging capability for my solar monitor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fast forward to this week: browsing my recent data in Home Assistant, I noticed the solar monitor battery voltage has been erratic for a few days. It usually charges up in the early morning soon after sunrise, then gradually fall through the day until the next morning. But now it no longer charges on a smooth curve in the morning, what's going on? Looking at charging status LEDs, I can see it changing state erratically once every few seconds. Maybe blinking in charging sequence for a bit, then maybe all four would be illuminated as if the battery was fully charged, then they would go out as if charging power disappeared, or some combination of those states.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pulling out my voltmeter, I checked the following candidate explanations:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Perhaps the <a href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/">buck converter I had used</a> to convert solar panel DC voltage down to 5V is misbehaving? I checked the voltage of enable pin: it is steady at 3.3V. I checked the output voltage: a steady 4.9V with no fluctuation. The buck converter seems to be performing nominally.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Perhaps the lithium-ion battery cell is failing? I monitored the battery terminal voltage as the charger cycled through its charging/not-charging states, looking to see if the battery voltage is behaving unexpectedly. Maybe it dropped below critical minimum (3V) or shot up to maximum (4.2V) upon charge. Neither was the case: voltage fluctuated around 3.6V. A little higher when charging and a little lower when discharging, signs of a nominally working battery cell.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>If the power input is good and the battery looks good, process of elimination says the problem is the repurposed power bank charging circuit between them. This was not a huge surprise since this piece of electronics was already known to be defective: The reason I took it apart was because the output stage could no longer deliver 5V USB power output. I'm actually rather pleased I got another year and a half of useful life out of the power input charging stage before the whole thing gave out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":28961,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-input-board-bottom.jpg?w=640" alt="" class="wp-image-28961"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":38580,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/duracell-usb-power-bank-input-board-bottom-charred.jpg?w=419" alt="" class="wp-image-38580"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Comparing year-and-a-half old picture (left) against current state (right), the most obvious sign of degradation is near the micro-USB power input port, the yellow epoxy towards one corner touching component U9 has visibly darkened. Is it charring from overheating, or some other degradation? That is not clear. What is clear is that I now need something else to <a href="https://newscrewdriver.com/2023/08/24/single-cell-lithium-ion-battery-management-system-module-4056/">manage charging the single 18650 lithium-ion battery cell</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

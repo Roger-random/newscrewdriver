@@ -1,0 +1,90 @@
+---
+layout: post
+title: Pinout for Asiahorse 120mm Fan (Magic-i 120 V2)
+date: 2022-08-02 12:30:00.000000000 +00:00
+type: post
+post_id: '31769'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Asiahorse
+- Cooling Fan
+- LED
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31771'
+  timeline_notification: '1659468618'
+  _publicize_job_id: '75374899243'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/02/pinout-for-asiahorse-120mm-fan-magic-i-120-v2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The Asiahorse Magic-i 120 V2 bundle included three 120mm cooling fans with integrated addressable RGB LEDs. These fans have a six-wire connector designed to be plugged into a hub that was included in the bundle, along with a remote control to change the light shown performed by those LEDs. Most users just need to plug those fans into the included hub, but some users like myself want to bypass the hub and control each fan directly. For this audience, I present the fan connector pinout derived from <a href="https://newscrewdriver.com/2022/08/01/exploring-6-wire-connector-of-asiahorse-magic-i-120-v2/">an exploratory session</a> on my electronics workbench.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31771,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asiahorse-magic-i-120-v2-fan-pinout-1080p.jpg?w=1024" alt="" class="wp-image-31771"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since this was reverse engineered without original design documents, I don't know which side is considered "pin #1" by the engineers who designed this system. These connectors appear to be <a rel="noreferrer noopener" href="https://www.jst.com/products/crimp-style-connectors-wire-to-board-type/ph-connector/" target="_blank">JST-PH</a>, whose <a rel="noreferrer noopener" href="https://www.jst.com/wp-content/uploads/2021/08/ePH-new.pdf" target="_blank">datasheet</a> does point to one side as "Circuit #1". But there's no guarantee the engineers followed JST convention. To avoid potential confusion, I'll call them only by name.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>System</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+12V</td>
+<td>Fan</td>
+<td>High side of fan motor. Hub connects this wire directly to +12V power input.</td>
+</tr>
+<tr>
+<td>Motor Low</td>
+<td>Fan</td>
+<td>Low side of fan motor. Use a power transistor between this wire and ground to control fan speed.</td>
+</tr>
+<tr>
+<td>Ground</td>
+<td>Fan + LED</td>
+<td>Power return for LED circuit and can be used for fan motor low side as well. Hub connects this wire directly to power input ground.</td>
+</tr>
+<tr>
+<td>Data In</td>
+<td>LED</td>
+<td>Input control signal for addressable RGB LED. Compatible with WS2812/"NeoPixel" protocol.</td>
+</tr>
+<tr>
+<td>+5V</td>
+<td>LED</td>
+<td>Power for LED circuit. Hub connects this wire directly to +5V power input.</td>
+</tr>
+<tr>
+<td>Data Out</td>
+<td>LED</td>
+<td>Control signal for addressable RGB LED beyond the end of LED string inside the fan. Useful for chaining multiple units together by connecting this wire to Data In of the next device in line.</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I understand its pinout, I will build my own control circuit to replace the default Asiahorse hub.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

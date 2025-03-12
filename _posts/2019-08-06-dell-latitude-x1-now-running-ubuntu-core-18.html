@@ -1,0 +1,44 @@
+---
+layout: post
+title: Dell Latitude X1 Now Running Ubuntu Core 18
+date: 2019-08-06 12:30:40.000000000 +00:00
+type: post
+post_id: '19099'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- PC
+tags:
+- Dell
+meta:
+  _thumbnail_id: '19100'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '33734363893'
+  timeline_notification: '1565119850'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667121830
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/06/dell-latitude-x1-now-running-ubuntu-core-18/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>About two years ago, an old friend was returned to me: a 2005 vintage Dell Latitude X1. It <a href="https://newscrewdriver.com/2017/11/28/dell-latitude-x1-a-2005-laptop-tries-to-fit-in-2017/">struggled to run desktop software of 2017</a> but speed wasn't the point - the impressive part was that it could run software of 2017 at all. It was never a speed demon even when new, as it sacrificed raw performance for its thin and light (for its day) construction. Over the past two years, I would occasionally dust it off just to see it still running, but as software got more complex it has struggled more and more to act as a modern personal computer.</p>
+<p>When an up-to-date Ubuntu 16 LTS desktop edition takes over 10 minutes to boot to the login screen, I had to concede it's well past time to stop trying to run it as a desktop computer. I hate to give up on this oddball hobby to keep an old machine running modern up to date operating systems, but an interesting idea came up to keep things going: How about running a lighter-weight text-based operating system?</p>
+<p>The overburdened desktop Ubuntu was erased to make room for <a href="http://releases.ubuntu.com/16.04/">Ubuntu 16.04.6 server</a>. This is a much lighter-weight operating system. As one point of measure, it now takes only about 55 seconds from pressing the power button to a text login prompt. This is much more tolerable than &gt;10 minutes to boot to a graphical login screen.</p>
+<p>After I logged in, it gave me a notification that Ubuntu 18 server is available for upgrade. I've noticed that my desktop Ubuntu took longer to boot after upgrading from 16 to 18, and I was curious if the text-mode server edition would reflect the same. Since I had no data on this machine anyway, I upgraded to obtain that data point.</p>
+<p>The verdict is yes, Ubuntu 18 server takes longer to boot as well. Power button to login prompt now takes 96 seconds, almost double the time for ubuntu 16 server. Actually more than double, considering some portion of that time was hardware initialization and GRUB boot selection timeout before the operating system even started loading.</p>
+<p>That was disappointing, but there is an even more interesting experiment: What if, instead of treating this old computer as a server, I treat it as an embedded device? After all, its ~1 GHz CPU and ~1 GB RAM is roughly on par with a Raspberry Pi, and its ~30GB HDD is in the ballpark of microSD cards used in a Pi.</p>
+<p>This is the new <a href="https://ubuntu.com/core">Ubuntu Core</a> option for bare-bones installations, targeting IoT and other embedded projects. There is <a href="http://cdimage.ubuntu.com/ubuntu-core/18/stable/current/">an i386 image</a> already available to be installed on the hard drive of this 14-year old Dell laptop. Since Ubuntu Core targets connected devices, I needed a network adapter for initial setup. It looks like the Latitude X1's WiFi adapter is not supported, but fortunately its wired Ethernet port worked.</p>
+<p>Once up and running, I timed its boot time from power switch to login prompt: 35 seconds. Subtracting non-OS overhead, booting Ubuntu 18 Core takes almost half the time of Ubuntu 16 Server, or approaching one quarter of Ubuntu 18 Server. Very nice.</p>
+<p>Ubuntu 18 Core makes this old laptop interesting again. Here is a device offering computing power in the ballpark of a Raspberry Pi, plus a display, keyboard, and mouse. (There's a battery, too, but its degraded capacity barely counts.) It is far too slow to be a general desktop machine, but now it is <a href="https://newscrewdriver.com/2019/08/08/dell-latitude-x1-running-ubuntu-core-18-no-graphics-but-ch341-usb-serial-works/">potentially a viable platform for an embedded device project</a>.</p>
+<p>The story of this old workhorse is not yet over...</p>
+<p></body></html></p>

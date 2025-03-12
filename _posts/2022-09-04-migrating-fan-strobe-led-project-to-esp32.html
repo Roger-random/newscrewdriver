@@ -1,0 +1,75 @@
+---
+layout: post
+title: Migrating Fan Strobe LED Project to ESP32
+date: 2022-09-04 12:30:00.000000000 +00:00
+type: post
+post_id: '32397'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- Fan Strobe LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32415'
+  _publicize_job_id: '76410974726'
+  timeline_notification: '1662319846'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/04/migrating-fan-strobe-led-project-to-esp32/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My fan strobe LED project has a flaw where I used a time delay inside an interrupt service routine (ISR), a bad idea. Because that blocks other housekeeping task from occurring, which leads to other hard-to-diagnose problems. I didn't know of a good way to resolve that problem with the ESP8266 microcontroller on board the Wemos D1 Mini module I had used, but I thought the more powerful ESP32 might do the job. Fortunately, I found <a href="https://newscrewdriver.com/2022/09/03/wemos-d1-mini-esp32-derivative/">an ESP32 dev board electrically compatible with the Wemos D1 Mini</a>. Hardware-wise, I just had to solder a compatibility subset of 16 out of 40 pins to make a drop-in upgrade.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The software side needed more work, but thanks to ESPHome and the Arduino framework it is built upon, most of the changes are minor. Aside from updating GPIO pin numbers in ESPHome YAML and the custom component written in Arduino C, I switched fan control from <a rel="noreferrer noopener" href="https://esphome.io/components/output/esp8266_pwm.html" target="_blank">ESP8266 software PWM</a> to ESP32's <a rel="noreferrer noopener" href="https://esphome.io/components/output/ledc.html" target="_blank">LEDC hardware PWM</a> peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That leaves the star of the show: the ISR that turns the LED on and off triggered by fan tachometer signal. For this initial migration, I kept all the code as-is, including those problematic calls to <code>delayMicroseconds()</code>. Even though I intend to replace that code, I wanted to run it as-is at first to see any problems firsthand. I had thought that perhaps I would have more leeway for my ISR abuse with dual cores, because there'd a second core available to do work while I hoarded one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bad news: it did not. If anything, it appears that ESP32 is even more sensitive to my abuse. Or possibly I notice it more because the ESP32 had better crash information. It's possible my ESP8266 sketch frequently crashed the controller and rebooted without my ever noticing something went wrong. With the ESP32, I get a lot more information with fully decoded stack trace, which takes nonzero time to generate and lets me notice the crashes. I love the fact that ESPHome incorporated all of this debugging infrastructure! It's actually less effort for me to get a decoded crash stack via ESPHome than from within Arduino IDE. Sure, I had to connect a USB cable to see crash stack over serial, losing the wireless advantage of ESPHome, but that's no worse than using Arduino IDE.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Judging by the crashing stack trace, my call to <code>delayMicroseconds()</code> was translated to <code>esphome::delay_microseconds_safe()</code>. And the fact it crashed told me that... well, it isn't as safe as the author intended. Further down on the call stack, I see calls to ESP32 NVS subsystem, something I have learned was <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/25/flash-memory-wear-effects-of-esphome-recovery-esp8266-vs-esp32/" target="_blank">an ESP32 feature absent from the ESP8266</a>. At first glance it implies <code>delay_microseconds_safe()</code> is not safe when called in the middle of a NVS write operation. No matter, the objective of this exercise is to get away from using <code>delayMicroseconds()</code> at all, so I should <a href="https://newscrewdriver.com/2022/09/05/esp32-timer-isr-not-allowed-to-call-timer-api/">start working on that</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>WARNING Found stack trace! Trying to decode it
+WARNING Decoded 0x400e2cac: esphome::delay_microseconds_safe(unsigned int) at /data/cache/platformio/packages/toolchain-xtensa32/xtensa-esp32-elf/include/c++/5.2.0/bits/basic_string.h:195
+WARNING Decoded 0x400810a0: pulse_timer_handler() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x4008147d: __timerISR at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-timer.c:174
+WARNING Decoded 0x40087459: _xt_lowint1 at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/xtensa_vectors.S:1154
+WARNING Decoded 0x4008f127: esp_rom_spiflash_read_status at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/spi_flash_rom_patch.c:662
+WARNING Decoded 0x4008f162: esp_rom_spiflash_wait_idle at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/spi_flash_rom_patch.c:662
+WARNING Decoded 0x4008f499: esp_rom_spiflash_program_page_internal at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/spi_flash_rom_patch.c:662
+WARNING Decoded 0x4008f6c9: esp_rom_spiflash_write at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/spi_flash_rom_patch.c:662
+WARNING Decoded 0x40087ec1: spi_flash_write_inner at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/flash_ops.c:155
+WARNING Decoded 0x40088151: spi_flash_write at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/flash_ops.c:416
+WARNING Decoded 0x40165a35: nvs::nvs_flash_write(unsigned int, void const*, unsigned int) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_ops.cpp:72
+WARNING Decoded 0x40163e8e: nvs::Page::writeEntry(nvs::Item const&amp;) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_page.cpp:871
+WARNING Decoded 0x401641f9: nvs::Page::writeItem(unsigned char, nvs::ItemType, char const*, void const*, unsigned int, unsigned char) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_page.cpp:871
+WARNING Decoded 0x40163220: nvs::Storage::writeMultiPageBlob(unsigned char, char const*, void const*, unsigned int, nvs::VerOffset) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_storage.cpp:579
+WARNING Decoded 0x401637b6: nvs::Storage::writeItem(unsigned char, nvs::ItemType, char const*, void const*, unsigned int) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_storage.cpp:579
+WARNING Decoded 0x40162bbb: nvs_set_blob at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_api.cpp:547
+WARNING Decoded 0x400d8413: esphome::esp32::ESP32Preferences::sync() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/components/esp32/preferences.cpp:124
+WARNING Decoded 0x400e3621: esphome::preferences::IntervalSyncer::on_shutdown() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400e36a9: std::_Function_handler&lt;void (), esphome::preferences::IntervalSyncer::setup()::{lambda()#1}&gt;::_M_invoke(std::_Any_data const&amp;) at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400e352a: std::function&lt;void ()&gt;::operator()() const at /data/cache/platformio/packages/toolchain-xtensa32/xtensa-esp32-elf/include/c++/5.2.0/functional:1710
+ (inlined by) esphome::Scheduler::call() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/scheduler.cpp:204
+WARNING Decoded 0x400e1325: esphome::Application::loop() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/application.cpp:69
+WARNING Decoded 0x400e399e: loop() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400f0ea9: loopTask(void*) at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/main.cpp:23
+WARNING Decoded 0x40089ff6: vPortTaskWrapper at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/port.c:355 (discriminator 1)</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

@@ -1,0 +1,55 @@
+---
+layout: post
+title: Goals and Challenges for Sawppy ESP32 Software
+date: 2021-03-09 12:30:00.000000000 +00:00
+type: post
+post_id: '25526'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25528'
+  _publicize_job_id: '55744121644'
+  timeline_notification: '1615321834'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/09/goals-and-challenges-for-sawppy-esp32-software/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>With a <a href="https://newscrewdriver.com/2021/03/08/micro-sawppy-rover-cardboard-box-testbed/">cardboard rover test platform</a> ready to go, I've run out of excuses to put off the software portion of micro Sawppy rover work. If my little rover is going to come alive, the software work must be done. This task shouldn't be as intimidating as it feels, because this is my second round through writing rover brain code. I have learned some lessons from writing <a rel="noreferrer noopener" href="https://github.com/Roger-random/SGVHAK_Rover" target="_blank">SGVHAK rover code</a> running on a Raspberry Pi (code which I then <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/blob/main/docs/SGVHAK%20Rover%20Software.md" target="_blank">adapted to Sawppy</a>) and those lessons should help me this time on the ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One goal for my new ESP32 project is to be more ROS-friendly. I'm not ready to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/08/29/micro-ros-now-supports-esp32/" target="_blank">dive straight into micro-ROS</a> right now. But when I (or someone else) tackles the challenge, the project shouldn't be tripped up by something that needlessly complicates the task. I wrote SGVHAK rover code before I knew much about ROS, and in hindsight I made some decisions that made a ROS port annoying for no good reason. For example, the ROS convention for robot forward is along the +X axis. Ignorant of this when I wrote SGVHAK rover software, I chose forward to be +Y axis. The ROS convention for angular measurements are radians for units, and the right-hand rule for positive rotation. Meaning a positive rover steering rotation is counter-clockwise. For SGVHAK rover, I worked with angles in degrees and positive rotation was clockwise. There was no reason to go against these ROS conventions, it was done purely out of ignorance. If I were to adapt my SGVHAK rover code to ROS, a whole bunch of conversions need to occur risking additional surface area for bugs. I completely understand why <a href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/">Rhys Mainwaring wrote a rover ROS software stack</a> from scratch instead, I would have done the same!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So for my upcoming ESP32 Sawppy rover brain project, I'll keep ROS conventions in mind. Specifically <a rel="noreferrer noopener" href="https://www.ros.org/reps/rep-0103.html" target="_blank">REP103 for units and coordinate conventions</a>. Another ROS-inspired similarity will be messages, which is a new luxury gained by the change in platform. For SGVHAK rover I avoided the complications of introducing multiprocessing concepts to Python code running on a Raspberry Pi. But now I'm targeting the customized FreeRTOS Espressif created to run an ESP32, I gain a lot of multiprocessing tools as a natural and fundamental part of the platform. I will be organizing my code components into FreeRTOS tasks, which has similarities to how ROS organizes code components into nodes. So when my tasks communicate with each other, I'll look to see if there is a ROS equivalent. I won't be able to make my FreeRTOS messages compatible with ROS message formats, though. Because I won't have some of the luxuries like dynamically sized arrays. But the data organization should at least look similar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I foresee the following items, and I'll probably find more as I go:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>I will rewrite <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/28/esp32-freertos-practice-project-controls-l298/" target="_blank">my ESP32 ADC joystick code</a> to communicate with a new data message. It should resemble <code><a rel="noreferrer noopener" href="http://docs.ros.org/en/api/sensor_msgs/html/msg/Joy.html" target="_blank">sensor_msgs/Joy</a></code> from ROS, normalized to the <a rel="noreferrer noopener" href="https://docs.ros.org/en/api/joy/html/" target="_blank">same value ranges</a>.</li>
+<li>When I write the task which translates raw input into desired rover chassis command, that result will be communicated with something that resembles <code><a rel="noreferrer noopener" href="http://docs.ros.org/en/api/geometry_msgs/html/msg/Twist.html" target="_blank">geometry_msgs/Twist</a></code> used for ROS topic <code>cmd_vel</code> (Commanded Velocity).</li>
+<li>When that cmd_vel command is broken down to commands for individual motors and actuators, those individual commands should resemble joint commands of <a rel="noreferrer noopener" href="http://wiki.ros.org/ros_control" target="_blank">ros_control</a>. I have not yet worked with ros_control myself so this one is the fuzziest with the most unknowns. But I look forward to learning!</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>And as expected of a learning project, I ran into problems immediately with the first item on the list. I eventually decided to <a href="https://newscrewdriver.com/2021/03/10/joystick-range-check-works-around-esp32-adc-mystery/">devise a workaround for ESP32 ADC behavior</a> I don't understand yet.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

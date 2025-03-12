@@ -1,0 +1,43 @@
+---
+layout: post
+title: 'Fusion 360 and Onshape: Spur Gears via Scripts'
+date: 2017-11-25 09:00:50.000000000 +00:00
+type: post
+post_id: '15498'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Fusion 360 vs. Onshape
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11822443231'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/25/fusion-360-and-onshape-spur-gears-via-scripts/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I've been learning Onshape and Fusion 360 as they are two of the cloud-based CAD solutions with a subscription tier that's free for me. They each have their strengths and weaknesses and it's always interesting to compare and contrast between them.</p>
+<p>One item they share that I found surprising is that neither of them has built-in capability to add gears into the mechanical design. I've always thought of gears as a critical part of any nontrivial machinery. So I had expected to find a significant section of the CAD package to be devoted to creating various types of gears for different applications, simulating and analyzing their suitability to the task, but there was nothing.</p>
+<p>For basic projects, a simple spur gear would suffice. Thankfully, both companies have heard the user requests and made simple spur gear creation available as an add-in created with their own respective scripting mechanism.</p>
+<p>Extending Onshape requires learning to write code in their custom language <a href="https://www.onshape.com/featurescript">FeatureScript</a>. A member of the Onshape team used it to create the <a href="https://cad.onshape.com/documents/5742c8cde4b06c68b362d748/v/16a222adf3cb9a3b33ed9536/e/c72760543a0d4412e72f6d38">spur gear script</a> and made it available in the public documents library. <del>One downside of this approach is the fact that (1) Onshape users needs to make a copy of a public document before they could use it for their own purposes, and (2) all documents created with the free subscription tier of Onshape are public. These two factors combined means <a href="https://cad.onshape.com/documents?nodeId=3&amp;resourceType=filter&amp;column=promotedAt&amp;order=desc&amp;viewMode=0&amp;q=FeatureScript%20Spur%20Gear">many, many copies of the spur gear script</a> in the public documents library.</del> Correction: <a href="https://cad.onshape.com/help/index.htm#customfeature.htm">Custom FeatureScript can be added to the toolbar</a> without making a copy. Thanks [FS] for the comment!</p>
+<p><img class=" size-full wp-image-15499 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/11/onshape-spur-gear.jpg" alt="OnShape Spur Gear" width="639" height="401"></p>
+<p>Fusion 360 did not declare their own scripting language. They expose their extension API to two languages: C++ for the high-performance native code crowd, and the Python interpreted scripting language for the less performance-focused audience. They used to also support JavaScript, but <a href="http://help.autodesk.com/view/fusion360/ENU/?guid=GUID-9701BBA7-EC0E-4016-A9C8-964AA4838954">as of July 2017</a> they have moved that into maintenance mode due to lack of usage.</p>
+<p>The spur gear script is part of the sample script library installed alongside Fusion 360, so I didn't have to find a separate download nor was copying of public document necessary. They presented it in both C++ and Python format. I found the Python version in the "Scripts and Add-ins" menu and clicked "Run".</p>
+<p><img class=" size-full wp-image-15501 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/11/f360-script-addin.jpg" alt="F360 Script Addin" width="361" height="453"></p>
+<p>Onshape and Fusion 360's spur gear scripts present their gear parameters in slightly different formats, but both should suffice for simple projects. If I want to do something more complex, I will have to dive into coding my own extension script.</p>
+<p>I've wanted to learn more about what is and isn't possible in an extension script anyway, so... challenge accepted!</p>
+<p><img class=" size-full wp-image-15500 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/11/f360-spur-gear.jpg" alt="F360 Spur Gear" width="345" height="748"></p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p></body></html></p>

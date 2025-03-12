@@ -1,0 +1,38 @@
+---
+layout: post
+title: Wiring For Both Options Of Z-Axis Motion
+date: 2019-09-13 12:30:11.000000000 +00:00
+type: post
+post_id: '19545'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19544'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1568403077'
+  _publicize_job_id: '35256882179'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/13/wiring-for-both-options-of-z-axis-motion/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Strictly speaking, it was not critical to <a href="https://newscrewdriver.com/2019/09/12/a-shelf-for-console-computer/">add a shelf for the little laptop</a> used to control everything, but it is very nice to resolve the constant irritation of pausing what I wanted to do just to find a place to set it down. It should speed up future tinkiering of this machine, and the next step in that process is to wire up Z-axis capability.</p>
+<p>In hindsight I should have packed the X (lower left) and Y axis (lower right) components a little closer together, but learning these lessons this is why we build prototypes. There isn't quite enough room to duplicate the same pin layout for Z in the upper right, but then again, I don't really need to. I'm not interfacing with an existing Parker Motion Control product, the Z-axis will be different.</p>
+<p>As a result, the JST-XH connectors have been simplified from a 4+3 arrangement to a single 6-pin arrangement. 4 of the pins are the same: a pair of open-drain signals for step and direction. The remaining two pins are for a normally-open switch to home the Z axis stepper control.</p>
+<p>But there's another twist to the Z-axis: a feature of Grbl ESP32 is the ability to use a RC hobby servo for any axis. It requires changing a few <code>#define</code> in the source code and recompiling, something I could do on the little laptop who now has a shelf. I thought a servo-actuated Z-axis would work well as a first test of system functionality, before I go through the effort of building a more functional stepper-controlled Z axis.</p>
+<p>But I couldn't use the same pin for both, because an open-drain circuit is the wrong way to send a control signal to a servo. Instead, a separate transistor was rigged up so the ESP32 control signal (3.3V) can emit a 5V servo signal. The signal pin and ground are exposed via a separate 3-pin header.</p>
+<p>The 5V source for the control signal came from the USB port connected to the little laptop. Ideally there'll be some opto-isolation for the control signal, but this will suffice for a prototype. However, it will not be enough to power the servo motor, which will <a href="https://newscrewdriver.com/2019/09/14/z-axis-servo-and-battery-box/">require its own power source</a>.</p>
+<p></body></html></p>

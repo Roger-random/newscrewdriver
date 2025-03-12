@@ -1,0 +1,36 @@
+---
+layout: post
+title: Bit Operations For Death Clock Display
+date: 2019-06-16 12:30:24.000000000 +00:00
+type: post
+post_id: '18653'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Death Clock
+- VFD
+meta:
+  _thumbnail_id: '18382'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31890879770'
+  timeline_notification: '1560713459'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/16/bit-operations-for-death-clock-display/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The way we've <a href="https://newscrewdriver.com/2019/04/14/hardware-side-of-keeping-pic-driver-simple/">wired up our VFD (vacuum fluorescent display) control board</a>, each segment on a VFD is a bit we can manipulate from the driver program. It can be anything that communicates via I2C and right now that is a Python script running on a Raspberry Pi. VFD pattern data in Python will be represented in the form of byte literals as outlined in <a href="https://www.python.org/dev/peps/pep-3112/">PEP #3112</a>. This is something we've already started using in <a href="https://github.com/Roger-random/vfd_on_pic/blob/master/pi_test/abstrnya.py">existing Python test scripts</a>. The '<code>b</code>' in front is how we designate this string as a byte literal. Each byte within is described with a leading backslash '<code>\</code>' and two hexadecimal digits. Each digit represents half (4 bits) of a byte.</p>
+<p>Our VFD hardware board is wired so setting a bit high will ground the corresponding element, turning it dark. Setting a bit low will allow pull-up resistors to raise voltage of the element, illuminating it. This particular VFD unit <a href="https://newscrewdriver.com/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/">has 8 pins for grids and 11 pins for elements</a>. However, not all combinations are valid for illuminating a specific segment. There's room blocked out for bits in our control pattern corresponding to these combinations, but they will have no effect on VFD output. For more details, see <a href="https://newscrewdriver.com/2019/04/20/create-vfd-bit-pattern-with-help-of-google-sheets/">the VFD pattern spreadsheet</a> where bits without a corresponding physical segment had their checkboxes deleted.</p>
+<p>So far so good, and for Death Clock we will take the next step beyond showing a fixed set of static patterns. We'll have to start changing bits around during runtime to do things like displaying the day of week and time of day. Manipulating our VFD pattern byte literals with Python <a href="https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations">bitwise operators</a> allow us to take multiple bit patterns, each representing one subset of what we want to show, and combine them together into the pattern we send to the PIC for display. This is conceptually similar to <a href="https://en.wikipedia.org/wiki/Compositing">compositing</a> in video production, but at a much simpler scale.</p>
+<p></body></html></p>

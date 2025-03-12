@@ -1,0 +1,42 @@
+---
+layout: post
+title: ESA ISS Tracker on HP Mini (110-1134CL)
+date: 2020-04-23 12:30:30.000000000 +00:00
+type: post
+post_id: '21214'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 110-1134CL
+- NUCC
+- Space
+meta:
+  _thumbnail_id: '21222'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1587670234'
+  _publicize_job_id: '43395554783'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/23/esa-iss-tracker-on-hp-mini-110-1134cl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I thought it might be fun to turn an obsolete computer into an International Space Station tracking monitor running full time somewhere in the house. I didn't want to write the software myself from scratch, and a search for something that I could put on various hardware found a <a href="https://newscrewdriver.com/2020/04/22/html-live-iss-tracker-by-esa/">web-based HTML live ISS tracker</a> published by the European Space Agency.</p>
+<p>My first test platform is a HP Mini (110-1134CL) from my <a href="https://newscrewdriver.com/2020/03/18/a-tale-of-three-laptops/">NUCC trio of machines</a> looking for projects. As the least capable machine in the bunch, I thought it was the best candidate. I reinstalled Ubuntu Mate 18.04 on this machine for the first round of experimentation. Earlier I established <a href="https://newscrewdriver.com/2020/03/15/hp-mini-110-1134cl-ubuntu-mate-and-chrome-os-slow-even-with-ssd/">Ubuntu Mate was unusable slow on this machine for interactive usage</a>, but maybe it will be enough for passive ISS tracking display.</p>
+<p>With Ubuntu Mate installed, putting the site on screen was straightforward. Firefox (which comes installed as part of standard Ubuntu) can be launched with a <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options">full screen <code>--kiosk</code> option</a>. That command line is what I used for a <code>systemd</code> service, similar to how <a href="https://aiyprojects.withgoogle.com/voice/#makers-guide--run-your-app-at-bootup">Google prescribed launching AIY Voice apps on startup</a>. I had to modify the AIY executable with the Firefox command line, and that was enough for the ISS tracker to be automatically launched on boot. I still had to manually click the full screen button for now, one of the to-do items I might investigate fixing later.</p>
+<p>I was not sure if a modern web application might be too much for this old piece of hardware to handle, but once up and running the ISS tracker is pretty lightweight on processor demands according to <code>htop</code>. To double check, I researched how to retrieve a laptop's power consumption under Linux and <a href="https://www.2daygeek.com/check-laptop-battery-status-and-charging-state-in-linux-terminal/">found this page</a> listing several options. I chose <a href="http://manpages.ubuntu.com/manpages/bionic/man1/upower.1.html"><code>upower</code> </a>to tell me how much power the laptop believes it is drawing from its battery pack.</p>
+<p> </p>
+<p><img class=" size-full wp-image-21213 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/04/upower-says-hp-mini-110-only-needs-7.5-watts.jpg" alt="UPower says HP Mini 110 only needs 7.5 watts" width="1920" height="1080"></p>
+<p>Looks like running ISS tracker takes about seven and a half watts. That's not bad, on par with a digital picture frame. Using this to calculate the cost of energy consumption: (7.5 Watts) * (24 hours) * (30 days) = 5.4 kilowatt-hours per month. I'm being billed roughly $0.25 per kilowatt-hour on my electrical bill, so running this laptop as ISS tracker 24x7 would cost me about $1.35 a month in electric power.</p>
+<p>I'm willing to entertain that amount as-is, but I was curious if I could drop that even further. What if I could replace Ubuntu Mate with an even simpler operating system? Would that further drop power consumption? I played with the <a href="https://newscrewdriver.com/2019/08/09/ubuntu-core-18-web-kiosk-on-dell-inspiron-11-3180/">web kiosk demo for Ubuntu Core</a> before, so I thought I'd <a href="https://newscrewdriver.com/2020/04/25/aborted-ubuntu-core-web-kiosk-adventure-with-hp-mini-110-1134cl/">revisit the experiment with this HP Mini 110-1134CL</a>.</p>
+<p></body></html></p>

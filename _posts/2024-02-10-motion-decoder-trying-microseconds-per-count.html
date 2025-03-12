@@ -1,0 +1,58 @@
+---
+layout: post
+title: Motion Decoder Trying Microseconds Per Count
+date: 2024-02-10 12:30:00.000000000 +00:00
+type: post
+post_id: '41909'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  firehose_sent: '1707597030'
+  wordads_ufa: s:wpcom-ufa-v4:1707709906
+  _publicize_job_id: '91852338931'
+  timeline_notification: '1707597032'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/10/motion-decoder-trying-microseconds-per-count/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I know the paper feed motor in a Canon Pixma MX340 multi-function inkjet does more than just feed paper, and I want to see how much I can understand. One small step at a time. Right now I have an Arduino Nano watching its rotation quadrature encoder. I want some level of precision, but I don't want to <a href="https://newscrewdriver.com/2024/02/09/options-for-improving-timestamp-precision/">spend time learning an entirely new field</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I'll stay with Arduino's <code>micros()</code> API to give me a timestamp a few hundred microseconds after the most recent encoder position update. The variability will add error to my calculations, but I'm hopeful the errors will average out across multiple data points. If not, I'll have to revisit the topic of timestamp precision.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>timestamp,position,count<br>16,0,448737<br>6489548,1,1<br>6490076,2,1<br>6490688,5,1<br>6491300,8,1<br>6491912,12,1<br>6492540,17,1<br>6493220,21,1<br>6493876,25,1<br><br>[...]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next most obvious step is to calculate velocity between each of these data points. For the final two line in the excerpt above, the distance is 25-21=4 encoder counts. That took place within 6493876-6493220 = 656 microseconds. 4/656 = 0.006 encoder counts per microsecond. Easy enough on paper, but a big problem in practice. The ATmega328P chip at the heart of this Arduino Nano has no floating point math hardware, so such a calculation would have to run through a math library that will add a lot of computation time to this very time-constrained project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first thought was maybe I can aggregate calculation across multiple data points, but that means tracking multiple data points. So far I've been trying to limit it to just two: the "now" data point and the "previous" data point. It makes for simple code with few things to go wrong, so I'm trying to avoid multiple data points for as long as I can get away with it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I'm reluctant to pull in floating math or multiple data points, I thought I would try a different approach. If my problem is that "encoder counts per microsecond" is a small floating point number, perhaps its reciprocal "microseconds per encoder count" could help me? It would be a much easier calculation: Instead of 4/656 = 0.006 encoder counts per microsecond, I can look at it as 656/4 = 164 microseconds per encoder count. Staying in integer math should keep the code fast, and staying with two data points ('now' and a single history point) make the code simple. I ran the simple code and plotted its output... <a href="https://newscrewdriver.com/2024/02/11/graphing-position-alongside-microseconds-per-encoder-count/">it looks promising, but there's definitely still work to do</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

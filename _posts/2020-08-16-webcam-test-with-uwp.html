@@ -1,0 +1,53 @@
+---
+layout: post
+title: Webcam Test with UWP
+date: 2020-08-16 12:30:00.000000000 +00:00
+type: post
+post_id: '21681'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- UWP
+meta:
+  _thumbnail_id: '21671'
+  _publicize_job_id: '47785237487'
+  timeline_notification: '1597606225'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/16/webcam-test-with-uwp/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I had an <a href="https://newscrewdriver.com/2020/08/15/and-i-ended-up-with-tape/">old webcam taped to the carriage of a retired 3D printer</a>, I shifted focus to writing code to coordinate the electronic and mechanical bits. My <a href="https://newscrewdriver.com/2020/05/26/simple-logger-extended-with-subset-list/">most recent experiments in application development</a> were in the Microsoft UWP platform, so I'm going to continue that momentum until I find a good reason to switch to something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Microsoft's development documentation site quickly pointed me to an example that implements <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/simple-camera-preview-access" target="_blank">a simple camera preview control</a>. It looks like the intent here is to put up a low resolution preview so the user can frame the camera prior to taking a high resolution still image. This should suffice as a starting point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to gain access to the camera feed, my application must declare the webcam capability. This will show the user a dialog box that the application wants to access the camera with options to approve or deny, and the user must approve before I could get video. Confusingly, that was not enough. If I approve camera access I still see errors. It turns out that even though I didn't care about audio, I had to request access for the microphone as well. This seems like a bug but a simple enough workaround in the short term.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that was in place, I got a low resolution video feed from the camera. I don't see any way to adjust parameters of this live video. I would like to shift to a higher resolution and I'm willing to accept lower frame rate. I would also like to reduce noise and I'm willing to accept lower brightness. The closest thing I found to camera options is something called "<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/camera-profiles" target="_blank">camera profiles</a>". For the moment this is a moot point because when I queried for profiles on this camera, <code>IsVideoProfileSupported</code> returned false.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I imagine there is another code path to obtain video feed, used by video conference applications and video recording apps. There must be a way to select different resolutions and adjust other parameters, but I have a basic feed now so I'm content to put that on the TO-DO list and move on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next desire is ability to select a different camera, since laptops usually have a built-in camera and I would attach another via USB. Thanks to <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/49312099/how-to-display-2-web-camera-preview-in-uwp" target="_blank">this thread on Stack Overflow</a>, I found a way to do so by setting <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/windows.media.capture.mediacaptureinitializationsettings.videodeviceid" target="_blank"><code>VideoDeviceId</code></a><a href="https://docs.microsoft.com/en-us/uwp/api/windows.media.capture.mediacaptureinitializationsettings.videodeviceid"> property</a> of <code>MediaCaptureInitializationSettings</code>. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And yay, I have a video feed! Now I want to move the 3D printer carriage by pressing the arrow keys. I created keyboard event handlers <code>KeyDown </code>and <code>KeyUp</code> for my application, but the handlers were never called. My effort to understand this problem became the entry point for a deep rabbit hole into the <a href="https://newscrewdriver.com/2020/08/17/reviewing-uwp-keyboard-routed-events/">world of keyboard events in UWP</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[<a href="https://github.com/Roger-random/UWPTest/tree/master/CameraTest" target="_blank" rel="noreferrer noopener">Code for this exploration is public on Github</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

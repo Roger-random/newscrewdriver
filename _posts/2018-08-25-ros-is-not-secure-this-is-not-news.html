@@ -1,0 +1,35 @@
+---
+layout: post
+title: ROS Is Not Secure, This Is Not News
+date: 2018-08-25 09:00:35.000000000 +00:00
+type: post
+post_id: '16690'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1535212947'
+  _publicize_job_id: '21453253052'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/25/ros-is-not-secure-this-is-not-news/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">When I started reading about ROS, as soon as I learnt ROS modules communicate over standard networking protocols, I immediately thought "What about security?" This should rightly be the first question of any software developer dealing with any networking code in this day and age. But... ROS was not created in this day and age of constant relentless network attacks. It was created ten years ago, when the internet was a far less hostile environment, and security was declared not a concern.</p>
+<p>I can cast no stones here, my own <a href="https://github.com/Roger-random/SGVHAK_Rover">SGVHAK Rover</a> project did the same thing, declaring network security <a href="https://en.wikipedia.org/wiki/Somebody_else%27s_problem">Someone Else's Problem</a>. But it's one thing to declare as such in a little hobbyist project, it's quite another to do so on a widely used framework. Given that the framework was already established by the time the internet turned into the environment it is today, the best ROS can do is to clearly document this fact and they have done so on <a href="http://wiki.ros.org/Security">a document explicitly titled <em>Security</em></a>. In it, they declare the lack of built-in security measures explicitly. A bad actor getting on a ROS network has access to everything, so in ROS installations where security is a concern it must be walled off from the internet at large via <a href="https://answers.ros.org/question/107006/security-vulnerabilities-in-ros/">tools of the network security trade</a>: firewalls, VPN, etc.</p>
+<p>Given this established fact, and clear documentation stating so, it was disappointing to see Wired <a href="https://www.wired.com/story/security-robotics/">making a fuss about how insecure ROS is</a>. This really isn't news, anyone who bothered to read ROS documentation would already know this. It's difficult to see the Wired article as anything other than to sensationalize a piece of information for people not familiar with ROS, and stroke paranoia about robots in general. This is... not a hallmark of great journalism.</p>
+<p>But that's out there, and getting picked up by a few other tech news sources, and we'll just have to see where this goes. The best available defense is the fact researchers are not blind to the situation and there already exists <a href="http://wiki.ros.org/SROS">work to beef up ROS security</a>. Though to be clear, it's just a research project and does not claim to be tough enough for the nasty world out there.</p>
+<p>And as briefly mentioned in the Wired article: ROS2, the future of ROS currently in development, has a baseline option for security. Communication in ROS is built on top of <a href="http://portals.omg.org/dds/">DDS</a> and the intent is to enable secure ROS networks by letting people use an implementation that features <a href="https://discourse.ros.org/t/ros2-security/2273">DDS-Security</a>.</p>
+<p>So it's not news, and it'll be even less news in the future.</body></html></p>

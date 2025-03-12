@@ -1,0 +1,55 @@
+---
+layout: post
+title: Miscellaneous Notes on HP Stream 7 Installation
+date: 2022-01-19 12:30:00.000000000 +00:00
+type: post
+post_id: '28211'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- HP Stream 7
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28212'
+  _publicize_job_id: '67887800104'
+  timeline_notification: '1642624224'
+  _oembed_9e0aad79c8b081121e8a7c7fc694eb1d: "{{unknown}}"
+  _oembed_e17be29d8619dd710b26cb6078995208: "{{unknown}}"
+  _oembed_a0dee59989aa4ee5231e63cc45928c9d: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/19/miscellaneous-notes-on-hp-stream-7-installation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My old HP Stream 7 can now run around the clock on external power, once I figured out <a href="https://newscrewdriver.com/2022/01/18/disabling-hp-stream-7-battery-drivers-when-externally-powered/">I needed to disable its battery drivers</a>. Doing so silenced the module that <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/" target="_blank">foiled my previous effort</a>. (It would raise an alert: "the tablet has run far longer than the battery capacity could support" and shut things down.) Ignoring that problematic module, remaining drivers in the same large Intel chipset driver package allowed the machine to step down its power consumption. From ten watts to under two watts, even with the screen on. (Though at minimum brightness.) Quite acceptable and I'm quite certain I'll repurpose this tablet for a project in the future. In the meantime, I wanted to jot down some notes on this hardware as reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The magic incantation to get into boot select menu (getting into BIOS, reinstalling operating system, and other tools) is to first shut down the tablet. While holding [Volume Down], hold [Power] until the HP logo is visible. Release power immediately or else it might trigger the "hold power for four seconds to shut off" behavior. (This is very annoying.) The boot select menu should then be visible along with on-screen touch input to navigate without a keyboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are many drivers on the HP driver downloads site. Critical for optimized power consumption -- and majority of onboard hardware -- is the "Intel Chipset, Graphics, Camera and Audio Driver Pack". I also installed the ""Goodix Touch Controller Driver" so the touchscreen would work, but be warned: this installer has a mix of case-sensitive and case-insensitive code which would fail with a "File Not Found" error if the directory names got mixed up. (<code>/SWSetup/</code> vs <code>/swsetup/</code>)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The available drivers are for Windows 8 32-bit (what the machine came with) and Windows 10 32-bit (what it is successfully running now.) The machine is not able to run 64-bit operating system despite the fact its Intel <a rel="noreferrer noopener" href="https://ark.intel.com/content/www/us/en/ark/products/80275/intel-atom-processor-z3735g-2m-cache-up-to-1-83-ghz.html" target="_blank">Atom Z3735G</a> CPU is 64-bit capable. I don't know exactly what the problem is, but when I try to boot into 64-bit operating system installer (true for both Windows 10 and Ubuntu) I get the error screen</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>The selected boot device failed. Press &lt;Enter&gt; to Continue.
+[Ok]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which reminds me of another fun fact: this machine has only a single <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/USB_hardware#Micro_connectors" target="_blank">USB micro-B</a> port. In order to use USB peripherals, we need a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/USB_On-The-Go" target="_blank">USB OTG</a> adapter. Which is good enough for a bootable USB drive for operating system installation... but then I need to press [Ok] to continue! The usual answer here is to use an USB hub so I could connect both the bootable OS installer and a keyboard. There's actually no guarantee this would work: it's not unusual for low-level hardware boot USB to support only root-level devices and not hubs. Fortunately, this tablet supported a hub to connect multiple USB devices allowing bootable USB flash driver for operating system installation to coexist with USB input devices to navigate a setup program.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll probably need some or all of these pointers the next time I dig this tablet out of my pile of hardware. For now, I return it to the pile... where <a href="https://newscrewdriver.com/2022/01/20/degraded-nexus-5-battery-demands-immediate-removal/">I noticed an unpleasant surprise</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

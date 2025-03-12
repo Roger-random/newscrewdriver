@@ -1,0 +1,64 @@
+---
+layout: post
+title: Honda CD Panel Lights and LCD Backlight
+date: 2022-06-24 12:30:00.000000000 +00:00
+type: post
+post_id: '30978'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Backlight
+- Honda CD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30983'
+  _publicize_job_id: '74007015701'
+  timeline_notification: '1656099008'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/24/honda-cd-panel-lights-and-lcd-backlight/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I started this Honda CD control panel investigation, I thought I might still have the CD player mainboard that sat behind the control panel. But when I pawed through my pile of anonymous circuit boards, I didn't see anything I recognized as related to the CD control panel. After spending time looking at the control panel in detail, I became more familiar with the connector between the control panel and the mainboard. Revisiting the pile with this knowledge, I <a href="https://newscrewdriver.com/2022/06/23/honda-cd-connector-lost-connector-found/">now recognized the matching connector</a>. But even more importantly, the old mainboard had labels on its connector pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30969,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-silkscreen-labels.jpg?w=1024" alt="" class="wp-image-30969"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Note that both connectors stagger their pins, but confusingly in opposite directions. Pin 1 is lower-right on the mainboard labels, but upper-right on the control board numbering. I hadn't spent much effort trying to find the pins for control panel illumination, but now that I see these LAMP pins clearly labeled, I wanted to light them up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30982,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-panel-lights-power.jpg?w=1024" alt="" class="wp-image-30982"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first experiment was to apply +14.4V DC to <code>LAMP+B</code> and ground to <code>LAMP-RET</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30983,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-panel-lights.jpg?w=1024" alt="" class="wp-image-30983"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When power was applied, all the little incandescent bulbs with blue covers lit up. The color is not as blue as the covers would imply. It actually has a tint of green because those bulb's natural glow is not white but a warm yellow. If they are supposed to masquerade as blue LEDs, they're not doing a very convincing job. This collection of 11 bulbs drew 0.6A at 14.4V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30985,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-backlight-power.jpg?w=1024" alt="" class="wp-image-30985"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next test is to put +14.4V DC power to <code>LCDLAMP+B</code> and ground to <code>LCDLAMP-RET</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30987,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-backlight.jpg?w=1024" alt="" class="wp-image-30987"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This illuminated the LCD backlight, drawing 0.2A at 14.4V. It is not very bright, but at least the light is fairly uniform. (Unlike its <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/19/two-separate-sets-of-faceplate-illumination-toyota-86120-08010/" target="_blank">Toyota tape deck counterpart</a>.) The primary purpose of these backlights is to ensure the display is visible at night. During daylight, these LCDs are legible under ambient sunlight. Lighting these up was fun! This experiment was good reference as I <a href="https://newscrewdriver.com/2022/06/25/reuse-honda-cd-connector-for-arduino/">repurpose the connector for my own use</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

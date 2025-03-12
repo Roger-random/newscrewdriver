@@ -1,0 +1,44 @@
+---
+layout: post
+title: Ardupilot as Sawppy Brain Option
+date: 2020-12-20 12:30:00.000000000 +00:00
+type: post
+post_id: '23978'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24175'
+  _publicize_job_id: '52464498719'
+  timeline_notification: '1608496271'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/12/20/ardupilot-as-sawppy-brain-option/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Most of my attention for future Sawppy are focused on mechanical details like part numbers and <a href="https://newscrewdriver.com/2020/12/19/rotate-sawppy-stls-for-printing/">rotating STLs for easy printing</a>. I've always believed I would use Sawppy as a platform to explore autonomous robotics, but I've been having so much fun in low level mechanical design I have yet to set aside enough time to become proficient at giving Sawppy autonomy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thankfully the Sawppy community include people who have built their own Sawppy-derived rovers and put their own time into autonomy. Marco Walther was the first to adopt Sawppy software to ROS by writing a ROS adaption layer, translating the <code>/cmd_vel</code> twist commands into Sawppy motion. Rhys Mainwaring went much further and authored a ground-up <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/" target="_blank">ROS-based software stack for Curio</a> their Sawppy-derived rover.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Rhys confirmed what I had feared from my limited ROS experimentation: much of the freely available open software modules for ROS are tailored for robots roaming building interiors. The <a rel="noreferrer noopener" href="http://docs.ros.org/en/melodic/api/nav_msgs/html/msg/OccupancyGrid.html" target="_blank">occupancy grid</a>, for example, is a 2D representation of a robot's environment. This works well indoors where most walls are vertical and most floors are flat, but such assumptions break down outdoors. Even outdoor-focused autonomous research such as self-driving cars would occasionally simplify their environment into a 2D representation of surface streets. This simplification is very useful for certain problem domains, but a rover exploring rugged terrain is not one of them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Rhys sent word that Curio development has progressed into investigation into <a rel="noreferrer noopener" href="https://ardupilot.org/" target="_blank">Ardupilot</a>. [Header image by Rhys.] The Ardupilot software stack originally started with autonomous aircraft, but it has since expanded to watercraft and ground vehicles. Its aircraft background also meant the software stack is quite aware the world has three dimensions and thus fewer systemic assumptions relying on two-dimensional simplifications. The Ardupilot ecosystem includes multiple vendors selling Ardupilot-compatible control units with a range of price and features, some open and some closed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will have to keep this potential venue in mind as I evolve future Sawppy. I was already planning to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/11/30/sawppy-issue-serial-bus-servo/" target="_blank">move away from serial bus servos</a> and towards more commodity hardware, and now I have another reason: using commodity hardware also improve the chances that an Ardupilot control unit can be found to interface with such components. This is an exciting possibility that really motivated me to <a href="https://newscrewdriver.com/2020/12/21/summary-of-sawppy-update-objectives/">get started working on Sawppy evolution</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

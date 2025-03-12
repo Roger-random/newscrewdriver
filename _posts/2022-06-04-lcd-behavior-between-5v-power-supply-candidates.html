@@ -1,0 +1,74 @@
+---
+layout: post
+title: LCD Behavior Between 5V Power Supply Candidates
+date: 2022-06-04 12:30:00.000000000 +00:00
+type: post
+post_id: '30663'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30667'
+  _publicize_job_id: '73296750850'
+  timeline_notification: '1654371008'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/04/lcd-behavior-between-5v-power-supply-candidates/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>There were nine pins on an LCD salvaged from an AT&amp;T CL84209 cordless phone system. I found two candidates for its +5V power supply pin, but an <a href="https://newscrewdriver.com/2022/06/03/lcd-in-parallel-test-round-2-5v-power/">experiment found that they both seemed to work</a>. I doubt these are both +5V supply pins, as I expect the manufacturer would have removed unnecessary redundancy in the interest of cost. I hypothesize that one of them is the actual +5V supply pin, and the other one allowed +5V to leak through the circuit as an accidental side effect. Trying to guess which is which, I returned to recording analog behavior with my Saleae Logic 8.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For reference, here's the behavior of handset LCD start-up that I want to replicate for pins 6-9. (Channels 4-7.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30587,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg?w=1024" alt="" class="wp-image-30587"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first experiment was to turn on the system without connecting any of the four mystery pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30674,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup-pin-6-and-9-unconnected.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup-pin-6-and-9-unconnected.jpg?w=1024" alt="" class="wp-image-30674"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Channel 5 picked up 3.3V from elsewhere in the circuit. Channel 4 less so at 3V. The other two pins would sporadically spike up to one of those two voltages. This is definitely wrong, but I wanted to rule out the possibility this mystery LCD controller had a built-in voltage booster.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next experiment was to put +5V (well, 4.8V) on Channel 4.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30676,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup-5v-on-pin-6.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup-5v-on-pin-6.jpg?w=1024" alt="" class="wp-image-30676"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This looks much better. Channel 5 and 6 behavior looks correct, or at least close enough to my eyes. I don't see anything that makes me think "Hmm, maybe this pin needs an external inductor, resistor, or capacitor." Such as channel 7, who is trying and failing to hold 5V so I think it needs an external capacitor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I switched +5V over to channel 7:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30682,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-saleae-trace-startup-5v-on-pin-9.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-saleae-trace-startup-5v-on-pin-9.jpg?w=1024" alt="" class="wp-image-30682"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Channels 5 and 6 are again working roughly as expected, which explains why LCD segments look good no matter where +5V comes in. However, I see a weird multi-step behavior on channel 4 that is not ideal. Out of my options, I think I should put +5V on channel 4 and put a little capacitor (100nF ceramic) on channel 7:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30683,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-saleae-trace-startup-5v-on-pin-6-100nf-on-pin-9.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-saleae-trace-startup-5v-on-pin-6-100nf-on-pin-9.jpg?w=1024" alt="" class="wp-image-30683"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yeah, I think that's my best approximation to the ideal behavior. The only difference I see is that, on the original data, channel 4 started with 3.3V then jumped up to 5V upon startup. It seems to be under LCD startup control, but I don't see how. Maybe there's something contributing elsewhere on the circuit board? I know there are still mysteries on this circuit buried underneath the handset LCD, something I intend to investigate later. For now, I hope putting +5V on pin 6 (channel 4) before initialization would not damage the LCD, because I plan on doing that for further exploration. Starting with a <a href="https://newscrewdriver.com/2022/06/05/handset-lcd-versus-base-station-lcd-cl84209/">comparison between these two LCDs</a> both responding to I<sup>2</sup>C 0x3E.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

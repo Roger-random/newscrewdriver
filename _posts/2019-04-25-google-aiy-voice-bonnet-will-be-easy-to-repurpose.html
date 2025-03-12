@@ -1,0 +1,39 @@
+---
+layout: post
+title: Google AIY Voice Bonnet Will Be Easy To Repurpose
+date: 2019-04-25 12:30:48.000000000 +00:00
+type: post
+post_id: '18385'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+tags:
+- AIY
+meta:
+  _oembed_5bd76576fa7a7a6f6a0a82360564c0cd: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30153723470'
+  timeline_notification: '1556220917'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/25/google-aiy-voice-bonnet-will-be-easy-to-repurpose/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Google's AIY products were an experiment to bring a hands-on building experience to retail storefronts. It's the kind of thing one would expect to find at Radio Shack, if Radio Shack were still alive. Sadly, with the <a href="https://newscrewdriver.com/2019/04/22/hello-google-aiy-voice-kit/">AIY Voice kit marked down for clearance</a> at my local Target, the experiment did not appear to be a resounding success. Still it means I now have a Google AIY voice kit to play with.</p>
+<p>Just for the sake of seeing how it was supposed to come together, I followed <a href="https://aiyprojects.withgoogle.com/voice">assembly instructions</a> even though I had no interest in building my own Google voice assistant for my home. Or at least, I got it set up far enough to have the mechanical box on my home network. I stopped before completing the <a href="https://aiyprojects.withgoogle.com/voice#google-assistant--get-credentials">steps to sign up for Google Assistant API access and enrolling this piece of hardware</a>.</p>
+<p>What it means is that I now have a Raspberry Pi Zero on my home network, coupled with "Voice Bonnet" audio hardware that I can now learn more about.</p>
+<p><img class="alignnone size-full wp-image-18380" src="https://newscrewdriver.com/wp-content/uploads/2019/04/google-aiy-voice-bonnet.jpg" alt="Google AIY Voice Bonnet" width="1600" height="801"></p>
+<p>It appears all the code to interface with this Voice Bonnet is <a href="https://aiyprojects.withgoogle.com/voice#makers-guide">documented</a> and available online. I went straight to the <a href="https://aiyprojects.readthedocs.io/en/latest/aiy.voice.audio.html"><code>aiy.voice.audio</code> APIs</a> to see how one interacts with the audio capabilities. I had expected to find code interfacing with device drivers and hardware registers, I didn't expect that the <a href="https://github.com/google/aiyprojects-raspbian/blob/aiyprojects/src/aiy/voice/audio.py">source file</a> mostly consists of code that calls out to standard <a href="https://manpages.debian.org/stretch/alsa-utils/aplay.1.en.html">command-line audio utilities <code>arecord</code> and <code>aplay</code></a>.</p>
+<p>I then looked into the default text-to-speech capabilities <a href="https://github.com/google/aiyprojects-raspbian/blob/aiyprojects/src/aiy/voice/tts.py">inside <code>aiy.voice.tts</code></a> and found much of the same: text is sent out to a <a href="https://packages.debian.org/jessie/sound/libttspico-utils">command-line utility <code>pico2wave</code></a> which does all the hard work. It generates a sound file, which is then sent to <code>aplay</code> for playback.</p>
+<p>This is great news: this meant it will be trivial to use the audio recording and playback capabilities of this Voice Bonnet for purposes other than interacting with Google voice assistant platform.</p>
+<p></body></html></p>

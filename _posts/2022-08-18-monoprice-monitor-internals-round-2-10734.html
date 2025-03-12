@@ -1,0 +1,76 @@
+---
+layout: post
+title: 'Monoprice Monitor Internals: Round 2 (10734)'
+date: 2022-08-18 12:30:00.000000000 +00:00
+type: post
+post_id: '32038'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32051'
+  _publicize_job_id: '75881248075'
+  timeline_notification: '1660851006'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/18/monoprice-monitor-internals-round-2-10734/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Leveraging Bitluni's work, I was able to convert one of my ESP32 into <a href="https://newscrewdriver.com/2022/08/17/full-screen-white-vga-signal-with-bitluni-esp32-library/">a VGA signal generator that outputs full-screen white</a>. This gave me a low-impact way to convert a malfunctioning monitor into a lighting fixture. But the low-impact way is definitely not the optimal way, because it meant I would need a VGA cable dangling outside of the screen, connected to an ESP32, which needs its own power supply. What are my other options? The <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/01/17/strange-failure-of-monoprice-monitor-10734/" target="_blank">first time I opened up this monitor</a>, I didn't understand very much of what I had looked at. A few years of tinkering lessons have been added to my brain, so I'll open it up again for another look.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This display was spared from the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/07/03/the-great-backlight-liberation-begins/" target="_blank">Great Backlight Liberation</a> because it could still be powered on, but once I had it open, I wanted to examine its backlight in light (ha ha) of new knowledge. I found the likely wire harness for this panel's backlight, a respectable bundle of twelve wires. Flipping over the circuit board, I see those wires were labeled with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>G_LED1-</li>
+<li>G_LED2-</li>
+<li>G_LED+</li>
+<li>B_LED+</li>
+<li>B_LED1-</li>
+<li>B_LED2-</li>
+<li>B_LED3-</li>
+<li>B_LED4-</li>
+<li>B_LED+</li>
+<li>G_LED1</li>
+<li>G_LED3-</li>
+<li>G_LED4-</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on these labels, we can infer there are four "G" LED strings and four "B" LED strings, each with their own "-" wire. There are two wires for "B_LED+", but the "G" LEDs have separate "G_LED+" and "G_LED1". I don't know why they were labelled differently, but my multimeter found electrical continuity between "G_LED+" and "G_LED1" so they are wired in parallel, as are those two "B_LED+" wires. Leading me to believe that "G" and "B" LEDs each have two "+" wires corresponding to four "-" wires. So far, so good. I then turned on the monitor to probe voltage levels of these wires. I had expected something in the neighborhood of the 24V DC power supply that feeds this monitor, but my meter said the voltage level is actually in the neighborhood of 64V to 68V DC. Yikes! That's well above maximum voltage of any boost converter I have on hand, so driving the backlight without this board wouldn't be my top choice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":17652,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2019/01/monoprice-10734-interface-board.jpg?w=1024" alt="" class="wp-image-17652"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see inductors and capacitors that are likely the boost conversion circuit for this backlight, but I didn't see a promising chip that might be a standalone LED driver like I see in <a href="https://newscrewdriver.com/2021/06/06/investigating-ti-tps61187-wled-driver/">some laptop panel teardowns</a>. I think it is all controlled by that central main chip sitting under a heatsink. I couldn't make it drive the backlight with a PWM signal like I could the laptop panel, so I have to stay with the ESP32 VGA signal generator.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32045,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/monoprice-10734-control-board-with-panel-data-disconnected.jpg?w=1024" alt="" class="wp-image-32045"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next question is then: could I use this board to drive just the backlight? To test this possibility, I unplugged these two cables connecting to the LCD array. Some of these wires carry power, the rest carry LVDS pixel data. When fed with VGA data from my ESP32, this control board happily powered up the backlight even when it couldn't communicate with the LCD array. This is a very promising find, but I'm not ready to commit to a destructive separation just yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By itself, without an incoming video signal, this monitor quickly goes to sleep mode. I know that my ESP32 VGA signal can keep it awake past that initial sleep mode, but I'm not yet confident everything else will continue running for the long term. The only diagnostic channel I have for this system is the on-screen display, and if I should separate the LCD from its backlight, I would no longer be able to read the on-screen display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27074,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-33-backlight-far-brighter-than-intact-display.jpg?w=1024" alt="" class="wp-image-27074"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's very tempting to separate them now, because I know a lot of light is trapped back there. Look at the brightness difference when I <a href="https://newscrewdriver.com/2021/06/13/a-closer-look-at-led-backlight-panel/">compared a bare backlight with the same non-broken (and non-separated) Chromebook panel</a>. I expect there to be a <strong><em>very</em></strong> bright backlight behind this LCD. But for the sake of doing things incrementally, I'll leave the LG display module intact for now and focus on <a href="https://newscrewdriver.com/2022/08/19/esp32-vga-signal-generator-finds-cozy-home-inside-monitor/">integrating my ESP32</a> VGA signal generator.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

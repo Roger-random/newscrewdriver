@@ -1,0 +1,55 @@
+---
+layout: post
+title: Notes on Angular "HTTP Client" Guide
+date: 2023-03-15 12:30:00.000000000 +00:00
+type: post
+post_id: '35718'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35724'
+  timeline_notification: '1678908651'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1678908784
+  _publicize_job_id: '82339354697'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/15/notes-on-angular-http-client-guide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A working understanding of <a href="https://newscrewdriver.com/2023/03/14/notes-on-angular-observables-rxjs-guide/">reactive programming with RxJS Observables for Angular</a> was listed as a prerequisite to Angular guide for HTTP client. After my long and convoluted tangent to learn RxJS, I felt I was finally ready to dive in and learn how to apply RxJS to handle HTTP transactions in an Angular web application.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the most powerful aspects of RxJS is the declaration of an Observable pipeline is a template. It means we can set one up independently of using them. To use them we call <code>subscribe()</code>, and it is a template that we can reuse by calling <code>subscribe()</code> again. An unexpected downside of this power is that nothing actually happens until we call <code>subscribe()</code>, which can be counterintuitive when we use the Angular HTTP client for operations like DELETE. Outside of Angular/RxJS, such things are fire-and-forget but here we have to <code>subscribe()</code> to start things in motion even if we don't really care about the results of that subscription. This is apparently a common mistake because it is called out multiple times on this page. I also remember seeing this in the "Tour of Heroes" tutorial, which was absolutely wild when I first saw it. I now understand why it behaves that way, but I still think it is weird.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unrelated to RxJS, I thought "Requesting a typed response" section was interesting. It enables TypeScript compile-time checking, which helps keep our code straight, but we have to remember we're still on the hook for runtime checking. Sanitizing data is important for security! This also explains why the example code would copy elements from the result and not blindly copy the whole object. Blind copy would leave our code vulnerable to a maliciously written object that comes with its own <code>toString()</code> or something that is likely to get called in the context (and authority!) of our application code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With my current basic understanding of RxJS and HTTP, the first half of this page was fairly straightforward. Then things got weird with "interceptors". I understand it is a very powerful concept that allows separation of concerns across different chunks of code, each handling an aspect of HTTP activity. But getting them to all play nicely together seems to be a challenging task with lots of room for error. A very powerful gun aimed at our feet, it seems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even just loading them up has pitfalls. There's a recommendation to load them with a "barrel" but I haven't understood the tradeoffs to use/not use them. I also understood that load order mattered, but it didn't cover symptoms of getting the order wrong. There's even a back channel for application code to control interceptors (passing metadata) via HttpContextToken object.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An application of interceptor that looked very impressive was the ability to return a cached value immediately while also issuing the HTTP request. Then the real updated live value from the server is given, all on the same Observable! This is something that would have been really complicated to do with plain JavaScript Promise (async/await) and the first real "A-ha" for me to see power of RxJS in action.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Interceptors are also how Angular performs client-side work to protect against cross-site request forgery (XSRF) adding an XSRF-TOKEN in the header. It's only part of the solution, though. It needs to mesh with server-side code to set the token and verify the token. It is on my "To-Do" list to find an implementation example, probably with Express.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, there's a section on using HTTP client in unit tests. This is the section I can put to work immediately.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

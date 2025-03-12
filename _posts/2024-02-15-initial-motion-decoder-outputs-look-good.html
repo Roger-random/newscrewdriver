@@ -1,0 +1,76 @@
+---
+layout: post
+title: Initial Motion Decoder Outputs Look Good
+date: 2024-02-15 12:30:00.000000000 +00:00
+type: post
+post_id: '41969'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _thumbnail_id: '41824'
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1708029022'
+  _publicize_job_id: '91994796501'
+  timeline_notification: '1708029023'
+  wordads_ufa: s:wpcom-ufa-v4:1708121102
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/15/initial-motion-decoder-outputs-look-good/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm trying to keep an Arduino project's code simple, which required resigning myself to the fact <a href="https://newscrewdriver.com/2024/02/14/trying-dwell-time-to-delineate-one-motion-from-another/">it won't be very robust</a> as it decoded paper feed motor motion of a Canon Pixma MX340 multi-function inkjet. I'm at the mercy of a magic threshold value, and the errors it could introduce if it's too small or too large.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Arduino sketch is looking at position reported by a quadrature encoder in this gearbox and, if it hasn't moved in 10 milliseconds (my magic threshold value), print how far it has moved since the last time it stopped someplace for at least 10ms. I've also added code to track the shortest time between encoder positions encountered during this interval, which reflects the fastest speed attained.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before this threshold-triggered report, I would have a long list of numbers that I could import and plot in Excel. Here's the position &amp; velocity graph for the machine's startup sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41946,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-position_per_us-over-time-with-two-entry-bounce-rejection.png?w=1024" alt="" class="wp-image-41946"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And now, I have a very short list of movements taken and how fast it moved to get there. Here is the startup sequence again in the new format:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>timestamp,count,min_us_enc<br>16,1799,28<br>13003168,2701,36<br>13478700,-1800,-28<br>13622500,-1800,-28<br>16468560,28020,36<br>20880704,2700,36<br>21135412,-2700,-38<br>21392592,-15000,-68<br>23213924,1800,28<br>25595052,-1799,-28<br>25739804,1798,28<br>25884356,-1798,-28</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Timestamps don't line up between these two different presentations because they were taken on different sampling runs, but the change in encoder counts and velocity match. This is a far more concise report of motion control behavior, presenting information I wanted and discarding the rest.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One big difference between this output and <a href="https://newscrewdriver.com/2024/02/06/canon-pixma-mx340-decoder-round-2-goals/" target="_blank" rel="noreferrer noopener">the goals I had originally set</a> is the lack of reporting on times when the system sat still. I thought it would be useful to know when nothing changed from time X to time Y, but the simple implementation generated noise from small movements and I didn't come up with an elegant way for it to <a href="https://newscrewdriver.com/2024/02/12/simple-debounce-improved-motion-decoding/">coexist with my debounce code</a>. I thought about it some more and remembered my goal here is to capture what kind of movements are involved in this gearbox. I don't really care about the times when it didn't move, so I deleted all associated code as unnecessary complexity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We'll see if that turns out to be the right call or if I will regret not investing the effort to make it work. For now, this decision means a caveat on interpreting my decoded output: timestamps corresponding to each motion includes the time spent sitting still <em>before </em>each motion. Example: the third and forth lines of data both reflect a move of -1800 encoder counts...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>13478700,-1800,-28<br>13622500,-1800,-28</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The timestamps are only about 144 milliseconds apart, but looking on the big chart above we can see the actual movements are nearly 3 seconds apart. That's because the second timestamp here was actually the start of that ~3 second period of staying still, before moving another -1800 encoder counts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite its flaws, I think it'll be useful enough of a tool to <a href="https://newscrewdriver.com/2024/02/16/motion-decoder-output-summary/">parse the motions I've been looking at</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

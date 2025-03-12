@@ -1,0 +1,49 @@
+---
+layout: post
+title: CircuitPython asyncio For Cooperative Multitasking
+date: 2024-05-29 12:30:00.000000000 +00:00
+type: post
+post_id: '43558'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43539'
+  wordads_ufa: u:wpcom-ufa-v4:1717145165
+  _publicize_job_id: '95012587124'
+  firehose_sent: '1717011004'
+  timeline_notification: '1717011005'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-31 08:47:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/29/circuitpython-asyncio-for-cooperative-multitasking/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to apply my CircuitPython lessons to a project that will require importing the <a href="https://newscrewdriver.com/2024/05/28/circuitpython-busio-for-hardware-serial-communication/"><code>busio</code> library to utilize asynchronous serial communication hardware</a> on board a RP2040 chip. This is a pretty common microcontroller scenario, but example projects usually only deal with one direction, either just sending or just receiving. Adafruit's <a href="https://learn.adafruit.com/circuitpython-essentials/circuitpython-uart-serial">CircuitPython UART serial introduction</a> only received data and did not send. Things will get more complex as I intend to implement bidirectional communication, and even more so because there's interaction between the two directions: I need to send data and listen for an acknowledgement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If that's the only thing being communicated, it would be easy: one line of code to send data, followed by a line of blocking code to wait for response data. But it's more complicated in this project because the K13988 chip on the control panel sends key scan matrix reports on a regular basis. (Every ~9ms.) If I wrote my code in the naive way, that wait for response may pick up a key scan matrix report byte instead of the acknowledgement byte. What I need is something that is constantly receiving and processing data, mostly key scan report bytes. After the data sender code runs, it will have to wait on the receiver loop to pick out any acknowledgement bytes as they come through in between key scan reports.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is doable within an Arduino-style <code>loop()</code>, and I've done it before, but I end up with code that's hard to follow as it rapidly switches between multiple contexts. That's why I was happy to learn CircuitPython implements the <code>async/await</code> pattern with its <code>asyncio</code> library, which should theoretically allow cleaner code structure. My prior experiences with this pattern mostly centered around JavaScript client/server networking code and not microcontrollers, but never fear, as per usual for Adafruit there's an excellent guide <em><a href="https://learn.adafruit.com/cooperative-multitasking-in-circuitpython-with-asyncio">Cooperative Multitasking in CircuitPython with <code>asyncio</code></a></em> putting the pattern in context for microcontroller tasks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It also highlights an important simplifying characteristic of CircuitPython: it has only a single thread of execution running a single event loop, so there is <a href="https://learn.adafruit.com/cooperative-multitasking-in-circuitpython-with-asyncio/communicating-between-tasks#no-race-conditions-3106383">no concern of race conditions</a> between multiple threads/loops and we don't have to worry about protecting critical sections. Eliminating concurrency eliminates all the huge headaches of writing concurrent code, at the performance cost of running only a single core. A RP2040 has two cores, like an ESP32, but apparently one core sits idle while the other runs CircuitPython. For this project (and most of my potential CircuitPython projects) a single CPU core will suffice. I'm not going to worry about the lack of dual-core operation until I run into an actual problem that needs it. Right now my problems are simple, like <a href="https://newscrewdriver.com/2024/05/30/circuitpython-countio-for-detecting-activity-limited-on-rp2040/">checking to see if there's any activity on a pin</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Installation note: for most CircuitPython libraries in <a href="https://circuitpython.org/libraries">the bundle</a>, we install it by copying its single corresponding <code>*.mpy</code> file into the <code>\lib\</code> subdirectory on our microcontroller's <code>CIRCUITPY</code> storage volume. But <code>asyncio</code> is actually a directory containing multiple <code>*.mpy</code> files and we copy the entire directory under <code>\lib\</code> so all its components are under <code>\lib\asyncio\*.mpy</code>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

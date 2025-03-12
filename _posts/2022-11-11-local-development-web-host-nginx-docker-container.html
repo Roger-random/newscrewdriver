@@ -1,0 +1,73 @@
+---
+layout: post
+title: Local Development Web Host nginx Docker Container
+date: 2022-11-11 12:30:00.000000000 +00:00
+type: post
+post_id: '33555'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Docker
+- nginx
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33556'
+  _publicize_job_id: '78634323208'
+  timeline_notification: '1668198616'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668326569
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/11/local-development-web-host-nginx-docker-container/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>During the course of <a href="https://newscrewdriver.com/2022/11/10/notes-on-codecademy-build-a-website-with-html-css-and-github-pages-skill-path/">Codecademy's skill path for website publishing</a>, we are given several off-platform assignments. "Off-platform" in this context means we are to build a website on our own using something outside Codecademy's in-browser learning environment. I decided to put these assignments on my GitHub account, because then it's easy to publish them via GitHub Pages. (When I decided this, I hadn't realized GitHub Pages would be the explicit focus for one of the assignments.) But there's a several-minute delay between pushing git commits and seeing those changes reflected on GitHub Pages. So I also wanted a local development web host for immediate feedback as I work. I decided to try using <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Nginx" target="_blank">nginx</a> for this purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Local development web hosting is just about the lightest duty workload possible for web server software, so using nginx is sheer overkill. The renowned speed and response of nginx running high traffic websites is completely wasted serving my single browser. Furthermore, some of nginx performance is due to its high-performance caching system, and I wanted to turn that off as well. Running nginx and not caring about cache is like buying a Toyota Prius and not caring about fuel efficiency. Such is the contradiction of using nginx as a local development web host. I will be making many changes and I want to see their effect immediately. I don't want to risk looking at results from a stale cached copy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reason I'm using this overkill solution (or arguably the wrong tool for the job) is because I hoped it would give me a beginner's level view of working with nginx. The easy part comes from the fact nginx distributes their code as a Docker container, so I could quickly launch an instance of "<code>nginx:stable-alpine</code>" and play with it. According to the tagging schema described on <a rel="noreferrer noopener" href="https://hub.docker.com/_/nginx" target="_blank">nginx Docker Hub page</a>, "stable" represents the latest stable release which is fine by me as I don't need the latest features. And "alpine" refers to a container built on top of <a rel="noreferrer noopener" href="https://www.alpinelinux.org/about/" target="_blank">Alpine distribution of Linux</a> with a focus on minimal size and complexity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To disable caching, I copied the default configuration file (<code>/etc/nginx/nginx.conf</code>) out of the nginx container so I could add a few lines to the configuration file. One to turn off nginx server side caching (from <a rel="noreferrer noopener" href="https://docs.nginx.com/nginx/admin-guide/content-cache/content-caching/#limiting-or-disabling-caching" target="_blank">nginx documentation</a>) and another to ask browser not to cache (from <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/49011665/how-to-set-no-cache-on-only-the-index-html-page-in-nginx" target="_blank">this StackOverflow post</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>    # Ask server not to cache
+    proxy_no_cache $http_pragma $http_authorization;
+
+    # Ask browser not to cache
+    add_header 'Cache-Control' 'no-cache, no-store, must-revalidate';</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>After editing, I will use Docker to map my modified version overriding the default. I don't think this is best Docker practice, but I'm focused on "easy" right now. I think the "right" way to do this is to build my own docker container on top of the nginx release but after modifying its configuration file. Something like what's described in <a rel="noreferrer noopener" href="https://ejf.io/dev_blog/docker_nginx_caching/" target="_blank">this person's blog post</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I specified the settings I typically use in a Docker Compose file. Now all I need to do is to go into my project directory and run "<code>docker compose up</code>" to have a non-caching local development web host. To double check, I used <code>curl -I</code> (uppercase i) to verify my intended <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control" target="_blank">Cache-Control headers</a> have been added.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>$ curl -I http://localhost:18080
+HTTP/1.1 200 OK
+Server: nginx/1.22.1
+Date: Wed, 09 Nov 2022 20:07:11 GMT
+Content-Type: text/html
+Content-Length: 4868
+Last-Modified: Wed, 09 Nov 2022 18:28:46 GMT
+Connection: keep-alive
+ETag: "636bf15e-1304"
+<mark style="background-color:rgba(0, 0, 0, 0);" class="has-inline-color has-vivid-red-color">Cache-Control: no-cache, no-store, must-revalidate</mark>
+Accept-Ranges: bytes</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks good! My modified <code>nginx.conf</code> and my <code>docker-compose.yml</code> files are publicly available from my <a rel="noreferrer noopener" href="https://github.com/Roger-random/codecademy_html" target="_blank">Codecademy HTML off-platform projects repository</a>. After this work getting nginx set up for local hosting and GitHub Pages <a rel="noreferrer noopener" href="https://docs.github.com/en/pages" target="_blank">set up for global hosting</a>, it's time to <a href="https://newscrewdriver.com/2022/11/12/notes-on-codecademy-build-a-website-off-platform-projects/">jump into my Codecademy off-platform assignments</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

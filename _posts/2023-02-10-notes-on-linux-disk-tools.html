@@ -1,0 +1,99 @@
+---
+layout: post
+title: Notes on Linux Disk Tools
+date: 2023-02-10 12:30:00.000000000 +00:00
+type: post
+post_id: '35028'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Linux
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33107'
+  _publicize_job_id: '81392839733'
+  timeline_notification: '1676061019'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676148457
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/10/notes-on-linux-disk-tools/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I am setting up an old PC as a TrueNAS replication target to back up data on my drive array. <a href="https://newscrewdriver.com/2023/02/09/sata-optical-to-2-5-drive-adapter/">Fitting a modern SSD into the box</a> was only part of the challenge, I need an SSD to put in it. This is a problem easily solved with money because I don't need a big system drive for this task, and we live in an era of 256GB SSDs <a rel="noreferrer noopener" href="https://amzn.to/3JFLAm1" target="_blank">on sale for under $20</a>.(*) But where's the fun in that? I already have some old and small SSDs, I just need to do a bit of musical chairs to free one up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These small drives are running various machines in my hoard of old PC hardware. <a href="https://en.wikipedia.org/wiki/X86-64" target="_blank" rel="noreferrer noopener">64-bit capable</a> machines run Ubuntu LTS and 32-bit only hardware running <a href="https://newscrewdriver.com/2020/05/08/debian-with-raspberry-pi-desktop-promising-for-old-computers/" target="_blank" rel="noreferrer noopener">Raspberry Pi Desktop</a>. Historically they were quite... <em>disposable</em>, in the sense that I usually wipe the system and start fresh whenever I want to repurpose them. This time is different: one of these is currently a print server, turning my old Canon imageCLASS D550 laser printer into a network-connected printer. Getting Canon's Linux driver up and running on this old printer was a miserable experience. Canon has since <a rel="noreferrer noopener" href="https://www.usa.canon.com/support/p/imageclass-d550" target="_blank">updated imageCLASS D550 Linux driver</a> so things might be better now, but I didn't want to risk repeating that experience. Instead of wiping a disk and starting fresh, I took this as an opportunity to learn and practice Linux disk administration tools.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Clonezilla</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first attempt tried using <a rel="noreferrer noopener" href="https://clonezilla.org/" target="_blank">Clonezilla Live</a> to move my print server from one drive to another. This failed with errors that scrolled by too fast for me to read. I rediscovered the "Scroll Lock" key on my keyboard to pause text scrolling so I could read the errors: partition table information was expected by one stage of the tool but was missing from a file created by an earlier stage of the tool. I have no idea how to resolve that. Time to try something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">dd</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I decided it was long overdue for me to learn and practice using the Linux disk tool <code>dd</code>. My primary reference is <a href="https://wiki.archlinux.org/title/Dd" target="_blank" rel="noreferrer noopener">Arch Linux Wiki page for <code>dd</code></a>. It's a powerful tool with many options, but I didn't need anything fancy for my introduction. I just wanted to directly copy from one drive to another (larger) drive. To list all of my install storage drives, I knew about <code>fdisk -l</code> but this time I also learned of <code>lsblk </code>which doesn't require entering the root password before listing all block storage device names and their capacities. Once I figured out the name of the source (/dev/sdc) and the destination (/dev/sde) I could perform a direct copy:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>sudo dd if=/dev/sdc of=/dev/sde bs=512K status=progress</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The "bs" parameter is "block size" and apparently the ideal value varies depending on hardware capabilities. But it defaults to 512 bytes for historical reasons and that's apparently far too small for modern hardware. I bumped it up several orders of magnitude to 512 kilobytes without really understanding the tradeoffs involved. "<code>status=progress</code>" prints the occasional status report so I know the process is ongoing, as it can take some time to complete.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">gparted</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the successful copy, I wanted to extend the partition so my print server can take advantage of new space. Resizing the partition with Ubuntu's "disks" app failed with an error message "Unable to satisfy all constraints on the partition." Fortunately, gparted had no such complaints, and my print server was back up and running with more elbow room.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Back to dd</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I erase the smaller drive, though, I thought I would try making a disk image backup of it. If Canon driver installation were painless, I would not have bothered. In case of SSD failure, I would replace the drive and reinstall Ubuntu and set up a new print server. But Canon driver installation was painful, and I wanted an image to restore if needed. I went about looking for how to create a disk image and in the Linux world of "everything is a file" I was not too surprised to find it's a matter of using a file name (~/canonserver.img) instead of device name (/dev/sde) for dd output. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>sudo dd if=/dev/sdc of=~/canonserver.img bs=512K status=progress</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">gzip and xz</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that raw disk image file is rather large, exactly the size of the source drive. (80GB in my case) To compress this data, <a href="https://wiki.archlinux.org/title/Dd" target="_blank" rel="noreferrer noopener">Arch Linux Wiki page on dd</a> had examples of how to pipe dd output into gzip for compression. Following those direction worked fine, but I noticed Ubuntu's "disks" app recognized img.xz natively as a compressed disk image file format and not img.gzip. Looking into that xz suffix, I learned <a href="https://askubuntu.com/questions/1193232/how-do-i-use-an-img-xz-file-or-get-an-img-file-from-it" target="_blank" rel="noreferrer noopener">xz was a different compression tool</a> analogous to gzip, and I could generate my own img.xz image by piping dd output into xz, which in turn emits its output into a file, with the following command:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>sudo dd if=/dev/sdc bs=512K status=progress | xz --compress -9 --block-size=100MiB -T4 &gt; ~/canonserver.img.xz</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I used xz parameters "-9" for maximum compression. "-T4" means spinning up four threads to work in parallel, as I was running this on a quad-core processor. "--block-size=100MiB" is how big of a chunk of data each thread receives to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A spinning-platter HDD was used as a test output and verified a restoration of this compressed image worked. Now I need to move this file to my TrueNAS array for backup, kind of bringing the project full circle. At 20GB, it is far smaller than the raw 80GB file but still nontrivial to move.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">gio</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried to mount my TrueNAS SMB shares as CIFS but kept running into errors. It would mount and I could read files, I just couldn't write any. After several failures I started looking for an alternative and found gio.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>gio mount --anonymous "smb://servername/sharename"
+gio copy --progress ~/canonserver.img.xz "smb://servername/sharename/canonserver.img.xz"</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK, that worked, but what did I just use? This name "gio" is far too generic. My first search hit was a "<a href="https://gioui.org/">Cross-Platform GUI for Go</a>" which is definitely wrong. My second hit "<a href="https://en.wikipedia.org/wiki/GIO_(software)">Gnome Input/Output</a>" might be correct or <a rel="noreferrer noopener" href="https://man.archlinux.org/man/gio.1" target="_blank">at least related</a>. As a beginner this is all very fuzzy, perhaps it'll get better with practice. For today I have an operating system disk up and running so I can work on <a href="https://newscrewdriver.com/2023/02/11/notes-from-zfs-adventures-for-truenas-replication/">my ZFS data storage drive</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

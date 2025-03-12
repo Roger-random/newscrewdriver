@@ -1,0 +1,76 @@
+---
+layout: post
+title: 'ESP32 Lessons From ESP_8_BIT: CPU and Memory Allocation'
+date: 2021-05-04 12:30:00.000000000 +00:00
+type: post
+post_id: '26401'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26326'
+  _oembed_14fff323938ea9507888d3a3e5cf2a8a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Hack
+    and slashed <a href="https://twitter.com/adafruit?ref_src=twsrc%5Etfw">@adafruit</a>
+    &quot;Uncanny Eyes&quot; sketch (Hallowing, Monster M4sk) to run on this rendering
+    stack, now my tube TV stares back.<br><br>I&#39;ve also forgotten how hard it
+    is to get a tube TV on video. Had to lock exposure all the way low to avoid bloomed
+    out phosphors. <a href="https://t.co/qq5oc7l5zd">pic.twitter.com/qq5oc7l5zd</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1384551877635809282?ref_src=twsrc%5Etfw">April
+    20, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '57966899282'
+  timeline_notification: '1620156621'
+  _oembed_time_14fff323938ea9507888d3a3e5cf2a8a: '1620190834'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/04/esp32-lessons-from-esp_8_bit-cpu-and-memory-allocation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I learn best when I have a working example I can poke and prod and tinker to see how it works. With <a href="https://newscrewdriver.com/2021/05/03/putting-adafruit-uncanny-eyes-on-a-tube-tv/">Adafruit's Uncanny Eye sort of running on my ESP32 running ESP_8_BIT code</a>, I have a long list of things I could learn using this example as test case.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>ESP32 CPU Core Allocation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Peter Barrett / rossumur of ESP_8_BIT said one of the things that made ESP_8_BIT run well were the two high performance cores available on an ESP32. Even the single-core variant only hiccups when accessing flash storage. When running on the more popular dual-core chips, core 0 handles running the emulator and core 1 handles the composite video signal generation. In <code>esp_8_bit.ino</code> we see the <code>xTaskCreatePinnedToCore()</code> call tying emulator to core 0, but I didn't see why the Arduino default <code>loop()</code> was necessarily on core 1. It's certainly an assertion <a href="https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/">backed by</a><a href="https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/" target="_blank" rel="noreferrer noopener"> </a><a href="https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/">claims elsewhere online</a>, but I wanted to get to the source.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Digging through <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/tree/master" target="_blank">Espressif's Arduino Core for ESP32 repository</a>, I found the key is <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/blob/master/Kconfig.projbuild" target="_blank">configuration parameter <code>ARDUINO_RUNNING_CORE</code></a>. This is used to launch the task running Arduino <code>loop()</code> in <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/main.cpp" target="_blank"><code>main.cpp</code></a>. It is core 1 by default, but that's not necessarily the case. The fact it is a project configuration parameter means it could be changed, but it's not clear when we might want to do so.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why is core 1 the preferred core for running our code? Again the convention wisdom here says this is because the WiFi stack on an ESP32 runs on core 0. But again, this is not necessarily the case. It is in fact possible to <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html#_CPPv4N18wifi_init_config_t17wifi_task_core_idE" target="_blank">configure the WiFi task with a different core affinity</a> than the default, but again it's not clear when we might want to do so. But at least now I know where to look to see if someone has switched it up, in case that becomes an important data point for debugging or just understanding a piece of code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>ESP32 Memory Allocation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew a Harvard architecture microcontroller like the ESP32 doesn't have the freedom of a large pool of universally applicable memory I can allocate at will. I remember I lost ability to run ESP_8_BIT in Atari mode due to a memory allocation issue, so I went back and <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/mem_alloc.html" target="_blank">re-read the documentation on ESP32 memory allocation</a>. There is a lot of information in that section, and this wasn't the first time I read it. Every time I do, I understand a little more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My Atari emulator failure was its inability to get a large contiguous block of memory. For the best chances of getting this memory, the <code>MALLOC()</code> allocator <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/mem_alloc.html#bit-accessible-memory" target="_blank">specified 32-bit accessible memory</a>. This would open up areas that would otherwise be unavailable. But even with this mechanism, the Atari allocation failed. There are tools available to <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/heap_debug.html#heap-information" target="_blank">diagnose heap memory allocation</a> problems and while it might be instructive to understand exactly why Atari emulator failed, I decided that's not my top priority right now because I'm not using the Atari path.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought it was more important to better understand the video generation code, which I am using. I noticed methods in the video generation code were marked with <code>IRAM_ATTR</code> and thought it was important to learn what that meant. I learned <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/memory-types.html#how-to-place-code-in-iram" target="_blank"><code>IRAM_ATTR</code> marked these as pieces of code that needs to stay in instruction RAM</a> and not optimized out to flash memory. This is necessary for <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spi_flash_concurrency.html#iram-safe-interrupt-handlers" target="_blank">interrupt service routines registered with <code>ESP_INTR_FLAG_IRAM</code></a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But those are just the instructions, how about the data those pieces of code need? That's the corresponding <code>DRAM_ATTR</code> and I believe I need to add them to the palette tables. They are part of video generation, and they are constant unchanging values that the compiler/linker might be tempted to toss out to flash. But they must no be moved out because the video generation routine (including ISRs) need to access them, and if they are not immediately available in memory everything comes crashing down.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these new nuggets of information now in my brain, I think I should try to turn this particular ESP32 adventure into <a href="https://newscrewdriver.com/2021/05/05/packaging-esp_8_bit-video-code-into-arduino-library/">something that would be useful to others</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

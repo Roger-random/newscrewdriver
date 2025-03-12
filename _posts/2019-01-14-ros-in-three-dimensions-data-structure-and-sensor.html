@@ -1,0 +1,36 @@
+---
+layout: post
+title: 'ROS In Three Dimensions: Data Structure and Sensor'
+date: 2019-01-14 16:47:06.000000000 +00:00
+type: post
+post_id: '17632'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Sawppy the Rover
+tags: []
+meta:
+  timeline_notification: '1547513229'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26539692691'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/14/ros-in-three-dimensions-data-structure-and-sensor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignright" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">One of the ways a TurtleBot makes ROS easier and more approachable for beginners is by simplifying a robot's world into two dimensions. It's somewhat like the introductory chapters of a physics textbook, where all surfaces are friction-less and all collisions are perfectly inelastic. The world of a TurtleBot is perfectly flat and all obstacles have an infinite height. This simplification allows the robot's environment to be represented as a 2D array called an occupancy grid.</p>
+<p>Of course, the real world is more complicated. My <a href="https://newscrewdriver.com/category/projects/phoebe-turtlebot/">TurtleBot clone Phoebe</a> encountered several problems just trying to navigate my home. The real world <a href="https://newscrewdriver.com/2018/09/22/phoebes-nemesis-floor-transitions/">do not have flat floors</a> and <a href="https://newscrewdriver.com/2018/09/23/phoebes-nemesis-office-chair/">obstacles come in all shapes, sizes, and heights</a>. Fortunately, researchers have been working on problems encountered by robots venturing outside the simplified world, it's a matter of reading research papers and following their citation links to find the tools.</p>
+<p>One area of research improves upon the 2D occupancy grid by building data structures that can represent a robot's environment in 3D. I've found several papers that built upon the <a href="https://en.wikipedia.org/wiki/Octree">octree</a> concept, so that seems to be a good place to start.</p>
+<p>But for a robot to build a representation of its environment in 3D, it needs 3D sensors. Phoebe's Neato vacuum LIDAR works in a simplified 2D world but won't cut it anymore in a 3D world. The most affordable entry point here is the Microsoft Kinect sensor bar from an old Xbox 360, which can function as a RGBD (red + blue + green + depth) <a href="http://wiki.ros.org/kinect">input source for ROS</a>.</p>
+<p>Phoebe used <a href="http://wiki.ros.org/gmapping">Gmapping</a> for <a href="https://en.wikipedia.org/wiki/Simultaneous_localization_and_mapping">SLAM</a>, but that takes 2D laser scan data and generates a 2D occupancy grid. Searching for a 3D SLAM algorithm that can digest RGBD camera data, I searched for "RGBD SLAM" that led immediately to this <a href="http://wiki.ros.org/rgbdslam">straightforwardly named package</a>. But of course, that's not the only one around. I've also come across <a href="http://wiki.ros.org/rtabmap_ros">RTAB-Map</a> which seems to be better maintained and updated for recent ROS releases. And best of all, RTAB-Map has the ability to generate odometry data purely from the RGBD input stream, which might allow me to bypass the challenges of <a href="https://newscrewdriver.com/2019/01/13/sawppy-on-ros-open-problems/">calculating Sawppy's chassis odometry from unreliable servo angle readings</a>.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/158208-sawppy-the-rover/log/158292-ros-in-three-dimensions-data-structure-and-sensor">Hackaday.io</a>)</body></html></p>

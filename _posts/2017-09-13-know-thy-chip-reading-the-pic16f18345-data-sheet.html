@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Know Thy Chip: Reading the PIC16F18345 Data Sheet'
+date: 2017-09-13 09:00:21.000000000 +00:00
+type: post
+post_id: '11400'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9251901452'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/13/know-thy-chip-reading-the-pic16f18345-data-sheet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that I got a taste of PIC development with the tutorials, I have a much better idea of what a PIC can and can't do. That survey gave me a rough outline with which I can use to keep myself oriented while diving deeper. So on the advice of a local longtime PIC tinkerer, I dove in to the authoritative source: the data sheet Microchip publishes for <a href="http://www.microchip.com/wwwproducts/en/PIC16F18345">the PIC16F18345 chip</a>.</p>
+<p>[caption id="attachment_11619" align="aligncenter" width="920"]<img class=" size-full wp-image-11619 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/491pages.png" alt="491Pages" width="920" height="451"> I rarely deal with a PDF with so many pages. Take a deep breath, we're going in![/caption]</p>
+<p>This data "sheet" is actually a tome with almost 500 pages (as of rev. E) of dense technical information and it would be unrealistic to expect that I would understand all of it or even be able to remember very much of it. Fortunately that is not the goal. This first pass will let me know the <em>kind</em> of information that could be found in the data sheet. So that when I need to know a specific detail in the future, I know I can find it here.</p>
+<p>I was surprised to find power management as a topic again and again, but in hindsight I shouldn't be. PIC micro controllers are used in a lot of small battery-powered devices, catering to engineers building devices that run on a tiny battery for weeks, months, or years. People who build these solutions (which doesn't include me... or at least not yet) need to know how the chip can be put into various low-power modes and what functionality does or does not work in those modes.</p>
+<p>Another topic that received a lot of pages in the data sheet are the integrated "<a href="http://www.microchip.com/cip">core-independent peripherals</a>" that handle common tasks. The different sets of <a href="http://microchipdeveloper.com/mcu1102:peripherals">peripherals</a> are a large part of how one PIC edition differs from another one in the same family. Each peripheral is briefly covered in the data sheet with basic description and a rough outline of how to use them on a PIC chip.</p>
+<p>Some peripherals are fairly straightforward in function: the serial communication tutorial has already introduced me to the <a href="http://microchipdeveloper.com/8bit:usart">serial modules</a>, and I paid special attention to the I²C communication peripheral since I intend to use that to communicate with a Raspberry Pi. I smiled at the <a href="http://microchipdeveloper.com/8bit:clc">Configurable Logic Cell</a> peripheral because I recognized it as the modern replacement for the network of <a href="https://en.wikipedia.org/wiki/List_of_7400_series_integrated_circuits">7400-series chips</a> that I last saw in college lab exercises.</p>
+<p>Others peripherals are less obvious to me. I can read the description for modules like the <a href="http://microchipdeveloper.com/8bit:cwg">Complementary Waveform Generator</a>, but my brain has yet to make the connection between these tools and the problems I would solve with them. I hope that when the appropriate problem arises, I would recognize it and know to come back to the data sheet to learn how to design a solution.</p>
+<p> </p>
+<p></body></html></p>

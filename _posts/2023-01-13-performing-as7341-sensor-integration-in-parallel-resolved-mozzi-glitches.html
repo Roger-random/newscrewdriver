@@ -1,0 +1,74 @@
+---
+layout: post
+title: Performing AS7341 Sensor Integration in Parallel Resolved Mozzi Glitches
+date: 2023-01-13 12:30:00.000000000 +00:00
+type: post
+post_id: '34554'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- ESP32
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34570'
+  _publicize_job_id: '80522822647'
+  timeline_notification: '1673641853'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673819821
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/13/performing-as7341-sensor-integration-in-parallel-resolved-mozzi-glitches/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2023/01/12/jst-sh-stemma-qt-and-3-5mm-headphone-audio-jack-for-esp32-mini/">set up an ESP32 development board for interfacing</a> with both an AS7341 spectral color sensor as well as Mozzi audio generation libraries. This is a follow-up to my project <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/10/as7341-spectral-color-sensor-with-mozzi-on-avr-arduino/" target="_blank">doing the same with an AVR ATmega328-based Arduino Nano</a>. On those AVR boards, trying to compile Mozzi with Adafruit's AS7341 library would fail due to conflict between Mozzi's <code>twi_nonblock</code> I2C library and Arduino's Wire I2C library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>[...]\libraries\Mozzi-master\twi_nonblock.cpp.o (symbol from plugin): In function `initialize_twi_nonblock()':
+(.text+0x0): multiple definition of `__vector_24'
+[...]\libraries\Wire\utility\twi.c.o (symbol from plugin):(.text+0x0): first defined here
+collect2.exe: error: ld returned 1 exit status
+
+exit status 1
+
+Compilation error: exit status 1</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My earlier project solved that problem by avoiding Arduino Wire library, writing AS7341 interface code with <code>twi_nonblock</code> while using Adafruit's library as a guide. (But unable to copy code straight from it.) However, <code>twi_nonblock</code> is excluded from non-AVR platforms like ESP32. The good news is that we avoid above compiler error, the bad news is that we're on our own to find a non-blocking I2C API. For an ESP32, that meant dropping down to <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/i2c.html" target="_blank">Espressif's ESP-IDF I2C API</a>. I believe that's within my coding capabilities, but there was an easier way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why does <code>as7341.readAllChannels()</code> consume so much time that it causes Mozzi audio glitches? Arduino Wire's blocking I2C operations are certainly a part of that process, but most of that time is spent in AS7341 sensor integration. <code>as7341.readAllChannels()</code> starts an integration and waits for it to complete before returning results, blocking our Arduino sketch the entire time. But Adafruit foresaw this problem and included a provision in their AS7341 library: we can start an integration without blocking on it. Our sketch resumes code execution, allowing Mozzi to update audio while integration occurs in parallel. Once integration is complete, we can retrieve the values and do all the same things we would do for results of <code>as7341.readAllChannels()</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This concept was illustrated in the Adafruit example sketch <code>reading_while_looping</code>, which I thought was promising when I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/04/notes-on-adafruit-as7341-arduino-library-example-code/" target="_blank">reviewed all example sketches</a> earlier. I couldn't try it on an AVR due to Wire/twi_nonblock compiler conflict, but I could give it a shot on this ESP32. I started with the <code>reading_while_looping</code> example sketch and converted it over to a Mozzi sketch. First by moving existing code in <code>loop()</code> into <code>updateControl()</code>, leaving just a call to <code>audioHook()</code> inside <code>loop()</code>. For my first test I didn't need anything fancy, so I just had Mozzi play a steady 440Hz sine wave in <code>updateAudio()</code>. (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/A440_(pitch_standard)" target="_blank">A440</a> is the note used by western classical music orchestra to verify all instruments are in tune with each other.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first run was a disaster! Audio glitches all over the place, but I knew there was room for improvement. There was an entirely unnecessary <code>delay(500)</code>, which I deleted. Interleaved with the parallel integration is a blocking integration to our old friend <code>as7341.readAllChannels()</code>. I don't understand why the blocking code is in the middle of a non-blocking example, but I deleted that, too. This removed most of the problems and left a little recurring audible click. Looking over what's left, I noticed this sketch made quite a number of calls to <code>Serial.println()</code>. After their removal I no longer heard glitches in Mozzi audio.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I2C communication is still performed with Arduino Wire library. But this experiment empirically showed the communication is fast enough on an ESP32 that Mozzi does not audibly glitch despite Wire's blocking nature. This is much easier than dropping down to ESP-IDF I2C API. Also, this approach portable to other non-AVR Mozzi platforms like Teensy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After this successful experiment, I modified one of Emily's color organ sketches and the resulting pull request shows the changes I had to make. <a href="https://github.com/emilyvelasco/color_organ/pull/2/files">They were quite minimal</a> compared to rewriting everything with <code>twi_nonblock</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Playing with Mozzi was a fun challenge catering to its timing requirements. But as I proceed to play with AS7341, I'd prefer to shed Mozzi timing constraint and <a href="https://newscrewdriver.com/2023/01/14/modifying-esp32-mini-to-focus-on-as7341/">focus on other capabilities of this sensor</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this exploration is <a href="https://github.com/Roger-random/ESP32Tests/blob/main/mozzi_as7341/mozzi_as7341.ino" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

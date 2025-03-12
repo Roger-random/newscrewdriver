@@ -1,0 +1,57 @@
+---
+layout: post
+title: MP1584 Modification Version 2
+date: 2022-03-06 12:30:00.000000000 +00:00
+type: post
+post_id: '28863'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28865'
+  _publicize_job_id: '69840492039'
+  timeline_notification: '1646598804'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/06/mp1584-modification-version-2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2022/03/05/potential-explanations-for-mp1584-behavior/">learned some lessons</a> from the first round of modifying a MP1584 module for solar power input, and I thought I would try again. This time I started with a new module that hasn't suffered the abuse of being enabled at too low of a voltage. To keep it that way, I still need to change the resistors on board so it activates at a higher voltage than the default 3V. <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/02/raising-mp1584-enable-voltage-by-replacing-resistor/" target="_blank">Last time</a>, I desoldered a surface-mount resistor, and it wasn't a very neat job possibly damaging the board. This time I will go with a less invasive process and add more resistors in parallel with an existing resistor. This one between EN and GND was already on the edge of the board so it is easier to access.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I chose to add a 47kΩ and a 22kΩ through-hole resistor in parallel to the existing 100kΩ surface mount resistor between EN and GND. This should lower the effective resistance to 13kΩ between EN and GND. Combined with the existing 100kΩ resistor between EN and Vin, this should result in an activate voltage (EN ~=1.5V) somewhere around 13V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28866,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584-with-parallel-resistors-47k-22k-on-low-side.jpg?w=1024" alt="" class="wp-image-28866"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A quick test with the bench power supply confirmed the new activation point. I then mounted it to a perforated prototype board using two 220uF capacitors as input and output pins. I didn't put any effort into figuring out the perfect capacitance value, 220uF was just what I had available in a <a rel="noreferrer noopener" href="https://amzn.to/3HMvUJk" target="_blank">big bag of 100</a>. (*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28904,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584-capacitor-leg-mounting-to-perfboard.jpg?w=1024" alt="" class="wp-image-28904"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Conveniently, using the capacitor's legs to mount this board solves another problem I had with this type of MP1584 module: the input and output holes on the corners does not align with the 0.1" spacing on a perforated prototype board or breadboard. But now that I have these capacitor legs, I could bend them to fit available spacing. Their length also leaves plenty of space for me to clamp on allegator clips. Useful for providing power from my bench power supply, and for measuring output with oscilloscope.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a new candidate power supply in place, the next step is to solder the rest of the board to accommodate my ESP8266 and INA219 boards <a href="https://newscrewdriver.com/2022/03/07/solar-startup-still-tricky/">and test it out</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

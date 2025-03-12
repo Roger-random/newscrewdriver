@@ -1,0 +1,42 @@
+---
+layout: post
+title: The Spectrum of ROS Robot Brain Candidates
+date: 2018-08-30 09:00:42.000000000 +00:00
+type: post
+post_id: '16715'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21623222492'
+  timeline_notification: '1535644867'
+  _thumbnail_id: '7463'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/30/the-spectrum-of-ros-robot-brain-candidates/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>In the immediate future, my ROS experimentation will follow the TurtleBot 3 model: An on-board Raspberry Pi 3 will read sensor input and send motor output. It will communicate over wireless network to a PC (either desktop or laptop) who will process sensor data, evaluate potential actions, and plan actions to be sent back to RPi3 for execution.</p>
+<p>This should scale well to pretty much any output mechanisms we have on the horizon, especially since we're likely to offload real time control to dedicated co-processor modules like a <a href="http://www.basicmicro.com/Roboclaw-2x7A-Motor-Controller_p_13.html">Roboclaw</a> or <a href="https://hackaday.com/2018/07/05/wrangling-rc-servos-becoming-a-hassle-try-serial-bus-servos/">serial bus servos</a>. They take care of direct motor control, leaving the RPi3 with very little to do beyond sending a short command.</p>
+<p>Input will be a different story. We know simple bump sensors will be easy. And while the <a href="https://newscrewdriver.com/tag/neato/">Neato scanning LIDAR</a> isn't taxing to a Pi, its limited sensing capability means we will eventually need better sensors that give more data. A depth-sensing camera sensor like an old <a href="http://wiki.ros.org/kinect">Kinect</a> or an <a href="https://software.intel.com/en-us/realsense">Intel RealSense</a> looks interesting, but they require USB 3 which is beyond a Raspberry Pi. And while a Pi can handle simple vision processing of a <a href="https://newscrewdriver.com/2018/08/29/duckietown-is-full-of-autonomous-duckiebots/">Duckiebot</a>, doing something more complex will quickly outstrip its capabilities.</p>
+<p>We won't know for sure what the bottleneck would be until we start building some robots and run into limitations firsthand. Until we know, we risk wasting money on unnecessary capability. Still, it's good to have information on a spectrum of candidates.</p>
+<p><img class=" size-thumbnail wp-image-5172 alignright" src="https://newscrewdriver.com/wp-content/uploads/2017/05/raspberry-pi-logo.png?w=127" alt="raspberry-pi-logo" width="127" height="150">We already have a starting point on the low end of the spectrum: Raspberry Pi. There are several other competitors in the single-board computer market, almost all of which claim to be more powerful than a Pi. But very few could match the mass volume pricing of a Pi or its software ecosystem. The last part is important because ROS runs best on something that has a port of Ubuntu, which is absent from many Pi competitors.</p>
+<p>The first step beyond a Raspberry Pi 3, then, is probably going to be something cheap with a low-end Intel processor that can run Ubuntu. I had thought my collection of old PC hardware could step into this space, but an Acer Aspire 10 <a href="https://newscrewdriver.com/2017/12/06/acer-aspire-switch-is-linux-unfriendly/">really doesn't want to run Linux</a> and the Dell Latitude X1 is just too old. Its CPU consumes far more power than modern chips while doing far less. And even worse than that, its <a href="https://newscrewdriver.com/2017/11/28/dell-latitude-x1-a-2005-laptop-tries-to-fit-in-2017/">spinning platter hard drive consumes more power than SSDs while being slower</a>.</p>
+<p><img class="alignleft size-medium wp-image-16724" src="https://newscrewdriver.com/wp-content/uploads/2018/08/chromebook-logo.png?w=300" alt="chromebook logo" width="300" height="70">This points to a modern Chromebook with x86 CPU, most of which <a href="https://blog.ubuntu.com/2018/01/30/tutorial-install-ubuntu-on-a-chromebook">could be convinced to run Ubuntu</a>. The CPU won't be anything exciting. They might even be slower than the RPi's ARM chip for some tasks, but they'll have a larger cache and connect to more memory. Chromebooks also tend to have more robust main storage (instead of a microSD card) plus keyboard, screen, and battery. Some of these will even have USB 3 ports for a complete package starting at around $200.</p>
+<p><img class=" size-thumbnail wp-image-16723 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/08/nvidia-logo.jpg?w=150" alt="NVIDIA logo" width="150" height="111">If a Chromebook proves insufficient, it'll likely be due to the low-end CPU. Where we go beyond that will depend on the nature of the work overloading the chip. If it's in the arena of dedicated vision or other AI-related processing capabilities, we might move to something like <a href="https://developer.nvidia.com/embedded/jetpack">NVIDIA's Jetson</a> which has dedicated processing hardware for specific tasks and could run Ubuntu. <a href="https://amzn.to/2mSqUzu" target="_blank" rel="noopener">The Jetson TX2 is not cheap</a> (*), so we have to be sure we need the specialized capabilities before shelling out the dollars. [UPDATE: After this was originally written, NVIDIA launched the <a href="https://amzn.to/2nt6LQR">Jetson Nano</a> (*) with a much more palatable price.]</p>
+<p><img class="alignleft size-thumbnail wp-image-16725" src="https://newscrewdriver.com/wp-content/uploads/2018/08/intel-logo.jpg?w=150" alt="Intel logo" width="150" height="104">For less task-specific needs, the <a href="https://www.intel.com/content/www/us/en/products/boards-kits/nuc.html">Intel NUC product line</a> is a good candidate: compact little boxes that holds RAM, SSD, USB3 ports and available with a wide range of processors. From unexciting Chromebook-equivalent chips all the way up to <a href="https://ark.intel.com/products/126143/Intel-NUC-Kit-NUC8i7HVK">Core i7 paired with a respectable AMD GPU</a>. And unlike dedicated hardware like Jetson, an Intel NUC can be repurposed to a wide spectrum of other projects if not serving as robot brain. They're quite capable little Swiss Army knives of computing.</p>
+<p>But there's one remaining scenario where a NUC might prove insufficient. And that's when we need a powerful Intel CPU in conjunction with a powerful NVIDIA GPU. This means a high-end 'gamer laptop' at which point my <a href="https://newscrewdriver.com/2018/06/03/in-a-distorted-computer-component-market-buying-is-better-than-building/">Inspiron 15 7000 (7577)</a> might end up sitting in <a href="https://newscrewdriver.com/category/projects/sawppy-the-rover/">Sawppy</a>'s equipment bay. This marks the high end of the spectrum and I hope I don't end up there, because that's going to be a very expensive trip.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

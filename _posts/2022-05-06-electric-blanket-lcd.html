@@ -1,0 +1,58 @@
+---
+layout: post
+title: Electric Blanket LCD
+date: 2022-05-06 12:30:00.000000000 +00:00
+type: post
+post_id: '30130'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- PAC-215
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30137'
+  _publicize_job_id: '72227314717'
+  timeline_notification: '1651865418'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/06/electric-blanket-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I chose to <a href="https://newscrewdriver.com/2022/05/05/electric-blanket-control-sunbeam-pac-215/">take apart controllers from my old broken electric blanket</a> because I got frustrated trying to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/04/taylor-food-thermometer-lcd-first-round-fail/" target="_blank">control LCD from a food thermometer</a> and went looking for something simpler. I was optimistic that an electric blanket controller, with just two 8-segment digits, would be just the ticket.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30137,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sunbeam-pac-215-lcd-quick-test-before-removal.jpg?w=1024" alt="" class="wp-image-30137"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was so eager I performed a quick LCD test before I even completed the teardown. I got a single segment to show up, which was a promising start. I was also happy to see this LCD connected to its circuit board with nice long metal pins that I could unsolder, not the elastomeric "zebra strip" used by the food thermometer.  These pins are even spaced in a breadboard-friendly 0.1" pitch, win!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30140,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sunbeam-pac-215-lcd-desoldered.jpg?w=1024" alt="" class="wp-image-30140"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I recently got the <a rel="noreferrer noopener" href="https://www.adafruit.com/product/1597" target="_blank">Engineer solder sucker from Adafruit</a>, upon Helen Leigh's recommendation and it made this de-soldering task much easier than with my previous lowest-bidder solder sucker. I now recommend the Engineer unit too, it is well worth the price premium.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30142,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sunbeam-pac-215-lcd-soldered-to-header-pins.jpg?w=1024" alt="" class="wp-image-30142"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried to put this module directly into a breadboard, but the pins are too fragile. (They would bend instead of pushing into the breadboard.) Thanks to the 0.1" spacing, it was very easy to solder robust headers onto those pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30144,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sunbeam-pac-215-lcd-mapped.jpg?w=1024" alt="" class="wp-image-30144"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The headers gave me a solid reliable connection to those pins, making it easy to map out all the segments. Far easier than the food thermometer LCD and its elastomeric strip. Now I need to figure out how to <a href="https://newscrewdriver.com/2022/05/07/quick-esp32-pwm-experiment-via-esphome/">generate the voltage levels necessary</a> to drive this LCD.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

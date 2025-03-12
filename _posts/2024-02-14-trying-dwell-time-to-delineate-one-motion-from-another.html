@@ -1,0 +1,58 @@
+---
+layout: post
+title: Trying Dwell Time To Delineate One Motion From Another
+date: 2024-02-14 12:30:00.000000000 +00:00
+type: post
+post_id: '41961'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  _publicize_job_id: '91966641713'
+  firehose_sent: '1707942600'
+  timeline_notification: '1707942601'
+  wordads_ufa: s:wpcom-ufa-v4:1708031602
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/14/trying-dwell-time-to-delineate-one-motion-from-another/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After fumbling around the edges for a while, I finally got <a href="https://newscrewdriver.com/2024/02/13/mx340-paper-feed-motor-acceleration-deceleration/">a decent acceleration/deceleration plot</a> of paper feed motor in a Canon Pixma MX340 multi-function inkjet. It was very informative not only in a "satisfy curiosity" way, but also in a "oh, my plan isn't going to work" way as well. Better I discover the flaw now rather than later!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41951,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-position_per_us-over-time-with-two-entry-bounce-rejection-first-three-movements.png?w=1024" alt="" class="wp-image-41951"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The challenge is to recognize when one motion has ended and another has begun. My first effort was to sample encoder position as fast as possible and, when there's zero delta between two samples, declare that a point of delineation. <a href="https://newscrewdriver.com/2024/02/07/motion-decoder-fail-zero-delta-between-two-samples/" target="_blank" rel="noreferrer noopener">This idea failed spectacularly</a>. So I thought I could base my decision on acceleration: when the motor starts accelerating after a period of deceleration, declare that a point of delineation. But now that I've looked at the actual plot, I know that won't work either. Several changes in acceleration rates occur within a single motion during normal operation, so that is not a reliable indicator to use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could withhold decision until acceleration exceeds a certain threshold, but that means I have to track a longer history. Back to when the candidate delineation point existed, so I could output that data when the decision is made. I'd like to avoid adding such runtime data management complexity. On top of that, it would add a threshold setting problem into the mix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If a threshold setting problem is inevitable, I might as well try it in the context of something simpler with less data to manage: dwell time. Defined as: how much time the system spends sitting at a particular encoder position. This is similar to the earlier "zero delta between two samples" approach, but now based on microsecond timestamp rather than an unpredictable "time elapsed between polls by <code>loop()</code>." Looking over the data I captured of system startup, I see "not quite there yet, need a little kick" dwell times of a little over 9000 microseconds. Given that, I'll start with a dwell time of 10000 microseconds (10 milliseconds).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think it's better to have this threshold a little too low versus too high. When it is too low, it would falsely break up a single motion. For example, "Moved 1798" then "moved 2" instead of desired "moved 1800". This will add noise to the motion decode output, but I think it is the lesser evil. Setting it too high would falsely combine multiple motions into one: "Moved 900" instead of "Moved 2700" and "Moved -1800" and such mistakes would be more difficult for me to recognize when <a href="https://newscrewdriver.com/2024/02/15/initial-motion-decoder-outputs-look-good/">looking at motion decode output</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

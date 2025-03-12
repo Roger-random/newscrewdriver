@@ -1,0 +1,58 @@
+---
+layout: post
+title: Notes on Siglent SDS1104X-E Oscilloscope User's Guide
+date: 2022-08-25 12:30:00.000000000 +00:00
+type: post
+post_id: '32180'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32169'
+  _publicize_job_id: '76101646526'
+  timeline_notification: '1661455812'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/25/notes-on-siglent-sds1104x-e-oscilloscope-users-guide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have some basic ideas on how to use an oscilloscope, but I've never had one of my own until <a href="https://newscrewdriver.com/2022/08/24/finally-bought-a-real-oscilloscope/">I bought one</a> during this year's Amazon Prime Day sale. Given its complexity and cost, I thought it would be a good idea to invest some time into <a href="https://en.wikipedia.org/wiki/RTFM" target="_blank" rel="noreferrer noopener">Reading The Fine Manual</a>. This did not start well, as there was only a Quick Start Guide in the box, featuring this particular gem:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32187,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/siglent-sds-1104x-e-quick-start-guide-symbols-1.jpg?w=1024" alt="" class="wp-image-32187"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>These symbols may appear on the product</em>: (<em>But we won't tell you what they mean!</em>) Thanks, guys. Despite such minor mistakes, the quick start guide seems fine if perfunctory. I was moderately annoyed that they used the same manual for two-channel and four-channel versions of this scope, so I would occasionally look at something that made no sense until I realize it was about the two-channel. That annoyance aside, I learned valuable things like adjusting probe compensation as part of unpacking and initial setup (they were all slightly under-compensated but easily resolved with the procedure) but most of the other descriptions assumed I already knew how to use an oscilloscope. I was worried until I saw a note saying I could find more information in the User Manual.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Okay! A real User Manual exists, even if it isn't in the box. I went hunting online and found my answer on <a rel="noreferrer noopener" href="https://siglentna.com/resources/documents/digital-oscilloscopes/#sds1000x-e-series" target="_blank">Siglent NA (North America?) document repository</a> where I could find the User Manual (and many other guides) in PDF format under the <strong><em>SDS1000X-E-Series</em></strong> section. It has the same annoyance of using one manual for both 2- and 4-channel versions, but now with a lot more useful detail.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>One valuable thing I learned and need to keep in mind is that most knobs on this oscilloscope are like the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/08/quadrature-encoder-rotary-knob-with-detent/" target="_blank">quadrature encoder knob I took apart</a>: there is a button press in addition to rotation. If I'm poking around looking for a feature, it might be a knob press.</li>
+<li>I like the idea of the "Auto Setup" button. It is advertised to looks at the channel's signal and choose an appropriate vertical and horizontal scaling. Sounds like a counterpart to "auto ranging" capability on a multimeter, I hope it will turn out to be as useful as it sounds.</li>
+<li>These scopes came with probes that have a switch to toggle between 1X and 10X attenuation. It appears the probe has no way to communicate its current setting to the scope, I have to tell the scope. Something to keep in mind and check when things make no sense.</li>
+<li>When I zoom out to a longer timescale, there's a threshold where the cheap DSO-138 would automatically switch to showing data in a horizontal scrolling display. After reading this user's guide I know it is called "Roll Mode" (Page 34) here and it's something I can choose to toggle on/off with a button, independent of timescale.</li>
+<li>I frequently try to adjust display timescale on the DSO-138 so I could zoom in and out to look at various features. Now, I have an actual zoom function (page 35) so I can keep the longer timescale waveform on screen simultaneously with a short timescale subset of the same wave.</li>
+<li>DSO-138 would frequently fail to show fast blips. If I need to see peaks of very brief signals, I can choose to display "Peak Detection" mode. (page 46).</li>
+<li>Typically having multiple channels mean multiple lines all graphed against time, but setting "Acquire" to "XY" (page 49) allows graphing one channel versus another instead of time. There will be some vector graphics fun with Lissajous curves in the near future.</li>
+<li>It seems like half of the manual goes into depth on what each of the trigger modes do. I will need to re-read this section several times. Eventually I should be able to recognize which situations are best fit for certain trigger modes.</li>
+<li>I was very excited to read about Video Trigger: it sounds like the oscilloscope knows what NTSC composite video signals should look like and can trigger on specific parameters or fields. Once I master this mode, I foresee it becoming extremely valuable for debugging my ESP32 composite video output library.</li>
+<li>I had no idea "Measurements" (page 130) are something oscilloscopes can do now. So instead of reading the screen to see how much time is represented by an on-screen grid division, and calculating the period of a waveform, and from there calculating the frequency... now the scope has measurement tools to do all that math for us. Wow, fancy!</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Judging by what I've learned from this User's Guide, I'm very happy with the potential usefulness of my oscilloscope purchase. I hope it will prove to be actually useful as I learn to <a href="https://newscrewdriver.com/2022/08/26/lrwave-audio-under-multichannel-oscilloscope/">harness its abilities</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

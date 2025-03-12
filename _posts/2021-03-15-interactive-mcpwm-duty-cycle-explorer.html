@@ -1,0 +1,52 @@
+---
+layout: post
+title: Interactive MCPWM Duty Cycle Explorer
+date: 2021-03-15 12:30:00.000000000 +00:00
+type: post
+post_id: '25598'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+- TT Gearmotor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24702'
+  _publicize_job_id: '55977016795'
+  timeline_notification: '1615836638'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/15/interactive-mcpwm-duty-cycle-explorer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I started <a href="https://newscrewdriver.com/2021/03/14/exploring-tt-gear-motor-speed-range/">exploring TT gearmotor response to different duty cycles</a> by editing MCPWM parameters in source code, compile with those new parameters, and uploading the results to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/01/jumper-wire-headaches-try-cardboard/" target="_blank">my ESP32 motor control test <s>bench</s> board</a>. It took only three cycles of this process before it was painfully clear I needed a better way. So I copied an excerpt (the joystick and MCPWM portions) of my ESP32 Sawppy control software out to <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/MCPWM_DutyCycle" target="_blank">a separate test program</a> in order to interactively explore TT gearbox behavior under different duty cycles.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This test program only dynamically varies the duty cycle, not the PWM frequency. I'm running my program at a PWM frequency of 20 kHz. There may be an annoying whine audible to dogs and newborns, but it's comfortably above my not-spring-chicken range of hearing. A brief test established that these TT gear motors behave differently at lower PWM frequencies. The most consequential effect is that I could turn them at a lower minimum speed. Still not rock-climbing slow, but there's definitely an effect. I don't have enough electrical engineering background to understand why I have more torque with lower PWM frequency, so I'll have to come back to this topic later to find an explanation for my observation. In the meantime I'm insistent on 20 kHz PWM because I don't like to hear the whining.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my test program I didn't have a real need for analog control, so the joystick was effectively turned into a direction pad. Pushing one direction increments duty cycle, pushing the opposite decrements it. The orthogonal axis adjusts the increment rate, so I can adjust in duty cycle increments of 10%, 1%, and 0.1%. In order to test startup power, I could press down on the stick to trigger its associated button. This button toggles motor power on and off. This program is only useful when connected to serial monitor because the increment rate and the current duty cycle are displayed via text sent over serial link. I plan to use this tool again once Micro Sawppy is rolling on its own wheels, in order to update speed-to-duty cycle mapping to reflect realistic loads on the wheels rather than unloaded spinning in the air.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In theory it should be possible to have this tool as a part of Sawppy ESP32 control code instead of a separate project. I would have to set up some sort of conditional compilation mechanism so I could toggle whether to compile standard Sawppy control or this duty cycle explorer. However, I don't see any particular motivation to perform this work today so until I see a benefit, I'll leave that integration task on the to-do list for the future. With some working PWM duty cycles in hand I can start putting them to work with <a href="https://newscrewdriver.com/2021/03/16/assigning-pins-for-sawppy-rover-esp32/">ESP32 GPIO pin assignments</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[ This test program is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/MCPWM_DutyCycle" target="_blank">publicly available on GitHub</a>. ]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

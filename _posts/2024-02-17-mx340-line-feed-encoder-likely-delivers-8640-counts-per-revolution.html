@@ -1,0 +1,73 @@
+---
+layout: post
+title: MX340 Line Feed Encoder Likely Delivers 8640 Counts Per Revolution
+date: 2024-02-17 12:30:00.000000000 +00:00
+type: post
+post_id: '41999'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '42005'
+  timeline_notification: '1708201807'
+  firehose_sent: '1708201806'
+  wordads_ufa: s:wpcom-ufa-v4:1708293931
+  _publicize_job_id: '92048256837'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/17/mx340-line-feed-encoder-likely-delivers-8640-counts-per-revolution/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2024/02/16/motion-decoder-output-summary/">written down motions I decoded</a> from a Canon Pixma MX340 multi-function inkjet as it went through various states, hoping that information will help me understand its mechanical internals when I take the print engine apart. However, that information was in terms of quadrature encoder counts. I also need to know what they are in terms of physical rotation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40663,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-print-head-carriage-motor-area.jpg?w=1024" alt="" class="wp-image-40663"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40599,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-paper-feed-roller-encoder-wheel-closeup.jpg?w=800" alt="" class="wp-image-40599"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Earlier, I took a close-up picture of the encoder wheel and its many very fine lines. Far too fine and far too many for me to contemplate counting them by eye.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41036,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-encoder-backwards-fast.png?w=826" alt="" class="wp-image-41036"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I had the quadrature encoders connected to my oscilloscope, I determined the sensor runs on 3.3V DC and it is only energized when the print engine is active. Trying to manually push some gears around would risk getting my fingers caught if it started running. But I can't get any data during idle periods because the sensor receives no power when idle.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42005,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-line-feed-encoder-unplugged.jpg?w=1024" alt="" class="wp-image-42005"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Solution: unplug the encoder from the system mainboard, and supply my own 3.3V DC to the sensor. An Arduino Nano has a convenient pin for supplying 3.3V DC.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I turned the gear train manually with my finger to turn the encoder wheel one full rotation, and saw the Arduino declare it had seen 8646 steps. This seemed like a very unlikely number, so I tried again and got 8652. A few experiments turning the gears back and forth determined my finger is far less precise than the encoder. Every time I move the gear and try to move it back to the exact same place, I would end up off by a margin of plus or minus 10 counts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given this error margin, I decided I'll have to take a guess as to encoder wheel resolution. Since this is a rotation encoder, I decided it likely worked in terms of degrees. (Versus, say, radians.) Looking at the range of values I got, 8640 came up as a good candidate as it factors into 360 times 24. 24 encoder counts per degree seems like a useful number, easily dividing into halves, thirds, quarters, etc. as needed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can take this number and convert my earlier motion decoder output into degrees. For example, I saw many quick movements of 1800 encoder counts. At 24 encoder counts per degree, that means 1800/24 = 75 degrees. I'm not 100% confident of 8640 counts per revolution on this encoder, but if I'm wrong, 8640 should be close enough for my immediate needs. Good enough to <a href="https://newscrewdriver.com/2024/02/18/canon-pixma-mx340-paper-feed-motor-round-2-summary/">wrap up this chapter of exploration</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

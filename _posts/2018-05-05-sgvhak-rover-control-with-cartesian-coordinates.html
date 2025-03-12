@@ -1,0 +1,41 @@
+---
+layout: post
+title: SGVHAK Rover Control With Cartesian Coordinates
+date: 2018-05-05 17:58:44.000000000 +00:00
+type: post
+post_id: '16131'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _wp_old_date: '2018-05-03'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1525568328'
+  _publicize_job_id: '17529679894'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/05/sgvhak-rover-control-with-cartesian-coordinates/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Having learned some valuable lessons from trying to drive our <a href="https://github.com/Roger-random/SGVHAK_Rover">SGVHAK rover</a> using an interface based on polar coordinates, we returned to the drawing board to create an alternative. Thankfully, the abstracted command structure meant we could experiment with front-end user interface without any changes to the back-end rover calculations.</p>
+<p>Our first-hand experience taught us polar coordinate math are more trouble than it was worth, so our next attempt will stay in the Cartesian coordinate space. Furthermore, we'll rearrange the layout so a position going full speed ahead would never be adjacent to a position going full speed reverse. (This was the case for polar coordinate system when doing full deflection turns.) Third, we'll have to make sure low speed maneuvering has just as much room to fine-tune its angle as going high speed. And lastly, when someone releases their finger out of caution, we need to stop the rover but we don't need to reset steering angles.</p>
+<p>It turned out to be very easy to satisfy all of the above desires: map X-axis left-right dimension to steering angle, and Y-axis up-down dimension to speed.</p>
+<p><img class=" size-full wp-image-16115 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/cartesian-pad.png" alt="Cartesian Pad" width="552" height="640"></p>
+<p>Full speed ahead is now along the top edge of the blue rectangle, which is far from the bottom edge representing full speed reverse. There is no longer any risk of suddenly jerking between them.</p>
+<p>At any given speed, we now have the full width for designating steering angle, we are no longer frustrated by a tiny range of adjustments when moving slow speed versus high.</p>
+<p>And finally, when the user releases their finger, the dot will snap to vertical center (stop moving) but will remain at its most recent horizontal position, preserving the steering angle most recently used by our rover driver. This makes fine position adjustments much easier by allowing slow incremental inching forward/reverse movements.</p>
+<p>Most users who tried both UI design prefer the Cartesian coordinate system. It was used for most of our driving <a href="https://newscrewdriver.com/2018/04/18/sgvhak-rover-and-predecessor-at-scale-16x/">at SCaLE 16X</a>.</p>
+<p></body></html></p>

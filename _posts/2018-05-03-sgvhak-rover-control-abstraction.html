@@ -1,0 +1,43 @@
+---
+layout: post
+title: SGVHAK Rover Control Abstraction
+date: 2018-05-03 09:00:53.000000000 +00:00
+type: post
+post_id: '16128'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17449777963'
+  timeline_notification: '1525363383'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/03/sgvhak-rover-control-abstraction/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once we were confident <a href="https://github.com/Roger-random/SGVHAK_Rover">our SGVHAK rover chassis control code</a> looked pretty good, we were willing to trust that it could drive a rover without sending conflicting commands that make our rover try to twist itself into a pretzel. Now our focus turns to creating an interface for user control input.</p>
+<p>A quick rough draft had been in place to help test rover chassis <a href="https://en.wikipedia.org/wiki/Ackermann_steering_geometry">Ackermann math</a>, letting a rover driver send a steering angle and travel speed to rover's control code. But it was very tied to the current rover implementation: angle range was limited to angle range of what we have today, and speed was specified in raw quadrature pulses per second (QPPS) that we send straight down to <a href="http://www.ionmc.com/">RoboClaw motion controller</a>'s API.</p>
+<p>Since we have ambitions for future rover variants, this direct dependency is not good. Future rovers may have a wider (or narrower) range of valid steering angles. They may also use something other than RoboClaw motor controllers. The answer is a typical software solution: abstraction!</p>
+<p>This required changing the interface between our HTML UI front-end and the Flask-based Python code running on the rover. Instead of a fixed number angle or a fixed number of encoder pulses, user now send driving commands in terms of two percentages ranging from negative 100% to positive 100%.</p>
+<p>For steering, -100% tells a rover to steer as far left as it could go, 0% is straight forward/back travel, and 100% is to steer as far right as it could go.</p>
+<p>For velocity, -100% is travelling backwards as fast as it could, 0% is stop, and 100% is <a href="https://en.wikipedia.org/wiki/Battle_of_Mobile_Bay#Damn_the_torpedoes">damn the torpedoes, full speed ahead</a>.</p>
+<p>Now when we adapt the code for future rover variants, we could focus on rover-side configuration and remain confident user-side HTML interface will automatically adapt to whatever capabilities are present on a particular rover variant.</p>
+<p>This also allows us to experiment with user-side HTML without worrying about having to make matching changes in rover-side Python code. We can try different control schemes, as long as it ends up sending a velocity and steering angle percentage to the rover.</p>
+<p>The first and crudest implementation of this concept is shown here: two HTML slider objects that move from -100% to 100%. The user can move the slider and tap "Send command" to rover. As the most basic HTML implementation possible, this is a useful test tool to isolate whether a particular control problem is in HTML front-end or in Python back-end, but it is obviously not a great driving interface.</p>
+<p>That's coming up next.</p>
+<p><img class=" size-full wp-image-16116 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/velocity-angle.png" alt="Velocity Angle" width="570" height="266"></p>
+<p></body></html></p>

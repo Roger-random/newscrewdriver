@@ -1,0 +1,43 @@
+---
+layout: post
+title: Panasonic UJ-867 Optical Carriage (Briefly) Under A4988 Control
+date: 2019-08-22 12:30:56.000000000 +00:00
+type: post
+post_id: '19287'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Electronic Components
+- Teardown
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19255'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34424502195'
+  timeline_notification: '1566502290'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/22/panasonic-uj-867-optical-carriage-briefly-under-a4988-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I <a href="https://newscrewdriver.com/2019/08/21/panasonic-uj-867-optical-drive-carriage-extraction/">extracted the optical assembly carriage</a> of a Panasonic UJ-867 optical drive, the next step is to interface it with a Pololu A4988 driver board. And just as with the previous optical drive stepper motor, there are four visible pins indicating a bipolar motor suitable for control via A4988. However, this motor is far smaller as befitting a laptop computer component.</p>
+<p><img class="alignnone size-full wp-image-19253" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-70-stepper-motor-connector.jpg" alt="Panasonic UJ-867 70 stepper motor connector" width="1600" height="900"></p>
+<p>The existing motor control cable actually passed through the spindle motor, meaning there were no convenient place to solder new wires on the flexible connector. So the cable was removed and new wires soldered in its place.</p>
+<p><img class="alignnone size-full wp-image-19254" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-80-stepper-motor-new-wires.jpg" alt="Panasonic UJ-867 80 stepper motor new wires" width="1600" height="900"></p>
+<p>Given the fine pitch of these pins it was very difficult to avoid solder bridges. But it appeared to run standalone so I reinstalled into the carriage. Where it still ran - but was very weak. Hardly any power at all. When I tilted it up so the axis of travel is vertical, the carriage couldn't win its fight against gravity. Since the job is only to move an optical assembly, I didn't expect these carriages exert a great deal of force. But I've seen vertically mounted slot loading optical drives. I thought it should at least be able to fight against gravity.</p>
+<p>A Dell laptop charger delivers 19.2V. I'm not sure how many volts this motor intended to run at, but 12V seemed reasonable. Then I increased current beyond the 50mA of the previous motor. Increasing both voltage and amperage seemed to help with more power, but it remained too weak to overcome gravity.</p>
+<p>As I'm tilting the metal carriage assembly in my hand, I started noticing it was warming. Oh no! The motor! I checked the temperature with my finger, which was a mistake as it was hot enough to be painful to human skin. I shut down my test program but it was too late, the carriage never moved again.</p>
+<p>Lessons learned: don't get too overzealous with power and check temperature more frequently.</p>
+<p>And if I want to continue these experiments, I'll need <a href="https://newscrewdriver.com/2019/08/23/optical-drive-carriage-the-sequel/">another stepper motor assembly</a>.</p>
+<p></body></html></p>

@@ -1,0 +1,75 @@
+---
+layout: post
+title: Xbox One SSD Upgrade Successful
+date: 2023-02-19 12:30:00.000000000 +00:00
+type: post
+post_id: '35270'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Xbox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35272'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676925250
+  _publicize_job_id: '81650521470'
+  timeline_notification: '1676838612'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/19/xbox-one-ssd-upgrade-successful/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Following directions published by iFixit, I successfully <a href="https://newscrewdriver.com/2023/02/18/xbox-one-hard-drive-extracted/">pulled the original factory hard drive from my Xbox One (2013) game console</a>. This is an attempt to increase game load performance with an SSD upgrade, migrating Xbox operating system files via <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/02/10/notes-on-linux-disk-tools/" target="_blank">Linux "dd" tool</a>. I installed both original Xbox 500GB hard drive and candidate replacement 500GB SSD in my Ubuntu tower case with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/10/14/rosewill-hard-disk-drive-cage-rsv-sata-cage-34/" target="_blank">drive cage that makes drive install/uninstall much easier</a>. Now I can see how they compare.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I expected both of their "500GB" to be rounded-off values approximating actual drive capacity, which are dictated by implementation details of each drive. Since they are built within constraints of completely different technologies, I expected the two drives to be somewhat different in capacity. Most of the time, a few megabytes bigger or smaller wouldn't make a big difference. But for a blind copy to succeed, my SSD must be at least as large as the HDD. If the SSD is even one byte smaller, the blind copy would fail.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the drive removed from Xbox and installed in my Ubuntu tower, as per "<code>fdisk -l</code>" command.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Disk /dev/sdb: 465.76 GiB, 500107862016 bytes, 976773168 sectors
+Disk model: WDC WD5000LPVX-2
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And here is my candidate for replacement SSD. It was bought a few years ago, from Western Digital's economy class "Blue" line. This model number WDBNCE5000P is no longer available, its current-day successor to the title of "WD Blue 500GB SATA" appears to be <a rel="noreferrer noopener" href="https://amzn.to/3lqI30U" target="_blank">model WDS500G3B0A</a> (*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Disk /dev/sdc: 465.76 GiB, 500107862016 bytes, 976773168 sectors
+Disk model: WDC  WDBNCE5000P
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oh wow, capacity of these two drives matched perfectly down to the byte. I didn't expect that. Was this pure coincidence or is there some other factor at play? I noticed both are Western Digital drives, did that help? No matter, I took the perfect capacity match as green light to proceed and launched my blind copy with the following command:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>sudo dd if=/dev/sdb of=/dev/sdc bs=4K status=progress</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>It took a little over three hours to copy because hard drive throughput dropped as copy progressed. It started at well over 100 megabytes per second, but towards the end it was barely copying 1-5 megabytes a second. I don't know why. Disk fragmentation was the only hypothesis I had, and that shouldn't be an issue in a blind copy. My best guess is that 4 kilobytes is not the optimal block size despite it listed as "optimal" I/O size above.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I connected everything together, many components loosely dangling, and pressed the power button. 38 seconds later, I saw the initial setup screen. That's almost half of HDD boot time of 64 seconds! I connected to my Microsoft account and retrieve a few of my digital purchases, which all ran without complaint. And even better, the SSD made this a much more responsive Xbox console. It didn't make a difference once a game was up and running, but the SSD helps us get into the game or switch levels much faster. Less waiting, more gaming! This was a win and it emboldened me to <a href="https://newscrewdriver.com/2023/02/20/xbox-one-x-ssd-upgrade/">perform an SSD upgrade with my Xbox One X</a> as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

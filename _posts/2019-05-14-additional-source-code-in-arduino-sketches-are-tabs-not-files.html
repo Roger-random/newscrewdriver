@@ -1,0 +1,48 @@
+---
+layout: post
+title: Additional Source Code In Arduino Sketches Are Tabs Not Files
+date: 2019-05-14 12:30:38.000000000 +00:00
+type: post
+post_id: '18481'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags: []
+meta:
+  _thumbnail_id: '18482'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30808785208'
+  timeline_notification: '1557862294'
+  _oembed_80b2afe2a1e79dfa70128e364388d030: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Fun
+    with trigonometry tonight! Reviewing <a href="https://twitter.com/hashtag/Sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#Sawppy</a>
+    wheel geometry on paper to help track down problems with my Arduino control code.
+    <a href="https://t.co/22A4VrLbjC">pic.twitter.com/22A4VrLbjC</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1127079594022948866?ref_src=twsrc%5Etfw">May
+    11, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_80b2afe2a1e79dfa70128e364388d030: '1557873961'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/14/additional-source-code-in-arduino-sketches-are-tabs-not-files/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Being an electronics hardware tinkerer, there was no way for me to be ignorant about Arduino, but it never quite seemed to fit what I needed for a project: if I wanted computing power I used a Raspberry Pi, and if I wanted inexpensive low-level microcontroller I used a PIC. But I wanted to make Sawppy friendlier to beginners, and <a href="https://newscrewdriver.com/2019/04/28/i-found-my-motivation-to-enter-world-of-arduino-make-sawppy-easier/">that was my motivation</a> to finally start learning about the Arduino ecosystem.</p>
+<p>I understand Arduino's success is largely credited to how its creators underwent a clean-sheet examination at physical computing with the specific goal of making things easy for beginners to get started. A clean-sheet approach meant that tenure was meaningless. If the creators felt it was not helpful to beginners, it was gone regardless of whether it was a long standing tradition. I <a href="https://newscrewdriver.com/2019/05/13/learning-how-to-write-arduino-libraries-and-tutorials/">read this philosophy repeatedly</a> as I was learning about Arduino, one example among many was this statement from Arduino API design style guide:</p>
+<blockquote><p><em>Some of these run counter to professional programming practice. We’re aware of that, but it’s what’s made it possible for so many beginners to get started with Arduino easily.</em></p></blockquote>
+<p>After I felt I had done enough reading to feel like I was properly oriented, I embarked on my project to started writing code for driving Sawppy using an Arduino. It didn't even take 5 minutes before my well-worn habits ran into a collision with The Arduino Way. I wanted to put <a href="https://www.arduino.cc/en/Tutorial/JoyStick">joystick tutorial code</a> in its own header (<code>*.h</code>) and source (<code>*.cpp</code>) files instead of putting it in the top level sketch (<code>*.ino</code>) file... and I couldn't do it.</p>
+<p>I selected "File"/"New" in the Arduino IDE, but that created a new Arduino sketch (<code>*.ino</code>). I poked around in various options on the file creation dialog, hoping to see a "create new header file" or similar, but saw nothing dealing with file types. I could see how file types might be confusing to beginners, so it's Arduino design in practice: avoid file types even if it disorients long time computer programmers.</p>
+<p>And I was definitely disoriented. I was so stuck in my old ways I couldn't figure out what might have replaced it in Arduino IDE. I eventually found my answer by downloading an existing Arduino project with multiple source files and opening it in the IDE: additional source files are tabs! In the Arduino IDE, a "document" is a complete sketch with all its parts. If source code is spread across multiple files on disk, they are represented as tabs when the document was opened.</p>
+<p>So in order to create a separate set of files for my joystick code, I need to select "New Tab" and give it the filenames I intended. One tab for <code>joydrive.</code>h and one for <code>joydrive.cpp</code>.</p>
+<p>My relationship with Arduino is off to a rocky start, but I'm sure we'll work it out.</p>
+<p> </body></html></p>

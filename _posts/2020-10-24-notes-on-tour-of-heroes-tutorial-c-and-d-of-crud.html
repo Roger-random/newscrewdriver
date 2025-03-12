@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'Notes on "Tour of Heroes" Tutorial: C and D of CRUD'
+date: 2020-10-24 12:30:00.000000000 +00:00
+type: post
+post_id: '23125'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22766'
+  timeline_notification: '1603567828'
+  _publicize_job_id: '50296666159'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/24/notes-on-tour-of-heroes-tutorial-c-and-d-of-crud/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>This Angular tutorial on server interactions <a href="https://newscrewdriver.com/2020/10/23/notes-on-tour-of-heroes-tutorial-r-and-u-of-crud/">started with (R)ead and (U)pdate operations</a>, then we moved to C(reate) of CRUD by adding a hero to the Tour of Heroes. I found it interesting that content creation was not the first thing to be covered, even though it is the obvious first step in life cycle of a piece of information which I supposed was why it was the first letter of CRUD. The authors of this tutorial gave us the luxury of a stub set of data so we can explore other concepts before we worry about data creation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even with that background, creation was still confusing to me. For example, our input element has a hash <code>#heroName</code>. I assume the hash prefix tells some piece of Angular infrastructure to do something... but what? That was completely unexplained and I have no idea how to use it myself later. Even worse, they didn't even give me a keyword to search for, so I'll start with input element documentation and hunt from there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another piece of auto-magic is in generation of hero ID. I felt that was a mistake because the identifier will be the first piece of information we'll need to understand in any debugging task. The tutorial authors may not think these details are important, but I do, so I'll have to chase down details later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally we have D(elete) of CRUD. The mind-boggling part for me was learning that RxJS only cares about delivering information to subscribers. If there are no subscribers, RxJS will decide it is not important and won't do the thing. This had to be called out because in this context it meant we must hang a subscriber on a delete operation, even if we don't do anything with the response, or else RxJS will not perform the operation. On the one hand, emphasizing that an Observable does nothing unless there are subscribers is a very valuable point to bring up. On the other hand, this feels like an inelegant hack.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can accept this as an oddity of a system that we just have to learn to live with in the world of Angular development. Even though I can see it biting me in the future if I ever forget, I can see how it is a worthwhile tradeoff to get everything else RxJS offers to <a href="https://newscrewdriver.com/2020/10/25/notes-on-tour-of-heroes-tutorial-other-web-server-interactions/">make server interaction easier</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,43 @@
+---
+layout: post
+title: Packing Bubble Squish Test
+date: 2020-09-17 12:30:00.000000000 +00:00
+type: post
+post_id: '21994'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Node-RED
+meta:
+  _thumbnail_id: '22276'
+  _oembed_d645bf3615b4fb377dbc0bc135cfdda6: "{{unknown}}"
+  _oembed_75cb50e70363af06460d474967965c3e: "{{unknown}}"
+  timeline_notification: '1600371168'
+  _publicize_job_id: '48934035782'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/17/packing-bubble-squish-test/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wrote down my <a href="https://newscrewdriver.com/2020/09/16/fast-and-easy-ui-via-node-red-dashboard/">first impressions of Node-RED Dashboard</a>, here I describe the project I used to explore and exercise my new tools in the Node-RED toolbox. It is a silly little thing that tests the squishiness of a plastic air bubble used as packing material. The bubble isn't important, the main objective was to build my first nontrivial Node-RED flow and have it interface with my two recent hardware projects: the 3-axis motion control chassis of a retired Geeetech A10 printer, and the load cell kit mounted where the printer's build plate used to be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both of these hardware components use USB connections that show up on the computer as serial ports, which made it easy to interface with Node-RED via <a rel="noreferrer noopener" href="https://flows.nodered.org/node/node-red-node-serialport" target="_blank"><code>node-red-node-serialport</code></a>. Once installed, I had three new nodes on my palette. "Serial in" is what I needed to read the stream of data coming in from the Arduino handling the HX711 reading the load cell strain gauges. "Serial request" is what I needed for bidirectional data transfer with the 3D printer control board: sending G-code commands and reading status like position. (The third one, "Serial out", is not applicable to this project.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To keep the project simple, my X- and Y-axis motion are hard coded and I only hooked up a few Dashboard buttons to control my 3D printer motion in the Z-axis. This allowed me to fine tune the height of the carriage. I added buttons to remember two set heights A and B, and a toggle to automatically cycle between those positions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I set my plastic bubble test subject down on the platform and used my flow to make the machine repeatedly press down on the bubble. Pressure reported by the load cell is sent to a Node-RED chart to graph its change over time. I was more interested in the exercise than any real results, but <a href="https://newscrewdriver.com/2020/09/18/packing-bubble-squish-test-data/">the graph actually turned out to be interesting</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

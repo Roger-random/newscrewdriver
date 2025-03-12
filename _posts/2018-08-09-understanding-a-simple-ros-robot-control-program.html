@@ -1,0 +1,54 @@
+---
+layout: post
+title: Understanding a Simple ROS Robot Control Program
+date: 2018-08-09 09:00:13.000000000 +00:00
+type: post
+post_id: '16595'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1533831204'
+  _publicize_job_id: '20905530375'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/09/understanding-a-simple-ros-robot-control-program/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>In the previous post, a simple "Hello World" Gazebo robot simulation was parsed into its components. I was interested in the node named "turtlebot3_drive" and I've figured out how to go from the rqt_graph diagram shown yesterday to its source code.</p>
+<ol>
+<li>Decide the node /turtlebot3_drive was interesting.</li>
+<li>Look back at the command lines executed and determine it's most likely launched from <code>roslaunch turtlebot3_gazebo turtlebot3_simulation.launch</code>
+</li>
+<li>Look at the launch file by running <code>rosed turtlebot3_gazebo turtlebot3_simulation.launch</code>
+</li>
+<li>Look through the XML file to find the node launch element <code>&lt;node name="$(arg name)_drive" pkg="turtlebot3_gazebo" type="<span style="color:#ff0000;">turtlebot3_drive</span>" required="true" output="screen"/&gt;</code>
+</li>
+<li>Go into the turtlebot3_gazebo package with <code>roscd turtlebot3_gazebo</code>
+</li>
+<li>Look at its makefile <code>CMakeLists.txt</code>
+</li>
+<li>See the executable turtlebot3_drive declared in the line <code>add_executable(turtlebot3_drive src/<span style="color:#ff0000;">turtlebot3_drive.cpp</span>)</code>
+</li>
+<li>Look at the source file <code>rosed turtlebot3_gazebo turtlebot3_drive.cpp</code>
+</li>
+</ol>
+<p>Now we can look at the actual nuts and bolts of a simple ROS control program. I had hoped it would be pretty bare-bones and was happy to find that I was correct!</p>
+<p>I had feared the laser rangefinder data parsing code would be super complicated, because the laser scanner looks all around the robot. As it turns out, this simple random walk only looks at distance in three directions: straight ahead (zero degrees), 30 degrees one way (30 degrees) and 30 degrees the other (330 degrees) inside the laser scanner data callback <code>Turtlebot3Drive::laserScanMsgCallBack()</code> This particular piece of logic would have worked just as well with three cheap individual distance sensors rather than the sophisticated laser scanner.</p>
+<p>The main decision-making is in the <code>GET_TB3_DIRECTION</code> case of the switch statement inside <code>Turtlebot3Drive::controlLoop()</code>. It goes through three cases - if straight ahead is clear, proceed straight ahead. If there's an obstacle near the right, turn left. And vice versa for right.</p>
+<p><img class=" size-full wp-image-16596 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/get_tb3_direction.png" alt="GET_TB3_DIRECTION" width="883" height="510"></p>
+<p>This is a great simple starting point for experimentation. We could edit this logic, go back to catkin root and run catkin_make, then see the new code in action inside Gazebo. This feels like the kind of thing I would write for competitions like <a href="http://roborodentia.calpoly.edu/">RoboRodentia</a>, where there's a fixed scripted task for the robot to perform.</p>
+<p>I could stay and play with this for a while, but honestly the motivation is not strong. The attraction of learning ROS is to buid on top of the work of others, and to play with recent advances in AI algorithms. Hand-coding robot logic would be an excellent exercise in using ROS framework but the result would not be novel or innovative.</p>
+<p>Maybe I'll have the patience to sit down and do my homework later, but for now, it's off to chasing shiny objects elsewhere in the ROS ecosystem.</body></html></p>

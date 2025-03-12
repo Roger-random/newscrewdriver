@@ -1,0 +1,36 @@
+---
+layout: post
+title: Neato Robot ROS Package Splits Laser Scan Read Operations
+date: 2019-03-30 12:30:48.000000000 +00:00
+type: post
+post_id: '18202'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- ROS
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29215634357'
+  timeline_notification: '1553974365'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/30/neato-robot-ros-package-splits-laser-scan-read-operations/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17966 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-mini-usb-cable-connection-to-laptop.jpg" alt="Neato mini USB cable connection to laptop" width="1600" height="813">I want to <a href="https://newscrewdriver.com/2019/03/27/neato-robot-ros-package-runs-after-adding-serial-communication-timeout/">understand how the <code>neato_robot</code> ROS package works</a>, and <a href="https://newscrewdriver.com/2019/03/29/neato-robot-ros-package-expects-specific-response-but-responses-actually-differ-between-neato-units/">debugging its hang inside <code>getMotors()</code></a> was a great first step. Now that I'm past the problem of mismatching responses between author's Neato robot vacuum and mine, I started looking at other parts of <a href="https://github.com/mikeferguson/neato_robot/blob/hydro-devel/neato_driver/src/neato_driver/neato_driver.py"><code>neato_driver.py</code></a> for potential explanations to its new (possibly timing-related) hang.</p>
+<p>Since I had just examined <code>getMotors()</code>, I looked at its counterpart <code>setMotors()</code> and found nothing remarkable. <code>getAnalogSensors()</code>, <code>getDigitalSensors()</code>, and <code>getCharger()</code> used the exact pattern as <code>getMotors()</code> which meant they share the same fragility against different Neato responses but they'll work for now. <code>setBacklight()</code> is nearly trivial.</p>
+<p>That leaves the two methods for reading Neato's laser distance scanner. Wait, two? Yes, and that's where my concern lies. Other data retrieval methods like <code>getMotors()</code> would issue a command and then parse its response before returning to caller. For the laser distance scanner, this is split into a <code>requestScan()</code> which issues a <code>getldsscan</code> command and immediately returns. Reading and parsing laser distance data is done in a separate method <code>getScanRanges()</code> which the caller is expected to call later.</p>
+<p>Why was this code structured in such a manner? My hypothesis is this was motivated by performance. When a <code>getldsscan</code> command is issued over serial, a lot of data is returned. There are 360 lines of data, one for each degree of laser scanning with distance and intensity information, plus a few more lines of overhead. This is far more than any of the other data retrieval methods. So rather than wait for all that data to transmitted before it could be processed, this two-call pattern allows the caller to go off and do something else. The transmitted data is trusted to be buffered and waiting in serial communication module.</p>
+<p>But this only works when the caller is diligent about making sure these two calls always follow each other, with no chance for some other command to accidentally get in between. If they fail to do so, everything will fall out of whack. Would that cause the hang I've observed? I'm not sure yet, but it would be better if we didn't even have to worry about such things.</body></html></p>

@@ -1,0 +1,102 @@
+---
+layout: post
+title: 'Canon Pixma MX340 Control Panel Data Communication: Stand By'
+date: 2024-01-02 12:30:00.000000000 +00:00
+type: post
+post_id: '41401'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  wordads_ufa: s:wpcom-ufa-v4:1704358734
+  firehose_sent: '1704227408'
+  _publicize_job_id: '90764858932'
+  timeline_notification: '1704227409'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/02/canon-pixma-mx340-control-panel-data-communication-stand-by/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm looking over data sent between control panel and main board of a Canon Pixma MX340 multi-function inkjet, and there were <a href="https://newscrewdriver.com/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/">many mystery bytes sent during its power-up sequence</a>. I hoped there wouldn't be as many new things in the process of going from "On" to "Standby".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pressing the power button itself is absent from this logic analyzer capture file, because the power button is wired directly to the main board and not part of the button matrix reported every 9.2ms. But I could see activity in response. All transmission from the main board was acknowledged with 0x20 from the control panel, who also continued sending button matrix status every 9.2ms until the chip was put into standby.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>0x0E 0xFD</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(4ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LCD screen update to show the user "Ending..."</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(2136ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x0E 0xFD</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(27ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0x75 and 0x04 0xB4.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(59ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0x34</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(19ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0x14</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(19ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0x0E</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(109ms)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0xEE and 0x0E 0xDC</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Chip enable pin drops to ground, putting the control panel's NEC K13988 chip to sleep.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Comparing these bytes against what I've seen to date, I noticed 0x0E 0xFD shows up a lot. It was among the initialization sequence when the chip is powered up from standby, and sent again after the initial LCD screen update. Here it is sent both before and after the screen update. Other than that, the only repeat I noticed is 0x04 0x34. It was the final element in the power-up initialization burst of 13 two-byte sequences. However, none of its adjacent neighbors showed up again here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't expect to find much commonality between powering up and shutting down. If something does show up in both (0x0E 0xFD), I will tentatively infer its purpose as more general than these specific events. Other than that, I really couldn't draw much in the way of conclusions on what these bytes mean. I expected this kind of frustration when I started this project, but it still doesn't feel great. Fortunately, I have an easier one to help make me feel a little better: <a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/">the LCD "screen saver" blank state</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,60 @@
+---
+layout: post
+title: Assigning Pins for Sawppy Rover ESP32
+date: 2021-03-16 12:30:00.000000000 +00:00
+type: post
+post_id: '25627'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25628'
+  timeline_notification: '1615923012'
+  _publicize_job_id: '56018645923'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/16/assigning-pins-for-sawppy-rover-esp32/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As part of <a href="https://newscrewdriver.com/2021/03/15/interactive-mcpwm-duty-cycle-explorer/">exploring MCPWM duty cycles</a>, I had to make decisions on ESP32 pin assignments. This is how my ESP32 DevKit will communicate with my DC motor driver and steering servos. Three DRV8833 motor driver IC breakout boards for Micro Sawppy rover's six TT gear motors driving wheels, plus four corner steering servos. Together they require sixteen PWM pins which is <a href="https://newscrewdriver.com/2021/02/21/micro-rover-esp32-brain-is-feasible/" target="_blank" rel="noreferrer noopener">within an ESP32's capability</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm very thankful for <a rel="noreferrer noopener" href="https://randomnerdtutorials.com/esp32-pinout-reference-gpios/" target="_blank">this compilation of ESP32 pinout</a> from <em>Random Nerd Tutorials</em>, which served as a starting point and immediately crossed off many off-limit pins like those tied to ESP32 flash memory access. I also eliminated the primary serial transmit &amp; receive pins from consideration as I wanted to keep them available for serial monitoring.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next pins I wanted to keep clear were the two hardware I2C pins. I want to be build a baseline ESP32-controlled rover with as few external support chips as possible. But if I can leave the I2C pins free, that leaves the door open for add-ons and expansions. Additional PWM pins can be added with something like <a rel="noreferrer noopener" href="https://amzn.to/3coa01i" target="_blank">the popular PCA9685 chip</a>. (*) And additional digital input/output pins <a href="https://amzn.to/3cr6vXX">can be added via PCF8574</a> (*) or similar chips. In fact, if I get to a point where I desire specific ESP32 peripherals (capacitive touch?) I can offload all wheel driving and steering duties to an external PWM chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to leave hardware SPI pins open for the same reason, but SPI was a luxury I could not afford. That would mean leaving four more pins unused and that's more than I can spare for my baseline design. If SPI becomes important, I'll need to offload some wheel control to external PWM chips. Another luxury I had to leave behind are <a href="https://newscrewdriver.com/2021/02/26/platformio-jtag-debug-adventure-on-esp32/">the JTAG debug pins</a>, which also demanded four pins I could not spare unless I offload PWM to external components.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But even though I could use those JTAG pins for general output, some care had to be taken because there will be some spurious signals on those pins. Upon power-up, before my code can run to configure those pins for PWM output, these pins will have signals corresponding to JTAG or other system use. In practice I expect this to mean my rover will twitch a little bit at startup, so I assigned those pins to steering servo signal duty. I rather that my rover steering servo twitch on powerup instead of a drive wheel. I don't want the rover to drive itself forward or back uncontrolled, no matter how briefly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After all of the above concerns are factored in, the final one is the physical relationship of pins. I wanted to keep related pins close together, such as the A and B lines for motor control. This is a little tricky to do on the <em>Random Nerd Tutorials</em> chart, because it is sorted by GPIO number instead of their physical position. I used Excel to create a chart that maps the physical location of those pins. Then I assigned their use so they roughly correlate to their positions on the rover, with the DevKit USB port pointing towards back. In reality the wiring won't be that straightforward because the motor control lines will have to go through a DRV8833 first, but it might help me during debugging.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The assignments are listed on the outer-most columns of the chart. The first letter is one of (F)ront, (M)id, or (B)ack. The second letter is (L)eft or (R)ight. The third letter is (A) and (B) for DRV8833 motor control, or (S) for steering servo. This particular set of assignments leaves the I2C SDA &amp; SCL pins free. Unencumbered GPIO23 is left free and clear for anything. The four input-only pins 34, 35, 36, and 39 are still available. And as a last resort, we still have the restricted-use GPIO0 pin. With this plan for pin assignments in hand, I proceed to <a href="https://newscrewdriver.com/2021/03/17/cardboard-box-rover-breadboard/">turn the plan into reality</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

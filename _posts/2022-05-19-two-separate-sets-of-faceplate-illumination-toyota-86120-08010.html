@@ -1,0 +1,75 @@
+---
+layout: post
+title: Two Separate Sets of Faceplate Illumination (Toyota 86120-08010)
+date: 2022-05-19 12:30:00.000000000 +00:00
+type: post
+post_id: '30393'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30397'
+  _publicize_job_id: '72709443998'
+  timeline_notification: '1652988612'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/19/two-separate-sets-of-faceplate-illumination-toyota-86120-08010/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've successfully <a href="https://newscrewdriver.com/2022/05/18/successful-arduino-test-of-lc75853n-control/">programmed an Arduino to interface with LCD controller</a> on the faceplate of a retired car tape deck. When under the control of its original mainboard, the LCD segments and the LCD backlight always turned on and off in lockstep, leading me to think LCD backlight was under control of the LCD segment controller. But now that I have active LCD segments but no LCD backlight, I know my assumption was wrong. I'll need to look elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at my notes from <a href="https://newscrewdriver.com/2022/05/13/probing-voltage-range-of-tape-deck-faceplate-interface/">measuring voltage of each pin relative to data ground</a>, two candidates stood out because their voltage levels changed when the LCD was active vs. inactive. When the LCD is on, there is ~6V difference between them. And when the LCD is off, there is ~0.5V between them. One candidate's label was cropped at the bottom. Earlier I guessed maybe it said "CD-BL" but now that I look closer, I think the vertical bar to the left is part of the text: a "L" with its bottom cropped. That label is possibly "LCD-BL" which I optimistically expand to "Liquid Crystal Display Back Light". The other candidate pin is labeled "BL-" which would be the negative terminal. Notably, "BL-" fluctuated relative to "GND" so these two pins, if they are our targets, have their own voltage planes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first test was with my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/" target="_blank">backlight LED tester</a>, which quickly shot up to the preset current limit of 20mA at less than 1V while the backlight stayed dark. I then measured with an Ohm meter, which indicated just 10 Ohms between these two pins. If that is a LED current-limiting resistor, it is the smallest I've ever measured. Might this backlight be some technology other than LEDs? I don't know how a compact fluorescent light would look like under an Ohm meter. (I do know a filament bulb usually shows up as a short a.k.a. direct connection with no resistance.) I can't see the actual light source, as it is buried within the metal case of the LCD assembly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well, this is a piece of salvaged electronics and I have little to lose. Especially since I believe the backlight is on its own circuit. So if I accidently destroy the backlight, I still have the rest of the faceplate to play with. I soldered wires to "LCD-BL" and "BL-" and connected it to my bench power supply. Gradually turning up the voltage, I start seeing a dull glow at just under 5V and got brighter as it reached 6V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30397,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-lcd-backlight-leds-illuminated.jpg?w=1024" alt="" class="wp-image-30397"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Illumination of this backlight isn't great, but consistent with how it looked when I powered it up with the original mainboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30339,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-audio-head-unit-lcd-fm-1-ch-1-87.9.jpg?w=1024" alt="" class="wp-image-30339"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The diffuser behind this LCD isn't nearly as good as what we see behind, say, the screen of <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/06/24/amazon-fire-sr043kl-backlight-layers/" target="_blank">an Amazon Fire tablet</a>. But it works well enough for us to see the LCD segments in the dark, and that's all it needed to do in a car. These LEDs do not need to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/08/02/glow-flow-at-full-power/" target="_blank">be daylight visible</a>, as the LCD is readable in the presence of ambient daylight without backlight help.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At 6V this backlight drew almost 70mA, which is LED territory after all. If this was a piece of cheap consumer electronics, I would say 70mA indicates three heavily-driven LEDs. But this is from a Toyota, a brand with reputation for engineering for longevity. So I'm going to assume it actually represents four (or more) lightly driven LEDs. I increased the voltage until 9V, at which point it drew 80mA and was still pretty dim and uneven. I guess "bright enough to be legible at 6V" is all we're going to get out of this backlight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I had the bench power supply set up for testing LEDs anyway, I connected wires to two other pins "ILL" and "ILL-" which I had already determined to be on their own independent voltage plane as well. These wires are connected to the in-car dashboard illumination circuit, which has a dimmer knob. Being on a separate power plane explains the behavior I remember from using this tape deck in the car: lights illuminating faceplate buttons would change in brightness as I moved the dimmer knob, but the LCD backlight LED stayed at constant illumination. When I powered them directly on ILL/ILL-, I start seeing a tiny bit of glow at just over 5V (&lt;10mA) and brighter as the voltage is increased.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30400,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-button-backlight-leds-illuminated.jpg?w=1024" alt="" class="wp-image-30400"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I stopped at 14.4V (80mA) which is the maximum recommended voltage level for automotive lead-acid batteries, and thus likely to be the ceiling for automotive electrical systems like this one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Between these two sets of lights, it means any project to repurpose them will need to generate multiple voltages. Up to 14.4V for button backlights (variable if we want dimming), 6V for LCD backlight, and 5V for digital logic including physical controls like <a href="https://newscrewdriver.com/2022/05/20/reading-faceplate-audio-mode-knob/">the Audio Mode knob</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

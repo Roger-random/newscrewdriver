@@ -1,0 +1,73 @@
+---
+layout: post
+title: Single Cell Lithium-Ion Battery Management System Module (4056)
+date: 2023-08-24 12:30:00.000000000 +00:00
+type: post
+post_id: '38583'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Solar Power
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38584'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1695974442
+  _publicize_job_id: '86946480588'
+  timeline_notification: '1692905419'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/08/24/single-cell-lithium-ion-battery-management-system-module-4056/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My solar panel power monitor project incorporated an old USB power bank for its battery and charger circuit, bypassing its broken USB power output circuit. After a year and a half of daily cycling, <a href="https://newscrewdriver.com/2023/08/23/solar-monitor-battery-charging-failure/">the charging circuit has broken down as well</a>. I'm happy I got that extra life out of a USB power bank circuit board that would otherwise have been disposed of. The battery is still going, but I will need a replacement circuit to manage charging it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the widespread adoption of lithium-ion battery power, I have many solutions to choose from. The lowest bidder du jour on Amazon was this vendor <a href="https://amzn.to/459Ywb4" target="_blank" rel="noreferrer noopener">selling a multipack of 40 BMS modules</a> (*). It arrived in a single 10x4 sheet for the me to break apart as needed, similar to <a href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/" target="_blank" rel="noreferrer noopener">a batch of buck converters I bought earlier</a>. I like this approach much better than loosely packed pieces that may damage each other in shipping.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The main chip in the center of this module had "4056H" printed on top. Many vendors on Amazon/AliExpress/etc. also single-cell BMS modules with this general design, not necessarily with "4056H" on top but all with some variation of "4056" with different prefix/suffix letters. A search for "4056" returned many chips from different companies that seemed to be interchangeable. I assume someone had a successful product that was then copied by many others, but I don't know who the original was. The same goes for this particular breakout board module design. Looks like both the module and the chip at the center of it have become commodities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This module also advertised protection against battery over discharge with a 3A current limit and 2.5V voltage limit, but that's beyond the scope of a 4056 chip. This module must have additional components handling such protection. I see one chip labeled 8205A, which appears to be a dual N-channel MOSFET chip suited for output cutoff controlled by the chip at position U2. I don't know how to dig deeper because U2 is unmarked on my purchase, but I have learned enough to put this module to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38599,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/4056-bms-module-closeup.jpg?w=923" alt="" class="wp-image-38599"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The module with its six soldering points is fairly straightforward to incorporate into my project:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>There are pads on either side of the USB micro-B socket for 5V power input, one of them marked "+". They are soldered to the existing buck converter dropping solar panel DC power down to 5V.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Pins labeled "B+" and "B-" connect to the positive and negative terminals of the 18650 battery cell.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Remaining pins labeled "OUT+" and "OUT-" are connected to the ESP8266 microcontroller module.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This configuration successfully recharged the solar monitor battery for two days, verifying everything worked as expected before I proceeded to <a href="https://newscrewdriver.com/2023/08/25/reduce-battery-charging-rate-of-4056-bms/">lower the charging rate from its default of 1 Amp</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,48 @@
+---
+layout: post
+title: Micro Sawppy Beta 3 Running With HTML Control
+date: 2021-04-17 12:30:00.000000000 +00:00
+type: post
+post_id: '26143'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26024'
+  _publicize_job_id: '57280788956'
+  timeline_notification: '1618687809'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/17/micro-sawppy-beta-3-running-with-html-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I <a href="https://newscrewdriver.com/2021/04/16/shiny-new-esp32-websocket-support/">established websocket communication</a> between an ESP32 server and a phone browser JavaScript client, I needed to translate that data into my rover's joystick command message modeled after ROS joy_msg. For HTML control, I decided to send data as JSON. This is not the most bandwidth-efficient format. In theory I could encode everything into binary with two signed 8-bit integers. One byte for speed and one byte for steering is all I really need. However I have ambition for more complex communication in the future, thus JSON's tolerance for extra fields has merit from the perspective of forward compatibility.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, that meant I had to parse my simple JSON on the ESP32 server. The first rule of writing my own parser is: <strong><em>DON'T</em></strong>. It's a recurring theme in software development: every time someone thinks "Oh I can just whip up a quick parser and it'll be fine" they have been wrong. Fortunately Espressif <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/tree/master/components/json" target="_blank">packaged the open source cJSON library</a> in ESP-IDF and it is as easy as adding <code>#include "cJSON.h"</code> to pull it into my project. Using it to extract steering and speed input data from my JSON, I could translate that into a <code>joy_msg</code> data structure for posting to the joystick queue. And the little rover is up and running on HTML control!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest advantage of using ESP32's WiFi capability to turn my old Nokia Lumia 920 phone into a handheld controller is cost. Most people I know already have a touchscreen phone with a browser, many of whom actually own several with older retired phones gathering dust in a drawer somewhere. Certainly I do! And yeah I also have a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/02/micro-sawppy-rover-and-spektrum-dx3e-radio-controller/" target="_blank">Spektrum ground radio transmitter/receiver combo</a> gathering dust, but that is far less typical.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, there are tradeoffs. A real radio control transmitter unit has highly sensitive inputs and tactile feedback. It's much easier to control my rover precisely when I have a large physical wheel to turn and a centering spring providing resistance depending on how far off center I am. I have some ideas on how to update the browser interface to make control more precise, but a touchscreen will never have the spring-loaded feedback. Having <a href="https://newscrewdriver.com/2021/04/07/micro-sawppy-beta-3-running-with-spektrum-radio-control/">used a RC transmitter a few days</a> before bringing up my HTML touch pad, I can really feel the difference in control precision. I understand why a lot of Sawppy rover builders went through the effort of adapting their RC gear to their rovers. It's a tradeoff between cost and performance, and I want to leave both options open so each builder can decide what's best for themselves. But that doesn't mean I shouldn't try to <a href="https://newscrewdriver.com/2021/04/18/variable-steering-on-sawppy-esp32-html-control/">improve my HTML control precision</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center"> [Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/lib/wifi">publicly available on GitHub</a>.] </p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'Before We Begin: Make Sure Sawppy the Rover Is Feasible'
+date: 2018-05-09 23:54:42.000000000 +00:00
+type: post
+post_id: '15950'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1525935285'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17686889256'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/09/is-sawppy-the-rover-feasible/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16039 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/servo-rover.jpg" alt="Servo Rover" width="1024" height="768">As <a href="https://newscrewdriver.com/2018/05/08/rover-romping-at-jpl-first-public-appearance-of-sawppy-the-rover/">mentioned yesterday</a>, Sawppy the Rover started with an offhand comment made by a member of <a href="https://opensourcerover.jpl.nasa.gov">JPL's Open Source Rover</a> project discussing possible variants on their baseline design. One common piece of feedback on the baseline was its $2,500 cost, and like good engineers they've brainstormed potential methods to reduce cost.</p>
+<p>One idea - the one I took and ran with to create Sawppy the Rover - was to use remote-control hobby servos as actuators. The baseline designed used <a href="http://www.ionmc.com/">RoboClaw motor controllers</a> hooked up to motor gearboxes monitored by position encoders. This is a very capable and precise system that gives a lot of headroom for a rover project to grow in sophistication, but all that capability costs money.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Servo_(radio_control)">hobby servo</a> combines all the components into an inexpensive self-contained unit. A motor, its gear train, a potentiometer for closed-loop feedback, and the motor control circuit to make it all work inside one box. This integration also reduces parts count and construction complexity of the rover. It seems worth making the trade-off against power, speed, and the ability to monitor precise position.</p>
+<p>Another piece of feedback for the baseline rover was its use of <a href="https://www.servocity.com/actobotics">Actobotics</a> construction system for robot structure. Again, this is a very capable system that gives easy flexibility to experiment with different robot configurations, because it is basically an Erector Set for robots. But again, this flexibility costs money.</p>
+<p>3D printing would allow individual rover components to be created at a lower price. The trade-off is that the rover would be less convenient to reconfigure, since it would require different pieces to be printed instead of just unbolting Actobotics parts and bolting things back on in different places. And even though 3D printed plastic won't be as strong, they should be lighter than Actobotics metal parts thereby reducing workload on the less powerful hobby servo motors.</p>
+<p>Following engineering tradition, a quick back-of-the-napkin calculation was made to see if the project is in the ballpark to be feasible. The baseline rover is a little over 20 pounds. If we guess at a 25% weight reduction from using 3D printed plastic, that gives us a target of roughly 17.5 pounds, or roughly eight kilograms. Hobbyist grade 3D printing plastic filament is sold in one kilogram spools for roughly $25 each, depending on plastic type and quality.  8 x $25 = $200 for plastic filament if the rover is completely printed. Which it won't be, this is just for the sake of a rough estimate.</p>
+<p>We'll need ten actuators to build a mechanically faithful rover model. (Six to drive each wheel, four to steer each corner.) Hobby servos are available for $20 or less, 10 x $20 = $200</p>
+<p>This gives a rough estimate of $400 leaving another $100 for Raspberry Pi and remaining components. Once a $500 servo-actuated, 3D printed rover is determined to be feasible, Sawppy the Rover project was underway.</body></html></p>

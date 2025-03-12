@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Quick Overview: Unity ML Agents'
+date: 2019-05-30 12:30:35.000000000 +00:00
+type: post
+post_id: '18559'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags: []
+meta:
+  _thumbnail_id: '18560'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31343456779'
+  timeline_notification: '1559244639'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/30/quick-overview-unity-ml-agents/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Out of all the general categories of machine learning, I find myself most interested in reinforcement learning. These problems (and associated solutions) are most applicable to robotics, forming the foundation of projects like <a href="https://hackaday.com/2018/11/30/buy-or-build-an-autonomous-race-car-to-take-the-checkered-flag/">Amazon's DeepRacer</a>. And the fundamental requirement of reinforcement learning is a training environment where our machine can learn by experimentation.</p>
+<p>While it is technically possible to train a reinforcement learning algorithm in the real world with real robots, it is not really very practical. First, because a physical environment will be subject to wear and tear, and second, because doing things in the real world at real time takes too long.</p>
+<p>For that reason there are many digital simulation environments in which to train reinforcement learning algorithms. I thought it would be an obvious application of robot simulation software like <a href="https://newscrewdriver.com/2018/07/30/ros-notes-robot-simulation-with-gazebo/">Gazebo for ROS</a>, but this turned out to only be partially true. Gazebo only addresses half of the requirements: a virtual environment that can be easily rearranged and rebuilt and not subject to wear and tear. However, Gazebo is designed to run in a single instance, and its simulation engine is complex enough it can fall behind real time meaning it takes longer to simulation something than it would be in the real world.</p>
+<p>For faster training of reinforcement learning algorithms, what we want is a simulation environment that can scale up to run multiple instances in parallel <em><strong>and</strong> </em>can run faster than real time. This is why people started looking at 3D game engines. They were designed from the start to represent a virtual environment for entertainment, and they were built for performance in mind for high frame rates.</p>
+<p>The physics simulation inside Unity would be less accurate than Gazebo, but it might be good enough for exploring different concepts. Certainly the results would be good enough if the whole goal is to build something for a game with no aspirations for adapting them to the real world.</p>
+<p>Hence the <a href="https://unity3d.com/machine-learning">Unity ML-Agents toolkit</a> for training reinforcement learning agents inside Unity game engine. The toolkit is nominally focused on building smart agents for game non-player characters (NPC) but that is a big enough toolbox to offer possibilities into much more. It has definitely earned a spot on my to-do list for closer examination in the future.</p>
+<p></body></html></p>

@@ -1,0 +1,143 @@
+---
+layout: post
+title: Installing “Getting Started with Angular Signals” Code Lab Locally
+date: 2023-05-28 12:30:00.000000000 +00:00
+type: post
+post_id: '36911'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36912'
+  timeline_notification: '1685302215'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685422393
+  _publicize_job_id: '84440392667'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/28/installing-getting-started-with-angular-signals-code-lab-locally/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2023/05/27/compass-project-updated-to-angular-16-standalone-components/">revisited Compass</a>, my Angular practice project, in light of what I've <a href="https://newscrewdriver.com/2023/05/22/notes-on-getting-started-with-standalone-components-code-lab/">recently learned about Angular standalone components</a> &amp; other things. And now I'll rewind back to <a href="https://newscrewdriver.com/2023/05/21/notes-on-getting-started-with-angular-signals-code-lab/"><em>Getting Started with Angular Signals</em> code lab</a>. I've gone through the primary exercise of Angular signals, but the app has many more lessons to teach me. The first one is: how do I fix a broken Angular build? Because while the code lab works fine on the recommended StackBlitz online environment, it failed to install locally on my development machine when I ran "<code>npm install</code>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>npm ERR! code ERESOLVE
+npm ERR! ERESOLVE unable to resolve dependency tree
+npm ERR! 
+npm ERR! While resolving: qgnioqqrg.github@0.0.0
+npm ERR! Found: @angular/compiler@15.2.9
+npm ERR! node_modules/@angular/compiler
+npm ERR!   @angular/compiler@"^15.2.2" from the root project
+npm ERR! 
+npm ERR! Could not resolve dependency:
+npm ERR! peer @angular/compiler@"15.1.0-next.2" from @angular/compiler-cli@15.1.0-next.2
+npm ERR! node_modules/@angular/compiler-cli
+npm ERR!   dev @angular/compiler-cli@"15.1.0-next.2" from the root project
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Earlier, for the sake of doing the Angular signals code lab, I resorted to using error-free StackBlitz. Now I want to get it working locally. Checking the versions published to NPM for <code>@angular/compiler</code> package, I <a href="https://www.npmjs.com/package/@angular/compiler?activeTab=versions">see <code>15.1.0-next.2</code> listed</a>. <code>@angular/compiler-cli</code> <a href="https://www.npmjs.com/package/@angular/compiler-cli?activeTab=versions">also showed a <code>15.1.0-next.2</code></a> as a valid version. Their presence eliminated the "listing nonexisting version" as a candidate problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What's next? I thought it might be how <code>@angular/compiler</code> has several different versions listed. Not just <code>15.1.0-next.2</code> that I checked, but also <code>15.2.9</code> and <code>15.2.2</code>. Why don't they match? Looking for the source of these version numbers, I looked through the repository and found they were listed in <code>package.json</code> file. I see <code>15.1.0-next.2</code> was explicitly named for the three <code>@angular/[...]</code> components under <code>devDependencies</code>, while "<code>^15.2.2</code>" is specified for all the <code>@angular/[...]</code> components under <code>dependencies</code>. That "^" prefix is apparently a "<a href="https://github.com/isaacs/node-semver#caret-ranges-123-025-004">caret range</a>" specifier, and 15.2.9 is the latest version that satisfies the caret range.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to make all <code>@angular/[...]</code> component versions consistent, I replaced all three instances of "<code>15.1.0-next.2</code>" with "<code>^15.2.2</code>". That got me to the next error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>npm ERR! code ERESOLVE
+npm ERR! ERESOLVE unable to resolve dependency tree
+npm ERR! 
+npm ERR! While resolving: qgnioqqrg.github@0.0.0
+npm ERR! Found: typescript@4.7.4
+npm ERR! node_modules/typescript
+npm ERR!   dev typescript@"~4.7.2" from the root project
+npm ERR! 
+npm ERR! Could not resolve dependency:
+npm ERR! peer typescript@"&gt;=4.8.2 &lt;5.0" from @angular/compiler-cli@15.2.9
+npm ERR! node_modules/@angular/compiler-cli
+npm ERR!   dev @angular/compiler-cli@"^15.2.2" from the root project
+npm ERR!   peer @angular/compiler-cli@"^15.0.0" from @angular-devkit/build-angular@15.2.8
+npm ERR!   node_modules/@angular-devkit/build-angular
+npm ERR!     dev @angular-devkit/build-angular@"^15.2.2" from the root project</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Updating to 15.2.9 meant TypeScript "<code>~4.7.2</code>" is too old. Not fully understand what changed between those versions, I tried the lowest version listed as acceptable: 4.8.2. These version number changes were required to make them consistent with each other, and that is enough to bring me to the next error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>npm ERR! code ERESOLVE
+npm ERR! ERESOLVE could not resolve
+npm ERR! 
+npm ERR! While resolving: qgnioqqrg.github@0.0.0
+npm ERR! Found: @angular/animations@16.0.3
+npm ERR! node_modules/@angular/animations
+npm ERR!   peer @angular/animations@"^16.0.0 || ^17.0.0" from @angular/material@16.0.1
+npm ERR!   node_modules/@angular/material
+npm ERR!     @angular/material@"^15.2.2" from the root project
+npm ERR!   peerOptional @angular/animations@"16.0.3" from @angular/platform-browser@16.0.3
+npm ERR!   node_modules/@angular/platform-browser
+npm ERR!     peer @angular/platform-browser@"16.0.3" from @angular/forms@16.0.3
+npm ERR!     node_modules/@angular/forms
+npm ERR!       peer @angular/forms@"^16.0.0 || ^17.0.0" from @angular/material@16.0.1
+npm ERR!       node_modules/@angular/material
+npm ERR!         @angular/material@"^15.2.2" from the root project
+npm ERR!       1 more (the root project)
+npm ERR!     peer @angular/platform-browser@"^16.0.0 || ^17.0.0" from @angular/material@16.0.1
+npm ERR!     node_modules/@angular/material
+npm ERR!       @angular/material@"^15.2.2" from the root project
+npm ERR!     3 more (@angular/platform-browser-dynamic, @angular/router, the root project)
+npm ERR!   1 more (the root project)
+npm ERR! 
+npm ERR! Could not resolve dependency:
+npm ERR! @angular/animations@"^15.2.2" from the root project
+npm ERR! 
+npm ERR! Conflicting peer dependency: @angular/core@15.2.9
+npm ERR! node_modules/@angular/core
+npm ERR!   peer @angular/core@"15.2.9" from @angular/animations@15.2.9
+npm ERR!   node_modules/@angular/animations
+npm ERR!     @angular/animations@"^15.2.2" from the root project
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I had upgraded my Angular tools to v16 for Compass, I now have a problem with this project which specified an older version. Now I have to downgrade with the following steps:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Uninstalling Angular v16 via "<code>npm uninstall -g @angular/cli</code>"</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Flush v16 binaries from my project tree with "<code>rm -rf node_modules</code>"</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Installing 15.2.2 with "<code>npm install -g @angular/cli@15.2.2</code>".</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>With <a href="https://github.com/Roger-random/codelabs/commit/9cbf8ad01a8c324081607331b00fe520ea5fdd73">these version numbers updated</a>, I was able to run "<code>npm install</code>" successfully to install remaining dependencies.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>How did this work on StackBlitz when I had problems on my local machine? I hypothesize that StackBlitz handles their installation procedure differently than a local "<code>npm install</code>". If they ignore the "<code>devDependencies</code>" section, there wouldn't have been a conflict with "<code>15.1.0-next.2</code>" modules. And if they ignored the caret range and used "<code>15.2.2</code>" exactly instead moving up to 15.2.9, there wouldn't have been a TypeScript conflict either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For now, I have solved my Node.js package management headaches and <a href="https://newscrewdriver.com/2023/05/29/compiling-getting-started-with-angular-signals-code-lab-locally/">onwards to Angular headaches</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">My code changes are made in <a href="https://github.com/Roger-random/codelabs/tree/signals-get-started">my fork of the code lab repository in branch <code>signals-get-started</code></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

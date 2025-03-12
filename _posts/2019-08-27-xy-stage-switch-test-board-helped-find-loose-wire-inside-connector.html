@@ -1,0 +1,47 @@
+---
+layout: post
+title: XY Stage Switch Test Board Helped Find Loose Wire Inside Connector
+date: 2019-08-27 12:30:41.000000000 +00:00
+type: post
+post_id: '19340'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19342'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34637153163'
+  timeline_notification: '1566934256'
+  _oembed_0cdde3c749128b6b3d97b5432b00595e: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    salvaged XY table can now perform homing sequence under command of Grbl ESP32.
+    With this success, we now have ambition to build a CNC machine. <a href="https://t.co/IcT8ls9Jkg">pic.twitter.com/IcT8ls9Jkg</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1166216061949112320?ref_src=twsrc%5Etfw">August
+    27, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_0cdde3c749128b6b3d97b5432b00595e: '1566956636'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/27/xy-stage-switch-test-board-helped-find-loose-wire-inside-connector/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Following plan for the <a href="https://newscrewdriver.com/2019/08/26/create-a-board-to-test-xy-stage-switches/">switch test board</a>, I crimped 3-pin JST-XH connectors on loose wires at the end of XY stage's limit and home switches. The colors matched the wiring diagram I found in documentation, which also matched what we determined via probing with a meter. But there was a problem hiding somewhere in this system, and that's what the test board is here to determine.</p>
+<p>The first discovery is that one of the limit switches is no longer closing before the carriage runs into a hard mechanical stop. In my eagerness to <a href="https://newscrewdriver.com/2019/08/19/xy-stage-position-detection-switches/">move the switches as far out to their limits as I could</a>, I've managed to move one of the limit switches too far out of detection range. This will have to be fixed eventually but it isn't the top problem right now.</p>
+<p>Moving the axis back and forth and watching LEDs on the test board, we eventually figured out the problem: there is a loose connection somewhere in the system. There are six LEDs on the test board, a pair of complementary LEDs for each of three switches. In normal operation we expect one of the two LEDs to illuminate. But for the homing switch, it occasionally goes dark and neither LEDs are illuminated.</p>
+<p><img class="alignnone size-full wp-image-19341" src="https://newscrewdriver.com/wp-content/uploads/2019/08/xy-stage-switch-connector-interior.jpg" alt="XY stage switch connector interior" width="1600" height="900"></p>
+<p>Hunting for loose connections, we eliminated the more likely suspects first (such as my JST-XH crimps) and worked our way down the list. We did not expect the strong industrial standard AMP circular connectors to be the problem, but that's where it was: pin for the black wire, which is the common wire of the homing switch, had backed out from its proper location and unable to make a strong and reliable connection. We pushed it back into position and it seemed to stay in position. At least, for now.</p>
+<p>With this intermittent connection, homing the machine would have been an unreliable process. It is conceivable this was the very problem that caused the original machine to be retired, but that is just speculation. With the homing switch repaired, it's time to <a href="https://newscrewdriver.com/2019/08/28/successful-single-axis-homing-on-xy-stage/">get back to work</a>.</p>
+<p></body></html></p>

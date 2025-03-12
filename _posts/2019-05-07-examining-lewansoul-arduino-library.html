@@ -1,0 +1,60 @@
+---
+layout: post
+title: Examining LewanSoul Arduino Library
+date: 2019-05-07 12:30:29.000000000 +00:00
+type: post
+post_id: '18420'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags: []
+meta:
+  _oembed_5f5592ffe2092ba43ec62fad2474e44e: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30561412043'
+  timeline_notification: '1557257451'
+  _oembed_5b6747915ef58750215b844bb4c5b6bf: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Now
+    everything runs off a single power plug! I learned so much on this project, thanks
+    to <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    <a href="https://twitter.com/RueNahcMohr?ref_src=twsrc%5Etfw">@RueNahcMohr</a>
+    <a href="https://twitter.com/wackyvorlon?ref_src=twsrc%5Etfw">@wackyvorlon</a>
+    and the fried microchips who gave their lives so this contraption could live.
+    <a href="https://t.co/wZHVKHxTDN">https://t.co/wZHVKHxTDN</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1125632461281550336?ref_src=twsrc%5Etfw">May
+    7, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_5b6747915ef58750215b844bb4c5b6bf: '1557267264'
+  _thumbnail_id: '18424'
+  _oembed_492c9900a96e0825e31a89a267fec819: "{{unknown}}"
+  _oembed_ac50a5a0859092b358321c274cc7d482: "{{unknown}}"
+  _oembed_26c4a702d2e5f6fb71203bb77db89254: "{{unknown}}"
+  _oembed_38082b29f40ab16ec54d3174929a5412: "{{unknown}}"
+  _oembed_57dd84467169563d722aca61b2fd05ca: "{{unknown}}"
+  _oembed_7f0f858949cba5c4622d2632350d11d0: "{{unknown}}"
+  _oembed_c91b40bfc0d724c1615bdf21d519c341: "{{unknown}}"
+  _oembed_7cc2b18758a0fd3cafbc6ba471299540: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/07/examining-lewansoul-arduino-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>When I first built Sawppy using <a href="https://amzn.to/2nNaacP" target="_blank" rel="noopener">LewanSoul LX-16A serial bus servos</a> (*), I was not interested in using their PC software which was tailored to running pre-scripted sequences of motion. At the time I was not using an Arduino, either, so I wrote my own <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/master/SGVHAK_Rover/lewansoul_wrapper.py">serial communication driver</a> in Python based on LewanSoul's PDF documenting their serial communication protocol.</p>
+<p><a href="https://newscrewdriver.com/2019/05/06/taking-an-arduino-crash-course/">This time around, I am using an Arduino</a> and eager to take advantage of already prebuilt software to cut down on development time. In the same <a href="http://bit.ly/2rJshh6">Dropbox</a> where I found my <code>LewanSoul Bus Servo Communication Protocol.pdf</code> reference document, there was a file <code>LSC series communication routines of controller.zip</code>. Now that I've seen Arduino libraries packaged in a zip file, I looked inside to verify the structure of having <code>*.cpp</code> and <code>*.h</code> source files. It turns out they were packaged inside that zip file as another file <code>LobotServoController.zip</code>. This zip file within a zip file looked like an Arduino library, with <code>LobotServoController.h</code> header file and <code>LobotServoController.cpp</code> source, a <code>keywords.txt</code> for Arduino IDE syntax highlighting, and a few <code>*.ino</code> sketch files inside an example directory.</p>
+<p>It all looked very promising at first glance but a closer look deflated the initial enthusiasm. The API only had commands for servo position, nothing for continuous rotation mode which is how Sawppy's six wheels roll on the ground. And looking under the hood inside the code, the serial communication header is in the wrong format. The first two bytes are LewanSoul identifiers <code>0x55 0x55</code> as expected, but the third byte is length, not servo ID.</p>
+<p>Digging a little deeper, I realized despite its location in <a href="https://www.dropbox.com/sh/b3v81sb9nwir16q/AACkK-tg0q39fKJZcSl-YrqOa/LX-16A%20Bus%20Servo">the <code>LX-16A Bus Servo</code> subdirectory</a> of LewanSoul's Dropbox, this Arduino library was not for controlling LX-16A devices. They are, as the file name stated (but I overlooked) intended for their <a href="http://www.lewansoul.com/product/list/85">LSC line of controller boards</a> for standard RC servos, not the serial bus servos.</p>
+<p>Sadly, this promising-looking Arduino library will not help me.</p>
+<p>Code for LX-16A servos actually lived in a different folder: <code>bus servo communication routines</code> held Arduino sketches matching the expected protocol. However, they were written as individual one big flat *.ino file, and not written as an Arduino library.</p>
+<p>This is fine for sample code, but not well suited to be part of a larger project. It looks like I'll need to learn to how to write an Arduino library after all, either to convert this LewanSoul sample code into a library or create my own from scratch (again).</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

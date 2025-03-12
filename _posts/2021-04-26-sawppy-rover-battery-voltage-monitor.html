@@ -1,0 +1,62 @@
+---
+layout: post
+title: Sawppy Rover Battery Voltage Monitor
+date: 2021-04-26 12:30:00.000000000 +00:00
+type: post
+post_id: '26263'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26264'
+  _publicize_job_id: '57641669300'
+  timeline_notification: '1619465404'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/26/sawppy-rover-battery-voltage-monitor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Trying to <a href="https://newscrewdriver.com/2021/04/25/windows-phone-debug-tools-rode-into-sunset/">debug a mobile web page without any debug support</a> -- no syntax error, no line number, not even <code>console.log()</code> -- was extremely frustrating and quite draining. After that experience I was ready for a break from rover work. But before I take that break, I wanted to at least attempt to use the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/25/provision-for-micro-sawppy-voltage-monitoring/" target="_blank">voltage-monitoring provision</a> I wired in to this draft of my Sawppy Rover ESP32 control board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I encountered a few more mysteries of ESP32 ADC while doing so. I initially set the ADC attenuation at 2.5db, which should have given me a range spanning 1.1V which fits nicely with my 10:1 voltage divider. But the raw ADC values were far below where I thought they should be. My voltmeter read 0.6V on the pin after the divider, which should have been a little more than 2048 out of the ADC's 12-bit resolution. (0-4095) Instead I got values closer to 1350 and I didn't understand why yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another mystery was working to convert that value to a voltage reading. I had thought the conversion would be straightforward: look at the raw ADC value, measure the actual voltage with my trusty Fluke meter, and divide them to obtain a conversion coefficient. But I found that the ratio between raw ADC value and voltage measured by the meter was not consistent across the voltage range. The coefficient I calculated from a 5V USB input voltage was different from the coefficient calculated from 7.4V of my 2-cell LiPo battery pack. This was a surprise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To solve this problem correctly, I should consult <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html#adc-calibration">Espressif ESP32 ADC documentation</a> on their factory ADC calibration values and how to leverage that work into a more precise value. But what I have today is good enough to roughly monitor battery level. I wanted to keep going and get the rest of the basic infrastructure set up before I ran out of motivation to work on this code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The small bit of ADC conversion code posted a message containing calculated voltage to a FreeRTOS queue, where multiple tasks can make use of that information. I updated the HTTP server code to peek at values on that queue, and send it to the user interface via websocket in the form of a JSON string. The ESP32 HTTP server sent real data, the Node.js stub server only sent a placeholder value. Sawppy's browser-side JavaScript was then modified to listen to that message, parse that JSON string, and print that data on the status bar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these changes, I could monitor battery voltage level from my touchscreen control. This is enough for the moment. I have a few tasks for the future, using this voltage reading at a few other places. Starting with these two:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>If the voltage drops below a certain level, the rover should stop. Or at least use a "limp mode" that runs slower, in order to avoid an ESP32 brownout.</li>
+<li>I want the motor control PWM frequency to dynamically adjust according to the battery voltage, with the goal to maintain consistent output voltage to the motors. For example, a command for full speed should always output 6V to the motors. If the battery is drained down to 6V, the PWM frequency would be 100%. If the battery is full, the PWM frequency would be lower than 100% even at "full speed" in order to avoid burning out the motor.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll add those features in a future Sawppy brain coding sprint. Software development will go on pause while I live with the feature set I've got on hand for a while. Besides, sometimes you <a href="https://newscrewdriver.com/2021/04/27/miha-kocars-esp8266-remote-control/">don't even need the features I already have</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,59 @@
+---
+layout: post
+title: Proxmox Cluster VM Migration
+date: 2023-11-05 12:30:00.000000000 +00:00
+type: post
+post_id: '40036'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- '7577'
+- Dell
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40037'
+  footnotes: ''
+  timeline_notification: '1699216261'
+  wordads_ufa: s:wpcom-ufa-v4:1699311092
+  _publicize_job_id: '89104877584'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/05/proxmox-cluster-vm-migration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had hoped to use an older Dell Inspiron 7577 as a light-duty virtualization server running Proxmox VE, but there's a Realtek Ethernet problem causing it to lose connectivity after an unpredictable amount of time. A workaround mirroring the in-progress bug fix <a href="https://newscrewdriver.com/2023/11/04/a-quick-look-at-aspm-and-power-consumption/">didn't seem to do anything</a>, so now I'm skeptical that the upcoming "fixed" kernel will address my issue. [UPDATE: I was wrong! After installing Proxmox VE kernel update from 6.2.16-15-pve to 6.2.16-18-pve, the network problem no longer occurs.] I found two other workarounds online: revert back to an earlier kernel, or revert back to an earlier driver. Neither feel like great options, so I'm going to leverage my "hardware-rich environment" a.k.a. I hoard computer hardware and might as well put them to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I brought another computer system online, the hardware was formerly the core of Luggable PC Mark II and mostly gathering dust ever since <a href="https://newscrewdriver.com/2020/01/12/luggable-pc-mark-ii-decommissioned/" target="_blank" rel="noreferrer noopener">Mark II was disassembled</a>. I bring it out for an experiment here and there, and now it will be my alternate Proxmox VE host. The first thing I checked was its networking hardware by typing "<code>lspci</code>" to see all PCI devices including the following two lines:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>00:1f.6 Ethernet controller: Intel Corporation Ethernet Connection (2) I219-V
+06:00.0 Ethernet controller: Intel Corporation I211 Gigabit Network Connection (rev 03)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This motherboard has two onboard Ethernet ports, and apparently both have Intel hardware behind them. So if I run into problems, hopefully it's at least not the same Realtek problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At idle, this system draws roughly 16 watts which is not bad for a desktop system but vastly more than the 2 watts drawn by a laptop. Running my virtual machines on this desktop will hopefully more reliable while I try to get to the bottom of my laptop's network issue. I really like the idea of a server that draws only around 2 watts when idle so I want to make it work. This means I foresee two VM migrations: immediate move from the laptop to the desktop, and a future migration back to the laptop after its Ethernet is reliable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I am confident I can perform this migration manually, since I just did it a few days ago to move these virtual machines from Ubuntu Desktop KVM to Proxmox VE. But why do it manually when there's a software feature to do it automatically? I set these two machines up as nodes in a <a href="https://pve.proxmox.com/pve-docs/chapter-pvecm.html" target="_blank" rel="noreferrer noopener">Proxmox cluster</a>. Grouping them together in such a way gains several features, the one I want right now is <a href="https://pve.proxmox.com/pve-docs/chapter-qm.html#qm_migration" target="_blank" rel="noreferrer noopener">virtual machine migration</a>. Instead of messing around with manually setting up software and copying backup files, now I click a single "Migrate" button.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":40037,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/proxmox-migrate-button.jpg?w=1024" alt="" class="wp-image-40037"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It took roughly 7 minutes to migrate the 32GB virtual disk from one Proxmox VE cluster node to another, and once back up and running, each virtual machine resumed as if nothing had happened. This is way easier and faster than my earlier manual migration procedure and I'm happy it worked seamlessly. With my virtual machines now seamlessly running on a different piece of hardware, I can dig deeper into <a href="https://newscrewdriver.com/2023/11/06/ethernet-failure-triggers-network-stack-timeout/">the signs of a a problematic network driver</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

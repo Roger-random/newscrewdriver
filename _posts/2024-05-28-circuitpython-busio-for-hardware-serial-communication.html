@@ -1,0 +1,40 @@
+---
+layout: post
+title: CircuitPython busio For Hardware Serial Communication
+date: 2024-05-28 12:30:00.000000000 +00:00
+type: post
+post_id: '43551'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43539'
+  timeline_notification: '1716924622'
+  firehose_sent: '1716924620'
+  wordads_ufa: u:wpcom-ufa-v4:1717043681
+  _publicize_job_id: '94981744922'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-30 04:36:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/28/circuitpython-busio-for-hardware-serial-communication/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>For my first nontrivial CircuitPython project, I thought I would try getting a microcontroller to <a href="https://newscrewdriver.com/2024/05/27/circuitpython-test-run-mx340-control-panel/">communicate with control panel salvaged from a Canon MX340</a> multi-function inkjet. Like most microcontrollers, the RP2040 chip at the heart of my KB2040 board can handle asynchronous serial communication via its <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">UART hardware peripheral</a>. Under CircuitPython, this peripheral is exposed by an <code>uart</code> class. It is under the umbrella of <a href="https://docs.circuitpython.org/en/latest/shared-bindings/busio/"><code>busio</code> library</a>, which includes hardware-accelerated communication of popular serial buses I2C, SPI, and asynchronous serial. CircuitPython has several libraries with the <code>io</code> suffix, and given their hardware-focused nature they appear to be <a href="https://docs.circuitpython.org/en/latest/docs/common_hal.html">a big chunk of the work</a> required to port CircuitPython to a new microcontroller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One aspects of CircuitPython (and MicroPython) I found enticing is the ideal that I could develop and debug code on my desktop computer and then copy it to run on a microcontroller. Unfortunately this goes out the window when I want to use hardware-accelerated features like <code>busio.uart</code>. Its name clearly announces that it is not trying to act like <a href="https://pyserial.readthedocs.io">PySerial</a> on the desktop. If I want to write something that works on both desktop Python and microcontroller CircuitPython, I would have to write an abstraction layer restricted to the small subset of common features I need in my project. Learning how to write such adapter code is on my Python learning to-do list, but it is out of scope for my first CircuitPython project. I'll stick with <code>busio.uart</code> and develop/debug strictly on microcontroller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One Python skill area I want to improve is structuring my code to better handle non-sequential events. The relevant scenario today is sending serial data out the transmit pin while simultaneously responsive to serial data coming in over the receive pin. Plus handling when the two interact: for example waiting to receive an acknowledgement after sending data. My earlier serial data filtering tool handled <a href="https://newscrewdriver.com/2024/01/18/simultaneously-listening-to-two-serial-ports/">reading from two serial ports</a> by rapidly switching between polling the two ports, but in hindsight, that was not elegant code and it didn't handle interaction between the two streams. In the search for a better way, I recall Python supported <a href="https://newscrewdriver.com/2020/05/13/new-to-me-programming-toy-async-await-pattern/">the async/await pattern I've encountered earlier</a> in JavaScript and C#. Furthermore, CircuitPython supports some form of the pattern as well, so I'm going to <a href="https://newscrewdriver.com/2024/05/29/circuitpython-asyncio-for-cooperative-multitasking/">give it another go</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

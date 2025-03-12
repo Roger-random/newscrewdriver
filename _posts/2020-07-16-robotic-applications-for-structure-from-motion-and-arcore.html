@@ -1,0 +1,45 @@
+---
+layout: post
+title: Robotic Applications for "Structure From Motion" and ARCore
+date: 2020-07-16 12:30:40.000000000 +00:00
+type: post
+post_id: '21858'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+- SfM
+meta:
+  _thumbnail_id: '21832'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46649714765'
+  timeline_notification: '1594927849'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/16/robotic-applications-for-structure-from-motion-and-arcore/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I was interested to explore if I can adapt capabilities of augmented reality on mobile device to an entirely different problem domain: robot sensing. First I had to do a little study to verify it (or more specifically, the <a href="https://newscrewdriver.com/2020/07/15/augmented-reality-built-on-structure-from-motion/">Structure from Motion algorithms underneath</a>) isn't fundamentally incompatible with robots in some way. Once I gained some confidence I'm not barking up the wrong tree, a<span style="color:var(--color-text);font-size:1rem;"> quick search online using keywords like "ROS SfM" returned several resources for applying SfM to robotics including several built on OpenCV. A fairly consistent theme is that such calculations are very computationally intensive. I found that curious, because such traits are </span><em style="color:var(--color-text);font-size:1rem;">inconsistent</em><span style="color:var(--color-text);font-size:1rem;"> with the fact they run on cell phone CPUs for ARCore and ARKit. A side trip explored whether these calculations were assisted by specialized hardware like "AI Neural Coprocessor" that phone manufacturers like to tout on their spec sheet, but I decided that was unlikely for two reasons. (1) If deep learning algorithms are at play here, I should be able to find something about doing this fast on the Google AIY Vision kit, Google Coral dev board, or NVIDIA Jetson but I came up empty-handed. (2) ARCore can run on some fairly low-frills mid range phones like my Moto X4.</span></p>
+<p>Finding a way to do SFM from a cell phone class processor would be useful, because that means we can potentially put it on a Raspberry Pi, the darling of hobbyist robotics. Even better if I can leverage neural net hardware like those listed above, but that's not required. So far my searches have been empty but something might turn up later.</p>
+<p>Turning focus back to ARCore, a search for previous work applying ARCore to robotics returned a few hits. The first hit is the most discouraging: <a href="https://github.com/google-ar/arcore-android-sdk/issues/28">ARCore for Robotics is explicitly not a goal for Google</a> and the issue closed without resolution.</p>
+<p>But that didn't prevent a few people from trying:</p>
+<ul>
+<li>
+<a href="https://ieeexplore.ieee.org/document/8813348"><em>An Indoor Navigation Robot Using Augmented Reality</em></a> by Corotan, et al. is a paper on doing exactly this. Unfortunately, it's locked behind IEEE paywall. The <a href="https://www.semanticscholar.org/paper/An-Indoor-Navigation-Robot-Using-Augmented-Reality-Corotan-Irgen-Gioro/bafa5db7e4db1d9fd2caa4ab710a4d74c1df472b">Semantic Scholar page</a> at least lets me sees the figures and tables, where I can see a few tantalizing details that just make me want to find this paper even more.</li>
+<li>
+<em><a href="https://www.ijeast.com/papers/356-359,Tesma409,IJEAST.pdf">Indoor Navigation Using AR Technology</a> </em>(PDF) by Kumar et al. is not about robot but human navigation, making it less applicable for my interest. Their project used ARCore to implement an indoor navigation aid, but it required the environment to be known and already scanned into a 3D point cloud. It mentions the Corotan paper above as part of "Literature Survey", sadly none of the other papers in that section was specific to ARCore.</li>
+<li>
+<a href="https://formal.iti.kit.edu/teaching/projektgruppe/themen/SoSe18/localizationARCore.pdf"><em>Localization of a Robotic Platform using ARCore</em></a> (PDF) sounded great but, when I brought it up, I was disappointed to find it was a school project assignment and not results.</li>
+</ul>
+<p>I wish I could bring up that first paper, I think it would be informative. But even without that guide, I can <a href="https://newscrewdriver.com/2020/07/17/window-shopping-google-arcore-concepts/">start looking over the ARCore SDK itself</a>.</body></html></p>

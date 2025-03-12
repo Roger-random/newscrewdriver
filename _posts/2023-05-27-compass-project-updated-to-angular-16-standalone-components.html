@@ -1,0 +1,125 @@
+---
+layout: post
+title: Compass Project Updated to Angular 16, Standalone Components
+date: 2023-05-27 12:30:00.000000000 +00:00
+type: post
+post_id: '36890'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36278'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685303393
+  _publicize_job_id: '84416622779'
+  timeline_notification: '1685215826'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/27/compass-project-updated-to-angular-16-standalone-components/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/05/26/notes-on-angular-forms-guide/">reading up on Angular Forms</a> (both template-driven and reactive) I was ready to switch gears for some hands-on practice of what I've recently learned. My only Angular practice project so far is <a href="https://github.com/Roger-random/compass">my Compass app</a>. I couldn't think of a reasonable way to practice Angular reactive forms with it, but I could practice a few other new learnings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Angular 16 Upgrade</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every major Angular version upgrade is accompanied by a lot of information. Starting with the broadest strokes on the Angular Blog "<em><a href="https://blog.angular.io/angular-v16-is-here-4d7a28ec680d">Angular v16 is here!</a></em>", then more details in Angular documentation under "Updates and releases" as "<em><a href="https://angular.io/guide/update-to-version-16">Update Angular to v16</a></em>" which points to an <em><a href="https://update.angular.io/">Angular Update Guide</a></em> app that will list all the nuts and bolts details we should watch out for.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My compass app is very simple, so I get to practice Angular version upgrade on easy mode. Before I ran the update script, though, I thought I'd take a snapshot of my app size to see how it is impacted by upgrade.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.0432b89ce9f334d0.js      | main          | 642.10 kB |               145.70 kB
+polyfills.342580026a9ebec0.js | polyfills     |  33.08 kB |                10.65 kB
+runtime.7c1518bc3d8e48a2.js   | runtime       | 892 bytes |               513 bytes
+styles.e5365f8304590c7a.css   | styles        |  51 bytes |                45 bytes
+
+                              | Initial Total | 676.11 kB |               156.89 kB
+
+Build at: 2023-05-23T23:37:24.621Z - Hash: a00cb4a3df82243e - Time: 22092ms</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>After running "<code>ng update @angular/cli @angular/core</code>", Compass was up to Angular 16.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.6fd12210225d0aec.js      | main          | 645.17 kB |               146.60 kB
+polyfills.f00f35de5fea72bd.js | polyfills     |  32.98 kB |                10.62 kB
+runtime.7c1518bc3d8e48a2.js   | runtime       | 892 bytes |               513 bytes
+styles.e5365f8304590c7a.css   | styles        |  51 bytes |                45 bytes
+
+                              | Initial Total | 679.08 kB |               157.76 kB
+
+Build at: 2023-05-23T23:50:05.468Z - Hash: f595c7c43b5422f4 - Time: 29271ms</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like it grew by 3 kilobytes, which is hard to complain about when it is 0.5% of app size.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Standalone Components</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then converted Compass components to become standalone components. Following the "<em><a href="https://angular.io/guide/standalone-migration">Migrate an existing Angular project to standalone</a></em>" guide, most of the straightforward conversion can be accomplished by running "<code>ng generate @angular/core:standalone</code>" three times. Each pass converts a different aspect of the project (convert components to standalone, remove vestigial <code>NgModule</code>, application bootstrap for standalone API) and we have an opportunity to verify our app still works.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.39226bf17498cc2d.js      | main          | 643.58 kB |               146.35 kB
+polyfills.f00f35de5fea72bd.js | polyfills     |  32.98 kB |                10.62 kB
+runtime.7c1518bc3d8e48a2.js   | runtime       | 892 bytes |               513 bytes
+styles.e5365f8304590c7a.css   | styles        |  51 bytes |                45 bytes
+
+                              | Initial Total | 677.48 kB |               157.52 kB</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since Compass is a pretty simple app, eliminating <code>NgModule</code> didn't change very much. All the same things (declare dependencies, etc.) still had to be done, they just live in different places. From a code size perspective, eliminating <code>NgModule</code> shrunk app size down by about 1.5 kilobytes, reclaiming about half of the minimal growth from converting to v16.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Remove Router</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Compass is a very simple app that really didn't use the Angular router for any of its advanced capabilities. Heck, with a single URL it didn't even use <em>any</em> Angular router capability. But as a beginner, copying and pasting code from tutorials without fully understanding everything, I didn't know that at the time. Now I know enough to recognize the router portions of the app (thanks to <a href="https://newscrewdriver.com/2023/05/22/notes-on-getting-started-with-standalone-components-code-lab/">standalone components code lab</a>) I could go in and <a href="https://github.com/Roger-random/compass/commit/fdd8ab274448880f009dbb24ecba1f9c0e44042c">remove router from Compass</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.4a58a43e0cb90db0.js      | main          | 565.24 kB |               128.77 kB
+polyfills.f00f35de5fea72bd.js | polyfills     |  32.98 kB |                10.62 kB
+runtime.7c1518bc3d8e48a2.js   | runtime       | 892 bytes |               513 bytes
+styles.e5365f8304590c7a.css   | styles        |  51 bytes |                45 bytes
+
+                              | Initial Total | 599.14 kB |               139.94 kB
+
+Build at: 2023-05-24T00:30:36.609Z - Hash: 155b70d2931a3e06 - Time: 18666ms</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ah, now we're talking. App size shrunk by about 77 kilobytes, quite significant relative to other changes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Fix PWA Service Worker</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, I realized my mistake when playing with turning Compass into a PWA (Progressive Web App): I never told it anything about the deployment server. By default, a PWA assumes the Angular app lives at the root of the URL. My Compass web app is hosted via GitHub Pages at <code>https://roger-random.github.io/compass</code>, which is not the root of the URL. (That would be <code>https://roger-random.github.io</code>) In order for path resolution to work correctly, I had to pass in the path information via <code>--base-href</code> parameter for <code>ng build</code> and <code>ng deploy</code>. Once I started doing that (I <a href="https://github.com/Roger-random/compass/commit/7301b70edc0a42d8ac89046fb2fcd9063aece64d">updated my npm scripts</a> to make it easier) I no longer see HTTP 404 errors in PWA service worker status page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm happy with these improvements. I expect my Compass web app project will continue to improve alongside my understanding of Angular. The next step in that journey is to <a href="https://newscrewdriver.com/2023/05/28/installing-getting-started-with-angular-signals-code-lab-locally/">dive back into the Angular Signals code lab</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

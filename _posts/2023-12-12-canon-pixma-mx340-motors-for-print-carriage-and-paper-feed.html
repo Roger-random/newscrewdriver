@@ -1,0 +1,78 @@
+---
+layout: post
+title: Canon Pixma MX340 Motors for Print Carriage and Paper Feed
+date: 2023-12-12 12:30:00.000000000 +00:00
+type: post
+post_id: '41003'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41010'
+  wordads_ufa: s:wpcom-ufa-v4:1703391133
+  firehose_sent: '1702413016'
+  reader_suggested_tags: '["Inkjet","Printer","Ink"]'
+  timeline_notification: '1702413017'
+  _publicize_job_id: '90226620735'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/12/canon-pixma-mx340-motors-for-print-carriage-and-paper-feed/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I started taking apart my old Canon Pixma MX340 multi-function inkjet, I didn't expect to make heads or tails of the sensor bar. So I was very proud of myself for getting far enough with a reasonable hypothesis on how to work with it, and <a href="https://newscrewdriver.com/2023/12/11/canon-pixma-mx340-scanner-image-sensor-partial-reuse-ideas/">jotted down some potential approaches</a> potentially scaled down to my skill level. They are potential projects for later. Right now I want to move on with observing other parts of the machine. Today's subjects: the motors used to move the print carriage horizontally ("X-axis", in my mind) and a separate but similar motor responsible for feeding sheets of paper ("Y-axis").</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41010,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-dc-motors-wired-for-oscilloscope.jpg?w=1024" alt="" class="wp-image-41010"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are two wires on each motor, characteristic of inexpensive commodity brushed DC motors. I was pretty confident I knew what I'll see on my oscilloscope screen: 0V ground on one wire and 24V DC from the power supply on the other wire in a <a href="https://en.wikipedia.org/wiki/Pulse-width_modulation" target="_blank" rel="noreferrer noopener">PWM</a> pattern depending on desired speed. It turns out I was both right and wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41013,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-print-carriage-motor-moving-away-from-parked-position.png?w=826" alt="" class="wp-image-41013"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's definitely PWM going on, but in both directions! Here's the oscilloscope plot for the print carriage motor upon startup, moving the print carriage out of its parking spot across the width of the printer. For slow motion I expected a low PWM cycle on one pin and the other pin held kept at ground, but the printer actually alternates between turning the motor forward and reverse with no de-energized states between them. (Not counting the very brief <a href="https://newscrewdriver.com/2023/09/28/valuable-oscilloscope-lessons-from-sonicare/">MOSFET ramp-down</a> during the switch.) I guess this is similar to how when we want to make precise motions with our limbs, we keep some tension on muscles on both sides of the joint. The motor speed is thus dictated by the ratio of time spent in each direction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41015,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-print-carriage-motor-moving-towards-parked-position.png?w=825" alt="" class="wp-image-41015"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Continuing the startup sequence: After the print head moved across the entire width of the printer, it moves back towards its parking position at the same speed. Changing the edge trigger channel made it easy to see the same ratio was used except with the polarity reversed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41017,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-motor-rolling-backwards.png?w=826" alt="" class="wp-image-41017"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The paper feed motor is driven in a similar manner. This was also taken during the printer startup sequence, at the moment the motor is spinning in a direction backwards from normal paper feed direction during printing. I don't know what this motion accomplishes yet, I hope to find out later in this teardown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41019,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-motor-rolling-forwards-slower.png?w=826" alt="" class="wp-image-41019"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Shortly after that action, the motor turned in the normal paper feed direction for a short distance. (Not far enough to <a href="https://newscrewdriver.com/2023/11/25/canon-pixma-mx340-paper-output-tray-door/" target="_blank" rel="noreferrer noopener">pop open the paper output tray door</a>.) It also turns at a slightly slower speed. The most obvious difference between these two plots are the different in voltage for opposite direction, and a less obvious difference is the power energized ratio between blue and green wires. It is slightly closer to 50/50 when the motor is turning slower.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Driving the motor in this manner is not very energy-inefficient, as most of the power is spent fighting power expended a few microseconds earlier. Only a fraction actually goes into motion, all the rest are turned into heat. Indeed these motors grew warm to the touch after some use. There's probably an explanation for why this is the preferred approach, somewhere in an electrical engineering motor control theory textbook. Maybe this is the only way to reliably accomplish precise movements with inexpensive DC motors? I should experiment with this concept the next time I revisit <a href="https://newscrewdriver.com/2021/04/07/micro-sawppy-beta-3-running-with-spektrum-radio-control/">my micro Sawppy project</a>, perhaps it would allow the little thing crawl at a more rover-like speed. However, I think it's likely this motor control scheme only works because <a href="https://newscrewdriver.com/2023/12/13/canon-pixma-mx340-paper-feed-shaft-encoder/">it has encoder feedback</a> for a closed-loop control system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

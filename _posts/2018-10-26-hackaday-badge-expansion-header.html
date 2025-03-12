@@ -1,0 +1,40 @@
+---
+layout: post
+title: Hackaday Badge Expansion Header
+date: 2018-10-26 09:00:00.000000000 +00:00
+type: post
+post_id: '17037'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23612371840'
+  timeline_notification: '1540570166'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/26/hackaday-badge-expansion-header/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The upper left corner of the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> is a series of standard 0.1" pitch electric connection pins that serves as a portal to the world of hardware hacking projects. When the onboard peripherals aren't enough, external accessories connect here.</p>
+<p><img class="alignnone size-full wp-image-17038" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-expansion-header.jpg" alt="Hackaday Badge Expansion Header" width="1024" height="655"></p>
+<p>There's also a less exotic use - the five pins on the left (RES / +V / GND / B0 / B1) serve as the firmware upgrade connection for the PIC32 processor. We connect a programmer (like the PICkit 3) to these five pins to reprogram the badge. But when the programmer is not connected, these pins can find secondary use in hardware hacks.</p>
+<p><img class=" size-full wp-image-17039 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-expansion-header.png" alt="Hackaday Badge Expansion Header" width="289" height="202"></p>
+<p>The center pin RES(ET) goes to the hardware reset pin so that's useful if we want to connect an external reset switch.</p>
+<p>+V and GND is the voltage source and ground. With the pair of AAs present, these pins act as power sources for external components. If the AAs are absent, these pins can accept external power. Do note, though, that there's no voltage regulation on the badge so +V/GND has to stay within the voltage range tolerated by badge components.</p>
+<p>C13 and C14 are set up for serial communication. These are the most widely accessible of the expansion pins, usable <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade/log/146234-hackaday-basic-interpreter">from BASIC</a> <code>uin</code> and <code>uout</code>, Z80 emulated CP/M machine <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade/log/146226-cpm-on-badge-quick-guide">via <code>xmdem</code></a>, and C user programs via <code>rx_read</code> and <code>tx_write</code> at the end of <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.c">hw.c</a>.</p>
+<p>The remaining four pins are explicitly labeled as expansion pins 0 (G2), 1 (G3), 2 (B0), and 3 (B1). Accessible <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade/log/146234-hackaday-basic-interpreter">from BASIC</a> with the <code>edr</code> / <code>ein</code> / <code>eout</code> commands and accessible from C user programs with <code>exp_ddr</code> / <code>exp_get</code> / <code>exp_set</code> functions in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.c">hw.c</a>.</p>
+<p>I see "I2C" written on top of G2 and G3, along with labels of SCL and SDA, but I have yet to find any actual I2C support infrastructure on the badge firmware. Maybe this is coming in later?</p>
+<p>Also note that while G2 and G3 have minor protection in the form of a 220 ohm resistor, B0 and B1 are 'naked'. Those expansion pins are connected directly to the corresponding PIC pins and officially must be free from external components when used for programming purposes. Typically this means they're unused or disconnected from peripherals during programming, though there are ways to use them and still follow specifications. For example, they can be connected to a normally-open switch. As long as the switch doesn't close during programming, everything should be fine.</p>
+<p></body></html></p>

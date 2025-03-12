@@ -1,0 +1,44 @@
+---
+layout: post
+title: Notes on ESP32 Input Output Pins
+date: 2021-02-20 12:30:00.000000000 +00:00
+type: post
+post_id: '24964'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24995'
+  _publicize_job_id: '55054187167'
+  timeline_notification: '1613853002'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/20/notes-on-esp32-input-output-pins/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As I combed through ESP32 documentation for <a href="https://newscrewdriver.com/2021/02/19/notes-on-esp32-pwm-peripherals/">information on its PWM capabilities</a>, I realized there was something missing from what I expected to see: information on which physical pins are associated with these PWM peripherals. This was something I saw and learned to expect from reading documentation for <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/09/13/know-thy-chip-reading-the-pic16f18345-data-sheet/" target="_blank">other microcontrollers like the PIC16F18345</a>. When I read about a peripheral, it is always accompanied by a chart showing which physical pins are wired to that peripheral. But not the ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reason became obvious as I started browsing ESP32 peripherals, a list that just kept going on and on and on. There are so many features on this chip for doing so many different things, how can we possibly use them all? Well, sadly, we can't. Only a small fraction of this chip's internal capabilities can be routed to the limited number of external pins. So this chip can do many interesting things, but it can't do them all at the same time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The key documentation here is <a rel="noreferrer noopener" href="https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf" target="_blank">the ESP32 Technical Reference Manual</a>. (PDF) Section 5 talks about the GPIO matrix, which is what we configure when we write an ESP32 application using GPIO peripherals. According to this document, all the ESP32 peripheral inputs added up to 162 potential signals, and all the outputs added up to 176 output signals. The GPIO matrix is how we control which of those 338 (!!) pins are routed to the 34 physical pins actually available on an ESP32. I found it amazing that, by definition, we could only use ~10% of an ESP32's input/output capabilities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And in reality, we are even more constrained than that. Especially when working with a ESP32 DevKit module as I am. The physical appearance of 38 pins are a little misleading, because there are multiple ground pins (all tied together, at least on my board) and both input and output voltage of the onboard 3.3V regulator. Six pins are tied to onboard flash memory and thus not available for use, and given the fact they are unusable I'm puzzled why they even broke them out on the dev kit. The UART for uploading programs are also exposed, meaning a few more pins unavailable for projects. Then there are pins involved in the boot and firmware upload process, and those involved in JTAG debugging.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found it all very confusing, but thankfully I found <a rel="noreferrer noopener" href="https://randomnerdtutorials.com/esp32-pinout-reference-gpios/" target="_blank">an ESP32 GPIO reference chart by Random Nerd Tutorials</a> which I consider a great resource for navigating this particular jungle. According to this chart, there are only 15 GPIO pins that an be used without caveats. Four more are limited to input-only and lack internal pull-up or pull-down resistors. Roughly 4-6 more pins are available depending on my appetite for adventure and confidence, followed by their associated restrictions. The rest might as well have been marked "<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Here_be_dragons" target="_blank">HERE BE DRAGONS</a>" and I'm staying away from them for my <a href="https://newscrewdriver.com/2021/02/21/micro-rover-esp32-brain-is-feasible/">micro Sawppy brain project</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

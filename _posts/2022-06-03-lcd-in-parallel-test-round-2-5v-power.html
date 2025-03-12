@@ -1,0 +1,69 @@
+---
+layout: post
+title: 'LCD in Parallel Test Round 2: 5V Power'
+date: 2022-06-03 12:30:00.000000000 +00:00
+type: post
+post_id: '30638'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30639'
+  _publicize_job_id: '73262925768'
+  timeline_notification: '1654284613'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/03/lcd-in-parallel-test-round-2-5v-power/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>There were nine pins on this LCD unit salvaged from an AT&amp;T CL84209 cordless phone system. I think I've figured out five of them: 3.3V supply, ground, enable, I<sup>2</sup>C clock, and I<sup>2</sup>C data. The remaining four are still unknown but I <a href="https://newscrewdriver.com/2022/06/02/lcd-analog-activity-started-by-digital-signal/">noticed a correlation</a> between their start-up behavior and the first control message sent to its I<sup>2</sup>C address of 0x3E. Perhaps those pins are not all input pins?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To get more data, I'm going to repeat the experiment of connecting two LCDs in parallel. One still mounted on remnant of a CL84209 handset circuit board, and the other was a bare module from the base station. The first time I tried this harebrained scheme, I <a href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/">connected all nine pins</a>. Both displays ran, but at much lower contrast than usual.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This time, I won't connect all the pins. Power supply, ground, and enable pins should be safe to connect in parallel. I<sup>2</sup>C data and clock lines are designed to connect to multiple devices in parallel, so electrically speaking it should be fine as well. But I<sup>2</sup>C is not designed to have two devices responding to the same address connected together. The protocol has no provision for such conflict resolution and usually I<sup>2</sup>C address conflict leads to chaos. The only reason we can get away with it this time is because these two screens respond identically (or close enough) so there aren't conflicts to resolve.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With five out of nine pins connected in parallel, I will experiment to see what happens when I selectively connect the rest. For reference, here is the behavior recorded from the handset running standalone: Channels 4 and 7 should rise to 5V, channel 5 should be an 8kHz square wave between 3.3V and 5V, and channel 6 should be another 8kHz square wave from 0V to 3.3V in phase with channel 5.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30587,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg?w=1024" alt="" class="wp-image-30587"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at this plot, I think I need to connect at least a pin to serve as a 5V power supply. Pin 6 (channel 4) and pin 9 (channel 7) are both candidates for 5V supply, since they both rise to 5V once things started up. Before the startup procedure, pin 6 (channel 4) received 3.3V as soon as the system received power, while pin 9 (channel 7) stayed at 0V until the startup procedure. Based on this difference, I think pin 6 (channel 4) is the better candidate to try, so I added a jumper wire to connect that to the handset circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30639,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-base-and-handset-in-parallel-round-2.jpg?w=1024" alt="" class="wp-image-30639"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's alive! And better yet, display contrast on both screens appears normal. Not faded-out as I saw in the previous parallel test with all nine pins connected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":30053,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/base-lcd-is-working-in-parallel.jpg" alt="" class="wp-image-30053"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":30051,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/handset-lcd-faded-but-working.jpg" alt="" class="wp-image-30051"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Normal display contrast supports the hypothesis that the 8kHz voltage square waves were used for LCD segments, and furthermore this test implies those square waves were generated by the onboard controller. When these two LCDs were connected in parallel, their 8kHz voltage waves interfered with each other and lowered contrast on both. But if this is true, why do these signals need to be brought out as externally accessible pins? Why not just leave them internal? I don't have a good guess for that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As an additional data point, I disconnected pin 6 and connected pin 9. If my hypothesis is correct that pin 6 is the 5V power supply, disconnecting it and putting 5V on pin 9 should mean the display stays blank. Nope! My hypothesis was wrong or at least incomplete. When I disconnected pin 6, the display went blank as expected. But when I connected pin 9, the display came back to life. Both pin 6 and pin 9 could apparently serve as 5V power supply. Which one should I use? Perhaps <a href="https://newscrewdriver.com/2022/06/04/lcd-behavior-between-5v-power-supply-candidates/">taking another set of analog traces</a> could provide some insight.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

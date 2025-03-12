@@ -1,0 +1,58 @@
+---
+layout: post
+title: LCD Exploration Unwinds Back to CL84209
+date: 2022-05-28 12:30:00.000000000 +00:00
+type: post
+post_id: '30559'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29985'
+  _publicize_job_id: '73044290907'
+  timeline_notification: '1653766215'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/28/lcd-exploration-unwinds-back-to-cl84209/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In my electronics teardown and salvaging adventures, I kept a few segmented LCD units with the intent to learn about them later. After I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/04/28/inspired-by-joey-castillos-introduction-to-segmented-lcd/" target="_blank">watched Joey Castillo's Remoticon presentation on LCDs</a>, I decided it was time to take some LCDs out of my pile and start learning how to use them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In hindsight, I undertook this adventure in backwards order. I couldn't make heads or tails of my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/04/29/mystery-desk-phone-lcd/" target="_blank">first attempt</a>, and <a href="https://newscrewdriver.com/2022/04/30/landline-answering-system-handset-lcd-cl84209/">the second didn't fare much better</a> though it gave me enough information to infer those two LCDs both came from an AT&amp;T CL84209 wireless landline system. The third attempt was a car tape deck <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/03/powering-up-toyota-audio-head-unit-86120-08010/" target="_blank">I managed to power up</a>, but it was too advanced of a system and wouldn't help me learn LCDs basics. The fourth item was an LCD salvaged from a food thermometer, but <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/04/taylor-food-thermometer-lcd-first-round-fail/" target="_blank">I had problems trying to attach wires</a> to this display. I was finally successful on the fifth try, obtaining <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/10/segmented-lcd-from-sunbeam-pac-215/" target="_blank">full control over a simple segmented LCD</a> salvaged from an <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/05/electric-blanket-control-sunbeam-pac-215/" target="_blank">electric blanket controller</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30209,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/pac-215-segment-map-monochrome.jpg?w=1024" alt="" class="wp-image-30209"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that success, I started unwinding my stack of failures. A bit of hackery and a lot of patience allowed me to <a href="https://newscrewdriver.com/2022/05/11/segmented-lcd-from-taylor-food-thermometer/">map out the food thermometer LCD</a> on my second try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30219,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-segments-map.jpg?w=1024" alt="" class="wp-image-30219"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these two examples of low-level LCD control, I returned to the tape deck and learned how to work at a higher level with its LCD controller. I even learned a new communication protocol (Sanyo's CCB) and <a href="https://newscrewdriver.com/2022/05/18/successful-arduino-test-of-lc75853n-control/" target="_blank" rel="noreferrer noopener">programmed an Arduino Nano to speak its language</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30369,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-segment-display-map.jpg?w=1024" alt="" class="wp-image-30369"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Obtaining a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/" target="_blank">full understanding of how to interface with the faceplate</a> was very satisfying. Two key factors made it possible: the LCD controller's datasheet, and a Saleae logic analyzer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Armed with this experience, I will now return to where I started: to the mystery LCD units salvaged from an AT&amp;T CL84209 landline phone system. I found nothing to identify their LCD controller, so I would have to go without a datasheet. However, I do have one valuable datapoint: <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/" target="_blank">a risky experiment</a> proved that while those two LCDs were different, they do communicate with the same protocol. This is enough of a starting point for me to <a href="https://newscrewdriver.com/2022/05/29/preparing-cordless-handset-lcd-for-logic-analysis/">dive in with my logic analyzer</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,112 @@
+---
+layout: post
+title: Hello ESPAsyncWebServer
+date: 2023-03-18 12:30:00.000000000 +00:00
+type: post
+post_id: '35764'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags:
+- ESP8266
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28376'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679343874
+  _publicize_job_id: '82426829069'
+  timeline_notification: '1679167843'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/18/hello-espasyncwebserver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have several interesting sensors in my hardware to-do pile, and I think it'd be interesting to do a series of interactive UIs one for each sensor. My first effort in this vein was a browser UI to interactively play with an AS7341 spectral color sensor, and <a href="https://newscrewdriver.com/2023/02/01/as7341-project-future-enhancements/">I learned a lot doing it</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One lesson was that I could perform all sensor data computation and visualization in the browser, so I don't need much in the way of microcontroller capabilities. The ESP32 I used for AS7341 web UI was overkill. All I needed was an I2C bus and WiFi, so I could easily drop down to an ESP8266. However, because I had used the <a href="https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer">WebServer from ESP32 Arduino Core library</a>, I will need an ESP8266-friendly replacement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Sticking with Original Repository</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I decided to look into <a href="https://github.com/me-no-dev/ESPAsyncWebServer">ESPAsyncWebServer</a>, which I had been using indirectly as a dependency of ESPHome. In addition to supporting ESP8266 as well as ESP32, it had a few other features I liked. The most important being its ability to serve files from flash file system, so I don't have to do silly things like <a href="https://newscrewdriver.com/2023/01/19/esp32-arduino-web-server-no-file-upload/">hexadecimal encoding files to program memory</a>. Using this capability also means switching from Arduino IDE to PlatformIO, because the latter has easy tools to work with flash file system. And finally, I was intrigued by the claim ESPAsyncWebServer can <a href="https://techoverflow.net/2022/08/07/how-to-make-angular-work-with-esp32-spiffs-espasyncwebserver/">serve GZip-compressed files</a>. Making better use of our precious megabyte of flash memory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only worry is that the GitHub repository looks stale. There are over 100 open issues, and there are 69 pull requests sitting unmerged. Maybe I should use one of the forks that saw more recent development? Since I was introduced via ESPHome, I thought I would try <a href="https://github.com/esphome/ESPAsyncWebServer">their fork of the repository</a>. It has seen more recent work, but unfortunately as of this writing, the most recent merge has a C syntax error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>.pio\libdeps\d1_mini\ESPAsyncWebServer-esphome\src\AsyncWebSocket.cpp: In function 'size_t webSocketSendFrame(AsyncClient*, bool, uint8_t, bool, uint8_t*, size_t)':
+.pio\libdeps\d1_mini\ESPAsyncWebServer-esphome\src\AsyncWebSocket.cpp:105:23: error: expected primary-expression before ')' token
+  105 |   if (!client-&gt;send();) return 0;
+      |                       ^</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's been <a href="https://github.com/esphome/ESPAsyncWebServer/actions/runs/4197249075/jobs/7279318189">sitting broken for over a month now</a>. I don't know the story behind the scenes, but it is clear the repository is in no shape to be used. I don't know which of the other forks might be worth investigating. As an introduction, I'll start with the original until I run into a compelling reason to do otherwise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">SPIFFS vs. LittleFS</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were <a href="https://github.com/me-no-dev/ESPAsyncWebServer/tree/master/examples">a few examples</a> to help me orient myself with ESPAsyncWebServer. Compiling them myself, though, brought up warnings that <a href="https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#spiffs-deprecation-warning">SPIFFS is now deprecated</a> and I should switch to LittleFS. This was opened as an <a href="https://github.com/me-no-dev/ESPAsyncWebServer/issues/780">issue #780 against ESPAsyncWebServer library</a>, but was closed without further action because the warning came from an optional SPIFFS-specific component called SPIFFSEditor. Since it is optional and not relevant to my projects, I can choose to ignore the warning.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Switching over is a little tricky because we build the code and file system separately, and they are two different uploads. If I upload the file system first, it gets reformatted by the code when it sees a file system it doesn't recognize. <a href="https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#spiffs-and-littlefs">As per documentation</a>: "<em>attempting to mount a SPIFFS volume under LittleFS may result in a format operation and definitely will not preserve any files, and vice-versa</em>" In order to end up with a functional system, I need upload code using LittleFS <em>then </em>upload LittleFS file system contents.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Gzip Compressed Files</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After verifying a simple "Hello World" web server worked, I compressed the small index.html into index.html.gz. Uploading the new LittleFS system, I was happy to see it come up in my browser! But how does this work? I queried using <code>curl </code>and found the answer:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>HTTP/1.1 200 OK
+Content-Length: 1284
+Content-Type: text/html
+<mark style="background-color:#fcb900" class="has-inline-color">Content-Encoding: gzip</mark>
+Content-Disposition: inline; filename="index.html"
+Connection: close
+Accept-Ranges: none</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESPAsyncWebServer <a href="https://github.com/me-no-dev/ESPAsyncWebServer/blob/master/src/WebResponses.cpp#L513">added "Content-Encoding: gzip" to the HTTP header</a> effectively making the browser deal with it. As the browser will be running on a far more powerful CPU than the ESP8266, it is indeed better suited to handle decompression.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Serve Angular Web Application</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a test of compression, I brought over my Angular tutorial app "Tour of Heroes". It's not as simple as just copying the files, though. As per <a href="https://angular.io/guide/deployment#routed-apps-must-fall-back-to-indexhtml">Angular deployment guide</a>, I needed to add a rule so ESPAsyncWebServer will serve up index.html rather than a 404 error when an URL is not found.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>  server.onNotFound([](AsyncWebServerRequest *request){
+    request-&gt;send(LittleFS, "/www/index.html");
+  });
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another problem was that LittleFS has a 31-character name limit. (32 characters + null termination.) Unfortunately, my Angular app bundle had a file <code>polyfills.716cc9a230a87077.js.gz</code> which is 32 letters! The hexadecimal hash was generated by "--output-hashing" option of "ng build". It's changed on every build in order to avoid using stale cached versions of polyfills.js. I could skip that feature, but then I run the risk of stale cached files. The other workaround is to skip compressing polyfills.js. Dropping the ".gz" extension resulted in a 29-letter filename that works for LittleFS.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With all files in my Angular app compressed (except for <code>polyfills.716cc9a230a87077.js</code>) the size of the app dropped from ~800kB down to ~230kB. This is a dramatic difference when <a href="https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#flash-layout">default available flash storage is only 1MB</a> out of a total of 4MB total flash memory onboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>Should </em>I use Angular to build my ESP8266-hosted sensor web UI projects? No. It is far too heavyweight and a simple sensor UI does not need the capabilities of Angular application framework.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>Will </em>I use Angular to build my ESP8266-hosted sensor web UI projects? Possibly. Angular is not the best tool for the job, but it might be valuable for me to practice Angular by starting with something simple.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this exploratory project is <a href="https://github.com/Roger-random/ESP8266Tests/tree/main/pio_webserver">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

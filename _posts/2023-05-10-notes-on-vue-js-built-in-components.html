@@ -1,0 +1,52 @@
+---
+layout: post
+title: Notes on Vue.js "Built-In Components"
+date: 2023-05-10 12:30:00.000000000 +00:00
+type: post
+post_id: '36632'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36516'
+  timeline_notification: '1683747009'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683845157
+  _publicize_job_id: '83942417832'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/10/notes-on-vue-js-built-in-components/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While <a href="https://newscrewdriver.com/2023/05/09/notes-on-vue-js-reusability/">reading Vue.js documentation on reusability</a>, I learned of <a href="https://vueuse.org/">VueUse library</a> filled with composable code available for use in our Vue apps. With that in mind, I was curious about the next section of documentation: "Built-in Components." What's special about these components? They must enable features requiring internal Vue support and could not be done (at least not efficiently) by an external code module. From what I can tell, they have one thing in common: they hook into platform changes to component structure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First example supports transition animations. CSS defines a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions">transition animation mechanism</a> but that only applies to changing properties on an object. Animating the objects themselves being changed requires support like Vue's <code>&lt;Transition&gt;</code> for individual components and <code>&lt;TransitionGroup&gt;</code> for elements in a list. By default, adding or removing components from the application means an abrupt and instantaneous change that may leave the user disoriented. These components allow designer to add transition animation to visually guide the user through such changes for a better user experience. Both by adding/removing classes to trigger CSS transition animation plus JavaScript hooks for whatever can't be done via CSS.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An example of a feature that requires framework level support is <a href="https://vuejs.org/guide/built-ins/transition.html#transition-modes">Transition Mode</a>, which manages how the old and new components interact to mitigate visually jarring artifacts. Moving from "mitigating a bad thing" to "enabling a great thing" is the <a href="https://vuejs.org/guide/built-ins/transition-group.html#move-transitions">Move Transitions demo</a> for <code>&lt;TransitionGroup&gt;</code>, a great way to visually inform a user of changes in a list. After seeing that, I've become a fan of <code>&lt;Transition&gt;</code> / <code>&lt;TransitionGroup&gt;</code>. Sure, they can be abused just like all mechanisms designed to attract user attention (<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blink">Die <code>&lt;blink&gt;</code> Die</a>) but there's plenty of room for subtle and tasteful designs. On the downside, I'm not a fan of <a href="https://vuejs.org/guide/built-ins/transition.html#named-transitions">Named Transitions</a> which introduces more name magic to Vue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the spirit of Vue keeping things lightweight and not reinventing wheels, <code>&lt;Transition&gt; </code>/ <code>&lt;TransitionGroup&gt;</code> only enables transitions, they do not define any animations themselves. This page links to animation libraries (<a href="https://animate.style/">Animate.css</a>, <a href="https://greensock.com/">GreenSock</a>, <a href="https://animejs.com/">Anime.js</a>, <a href="https://motion.dev/">Motion One</a>) that it plays well with.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As much as I love some of the animations demonstrated here, as a practical matter I'm not likely to use any of these directly in the near future. If I start building projects with Vue, I'll start without worrying about visual polish. For a first pass on visual polish, I'll probably use something like <a href="https://www.creative-tim.com/vuematerial">Vue Material</a>. Crafting my own visual styles with transition animations will be much further down the line, if ever.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm equally unlikely to use anything else in Vue's "Built-in Components" section. <code>&lt;KeepAlive&gt;</code> keeps a <code>&lt;component&gt;</code> node alive to keep its state, in the expectation of eventual reinsertion back into the tree. <code>&lt;Teleport&gt;</code> moves visual elements somewhere outside of their proper location in Vue component hierarchy, useful for global model display dialog boxes. And <code>&lt;Sense&gt;</code> is still an experimental feature for consolidating visual feedback of multiple child asynchronous operations. (One spinning "waiting" animation instead of each component having their own.) <code>&lt;Sense&gt;</code> <a href="https://vuejs.org/guide/built-ins/suspense.html#combining-with-other-components">combined with</a> <code>&lt;Transition&gt;</code> and <code>&lt;KeepAlive&gt;</code> to handle Vue Router changes is far too advanced of a technique for this beginner to worry about. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which is true of most of the rest of Vue.js guides, but I wanted to skim over them anyway <a href="https://newscrewdriver.com/2023/05/11/notes-on-vue-js-scaling-up/">starting with "Scaling Up"</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

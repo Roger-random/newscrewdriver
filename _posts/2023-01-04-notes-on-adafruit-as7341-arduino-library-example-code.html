@@ -1,0 +1,90 @@
+---
+layout: post
+title: Notes on Adafruit AS7341 Arduino Library Example Code
+date: 2023-01-04 12:30:00.000000000 +00:00
+type: post
+post_id: '34432'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Arduino
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34428'
+  _publicize_job_id: '80248739024'
+  timeline_notification: '1672864368'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672953961
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/04/notes-on-adafruit-as7341-arduino-library-example-code/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2023/01/03/adafruit-as7341-board-4698/">purchased an AS7341 breakout board from Adafruit</a> (#4698) and read through their guide (<a rel="noreferrer noopener" href="https://learn.adafruit.com/adafruit-as7341-10-channel-light-color-sensor-breakout?view=all" target="_blank">single-page view</a>) on the board. It's nice to see their library takes care of the complexity of this chip's internals such as SMUX configuration. Examples that come bundled with a library is always a good overview of capabilities, and this is what I see from <a rel="noreferrer noopener" href="https://github.com/adafruit/Adafruit_AS7341/tree/master/examples" target="_blank">its examples directory</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<strong><code>basic_counts</code></strong>: "Basic Counts" is a concept described in the AS7341 calibration application note. A bit of math that takes raw sensor counts and compensates for gain and integration time. AMS recommends application logic work with "Basic Counts". This lets us change gain and integration based on environment and still keep the rest of the application logic unchanged.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>flicker_detection</code></strong>: Prime concern of flicker detection is with household AC power frequencies of 50Hz or 60Hz however this sensor is not limited to those rates. The datasheet says it can detect flicker frequencies up to 2kHz. This capability feels like a potential project all by itself, I'll have to think more about it.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code><strong>get_channel</strong></code>: Performs a read of all channels then iterates through 10 spectral sensing channels of 8 visible spectrum + clear + infrared to print their raw counts. (Flicker detection channel is ignored.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>gpio_example</code></strong>: Using the "GPIO" pin as a digital output. High for 3 seconds and low for half a second and repeat. <em>Important note</em>: according to board <a rel="noreferrer noopener" href="https://learn.adafruit.com/assets/93709" target="_blank">schematic published by Adafruit</a>, the GPIO pin is brought out directly to the headers. There is no voltage level shifting or protection on this pin so be sure to consult datasheet and be nice to this 1.8V part.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>gpio_input_example</code></strong>: Using the "GPIO" pin as digital input. Samples every half second and prints either "high" or "low" to serial console.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>led_test</code></strong>: The canonical "blink a LED" test implemented with the LED Adafruit installed on the breakout board connected to AS7341's LDR pin. Lights up at 4mA for 1/10th of a second, dark for half a second, light up to 100mA for 1/10th of a second, dark for another half a second, and repeat. Note while the AS7341 constant current control register goes up to 258mA, we shouldn't go that far. According to board <a href="https://learn.adafruit.com/assets/93709" target="_blank" rel="noreferrer noopener">schematic published by Adafruit</a>, the onboard LED is an <a href="https://www.digikey.com/en/products/detail/everlight-electronics-co-ltd/EAHC2835WD6/6002463" target="_blank" rel="noreferrer noopener">EAHC2835WD6</a> with recommended ceiling of 150mA and absolute maximum of 180mA.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>plotter_example</code></strong>: A clever variation on <code>get_channel</code> designed to work with Arduino IDE's <a rel="noreferrer noopener" href="https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-plotter" target="_blank">Serial Plotter</a> feature. Five comma-separated sensor values are printed on a line so that when we turn on Serial Plotter, the plotter line drawing colors are close to the color wavelength of that sensor.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code><strong>read_all_channels</strong></code>: This is almost identical to <code>get_channel</code>. The only difference is this sketch passes an array into the call to <code>readAllChannels()</code> and prints from sketch's own array. get_channel does the exact same thing using the array stored in Adafruit library object.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>reading_while_looping</code></strong>: Most of these examples call <code>readAllChannels()</code>, which is a blocking call that waits for sensor integration to complete before returning with results. Depending on integration time configuration, delay caused by waiting can be problematic. This sketch illustrates a way to initiate AS7341 integration and yield control so other things can happen until integration is complete. Note: the I2C operations involved are still blocking calls via Arduino's Wire library.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>smux_test</code></strong>: I didn't understand this sketch. It has an empty <code>loop()</code> and I don't see how <code>setup()</code> tests SMUX in any way.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>spectral_interrupts</code></strong>: By its name I hoped to see a demonstration of using AS7341 INT pin to generate a hardware interrupt signal for Arduino microcontroller, triggering an ISR (interrupt service routine) for sensor read. I was wrong, the "interrupt" for this sketch is merely a register flag that we read from within <code>loop()</code>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong><code>synd_mode</code></strong>: By its name I hoped to see a demonstration of using GPIO pin to trigger start of AS7341 sensor integration. This time I think I got my wish! Unlike all of the other examples, this sketch doesn't use Adafruit's AS7341 library and was not written by anyone at Adafruit. It uses the Wire library directly and was written by an AMS application support engineer.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite mysteries like <code>smux_test</code>, I see a good set of examples here to help me become familiar with AS7341 capabilities. A sensible person would start their exploration with simple modifications to one of these sample sketches. <a href="https://newscrewdriver.com/2023/01/05/new-project-mozzi-as7341/">I did not go down that path of sensibility</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,51 @@
+---
+layout: post
+title: 'A Tale of Two ADCs: ESP32 versus INA219'
+date: 2022-02-27 12:30:00.000000000 +00:00
+type: post
+post_id: '28778'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- INA219
+- MPS500
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28779'
+  _publicize_job_id: '69548696718'
+  timeline_notification: '1645993813'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668587668
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/27/a-tale-of-two-adcs-esp32-versus-ina219/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I started looking at Home Assistant and ESPHome because I realized I did not have enough enthusiasm to write my own sensor data gathering and processing framework. Learning how to <a href="https://newscrewdriver.com/2022/02/26/exploring-low-power-esphome-nodes/">put an ESPHome node to sleep to save power</a> was one of many steps I had to retrace, but I'm finally ready to pick up where I left off with an INA219 DC voltage and current sensor breakout board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had been using an ESP32 with its integrated ADC to monitor the DC voltage output of my MPS500 battery. I started with an ESP32 because they received factory calibration by Espressif whereas the ESP8266 did not. Sadly that wasn't as useful as I had hoped because the ADC was only capable of measuring <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html" target="_blank">up to 2.45 volts</a>. The MPS500 battery voltage range is consistent with three lithium chemistry battery cells in series ("3S") meaning up to 12.6V, requiring a voltage divider built with a few resistors. These were cheap resistors that were several percent off the nominal value, so I had to use my voltage meter to recalibrate anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While off-nominal resistors would affect the <em>accuracy</em> of my readings, I had expected the <em>precision </em>to be pretty good if I <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html#minimizing-noise" target="_blank">followed Espressif recommendation on reducing ADC noise</a> with use of multisampling plus a bypass capacitor. And indeed the results were perfectly sufficient for me to log the change in battery voltage over time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But once I had an INA219 up and running, it took over voltage monitoring duty in addition to current (and power) monitoring. After just one day, I can see the task-specific ADC circuit in an INA219 significantly outperformed the general-purpose ESP32 ADC. This graph covers two days: the day before switchover, and the day after.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28779,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/esp32-adc-vs-real-adc.jpg?w=1024" alt="" class="wp-image-28779"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The green line on the left were voltage fluctuations recorded by ESP32 ADC, the yellow line on the right reflected the same usage pattern but recorded by INA219. There is a very drastic difference in noise fluctuations between the two graphs! The ESP32 ADC plot was a little jagged and perfectly fine for my purpose, but it was a real treat to see INA219 values tracing out a smooth curve with no visible noise. At least, at the scale of my graph. This improvement should help as I move on to the <a href="https://newscrewdriver.com/2022/02/28/investigating-mp1584-for-solar-power/">next step of my project</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

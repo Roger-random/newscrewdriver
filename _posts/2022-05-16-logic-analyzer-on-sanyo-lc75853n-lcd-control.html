@@ -1,0 +1,480 @@
+---
+layout: post
+title: Logic Analyzer on Sanyo LC75853N LCD Control
+date: 2022-05-16 12:30:00.000000000 +00:00
+type: post
+post_id: '30314'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- LC75853N
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30339'
+  _publicize_job_id: '72592264629'
+  timeline_notification: '1652729416'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/16/logic-analyzer-on-sanyo-lc75853n-lcd-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My Saleae Logic 8 analyzer is now tapped into communication between the mainboard and face plate of a tape deck. A <a href="https://newscrewdriver.com/2022/05/15/sanyo-ccb-close-enough-to-spi-for-logic-analyzer/">quick examination of the captured data</a> looks reasonable, now it is time to dig into the data, compare against the LC75853 datasheet, and understand what is going on with LCD output control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30340,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-audio-head-unit-lcd-off.jpg?w=1024" alt="" class="wp-image-30340"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Within the ~3/4 second of the faceplate getting power, this sequence is transmitted repeatedly approximately once every 5 milliseconds. Zooming in, I see they are three consecutive CCB transmissions to address 0x42:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0xC0</td>
+<td>0x10</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Guided by the datasheet, I interpret them as:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Most of the 0x00 bits indicate the corresponding LCD segment is to be turned off.</li>
+<li>Some of the 0x00 bits in the second and third set are fixed data.</li>
+<li>In the first set, the two bits in 0xC0 maps to S0 and S1, which controls sleep mode. S0 =1 and S1=1 is one of three available sleep modes.</li>
+<li>Also in the first set, the single bit in 0x10 translates to SC, the segment on/off control data. SC=1 means display state is off.</li>
+<li>For the second and third set, they each have a single bit that appear to be fixed within the section labeled as DD (direction data) and their values written into the timing diagram.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that initial ~3/4 of a second, the pattern makes a minor change and repeats less frequently: once every 50 milliseconds:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>0</td>
+<td>0x10</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two bits associated with sleep mode are now zeroes. Sleep flags S0=0 and S1=0 means "Normal operation", so the chip is awake. SC is still 1, though, so LCD is still off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30339,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-audio-head-unit-lcd-fm-1-ch-1-87.9.jpg?w=1024" alt="" class="wp-image-30339"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I pressed the power button. This triggered a set of events (probably related to key scan reporting) that I will investigate later. Right now, I am focused on how the LCD control message changed to display "FM 1 CH 1 87.9"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">D</mark>0</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">DD</mark>
+</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">2</mark>
+</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>0</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">7</mark>0</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">55</mark>
+</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">6</mark>
+</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">4</mark>
+</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">B</mark>
+</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>The end of first set changed from 0x10 to 0x00. This cleared the SC flag, so now LCD is on. There are other control bits in the first set of bytes and they are all zero.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>K0 and K1 set to zero means none of the key scan pins were reassigned to segment control duty, so the chip retains ability to scan up to 30 keys.</li>
+<li>P0 and P1 set to zero means none of the segment pins were reassigned to digital output duty, so the chip can control a maximum of 120 segments.</li>
+<li>DR set to zero means 1/3 bias drive voltage.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The display backlight is also illuminated now, but which of these bits are responsible? For now, that is still an unknown. Until I get more information otherwise, I'll proceed on the assumption that all remaining bits are LCD segment control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30341,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-audio-head-unit-lcd-bas-0.jpg?w=1024" alt="" class="wp-image-30341"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To get more information, I pressed the "Mode" knob changing the display to "BAS 0" and its control message to this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>0</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">C0</mark>
+</td>
+<td>0x02</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0D</mark>
+</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">80</mark>
+</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">DC</mark>
+</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">F4</mark>
+</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">2F</mark>
+</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">2</mark>
+</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>
+</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>
+</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>
+</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's a lot of changes!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30343,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-audio-head-unit-lcd-bas-1.jpg?w=1024" alt="" class="wp-image-30343"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For a smaller delta, I turned the knob one step so it now shows "BAS 1".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td><mark style="background-color:rgba(0, 0, 0, 0);" class="has-inline-color has-black-color">0x00</mark></td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">8</mark>0</td>
+<td>0x02</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x0<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">0</mark>
+</td>
+<td>0x80</td>
+<td>0xDC</td>
+<td>0xF4</td>
+<td>0x2F</td>
+<td>0x02</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a more manageable set of changes. A single step changes "0" to "1", which on a 7-segment display means turning off four segments. A change from 0xC0 to 0x80 turns off one bit, and from 0x0D to 0x00 turns off three bits. This matches expectation of deactivating four segments.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't take pictures for the next experiment: While in FM radio mode, I press the tuner up button once. This moved it off the first preset so "CH 1" disappeared and now the display shows "FM 1 88.1":</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x10</td>
+<td>0xD1</td>
+<td>0x02</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x7F</td>
+<td>0x55</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x0B</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I pressed it again, so it now displays "FM 1 88.3":</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">D</mark>0</td>
+<td>0xD<mark style="background-color:#cf2e2e;" class="has-inline-color has-white-color">9</mark>
+</td>
+<td>0x02</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x7F</td>
+<td>0x55</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x0B</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>All changes are in the first part of the control message. Changing from 0x10 to 0xD0 turns on two bits, 0xD1 to 0xD9 turns on one bit. These added up to the three activated segments, matching expectation of going from a "1" to "3" on a seven-segment numeric display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These observations give me confidence that we are indeed looking at control bits corresponding to individual segments on screen. Not enough information to map out all the segments to their corresponding bits, but I am postponing that task until I have individual control through code. It would be much easier to map out segments when they are under my control. And if I fail to obtain control, I wouldn't care about the segment map anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With some confidence I understand the output side, now to <a href="https://newscrewdriver.com/2022/05/17/logic-analyzer-on-sanyo-lc75853n-key-scan-input/">look at the input side</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

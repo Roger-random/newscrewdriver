@@ -1,0 +1,140 @@
+---
+layout: post
+title: Pinout of LCD Salvaged From AT&amp;T CL84209
+date: 2022-06-13 12:30:00.000000000 +00:00
+type: post
+post_id: '30796'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Pinout
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30639'
+  _publicize_job_id: '73621799259'
+  timeline_notification: '1655148634'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/13/pinout-of-lcd-salvaged-from-att-cl84209/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I retired my landline phone connection, I also retired my home phone. It was an AT&amp;T CL84209 phone with built-in digital answering machine. I had a base station and though it supported multiple cordless handsets I had just a single handset. Without a landline, I took the entire system apart keeping a few parts for potential later use. Among the stuff I kept were two custom LCD units. One LCD was freed from the base station circuit board. I wanted to keep its backlight as well, but I accidentally destroyed it while trying to free it from the system. The other LCD was in the handset, and I kept it attached to its circuit board because I didn't want to accidentally destroy another backlight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>They sat in my pile of salvaged parts for several years, until a few weeks ago when I took them out and started playing with them. I thought I could find some official documentation on these display units, but nothing came out of searches using <a href="https://newscrewdriver.com/2022/06/12/cl84209-handset-lcd-disassembly/">every identifier I could find</a> on these devices. Fortunately, thanks to the still-working handset circuit board and a logic analyzer, I figured out enough to control them from an ESP8266 Arduino program. This page is a summary of my findings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Electrical</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:image {"align":"center","id":30003,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-lcd-pin-numbering.jpg?w=960" alt="" class="wp-image-30003"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both LCDs have nine hardware interface connections. Base station LCD uses pins, handset LCD shown above uses an FPC. I've numbered them 1 through 9 counting left to right as we are looking at the display. Despite the different physical form factor, electrically speaking they respond identically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Name</th>
+<th>Additional Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Enable</td>
+<td>We can make it always enabled by tying it high: use a 1kΩ pull-up resistor connected to pin 5 (+3.3V)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SCL</td>
+<td>I2C clock logic level measured +3.3V, don't know if it is +5V tolerant.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>SDA</td>
+<td>I2C data logic level measured +3.3V, don't know if it is +5V tolerant.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ground</td>
+<td>Relative to pin 5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>V<sub>cc</sub>
+</td>
+<td>Supply +3.3V to this pin.<br>0.82uF capacitor between this pin and pin 6 (V<sub>boost</sub>)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>V<sub>boost</sub>
+</td>
+<td>Output pin of built-in boost converter. Measured at +5.4V.<br>0.82uF capacitor between this pin and pin 5 (V<sub>cc</sub>)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>V<sub>LCDH</sub>
+</td>
+<td>LCD segment voltage (high) 8kHz square wave from V<sub>cc</sub> to V<sub>boost</sub> <br>0.82uF capacitor between this pin and pin 8 (V<sub>LCDL</sub>)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>V<sub>LCDL</sub>
+</td>
+<td>LCD segment voltage (low) 8kHz square wave from 0V to V<sub>cc</sub> <br>0.82uF capacitor between this pin and pin 7 (V<sub>LCDH</sub>)</td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td>Voltage measured to match V<sub>boost</sub><br>Appears not connected to anything else on handset circuit board.</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:heading --></p>
+<h2>Digital</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both LCDs are I2C devices with an address of 0x3E. There are two types of messages:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Configuration set of 8 messages. Values were copied from logic analyzer capture and played back. Their exact meanings are unknown.</li>
+<li>Data set of 3 messages. First message includes 15 bytes of alphanumeric data for the first line, second message for the second line, and the third message has 16 bits of digital data toggling state of custom LCD segments. (Which are different between LCDs.)</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>See the following pages for details:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li><em><a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/01/examining-control-data-for-lcd-at-i2c-address-0x3e/" target="_blank">I<sup>2</sup>C Control Data for CL84209 LCD</a></em></li>
+<li><em><a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/06/cl84209-base-station-lcd-character-set/" target="_blank">CL84209 LCD Character Set</a></em></li>
+<li><a href="https://newscrewdriver.com/2022/06/07/cl84209-base-station-lcd-segment-map/" target="_blank" rel="noreferrer noopener"><em>CL84209 Base Station LCD Segment Map</em></a></li>
+<li><em><a href="https://newscrewdriver.com/2022/06/11/cl84209-handset-lcd-segment-map/" target="_blank" rel="noreferrer noopener">CL84209 Handset LCD Segment Map</a></em></li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code of software written to help with this investigation is <a href="https://github.com/Roger-random/lcd_cl84209" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

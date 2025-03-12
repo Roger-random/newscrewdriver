@@ -1,0 +1,67 @@
+---
+layout: post
+title: Notes on Codecademy "Learn CSS"
+date: 2022-10-30 13:47:38.000000000 +00:00
+type: post
+post_id: '33374'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33382'
+  timeline_notification: '1667162861'
+  _publicize_job_id: '78245031856'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/30/notes-on-codecademy-learn-css/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After going through Codecademy courses on HTML <a href="https://newscrewdriver.com/2022/10/28/notes-on-codecademy-learn-intermediate-javascript/">and JavaScript</a>, the next obvious step for me was to visit the third pillar of the modern web: CSS. There's a bit of weirdness with the class listing, though. It seems Codecademy is reorganizing offerings in this area. I took the "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/courses/learn-css" target="_blank">Learn CSS</a></em>" class listed at the top of their <a rel="noreferrer noopener" href="https://www.codecademy.com/catalog/language/html-css" target="_blank">HTML/CSS section</a> and afterwards, I discovered it was actually a repackaging of several smaller CSS courses.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li><em><a href="https://www.codecademy.com/learn/learn-css-introduction" target="_blank" rel="noreferrer noopener">Learn CSS: Introduction</a></em></li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><em><a href="https://www.codecademy.com/learn/learn-css-box-model-and-layout" target="_blank" rel="noreferrer noopener">Learn CSS: Box Model and Layout</a></em></li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><em><a href="https://www.codecademy.com/learn/learn-css-colors" target="_blank" rel="noreferrer noopener">Learn CSS: Colors</a></em></li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><em><a href="https://www.codecademy.com/learn/learn-css-typography-and-fonts" target="_blank" rel="noreferrer noopener">Learn CSS: Typography and Fonts</a></em></li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Either that, or the reverse: <em>Learn CSS</em> course is being split up into these multiple smaller courses. I'm not sure which direction it is going, but I expect this is a temporary "pardon our dust while we reorganize" situation. The good news is that their backend tracks our progress through this material, so we get credit for completing them no matter which course was taken.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, onward to the material. CSS determines how things look and lets us make our pages look better even if we don't have professional design skills. My first nitpick had nothing to do with appearance at all: in the very first introductory example, they presented a chunk of HTML with DIV tags for header, content, and footer. My first thought: Hey, they didn't <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/10/26/notes-on-codecademy-learn-html/" target="_blank">use semantic HTML</a> and they should!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the introductory material was vaguely familiar from my earlier attempts to learn CSS. I hadn't known (or had forgotten) that <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors" target="_blank">attribute selectors had such a wide range of capabilities</a>, almost verging on regular expressions. The fancier pattern matching ones seem like they could become a runtime performance concern. Selector chaining (<code>h1.destination</code> covers all H1 tags with class="destination") is new to me, as was descendant combinator (<code>.description h5</code> covers all H5 tags under something (not the H5) with class="description"). I foresee lots of <s>mistakes</s> practice keeping them straight alongside multiple selectors (<code>.description,h5</code> covers H5 tags and tags with class="description" equally, without requiring any relation between them.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the realm of box model and layout, I have never found the default HTML content box model to be intuitive to my brain. I always thought of the border and padding as part of the element, so I expect I'll have better luck using <code>box-sizing: border-box;</code> instead for my own layouts. What I <em>don't </em>expect to have a luck with is positioning. I've played with this before and relative/absolute/fixed/sticky always felt like voodo magic I didn't fully understand. It'll take a lot more practice. And a lot more examining of behavior in browser development tools. And if that fails, there's always the fallback layout debug tool of putting a border around everything:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>* { border: 1px solid red !important; }</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, I need more practice to get an intuitive grasp of how to specify values in CSS. Most of this course used pixels, but it would be nice to design style sheets that dynamically adjust to content using <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numbers_lengths_and_percentages">other units like em or rem</a>. (Unrelated: this URL is in the MDN "Guides" section which have other helpful-looking resources.) I also want to make layouts dynamic to the viewport. We have a few tools to obtain such values: vw is viewport width, vh is viewport height, vmin is the smaller of the two, vmax is the larger of the two. On paper vmin+vmax can tell me if the screen is portrait or landscape, but I haven't figured out the logic for a portrait layout vs. landscape layout. Perhaps that is yet to come in <a href="https://newscrewdriver.com/2022/11/02/notes-on-codecademy-learn-css-flexbox-and-grid/">later Codecademy CSS courses</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

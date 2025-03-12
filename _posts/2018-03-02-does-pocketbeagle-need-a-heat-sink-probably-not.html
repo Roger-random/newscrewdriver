@@ -1,0 +1,38 @@
+---
+layout: post
+title: Does PocketBeagle Need a Heat Sink? Probably Not.
+date: 2018-03-02 15:47:15.000000000 +00:00
+type: post
+post_id: '15872'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags: []
+meta:
+  timeline_notification: '1520034438'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15321561693'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669106141
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/03/02/does-pocketbeagle-need-a-heat-sink-probably-not/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>In the single-board computer field, the <a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/">Raspberry Pi 3</a> has been the benchmark for high performance devices: A newcomer SBC has to provably outperform the Pi 3 to build a compelling case on superior performance. One big asterisk in these comparisons is the thermal conditions during comparison. When run hard, a default stock Raspberry Pi 3 can drive itself up to the self-imposed thermal limit of 85 degrees Celsius, at which point it throttles performance.</p>
+<p>The BeagleBoard people has released their smallest form factor yet - the <a href="http://beagleboard.org/pocket">PocketBeagle</a>. Performance of their standard sized BeagleBoard are not thermally constrained like the Pi 3. But their claims of BeagleBone level of performance in a small form factor leads to the question whether packing into a tiny space also increased the thermal load. And if so, perhaps a heat sink will help performance as it would on a Raspberry Pi 3.</p>
+<p>For this test, we ran a PocketBeagle at 100% CPU using the 'stress' tool available as part of its Debian distribution and measured its temperature with a non-contact infrared thermometer over a period of six minutes. The ambient air temperature was 28° C. Two runs were performed, and their average value plotted out against time (in number of seconds).</p>
+<p><img class=" size-full wp-image-15873 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/03/pocketbeagle-thermal-graph.jpg" alt="PocketBeagle Thermal Graph" width="581" height="362"></p>
+<p>The temperature rise visibly started to taper off at six minutes. Gauging by the trend, it may approach but is unlikely to surpass 60° C. The Octavo <a href="https://octavosystems.com/docs/osd335x-sm-datasheet/">OSD335x datasheet</a> page 28 listed the operating temperature range of 0 to 85°C. We have plenty of thermal headroom on a PocketBeagle without use of any heat sinks when operating at normal room temperature.</p>
+<p>Perhaps a PocketBeagle would need a heat sink in some high-temperature environments, but for normal use, anybody trying to sell a heat sink to improve performance is probably just selling snake oil. The thermal profile here is not anything like a Raspberry Pi 3.</p>
+<p><img class=" size-full wp-image-15874 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/03/noncontact-pocketbeagle-temp.jpg" alt="Noncontact PocketBeagle Temp" width="1024" height="768"></p>
+<p></body></html></p>

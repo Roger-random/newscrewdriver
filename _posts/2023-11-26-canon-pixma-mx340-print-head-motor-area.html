@@ -1,0 +1,76 @@
+---
+layout: post
+title: Canon Pixma MX340 Print Head Motor Area
+date: 2023-11-26 12:30:00.000000000 +00:00
+type: post
+post_id: '40631'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40663'
+  wordads_ufa: s:wpcom-ufa-v4:1703391395
+  _publicize_job_id: '89723230731'
+  timeline_notification: '1701030625'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/26/canon-pixma-mx340-print-head-motor-area/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm taking apart a Canon Pixma MX340 multi-function inkjet and finding fascinating details everywhere. Including a mechanism that <a href="https://newscrewdriver.com/2023/11/25/canon-pixma-mx340-paper-output-tray-door/">automatically opens the door to the print output tray</a> by tapping into torque from the paper feed motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40663,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-print-head-carriage-motor-area.jpg?w=1024" alt="" class="wp-image-40663"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Above and behind (to the left in this picture) the paper feed motor is the print head carriage motor, these two motors work together for complete control in two dimensions for printing across the entire page. The actual motor units look like they might be mechanically identical units, it's hard to tell for sure until further disassembly. Both are under closed-loop control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40675,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-print-head-carriage-belt-and-encoder-strip.jpg?w=1024" alt="" class="wp-image-40675"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In comparison to the paper feed motor's encoder disk, the print head motor has a encoder strip across the width of the printer in front of its drive belt. A spring pulls the strip tight so it does not sag.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40666,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-print-head-carriage-encoder-strip-closeup.jpg?w=800" alt="" class="wp-image-40666"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's a close-up view of the encoder strip. Again, no fancy patterns, just an alternating strip of black and clear. The black dot to the left may be part of a position sensing homing mechanism. The sensor to read this encoder strip is probably part of the print head assembly, something to look for later when I take that piece apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next to the motor is a small circuit board, about the size of a large postage stamp, sitting all by itself on a metal bracket. Connected to the mainboard with a six-wire harness, most of it is covered up by a metal shield.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40668,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-wifi-module-label.jpg?w=800" alt="" class="wp-image-40668"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Releasing three screws and flipping it over uncovers the product label telling us it is the WLAN Module. Its left-rear position is interesting. I know motors generate a lot of electromagnetic noise, and this is the area where the print head and paper feed motors live. Almost directly overhead is the stepper motor to drive the automatic document feeder. Sitting in close proximity to motors, this is about the last place I expected to find a module for wireless radio frequency communication! I would have guessed such a thing would have lived in the front right corner, near the USB port, putting it as far away from the motors as possible. But as I can see here, the Canon engineers decided differently. Apparently there is some criteria more important than "keep the RF antenna away from sources of RF noise", but I don't know what it might be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40670,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-speaker.jpg?w=1024" alt="" class="wp-image-40670"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Behind the motor and WiFi module is the speaker assembly. At first I was confused to find a full speaker here, as most of the audio feedback came from simple beeps and I had expected to find a small piezo buzzer either on the <a href="https://newscrewdriver.com/2023/11/17/canon-pixma-mx340-control-panel/" target="_blank" rel="noreferrer noopener">front control panel circuit board</a> or on the main circuit board in the back. A few minutes later it clicked: one of the multiple functions is a fax machine. If we've accidentally dialed a voice line and a human being picked up, we need to be able to hear their confused "Hello?" to realize our mistake.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With disassembly of the speaker and WLAN module assemblies, I now have access to all the electrical wiring I could see inside this machine. Time to <a href="https://newscrewdriver.com/2023/11/27/canon-pixma-mx340-teardown-phase-1-complete/">pause working with screwdrivers and pull out the oscilloscope</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

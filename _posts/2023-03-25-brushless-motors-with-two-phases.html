@@ -1,0 +1,58 @@
+---
+layout: post
+title: Brushless Motors with Two(?) Phases
+date: 2023-03-25 12:30:00.000000000 +00:00
+type: post
+post_id: '35890'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31112'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679865083
+  _publicize_job_id: '82630094205'
+  timeline_notification: '1679772608'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/25/brushless-motors-with-two-phases/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>During teardowns, I usually keep any motors I come across, even if I have no idea how I'd use them. Recently I <a href="https://newscrewdriver.com/2023/03/24/two-hard-drive-motors-on-blheli_s-controller/">got a pair of hard drive motors spinning again</a>, a good step forward in my quest to better understand brushless direct current (BLDC) motors. I've also learned enough to spot some differences between motors. Those that I've successfully spun up are three-phase motors, with three sets of coils energized 120 degrees out of phase with each other to turn the rotor. But not all of the motors I've disassembled fit this description.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's a class of motors with only two sets of coils. Based on what I know of three-phase brushless motors, that would imply two sets of coils are 180 degrees out of phase. A naive implementation would have no control over which direction the rotor would spin, but I've found these in cooling fans, where the direction of spin is critical, so there must be more to this story. (If it doesn't matter which direction the motor spins, <a href="https://newscrewdriver.com/2022/07/06/microwave-turntable-motor-tyj50-8a19/">we only need a single coil</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34019,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/12/zalman-za1225csl-motor-controller-ftc-s276-fs276.jpg?w=800" alt="" class="wp-image-34019"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>What I've observed so far is that a Hall-effect sensor is an important part of this mystery, because I looked up this control chip <a href="https://newscrewdriver.com/2022/12/10/zalman-120mm-case-fan-clear-with-blue-led-za1225csl/">found inside a computer cooling fan</a> and read it had an integrated Hall sensor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":31116,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/evaporator-motor-adl-5846amea-hall-effect-sensor.jpg?w=1024" alt="" class="wp-image-31116"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A Hall sensor is also part of <a href="https://newscrewdriver.com/2022/07/07/evaporator-fan-motor-adl-5846amea/">this refrigerator evaporator fan motor</a> control circuit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching online for an explanation of how these motors worked, I found this thread "<em><a href="https://electronics.stackexchange.com/questions/365796/how-do-single-phase-bldc-motors-start-in-proper-direction">How do single phase BLDC motors start in proper direction?</a></em>" on Electronics StackExchange. I don't fully understand the explanation yet, but I do understand these motors aren't as symmetric as they look. A slight asymmetry allows enforcing the correct turn direction. The hall sensor adds a bit of cost, but I guess it is cheaper than additional coils.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even better, that thread included a link to <em><a href="https://www.mpoweruk.com/machines.htm">Electric Drive Fundamentals</a></em> on Electropaedia. This page gives an overview of fundamental electromagnetic principles that underpin all electric motors. I knew some of these, but not all of them, and certainly not enough to work through the mathematical formulas. But I hope studying this page will help me better understand the motors I find as I take things apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Independent of building an understanding of electromagnetic fundamentals, I also want to <a href="https://newscrewdriver.com/2023/03/26/hall-effect-sensors-quick-look/">better understand Hall sensors</a> critical to running certain motors.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,42 @@
+---
+layout: post
+title: Rover Wheel's First RoboClaw Test Run Foiled By Encoder
+date: 2018-04-04 09:00:55.000000000 +00:00
+type: post
+post_id: '15775'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '16459198642'
+  timeline_notification: '1522857890'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/04/rover-wheels-first-roboclaw-test-run-foiled-by-encoder/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once we had all the parts of our <a href="https://github.com/DavidMFlynn/RoverWheel">3D-printed rover wheel</a> we assembled the first prototype. Then we brought it to one of our local makers' <a href="https://www.meetup.com/SGVTech/">SGVHAK meetup</a> and hooked it up to a <a href="http://www.ionmc.com/RoboClaw-2x15A-Motor-Controller_p_10.html">RoboClaw motion controller</a>. The first half of the night was spent figuring out the computer software end of things. The RoboClaw configure software "Ion Studio" is Windows-only, whereas the Python software on hand is expected to run on a Linux distribution, most likely Ubuntu.</p>
+<p>The software configuration settled on Windows running Python code inside WSL. (Windows Subsystem for Linux.) <a href="https://blogs.msdn.microsoft.com/wsl/2017/04/14/serial-support-on-the-windows-subsystem-for-linux/">Python inside WSL couldn't access the USB serial port</a> unless given superuser privileges. (UPDATE: Should have tried <a href="https://askubuntu.com/questions/112568/how-do-i-allow-a-non-default-user-to-use-serial-device-ttyusb0/112572">adding user to <code>dialout</code> group</a>.) Not ideal, but enough to get us going. Also worth mentioning: the two pieces of software (Ion Studio and Python) are unable to share the port. One must be shut down before the other could gain access to the port. Once all the above were squared away, we could send commands to RoboClaw from Python command line and commence the second half of the night: learning how to control wheel motion with RoboClaw.</p>
+<p>The motion we saw was rough. Some of it could be attributed to the imprecision of 3D printed parts. But we suspected something else contributed to the jittery motion we saw. We suspect the PID tuning is far off the mark, and the acceleration / deceleration numbers are not the best. But the root culprit was traced down to the square wave signal from the optical encoder. We need the signal to be a clean square wave before any of those other tuning parameters could function reliably. Hooking the encoder output pins to an oscilloscope showed a ragged signal that would mislead the RoboClaw as to the physical movement of the assembly. It's pretty hopeless to try tuning the other parameters without accurate motion feedback.</p>
+<p><img class=" size-full wp-image-15777 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/bad-encoder-waveform.jpg" alt="Bad Encoder Waveform" width="1024" height="581"></p>
+<p>The encoder signal will need to be fixed before we come back to PID tuning &amp; friends.</p>
+<p>Our prime suspects for causing this waveform are:</p>
+<ol>
+<li>Poor electrical connection</li>
+<li>Insufficient power delivered to the IR emitters in the encoder.</li>
+<li>Problem with the 3D-printed slotted wheel.</li>
+</ol>
+<p></body></html></p>

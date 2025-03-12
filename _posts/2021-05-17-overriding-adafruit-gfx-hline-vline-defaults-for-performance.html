@@ -1,0 +1,58 @@
+---
+layout: post
+title: Overriding Adafruit GFX HLine/VLine Defaults for Performance
+date: 2021-05-17 12:30:00.000000000 +00:00
+type: post
+post_id: '26623'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26667'
+  _oembed_66285521ef37dba78420fb59c9f854cd: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    interactive RGB332 8-bit color picker can now be toggled between HSV cylinder
+    and RGB cube modes. Half of the cubes (green-yellow) aren&#39;t doing what I want
+    because I clearly don&#39;t understand quaternions. Still a nifty animation, though.
+    <a href="https://t.co/jtRMMVNboP">pic.twitter.com/jtRMMVNboP</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1388265529228480512?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '58481484516'
+  timeline_notification: '1621279804'
+  _oembed_time_66285521ef37dba78420fb59c9f854cd: '1621301788'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/17/overriding-adafruit-gfx-hline-vline-defaults-for-performance/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had a lot of fun building a color picker for 256 colors available in the RGB332 color space, <a href="https://newscrewdriver.com/2021/05/16/notes-of-a-three-js-beginner-quaternionkeyframetrack-struggles/">gratuitous swoopy 3D animation and all</a>. But at the end of the day it is a tool in service of the ESP_8_BIT_composite video out library. Which has <a href="https://newscrewdriver.com/2021/05/10/initial-issues-with-esp_8_bit-color-composite-video-out-library/">its own to-do list</a>, and I should get to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most obvious work item is to override some Adafruit GFX default implementations, starting with the ones explicitly recommended in comments. I've already overridden <code>fillScreen()</code> for blanking the screen on every frame, but there are more. The biggest potential gain is the degenerate horizontal-line drawing method <code>drawFastHLine()</code> because it is a great fit for ESP_8_BIT, whose frame buffer is organized as a list of horizontal lines. This means drawing a horizontal line is a single <code>memset()</code> which I expect to be extremely fast. In contrast, vertical lines via <code>drawFastVLine()</code> would still involve a loop iterating over the list of horizontal lines and won't be as fast. However, overriding it should still gain benefit by avoiding repetitious work like validating shared parameters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given those facts, it is unfortunate Adafruit GFX default implementations tend to use VLine instead of the HLine that would be faster in my case. Some defaults implementations like <code>fillRect()</code> were easy to switch to HLine, but others like <code>fillCircle()</code> is more challenging. I stared at that code for a while, grumpy at lack of comments explaining what it is doing. I don't think I understand it enough to switch to HLine so I aborted that effort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since VLine isn't ESP_8_BIT_composite's strong suit, these default implementations using VLine did not improve as much as I had hoped. Small circles drawn with <code>fillCircle()</code> are fine, but as the number of circles increase and/or their radius increase, we start seeing flickering artifacts on screen. It is actually a direct reflection of the algorithm, which draws the center vertical line and fills out to either side. When there is too much to work to fill a circle before the video scanlines start, we can see the failure in the form of flickering triangles on screen, caused by those two algorithms tripping over each other on the same frame buffer. Adding double buffering is on the to-do list, but before I tackle that project, I wanted to take care of another optimization: <a href="https://newscrewdriver.com/2021/05/18/the-fastest-pixels-are-those-we-never-draw/">clipping off-screen renders</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

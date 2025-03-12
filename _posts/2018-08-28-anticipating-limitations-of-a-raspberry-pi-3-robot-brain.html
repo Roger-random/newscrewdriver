@@ -1,0 +1,46 @@
+---
+layout: post
+title: Anticipating Limitations of a Raspberry Pi 3 Robot Brain
+date: 2018-08-28 09:00:47.000000000 +00:00
+type: post
+post_id: '16705'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1535472064'
+  _publicize_job_id: '21551171969'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/28/anticipating-limitations-of-a-raspberry-pi-3-robot-brain/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">As investigation into ROS continues, it's raising concern that a self-contained autonomous robot will likely need a brain more powerful than a Raspberry Pi. It's a very capable little computing platform and worked well serving as Sawppy's brain when operated as a remote-control vehicle. But when the rover needs to start thinking on its own, would a little single-board computer <a href="https://www.quora.com/What-are-the-limitations-of-using-Arduino-or-Raspberry-Pi-for-building-robots">prove to be limiting</a>?</p>
+<p><em><strong>CPU</strong></em></p>
+<p><img class="alignright size-thumbnail wp-image-5172" src="https://newscrewdriver.com/wp-content/uploads/2017/05/raspberry-pi-logo.png?w=127" alt="raspberry-pi-logo" width="127" height="150">The most obvious point of concern is the low power ARM CPU. The raw processing capability of the chip is actually fairly respectable, and probably won't be the biggest problem. But there are two downsides with the chip:</p>
+<ol>
+<li>It has a very small memory cache, so the chip will have problems working with large data sets. (Say, a detailed map of the robot's surroundings.) Without a large cache or high bandwidth memory, the CPU will sit idle as it starves for data.</li>
+<li>It has limited heat dissipation. Under sustained load, the CPU will heat up and reach the point where it will have to slow itself down to avoid overheating.</li>
+</ol>
+<p>Both of these are consistent with design objective of the chip. It is very good at quickly completing a task using its high-speed CPU, then wait for its next task. This type of workload is common to devices like cell phones. In contrast, a robot has to process sensor inputs, evaluate its current condition, and decide what to do about it in a constantly running loop. There's no "wait for next task" downtime where the computer can cool down and clean up its memory cache.</p>
+<p><em><strong>Memory</strong></em></p>
+<p>The main memory is also a point of concern. There's only 1GB of RAM on board a Raspberry Pi 3 with no option for expansion. This is already pretty cramped to run a modern operating system, never mind the robotic software we'd like to run on top. To mitigate limitations of small RAM, modern operating systems can page memory out to storage. But that just makes the next problem worse...</p>
+<p><em><strong>Storage</strong></em></p>
+<p>A Raspberry Pi uses commodity microSD flash memory as main storage. These devices are designed for usage scenarios like holding photos in a digital camera. Each bit of capacity is only expected to be written to a handful of times in its lifetime. But when serving as main storage of a Raspberry Pi actively running complex applications (or serving as paged memory) high traffic sections of the microSD may receive new write data several times a second, leading to premature failure.</p>
+<p><em><strong>Raspberry Pi in the TurtleBot 3</strong></em></p>
+<p>A Raspberry Pi 3 serves as the on-board brains of a <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/overview">TurtleBot 3</a> 'Burger' and 'Waffle Pi' variants. I had been curious how they got around the problems above and the answer is they've divided up workload of a robot brain across multiple computers. The Raspberry Pi 3 reads sensor data and outputs motor data, but performs little computation itself. Sensor data is sent over the network to a desktop computer who does the computation, evaluation, and decision making. Once an action is decided, the desktop computer sends motor commands over the network back to the Raspberry Pi.</p>
+<p>This is a cost-effective approach because anyone doing robotics research will already have a powerful desktop computer where development is taking place. By offloading computation to said computer and keeping the robot's on-board processing simple, it makes the robot a lot cheaper.</p>
+<p>This is fine for development, but the fact TurtleBot 3 makers chose this approach reinforces the suspicion that an actual self-contained autonomous robot will need something more than a Raspberry Pi.</body></html></p>

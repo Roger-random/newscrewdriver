@@ -1,0 +1,93 @@
+---
+layout: post
+title: 'Adafruit Memento + AMG8833 Overlay: Performance Timers'
+date: 2024-07-11 12:30:00.000000000 +00:00
+type: post
+post_id: '44154'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44123'
+  _oembed_46af33547c9b7dbfb59ac83b10ac8713: "{{unknown}}"
+  _oembed_06920f3c4d14991694f6ef8c98d31773: "{{unknown}}"
+  _oembed_873ef667a47a24aea166006a8128347f: "{{unknown}}"
+  firehose_sent: '1720726233'
+  _publicize_job_id: '96161850714'
+  timeline_notification: '1720726235'
+  wordads_ufa: u:wpcom-ufa-v4:1720906017
+  _elasticsearch_data_sharing_indexed_on: '2024-07-13 21:28:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/11/adafruit-memento-amg8833-overlay-performance-timers/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've successfully overlaid data from a AMG8833 thermal sensor on top of the Adafruit Memento camera viewfinder, turning it into a thermal camera. A very slow and sluggish thermal camera! Because my first draft was not written with performance in mind. To speed things up, I converted my thermal overlay to use <code>TileGrid</code> and take advantage of the compositing engine in Adafruit's <code>displayio</code> library. In theory that should have been faster, <a href="https://newscrewdriver.com/2024/07/10/adafruit-memento-amg8833-overlay-tilegrid/">but my attempt was not</a> and I didn't know how to debug it. I went looking for another approach and found MicroPython/CircuitPython has ported a subset of the powerful Python <a href="https://en.wikipedia.org/wiki/NumPy">NumPy</a> library as <code><a href="https://docs.circuitpython.org/en/latest/shared-bindings/ulab/numpy/">ulab.numpy</a></code>. And furthermore, there was an example of using this library to interpolate AGM8833 8x8 data to a 15x15 grid in Adafruit learning guide <a href="https://learn.adafruit.com/improved-amg8833-pygamer-thermal-camera"><em>Improved AMG8833 PyGamer Thermal Camera</em></a>. Ah, this will do nicely.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Add Performance Timers</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thing I got from that project is a reminder of an old lesson: I need to record timestamps during my processing so I know which part is slow. Otherwise I'm left with vague things like "TileGrid didn't seem much faster". I added several lines of code that recorded <code><a href="https://docs.circuitpython.org/en/latest/shared-bindings/time/index.html#time.monotonic_ns">time.monotonic_ns()</a></code> and a single line at the end of my loop that <code>print()</code> delta between those timestamps. Since the units are nanoseconds and these are slow operations, I get some very large numbers that were unwieldy to read. Instead of dividing these numbers by 1000, I right-shifted them by 10 bits to result in a division by 1024. The difference between "roughly microseconds" and "exactly microseconds" is not important right now and, in the spirit of performance, should be much faster.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Measure TileGrid Implementation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's are four frames from my TileGrid implementation: </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>read 38087 scaled 3099 mapped 1789 grid 1728 blit 28223 refresh 360370 total 433296
+read 37789 scaled 3099 mapped 1759 grid 1758 blit 30190 refresh 359803 total 434398
+read 38713 scaled 3129 mapped 1788 grid 1729 blit 29683 refresh 362098 total 437140
+read 38296 scaled 3129 mapped 1758 grid 1759 blit 29146 refresh 360579 total 434667</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a total of ~434ms per loop, this is just a bit over two frames per second. Here's the breakdown on what those numbers meant:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>"read" is time consumed by reading 8x8 sensor data from AMG8833 sensor. This ~38ms is out of my control and unavoidable. It must occur for basic functionality of this thermal camera.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"scaled" is the time spent normalizing 8x8 sensor data points between the maximum and minimum values read on this pass. This ~3ms is my code and I can try to improve it.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"mapped" is the time spent translating normalized 8x8 sensor data into an index into my thermal color palette. This ~1.7ms is my code and I'm surprised it's over half of "scaled" when it does far less work. Perhaps ~1.7ms is how long it takes CircuitPython to run through "<code>for y in range(8): for x in range(8):</code>" by itself no matter what else I do.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"grid" is the time spent updating TileGrid indices to point to the color indices calculated in "mapped". Since it's basically the same as "mapped" I now know updating TileGrid indices do not immediately trigger any bitmap processing.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"blit" copied OV5640 sensor data into a bitmap for compositing. This ~30ms is out of my control and unavoidable. It must occur for basic functionality of this thermal camera.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"refresh" is where most of the time was spent. A massive ~360ms triggered by a single line of my code. This included pulling bitmap tiles based on TileGrid indices, rendering them to the TileGrid, compositing thermal overlay TileGrid on top of the OV5640 bitmap TileGrid, and finally send all of that out to the LCD.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Back to Bitmap</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know why my TileGrid compositing consumed so much time. I'm probably doing something silly that crippled performance but I don't know what it might be. And when it's all triggered by a single line of my code, I don't know how to break it down further. I will have to <a href="https://newscrewdriver.com/2024/07/12/adafruit-memento-amg8833-add-interpolation/">try something else</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">https://github.com/Roger-random/circuitpython_tests/commit/1a62d8adbbeecf9d05ad79ff239906367fbfb440</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

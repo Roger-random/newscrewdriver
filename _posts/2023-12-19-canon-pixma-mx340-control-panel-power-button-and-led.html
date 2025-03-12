@@ -1,0 +1,162 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Power Button and LED
+date: 2023-12-19 12:30:00.000000000 +00:00
+type: post
+post_id: '41102'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41103'
+  firehose_sent: '1703017809'
+  wordads_ufa: s:wpcom-ufa-v4:1704491490
+  _publicize_job_id: '90420428111'
+  timeline_notification: '1703017810'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/19/canon-pixma-mx340-control-panel-power-button-and-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm exploring the control panel from a Canon Pixma MX340 multi-function inkjet. To help navigate my journey, I took multiple close-up photos of copper traces on the circuit board and <a href="https://newscrewdriver.com/2023/12/18/canon-pixma-mx340-control-panel-circuit-board-stitch/">stitched them together</a>. With my new detailed atlas in hand, my first journey is the power button and nearby LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41107,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-power-button-and-led-no-faceplate.jpg?w=1024" alt="" class="wp-image-41107"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Mechanically, the control panel is built from multiple layers of injection-molded plastic. Here is the second layer that bridges between facade in front and circuit board behind.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41109,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-power-button-and-led-circuit-board-only.jpg?w=1024" alt="" class="wp-image-41109"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://newscrewdriver.com/2020/10/06/quest-for-the-whistler-button/" target="_blank" rel="noreferrer noopener">Pre-built buttons with integrated LED exist</a>, but Canon didn't use one here. They made their own using a custom clear plastic piece serving as both light guide and the thing user actually pushes. On the circuit board it's a standard button with an adjacent standard LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41111,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-power-button-and-led-circuit-traces.jpg?w=800" alt="" class="wp-image-41111"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's all great, but the focus today is tracing their circuit on the back. I inferred the NEC K13988 chip is responsible for reading most buttons on this control panel, but I thought a few critical items likely bypassed the NEC chip and are routed directly to the main board ribbon cable. The power button is a great candidate: routing that directly to the main board gives Canon the option of powering down the NEC K13988 chip while in standby mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The power button has four legs. Two of them are soldered to the ground plane, and a third has its own island not connected to anything else. That leaves a single signal wire that travels across half the circuit board. Near the mainboard connector, it meets up with resistor labeled R100 and marked with 221 (220 ohms), then continued on to main board pin 7. Hypothesis confirmed!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Adjacent to the power button is the power LED, and again one leg is soldered to ground. The other leg goes to check point CP142, unpopulated capacitor C119, and resistor R110 marked 101 (100 ohms) then traveled alongside the power button trace all the way to main board pin 6. Since the main board is responsible for the power button, it made sense it also has control of power LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The "Alarm" LED is set up much the same way: one leg to ground, other leg to check point CP143, unpopulated capacitor C120, and resistor R111 also marked 101 (100 ohms). Then it jumped over a trace with JP1 before meeting up with the power LED trace all the way to main board pin 5. It is no surprise the main board has direct control of the error indicator LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In comparison, the "In Use/Memory" LED was implemented differently. One leg taps into the always-on 3.3V DC voltage plane from main board pin 9. The other leg disappears underneath K13988. Determining exactly which K13988 pin is responsible for sinking "In Use/Memory" LED is a future exercise. Right now I have learned enough to fill in a few entries from the <a href="https://newscrewdriver.com/2023/12/15/canon-pixma-mx340-control-panel-to-main-board-connector/">earlier incomplete table</a> of main board connector pins, and I want to <a href="https://newscrewdriver.com/2023/12/20/canon-pixma-mx340-control-panel-wifi-led/">work towards filling in the rest</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: After investigation, <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/" target="_blank" rel="noreferrer noopener">this post</a> has the table fully filled in.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Pin Number</th>
+<th class="has-text-align-center" data-align="center">Tentative Guess</th>
+<th class="has-text-align-center" data-align="center">Printer On</th>
+<th class="has-text-align-center" data-align="center">Printer Standby ("Off")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">Maybe LED power?</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+<td class="has-text-align-center" data-align="center">0V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">Alarm LED+</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">Power LED+</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">Power button<br>(grounded when pressed)</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">Always-on power</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">10</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">11</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">12</td>
+<td class="has-text-align-center" data-align="center">Power</td>
+<td class="has-text-align-center" data-align="center">5.5V DC</td>
+<td class="has-text-align-center" data-align="center">0V DC</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

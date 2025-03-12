@@ -1,0 +1,39 @@
+---
+layout: post
+title: Intel RealSense T265 Tracking Camera
+date: 2019-01-28 13:30:46.000000000 +00:00
+type: post
+post_id: '17698'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- TIL
+- Window Shopping
+tags: []
+meta:
+  timeline_notification: '1548711049'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '27031062100'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/28/intel-realsense-t265-tracking-camera/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>In the middle of these experiments with a Xbox 360 Kinect as robot depth sensor, Intel announced a new product that's along similar lines and a tempting venue for robotic exploration: the <a href="https://realsense.intel.com/tracking-camera/">Intel RealSense T265 Tracking Camera</a>. Here's a picture from Intel's website announcing the product:</p>
+<p><img class="alignnone size-full wp-image-17699" src="https://newscrewdriver.com/wp-content/uploads/2019/01/intel_realsense_tracking_camera_t265_hero.jpg" alt="intel_realsense_tracking_camera_t265_hero" width="2000" height="974"></p>
+<p>T265 is not a direct replacement for the Kinect, at least not as a depth sensing camera. For that, we need to look at <a href="https://realsense.intel.com/depth-camera/#D415_D435">Intel's D415 and D435</a>. They would be fun to play with, too, but I already had the Kinect so I'm learning on what I have before I spend money.</p>
+<p>So if the T265 is not a Kinect replacement, how is it interesting? It can act as a complement to a depth sensing camera. The point of the thing is not to capture the environment - it is to track the motion and position within that environment. Yes, there is the option for an image output stream, but the primary data output of this device is a position and orientation.</p>
+<p>This type of camera-based "inside-out" tracking is used by the <a href="https://www.microsoft.com/en-us/windows/windows-mixed-reality">Windows Mixed Reality headsets</a> to determine its user's head position and orientation. These sensors requires low latency and high accuracy to avoid VR motion sickness, and has obvious applications in robotics. Now Intel's T265 offers that capability in a standalone device.</p>
+<p>According to Intel, the implementation is based on a pair of video cameras and an inertial motion unit (IMU). Data feeds into internal electronics running a V-SLAM (visual simultaneous location and mapping) algorithm aided by <a href="https://www.movidius.com">Movidius</a> neural network chip. This process generates position+orientation output. It seems pretty impressive to me that it is done in such a small form factor and high speed (at least low latency) with 1.5 watt of power.</p>
+<p>At $200, it is a tempting toy for experimentation. Before I spend that money, though, I'll want to read more about how to interface with this device. The USB 2 connection is not surprising, but there's a phrase that I don't yet understand: "non volatile memory to boot the device" makes it sound like the host is responsible for some portion of the device's boot process, which isn't like any other sensor I've worked with before.</p>
+<p></body></html></p>

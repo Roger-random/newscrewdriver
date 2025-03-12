@@ -1,0 +1,79 @@
+---
+layout: post
+title: Options for Improving Timestamp Precision
+date: 2024-02-09 12:30:00.000000000 +00:00
+type: post
+post_id: '41899'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  wordads_ufa: s:wpcom-ufa-v4:1708667519
+  _publicize_job_id: '91826180308'
+  firehose_sent: '1707510656'
+  timeline_notification: '1707510658'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/09/options-for-improving-timestamp-precision/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a quick test determined that my Arduino sketch will be dealing data changing at a faster rate than 1kHz, I switched the timestamp query from calling <code>millis()</code> to <code>micros()</code>. As per Arduino documentation, <a href="https://newscrewdriver.com/2024/02/08/motion-decoder-timestamp-switching-to-microseconds/">this change improved time resolution by 250</a> from 1 millisecond precision to 4 microsecond precision. Since I had time on my mind anyway, I took a research detour to learn how this might be improved further. After learning how much work it'd take, I weighed it against my project and decided... nah, never mind.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Hardware: ATmega328P</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search for ATmega328P processor programming found good information on this page <em><a href="https://wellys.com/posts/avr_c_time/" target="_blank" rel="noreferrer noopener">Developing in C for the ATmega328: Marking Time and Measuring Time</a></em>. The highest possible timing resolution is a counter that increments upon every clock cycle of the processor. For an ATmega328P running at 16MHz, that's a resolution of 62.5 nanoseconds from <code>ticks()</code>. This 16-bit counter overflows very quickly (once every 4.096 milliseconds) so there's another 16 bit counter <code>ticks_ro()</code> that increments whenever ticks() overflows. Together they become a 32-bit counter that would overflow every 4.47 minutes, after that we're on our own to track overflows.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, <code>ticks()</code> and <code>ticks_ro()</code> are very specific to AVR microcontrollers and not (easily) accessible from Arduino code because that kills its portability. Other microcontrollers have similar concepts but they would not be called the same thing. (Example: ESP32 has <code>cpu_hal_get_cycle_count()</code>)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Software: Encoder Library</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another factor in timing precision is the fact that I'm not getting the <code>micros()</code> value when the encoder position is updated. The encoder position counter is updated within the quadrature decoding library, and I call <code>micros()</code> sometime afterwards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>timestamp,position,count<br>16,0,448737<br>6489548,1,1<br>6490076,2,1<br>6490688,5,1<br>6491300,8,1<br>6491912,12,1<br>6492540,17,1<br>6493220,21,1<br>6493876,25,1</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the final two lines of this excerpt, I see my code recorded encoder update from position 21 to 25 over a period of 6493876-6493220 = 656 microseconds. But 6493876 is only when my code ran, that's not when the encoder clicked over from 24 to 25! There's been a delay on the order of three-digit microseconds, an approximation derived from 656/(25-21) = 164.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One potential way to improve upon this is to add a variable to the Encoder library, tracking the <code>micros()</code> timestamp of the most recent position update. I can then query that timestamp from my code later, instead of calling <code>micros()</code> myself which pads an unknown delay. I found the encoder library source code at <a href="https://github.com/PaulStoffregen/Encoder">https://github.com/PaulStoffregen/Encoder</a>. I found <a href="https://github.com/PaulStoffregen/Encoder/blob/master/Encoder.h#L189">an <code>update()</code> function</a> and saw a <code>switch()</code> statement that looked at pin states and updated counter as needed.  I can add my <code>micros()</code> update in the cases that updated position. Easy, or so I thought.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the code more closely, I realized the function I found is actually in a comment. It was labeled the "<em>Simple, easy-to-read "documentation" version :-)</em>" implying the actual code was not as simple or easy to read. I was properly warned as I scrolled down further and found... AVR assembly code. Dang! That's hard core.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, AVR assembly code means it can access the hardware registers behind <code>ticks()</code> and <code>ticks_ro()</code> for the ultimate in timer resolution. On the downside, I don't know AVR assembly and, after some thought, I decided I'm not motivated enough to learn it for this particular project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a fun side detour and I learned things I hadn't known before, but I don't think the cost/benefit ratio makes sense for my Canon MX340 teardown project. I want to <a href="https://newscrewdriver.com/2024/02/10/motion-decoder-trying-microseconds-per-count/">try some other easy things</a> before I contemplate the harder stuff.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

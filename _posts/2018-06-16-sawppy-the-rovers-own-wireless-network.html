@@ -1,0 +1,44 @@
+---
+layout: post
+title: Sawppy the Rover's Own Wireless Network
+date: 2018-06-16 09:00:53.000000000 +00:00
+type: post
+post_id: '16142'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '19030928822'
+  timeline_notification: '1529164881'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/06/16/sawppy-the-rovers-own-wireless-network/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>So far all of Sawppy tests have been performed as a client of a nearby wireless network. But we won't always have a network to connect to. Sawppy may venture where we don't have access privileges to a nearby network or possibly go places where there is no network at all.</p>
+<p>This problem was encountered before on the SGVHAK rover project. The Raspberry Pi 3 on SGVHAK rover were modified to become its own wireless network access point by following <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">directions posted on Raspberry Foundation website</a>. The downside of Pi configured to be its own network is that we lose the ability to connect to the internet. This is probably a problem that can be solved by diving deeper into Linux networking configuration but there was also the problem of limited power of Raspberry Pi's on-board wireless hardware.</p>
+<p>As an experiment to reduce configuration headaches and to increase wireless power range, a <a href="https://www.tp-link.com/us/products/details/cat-9_TL-WR802N.html">TP-Link TL-WR802N mini router</a> was added to the rover chassis. Now Sawppy the Rover has its own wireless network, giving us the following advantages:</p>
+<ul>
+<li>We can use Raspberry Pi in its default configuration - no need to reconfigure Raspbian networking stack.</li>
+<li>A wireless router is already designed to work to establish both (1) a standalone wireless network and simultaneously (2) have the ability to connect to an external wired network. Plug in an Ethernet cable and Sawppy is on the internet, no reconfiguration required.</li>
+<li>A wireless router is already set up to be secure. TP-Link may or may not have covered all the bases, but it is expected to be more secure than a Raspberry Pi configured by a Linux networking amateur.</li>
+<li>A dedicated wireless router has a more powerful wireless antenna.</li>
+<li>Additional modules can be added to Sawppy and communicate over local wireless network. For example, adding a commodity wireless IP camera.</li>
+</ul>
+<p>The mini router is mounted to a stand bolted above the rear right corner. This location was chosen because that's where real Mars rover Curiosity's UHF communications antenna is mounted. Power for this little router comes from a micro-USB cable, so we could power it with another unit of the same power converter used to power the Raspberry Pi.</p>
+<p><img class="alignnone size-full wp-image-16276" src="https://newscrewdriver.com/wp-content/uploads/2018/05/mini-router.jpg" alt="Mini router" width="1024" height="807"></p>
+<p>The TL-WR802N is a nice compact solution that avoided having to mess with Raspbian (Linux) networking and, more importantly, the risk of doing it wrong. It was also more powerful than a Raspberry Pi's on board wireless networking, but sadly not by as much as originally hoped.</p>
+<p>Sometime in the future Sawppy will get a more powerful router for greater range, hopefully a dual-band unit to access the less crowded 5 GHz WiFi band. With more power and 5 GHz ability, Sawppy should have a better chance of tolerating <a href="https://newscrewdriver.com/2018/04/18/sgvhak-rover-and-predecessor-at-scale-16x/">noisy RF environments like SCaLE exhibit floor</a>.</body></html></p>

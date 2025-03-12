@@ -1,0 +1,72 @@
+---
+layout: post
+title: Window Shopping LabWindows/CVI
+date: 2020-03-25 12:30:03.000000000 +00:00
+type: post
+post_id: '20968'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- Window Shopping
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '20987'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42218015569'
+  timeline_notification: '1585164648'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/25/window-shopping-labwindows-cvi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I've taken a quick look over <a href="https://newscrewdriver.com/2020/03/23/window-shopping-keysight-vee-custom-data-display/">Keysight VEE</a> and <a href="https://newscrewdriver.com/2020/03/24/window-shopping-labview-2019/">LabVIEW</a>, both tools that present software development in a format that resembles physical components and wires: software modules are virtual instruments, data flow are virtual wires. This is very powerful for expressing certain problem domains and naturally imposes a structure. From a software perspective, explicit description of data flow also makes it easier to take advantage of parallel execution possible on modern multicore processors.</p>
+<p>But imposing certain structures also make it hard to venture off the beaten path, which is why attention now turns to LabVIEW's stablemate, <a href="https://www.ni.com/en-us/shop/electronic-test-instrumentation/programming-environments-for-electronic-test-and-instrumentation/what-is-labwindows-cvi.html">LabWindows/CVI</a>. They both offer access to industry standard communication protocols plus data analysis and visualization tools, but the data flow and program structure is entirely different. Instead of LabVIEW's visual "G" language, LabWindows/CVI uses ANSI C to connect all its components and control flow of data and execution. I am optimistic it will be more aligned with my software experience.</p>
+<p>Like LabVIEW, the program help files for LabWindows/CVI is also available for <a href="http://zone.ni.com/reference/en-XX/help/370051AG-01/">download and perusal</a>. Things look fairly promising at first glance.</p>
+<p>I found a serial communication API that can read and write raw bytes under:</p>
+<ul>
+<li>Library Reference
+<ul>
+<li>RS-232 Library
+<ul>
+<li>function tree</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>For user display, I found something that resembles LabVIEW's "2D Picture Control" here called a "Canvas Control". An overview of drawing with Canvas Control's basic drawing primitives can be found under:</p>
+<ul>
+<li>Library Reference
+<ul>
+<li>User Interface Library
+<ul>
+<li>Controls
+<ul>
+<li>Control Types
+<ul>
+<li>Canvas Controls
+<ul>
+<li>Programming with Canvas Controls</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>I'm encouraged by what I found looking through LabWindows/CVI help files, enough to download the actual development tool and <a href="https://newscrewdriver.com/2020/03/26/labwindows-cvi-getting-started-guide/">get hands-on with it</a>.</body></html></p>

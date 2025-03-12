@@ -1,0 +1,80 @@
+---
+layout: post
+title: Old OCZ SSD Reawakened and Benchmarked
+date: 2022-10-15 12:30:00.000000000 +00:00
+type: post
+post_id: '33134'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33107'
+  _publicize_job_id: '77744974748'
+  timeline_notification: '1665862210'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/15/old-ocz-ssd-reawakened-and-benchmarked/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In the interest of adding 3.5" HDD bays to a tower case, along with cleaning up wiring to power them, <a href="https://newscrewdriver.com/2022/10/14/rosewill-hard-disk-drive-cage-rsv-sata-cage-34/">I installed a Rosewill quad hard drive cage</a> where a trio of 5.25" drive bays currently sit open and unused. It mostly fit. To verify that all drive cage cable connections worked with my <a rel="noreferrer noopener" href="https://amzn.to/3T52PyO" target="_blank">SATA expansion PCIe card</a> (*) I grabbed four drives from my shelf of standby hardware. When installing them in the drive cage, I realized I made a mistake: one of the drives was an <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/18/ocz-core-series-v2-120gb-ssd-oczssd2-2c120g/" target="_blank">old OCZ Core Series V2 120GB SSD</a> that had stopped responding to its SATA input. I continued installation anyway because I thought it would be interesting to see how the SATA expansion card handled a nonresponsive drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Obviously, because today intent was to see an unresponsive drive, Murphy's Law stepped in and foiled the plan: when I turned on the computer, that old SSD responded just fine. Figures! I don't know if there was something helpful in the drive cage, or the SATA card, or if something was wrong with the computer that refused to work with this SSD years ago. Whatever the reason, it's alive now. What can I do with it? Well, I can fire up the Ubuntu disk utility and get some non-exhaustive benchmark numbers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":33143,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/10/ocz-core_ssd-128gb-r143-w80-s0.22.png?w=680" alt="" class="wp-image-33143"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Average read rate 143.2 MB/s, write 80.3 MB/s, and seek of 0.22 ms. This is far faster than what I observed by using the USB2 interface, so I was wrong earlier about the performance bottleneck. Actual performance is probably lower than this, though. Looking at the red line representing write performance, we can see it started out strong but degraded at around 60% of the way through the test and kept getting worse, probably the onboard cache filling up. If this test ran longer, we might get more and more of the bottom end write performance of 17 MB/s.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>How do these numbers compare to some contemporaries? Digging through my pile of hardware, I found a Samsung ST750LM022. This is a spinning-platter laptop hard drive with 750GB capacity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":33145,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/10/st750lm022-750gb-r85-w71-s16.png?w=698" alt="" class="wp-image-33145"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Average read 85.7 MB/s, write 71.2 MB/s, and seek of 16.77 ms. Looking at that graph, we can clearly see degradation in read and write performance as the test ran. We'd need to run this test for longer before seeing a bottom taper, which may or may not be worse than the OCZ SSD. But even with this short test, we can see the read performance of a SSD does not degrade over time, and that SSD has a much more consistent and far faster seek time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was interesting, how about another SSD? I have an 120GB SSD from the famed <a href="https://en.wikipedia.org/wiki/X25-M">Intel X25-M series</a> of roughly similar vintage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":33147,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/10/intel-ssdsa2m12g2gc-120g-r261-w106-s0.15.png?w=680" alt="" class="wp-image-33147"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Average read 261.2 MB/s, write 106.5 MB/s, seek 0.15 ms. Like the OCZ SSD, performance took a dip right around the 60% mark. But after it did whatever housekeeping it needed to do, performance level resumed at roughly same level as earlier. Unlike the OCZ, we don't see as much of a degradation after 60%.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't expect this simple benchmark test to uncover the full picture, as confirmed after seeing this graph. By these numbers, the Intel was around 30% better than the OCZ. But my memory says otherwise. In actual use as a laptop system drive, the Intel was a pleasure and the OCZ was a torture. I'm sure these graphs are missing some important aspects of their relative performance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I had everything set up anyway, I plugged in a SanDisk SSD that had the advantage of a few years of evolution. In practical use, I didn't notice much of a difference between this newer SanDisk and the old Intel. How do things look on this benchmark tool?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":33150,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/10/sandisk-sdssdhp256g-r478-w203-s0.05.png?w=680" alt="" class="wp-image-33150"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Average read 478.6 MB/s, write 203.4 MB/s, seek 0.05 ms. By these benchmarks, the younger SanDisk absolutely kicked butt of an older Intel with at least double the performance. But that was not borne out by user experience as a laptop drive, it didn't <em>feel </em>much faster.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given that the SanDisk benchmarked so much faster than the Intel (but didn't feel that way in use) and OCZ benchmarked only slightly worse than the Intel (but absolutely felt far worse in use) I think the only conclusion I can draw here is: Ubuntu Disk Utility built-in benchmarking tool does not reflect actual usage. If I really wanted to measure performance details of these drives, I need to find a better disk drive benchmarking tool. Fortunately, today's objective was not to measure drive performance, it was only to verify all four bays of my Rosewill drive cage were functional. It was a success on that front, and I'll call it good for today.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

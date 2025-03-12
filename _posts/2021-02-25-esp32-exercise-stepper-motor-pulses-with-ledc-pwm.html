@@ -1,0 +1,125 @@
+---
+layout: post
+title: 'ESP32 Exercise: Stepper Motor Pulses With LEDC PWM'
+date: 2021-02-25 12:30:00.000000000 +00:00
+type: post
+post_id: '25245'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25246'
+  _oembed_fa4f1744c4190a41018c9bfd08c8f7d5: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_fa4f1744c4190a41018c9bfd08c8f7d5: '1614373618'
+  _oembed_392d9edbd6315c0e4bee887dafee4d75: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '55267106038'
+  timeline_notification: '1614285020'
+  _oembed_063a535c221f0d63f17b47bd3ebbf9d4: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_063a535c221f0d63f17b47bd3ebbf9d4: '1614285020'
+  _oembed_time_392d9edbd6315c0e4bee887dafee4d75: '1614285021'
+  _oembed_34a4d905a9ce4a8777c1438a55995ac3: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_34a4d905a9ce4a8777c1438a55995ac3: '1614285028'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667464520
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/25/esp32-exercise-stepper-motor-pulses-with-ledc-pwm/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After successfully <a href="https://newscrewdriver.com/2021/02/24/using-platformio-for-esp-idf-development/">installing PlatformIO's ESP-IDF support</a> (and a sigh of relief nothing else seems broken on my computer) I resumed practicing writing code for ESP32. The next exercise was motivated by Emily's <a href="https://www.youtube.com/watch?v=6BO4SKXGJW4" target="_blank" rel="noreferrer noopener">optical audio decoder project</a> where we traded a few e-mail about generating stepper motor signals. For her project she used an Arduino and the AccelStepper library, but it has a <a rel="noreferrer noopener" href="https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html" target="_blank">maximum speed of roughly four thousand steps per second</a> on classic Arduinos. I was confident the ESP32 can do far better than that, and decided to try it myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was also an opportunity to play with a <a href="https://www.trinamic.com/products/integrated-circuits/details/tmc2208-la/">Trinamic TMC2208</a> breakout board sometimes called the <a rel="noreferrer noopener" href="https://www.trinamic.com/support/eval-kits/details/silentstepstick/" target="_blank">SilentStepStick</a>. I think this board might be a Trinamic original design, but there's a slight chance they just hosted materials on their website since it was such a popular use of their chip. Either way, there are a lot of Amazon vendors <a rel="noreferrer noopener" href="https://amzn.to/3ryzpLv" target="_blank">selling these in affordable multi-packs</a>(*) targeting the 3D printer market. Mostly for people who are unhappy with the high-pitched whine of many inexpensive 3D printers, because TMC2208 is a good choice for helping a printer run much silently than they would on the <a rel="noreferrer noopener" href="https://www.pololu.com/product/1182" target="_blank">very popular A4988 driver chip</a> that helped start the current wave consumer 3D printers. My own 3D printers had A4988 drivers soldered on the board so I couldn't use these modules to upgrade, but I foresee these modules becoming useful in other projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the current Sawppy rover context, these drivers may become useful if I investigate using stepper motors in a future rover iteration. I've already received requests to drive and steer Sawppy wheels with NEMA17 style stepper motors commonly used in 3D printers, and there's always that mythical robot arm that my rover is still patiently waiting for. Commodity NEMA17 motors typically have far less torque than LX-16A serial bus servos, but I'm not sure it is a critical difference for a rover and the best way to find out would be to build one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But for now I'm just looking at the stepper motor driver, which is commanded by two signal pins: one signifying direction, and another that signals a step for the stepper motor. Direction pin is fairly trivial, it's the step pin that presents a challenge. Generic portable code like AccelStepper couldn't reliable pulse the step pin at high speeds, that requires coding to the hardware as GRBL did for the ATmega328.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the ESP32, my experiment used the ADC peripheral to read the position of a potentiometer and the LED control hardware PWM module to generate step pulses. This module is optimized for dynamic adjustment of pulse width duty cycle during application execution, but stepper motor control is a bit of a off-label use where I left the duty cycle at 50% and changed the PWM frequency at runtime in response to knob position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>According to <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/ledc.html" target="_blank">LEDC peripheral documentation</a>, it is theoretically capable of up to 40MHz pulses at 50% duty cycle. However, for any given configuration, the ESP32 is constrained to a subset of the total range of speed possible. I'm not sure how feasible it is to reconfigure the LEDC peripheral at runtime, but such tricks will be required for anyone with ambition to generate a wider range of pulse frequencies. In my exercise it is limited to a range of 32 Hz to 32.5kHz, which is plenty for today as proof we can surpass the 4kHz limit of AccelStepper on a ATmega328. A stepper motor's torque diminishes as the speed rises, so I expect the stepper motors will run into mechanical problems well before becoming limited by ESP32 PWM frequency range up to 40MHz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I got this exercise up and running, I started eyeing a desirable luxury advertised by PlatformIO: <a href="https://newscrewdriver.com/2021/02/26/platformio-jtag-debug-adventure-on-esp32/">source-level JTAG debugging</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code and schematic for this practice exercise is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/StepperVelocity" target="_blank">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https:\/\/twitter.com\/Regorlas\/status\/1335428897928740867","type":"rich","providerNameSlug":"twitter","responsive":true,"align":"center"} --></p>
+<figure class="wp-block-embed aligncenter is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1335428897928740867
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

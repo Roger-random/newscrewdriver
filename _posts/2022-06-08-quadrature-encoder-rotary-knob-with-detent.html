@@ -1,0 +1,62 @@
+---
+layout: post
+title: Quadrature Encoder Rotary Knob with Detent
+date: 2022-06-08 12:30:00.000000000 +00:00
+type: post
+post_id: '30729'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30730'
+  _publicize_job_id: '73444210897'
+  timeline_notification: '1654716664'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/08/quadrature-encoder-rotary-knob-with-detent/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In order to <a href="https://newscrewdriver.com/2022/06/07/cl84209-base-station-lcd-segment-map/">create a segment map for a salvaged LCD unit</a>, I soldered a rotary knob into my Arduino circuit so I could interactively select which segment to activate. It came from <a rel="noreferrer noopener" href="https://amzn.to/3xajfN2" target="_blank">this particular Amazon multipack listing</a> (*) which was the lowest bidder that day. This knob reports rotary motion via quadrature encoding, and it has a mechanical detent for tactile position feedback. (Twenty detents per revolution of the knob, or 360/20 = 18 degrees per detent.) It also responds to push like a button. The segment map project was my first unit from the multipack, and it seems to function properly. Even better, it doesn't "feel cheap" in its tactile sensation, so I'm happy with this particular multipack. And because it was so inexpensive, I decided to take one apart and look inside.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The entire assembly is held together by folded sheet metal. Bending its four fingers aside allowed me to separate the device into individual subcomponents. The pushbutton mechanism is at the bottom, a very simple construction where the two pins connected to two sheets of slightly separated metal. There's a slight convex curve to the metal acting as spring. Pushing on the knob pushes these two sheets together. Overcoming the convex curvature gives us the tactile "click" of the button press and gives us electrical conductivity between those two sheets. Usage: tie one of these two pins to ground and connect the other pin to the microcontroller input pin with either internal pull-up or external pull-up resistor so it normally reads high. When knob is pressed, the pin will be shorted to ground so it reads low.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30735,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/quadrature-encoder-rotary-knob-disassembled.jpg?w=1024" alt="" class="wp-image-30735"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next layer up is the quadrature encoder to report rotary motion. There are two sets of thin metal fingers that stay in a fixed position, making contact with alternatively conductive/non-conductive portions of a wheel that turns with the knob. Here is an illustration of the electrical conductivity between these fingers and their interface pins:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30737,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/quadrature-encoder-rotary-knob-disassembled-continuity-color.jpg?w=1024" alt="" class="wp-image-30737"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The center of these three pins connect to both sides. Each of the other two connect to their side of the wheel. Usage: connect the center pin to ground. Connect the other two pins as quadrature A and B signals to microcontroller with internal pull-up or external pull-up resistors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Above the wheel is the detent mechanism. For this particular device, there is a detent every four quadrature transitions. When it is stopped at a detent neither of the two side pins are connected to ground. (high/high) When turning from one detent to the next, it will quickly cycle through the other three states (high/low + low/low + low/high. Or the reverse order low/high + low/low + high/low if spin the opposite direction) before stopping at high/high again on the next detent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These quick transitions meant polling would not be fast enough to read this encoder. We require hardware interrupt support to ensure we don't miss steps. As I did for <a href="https://newscrewdriver.com/2022/05/20/reading-faceplate-audio-mode-knob/" target="_blank" rel="noreferrer noopener">the Toyota faceplate investigation</a>, I used <a rel="noreferrer noopener" href="https://github.com/PaulStoffregen/Encoder" target="_blank">Paul Stoffregen's Encoder Arduino library</a>. This time running on ESP8266 Arduino Core instead of ATmega328, it reliably read knob transitions using ESP8266 interrupts. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>(Note: at the time of this writing, the latest public release is v1.4.2 <a rel="noreferrer noopener" href="https://github.com/PaulStoffregen/Encoder/issues/40" target="_blank">which has problems</a> running on an ESP8266. I had to clone the repository directly to <a href="https://github.com/PaulStoffregen/Encoder/commit/eb73cf763504c6d0159fc2326fc9142a801e4e8a">pick up at least this fix</a> among others.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

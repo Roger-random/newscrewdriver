@@ -1,0 +1,70 @@
+---
+layout: post
+title: No Budibase Support For Imported Nested JSON
+date: 2024-08-28 12:30:00.000000000 +00:00
+type: post
+post_id: '44946'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  timeline_notification: '1724873438'
+  firehose_sent: '1724873437'
+  _publicize_job_id: '97384199087'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-28 03:14:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/28/no-budibase-support-for-imported-nested-json/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took my personal finance tracking spreadsheet and reorganized it into a set of normalized database tables each in a CSV (comma-separated values) file. They imported into Budibase fine <a href="https://newscrewdriver.com/2024/08/27/no-budibase-support-for-csv-data-relationships/">but I could not define declare logical relationships between them</a>. Looking for another entry point for Budibase built-in database, I found JSON was another supported format so I had my Python code output my spreadsheet data as JSON. Each entry looks something like this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>{
+  "Date": "12/18/2016",
+  "Vendor": "Target",
+  "Total": 41.24,
+  "Items": [
+    {
+      "Price": 26.27, 
+      "Category": "Food"
+    },
+    {
+      "Price": 14.97,
+      "Category": "Durable"
+    }
+  ]
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is no longer a set of normalized database tables. It's closer to how things were laid out in my spreadsheet. A date, a vendor name, and a total that may be divided across multiple items each in a different category. Except each category had a column in my spreadsheet and now it is a nested array in my JSON.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't like this layout as much as my normalized tables. The vendor name ("Target") is repeated over and over in this JSON format, instead of split off into a dedicated vendor table and referenced via ID. This is vulnerable to data entry errors like a misspelling, which could be found all over my original spreadsheet. The nested item categories are likewise repeated instead of sitting in their own table of categories.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite my dislike, I was willing to give it a shot. This data schema is vaguely familiar from the time I briefly played with MongoDB, another NoSQL database. Now I built this table with my Python processing code to see what <a href="https://couchdb.apache.org/">CouchDB</a> (what Budibase built-in database is based upon) can do with this data. The answer: CouchDB can handle this just fine, but building interactions for this data is too far off the beaten Budibase path.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To Budibase's credit, it was very easy to build UI to interact with all the top-level items: date, vendor, and total. But then I ran into a brick wall with those nested Items remaining opaque. I could only get my list of two items to show up as:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Items: [ (object), (object) ]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which is not very useful at all! Searching around Budibase GitHub discussion for help, I found #3394 <em><a href="https://github.com/Budibase/budibase/discussions/3394">How to create form to accept an array of items</a></em> which pointed to #2568 <em><a href="https://github.com/Budibase/budibase/issues/2568">JSON (Key / Value) type</a></em>. It is possible to define a schema for <a href="https://docs.budibase.com/docs/json#displaying-data-within-a-json-column">JSON data that includes nested arrays</a>. However, there's a catch: this option is only available for JSON data tables newly created within Budibase. This is not available for existing data that was imported. Darn! This is probably on Budibase to-do list for the future, but today I will have to abandon JSON approach and <a href="https://newscrewdriver.com/2024/08/29/choosing-postgresql-as-budibase-external-database/">try something else</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

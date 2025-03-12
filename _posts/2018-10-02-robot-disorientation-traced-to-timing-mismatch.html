@@ -1,0 +1,43 @@
+---
+layout: post
+title: Robot Disorientation Traced To Timing Mismatch
+date: 2018-10-02 09:00:13.000000000 +00:00
+type: post
+post_id: '16897'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1538496049'
+  _publicize_job_id: '22763287779'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/02/robot-disorientation-traced-to-timing-mismatch/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once the <a href="https://github.com/Roger-random/roboclaw_ros">Roboclaw ROS Node</a>'s wheel parameters were updated to match the new faster motors, Phoebe went on a mapping run. And the results were terrible! This is not a complete surprise. Based on <a href="https://newscrewdriver.com/2018/08/23/observations-from-a-neato-lidar-on-the-move/">previous experimentation with this LIDAR module</a>, I've seen its output data distorted by motion. It doesn't take a lot of motion - even a normal human walking pace is enough to cause visible distortion. So now that Phoebe's motors are <a href="https://newscrewdriver.com/2018/09/24/speedy-phoebe-swapping-gearbox-for-370-motors/">ten times faster than before</a>, that extra speed also adds extra distortion.</p>
+<p>While this is a problem, it might not be the only problem behind the poor map. I decided to dig into an anomaly I noticed while using <a href="http://wiki.ros.org/rviz">RViz</a> to calibrate wheel data against LIDAR data: there's some movement that can't be entirely explained by a LIDAR spinning at 240 RPM.</p>
+<p>The idea behind this odometry vs. LIDAR plot on RViz is to see if wheel odometry data agrees with LIDAR data. My favorite calibration surface is a door - it is a nice flat surface for LIDAR signal return, and I could swing the door at various angles for testing. In theory, when everything lines up, movement in the calculated odometry would match LIDAR observed behavior, and everything that is static in the real world (like the door) would be static in the plot as well.</p>
+<p>In order to tune the <code>base_width</code> parameter, I looked at the position of the door before turning, and position after turning. Adjusting base_width until they line up, indicating odometry matches LIDAR. But <strong><em>during</em> </strong>the turn, the door moved relative to the robot before finishing at the expected position.</p>
+<p>When Phoebe started turning (represented by red arrow) the door jumped out of position. After Phoebe stopped turning, the door snapped back to position. This means non-moving objects appear to the robot as moving objects, which would confuse any mapping algorithm.</p>
+<p><img class="alignnone size-full wp-image-16899" src="https://newscrewdriver.com/wp-content/uploads/2018/09/odom-lidar-mismatch-no-hack.gif" alt="Odom LIDAR Mismatch No Hack" width="640" height="400"></p>
+<p>I chased down a few dead ends before realizing the problem is a timing issue: the timestamp on the LIDAR data messages don't line up with the timestamp on odometry messages. At the moment I don't have enough data to tell who is at fault, the LIDAR node or the Roboclaw node, just that there is a time difference. Experimentation indicated the timing error is roughly on the order of 100 milliseconds.</p>
+<p>Continuing the experiment, I <a href="https://github.com/Roger-random/roboclaw_ros/commit/c643846c5e0e233199361248ef7b16236ad86b85">hard-coded a 100ms timestamp delta</a>. This is only a hack which does not address the underlying problem. With this modification, the door still moves around but at least it doesn't jump out of place as much.</p>
+<p><img class="alignnone size-full wp-image-16900" src="https://newscrewdriver.com/wp-content/uploads/2018/09/odom-lidar-mismatch-100ms-hack.gif" alt="Odom LIDAR Mismatch 100ms hack" width="640" height="400"></p>
+<p>This timing error went unnoticed when Phoebe was crawling extremely slowly. But at Phoebe's higher speed this timing error could not longer be ignored. Ideally all of the objects on the RViz plot would stay still, but we clearly see nonuniform distortion during motion. There may be room for further improvement, but I don't expect I'll ever get to ideal performance with such an inexpensive LIDAR unit. Phoebe may end up just having to go slowly while mapping.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/153706-robot-disorientation-traced-to-timing-mismatch">Hackaday.io</a>)</p>
+<p></body></html></p>

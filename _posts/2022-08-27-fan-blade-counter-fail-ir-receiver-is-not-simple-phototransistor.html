@@ -1,0 +1,54 @@
+---
+layout: post
+title: 'Fan Blade Counter Fail: IR Receiver is not Simple Phototransistor'
+date: 2022-08-27 12:30:00.000000000 +00:00
+type: post
+post_id: '32240'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- TIL
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32242'
+  _publicize_job_id: '76162339317'
+  timeline_notification: '1661628617'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/27/fan-blade-counter-fail-ir-receiver-is-not-simple-phototransistor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a <a href="https://newscrewdriver.com/2022/08/26/lrwave-audio-under-multichannel-oscilloscope/">successful Lissajous experiment</a> with my new oscilloscope, I proceeded to another idea to explore multichannel capability: a fan blade counter. When I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/08/computer-cooling-fan-tachometer-wire/" target="_blank">looked at the tachometer wire on a computer cooling fan</a>, I could see a square wave on a single-channel oscilloscope. But I couldn't verify how that corresponded to actual RPM, because I couldn't measure the latter. I thought I could set up an optical interrupter and use the oscilloscope to see individual fan blades interrupt the beam as they spun. Plotting the tachometer wire on one oscilloscope channel and the interrupter on another would show how they relate to each other. However, my first implementation of this idea was a failure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I needed a light source, plus something sensitive to that particular light, and they need to be fast. I have some light-sensitive resistors on hand, but <a rel="noreferrer noopener" href="https://eepower.com/resistor-guide/resistor-types/photo-resistor" target="_blank">their reaction times are too slow</a> to count fan blades. A fan could spin up to a few thousand RPM and a fan has multiple blades. So, I need a sensor that could handle signals in the tens of kilohertz and up. Looking through my stock of hardware, I found a box of <a rel="noreferrer noopener" href="https://amzn.to/3QyG2dR" target="_blank">consumer infrared remote-control emitter and receiver modules</a> (*) from my brief exploration into infrared. Since <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Consumer_IR" target="_blank">consumer IR</a> usually modulate their signals with a carrier frequency in the ballpark of 38kHz, these should be fast enough. But trying to use them to count fan blades was a failure because I misunderstood how the receiver worked.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I set up an emitter LED to be always-on and pointed it at a receiver. I set up the receiver with power, ground, and its signal wire connected to the oscilloscope. I expected the signal wire to be at one voltage level when it sees the emitter, and at another voltage level when I stick an old credit card between them. Its actual behavior was different. The signal was high when it saw the emitter, and when I blocked the light, the signal is... still high. Maybe it's only setup to work at 38kHz? I connected the emitter LED to a microcontroller to pulse it at 38kHz. With that setup, I can see a tiny bit of activity with my block/unblock experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32247,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/ir-receiver-saturation-with-always-on-emitter.jpg?w=1024" alt="" class="wp-image-32247"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Immediately after I unblocked the light, I see a few brief pulses of low signal before it resumed staying high. If I <em>gradually </em>unblocked the light, these low signals stayed longer. Even stranger, if I do the opposite thing and <em>gradually blocked </em>the light, I also get longer pulses of low signal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hypothesis: this IR receiver isn't a simple photoresistor changing signal high or low depending on whether it sees a beam or not. There's a circuit inside looking for a change in intensity and the signal wire only goes low when it sees behavior that fits some criteria I don't understand. That information is likely to be found in the datasheet for this component, but such luxuries are absent when we buy components off random Amazon lowest-bidder vendors instead of a reputable source like Digi-Key. Armed with microcontroller and oscilloscope, I could probably figure out the criteria for signal low. But I chose not to do that right now because, no matter the result, it won't be useful for a fan blade counter. I prefer to stay focused on my original goal, and I have <a href="https://newscrewdriver.com/2022/08/28/fan-blade-counter-success-infrared-led-photovoltaic-effect/">a different idea to try</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

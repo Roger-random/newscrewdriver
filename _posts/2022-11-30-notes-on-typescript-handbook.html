@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on TypeScript Handbook
+date: 2022-11-30 15:12:05.000000000 +00:00
+type: post
+post_id: '33838'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33847'
+  timeline_notification: '1669849929'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674526364
+  _publicize_job_id: '79223419224'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/30/notes-on-typescript-handbook/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I liked the idea of TypeScript, a tool that makes JavaScript more predictable and manageable. An introduction from Codecademy's <em>Learn TypeScript</em> course <a href="https://newscrewdriver.com/2022/11/29/notes-on-codecademy-learn-typescript/">was quite instructive</a>, but I knew that wasn't the whole picture. To learn more, I decided to read through the <a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook" target="_blank">TypeScript Handbook</a>. It is a document meant to be shorter and easier to read than the formal TypeScript language definition, at a tradeoff of less precision and skipping over details on edge cases.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The majority of value in TypeScript is in keeping track of code intent by assigning data types to variables. At first glance I thought it would be helpful but not a huge deal, but I was wrong. TypeScript can infer <em>a lot </em>from these type assignments. My favorite example was named "<a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking" target="_blank">Exhaustiveness checking</a>", where TypeScript could infer when a <code>switch()</code> statement is missing a <code>case</code>. This is a class of problem I frequently try to make visible in my own code. Unfortunately, I could only log an error and/or throwing an exception in case I fall into default. Which is a runtime solution where my code would come to a screeching halt long after I wrote it. But with TypeScript exhaustiveness checking combined with TypeScript '<code>never</code>' Type, I could turn such mistakes into compile-time error "<code>is not assignable to type 'never'</code>". This is huge and this capability alone is enough to turn me into a TypeScript fan.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, TypeScript can't solve all JavaScript ills, because TypeScript always maintains full runtime compatibility with JavaScript. This means TypeScript labels like "readonly" only communicates intent for compile-time checking and could not guarantee the value will remain immutable at runtime. It couldn't solve the fact JavaScript evolution ended up with a very convoluted model on <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this" target="_blank">what "this" means</a>. Sometimes TypeScript tries to solve a problem, only for JavaScript to end up with a different solution to the same problem. Such as TypeScript labeling class members as private (intent-only compile time check) and <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields" target="_blank">JavaScript's "#" private marker</a> (actual runtime enforcement?) And if JavaScript changes how inherited fields are initialized, TypeScript must follow suit while doing their best to <a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/2/classes.html#type-only-field-declarations" target="_blank">provide a mitigation</a> for existing code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another area where TypeScript had no choice but to follow suit with JavaScript is adopting all the different ways a function could be declared. My eyes started watering as I read through the <a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/2/functions.html" target="_blank">function section of TypeScript handbook</a>, I had never even seen most of these ways! Designing TypeScript so it could annotate type information on all of these function declaration methods must have been a huge headache. But this was just a taste: there's a whole "<a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/2/types-from-types.html" target="_blank">Type Manipulation</a>" section of the handbook describing how to carry type information through all kinds of different convolutions. The author seems proud of this capability, claiming "<em>we can express complex operations and values in a succinct, maintainable way</em>" but I got lost. This is information I could not absorb on the first pass and would have to return frequently as reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the "easy to read" handbook already lost me on several points, I don't think I'm quite ready to jump into the full language specification just yet. But there was one more item I wanted to look up: class decorators are used in Angular to <a href="https://angular.io/api/core/Component">create every component</a>, and I didn't quite understand how that worked. <a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/decorators.html#class-decorators" target="_blank">TypeScript reference page for decorators</a> called it an experimentational feature of TypeScript that is also a proposal to JavaScript, which means things might change in the future if JavaScript officially adopts decorators in a way incompatible with what TypeScript does today. Oh well, if that happens, I'm confident the TypeScript people are well practiced at dealing with it. In the meantime, I have to <a href="https://newscrewdriver.com/2022/12/01/learning-plan-for-angular-round-2/">devise a plan</a> for my own TypeScript practice.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

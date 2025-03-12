@@ -1,0 +1,67 @@
+---
+layout: post
+title: Risky Parallel LCD Test Surprisingly Worked
+date: 2022-05-02 12:30:00.000000000 +00:00
+type: post
+post_id: '30037'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30040'
+  _publicize_job_id: '72077920071'
+  timeline_notification: '1651519810'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I briefly surveyed <a href="https://newscrewdriver.com/2022/05/01/hobbyist-friendly-lcd-controllers/">LCD controllers popular with hobbyist projects</a>, hoping to find something that might match my mystery salvaged LCD units on hand. No luck. If my intention is to build a project with LCD screen, I should go and buy one of those popular units. But the point of the exercise is to try reusing salvaged electronics, so I stared at my two LCD units some more while thinking of Emily's observation that they both had nine interface pins and the hypothesis they share a common command set.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know for sure they aren't identical. For starters, the two modules are different sizes. And while they both have nine interface connection; they are physically different. The bare LCD module has pins, and the headset LCD module is soldered to its circuit board with a segment of <a rel="noreferrer noopener" href="https://docs.oshpark.com/services/flex/" target="_blank">FPC (flexible printed circuit)</a>. Holding the bare LCD's pins up to those soldered joints, I had an idea: what if I wired both LCDs together in parallel by soldering the bare LCD pins to the existing FPC pads?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thought was to dismiss it as a stupid idea. There were too many reasons why it wouldn't work even if the devices have a common interface. If they were SPI devices, they would conflict on the MISO pin. If they were I2C devices, the two devices probably have different addresses, and the bare LCD wouldn't do anything. Or if they had the same address, there would be conflict as they both tried to ground I2C control lines at the same time. LCD controllers like the PCD8544 had internal LCD voltage generators. Wiring two boost converters in parallel risks creating a feedback cycle that overshoots limits and destroy components. And if their wiring were completely different, I risk short-circuiting VCC to ground, or possibly connecting one of the boosted higher voltage lines to something that could not tolerate such voltage. And I'm sure there are other risks that didn't come immediately to mind.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But despite all those risks, the thought refused to go away. After a day of "but what if?" ringing around in my head, I decided these were salvaged components that I would eventually discard if I couldn't figure them out. (Or even if I could, if I'm being honest.) Basically, I didn't have anything to lose by throwing the dice and trying parallel wiring.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30040,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/phone-lcd-soldered-in-parallel.jpg?w=1024" alt="" class="wp-image-30040"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I powered on the handset LCD and, after a few seconds, the screen came up. It was quite faded compared to earlier, so something in this circuit is unhappy with the parallel screens. But at least I didn't kill it outright.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30051,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/handset-lcd-faded-but-working.jpg?w=1024" alt="" class="wp-image-30051"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a mental drum roll, I tilted my head to look at the other screen and... wow! I see something!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30053,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/base-lcd-is-working-in-parallel.jpg?w=1024" alt="" class="wp-image-30053"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both screens are very faded compared to what I've seen them earlier, but they are both nominally working while wired in parallel which is amazing! Seeing same text on both indicates the alphanumeric portions are common. The segmented portions below "CONNECTING..." are, however, different between the two displays.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The faded contrast tells me something is overstressed, so I quickly powered down after taking these pictures and de-soldered the second LCD. Powering the board back up restored normal contrast on handset LCD implying there was no permanent damage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While there doesn't seem to exist a popular common protocol for nine pin LCDs, at least these two are in common with each other. From a historical perspective, their commonality implies the bare LCD was salvaged from the base station for the wireless handset. From a reverse engineering perspective, having two devices with a common protocol meant I could leave the handset LCD intact for probing. I could then test my guesses with the bare LCD connected to another microcontroller. From a reuse perspective, it means if I'm successful figuring these guys out, that work could be utilized on two displays and not just a one-off. I could work on this project, but instead I decided to <a href="https://newscrewdriver.com/2022/05/03/powering-up-toyota-audio-head-unit-86120-08010/">dig up another LCD</a> that should be easier to decipher.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

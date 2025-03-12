@@ -1,0 +1,57 @@
+---
+layout: post
+title: Arduino Control Of LewanSoul LX-16A Servo Via Joystick Commands
+date: 2019-05-15 12:30:16.000000000 +00:00
+type: post
+post_id: '18492'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Sawppy the Rover
+tags: []
+meta:
+  _thumbnail_id: '18484'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_9805f55e0728abdfa82009ea59b1d0df: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Getting
+    walked on a leash... <a href="https://t.co/TH3CWCrrkv">pic.twitter.com/TH3CWCrrkv</a></p>&mdash;
+    Sawppy (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1128137078464630784?ref_src=twsrc%5Etfw">May
+    14, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '30844498017'
+  timeline_notification: '1557948800'
+  _oembed_time_9805f55e0728abdfa82009ea59b1d0df: '1557953733'
+  _oembed_80b2afe2a1e79dfa70128e364388d030: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Fun
+    with trigonometry tonight! Reviewing <a href="https://twitter.com/hashtag/Sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#Sawppy</a>
+    wheel geometry on paper to help track down problems with my Arduino control code.
+    <a href="https://t.co/22A4VrLbjC">pic.twitter.com/22A4VrLbjC</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1127079594022948866?ref_src=twsrc%5Etfw">May
+    11, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_80b2afe2a1e79dfa70128e364388d030: '1557954341'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669278908
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/15/arduino-control-of-lewansoul-lx-16a-servo-via-joystick-commands/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once I climbed <a href="https://newscrewdriver.com/2019/05/14/additional-source-code-in-arduino-sketches-are-tabs-not-files/">a few early steps on the Arduino IDE learning curve</a>, I was off and running writing code. Fortunately the underlying code for programming an Arduino is still the C++ I'm familiar with. I picked up where I left off earlier with <a href="https://newscrewdriver.com/2019/04/30/obsolete-arduino-board-is-alive-and-reading-analog-joystick/">the analog joystick tutorial</a>, now shuffled off to its own C++ class. I then looked over the <a href="https://newscrewdriver.com/2019/05/07/examining-lewansoul-arduino-library/">sample code released by LewanSoul for controlling LX-16A servos</a> in the form of a single flat Arduino sketch file. All with the goal of controlling <a href="https://amzn.to/2nNaacP" target="_blank" rel="noopener">these LX-16A servos</a>. (*)</p>
+<p>I don't plan on using most of the functionality of that sketch, but I thought it was easiest to lift the code wholesale rather than putting time into extracting just the parts I wanted to use. The code was written as flat top-level APIs, but it wasn't difficult to <a href="https://github.com/Roger-random/Sawppy_Rover/blob/master/arduino_sawppy/lewansoul.cpp">write a small class</a> that exposed a few methods which called into the two API I cared about. One to make a LX-16A move to a specific position, the other to make it rotate continuously.</p>
+<p>There were a few rounds of experimentation on how exactly to communicate intent across this API. Using values as directly dictated by LewanSoul would have worked fine for this one case, but I didn't want to be tied to one specific servo. Like my <a href="https://github.com/Roger-random/SGVHAK_Rover">SGVHAK Rover</a> software project, I wanted this code to be adaptable to multiple motor implementations which meant a more general description of motor action.</p>
+<p>I tried percentages for both, ranging from -100% to +100%. For position servo, this would mean -100% is full deflection left, 0 is center, and +100% is full deflection right. And for continuous rotation, -100% is full speed reverse, 0 is stopped, and +100% is full speed forward.</p>
+<p>Speed worked well but position did not: different servo will have different ranges of motion, so full deflection would mean different angles for different servos. So that was changed to angle in degrees. In the case of LewanSoul, -120 degree to +120 degree.</p>
+<p>This was enough to let me control two servos with an Arduino, based on position of the connected analog joystick. This is sufficient control for my standard "<a href="https://newscrewdriver.com/2018/05/17/sawppy-the-rovers-wheel-on-a-stick/">rover wheel on a stick</a>" test case, a good milestone before proceeding onwards.</p>
+<p>(Code for this project is publicly available in the <a href="https://github.com/Roger-random/Sawppy_Rover/tree/master/arduino_sawppy"><code>arduino_sawppy</code> subdirectory</a> of Sawppy Rover's Github repository.)</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

@@ -1,0 +1,92 @@
+---
+layout: post
+title: These Aren't The Frame Buffers You're Looking For
+date: 2024-06-05 12:30:00.000000000 +00:00
+type: post
+post_id: '43649'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43612'
+  firehose_sent: '1717615851'
+  timeline_notification: '1717615854'
+  _publicize_job_id: '95197681161'
+  wordads_ufa: u:wpcom-ufa-v4:1717709367
+  _elasticsearch_data_sharing_indexed_on: '2024-06-06 21:31:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/05/these-arent-the-frame-buffers-youre-looking-for/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2024/06/04/improve-drawing-via-mvmsb-for-adafruit_framebuf/">a small (if not necessarily elegant) enhancement</a> to <code>adafruit_framebuf</code> class, I can use it for basic graphical operations on the bit-mapped LCD of a salvaged Canon Pixma MX340 multi-function inkjet control panel. I then set my sights on adapting it to work with Adafruit's <a href="https://learn.adafruit.com/circuitpython-display-support-using-displayio/introduction">graphics compositing engine <code>displayio</code></a>, but that turned out to be more difficult than I had thought.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know the full history but looking in hindsight I think <code>displayio</code> was optimized for sprite rendering, the most performance-critical part of a 2D game engine. Such a system would support <a href="https://learn.adafruit.com/adafruit-pygamer/overview">products like Adafruit PyGamer</a>. Not so important for this inkjet control panel LCD, <a href="https://newscrewdriver.com/2023/12/24/canon-pixma-mx340-control-panel-lcd-updates-under-oscilloscope/">whose refresh rate tops out at just under 14 frames per second</a>. But I thought it would be fun anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Adafruit has <code>displayio</code> drivers for their most popular screens and obviously my LCD is none of them. Looking for an appropriate tool, I found <a href="https://docs.circuitpython.org/en/latest/shared-bindings/framebufferio/index.html">their <code>framebufferio</code> class</a> which takes a frame buffer and returns a display object. Its target usage scenario allows using <code>displayio</code> with a RGB LED matrix, which has resolutions with similar order of magnitude as my LCD. This looks promising.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I fed <code>framebufferio</code> my <code>FrameBuffer</code> class, I crashed my KB2040 which restarted in safe mode. (Indicated by <a href="https://learn.adafruit.com/welcome-to-circuitpython/troubleshooting#circuitpython-rgb-status-light-2978455">triple blinking yellow LED</a>.) Annoyingly, when a CircuitPython device crashes and reboots like this, Mu closes its serial terminal so I couldn't read the error message before it immediately disappeared. I had to bring in a different serial monitor tool in order to see the error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>TypeError: 'FrameBuffer' object does not support 'protocol_framebuffer'</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Darn. Looks like the CircuitPython frame buffer object I had been working on, isn't the CircuitPython frame buffer object expected by <code>framebufferio</code>. If I want this to work, I have to implement "<code>protocol_framebuffer</code>", but what is it? Clicking on the link brought me to something called <a href="https://docs.circuitpython.org/projects/adafruit-circuitpython-typing/en/latest/api.html#circuitpython_typing.FrameBuffer"><code>circuitpython_typing.FrameBuffer</code></a>, which forwards to <a href="https://docs.circuitpython.org/en/latest/shared-bindings/rgbmatrix/index.html"><code>rgbmatrix.RGBMatrix</code></a>. I added methods to my <code>FrameBuffer</code>-derived class in order to match those listed for <code>RGBMatrix</code>, but that was not good enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Digging deeper meant going into <a href="https://github.com/adafruit/circuitpython">core CircuitPython written in C</a>. I found <code>framebufferio/FrameBufferDisplay.c</code> which had this line:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>self-&gt;framebuffer_protocol = mp_proto_get_or_throw(MP_QSTR_protocol_framebuffer, framebuffer);</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think this is where my error message came from, so the next step is to find more information on the expected protocol which was declared in the associated header file <code>FrameBufferDisplay.h</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>typedef struct _framebuffer_p_t {
+    MP_PROTOCOL_HEAD // MP_QSTR_protocol_framebuffer
+
+    // Mandatory
+    framebuffer_get_bufinfo_fun get_bufinfo;
+    framebuffer_swapbuffers_fun swapbuffers;
+    framebuffer_deinit_fun deinit;
+    framebuffer_get_width_fun get_width;
+    framebuffer_get_height_fun get_height;
+
+    // Optional getters
+    framebuffer_get_bytes_per_cell_fun get_bytes_per_cell; // default: 2
+    framebuffer_get_color_depth_fun get_color_depth; // default: 16
+    framebuffer_get_first_pixel_offset_fun get_first_pixel_offset; // default: 0
+    framebuffer_get_grayscale_fun get_grayscale; // default: grayscale if depth &lt; 8
+    framebuffer_get_native_frames_per_second_fun get_native_frames_per_second; // default: 60
+    framebuffer_get_pixels_in_byte_share_row_fun get_pixels_in_byte_share_row; // default: false
+    framebuffer_get_reverse_pixels_in_byte_fun get_reverse_pixels_in_byte; // default: false
+    framebuffer_get_reverse_pixels_in_word_fun get_reverse_pixels_in_word; // default: false
+    framebuffer_get_row_stride_fun get_row_stride; // default: 0 (no extra row padding)
+
+    // Optional -- default is no brightness control
+    framebuffer_get_brightness_fun get_brightness;
+    framebuffer_set_brightness_fun set_brightness;
+
+} framebuffer_p_t;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is beyond my current understanding of CircuitPython code. Does it mean <code>framebufferio</code> only works with Adafruit's own frame buffer objects written in C? Or is this compatible with user-created Python code somehow? Again I tried modifying my <code>FrameBuffer</code>-derived class to fit this signature, but either I made a mistake somewhere or it is fundamentally impossible. I wish I could get finer-grained error message telling me where exactly I failed to support <code>protocol_framebuffer</code>, but I just keep getting the same failure leaving me stabbing in the dark.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After a few hours of fiddling without success, I abandoned <code>displayio</code> compatibility and wrote up this page in case my future self wants to pick up where I left off today. Without <code>displayio</code> I'll learn what I can from using <code>adafruit_framebuf</code>. First lesson: updating LCD at a high frame rate <a href="https://newscrewdriver.com/2024/06/06/circuitpython-asyncio-lock-prevents-interleaving-data-transmission/">required task synchronization</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

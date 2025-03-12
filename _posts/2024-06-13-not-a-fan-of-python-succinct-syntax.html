@@ -1,0 +1,78 @@
+---
+layout: post
+title: Not A Fan Of Python Succinct Syntax
+date: 2024-06-13 12:30:00.000000000 +00:00
+type: post
+post_id: '43768'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  wordads_ufa: u:wpcom-ufa-v4:1724033376
+  _publicize_job_id: '95413483587'
+  firehose_sent: '1718307017'
+  timeline_notification: '1718307018'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-15 05:27:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/13/not-a-fan-of-python-succinct-syntax/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When learning about a Python feature like <a href="https://newscrewdriver.com/2024/06/11/notes-on-pep-342-coroutines-via-enhanced-generators/">coroutines and generators</a>, I found it instructive to flip back and forth between different ways a feature is represented. It's nice to get the context of a feature and its evolution by reading its associated Python Enhancement Proposal, and it's good to see how the official Python tutorial presents the same concept after the PEP process was all said and done. However, I want to take a side detour because the generator tutorial section was immediately followed by <a href="https://docs.python.org/3/tutorial/classes.html#generator-expressions">generator expressions</a> and that made me grumpy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><em>Some simple generators can be coded succinctly as expressions using a syntax similar to list comprehensions but with parentheses instead of square brackets.</em></p>
+<p><!-- /wp:paragraph -->
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>I am personally against such alternate syntax for the reason they are extremely hostile to people who don't already know it. When I came across a generator and didn't know what it was, I was able to search for keywords "<code>yield</code>" and "<code>send</code>" and get pointed in the right direction. But if someone comes across a generator expression or a list comprehension and didn't know what it was, they have nothing to search on. The expression is enclosed by parentheses or square brackets, commonly used throughout the language. Inside the expression are normal Python syntax, and searching on "<code>for</code>" would just get to those features and not anywhere close to an explanation for generator expression or list comprehension.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I get that whoever pushed this through Python loved the option to "code succinctly" but my counter position is: No! Go type a few more characters. It won't kill you, but it'll be tremendously helpful to anyone reading your code later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's an excerpt from the <a href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions">list comprehension section of Python tutorial</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>[(x, y) for x in [1,2,3] for y in [3,1,4] if x != y]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a Python beginner, I had no idea what this syntax meant when I first saw it. I see two "<code>for</code>" loops, but this isn't just a "<code>for</code>" loop, I see an "<code>if</code>" statement, but I didn't know what that decision affected. (There's no obvious "then" in this if/then.) Beyond those keywords, there are just variables and parentheses and square brackets. I had nothing to put into a search to point me towards "list comprehension".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Python list comprehension tutorial said the above was equivalent to this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>combs = []
+for x in [1,2,3]:
+    for y in [3,1,4]:
+        if x != y:
+            combs.append((x, y))</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I didn't understand this code, I could search "<code>for</code>" and learn that. Same with the "<code>if</code>", and I can see the result of the decision affected whether the value was appended to a list. This is way more readable, it wasn't even that much more typing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Was list comprehension (and generator expression) worth adding to Python? I guess enough people in decision-making positions thought yes, but I disagree. I don't understand why Python is considered beginner-friendly when horribly beginner-hostile things like this exist. I don't think they should be in the language at all, but that ship has long since sailed. I can only shake my fist, yell at cloud, then <a href="https://newscrewdriver.com/2024/06/14/notes-on-pep-343-the-with-statement/">return to my study</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Related: I made a similar rant on <a href="https://newscrewdriver.com/2023/07/04/javascript-spread-syntax-and-other-un-google-able-shorthand/">impossible to search JavaScript short hands</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

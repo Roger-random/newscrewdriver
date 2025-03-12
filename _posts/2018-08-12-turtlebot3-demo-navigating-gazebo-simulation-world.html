@@ -1,0 +1,52 @@
+---
+layout: post
+title: TurtleBot3 Demo Navigating Gazebo Simulation World
+date: 2018-08-12 09:00:45.000000000 +00:00
+type: post
+post_id: '16615'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1534089704'
+  _publicize_job_id: '21007150745'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/12/turtlebot3-demo-navigating-gazebo-simulation-world/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Continuing on this beginner's exploration of ROS, I got a taste of how a robot can be more intelligent about its movement than the <a href="https://newscrewdriver.com/2018/08/09/understanding-a-simple-ros-robot-control-program/">random walk of <code>turtlebot3_drive</code></a>. It also gave me a taste of how much I still have to learn about how to effectively use all these open source algorithms available through the ROS ecosystem, but seeing these things work is great motivation to put in the time to learn.</p>
+<p>There's an entire <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/navigation">chapter in the manual dedicated to navigation.</a> It is focused on real robots but it only needs minimal modification to run in simulation. The first and most obvious step is to launch the "turtle world" simulation environment.</p>
+<blockquote><p><code>roslaunch turtlebot3_gazebo turtlebot3_world.launch</code></p></blockquote>
+<p>Then we can launch the navigation module, referencing the map we created earlier.</p>
+<blockquote><p><code>roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml</code></p></blockquote>
+<p>When RVis launches, we see one and a half turtle world. The complete turtle world is the map data, the incomplete turtle world is the laser distance data. We see the two separately because the robot doesn't yet know where it is, resulting in a gross mismatch between map data and sensor data.</p>
+<p><img class=" size-full wp-image-16616 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/navigation-startup.png" alt="Navigation Startup" width="1295" height="916"></p>
+<p>ROS navigation can determine the robot's position, but it needs a little help with initial position. We provide this help by clicking on "2D Pose Estimate" and drawing an arrow. First we click on the robot's position on the map, then we drag upwards to point the arrow up representing the direction our robot is facing.</p>
+<p><img class="alignnone size-full wp-image-16620" src="https://newscrewdriver.com/wp-content/uploads/2018/08/navigation-pose_estimate.png" alt="navigation-pose_estimate.png" width="1295" height="916"></p>
+<p>In theory, once the robot knows roughly where it is and which direction it is facing, it can match laser data up to the map data and align itself the rest of the way. In practice it seems like we need to be fairly precise about the initial pose information for things to line up.</p>
+<p><img class="alignnone size-full wp-image-16617" src="https://newscrewdriver.com/wp-content/uploads/2018/08/navigation-aligned.png" alt="Navigation Aligned" width="1298" height="911"></p>
+<p>Once aligned, we can click on "2D Nav Goal" to tell our robot navigation routine where to go. The robot will then plan a route and traverse that route, avoiding obstacles along the way. During its travel, the robot will continuously evaluate its current position against the original plan, and adjust as needed.</p>
+<p><img class="alignnone size-full wp-image-16618" src="https://newscrewdriver.com/wp-content/uploads/2018/08/navigation-progress.png" alt="Navigation Progress" width="1289" height="915"></p>
+<p>That was a pretty cool demo!</p>
+<p>Of course there's a lot of information shown on RViz, representing many things I still need to sit down and learn in the future. Such as:</p>
+<ul>
+<li>What are those little green arrows? They're drawn in RVis under the category named "Amcl Particles" but I don't know what they mean yet.</li>
+<li>There's a small square surrounding the robot showing a red-to-blue gradient. The red appears near obstacles and blue indicates no obstacles nearby. The RViz check box corresponding to this data is labelled "Costmap". I'll need to learn what "cost" means in this context and how it can be adjusted to suit different navigation goals.</li>
+<li>What causes the robot to deviate off the plan? In the real world I would expect things like wheel slippage to cause a robot to veer off its planned path. I'm not sure if Gazebo helpfully throws in some random wheel slippage to simulate the real world, or if there are other factors at play causing path deviations.</li>
+<li>Sometimes the robot happily traverses the route in reverse, sometimes it performs a three-point-turn or in-place turn before beginning its traversal. I'm curious what dictates the different behaviors.</li>
+<li>And lastly: Why do we have to do mapping and navigation as two separate steps? It was a little disappointing this robot demo separates them, as I had thought state of the art is well past the point where we could do both simultaneously. There's probably a good reason why this is a hard problem, I just don't know it yet in my ignorance.</li>
+</ul>
+<p>Lots to learn!</body></html></p>

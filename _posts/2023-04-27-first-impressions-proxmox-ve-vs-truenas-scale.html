@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'First Impressions: Proxmox VE vs. TrueNAS SCALE'
+date: 2023-04-27 12:30:00.000000000 +00:00
+type: post
+post_id: '36412'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36301'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682623941
+  _publicize_job_id: '83588737531'
+  timeline_notification: '1682623819'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/27/first-impressions-proxmox-ve-vs-truenas-scale/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've spent a few hours each on Proxmox VE and TrueNAS SCALE, the latter of which is now <a href="https://newscrewdriver.com/2023/04/26/plex-media-server-in-truenas-scale-virtual-machine/">hosting both my personal media collection and a VM-based Plex Media Server view of it</a>. Proxmox and TrueNAS are both very powerful pieces of software with a long list of features, a few hours of exposure barely scratched the surface. They share a great deal of similarities: they are both based on Linux, they both use KVM hypervisor for their virtual machines, and they both support software-based data redundancy across multiple storage drives. (No expensive RAID controllers necessary.) But I have found a distinct difference between them I can sum up as this: TrueNAS SCALE is a great storage server with some application server capabilities, and Proxmox VE is a great application server with an optional storage server component.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I got past a few of my beginner's mistakes, it was very quick and easy to spin up a virtual machine with Proxmox interface. I felt I had more options at my disposal, and I thought they were better organized than their TrueNAS counterparts. Proxmox also offers more granular monitoring of virtual machine resource usage. With per-VM views of CPU, memory, and network traffic. My pet feature USB passthrough allows adding/removing USB hardware from a virtual machine live at runtime under Proxmox. Doing the same under TrueNAS requires rebooting the VM before USB hardware changes are reflected. Another problem I experienced under TrueNAS was that my VM couldn't see the TrueNAS server itself on the network. ("No route to host") I worked around it by using another available Ethernet port on my server, but such an extra port isn't always available. Proxmox VM could see their Proxmox host just fine over a single shared Ethernet port.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was able to evaluate Proxmox on a machine with a single large SSD that hosts both Proxmox itself and virtual machines. In contrast, TrueNAS requires a dedicated system drive and additional separate data storage drives. This reflects its NAS focus (you wouldn't want to commingle storage and operating data) but it does mean evaluating TrueNAS requires a commitment at least two storage devices versus just one for Proxmox.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But storage is easy and (based on years with TrueNAS CORE) dependable and reliable with redundant hardware. This is their bread-and-butter and it works well. In contrast, data storage in Proxmox is an <a href="https://pve.proxmox.com/pve-docs/chapter-pveceph.html">optional component provided via Ceph</a>. I've never played with Ceph myself but, based on skimming that documentation, there's a steeper learning curve than setting up redundant storage with TrueNAS. Ceph seems to be more powerful and can scale up to larger deployments, but that means more complexity at the small end before I can get a minimally viable setup suitable for home use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My current plan is to skip Ceph and continue using TrueNAS SCALE for my data storage needs. I will also use its KVM hypervisor to run a few long-running virtual machines hosting associated services. (Like Plex Media Server for my media collection.) For quick experimental virtual machines who I expect to have a short lifespan, or for those that require Proxmox specific feature (add/remove USB hardware live, granular resource monitoring, etc) I'll run them on my Proxmox evaluation box. Over the next few months/years, I expect to better able evaluate which tool is better for which job.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

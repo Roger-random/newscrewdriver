@@ -1,0 +1,112 @@
+---
+layout: post
+title: Google Daydream Controller (D9SCA)
+date: 2023-06-23 12:30:00.000000000 +00:00
+type: post
+post_id: '37442'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- xr
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37448'
+  timeline_notification: '1687548676'
+  _publicize_job_id: '85161849162'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1687660953
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/06/23/google-daydream-controller-d9sca/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>User interactivity in Google Cardboard was limited to a single button tapping anywhere on screen. Google decided to address that limitation with their follow up Daydream VR by adding the requirement of a handheld controller to go with <a href="https://newscrewdriver.com/2023/06/22/google-daydream-headset-d9sha/">the Daydream headset</a> as a complete system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37081,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-vr.jpg?w=1024" alt="" class="wp-image-37081"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The small text imprinted on the back of the controller included an FCC ID because this is a Bluetooth device operating over airwaves. Curiously, a search for A4R-D9SCA came up empty on the <a href="https://www.fcc.gov/oet/ea/fccid">FCC ID search site</a>. Looking around the internet for other resources, I found <a href="https://www.slashgear.com/google-daydream-controller-teardown-red-flags-10463265/">a teardown posted by SlashGear</a>. I was disappointed (but not surprised) this device is largely glued together and will be more difficult than the headset to disassemble.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37450,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-opened.jpg?w=1024" alt="" class="wp-image-37450"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, I have the freedom of not caring if I break it, so I started prying. Half of the controller (the palm end) was indeed held by glue. The other half (touchpad end) is designed to flex and so we can click the touchpad, thus it was only held by two clips that allowed a small range of motion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37451,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-touchpad-back.jpg?w=1024" alt="" class="wp-image-37451"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Focusing on the top panel circuit board, I see a small white tactile button in the middle for clicking, and a chip with the following markings:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>IQS525
+GH 25X
+VG CHN
+624 Y</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search found the <a href="https://www.azoteq.com/product/iqs525-b000/">Azoteq IQS525 capacitive touch controller</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37447,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-cut-touchpad-free.jpg?w=1024" alt="" class="wp-image-37447"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Curious what the other side looked like, I used my flush cutters to cut away melted plastic rivets holding the circuit board in place.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37452,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-touchpad-front.jpg?w=1024" alt="" class="wp-image-37452"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We see a grid of diamond-shaped metal pads for the IQS525 to sense our finger position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37449,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-mainboard-glue.jpg?w=1024" alt="" class="wp-image-37449"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The mainboard is held very securely. Not just by several screws, but also by glue. While the glue is brittle and easily cracked, it still put up quite a fight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37446,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-bent-mainboard-removed.jpg?w=1024" alt="" class="wp-image-37446"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>By the time I freed the mainboard, it was very bent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37453,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-weight-removed.jpg?w=1024" alt="" class="wp-image-37453"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Under that board is the battery and a small piece of metal that couldn't be a heat sink as it doesn't touch any of the chips. It's probably just to add heft to the controller right in the middle of where our palm would be. It is mainly held by some double-sided tape, but it is also in contact with that glue. It takes a bit of effort to pry it free.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37444,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-battery-removed.jpg?w=1024" alt="" class="wp-image-37444"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The battery is held by a <a href="https://hackaday.com/2020/11/08/teardown-experts-sing-praise-of-stretch-release-adhesives/">stretch-release adhesive strip</a>, but I have yet to develop the fine touch needed to make those strips work for me. I pulled too hard on this one and it broke. Fortunately, it released enough for the battery to come free. Aided by the fact the enclosure designed a bunch of ribs in the battery tray for a much smaller contact surface than if the enclosure had a smooth flat base. It's curious we have these ribs and stretch-release adhesive features for easy battery removal, yet it is trapped under a circuit board that was glued in place. Some design criteria must have changed partway through development.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37445,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-battery.jpg?w=1024" alt="" class="wp-image-37445"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since this small battery saw barely any actual use or much abuse during removal, I am willing to consider repurposing it in a future project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37448,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/google-daydream-controller-disassembled.jpg?w=1024" alt="" class="wp-image-37448"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Due to the copious amounts of adhesives and glue, this controller was annoying to take apart. In practice it is likely to be impossible to repair as well. The battery was far more difficult to remove than it really needed to be. I expect very few of them have been properly disposed or recycled after retirement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Daydream represented Google's idea to improve phone-based VR. <a href="https://newscrewdriver.com/2023/06/24/samsung-gear-vr-sm-r322/">Samsung took a different route with their Gear VR</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

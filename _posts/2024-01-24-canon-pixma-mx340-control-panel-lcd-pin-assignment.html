@@ -1,0 +1,70 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Pin Assignment
+date: 2024-01-24 12:30:00.000000000 +00:00
+type: post
+post_id: '41708'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41679'
+  firehose_sent: '1706128219'
+  wordads_ufa: s:wpcom-ufa-v4:1706226194
+  _publicize_job_id: '91376059965'
+  timeline_notification: '1706128220'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/24/canon-pixma-mx340-control-panel-lcd-pin-assignment/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Tracing through the control panel circuit board of a Canon Pixma MX340 multi-function inkjet, I found five communication wires between its control chip and LCD screen. While I was <a href="https://newscrewdriver.com/2024/01/23/canon-pixma-mx340-control-panel-lcd-wires-for-logic-analyzer/">soldering wires to tap into that data bus</a>, I hypothesized what they might be. My best guess was <a href="https://en.wikipedia.org/wiki/Serial_Peripheral_Interface" target="_blank" rel="noreferrer noopener">four wires for SPI</a> plus an analog voltage wire to control display contrast. For my initial captures, I set Saleae Logic to analog mode and ran through scenarios <a href="https://newscrewdriver.com/2023/12/28/canon-pixma-mx340-control-panel-logic-analyzer-capture-targets/" target="_blank" rel="noreferrer noopener">similar to what I used</a> to capture data between main board and control panel. The analog voltage hypothesis was quickly disproved: these are all digital signals of either 3.3V DC or ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41710,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-lcd-logic-analyzer-plug-in-power.png?w=1024" alt="" class="wp-image-41710"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Setting my capture settings back to digital, I started over from the beginning. At the moment I plugged in its power cable, four out of five wires went high.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41712,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-lcd-logic-analyzer-power-up.png?w=1024" alt="" class="wp-image-41712"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I pressed the power button, the first detected activity was the fifth wire going high. This pin stayed high until I pressed the power button to drop the system into standby mode. From this I inferred LCD pin 2 (red wire, logic analyzer channel 2) is passing through the "<a href="https://newscrewdriver.com/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/" target="_blank" rel="noreferrer noopener">Chip Enable</a>" signal. One mystery down, four to go.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41714,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-lcd-logic-analyzer-sleep.png?w=1024" alt="" class="wp-image-41714"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's a single-byte command sent to the LCD <a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/" target="_blank" rel="noreferrer noopener">telling it to go to sleep</a>. LCD pin 4 (green wire, logic analyzer channel 5) looks like an active-low clock signal, pulsing eight times to send a single byte. LCD pin 1 (yellow wire, logic analyzer channel 4) was dropped low just before the clock started pulsing, and stayed low until after it was done. This behavior is consistent with SPI "Select" wire, notifying LCD to pay attention to incoming synchronous clock and data signals. Speaking of data, that would be LCD pin 5 (black wire, logic analyzer channel 0) that held each data bit at the clock signal's low-to-high transition.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Where does that leave the LCD pin 3? (blue wire, logic analyzer channel 6) It almost behaves like a SPI Select, except it drops low at the same time as the first leading edge of the clock. Too late to serve as notification for LCD to get ready, so it must mean something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41716,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-lcd-logic-analyzer-update.png?w=1024" alt="" class="wp-image-41716"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is the capture timeline for a LCD update, and it showed a behavior difference between blue and yellow lines. The blue pulses divide this transfer into five sections, matching the number of bulk transfers sent by the main board. For each section, several bytes were transferred with blue held low, followed by many bytes with the blue held high. This means the blue line indicates whether the data being transferred is to be treated as a command (low) or as data (high).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With candidate roles for all five wires, I could use them to configure Saleae Logic's SPI decoder and <a href="https://newscrewdriver.com/2024/01/25/canon-pixma-mx340-control-panel-lcd-data-decoded/">look over the bytes transferred</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

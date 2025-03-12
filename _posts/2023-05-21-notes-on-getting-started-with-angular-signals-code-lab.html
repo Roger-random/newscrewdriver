@@ -1,0 +1,54 @@
+---
+layout: post
+title: Notes on "Getting Started with Angular Signals" Code Lab
+date: 2023-05-21 12:30:00.000000000 +00:00
+type: post
+post_id: '36778'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36784'
+  _publicize_job_id: '84244255922'
+  timeline_notification: '1684697434'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684786964
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/21/notes-on-getting-started-with-angular-signals-code-lab/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As part of Google's I/O 2023 developer conference, they released several code labs that went with some of the talks. We can get a quick taste of new technology with these low-overhead exercises. I went through the WebGPU code lab out of curiosity to <a href="https://newscrewdriver.com/2023/05/20/notes-on-your-first-webgpu-app-code-lab/">learn basics of modern GPU hardware programming</a>. In contrast, I went into <a href="https://codelabs.developers.google.com/angular-signals">"<em>Getting Started with Angular Signals</em>"</a> with more than just curiosity. I had full expectation I'll learn stuff I can use in future Angular projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Project source code is set up for us to run in the browser (on <a href="https://newscrewdriver.com/2020/10/11/stackblitz-a-web-app-for-building-web-apps/">StackBlitz infrastructure</a>) with no need for local machine installation. Since I expect to use Angular Signals in future projects, I thought I'd clone the repo into my typical Angular environment: a Visual Studio dev container running locally. However, I ran into an error while running "<code>npm install</code>":</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>While resolving: qgnioqqrg.github@0.0.0
+Found: @angular/compiler@15.2.9
+node_modules/@angular/compiler
+  @angular/compiler@"^15.2.2" from the root project
+
+Could not resolve dependency:
+peer @angular/compiler@"15.1.0-next.2" from @angular/compiler-cli@15.1.0-next.2
+node_modules/@angular/compiler-cli
+  dev @angular/compiler-cli@"15.1.0-next.2" from the root project</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This might have been easy to resolve with a little time, but StackBlitz was ready to go with no time. I decided to postpone debugging this situation until later and went through this code lab exercise on StackBlitz. It was fine, pretty much exactly what I saw in the video presentation associated with this code lab. We get to use <code>signal()</code> (the reactive piece of data), <code>computed()</code> (which reacts to other signal(s) and deliver its own reactive result) and <code>effect()</code> (which also reacts to other signal but does not deliver its own reactive result.) After going through Vue.js documentation recently, I recognize these as closely analogous to Vue's <code>data</code>, <code>computed</code>, and <code>watch</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If that's all I got out of the code lab project, I would be disappointed because I hadn't learn anything in addition to what was covered in the video presentation. But unlike the video presentation, I have the rest of the project in hand for me to sink my teeth into. The first thing I wanted to investigate was the "Angular Standalone" concept, which I had thought was an advanced technique. But <a href="https://newscrewdriver.com/2023/05/19/notes-on-google-i-o-2023-angular-signals/">one of the Angular seesions at Google I/O</a> told me I was wrong: It was something intended to make Angular easier for beginners and small-scale projects. I should look into that! This Angular Signals code lab project makes use of <code>standalone:true</code> and I wanted to learn more. Fortunately for me, this code lab <a href="https://newscrewdriver.com/2023/05/22/notes-on-getting-started-with-standalone-components-code-lab/">linked to an earlier code lab</a> <em>Getting Started with Standalone Components</em>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

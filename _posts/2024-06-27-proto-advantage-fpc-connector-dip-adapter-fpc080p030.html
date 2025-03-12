@@ -1,0 +1,72 @@
+---
+layout: post
+title: Proto Advantage FPC Connector DIP Adapter (FPC080P030)
+date: 2024-06-27 12:30:00.000000000 +00:00
+type: post
+post_id: '43950'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43951'
+  firehose_sent: '1719516605'
+  _publicize_job_id: '95789207749'
+  timeline_notification: '1719516606'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-28 21:52:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/27/proto-advantage-fpc-connector-dip-adapter-fpc080p030/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to learn more about a keyboard module I pulled out of an Acer Aspire Switch 10. And while the first step is to <a href="https://newscrewdriver.com/2024/06/26/acer-aspire-switch-10-keyboard-wiring/">look at the actual wires involved in connecting</a> such a thing, to get further I will need to probe electrical behavior of those wires. I went online to find a breakout board that I hoped would help me, and ordered a <a href="https://amzn.to/3XxLgwN">Proto-Advantage FPC080P030</a>. (*) One side of this board has 0.8mm pitch contacts with flexible sizing able to accommodate up to 30 positions. Appropriate for soldering the kind of FPC (flexible printed circuit) cable connector I unsoldered from the Acer's circuit board, which has 26 positions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The business card that came with the kit pointed me to <a href="http://www.proto-advantage.com/store/">website for Proto-Advantage</a>, where I found a huge catalog of adapter boards to bridge the world of surface-mount devices and 0.1" pitch prototype perforated boards/breadboards. Looks like I am likely to buy more of their products in the future if I continue playing with salvaged electronics components. I went to check out their listing for <a href="http://www.proto-advantage.com/store/product_info.php?products_id=3400019">the FPC080P030 I just bought</a>. This is a company based in Canada. For their United States customers like myself, looks like it makes more sense to use Amazon logistics for distribution rather than trying to sell direct.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43955,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/proto-advantage-fpc080p030-connector-pitch-check.jpg?w=800" alt="" class="wp-image-43955"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First task was to double check I bought the correct pitch to match my salvaged connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43957,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/proto-advantage-fpc080p030-connector-soldered.jpg?w=800" alt="" class="wp-image-43957"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was not looking forward to soldering 0.8mm pitch connectors one by one, but it turns out I didn't have to. My soldering iron tip is far too big to work at this scale but all I had to do was drag a melted blob of solder across this row of pins. Between the solder mask on the Proto Advantage circuit board and copious use of soldering flux, surface tension did all the hard work. A quick meter check confirmed I have electrical continuity on all 26 pins and there were no bridges. Thanks, surface tension!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43959,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/proto-advantage-fpc080p030-offset-0.1-pitch-pins.jpg?w=800" alt="" class="wp-image-43959"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the other side, there were no through-holes for adapting to 0.1" pitch DIP format. I didn't quite understand what I saw on product listing pictures but it made sense once I had all components in hand. The backside pads were laid out to go with right-angle 0.1" headers, with their angled head pointing in alternate directions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43961,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/proto-advantage-fpc080p030-asm-help-300-assembly-helper.jpg?w=800" alt="" class="wp-image-43961"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Proto Advantage bundled this assembly helper circuit board. There's no copper to solder to here, its purpose is to hold all pins in a row within its drilled holes. This ensures all pins are soldered with the correct relative spacing to fit on a 0.1" grid.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43963,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/proto-advantage-fpc080p030-will-not-work-for-jumper-wires-on-breadboard.jpg?w=800" alt="" class="wp-image-43963"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This specific board is, unfortunately, not breadboard jumper friendly. Inserting the keyboard module FFC would block off almost the entire left side. There's a tiny bit of room to lay wires flat against the surface of the breadboard, but it won't be possible to explore with jumper cables like I wanted. I'll have to find another way, and <a href="https://newscrewdriver.com/2024/06/28/jumper-wire-between-adapter-and-pi-pico-skips-breadboard/">it turned out to be a better way</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

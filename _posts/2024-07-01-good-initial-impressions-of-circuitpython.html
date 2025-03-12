@@ -1,0 +1,45 @@
+---
+layout: post
+title: Good Initial Impressions of CircuitPython
+date: 2024-07-01 12:30:00.000000000 +00:00
+type: post
+post_id: '44021'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43920'
+  firehose_sent: '1719862250'
+  _publicize_job_id: '95892364993'
+  timeline_notification: '1719862251'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-02 22:16:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/01/good-initial-impressions-of-circuitpython/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got a salvaged laptop keyboard module <a href="https://newscrewdriver.com/2024/06/30/kmk-firmware-revives-acer-aspire-switch-10-keyboard-module/">up and running as a USB keyboard</a> using open source keyboard firmware KMK. It was configured with keyboard matrix information deciphered with a CircuitPython utility published by Adafruit. KMK itself was also written in CircuitPython. This project followed another project taking <a href="https://newscrewdriver.com/2024/06/23/mx340-control-panel-under-rp2040-control/">a salvaged Canon Pixma MX340 panel under CircuitPython control</a>. I think this is enough hands-on experience to declare that I am a fan of CircuitPython and plan to work with it further.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a longtime Adafruit customer I had been aware of their efforts building and championing CircuitPython for hobbyist projects, but I already had familiar microcontroller development workflows (mostly built around Arduino ecosystem) and lacked motivation to investigate. In fact, the reason that got me started looking at microcontroller-based Python wasn't even for myself: I was on a Python kick due to CadQuery, and that was motivated by a desire to build future Sawppy rover on a open-source CAD solution so it can be shared with others. Sawppy was built on Onshape but I doubted their commitment to keeping a free tier available especially <a href="https://newscrewdriver.com/2022/11/19/heroku-free-rides-are-over/">after their acquisition</a>. I was distracted from my CadQuery practice projects with the loan of a Raspberry Pi Pico and kept my train of thought on the Python track. If I want future shared Sawppy to be easy to understand, perhaps its code should be in Python as well!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Switching the programming language itself wasn't a huge deal for me: I've worked in C/C++ languages for many years and I'm quite comfortable. (Part of why I didn't feel motivated to look elsewhere.) However, CircuitPython's workflow is a huge benefit: I hit save on my Python file, and I get feedback almost immediately. In contrast iterating Arduino sketches require a compile and upload procedure. That usually only takes a few seconds and I've rarely felt that was too long, but now I'm spoiled by CircuitPython's instant gratification.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another big benefit of CircuitPython is its integration of USB capability available in modern microcontrollers. CircuitPython's integration was so seamless that at first I didn't even notice until I got KMK up and running. I pressed a key and a keystroke showed up on my computer. That's when I had my "A-ha!" moment: this Raspberry Pi Pico is acting as a USB HID keyboard, at the same time exposing its data volume as a USB storage drive, at the same time exposing its Python console output through a text stream. All on a single USB cable. In contrast, most Arduino are limited to asynchronous serial communication over a serial-to-USB bridge. Firmware upload and diagnostic text has to share that single serial link, and additional functionality (like USB HID keyboard) would require a separate USB port. This keeps hardware requirements simple and makes it possible to port to more microcontrollers, part of the reason why more chips have Arduino support but not CircuitPython.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On this front I believe MicroPython is serial-only like Arduino and thus share the same limitations on capability. I like CircuitPython's approach. Depending on circumstances, I can see CircuitPython's requirement for USB hardware might keep it out of certain niches, but I'm pretty confident <a href="https://newscrewdriver.com/2024/07/02/usb-devices-in-circuitpython/">it'll be a net positive</a> for my realm of hobbyist projects.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

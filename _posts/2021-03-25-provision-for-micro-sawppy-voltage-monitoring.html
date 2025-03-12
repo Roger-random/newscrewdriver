@@ -1,0 +1,53 @@
+---
+layout: post
+title: Provision for Micro Sawppy Voltage Monitoring
+date: 2021-03-25 12:30:00.000000000 +00:00
+type: post
+post_id: '25753'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- MP1584
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25740'
+  timeline_notification: '1616700612'
+  _publicize_job_id: '56381993390'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/25/provision-for-micro-sawppy-voltage-monitoring/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Recent experience iterating through Micro Sawppy prototypes made it clear I <a href="https://newscrewdriver.com/2021/03/24/configurable-micro-sawppy-servo-power-supply/">underestimated the task of designing a power supply scheme</a> to fit all of my objectives. My blind spot came from the fact Sawppy V1 was up and running with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/06/powering-sawppy-the-rover/" target="_blank">a very simple scheme</a> for power. I had a two-cell lithium-polymer battery pack, and almost all the components on board were happy to take power directly from that battery and perform their own internal voltage regulation. The only exception was the Raspberry Pi 3 on board, to which I attached a MP1584 buck converter to supply a consistent five volts. It was very little effort to get Sawppy V1 working, so I had the misconception power schemes are easy! They are not.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to meet my cost objectives for Micro Sawppy, I switched to different components. These simpler components were far more particular about their power supply, so I had to take on more of the power considerations that were previously a feature built in to more expensive parts. We are now at the point where I think I need to pull the rover's ESP32 brain into the discussion. The motivation here are the six TT gearboxes and their corresponding motors, officially rated for operation up to 6 volts but can tolerate brief periods above that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to stay below that maximum, the ESP32 can limit its maximum motor control PWM duty cycle sent to the DRV8833 motor control ICs. In an ideal world, if I had a 7.4V power supply, I should be OK as long as I limit PWM duty cycle to no more than (6 / 7.4) = 81%. But this voltage value would change as the battery depletes. When the battery is fully charged at 8.4V, 81% would delivery too much power. And as it approaches depletion of 7V, 81% would be too low to obtain 6V output. What I really want is for the PWM duty cycle to be dynamically adjusted based on battery voltage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Conveniently, the current pin assignment for ESP32 dev kit still has one input pin open and available for use. So I soldered a pair of resistors to that pin. An 1 MOhm resistor to the battery voltage pane, and a 100 KOhm resistor to ground. This gives me an 11:1 voltage divider which I should be able to read with one of ESP32's ADC (analog-to-digital conversion) peripherals. This provision will still need corresponding software work before it'll do anything useful. But if it doesn't work, it should be pretty easy to clip those resistors off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The primary objective for voltage monitoring is to dynamically adjust PWM duty cycle in order to maintain rover performance as the battery discharges. Secondary objective is to let the ESP32 send out a low battery alert if the battery is low. Sawppy V1 used an <a rel="noreferrer noopener" href="https://amzn.to/3eZyQYl" target="_blank">external battery voltage alarm</a> (*) but if I can incorporate that feature into ESP32 software it'll cut down on parts cost. At the very least, I would like to put the rover into limp mode if the battery voltage drops below a threshold, which would be a feature missing from Sawppy V1.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I expect that battery voltage drop would make the motors unreliable well before it makes the ESP32 unreliable, but as my breadboard test showed, that is still possible. So another potential work item on the to-do list is to enable <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html#config-esp32-brownout-det-lvl-sel">ESP32 brownout detection capability</a> and recognize when battery voltage is dragged down by <a href="https://newscrewdriver.com/2021/03/26/tt-gearbox-motor-wire-and-capacitor/">rover motors</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,46 @@
+---
+layout: post
+title: 'MX340 CircuitPython: Internals and Context Manager'
+date: 2024-06-19 17:49:31.000000000 +00:00
+type: post
+post_id: '43842'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43586'
+  firehose_sent: '1718844573'
+  wordads_ufa: u:wpcom-ufa-v4:1719266276
+  _publicize_job_id: '95579886969'
+  timeline_notification: '1718844576'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 21:59:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/19/mx340-circuitpython-internals-and-context-manager/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got CircuitPython code to interface with control panel of a Canon MX340 multi-function inkjet, and gradually refining my crude experimental code into an actual reusable CircuitPython library. Using <a href="https://newscrewdriver.com/2024/06/18/mx340-circuitpython-refinements-async-event-but-no-property-setter/">events for synchronization and exposing property setters</a> was just the start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A major change is to separate communication infrastructure from code that utilizes such infrastructure. For example, I've had code in there blinking the "In Use/Memory" LED to let me know everything is still running. I consider code to transmit the LED control bytes to the NEC K13988 as infrastructure, and the timing loop to toggle LED on and off to be application code. I have a separate asynchronous task that continually updates the LCD content for the same reason, and that should be separated out as well. During the experimental phase I could just mix code in there in a big jumble. A global space where any bit of code can call any other bit of code. But now I have to think about which methods should be part of the API and which are internal implementation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To reflect this division, a minor change is to rename several methods with a leading underscore. This is a "weak internal" <a href="https://peps.python.org/pep-0008/#public-and-internal-interfaces">indicator by Python convention</a>. They are understood to be for internal use though there's no language level mechanism preventing callers from accessing them. I guess this means they can be changed without becoming a public API breaking change? Reading the linked section of PEP 8, I saw there's also a way to declare public interface with <code>__all__</code>. As per <a href="https://docs.python.org/3/tutorial/modules.html#importing-from-a-package">Python tutorial on module imports</a>, this works in conjunction with "<code>from [module] import *</code>". I don't understand enough about Python modules yet to know if it's applicable to my project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I performed this separation, I can clearly see a set of startup and cleanup tasks that have to run before and after application code. This sounds like a job for <a href="https://newscrewdriver.com/2024/06/14/notes-on-pep-343-the-with-statement/">context managers</a>! I can set up all the infrastructure by using an <code>async with</code> statement, and all application code can run within its scope. I first tried to write my context manager with the generator syntax that has a single <code>yield</code> for application code, but that failed: I need to decorate such a generator with <code>@contextmanager</code> to apply supporting infrastructure from <code><a href="https://docs.python.org/3/library/contextlib.html">contextlib</a></code>, which has not been ported to CircuitPython. Oops! Fortunately I can still implement a context manager by falling back to <a href="https://peps.python.org/pep-0492/#asynchronous-context-managers-and-async-with">using special method names <code>__aenter__()</code> and <code>__aexit__()</code></a>. Once implemented, I can apply even more lessons from my recent study session, implementing a clean separation between my test code from my NEC K13988 infrastructure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was pretty pleased with myself with how well this is going when I realized <a href="https://newscrewdriver.com/2024/06/20/mx340-circuitpython-key-events/">I completely forgot about key press events</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

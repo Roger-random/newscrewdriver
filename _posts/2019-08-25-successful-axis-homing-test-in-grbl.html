@@ -1,0 +1,79 @@
+---
+layout: post
+title: Successful Axis Homing Test In Grbl
+date: 2019-08-25 12:30:15.000000000 +00:00
+type: post
+post_id: '19317'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- TIL
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19320'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_c1fc167a7c12487198852cfb3184f78c: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Unnecessarily
+    complex circuit is at least homing properly under Grbl ESP32. Hardware amateur
+    hour continues... <a href="https://t.co/PwATjsl08v">pic.twitter.com/PwATjsl08v</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1163896910844850176?ref_src=twsrc%5Etfw">August
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '34547340053'
+  _oembed_7ddc6629a046ed970fb950b2345c7644: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="420" data-dnt="true"><p lang="en" dir="ltr">Unnecessarily
+    complex circuit is at least homing properly under Grbl ESP32. Hardware amateur
+    hour continues... <a href="https://t.co/PwATjsl08v">pic.twitter.com/PwATjsl08v</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1163896910844850176?ref_src=twsrc%5Etfw">August
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_7ddc6629a046ed970fb950b2345c7644: '1566761456'
+  timeline_notification: '1566761457'
+  _oembed_677030608591844749bce35773d55ca0: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Unnecessarily
+    complex circuit is at least homing properly under Grbl ESP32. Hardware amateur
+    hour continues... <a href="https://t.co/PwATjsl08v">pic.twitter.com/PwATjsl08v</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1163896910844850176?ref_src=twsrc%5Etfw">August
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_677030608591844749bce35773d55ca0: '1566761458'
+  _oembed_time_c1fc167a7c12487198852cfb3184f78c: '1566761467'
+  _oembed_f589f6eb5a92320d25fd361b7579a16a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Unnecessarily
+    complex circuit is at least homing properly under Grbl ESP32. Hardware amateur
+    hour continues... <a href="https://t.co/PwATjsl08v">pic.twitter.com/PwATjsl08v</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1163896910844850176?ref_src=twsrc%5Etfw">August
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_f589f6eb5a92320d25fd361b7579a16a: '1566765122'
+  _oembed_186c5cb4f382daacecba4a8f44dbed6f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Unnecessarily
+    complex circuit is at least homing properly under Grbl ESP32. Hardware amateur
+    hour continues... <a href="https://t.co/PwATjsl08v">pic.twitter.com/PwATjsl08v</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1163896910844850176?ref_src=twsrc%5Etfw">August
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_186c5cb4f382daacecba4a8f44dbed6f: '1708471100'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/25/successful-axis-homing-test-in-grbl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When I played with the salvaged XY stage, I had only about 10 minutes at the end of that work session to play with homing. I connected the homing switch so it can bring the pin low when the switch closes, and the stage moved right past the homing switch and into the hard end stop.</p>
+<p>Before my next work session, I wanted to learn how to properly set up a homing switch for an axis in Grbl. So I started playing with salvaged optical carriages and, when I found it had very little mechanical power, I <a href="https://newscrewdriver.com/2019/08/24/salvage-surface-mount-switches-for-homing-test/">salvaged some tiny switches</a> requiring only a very light touch to trigger.</p>
+<p>Since this was only serving as a test chassis for Grbl configuration, I didn't put too much work into making this an elegant and durable setup. The new limit switch was placed roughly in the right position with tape. All I needed was for the carriage to touch and close the switch when it nears one end of the travel. There was a secondary benefit to this very temporary setup: if the carriage runs past the switch as I expected, the switch is able to fall out of the way without damage.</p>
+<p>I commanded this carriage to home and, much to my surprise, it functioned exactly as expected. I had thought this would replicate the problem I saw with the full sized salvaged XY stage running past the homing position. The fact that it did not implied the problem was not in Grbl configuration, but in the limit switch on board the XY stage.</p>
+<p>The switch looked fine when I tested continuity with a meter, but it was an awkward setup and I could only look at one switch at a time. To help isolate the problem, I shall create a <a href="https://newscrewdriver.com/2019/08/26/create-a-board-to-test-xy-stage-switches/">simple test circuit to watch all three switches</a> (min and max limit, plus home) on a single axis.</p>
+<p>https://twitter.com/Regorlas/status/1163896910844850176</p>
+<p></body></html></p>

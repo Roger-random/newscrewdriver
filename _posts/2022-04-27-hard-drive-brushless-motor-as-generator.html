@@ -1,0 +1,72 @@
+---
+layout: post
+title: Hard Drive Brushless Motor as Generator
+date: 2022-04-27 12:30:00.000000000 +00:00
+type: post
+post_id: '29933'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Brushless Motor
+- Joule Thief
+- Motor
+- Power Generation
+meta:
+  _thumbnail_id: '29952'
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '71897117776'
+  timeline_notification: '1651087814'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/27/hard-drive-brushless-motor-as-generator/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Some time ago I had a broken hobby servo that I traced to a burned-out control board. Since the motor itself and its geartrain are still good, I thought I could use it as a gearmotor but I didn't have an immediate project. What I did have immediately on hand was a few LEDs on the workbench, so I reversed the power flow: I connected the LED to the motor and spun the servo shaft. The former output shaft is now where I input my mechanical energy, and the former motor power input pins have become electrical output pins of a very simple and crude power generator. Making the LED glow a dull red was fun for a few minutes before some gears failed. Clearly, there is room for improvement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think of that experience every time I take apart a failed hard disk drive, which I do for a few reasons: first, because I wanted the powerful magnets within a hard drive. Second, because disassembling the data platters make my data very difficult to steal. And third, because all that precision machining is very pretty to look at! The typical finish line for this activity is a hard drive chassis with a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Brushless_DC_electric_motor" target="_blank">brushless motor</a> that formerly spun the platters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29945,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/hdd-chassis-with-spindle-bldc-motor.jpg?w=1024" alt="" class="wp-image-29945"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've wanted to try turning such a motor into a generator as well, a more complex project that I had put off until now. I started by soldering wires to the motor's three input pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29947,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/hdd-chassis-with-wires-soldered-to-spindle-bldc-motor.jpg?w=1024" alt="" class="wp-image-29947"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>From here I could connect any two of these three wires to my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/01/22/dso-138-oscilloscope-kit-by-jye-tech/" target="_blank">cheap oscilloscope</a>. When I spin the motor by hand, I can see a small sinusoidal AC signal. There should be three sets of these waveforms, one between each pair of wire. (1-2, 2-3, and 1-3.) In order to convert this to DC power suitable for lighting up a LED, I will need <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Rectifier" target="_blank">rectifiers</a> to turn that AC power into DC. I have a motley collection of rectifiers salvaged from various electronics teardowns, but I don't know if it is important that I use three matching units. Since they are cheap, I decided to buy <a rel="noreferrer noopener" href="https://amzn.to/3rKL0tp" target="_blank">a pack of twenty rectifiers</a>(*) just so I have three identical units for this experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29950,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/rectifier-for-hdd-spindle-motor.jpg?w=1024" alt="" class="wp-image-29950"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Rectifiers in hand, I picked two out of the three wires from my motor and wire them up to the two pins labeled "AC". Repeat for two more rectifiers each for one of the other two wire pairings, then connect all three "+" and "-" together in parallel with a capacitor. I then put my DC voltmeter across them and started playing with the motor spindle. Unsurprisingly, there's some kind of startup barrier. If I just casually spin the motor about the same speed I turn the volume knob on audio equipment, nothing happens. But if I give it a fast twist like I'm spinning a top, I can see the capacitor voltage jump to about 1V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29952,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/hdd-spindle-bldc-motor-as-generator-for-joule-thief-led.jpg?w=1024" alt="" class="wp-image-29952"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A single volt is not enough to directly illuminate a LED, but I have <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/10/30/building-a-compact-joule-thief/" target="_blank">built lots of little "Joule thief" boost converters</a> that can light LEDs from tired alkaline batteries. They only need about 0.4V to do their thing, but I don't know if there's enough current. I soldered one of them to this circuit and gave the motor a good twist. I was rewarded by a brief blink of LED. I count that as success!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next step in this exploration is to build something so that motor can spin faster and more consistently than what I can accomplish with a flick of the wrist. What form of mechanical energy should I try to harness for power generation?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

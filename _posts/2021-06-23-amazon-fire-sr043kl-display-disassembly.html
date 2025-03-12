@@ -1,0 +1,79 @@
+---
+layout: post
+title: Amazon Fire SR043KL Display Disassembly
+date: 2021-06-23 12:30:00.000000000 +00:00
+type: post
+post_id: '27212'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Amazon Fire
+- Backlight
+- LCD Panel
+- SR043KL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27213'
+  _publicize_job_id: '59940403490'
+  timeline_notification: '1624476608'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/23/amazon-fire-sr043kl-display-disassembly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have taken apart an Amazon Fire tablet (SR043KL) and retrieved the prize I sought: an <a href="https://newscrewdriver.com/2021/06/22/amazon-fire-sr043kl-screen-removal/">intact display assembly under the cracked digitizer glass</a>. Though presence or absence of cracks in the LCD wouldn't have mattered for my project anyway. My objective is actually the backlight behind it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just like the LG laptop display <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/06/01/lg-lcd-panel-lp133wf2spa1-teardown/" target="_blank">I disassembled earlier</a>, this display module is held on all edges by thin precision black tape. Peeling back the tape, I had hoped to find a LED backlight driver as I did on the laptop display, but not this time. There are a few small passive components here, but the backlight driver must be <a href="https://newscrewdriver.com/2021/06/20/amazon-fire-sr043kl-mainboard/" target="_blank" rel="noreferrer noopener">on the mainboard</a> hidden under one of those metal shields.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27216,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-18-display-module-fpc-under-tape.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-18-display-module-fpc-under-tape.jpg?w=1024" alt="" class="wp-image-27216"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lacking an easily accessible LED driver, the next objective is to hunt for the backlight LED circuit itself. I expected them to be the largest traces relative to the other components, and I see two exposed contacts already labelled with + and -. Hmm... could it be that easy? I could do a quick test: since these two points were already exposed, soldering some wires to them were straightforward.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27218,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-19-backlight-power-wires.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-19-backlight-power-wires.jpg?w=1024" alt="" class="wp-image-27218"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to see if the LEDs glow, I peeled back more of the tape. Slowly increasing the voltage, I started seeing a glow at around 15V. Wow, it's really <em><strong>was </strong></em>that easy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27220,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-20-backlight-illumination-test.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-20-backlight-illumination-test.jpg?w=1024" alt="" class="wp-image-27220"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have no idea how to drive this LCD array, and I have no intention to learn. My objective for today is the LED backlight. So after I peeled away all black tape around the perimeter, I sliced the high density LCD pixel data ribbon in order to separate the two parts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27222,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-21-display-disassembled.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-21-display-disassembled.jpg?w=1024" alt="" class="wp-image-27222"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There isn't much more to be said about the LCD array. I was able to peel off the polarizer film, this time without cracking any glass, but using acetone to clean off the adhesive once again caused the film to disintegrate. That's two strikes against acetone, I'll have to try something else next time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27225,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-22-polarizer-film-acetone-disintegration.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/amazon-fire-sr043kl-22-polarizer-film-acetone-disintegration.jpg?w=1024" alt="" class="wp-image-27225"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have to put more thought into polarizer film recovery, but that's only a mild distraction from my fascination with the backlight and <a href="https://newscrewdriver.com/2021/06/24/amazon-fire-sr043kl-backlight-layers/">its sheets of optical magic</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

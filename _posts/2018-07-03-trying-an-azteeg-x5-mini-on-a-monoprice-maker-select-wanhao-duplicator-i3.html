@@ -1,0 +1,42 @@
+---
+layout: post
+title: Trying an Azteeg X5 Mini on a Monoprice Maker Select (Wanhao Duplicator i3)
+date: 2018-07-03 09:00:34.000000000 +00:00
+type: post
+post_id: '16389'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Azteeg X5 Mini
+- Monoprice Maker Select
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1530634871'
+  _publicize_job_id: '19625968777'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/03/trying-an-azteeg-x5-mini-on-a-monoprice-maker-select-wanhao-duplicator-i3/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The first step of this process was to determine if an <a href="http://www.panucatt.com/azteeg_X5_mini_reprap_3d_printer_controller_p/ax5mini.htm">Azteeg X5 Mini</a> would even work with an <a href="https://monoprice.com/product?p_id=21864">Monoprice Maker Select</a>. We'll find out by trying to run the printer with the board with minimal (ideally zero) modifications to both. This way, if an unsurmountable deal-breaker is encountered, everything can be restored to the way they were.</p>
+<p>When the printer control box was opened, there was no visual indication what was emitting the smoke scent. I had expected to see some discoloration on the circuit board or component, but this is fine: it's a good thing we're taking on this project before anything goes seriously wrong.</p>
+<p><img class="alignnone size-full wp-image-16057" src="https://newscrewdriver.com/wp-content/uploads/2018/04/mms-brain-01-before.jpg" alt="MMS Brain 01 - Before" width="1024" height="347"></p>
+<p>The upgrade was done incrementally. Connectors were moved over in associated groups and tested with each group. The first group to move over were the X and Y axis motors and associated homing switches. A <a href="http://www.panucatt.com/product_p/vikilcd2.htm">ViKi 2 LCD display</a> was borrowed for the duration of this test.</p>
+<p><img class="alignnone size-full wp-image-16058" src="https://newscrewdriver.com/wp-content/uploads/2018/04/mms-brain-02-incremental-move.jpg" alt="MMS Brain 02 - Incremental Move.jpg" width="1024" height="590"></p>
+<p>One expected annoyance is that these two boards used different connectors. Fortunately they were the same pitch so most of the connectors could be persuaded to fit (even if not properly) for testing purposes. The only nontrivial electrical work was for our Z-axis. Prusa i3 style printers like this one have two Z-axis stepper motors driven in parallel, but Azteeg X5 mini only has a single Z-axis connector. This required soldering up an Y-connector to electrically connect the two motors in parallel.</p>
+<p>Several items in Azteeg X5 Mini's configuration had to be modified for this particular printer chassis. Number of steps per millimeter, how to properly interpret temperature readings, all fairly normal items for configuring a 3D printer. There were no deal-breakers which is great news.</p>
+<p>At the end of the day, all connectors were (crudely) hooked up and printer configuration updated. Heating up the nozzle and print bed allowed verification of temperature control by double-checking their temperature readings using a separate temperature probe. And finally, it was time for a test print!</p>
+<p>The test print showed that X/Y/Z axis are working correctly, but the print exhibited signs of under-extrusion so the extruder needs tuning. This is a minor flaw which means we've successfully confirmed that we can use the Azteeg X5 Mini in this printer.</p>
+<p>Next task: replace crude connections with proper connectors, and find a way to physically mount the Azteeg X5 Mini in this printer.</p>
+<p></body></html></p>

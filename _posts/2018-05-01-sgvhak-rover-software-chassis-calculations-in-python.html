@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'SGVHAK Rover Software: Chassis Calculations in Python'
+date: 2018-05-01 23:00:20.000000000 +00:00
+type: post
+post_id: '16122'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1525240823'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17397521124'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/01/sgvhak-rover-software-chassis-calculations-in-python/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignnone size-full wp-image-16113" src="https://newscrewdriver.com/wp-content/uploads/2018/04/sgvhak-rover-chassis-config.png" alt="SGVHAK Rover Chassis Config" width="953" height="387">One of the biggest changes in our new rover controller code is the goal of managing all ten rover chassis motors together, starting to think of the rover as a single unit instead of ten individual things.</p>
+<p>This logic is centered in <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/master/SGVHAK_Rover/roverchassis.py">roverchassis.py</a>, which is be responsible for calculating <a href="https://en.wikipedia.org/wiki/Ackermann_steering_geometry">Ackermann angles</a> for all steerable wheels in the rover, as well as calculating the desired travel velocity for each wheel. In order to make this code as flexible as we can, we offload details of rover chassis into configuration files and make our Python math as generic as possible running calculations based on configuration file values. This meant we could support rovers with different geometries without editing source code. This feature began with a desire to have flexible wheelbase and track dimensions of our rover chassis, but eventually extended to supporting similar but different configurations such as two-wheel differential drive.</p>
+<p>Another goal was to support different types of motors and motor controllers. We appreciated all the features in the <a href="http://www.ionmc.com/">RoboClaw motor controller</a> we started with, but we also thought about trading off some of these features for lower cost. In preparation for this flexibility, we kept roverchassis.py focused on general Ackermann-related math and kept motor-specific code in a separate class. In the first draft, this meant pulling all RoboClaw related code into <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/master/SGVHAK_Rover/roboclaw_wrapper.py">roboclaw_wrapper.py</a> which translates general concepts from roverchassis.py into specific commands in Ion Motion Control's <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/master/SGVHAK_Rover/roboclaw.py">public domain API roboclaw.py</a>. Later on we validated this flexibility by <a href="https://newscrewdriver.com/2018/04/17/sgvhak-rover-steering-restored-with-servo-hack/">steering a single wheel with a RC servo</a> followed by adding support for LewanSoul serial bus servos.</p>
+<p>This was all possible using a flexible syntax in <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/master/config_roverchassis.json">config_roverchassis.json</a> that allows us to adjust wheel dimensions as well as switch out individual wheel travel or steering motors for different motor controllers.</p>
+<p> </p>
+<p> </body></html></p>

@@ -1,0 +1,144 @@
+---
+layout: post
+title: Roku Premiere (4620X "Cooper") Teardown
+date: 2022-03-29 12:30:00.000000000 +00:00
+type: post
+post_id: '29260'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Roku
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29219'
+  _publicize_job_id: '70773172415'
+  timeline_notification: '1648582214'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/29/roku-premiere-4620x-cooper-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been gifted two retired Roku devices for teardown. The <a href="https://newscrewdriver.com/2022/03/28/roku-streaming-stick-3500x-sugarland-teardown/">small streaming stick was straightforward</a>, now it's time for the far more interesting Roku Premiere. I also have its AC power supply and remote control. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29215,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-all.jpg?w=1024" alt="" class="wp-image-29215"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking up the model number 4620X listed on the bottom of the case, we find these specifications on <a rel="noreferrer noopener" href="https://developer.roku.com/docs/specs/hardware.md" target="_blank">Roku's hardware reference chart</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<tbody>
+<tr>
+<td>Device Name</td>
+<td>Roku Premiere</td>
+</tr>
+<tr>
+<td>Code Name</td>
+<td>Cooper</td>
+</tr>
+<tr>
+<td>roDeviceInfo.GetModel()</td>
+<td>4620X</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>ARM Cortex A53 quad core 1.2 GHz</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>1 GB</td>
+</tr>
+<tr>
+<td>Accelerated Graphics API</td>
+<td>OpenGL ES 2.0</td>
+</tr>
+<tr>
+<td>Max UI Resolution</td>
+<td>1920X1080</td>
+</tr>
+<tr>
+<td>Max Playback Resolution</td>
+<td>4K UHD, 60fps</td>
+</tr>
+<tr>
+<td>HDR Support</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>IDK Support</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Whereas the streaming stick was roughly analogous to a Raspberry Pi Zero, the 4K UHD capabilities here put this item closer to a Raspberry Pi 4. A more capable piece of hardware that is fed more electrical power as well. Its power supply (model PA-1120-42RU) is specified to deliver 12 volts DC at up to 1 amp.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29214,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-ac-adapter-pa-1120-42ru.jpg?w=1024" alt="" class="wp-image-29214"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike a streaming stick, a Premiere can be set in line of sight of the user so its remote control (model RC108) is infrared. I plan to play with this later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29230,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-remote-control-rc108.jpg?w=1024" alt="" class="wp-image-29230"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see a seam around the top of this enclosure, and a bit of prying could release some plastic clips. But they would immediately snap back. I suspect some fasteners are hidden under the bottom, which is a soft rubbery surface that gives the device good traction to resist sliding around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29216,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-back.jpg?w=1024" alt="" class="wp-image-29216"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had expected annoying strong glue to hold this in place, but it actually peeled off easily. Not as easily as normal cellophane ("Scotch") tape, more like packing tape or duct tape.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29233,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-rubber-back-peeled.jpg?w=1024" alt="" class="wp-image-29233"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see my primary target: four Philips-head screws. I also see the reset button through a window in the case, a hard nub on the rubber base helps us push it when needed. Towards the upper left of this picture, we can see another window exposing test and/or debug points.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29220,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-externally-accessible-test-points.jpg?w=1024" alt="" class="wp-image-29220"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Those four Philips-head screws were revealed to be self-tapping plastic screws upon removal. Then I resumed working on the lid, and this time its clips could be freed and stay freed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29236,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-topside-1.jpg?w=1024" alt="" class="wp-image-29236"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once clips were freed, the lid could be removed exposing a circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29237,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-topside-2.jpg?w=1024" alt="" class="wp-image-29237"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is only one layer to the circuitry, below that is the bottom of the case.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29238,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-topside-3.jpg?w=1024" alt="" class="wp-image-29238"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are the components laid out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29219,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-disassembled.jpg?w=1024" alt="" class="wp-image-29219"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were a few features that caught my interest that's worth a closer look, starting with <a href="https://newscrewdriver.com/2022/03/30/roku-premiere-4620x-cooper-enclosure/">its external enclosure</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

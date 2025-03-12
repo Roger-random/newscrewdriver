@@ -1,0 +1,67 @@
+---
+layout: post
+title: Voltage Step-Down (Buck) Converter Module With Mystery AELH Chip
+date: 2023-10-13 12:30:00.000000000 +00:00
+type: post
+post_id: '39570'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39589'
+  wordads_ufa: s:wpcom-ufa-v4:1697313216
+  _publicize_job_id: '88476531183'
+  timeline_notification: '1697225460'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/13/voltage-step-down-buck-converter-module-with-mystery-aelh-chip/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've used a commodity voltage step-down converter (a.k.a. buck converter) module built around a MP1584 chip for many projects and it has worked well. <a href="https://newscrewdriver.com/2023/10/12/voltage-step-down-buck-converter-module-schematic-mp1584/">Tracing the MP1584 module out to a KiCad schematic</a> gave me a better understanding of that black box. It didn't expose the enable pin, though, and there was one project where I wanted that capability so I tried a different buck converter module because <a href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/" target="_blank" rel="noreferrer noopener">it had an exposed enable pin</a>. Here are pictures of the module, with the backside image flipped so all the traces and vias would line up as I try to follow them from one layer to another.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39586,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-buck-converter-pcb-front.jpg?w=800" alt="" class="wp-image-39586"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"align":"center","id":39585,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-buck-converter-pcb-back-flipped.jpg?w=800" alt="" class="wp-image-39585"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It had a row of resistors on board for voltage presets, and I could use them by cutting the trace to the adjustable potentiometer and soldering a bridge across the desired position. Despite the space dedicated to these preset resistors, this module was only about 60% of the size of the MP1584 module I had been using. Here they are side-by-side, with the MP1584 module to the left and this module to the right.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39639,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/mp1584-and-aelh-relative-sizes.jpg?w=1024" alt="" class="wp-image-39639"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought it might be fun to decipher the magic behind this compact and capable module, but there were two significant problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first was that I still couldn't find any information on the chip at the heart of this module. I can read the marking AELH easily enough, but I only found one chip with that marking and it's the wrong chip: the MAX6514UKP115, part of <a href="https://www.analog.com/en/products/max6514.html">Analog Devices MAX6514 line of temperature switch chips</a>. A temperature switch is not a voltage converter, plus I have 8 pins here and a MAX6514 has just 5-pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second problem was the fact this module has a very tightly packed layout. The copper wiring on this circuit board are hard to see as they snake between tight gaps in components and underneath them in many cases. To trace through this module, I would have to somehow make copper paths show up clearly against non-copper areas of this circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39589,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-buck-converter-pcb-annoted-front.jpg?w=1024" alt="" class="wp-image-39589"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a consolation prize I have at least obtained some practical data points on this module by probing with a continuity meter to see which pads are connected. Aligned with the voltage select solder bridge pads are a row of resistors lined up with the potentiometer. These form half of the voltage divider providing feedback to the AELH chip. I also found the resistor acting as the bottom half of the voltage divider.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An earlier project using this module had problem <a href="https://newscrewdriver.com/2022/03/17/two-problems-controlling-buck-converter/" target="_blank" rel="noreferrer noopener">controlling the enable pin on this module</a> because it would be enabled by default via a pull-up resistor. When my microcontroller went to sleep I wanted the boost converter to be disabled as well, but the pull-up resistor foiled that plan. Not wanting to deal with tiny surface mount components at the time, I decided to wire in an external pull-down resistor to fight that pull-up resistor. In the future, if I have a similar need, I have now located the pull-up resistor I need to remove.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the moment, poor visual contrast of copper and its tight layout foiled my goal of tracing through this board to generate a schematic. As a change of pace, I took a break and went to <a href="https://newscrewdriver.com/2023/10/14/ai-generated-rovers-not-mechanically-sound-yet/">play with AI image generators</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

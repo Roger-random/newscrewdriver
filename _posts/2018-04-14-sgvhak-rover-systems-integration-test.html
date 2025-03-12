@@ -1,0 +1,52 @@
+---
+layout: post
+title: SGVHAK Rover Systems Integration Test
+date: 2018-04-14 22:11:08.000000000 +00:00
+type: post
+post_id: '15865'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  timeline_notification: '1523769071'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '16810829252'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/14/sgvhak-rover-systems-integration-test/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>It took some trudging through tedious nuts-and-bolts work (occasionally literally) before we got to our next milestone: the first system integration test.</p>
+<ol>
+<li>Structural - the rocker-bogie suspension system assembled and can accept all six wheels.</li>
+<li>Mechanical - All six wheel assemblies and all four steering assemblies ready to install on structure.</li>
+<li>Electrical - all five RoboClaw modules installed on the rover chassis, with wiring harnesses built to connect all motors to their respective RoboClaw.</li>
+<li>Communication - All five RoboClaw connected together into a single serial command network, connected to a USB-serial bridge that will talk to the brain. (Ubuntu PC, Raspberry Pi, MacBook, anything.)</li>
+<li>Software - Ready to talk to all five RoboClaw modules and sending commands for rover mobility.</li>
+</ol>
+<p>The integration test was intended to help expose problems, and it was very effectively at doing so! Some highlights:</p>
+<ol>
+<li>While all RoboClaw were correctly configured for advanced packet serial command and on the correct baud rate, they weren't all properly communicating because they haven't all be set into multi-unit mode. Toggling multi-unit mode is not something that we could do with buttons on the RoboClaw so we had to hook up the individual modules to update configuration.</li>
+<li>The RoboClaw motor encoder A/B are reversed between the two channels on the board, which resulted in some of our wheels running in opposite direction than the encoder expected. This meant reversing some of the motor drive power wires in order for the motor direction to agree with encoder direction.</li>
+<li>The control software responded to input events as fast as it could, which far outpaced the RoboClaw communication resulting in a backlog of commands. This backlog overflowed some communication queues causing crashes.
+<ol>
+<li>Long-term fix: The server needs to throttle event response. We settled on a maximum rate of an event once every 50ms.</li>
+<li>Short-term fix: Create an alternate UI that only sends one command at a time to avoid the crunch.</li>
+</ol>
+</li>
+</ol>
+<p>After we worked through the issues big and small, we could run the motors with the rover lying on its back. It won't be long before we'll be able to drive the rover on its own wheels.</p>
+<p><img class="alignnone size-full wp-image-15867" src="https://newscrewdriver.com/wp-content/uploads/2018/02/wheelsrolling.gif" alt="WheelsRolling" width="800" height="450"><br />
+</body></html></p>

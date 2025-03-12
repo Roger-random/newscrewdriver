@@ -1,0 +1,54 @@
+---
+layout: post
+title: Sawppy ESP32 HTML Control Project
+date: 2021-04-08 12:30:00.000000000 +00:00
+type: post
+post_id: '26026'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26021'
+  _oembed_52dbbd7ddff45925779f936fb70bbbc0: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Lack
+    of low speed torque hampers its rugged terrain ability, but can still climb an
+    obstacle roughly as tall as its wheel diameter.<br>The speed makes it feel less
+    &quot;scholarly study exploration&quot; and more &quot;curious puppy exploring&quot;
+    which I&#39;m OK with. <a href="https://t.co/vPgNy0FQYy">pic.twitter.com/vPgNy0FQYy</a></p>&mdash;
+    Sawppy (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1375229078257590272?ref_src=twsrc%5Etfw">March
+    25, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '56933690686'
+  timeline_notification: '1617910212'
+  _oembed_time_52dbbd7ddff45925779f936fb70bbbc0: '1617921262'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/08/sawppy-esp32-html-control-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Giving my little Sawppy rover <a href="https://newscrewdriver.com/2021/04/07/micro-sawppy-beta-3-running-with-spektrum-radio-control/">an interface with radio control equipment</a> was a fun project, but that capability was always going to be a side show and never my main attraction. One of the reasons I chose the ESP32 is because of its wireless networking capabilities, and I had always planned to use that instead of external radio gear. Eliminating that equipment is also critical on cost grounds, as my Spektrum DX3E transmitter and SR300 receiver combo itself cost more than my $100 USD target for rover parts cost. Today Spektrum offers lower-priced entry level models, but they're still going to cost money. By using ESP32 wireless capability directly, I hope to avoid that expense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So the next project is to give my ESP32-based Sawppy brain a HTML browser-based control scheme using ESP32's WiFi hardware. This will be similar to what <a rel="noreferrer noopener" href="https://github.com/Roger-random/SGVHAK_Rover" target="_blank">I created for SGVHAK rover</a> which has performed satisfactorily for several rover projects to date, including <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/blob/main/docs/SGVHAK%20Rover%20Software.md" target="_blank">Sawppy V1</a> and <a href="https://newscrewdriver.com/2021/01/09/micro-sawppy-beta-1-electronics/">Micro Sawppy Beta 1</a>. But while the concepts will be similar, I don't plan on using very much of the same code for two main reasons.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first reason is due to downscaled rover hardware. SGVHAK rover software ran on a Raspberry Pi and was <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/04/22/sgvhak-rover-control-with-flask-a-web-server/" target="_blank">written with a Python-based web framework called Flask</a>. This class of infrastructure will not be available on a microcontroller like the ESP32, which is far less powerful than a Raspberry Pi. So instead of using a web server platform that is built on dynamic server-side template transformations, I intend to create a system where the server only has to send out static files and leave script execution to the client's web browser. This follows <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/11/09/i-started-learning-jamstack-without-realizing-it/" target="_blank">the Jamstack philosophy</a> and I see this as a project for me to try implementing it firsthand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second reason is my target client platform. I want the client browser code to be very basic, because I didn't want to require an expensive recently-released phone. As part of keeping rover costs low, I wanted people to have the option of using their old out-of-date phones. My representative out-of-date device runs <a href="https://newscrewdriver.com/2021/04/09/windows-phone-8-as-sawppy-rover-controller/">Windows Phone 8</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

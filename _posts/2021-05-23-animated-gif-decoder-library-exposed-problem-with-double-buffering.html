@@ -1,0 +1,58 @@
+---
+layout: post
+title: Animated GIF Decoder Library Exposed Problem With Double Buffering
+date: 2021-05-23 12:30:00.000000000 +00:00
+type: post
+post_id: '26716'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26710'
+  _publicize_job_id: '58728523619'
+  timeline_notification: '1621798226'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/23/animated-gif-decoder-library-exposed-problem-with-double-buffering/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I resolved all the <a href="https://newscrewdriver.com/2021/05/22/til-some-video-equipment-support-both-pal-and-ntsc/">problems I knew existed in version 1.0.0</a> of my <code>ESP_8_BIT_composite</code> color video out Arduino library, I started looking around for usage scenarios that would unveil other problems. In that respect, I can declare my next effort a success.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My train of thought started with ease of use. Sure, I provided an adaptation of Adafruit's GFX library designed to make drawing graphics easy, but how could I make things even easier? What is the easiest way for someone to throw up a bit of colorful motion picture on screen to exercise my library? The answer came pretty quickly: I should demonstrate how to display an animated GIF on an old analog TV using my library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/11/01/hackaday-badge-nyan-cat-gif-or-not/" target="_blank">a question I've contemplated before</a> in the context of the Hackaday Supercon 2018 badge. Back then I decided against porting a GIF decoder and wrote my own run-length encoding instead. The primary reason was that I was short on time for that project and didn't want to risk losing time debugging an unfamiliar library. Now I have more time and can afford the time to debug problems porting an unfamiliar library to a new platform. In fact, since the intent was to expose problems in my library, I fully expected to do some debugging!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I looked around online for an animated GIF decoder library written in C or C++ code with the intent of being easily portable to microcontrollers. Bonus if it has already been ported to some sort of Arduino support. That search led me to the <a href="https://github.com/bitbank2/AnimatedGIF">AnimatedGIF library</a> by Larry Bank / bitbank2. The way it was structured made input easy: I don't have to fuss with file I/O or SPIFFS, I can feed it a byte array. The output was also well matched to my library, as the output callback renders the image one horizontal line at a time, a great match for the line array of <code>ESP_8_BIT</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking through the list of examples, I picked <code>ESP32_LEDMatrix_I2S</code> as the most promising starting point for my test. I modified the output call from the LED matrix I2S interface to my Adafruit GFX based interface, which <a href="https://github.com/Roger-random/AnimatedGIF_ESP32_example/commit/e2d01710b212d384e276cf0a2a179c29ddd4c57d">required only minor changes</a>. On my TV I can <em>almost </em>see a picture, but it is mostly gibberish. As the animation progressed, I can see deltas getting rendered, but they were not matching up with their background.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After chasing a few dead ends, the key insight was noticing my noisy background of uninitialized memory was flipping between two distinct values. That was my reminder I'm performing double-buffering, where I swap between front and back buffers for every frame. AnimatedGIF is efficient about writing only the pixels changed from one frame to the next, but double buffering meant each set of deltas was written over not the previous frame, but two frames prior. No wonder I ended up with gibberish.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>Aside: The gibberish amusingly worked in my favor for this title image. The AnimatedGIF example used a clip from The Simpsons, copyrighted material I wouldn't want to use here. But since the image is nearly unrecognizable when drawn with my bug, I can probably get away with it.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>The solution is to add code to keep the two buffers in sync. This way libraries minimizing drawing operations would be drawing against the background they expected instead of an outdated background. However, this would incur a memory copy operation which is a small performance penalty that would be wasted work for libraries that don't need it. After all of my previous efforts to keep API surface area small, I finally surrendered and <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/commit/79bd668b8eb80ecdee8157b47c62d4042c90a7e2" target="_blank">added a configuration flag <code>copyAfterSwap</code></a>. It defaults to false for fast performance, but setting it to true will enable the copy and allow using libraries like AnimatedGIF. It allowed me to run the AnimatedGIF example, but I ran into problems playing back other animated GIF files due to <a href="https://newscrewdriver.com/2021/05/24/finding-x-offset-bug-in-animatedgif-example/">missing X-coordinate offsets in that example code</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

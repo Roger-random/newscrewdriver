@@ -1,0 +1,33 @@
+---
+layout: post
+title: 'FreeNAS Plugin: Plex Media Server'
+date: 2017-07-20 09:00:42.000000000 +00:00
+type: post
+post_id: '8404'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7295676864'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/20/freenas-plugin-plex-media-server/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignleft size-medium wp-image-8410" src="https://newscrewdriver.com/wp-content/uploads/2017/07/plex-logo-e1446990678679.png?w=300" alt="plex-logo-e1446990678679" width="300" height="117">Once I had a few simple network file shares set up in <a href="http://www.freenas.org/">FreeNAS</a>, it was enough to do most of what I want in a home network storage device. For a fraction of the cost of a commercial solution like <a href="http://www.drobo.com/">Drobo</a>. Now we can start looking at the less critical fun stuff.</p>
+<p>Part of my home media collection stored on my NAS includes various video files that I've been carrying around. Most of them were standard-definition video files I recorded off of broadcast television programs. This was done at a time when most people would record to VHS tape. Only the super nerdy types record to computer video.</p>
+<p>So I had the files, but I didn't have a good way to play them straight off a file share. This is where something like <a href="https://www.plex.tv/">Plex </a>comes in. There's a server-side component that runs on my FreeNAS box, talking to client-side components for various devices. The web client could cast to a Google Chromecast, and the Amazon Fire TV stick has a Plex client app.</p>
+<p>For security isolation, FreeNAS runs plugins inside a "jail". This is a <a href="https://en.wikipedia.org/wiki/FreeBSD_jail">FreeBSD feature </a>that sounds a lot like a Docker container but isn't a Docker container. This isolation is good default security, but it does mean the Plex Media Server plugin could not see the rest of the FreeNAS box until the user specifies a way for the code inside the jail to see specifically allowed files outside of a jail. I could even specify the storage visibility to be read-only so there would be no accidental manipulation of my video files.</p>
+<p>Once I got past the FreeBSD jail mechanics, it was mostly smooth sailing. The only problem came from the large fraction of my files encoded in <a href="https://en.wikipedia.org/wiki/Windows_Media_Video">Windows Media Video</a> format, an old video format that Plex does not support. If I end up deciding I like the Plex experience, I will have to look into doing a bulk re-encode of these old video files.</body></html></p>

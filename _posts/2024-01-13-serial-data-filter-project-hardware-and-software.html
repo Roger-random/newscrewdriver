@@ -1,0 +1,49 @@
+---
+layout: post
+title: Serial Data Filter Project Hardware and Software
+date: 2024-01-13 12:30:00.000000000 +00:00
+type: post
+post_id: '41545'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41534'
+  firehose_sent: '1705177816'
+  wordads_ufa: s:wpcom-ufa-v4:1705265582
+  _publicize_job_id: '91062372921'
+  timeline_notification: '1705177818'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/13/serial-data-filter-project-hardware-and-software/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2024/01/12/going-diy-route-for-serial-data-filter-tool/">set out to make my own tool</a> to help me understand the communication between control panel and main board of a Canon Pixma MX340 multi-function inkjet. It will listen to that communication, filter out the known data, and alert me to activity that are unknown to me. I thought such a tool would already exist but I failed to find it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Trying to keep things simple, I will focus on just this MX340 teardown project instead of a general serial data filter/alert system. The entire project will be built along a similar "start with the easy thing first" approach. In terms of hardware, this project requires two asynchronous serial receive lines. Rather than build dedicated hardware, I'm going to use standard USB serial adapters. Each of them have a transmit and a receive line, so I'll use two of those commodity adapters and use the receive line on each.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For connecting to the MX340, I first thought I'd do what I did earlier for the Saleae logic analyzer and <a href="https://newscrewdriver.com/2023/12/27/canon-pixma-mx340-control-panel-meet-saleae-logic-8/" target="_blank" rel="noreferrer noopener">build my own wiring harness</a>. I wasn't thrilled with the thought of unsoldering some perfectly good connections just to swap to different wires, then I realized I had an even easier option: cut into the wiring harness I built and crimp on more connectors. This leaves existing soldering in place and I still preserve the ability to use the logic analyzer in parallel if I wanted to. I used generous amount of wire earlier so there's plenty of slack.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For software, I wanted to optimize my iteration time. This means I'm not using a microcontroller, to avoid a recompile and upload on every iteration. Staying on my computer, I don't even want to use a compiled language. I want something I can quickly experiment on an interactive command line and grow to short interpreted source code that's quick to edit and rerun. These preferences led me to Python and the <a href="https://pyserial.readthedocs.io/en/latest/pyserial.html">pySerial library</a>. I'll try that first and it seems to work well enough to <a href="https://newscrewdriver.com/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/">help me gain further insight</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

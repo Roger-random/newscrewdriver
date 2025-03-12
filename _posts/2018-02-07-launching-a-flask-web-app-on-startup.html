@@ -1,0 +1,35 @@
+---
+layout: post
+title: Launching a Flask Web App on Startup
+date: 2018-02-07 17:40:19.000000000 +00:00
+type: post
+post_id: '15844'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1518054022'
+  _publicize_job_id: '14503982402'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/02/07/launching-a-flask-web-app-on-startup/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-15842 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/02/flask.png" alt="flask" width="180" height="161">The first few experiments with <a href="http://flask.pocoo.org/">Flask</a> has been successful. A simple user interface can be created in HTML and accessed from local as well as remote clients over HTTP. One of the downsides bit us today: a web app isn't as easy to launch as a native local application. When running locally, we still need to get two parts up and running: the server-side code and the web browser pointing to <code>http://localhost</code>.</p>
+<p><img class=" size-thumbnail wp-image-5172 alignright" src="https://newscrewdriver.com/wp-content/uploads/2017/05/raspberry-pi-logo.png?w=127" alt="raspberry-pi-logo" width="127" height="150">This is especially problematic when the desire is to launch the app on power-up of the Raspberry Pi 3 that will run the server side. "Run on startup" is one of those tasks that have many different approaches across different flavors of Linux. Each with their advantages and disadvantages, benefits and gotchas.</p>
+<p>The first attempt is to write a shell script that launches the Flask web server and the Chromium web browser. This works when executed interactively at the command line logged in as the default user <code>pi</code>. But it didn't work when executed as a <a href="https://en.wikipedia.org/wiki/Cron"><code>cron</code></a> <code>@reboot</code> job, probably something to do with the fact it would run as <code>root</code>.</p>
+<p>The next effort led to <a href="https://www.raspberrypi.org/documentation/linux/usage/rc-local.md">Raspberry Pi documentation</a>, which pointed to the file <code>/etc/rc.local</code>. We seem to have better luck here - the Flask web server does launch but Chromium web browser still did not.</p>
+<p>Further hunting eventually <a href="https://raspberrypi.stackexchange.com/questions/40631/setting-up-a-kiosk-with-chromium">found this page</a> for setting up a Raspberry Pi running Chromium web browser as a web kiosk. Not quite the project at hand, but close enough for the answer to be applicable. This meant leaving Flask startup in <code>/etc/rc.local</code> and editing the file <code>/home/pi/.config/lxsession/LXDE-pi/autostart</code> to have it launch chromium-browser with the parameter <code>--kiosk http://localhost:5000/</code></p>
+<p>Upon power-up, this Pi will now launch Flask web server and Chromium web browser to point at that server running on the same device. It works, but it's not clear why these hoops were necessary. It's pretty bewildering for a beginner to try to understand the <em>why</em> behind all these different startup mechanisms. A few hours of reading (sometimes contradictory) documentation did not make the situation any more clear. Sadly, time constraints dictate that we can't get to the bottom of this issue today. Perhaps later.</body></html></p>

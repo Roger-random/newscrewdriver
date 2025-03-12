@@ -1,0 +1,52 @@
+---
+layout: post
+title: Jumper Wire Between Adapter And Pi Pico Skips Breadboard
+date: 2024-06-28 12:30:00.000000000 +00:00
+type: post
+post_id: '43973'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43974'
+  timeline_notification: '1719603009'
+  firehose_sent: '1719603007'
+  wordads_ufa: u:wpcom-ufa-v4:1719690957
+  _publicize_job_id: '95816641834'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-29 19:57:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/28/jumper-wire-between-adapter-and-pi-pico-skips-breadboard/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I bought a FPC (flexible printed circuit) to DIP (dual in-line pins) adapter so I could explore the electrical behavior of a keyboard module I salvaged from a dead Acer Aspire Switch 10. After <a href="https://newscrewdriver.com/2024/06/27/proto-advantage-fpc-connector-dip-adapter-fpc080p030/">assembling the adapter</a>, I realized I my original plan would not work. I had thought I could stick it on a breadboard and start with probing its pins with a multimeter and, with information from that probe, use jumper wires to build a test circuit. The first part won't work because the adapter was designed so its DIP-sde pins were fully underneath without any part poking up above for my probe to touch. The second part won't work because when the keyboard module FPC is installed, the cable blocks almost the entire left side. There's enough room underneath if I want to use wires that travel horizontally, but not for the tall vertical ends of the quick test jumpers I had wanted to use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Researching my options for plan B, I actually found a better way. My plan A of manually probing with a multimeter to determine keyboard matrix would have been a tedious process. I would have to try all combinations of pins and see which pair corresponded to each key. Tedious repetitious processes calls for automation! In this case, I found Adafruit had published a CircuitPython sketch (<a href="https://learn.adafruit.com/commodore-keyboard-to-usb-hid-with-circuitpython/key-matrix-whisperer">Key Matrix Whisperer</a>) that would automatically cycle through all combinations of pins looking for continuity as I press individual keys. Wow, this sounds much easier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To use the Key Matrix Whisperer I would need to wire up my keyboard adapter to a CircuitPython microcontroller. I was going to use the Adafruit KB2040 I had been using for CircuitPython experimentation, because the "<a href="https://www.adafruit.com/product/5302">Kee Boar</a>" was originally designed for the scenario of building custom keyboards. Unfortunately <a href="https://learn.adafruit.com/adafruit-kb2040/overview">it had only 20 accessible IO pins</a> and I needed 24 here. So I pulled out my Raspberry Pi Pico with its 26 accessible pins already soldered with header pins. The new connection solution is to skip the breadboard and build a wiring bundle to directly connect adapter board to Pi Pico.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43979,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/jumper-wire-bundle-connecting-proto-advantage-fpc080p030-to-raspberry-pi-pico.jpg?w=800" alt="" class="wp-image-43979"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These <a href="https://amzn.to/3VLENM2">jumper wires</a> (*) came with individual 0.1" pitch connectors. (I've seen these connectors listed as Dupont connectors, which is far too generic of a name.) While I could connect directly one-by-one, that implied a nightmare of single wires popping loose and having to figure out where they should go back to. In the interest of keeping things better organized, I popped off most of those single connectors and <a href="https://amzn.to/4cp9zS7">slotted them into longer connectors</a>. (*) (The specific box I bought also called the connector type as JST-SM, except they are <a href="https://www.jst.com/wp-content/uploads/2021/03/eSM.pdf">very clearly NOT JST-SM</a>.) This only took a few extra minutes and I felt holding things together more securely was a good time investment. I don't want to worry about loose connections as <a href="https://newscrewdriver.com/2024/06/29/acer-aspire-switch-10-keyboard-matrix/">I decipher this keyboard matrix</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,37 @@
+---
+layout: post
+title: Death Clock Code Organization
+date: 2019-06-22 12:30:58.000000000 +00:00
+type: post
+post_id: '18719'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Death Clock
+- VFD
+meta:
+  _thumbnail_id: '18702'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32090129102'
+  timeline_notification: '1561231881'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/22/death-clock-code-organization/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When we established our <a href="https://newscrewdriver.com/2019/06/15/death-clock-display-states/">set of display states</a> for the Death Clock project, we knew there would need to be a state machine somewhere in its logic to manage those display states. And when we designated <a href="https://newscrewdriver.com/2019/06/19/display-zones-of-vacuum-fluorescent-display/">different zones that can be composited together</a> for a single frame in our display animation, we knew there would need to be some kind of animation engine in charge of corresponding work. These requirements formed our starting point for designing and organizing code for Death Clock.</p>
+<p>The state machine was implemented as an infinite loop running an <code>if/elif/else</code> loop checking for our state value. Each clause corresponds to a display state and has (1) calls to code handling that display and (2) conditions to transition to another state. The state machine resides in a single class <code>deathclock</code> which also owns the reference to Pi GPIO library for display. It may make sense to split the I2C communication to another class but there's no need to do so just yet.</p>
+<p>Different display states require different operations to assemble their animation frame. An attempt to create a master animation engine capable of all operations became unnecessarily complex and was eventually abandoned. Instead, we'll have multiple classes (<code>nyancat</code>, <code>thinkingface</code>, and <code>deathtime</code>) each of which will stay focused on the type of operations required for a single display state. This keeps the simple animations simple, and allows us to experiment with more complex animations without fear of damaging unrelated display states. This will result in some code duplication that we can come back to refactor later, but keeping each display state animation code separate lets us iterate ideas faster.</p>
+<p>Code discussed in this blog post is <a href="https://github.com/Roger-random/vfd_on_pic/blob/master/pi_test/deathclock.py">available on Github</a>.</p>
+<p></body></html></p>

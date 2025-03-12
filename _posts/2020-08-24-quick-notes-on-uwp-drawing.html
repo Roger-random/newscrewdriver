@@ -1,0 +1,52 @@
+---
+layout: post
+title: Quick Notes on UWP Drawing
+date: 2020-08-24 12:30:00.000000000 +00:00
+type: post
+post_id: '21741'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- UWP
+meta:
+  _thumbnail_id: '21744'
+  _publicize_job_id: '48076007149'
+  timeline_notification: '1598297445'
+  _oembed_a4f41db472d3cc0e7c60d21c19985acf: "{{unknown}}"
+  _oembed_d645bf3615b4fb377dbc0bc135cfdda6: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/24/quick-notes-on-uwp-drawing/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Because I wanted to handle keyboard events, I <a href="https://newscrewdriver.com/2020/08/23/user-interface-taking-control/">created an UserControl that packages the CaptureElement displaying the camera preview</a>. Doing this allowed an easy solution to another problem I foresaw but didn't immediately know how to solve: How do I draw reference marks over the camera preview? I'd definitely need something to mark the center, and maybe additional marks for horizontal/vertical alignment and if I'm ambitious, an on screen ruler to measure distance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With an UserControl, drawing these things became trivial: I can include graphical drawing elements as a peer of CaptureElement in my UserControl template, and we are off to the races.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Or so I thought. It is more accurate to say I was off to an entirely different set of problems. The first was making marks legible regardless of camera image. That means I can't just use a bright color, because that would blend in on a bright background. Likewise, a dark color would be lost in a dark background. What I need is a combination of high contrast colors to ensure they are visible independent of background characteristics. I had thought: easy! Draw two shapes with different stroke thickness. I first draw a rectangle with a thicker stroke, like this blue rectangle:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":21745} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2020/06/strokethickness24.jpg" alt="StrokeThickness24" class="wp-image-21745"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then drew a yellow rectangle with half the stroke thickness, expecting it to sit in the center of the blue stroke. But it didn't! The yellow covered the outer half leaving the inner half, instead of my expectation of a yellow line with blue on either side. But even though this was unexpected, it was still acceptable because that gave me the contrasting colors I wanted.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":21744} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2020/06/strokethickness24and12.jpg" alt="StrokeThickness24and12" class="wp-image-21744"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This only barely scratches the surface of UWP drawing capability, but I have what I need for today. I've spent far too much time on UWP keyboard navigation and I'm eager to move forward to make more progress. Drawing a single screen element is fun, but to be useful they need to coexist with other elements, which means <a href="https://newscrewdriver.com/2020/08/25/quick-notes-on-uwp-layout/">layout comes into the picture</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

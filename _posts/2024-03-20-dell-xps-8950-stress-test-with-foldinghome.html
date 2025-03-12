@@ -1,0 +1,51 @@
+---
+layout: post
+title: Dell XPS 8950 Stress Test with Folding@Home
+date: 2024-03-20 12:30:00.000000000 +00:00
+type: post
+post_id: '42608'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37171'
+  firehose_sent: '1710963040'
+  _publicize_job_id: '92888681701'
+  timeline_notification: '1710963041'
+  wordads_ufa: s:wpcom-ufa-v4:1710963344
+  _elasticsearch_data_sharing_indexed_on: '2024-03-20 19:35:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/03/20/dell-xps-8950-stress-test-with-foldinghome/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had another lengthy saga running In parallel with <a href="https://newscrewdriver.com/2024/03/19/canon-pixma-mx340-teardown-index/">my lengthy Canon Pixma MX340 teardown</a>. The <a href="https://newscrewdriver.com/2023/06/14/dell-xps-8950-with-rtx-3080-and-i7-12700/">Dell XPS 8950 I bought primarily for SteamVR with my Valve Index</a> began exhibiting <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-code-reference2">bug checks</a> on an irregular basis. This is not good. I paid a premium over similar-spec computers on the expectation that a XPS would be more reliable and, failing that, Dell is more likely to fix things that go wrong. Well, the first part turned out to be wrong. Thankfully the second part was eventually tested to be true, but it took some work to get there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thing I needed was a better way to reproduce the issue. I want to collect many bug check memory dumps to compare them against each other, and I needed a way to verify the problem has been resolved or not. Since I bought this computer mainly for SteamVR, the bug check usually happens while I'm in the middle of a VR session. It spoiled a few <em>Beat Saber</em> songs and abruptly ended firefights with Combine soldiers in <em>Half Life: Alyx</em>, but not every VR session triggered the problem and I wasn't going to just stay in VR until it occurred.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found hardware tests in Dell's SupportAssist tool (more on SupportAssist in a future post) and ran those. My computer passed the tests with no errors. I looked for a way to run these tests in a loop but didn't find a way to do so.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried just leaving the computer on and running, but not doing anything in particular. After a week, I got two bug checks. This is better than unpredictable crashes in VR sessions, but waiting 3-4 days between reproducing a failure is still not great.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I increased system workload by installing and running <a href="https://foldingathome.org/">Folding@Home</a>. It kept the GPU busy but CPU utilization would drop off after a few minutes. I eventually figured out Windows 11 detected a long-running compute process and decided to <a href="https://foldingforum.org/viewtopic.php?t=37720">restrict Folding@Home to the four power-efficient E-Cores on my i7-12700 CPU</a>. Gah, foiled! I worked around this by disabling the E-Cores in system BIOS. (Where they were called Atom Cores.) With E-Cores out of the picture, CPU utilization stays at 100% with all eight hyper-threaded P-cores running at full blast.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I would rather have a procedure to consistently and immediately reproduce the crash but I never found one. Running Folding@Home the bug check would usually occur within 12-24 hours and this was the best I've got. Over the course of about two weeks, Folding@Home helped me generate a decently sized collection of bug check crash memory dumps to examine.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

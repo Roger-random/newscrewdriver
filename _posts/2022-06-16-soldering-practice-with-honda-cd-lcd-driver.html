@@ -1,0 +1,69 @@
+---
+layout: post
+title: Soldering Practice with Honda CD LCD Driver
+date: 2022-06-16 12:30:00.000000000 +00:00
+type: post
+post_id: '30860'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+- LC75883
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30822'
+  _publicize_job_id: '73732143387'
+  timeline_notification: '1655407826'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/16/soldering-practice-with-honda-cd-lcd-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Looking over the <a href="https://newscrewdriver.com/2022/06/15/honda-cd-circuit-board/">control circuit board for a Honda in-dash CD player</a>, I saw an LCD driver chip which is a close cousin of one I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/" target="_blank">worked with earlier</a> in a Toyota tape deck. Even though I've never seen this CD control LCD run, and lacking the parts to reassemble the CD player, I think I have a chance to get it running just based on a datasheet and my recent experience. I do have a few obstacles I'd need to resolve first, though.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30864,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-controller-0.5mm-pitch-1.jpg?w=1024" alt="" class="wp-image-30864"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first is that this section of the circuit board is coated in a conformal coating that prevents me from making electrical contact. It is also slightly sticky, which made it hard to work in this area. Every action adds debris stuck to this coating. Trying to wipe them off made things worse, as the coating grabbed fibers from my cleaning cloth.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I first tried isopropyl alcohol, which I understood to be the default cleaning solvent for electronics. I had hoped it would dissolve the blue coating but I saw no effect. I have a collection of household cleaning solvents harsher than isopropyl alcohol, but I don't know which of them would damage electronics. Abandoning chemistry, I turned to heat: I put a small blob of solder on the tip of my soldering iron and touched it to the pins, hoping it will melt through the coating. The good news is that it did, the bad news is that it immediately heated the pins and existing solder and everything blended together into a bridge that connected all the pins I cared about plus many more that I did not. This was because of my second obstacle: these pins has very fine pitch. Datasheet says this SQFP80 package has 0.5mm pitch, which is far denser than the 0.1" (~2.54mm) pitch I usually work with.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30888,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/sanyo-lc75883-footprint.png?w=948" alt="" class="wp-image-30888"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My attention was focused on the following pins:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>70: V<sub>DD</sub> +5V power supply</li>
+<li>73: V<sub>SS</sub> ground</li>
+<li>77: DO Data Out</li>
+<li>78: CE Chip Enable</li>
+<li>79: CL Clock</li>
+<li>80: DI Data In</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>And now I have a large solder blob that gave electrical continuity across all of them. Gah! Unpracticed at this scale, it took me over an hour to get the situation back into some semblance of control. Solder sucker took care of the major blobs, de-soldering braid took care of smaller portions, and a hot air gun melted off lingering whiskers. It was a disaster zone but I'll be optimistic and call it practice. I still see signs of extraneous solder on the surface, and no guarantee there aren't any hiding where I can't see them. On top of that, all the heat to clean up the solder mess may have damaged the chip. Still, I had nothing to lose but time and everything to gain, so I proceeded.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30865,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-controller-single-wire-soldered-1.jpg?w=1024" alt="" class="wp-image-30865"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I took the finest, smallest gauge wire I had on hand and soldered the first one to pin 80 DI (Data In.) And clearly this is not going to work: the wire is far too fat. But at least the conformal coating has been removed from these pins. So even if I can't solder directly to these pins, I can use my meter to <a href="https://newscrewdriver.com/2022/06/17/preliminary-pinout-for-honda-cd/">probe for another way</a> to connect.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

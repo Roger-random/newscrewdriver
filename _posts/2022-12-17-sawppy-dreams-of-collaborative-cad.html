@@ -1,0 +1,116 @@
+---
+layout: post
+title: Sawppy Dreams of Collaborative CAD
+date: 2022-12-17 14:55:01.000000000 +00:00
+type: post
+post_id: '34214'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Ideas
+- Sawppy the Rover
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '19829'
+  _publicize_job_id: '79736586628'
+  timeline_notification: '1671317705'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689390108
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/17/sawppy-dreams-of-collaborative-cad/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph {"placeholder":"What cities do you want to visit?"} --><html><body></p>
+<p>While putting together my presentation for the <a href="https://newscrewdriver.com/2022/12/14/sawppy-at-space-themed-episode-of-hangout-nerdout/">Space episode of Hangout and Nerdout</a>, it occurred to me that I would be presenting Sawppy to an audience with a wide variety of backgrounds and would know many things I did not. Towards the end of the deck, I put in a slide asking for pointers to collaborative CAD tools. During the presentation I ended up skipping that slide because I got too excited blabbing about Sawppy and went over my 10 minute time limit. Fortunately, I had an opportunity to bring it up again during the Q&amp;A afterwards when I was asked about user contributions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reality is that right now it that I don't have an easy workflow for accepting contributions. I've been able to accept a few contributions in the form of edits for Sawppy assembly documentation. Two years ago, <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/11/02/sawppy-documentation-could-be-better/" target="_blank">I wrote a series of blog posts</a> about what I'd like to have in Sawppy documentation workflow. I posed my wish list to the audience of a <a href="https://www.writethedocs.org/" target="_blank" rel="noreferrer noopener">Write the Docs</a> <a href="https://www.meetup.com/Write-the-Docs-LA" target="_blank" rel="noreferrer noopener">LA meetup</a>, and they were helpful in pointers to things I could investigate, but I never got as far as putting anything into practice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And that was just for written word documentation. Accepting contributions in the form of CAD updates is a whole other ball of wax. Sawppy was designed in Onshape, a powerful web-based CAD system marketed to SolidWorks CAD professionals. I was entranced by the possibility that even $200 Chromebooks can be full power CAD workstations. Onshape has always had a free tier for makers, but that free tier is not their business focus and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/12/30/onshape-is-free-for-makers-but-theyre-less-eager-to-say-so-now/" target="_blank">would occasionally disappear from Onshape website</a>. As of this writing, Onshape <a rel="noreferrer noopener" href="https://www.onshape.com/en/pricing" target="_blank">free tier is back on their product list</a> but that could change again in the future. When I started Sawppy, Onshape was a startup. They have since been <a rel="noreferrer noopener" href="https://www.ptc.com/en/news/2019/ptc-completes-acquisition-onshape" target="_blank">acquired by PTC</a> and free tier has a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/19/heroku-free-rides-are-over/" target="_blank">history of disappearing</a> after startups are acquired.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even if free Onshape tier remains available, it will always be limited to a subset of professional tier functionality. Which is unfortunate, because some of that would be useful for Sawppy to become a community-developed project. (To be clear, this is not limited to Onshape. Other products like Autodesk Fusion 360 similarly restrict their free tier capabilities.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sawppy dreams of a free CAD workflow with the following collaborative capabilities:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<strong>Tweak</strong>: Let people make minor changes without commitment of setting up and learning a full CAD workflow. For Sawppy, it would be very useful to make small adjustment to diameter of holes intended for heat-set inserts. Alex Glow brought up Thingiverse's Customizer tool, which is an implementation of this concept but <a rel="noreferrer noopener" href="https://customizer.makerbot.com/docs" target="_blank">only applicable to objects designed in OpenSCAD</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>Branch</strong>: Git style capability to create branches and merge changes back to main branch. (*)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>Fork</strong>: GitHub style capability to let anyone fork a repository, make their changes, and create a pull request to propose merging their changes back to the original repository.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>Diff</strong>: To evaluate those merges, we'd need to be able to visually compare the difference. CAD interchange formats like IGES and STEP use text files that would work within Git, but they are not designed to be human-readable. I would not be able to visualize the physical difference by looking at text changes in those file formats. Code-based CAD solutions like OpenSCAD are better in this regard, but it would be ideal to have a 3D view to compare changes. (*)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>Review</strong>: Building on the previous bullet, we'd need to be able to annotate that view in order to have discussion before accepting a merge. Comments like "Why was this part lengthened?" or "Please change this fastener to M3x10mm." This process would be analogous to a <a rel="noreferrer noopener" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews" target="_blank">GitHub code review</a>. Jinger Zeng brought up <a rel="noreferrer noopener" href="https://wikifactory.com/cad-rooms/" target="_blank">Wikifactory's CAD Rooms</a> capability, which at first glance looks very promising and worth further investigation.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>Verify</strong>: automated software tests can be a part of verifying a pull request's code changes. I don't know if this concept has migrated to the professional CAD world. I would love to have automated checks to find problems without actually printing and building a rover.<!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>I want to know if multiple physical parts are occupying the same space. (I think this is called "clash analysis" in professional CAD.)  At a basic level it'll check just the parts as they sit (and that alone would be valuable) but it'd also be nice to check for mechanical interference through entire range of motion of all joints.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Physical simulation to verify nothing has disconnected or hovering unsupported in space.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Mechanical simulation to verify all parts are still thick enough to support their intended loads.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Many more ideas! My imagination can run pretty far in this direction.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list -->
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>Document</strong>: And looping back to the earlier series about written documentation, CAD changes could require updating documentation to ensure information does not go stale and out of sync. For Sawppy documentation right now I have to remember to make updates manually. This is an error-prone process that has caused headaches for other rover builders as they read instructions that made no sense because I only remembered to update one place and forgot another. Computers should be able to help with the following tasks:<!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Update the construction BOM (Bill of Materials) to reflect CAD changes. (*)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Update illustrative figures in documentation by generating new CAD renderings.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Flag associated text for "is this still accurate" manual review to ensure they are not overlooked.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list -->
+</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't expect Onshape, Fusion 360, etc. to make this level of functionality freely available to makers. At this point my best hope is to find like-minded people who have done this kind of work in the open-source world. Failing that, I would have to learn an open-source CAD tool like FreeCAD and try to extend it. This will be a huge project far bigger than Sawppy itself!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>(*) This exists in professional tier of Onshape, but not at the free tier.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

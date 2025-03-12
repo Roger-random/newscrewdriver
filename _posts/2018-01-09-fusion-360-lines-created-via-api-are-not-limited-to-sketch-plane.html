@@ -1,0 +1,34 @@
+---
+layout: post
+title: Fusion 360 Lines Created Via API Are Not Limited To Sketch Plane
+date: 2018-01-09 09:00:18.000000000 +00:00
+type: post
+post_id: '15737'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Fusion 360
+- Python
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '13396499935'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/01/09/fusion-360-lines-created-via-api-are-not-limited-to-sketch-plane/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignnone size-full wp-image-15738" src="https://newscrewdriver.com/wp-content/uploads/2018/01/cube-on-sketch.jpg" alt="Cube on Sketch" width="1178" height="537"></p>
+<p>Today's performance tip helps avoid creating unnecessary planes and sketches when creating objects using the Fusion 360 API. First, some background: when sketching lines in Fusion 360 must be done in the context of a sketch object. This sketch object is in turn created to be aligned with a plane. It may be one of the default planes that intersect the origin (XZ plane, XY plane, or YZ plane) or a construction plane.</p>
+<p>When sketching with the interactive UI, the user's sketch entities are constrained to the plane of the sketch. For example, if a sketch was created on the XY plane, then all sketch entities would have a Z coordinate of zero. This makes sense to keep the data organized and easy to understand by the human looking at a 2D computer monitor.</p>
+<p>When creating entities with the API, though, they are apparently not constrained. The first clue came from looking at the <a href="https://help.autodesk.com/view/fusion360/ENU/?guid=GUID-d951811b-886d-4712-b9e9-3edd0069b44e"><code>SketchLines.addByTwoPoints</code> API</a> - its two parameters are Point3D objects. A little experimentation confirmed the API would gladly accept 3D coordinates that lie outside the sketch plane. The example screenshot on this page is the result of drawing an one-centimeter cube on a sketch aligned to the XY plane. Only four of the eight corners (and four of the 12 edges) lie on the plane, but the API happily accepted all the information for a 3D cube.</p>
+<p>This is very useful when creating geometries via code. Humans need to see points on a sketch stay in a plane for them to be workable on a 2D monitor screen, otherwise things get too confusing. But code doesn't care about appearance on a screen. So go ahead - let code create complex 3D entities on a single sketch. Skipping the unnecessary planes and sketches will generate fewer API objects. Reducing object management overhead and allowing faster performance.</body></html></p>

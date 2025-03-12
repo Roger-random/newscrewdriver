@@ -1,0 +1,51 @@
+---
+layout: post
+title: Potential Explanations for MP1584 Behavior
+date: 2022-03-05 12:30:00.000000000 +00:00
+type: post
+post_id: '28854'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28840'
+  _publicize_job_id: '69802213268'
+  timeline_notification: '1646512212'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/05/potential-explanations-for-mp1584-behavior/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I thought I could modify a MP1584 buck converter so that it would start up and shut down appropriately depending on whether its input voltage from a solar panel is enough to deliver 3.3V output. It destroyed my circuit instead and <a href="https://newscrewdriver.com/2022/03/04/putting-modified-mp1584-under-oscilloscope/">I could see what happened</a> under an oscilloscope: when input voltage is close to the on/off transition point, output voltage is a sawtooth pattern with overshoot peak far above 3.3V. Why might this be happening? I can think of a few possible explanations:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>When replacing resistors for the voltage divider, I had damaged a part of the circuit critical to proper voltage feedback and regulation. I think this is very likely.</li>
+<li>Before I learned MP1584 enable voltage, I was giving it voltage that would trigger the default enable circuit (at 3V) which was lower than the target voltage (3.3V) and this damaged the chip. I think this is also fairly likely. Based on my reading of the MP1584 datasheet, it was not designed for variable-output adjustment with a potentiometer as is done on this board. There is an implicit assumption that the application engineer knows to make sure enable voltage is higher than target voltage and avoid this situation.</li>
+<li>On some boost converters, voltage overshoots are expected in low-load conditions. I regard this possibility as unlikely, since MP1584 datasheet was very proud at how it can automatically adjust to handle low loads. I found no mention of a minimum load required for proper operation.</li>
+<li>This is normal behavior for MP1584 close to enable on/off threshold. This is wrong for genuine MP1584, but if this chip was a knockoff (always a possibility when buying over internet from lowest bidder) then perhaps the knockoff chip has bad transitory behavior assuming few buyers would notice.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know which explanation is correct, and right now I'm not terribly interested in risking additional components to test these hypotheses. But I plan to do the following which should mitigate all of the above:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Never use this specific modified module again.</li>
+<li>In the future, avoid enabling MP1584 when input voltage is lower than output voltage.</li>
+<li>The MP1584 module has a small surface-mount capacitor across both its input and output. For additional buffering, I will <a href="https://newscrewdriver.com/2022/03/06/mp1584-modification-version-2/">add larger capacitors to both sides</a> for additional buffering.</li>
+</ol>
+<p><!-- /wp:list --><br />
+</body></html></p>

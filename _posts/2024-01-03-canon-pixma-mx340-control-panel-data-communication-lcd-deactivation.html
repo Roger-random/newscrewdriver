@@ -1,0 +1,66 @@
+---
+layout: post
+title: 'Canon Pixma MX340 Control Panel Data Communication: LCD Deactivation'
+date: 2024-01-03 12:30:00.000000000 +00:00
+type: post
+post_id: '41409'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  firehose_sent: '1704313844'
+  _publicize_job_id: '90791639558'
+  timeline_notification: '1704313846'
+  wordads_ufa: s:wpcom-ufa-v4:1704446461
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been examining the internal communication of a Canon Pixma MX340 multi-function inkjet, between its main board and its control panel. After examining what happens <a href="https://newscrewdriver.com/2024/01/02/canon-pixma-mx340-control-panel-data-communication-stand-by/">when the system goes into standby</a>, I have one more trace from my initial batch of captures: a relatively simple "screen saver" mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the system is brought out of stand by and turned on, it will wait for the user to do something. If no user actions are taken, a few things happen. After just a few seconds of inactivity, it does something mechanical with the print carriage. It's on my to-do list to better understand that later. A few minutes after that, the LCD screen goes blank. This is different from a full system standby, because the rest of the printer remains powered on. (The power LED and WiFi LEDs are still glowing, for example.) I wanted to catch this transition and see if there are any similarities to the full standby sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When the LCD went blank, my logic analyzer captured a single two-byte sequence 0x04 0x75. This was very short! And very good news, because that left no ambiguity. 0x04 0x75 was indeed part of the system standby sequence, and now I have definitive proof it is a "go to sleep" command.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the screen deactivated, I pressed a button and saw the button matrix reporting value change. Approximately 40ms after the report with new value, I saw 0x04 0xF5. 4.5ms after that, I see the LCD screen update data burst pattern. Looks like 0x04 0xF5 is a "wake up" command. Going back to review the system power-up sequence, I see 0x04 0xF5 was sent <em>after </em>the first LCD screen update pattern. At first I was disappointed because it contradicted the "wake up" observation, but then I remembered the first LCD screen update only lasted about 100ms before the second burst of screen data. Too short to represent data expected to be seen by the user. I had hypothesized that first update cleared the screen and this observation actually supports rather than contradicts the hypothesis: it makes sense for the system to send data to clear the screen, <em>then </em>wake up the screen for display. Ensuring the user is never presented with a screen filled with random uninitialized bits in memory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Summary</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>0x04 0x75 = stop displaying frame buffer data on screen</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04 0xF5 = begin displaying frame buffer data on screen</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's still tentative and a tiny fraction of all the commands streaming across this channel, but I'm pretty happy I managed to decipher this much. It exceeded my expectation when I started this teardown project. I'm learning as I go! The next step will be to figure out what tools will help me gain further insight into this data, and <a href="https://newscrewdriver.com/2024/01/04/window-shopping-custom-saleae-high-level-analyzer-extension/">I don't think a custom Saleae Logic extension will help here</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,72 @@
+---
+layout: post
+title: First Test with Adafruit SSD1305 Library
+date: 2022-09-21 12:30:00.000000000 +00:00
+type: post
+post_id: '32663'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags:
+- ESP32
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32694'
+  _publicize_job_id: '76960604864'
+  timeline_notification: '1663788609'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/21/first-test-with-adafruit-ssd1305-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I feel I now <a href="https://newscrewdriver.com/2022/09/20/formlabs-form-1-oled-screen-updates/">have a good grasp</a> on how I would repurpose the OLED dot matrix display from a broken FormLabs Form 1+ laser resin 3D printer. I felt I could have figured out enough to play back commands captured by my logic analyzer, interspersed with my own data, similar to <a href="https://newscrewdriver.com/2022/06/01/examining-control-data-for-lcd-at-i2c-address-0x3e/" target="_blank" rel="noreferrer noopener">how I controlled a salvaged I2C LCD</a>. But this exploration was much easier because a user on FormLabs forums <a href="https://newscrewdriver.com/2022/09/15/formlabs-form-1-display-board-rev-01/" target="_blank" rel="noreferrer noopener">recognized the SSD1305-based display module</a>. Thanks to that information, I had a datasheet to <a href="https://newscrewdriver.com/2022/09/19/formlabs-form-1-oled-control-consistent-with-ssd1305/" target="_blank" rel="noreferrer noopener">decipher the commands</a>, and I could go searching to see if anyone has written code to interface with a SSD1305. Adafruit, because they are awesome, <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/libraries/adafruit-ssd1305/" target="_blank">published an Arduino library to do exactly that</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Adafruit's library was written to support several of their products that used an SSD1305, including <a rel="noreferrer noopener" href="https://www.adafruit.com/product/2675" target="_blank">product #2675 <em>Monochrome 2.3" 128x32 OLED Graphic Display Module Kit</em></a> which looks very similar to the display in a Form 1+ except not on a FormLabs custom circuit board. Adafruit's board has 20 pins in a single row, much like <a rel="noreferrer noopener" href="https://newhavendisplay.com/2-23-inch-blue-graphic-oled-module/" target="_blank">the Newhaven Display board</a> but visibly more compact. Adafruit added level shifters for 5V microcontroller compatibility as well as an extra 220uF capacitor to help buffer power consumption.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the FormLabs custom board lacked such luxuries, I need to use a 3.3V Arduino-compatible microcontroller. The most convenient module at hand (because it was used in my <a href="https://newscrewdriver.com/2022/09/04/migrating-fan-strobe-led-project-to-esp32/" target="_blank" rel="noreferrer noopener">most recent project</a>) happened to be an ESP32. The <code>ssd1305test</code> example sketch of Adafruit's library compiled and uploaded successfully but threw the ESP32 into a reset loop. I changed the Arduino IDE Serial Monitor baud rate to 115200 and saw this error message repeating endlessly every few seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>ets Jun  8 2016 00:22:57
+
+rst:0x8 (TG1WDT_SYS_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:1
+load:0x3fff0030,len:1344
+load:0x40078000,len:13516
+load:0x40080400,len:3604
+entry 0x400805f0
+SSD1305 OLED test</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three letters jumped out at me: WDT, the watchdog timer. Something in this example sketch is taking too long to do its thing, causing the system to believe it has locked up and needs a reset to recover. One unusual aspect of <code>ssd1305test</code> code is that all work live in <code>setup()</code> leaving an empty <code>loop()</code>. As an experiment, I moved majority of code to <code>loop()</code>, but that didn't fix the problem. Something else is wrong but it'll take more debugging.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To see if it's the code or if it is the hardware, I pulled out a different 3.3V microcontroller: an <a rel="noreferrer noopener" href="https://docs.arduino.cc/hardware/nano-33-ble-sense" target="_blank">Arduino Nano 33 BLE Sense</a>. I chose this hardware because its default SPI communication pins are those already used in the sample sketch, making me optimistic it is a more suitable piece of hardware. The sketch ran without triggering its watchdog dimer, so there's an ESP32 incompatibility somewhere in the Adafruit library. Once I saw the sketch was running, I connected the OLED and immediately saw the next problem: screen resolution. I see graphics, but only the lower half. To adjust, I changed the height dimension passed into the constructor from 64 to 32. (Second parameter.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Adafruit_SSD1305 display(128, <mark style="background-color:#fcb900;" class="has-inline-color">32</mark>, &amp;SPI, OLED_DC, OLED_RESET, OLED_CS, 7000000UL);</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the code gracefully adjusted to render at 32 pixel height, but there's a visual glitch where pixels are horizontally offset: the entire image has shifted to the right by 4 pixels, and what's supposed to be the rightmost 4 pixels are shown on the left edge instead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The third problem I encountered is this sketch only runs once, immediately after successful uploading to the Nano 33 BLE Sense. If I press the reset button or perform a power cycle, the screen never shows anything again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Graphics onscreen prove this OLED responds to an SSD1305 library, but this behavior warrants <a href="https://newscrewdriver.com/2022/09/22/adafruit-ssd1305-arduino-library-on-esp8266/">a closer look into library code</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

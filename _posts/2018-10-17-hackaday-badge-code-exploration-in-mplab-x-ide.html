@@ -1,0 +1,55 @@
+---
+layout: post
+title: Hackaday Badge Code Exploration in MPLAB X IDE
+date: 2018-10-17 09:00:25.000000000 +00:00
+type: post
+post_id: '17007'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539792364'
+  _publicize_job_id: '23293670764'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/17/hackaday-badge-code-exploration-in-mplab-x-ide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-12787 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/mplab-x-logo.png" alt="MPLAB X logo" width="1115" height="219"></p>
+<p>Now that the <a href="https://github.com/Hack-a-Day/basic-badge">Hackaday badge project</a> compiles successfully on my computer, it's time to look around and get oriented with the structure of this code project. Part of the orientation is actually getting re-oriented with Microchip's own MPLAB X IDE for developing software running on their chips, like the PIC32MX chip that's at the center of the badge.</p>
+<p>I only use MPLAB X when dealing with PIC code. While it's not exactly my favorite, I would agree it is <em>sufficient</em> to be a productive tool. The features most relevant to me right now are for code navigation. MPLAB parses the project files enough to knows how pieces of code are linked and lets me traverse those links easily.</p>
+<p>For exploration, the following two key combinations are super useful:</p>
+<p style="padding-left:30px;"><code>Control + B</code>: Go to declaration/definition</p>
+<p style="padding-left:30px;"><code>Alt + Left</code>: Go back</p>
+<p>While it is possible to use a text search to do both of these things, having an IDE that understands the project and makes navigation simple is a real time saver. With these keystrokes I could take a deeper look inside a particular function to see what it does, repeating to trace calls further if necessary. And when I've had enough with a particular area of code, go back to where I was before I started digging.</p>
+<p>But of course, these tools are only useful once I have a starting point. Looking over the project files, I thought <code><a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/main.c">main.c</a></code> sounded like a great place to start and indeed it was. There was just a short snippet of code in the <code>main()</code> function but it is the root of all functionality.</p>
+<blockquote><p>
+<code>hw_init();</code><br />
+<code>badge_init();</code><br />
+<code>if (KEY_BRK==0) post();</code><br />
+<code>if ((SHOW_SPLASH)&amp;(K_SHIFTR==1)) boot_animation();</code><br />
+<code>badge_menu();</code>
+</p></blockquote>
+<ul>
+<li>
+<code>hw_init()</code> initialize all the PIC settings upon startup. What the pins do, which peripherals are activated, set things to default values, etc.</li>
+<li>
+<code>badge_init()</code> seemed redundant but <code>Control+B</code> lets me see its comment saying this is work done whenever badge wakes up from sleep. So <code>hw_init()</code> is for a cold boot, and <code>badge_init()</code> is for resuming from sleep.</li>
+<li>If a specific key is pressed upon power-up, there's <code>post()</code>. The code looks like some sort of self-test, which implies POST = Power-On Self-Test.</li>
+<li>The badge does have a little startup animation, which is apparently launched by <code>boot_animation()</code> if a compile-time flag and a runtime key both agree it should be run.</li>
+<li>Finally, <code>badge_menu()</code> which is a loop for the badge main menu. This call never returns.</li>
+</ul>
+<p>Most of <code>main.c</code> actually consist of comments which invites hackers to look around, find certain items discussed in the comment by using <code>Control + Shift + F</code> to search on strings in comments.</p>
+<p>I will absolutely accept that invitation.</body></html></p>

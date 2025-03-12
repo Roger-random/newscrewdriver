@@ -1,0 +1,72 @@
+---
+layout: post
+title: Updated Goals for MX340 CircuitPython Project
+date: 2024-06-17 18:00:18.000000000 +00:00
+type: post
+post_id: '43815'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  firehose_sent: '1718672420'
+  _publicize_job_id: '95522940974'
+  timeline_notification: '1718672422'
+  wordads_ufa: u:wpcom-ufa-v4:1719266413
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 22:02:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/17/updated-goals-for-mx340-circuitpython-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I typically learn new things by alternating between hands-on time and reading study time. After reading through (though not necessarily understand all of) several Python Enhancement Proposals <a href="https://newscrewdriver.com/2024/06/16/notes-on-pep-492-coroutines-with-async-and-await-syntax/">ending with PEP 492</a> <em>Coroutines with async and await syntax</em> I'm ready to switch back to playing in a code editor. My CircuitPython practice project is to interface with a control panel I salvaged from a Canon MX340 multi-function inkjet. <a href="https://newscrewdriver.com/2024/06/06/circuitpython-asyncio-lock-prevents-interleaving-data-transmission/">I've successfully accomplished that</a> with a few rough test programs, but I didn't understand what I did, thus the study session.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I understand a bit more of Python generally and CircuitPython in particular, I want to aim higher for my project. Instead of a bunch of test code written on the fly whenever the next idea occurs to me, I should go in and organize things sensibly. I want to learn from Adafruit's collection of CircuitPython libraries to interface with hardware peripherals, following their lead to reorganize my MX340 jumble into a self-contained piece of reusable code. I believe the primary reference would be <a href="https://docs.circuitpython.org/en/latest/docs/design_guide.html">Adafruit's CircuitPython design guide</a> for community-contributed libraries. I don't understand all of it yet, but I expect to learn by doing and learn from my failures to conform to the design guide. I do not realistically expect my MX340 CircuitPython library to be used by many others. The point of the exercise is to learn how to build such a library, so that a future library I write may actually be useful to others.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are my updated goals:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>A class to handle serial communication with the NEC K13988 chip on board the control panel, with three functional areas:<!-- wp:list -->
+<ul class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>Buttons: Event queue of button activity, following precedence of <a href="https://docs.circuitpython.org/en/latest/shared-bindings/keypad/">Adafruit's <code>keypad</code> class</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LEDs: Two boolean properties with get/set to manipulate <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/">LEDs under K13988 control</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LCD screen: following precedence of <a href="https://docs.circuitpython.org/en/latest/shared-bindings/rgbmatrix">Adafruit's <code>rgbmatrix</code> class</a>, either create a byte array for raw frame buffer or use a caller-allocated byte array. Implement a <code>refresh()</code> method which will initiate sending frame buffer data to K13988 for display.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list -->
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>An optional class to wrap the above LCD raw byte array into a MicroPython-style FrameBuffer class. Implemented as <code>adafruit_framebuf</code> with <a href="https://newscrewdriver.com/2024/06/04/improve-drawing-via-mvmsb-for-adafruit_framebuf/">a custom frame buffer manipulation class</a>. This is optional and not part of #1 because the caller may wish to manipulate the byte buffer directly.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Some example code utilizing the above.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>After writing example code, decide if it's useful to add one more: An optional class as single point of contact for the entire control panel. Exposing a single event queue integrating direct-control buttons ("Power" and "Stop") with K13988-scanned buttons, and properties for direct-control LEDs ("Power" and "Alarm") peer of K13988-controlled LEDs ("WiFi" and "In Use/Memory")</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>That seems like a set of achievable goals to guide me as <a href="https://newscrewdriver.com/2024/06/18/mx340-circuitpython-refinements-async-event-but-no-property-setter/">I got started with code reorganizing</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

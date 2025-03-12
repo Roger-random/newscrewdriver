@@ -1,0 +1,64 @@
+---
+layout: post
+title: Going DIY Route for Serial Data Filter Tool
+date: 2024-01-12 12:49:29.000000000 +00:00
+type: post
+post_id: '41533'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41534'
+  firehose_sent: '1705092571'
+  _publicize_job_id: '91037503340'
+  timeline_notification: '1705092573'
+  wordads_ufa: s:wpcom-ufa-v4:1705222747
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/12/going-diy-route-for-serial-data-filter-tool/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted a tool to help me filter the stream of data passing between control panel and main board of a Canon Pixma MX340 multi-function inkjet. They communicate over two wires (one in each direction) via asynchronous serial 250000-8-E-1. Hardly exotic for embedded hardware, so I thought my desired listen-and-filter tool should already exist. I found a few candidates and <a href="https://newscrewdriver.com/2024/01/11/window-shopping-serialtool/">while SerialTool came the closest</a>, ultimately I struck out. If the perfect tool is out there, my search skills weren't enough to find it. I will fall back to creating my own tool for the job.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have no ambition to compete with SerialTool or any others, though, which is the first step of any project: setting its scope. This is going to be a quick hack-and-slash job to do just want I want for my MX340 teardown and no more. I will not be designing a generic DSL (domain-specific language) to express serial data to be filtered, it'll be whatever simplest logic I can write in code. I will not be generalizing it to interfaces other than asynchronous serial. There will be no elegant user interface, probably just printed to text console, and so on. If data filtering turns out to be something I modify and reuse for several teardown projects, I will revisit my decisions <em>after </em>I have those additional experiences under my belt. Such additional data points will inform a new scope, but right now I stay focused on a target of one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on what I know so far, here's the plan:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First draft will monitor just a single wire, data sent by control panel to main board during steady state. This will have a constant stream of button matrix report 0x80 (no button pressed) every ~9.2ms without any user interaction, test data to make sure I have the foundations in place.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I will start pushing buttons on the control panel, which will change the button matrix report value. Some of these will trigger screen updates, which will involve a lot of 0x20 acknowledgement sent back to the main board. I will ignore those 0x20 for now, and see if anything else interesting is sent by the control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that is all working, I will add monitoring for the second wire for data sent by main board to control panel. This will need to recognize the pattern for a screen update, but only enough to know when bitmap data starts and stops. No need to rasterize that data into an actual bitmap. The objective at this stage is merely to see if anything <em>else </em>is sent by the main board during these button presses.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At that point, I could try to link the two channels together: verify that commands sent by the main board are indeed acknowledged by a 0x20 from the control panel. This will be an interesting technical challenge and could be very useful if this is to grow into a hardware verification tool, but I don't care about that right now. I will assume Canon engineers are competent and their hardware behaves correctly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What will be more interesting is to add recognition for the various state transitions: start up, stand by, screen going to sleep, etc. Then, run through those states and see if the tool alerts me to anything coming through those wires that I haven't seen yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I gain the confidence that I understand all traffic coming through these wires, the tool will be a success. And now I've set my goal, <a href="https://newscrewdriver.com/2024/01/13/serial-data-filter-project-hardware-and-software/">it's time to get started</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,156 @@
+---
+layout: post
+title: FormLabs Form 1+ OLED Control Consistent with SSD1305
+date: 2022-09-19 12:30:00.000000000 +00:00
+type: post
+post_id: '32637'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32614'
+  _publicize_job_id: '76891452411'
+  timeline_notification: '1663615836'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/19/formlabs-form-1-oled-control-consistent-with-ssd1305/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been looking at various components of a broken FormLabs Form 1+ laser resin 3D printer, right now the focus is its front panel dot matrix OLED display. My first attempt at using a logic analyzer on its control signals told me which wires were active, but the actual data were gibberish. Fortunately, a <a href="https://newscrewdriver.com/2022/09/18/second-try-with-formlabs-form-1-display-board-signals/">second attempt retrieved sensical data waveforms</a>. Someone on the FormLabs forums speculated this was an OLED display built around a SSD1305 controller, so now I will see if my captured data matches commands listed in SSD1305 documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32643,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/saleae-logic-formlabs-oled-powerup.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/saleae-logic-formlabs-oled-powerup.png?w=1024" alt="" class="wp-image-32643"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This stream of data represents system powerup, a set of commands (channel 0 white line is low) sent just before the first batch of data (channel 1 white line is high). If I interpret these bytes in context of SSD1305 datasheet, I get the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>0xAE: Display OFF.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xD5 0x10: Set display clock divide ratio to 1:1 and oscillator frequency to 300kHz.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xA8 0x1F: Set multiplex ratio to 31. (0x1F)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xD3 0x00: Set display offset to zero.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x40: Set display start line to zero.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xAD: Master Configuration for external Vcc power supply.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x8E: ???</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x20 0x02: Set memory addressing mode to 0x02 (Page Addressing Mode.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xA0: Set segment remap to 0 (Column address 0 is SEG0)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xC8: Set COM output scan direction to 1 (Remapped mode. Scan from COM[N~1] to COM0)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xDA 0x12: Set COM pins hardware configuration. (Disable COM Left/Right remap, Alternative COM pin configuration.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x91 0x3F 0x3F 0x3F 0x3F: Set current drive pulse width of BANK0, color A, B, and C all to maximum valid value of 0x3F (63 clocks).</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x81 0xFF: Set contrast control for BANK0 to 0xFF. (256, which is maximum contrast.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x82 0xFF: Set brightness for area color banks to 0xFF. (256, which is maximum brightness.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xD9 0xD2: Set precharge period to 0xD2. (Phase 1 period of 0x2 clocks, phase 2 period of 0xD or 13)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xDB 0x08: Set V<sub>COMH</sub> Deselect Level to 0x08, but 0x08 is not in the list of valid values?</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xA4: Entire display ON to display RAM content.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0xA6: Set Normal Display. (Instead of 0xA7 for Inverted.)</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This looks like an entirely sensible chain of commands for initial startup, aside from the two gaps: command 0x8E and parameter 0x08 for command 0xDB. The datasheet I have is rev 1.9 dated May 2008, so it's possible those commands were added later. Even though they didn't quite line up with the datasheet, these matches are too close to have been a coincidence. I'm now convinced there is a SSD1305 (or very closely related derivative) controller inside this OLED module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three more commands round out the end of the startup sequence:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>0xB0: Set Page Start Address to 0.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x00: Set Lower Column Start address to 0.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x10: Set Higher Column Start address to 0.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>After these are sent, the Command/Data line was raised signifying data transmission. A large number of zeros followed, then the C/D line was lowered in for another trio of commands:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>0xB1: Set Page Start Address to 1.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x00: Set Lower Column Start address to 0.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x10: Set Higher Column Start address to 0.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Followed by another large chunk of zeroes, and this repeated for all eight pages of memory. Documentation section 8.7 <em>Graphic Display Data RAM (GDDRAM)</em> gave a size of 132 x 64 bits divided into eight pages. By that math, there should be 132 bytes in each block of zeros, but I'm not going to count that by hand. There's probably a way to count inside Saleae Logic software, but I went with a low-tech approach:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Zoom into the trace so one large block of zeros span majority of my computer monitor.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Using a ruler, I measured the physical width on screen of the first eight decoded bytes of 0x00: they are 33mm wide.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>132 bytes / 8 bytes = 16. So if there are 132 bytes in the block of zeros, they should be (16 * 33mm =) 528mm wide.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I measured the entire block, 525mm wide. Close enough!</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having learned this information about initial startup including clearing the screen memory, I can better interpret the data captured by the logic analyzer <a href="https://newscrewdriver.com/2022/09/20/formlabs-form-1-oled-screen-updates/">during my other test activities</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

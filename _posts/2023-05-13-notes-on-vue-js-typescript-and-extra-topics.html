@@ -1,0 +1,52 @@
+---
+layout: post
+title: Notes on Vue.js TypeScript and "Extra Topics"
+date: 2023-05-13 12:30:00.000000000 +00:00
+type: post
+post_id: '36664'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36516'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684095784
+  _publicize_job_id: '84024089251'
+  timeline_notification: '1684006209'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/13/notes-on-vue-js-typescript-and-extra-topics/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As a beginner to Vue.js development I doubt I'd really need to worry about following best practices, but <a href="https://newscrewdriver.com/2023/05/12/notes-on-vue-js-best-practices/">it was good to skim through that information</a> just to see what lies down the road. Likewise, I didn't expect to get very much out of the "Extra Topics" section of Vue.js documentation but I skimmed through it anyway to see what I can pick up. More than I thought I would, actually!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I haven't done enough web development to understand all of the scenarios outlined in "<em><a href="https://vuejs.org/guide/extras/ways-of-using-vue.html">Ways of Using Vue</a></em>" but I do understand several of them. And I think I understood enough of the rest to recognize situations if they should come up in a "Ah, that's what document was talking about" way. The overarching lesson is that: Vue is happy to work in several different shapes and sizes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I enjoyed getting a look under the hood with "<em><a href="https://vuejs.org/guide/extras/reactivity-in-depth.html">Reactivity in Depth</a></em>". I don't understand enough about JavaScript proxies to use it in my own code, but it was good to see some of the benefits and pitfalls of working within Vue's usage of the mechanism. It mostly boils down to the fact a proxy is one level of indirection from the real object. Unfortunately, one of the downsides appears to be that additional effort must be made to make sure TypeScript understands data types through this layer of indirection.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Coming from a background of strongly-typed languages like C, I was not a fan of the free-form <s>chaos</s> freedom of JavaScript. Using TypeScript imposes some order to the madness, and I appreciate that. Vue.js itself was written with TypeScript and supports TypeScript Vue.js application code, but doing so <a href="https://vuejs.org/guide/typescript/overview.html">wasn't as straightforward</a> as I had thought it might be. This is especially true of the simpler Options API, partly because JavaScript usage was so simple that additional effort to be TypeScript-friendly seems like a huge imposition. In contrast, Composition API takes more effort to write but it also resembles "normal" code more so TypeScript was a better fit. After reading through TypeScript sections and "<em><a href="https://vuejs.org/guide/extras/composition-api-faq.html">Composition API FAQ</a></em>" I wonder if I'd be better off focusing on the more powerful and TypeScript-friendly Composition API for my own Vue.js projects. I'll push that decision off to later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The "<em>Rendering Mechanism</em>" and "<em>Render Functions and JSX</em>" sections were a look under a hood of a different part of Vue.js: outputting Vue.js component data into HTML markup for the browser. I'm not as familiar with this problem space, so I didn't understand all the problems solved by these approaches. I don't foresee myself writing custom rendering functions, and hopefully I won't have to debug standard rendering functions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I enjoyed seeing some of the fun things possible with CSS animations in "<em><a href="https://vuejs.org/guide/extras/animation.html">Animation Techniques</a></em>" but that's further off in the future. I would want to get a functional understanding of building Vue.js applications before I worry about visual polish, and I would lean on libraries before I start fiddling with details for myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of the future, I appreciated "<em><a href="https://vuejs.org/guide/extras/web-components.html">Vue and Web Components</a></em>" because it addressed one of my open questions: how much of frameworks like Angular or Vue will remain relevant in the future as web standards evolve? Many of web development frameworks arose to solve problems people had with browser-supported standards. These fed into evolution of web standards and eventually, browsers incorporated those lessons rendering many web tools no longer relevant. This "<em>Vue and Web Components</em>" section explained how it's not a conflict, at least today. Vue has features not yet on the roadmap for standardized web components. Furthermore: peaceful coexistance is possible: Vue components can be self-contained into a standard web component for use elsewhere, and Vue applications can consume standard web components. This is encouraging, and it'll be interesting to see this situation evolve in the future. For now, I'm going to <a href="https://newscrewdriver.com/2023/05/14/vue-js-beginner-learning-checkpoint/">wrap up this Vue.js learning session</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

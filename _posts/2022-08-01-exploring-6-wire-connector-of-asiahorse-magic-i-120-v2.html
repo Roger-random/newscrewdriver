@@ -1,0 +1,98 @@
+---
+layout: post
+title: Exploring 6-Wire Connector of Asiahorse Magic-i 120 V2
+date: 2022-08-01 12:30:00.000000000 +00:00
+type: post
+post_id: '31749'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Asiahorse
+- Cooling Fan
+- LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31751'
+  _publicize_job_id: '75340895434'
+  timeline_notification: '1659382248'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/01/exploring-6-wire-connector-of-asiahorse-magic-i-120-v2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was curious about PC accessories with embedded addressable RGB LED, so I bought the cheapest item available on Newegg that day. I have <a href="https://newscrewdriver.com/2022/07/31/asiahorse-magic-i-120-v2/">verified it works as originally intended</a>, and now I'm going to dig deeper. This <a rel="noreferrer noopener" href="https://www.newegg.com/asiahorse-fs-9002-3pack-case-fan-accessory/p/1YF-00SS-00044?Item=9SIAJ00DP06171" target="_blank">Asiahorse Magic-i 120 V2</a> is a three-pack of 120mm fans with integrated LEDs. All three fans plug into a hub that has a corresponding remote control for me to select from a list of programmed patterns. This bundle is fine if I'm satisfied with those patterns, but I want display patterns of my own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31755,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-magic-i-120-v2-fan-hub-with-fan-connector.jpg?w=1024" alt="" class="wp-image-31755"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each fan connects to the hub through this six-wire connector. The distance between each pin is 2mm. Judging by the pitch and physical appearance, I guess they are <a href="https://www.jst.com/products/crimp-style-connectors-wire-to-board-type/ph-connector/" target="_blank" rel="noreferrer noopener">JST-PH</a> or a clone. (I don't have any 6-conductor JST-PH to verify.) This is mildly inconvenient because my workbench is setup to work with 0.1" pitch (~2.54mm) connectors so it's not very easy for me to probe those signals as-is.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31756,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-magic-i-120-v2-fan-exploration-board.jpg?w=1024" alt="" class="wp-image-31756"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The solution is a quick soldering project to give me an exploration board. I cut the bundle of six wires and inserted a small piece of perforated prototype board. Each of the six wires are then bridged with an exposed length of solid wire, easy for me to clip probes onto.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31758,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-magic-i-120-v2-fan-exploration-board-with-capacitors.jpg?w=1024" alt="" class="wp-image-31758"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Trying the easy thing first, I probed for continuity between these six wires and the power input wires. This gave me location for +12V source, +5V source, and ground. Armed with this information, I soldered capacitors to smooth out both power rails, because the AC adapter I'm using is designed for far higher wattage than a few LEDs and it's not unusual for switching power supplies to be noisy at low power levels. (And the cheap ones are always noisy at all power levels...)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With three out of six wires identified for power, this left me with three more wires to decipher. Here are my candidates:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>
+<strong>Fan control</strong>: it may be one (or none) of the following:
+<ul>
+<li>
+<strong>Fan motor high side</strong>: the fan may be internally connected to the ground wire, and the high side wire is left exposed here for external PWM or on/off control with a power transistor.</li>
+<li>
+<strong>Fan motor low side</strong>: the same idea but reverse: fan motor is internally connected to +12V and the low side is exposed here for external PWM or on/off control with a power transistor.</li>
+<li>
+<strong>Fan motor PWM</strong>: Neither of the above. Instead of leaving either high or low side unconnected for external power transistor, a suitable power transistor is built into the fan and controlled with a 25kHz PWM signal <a href="https://newscrewdriver.com/2022/07/24/cpu-cooling-4-wire-fan/" target="_blank" rel="noreferrer noopener">as used in 4-wire fans</a>.</li>
+</ul>
+</li>
+<li>
+<strong>Fan tachometer</strong> like the type <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/08/computer-cooling-fan-tachometer-wire/" target="_blank">I found in 3-wire fans</a>.</li>
+<li>
+<strong>LED Data In</strong>: addressable RGB signal input.</li>
+<li>
+<strong>LED Data Out</strong>: signal that has passed through the LED string inside this device and ready to be passed on to other LEDs in other devices down the chain.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>To decipher which wires are which of those candidate capabilities, I connected my Saleae Logic 8 to the three unknown wires. I started an analog waveform capture session and used the fan remote control to command that all fans show a solid green.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31762,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-fan-control-analog-capture.jpg?w=953" alt="" class="wp-image-31762"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The top line in white stayed at 0V through the entire session. This may be the tachometer wire, or it may be fan motor low side. To determine which, I disconnected everything other than the +12V and ground wires. The fan did not move. I connected the wire corresponding to this white line to ground, and the fan started spinning. Conclusion: this wire is <strong>fan motor low side</strong>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The middle line in brown shows a distinct repeating pattern. The bottom line in red shows the same repeating pattern, but delayed by 12 cycles. Since there are 12 LEDs in a fan, that means the middle brown line is <strong>LED Data In</strong> and the red line is <strong>LED Data Out</strong>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To verify LED Data In, I connected +5V, ground, plus this wire to the data pin of a Pixelblaze. After I configured the Pixelblaze to emit control signal for a string of 12 x WS2812 (NeoPixel) LEDs, I saw them light up appropriately on the fan.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To verify LED Data Out, I connected it to the data input pin of an array of 64 WS2812 LEDs. I configured the Pixelblaze for 12 + 64 = 76 pixels. After colorful pixels cycle through the fan, they marched onwards to the array as appropriate for LED Data Out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these functions verified, I'm confident enough to describe this <a href="https://newscrewdriver.com/2022/08/02/pinout-for-asiahorse-120mm-fan-magic-i-120-v2/">Asiahorse fan pinout</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

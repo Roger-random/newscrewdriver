@@ -1,0 +1,149 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner Motor
+date: 2023-12-04 12:30:00.000000000 +00:00
+type: post
+post_id: '40823'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40829'
+  wordads_ufa: s:wpcom-ufa-v4:1703391583
+  _publicize_job_id: '89986510796'
+  timeline_notification: '1701721808'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/04/canon-pixma-mx340-scanner-motor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm exploring the inner workings of a Canon Pixma MX340 multi-function inkjet as I take it apart. After coming up with a hypothesis on how the scanner bar finds its way to its home position, I had some fun <a href="https://newscrewdriver.com/2023/12/03/canon-pixma-mx340-scanner-homing-marker/">confirming that hypothesis and confusing that electronic brain</a>. Next I wanted to look at the motor that drives scan head movement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40831,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-head-separates-cleanly.jpg?w=1024" alt="" class="wp-image-40831"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Canon engineers designed the scanner bar to be easily disassembled into its two major components. A slight sideways push was all it took to separate the motor gearbox motion-control assembly from the lighting and imaging sensor bar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40834,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-motor-connector.jpg?w=1024" alt="" class="wp-image-40834"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping the motion control assembly on its side, I can take a close look at the connector to a long cable leading back to the printer main board. There are five conductors in this wire, one of which went immediately to a screw fastening it to the stamped sheet-metal structure. This would be the chassis ground. The other four pins likely led to a pair of coils inside a stepper motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40836,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-motor-connector-with-labels.jpg?w=800" alt="" class="wp-image-40836"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Probing those pins with a multi-meter, I found 15 Ohms of resistance between pairs of pins that I've labeled as +/- endpoints of two coils A and B.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40829,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-motor-connector-wired-for-oscilloscope.jpg?w=1024" alt="" class="wp-image-40829"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This connector has 1mm spacing between pins ("pitch") which is less than half of the 0.1" (~2.54mm) pitch I'm familiar with. I've found this is roughly the limit of my current soldering skill, requiring two attempts before I could solder wires to them without accidental solder bridges. These wires were connected to my oscilloscope, measuring their voltage levels as the scanner went through <a href="https://newscrewdriver.com/2023/12/02/canon-pixma-mx340-scanner-homing-sequence/" target="_blank" rel="noreferrer noopener">its homing sequence</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40839,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-mx340-scanner-motor-all.png?w=800" alt="" class="wp-image-40839"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This stepper motor is also run at 24V DC as delivered by the power supply, <a href="https://newscrewdriver.com/2023/12/01/canon-pixma-mx340-adf-motor/" target="_blank" rel="noreferrer noopener">same as the ADF motor</a>. The coils in this scanner motor measured 15 Ohms which <a href="https://en.wikipedia.org/wiki/Ohm's_law" target="_blank" rel="noreferrer noopener">calculates out</a> to 1.6 Amps of current through each coil. Less than half of the power delivered to the ADF motor. And similar to the ADF motor, the scanner position motor does not need to hold position which means it avoids the high stress duty of having power continuously on a coil heating it up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's a visibly repeating pattern in this oscilloscope snapshot, but it's a bit difficult to make out each of the four wires when they're all together on the same plot. Here they are individually:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40844,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-mx340-scanner-motor-1.png?w=800" alt="" class="wp-image-40844"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40845,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-mx340-scanner-motor-2.png?w=800" alt="" class="wp-image-40845"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are two ends of "A" coil, most of the time energized to one direction or another but there's a brief period where both ends are at ground leaving the coil de-energized.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40846,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-mx340-scanner-motor-3.png?w=800" alt="" class="wp-image-40846"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40848,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-mx340-scanner-motor-4.png?w=800" alt="" class="wp-image-40848"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A similar pattern is visible in the B coil, offset by half a pattern period. I'm not sure why the motor cycle has this bit of de-energized coil time in between other energized patterns. Except for that small window, this pattern would be match what I expected from <a href="https://en.wikipedia.org/wiki/Stepper_motor" target="_blank" rel="noreferrer noopener">stepper motor operating theory</a>. For a stepper motor spinning at a constant speed, I would expect something like this four-state cycle with equal duration per state:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<tbody>
+<tr>
+<td>A+</td>
+<td>B+</td>
+</tr>
+<tr>
+<td>A+</td>
+<td>B-</td>
+</tr>
+<tr>
+<td>A-</td>
+<td>B-</td>
+</tr>
+<tr>
+<td>A-</td>
+<td>B+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that's not what I see in this oscilloscope trace. This is what I picked out, a slightly different pattern and some states are held for different duration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<tbody>
+<tr>
+<td>A+</td>
+<td>B+</td>
+</tr>
+<tr>
+<td>A+</td>
+<td>B-</td>
+</tr>
+<tr>
+<td>A-</td>
+<td>B-</td>
+</tr>
+<tr>
+<td>A-</td>
+<td>(off)</td>
+</tr>
+<tr>
+<td>(off)</td>
+<td>B+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>This difference from textbook description serves a purpose I couldn't determine. Perhaps this helps ensure the coils don't overheat from constant power? Maybe this is to help reduce resonance problems? Perhaps this is synchronized to the imaging sensor for some data purpose? It'll stay a mystery for now, as I proceed to take <a href="https://newscrewdriver.com/2023/12/05/canon-pixma-mx340-scanner-led/">a closer look at said imaging sensor</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

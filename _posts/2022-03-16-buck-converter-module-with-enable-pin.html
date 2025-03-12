@@ -1,0 +1,75 @@
+---
+layout: post
+title: Buck Converter Module with Enable Pin
+date: 2022-03-16 12:30:00.000000000 +00:00
+type: post
+post_id: '29021'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29107'
+  _publicize_job_id: '70260664506'
+  timeline_notification: '1647459010'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/16/buck-converter-module-with-enable-pin/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/03/15/esp8266-adc-helps-avoid-over-discharging-battery/">implementing over-discharge protection</a>, attention turns to the charging portion of my project. For several of my projects over the past few years, I've been using a commodity buck converter module sold by many vendors. Built around a MP1584 chip (or a close-enough clone) <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/" target="_blank">they have worked quite well</a>. But there were a few annoyances that made me want to try a different module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>The first annoyance is that the commodity module is designed for variable output voltage adjusted via a tiny potentiometer. This gives great flexibility but it means every time I want to use a module I have to measure its output voltage on my voltmeter and adjust its potentiometer until I reached the voltage I wanted for a particular project. Most of the time I just want one of several common voltage values, usually 5V. It'd be nice to streamline that process.</li>
+<li>The next annoyance is that the MP1584 enable pin is not exposed on the module. There is an onboard voltage divider that automatically enables the chip whenever supply voltage rises above 3V. Usually this is what I want, but not always. And when I don't want it, <a href="https://newscrewdriver.com/2022/03/02/raising-mp1584-enable-voltage-by-replacing-resistor/">modifying the module</a> is a hassle and prone to errors.</li>
+<li>And finally, the module's connection pinout does not align with 0.1" spacing, making its use on a perforated prototype board annoying. Recently I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/06/mp1584-modification-version-2/" target="_blank">worked around this problem</a> by adding capacitors to the input and output terminals then using those capacitor legs' flexibility to compensate. But it would be nice if I don't have to do that.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking over Amazon listings for "buck converter" I <a href="https://amzn.to/3MLVVw4">found an alternative candidate</a>(*) advertised to address these annoyances. I bought a pack of twenty and it arrived in two bars of ten. We are to break off individual units like a candy bar. Some of the Amazon viewers complained, but I actually prefer this packaging over loosely packed individual modules. Here is the front and back of a single module:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":29018,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/bucker-converter-front.jpg" alt="" class="wp-image-29018"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":29017,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/bucker-converter-back.jpg" alt="" class="wp-image-29017"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>The chip that runs the show is labeled AELH. This is different from Amazing listing pictures, which show a chip labeled AGCH. I found no information for either of those designations, so for the moment the exact identity of this buck converter chip is a mystery. For all I know, it might still be a MP1584 (or drop-in replacement) but that doesn't matter right now. What matters is the rest of this module, which features an impressively compact layout.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Across the bottom we have four pins: VO+ (voltage output positive), GND (ground), IN+ (voltage input positive) and EN (enable). They have 0.1" spacing, which I wanted for convenient prototype board/breadboard use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is a potentiometer in the top front corner, and six resistors below that. Looking on the backside we can see the potentiometer is connected but there are provisions for us to cut that trace and bridge one of the other pairs of pads to select one of the resistors that'll give us a popular voltage, no fiddling with potentiometer required. I promptly cut the potentiometer trace and bridged the 5V pads with a bit of solder to see what I get.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29016,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/bucker-converter-5v-select.jpg?w=1024" alt="" class="wp-image-29016"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I measured the output pins with my voltmeter, and it says 4.93V. This might be too low to avoid the dreaded lightning bolt icon used by a Raspberry Pi to signal low voltage, but should be good enough to charge a USB power bank.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Encouraged by this, I integrated this module into my solar monitor project. Where I found that the enable pin is <a href="https://newscrewdriver.com/2022/03/17/two-problems-controlling-buck-converter/">almost -- but not quite</a> -- what I had hoped for.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

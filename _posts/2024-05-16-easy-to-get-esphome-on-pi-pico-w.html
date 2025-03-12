@@ -1,0 +1,48 @@
+---
+layout: post
+title: Easy To Get ESPHome On Pi Pico W
+date: 2024-05-16 21:22:03.000000000 +00:00
+type: post
+post_id: '43417'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- ESPHome
+- rp2040
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43418'
+  firehose_sent: '1715919725'
+  wordads_ufa: u:wpcom-ufa-v4:1715919908
+  timeline_notification: '1715919726'
+  _publicize_job_id: '94635678164'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-17 04:22:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/16/easy-to-get-esphome-on-pi-pico-w/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2024/05/14/new-toy-raspberry-pi-pico-w/">borrowing a Raspberry Pi Pico W board</a> to play with, I had many ideas I wanted to try out. The first test was Home Assistant support via ESPHome, and this was a success. In fact, I think getting ESPHome started on a Pico W is even easier than doing the same on their namesake Espressif boards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A tremendously useful feature of ESPHome is the ability to perform updates over WiFi. This over-the-air (OTA) capability means every ESPHome-powered node in a Home Assistant network can be updated wherever they are around the house, no need to bring them back to a computer with a USB cable (or bring a laptop with USB cable out to them). However, this only works after ESPHome is already running on board, which means initial ESPHome setup on a microcontroller still require a USB connection to install a compiled binary file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For ESP8266 and ESP32 board, this means connecting it directly to the computer running Home Assistant which can get complicated depending on how Home Assistant is set up and whether its ESPHome plug-in can access USB ports. Alternatively, it can be installed by an <a href="https://web.esphome.io/">ESPHome web tool</a>. Or we can install Espressif's <a href="https://docs.espressif.com/projects/esptool/en/latest/esp32/">esptool</a> flash utility on a computer. So this is a solvable problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But a Pico W has an even easier way: do it on any modern computer, no software installation required. Because when we hold down the "BOOTSEL" button upon powerup, the Pico W presents itself as a generic USB storage device, to which we can copy the compiled binary file (it has a *.uf2 extension) and the Pico W is off and running. Very nice!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As is typical microcontroller practice, my "Hello World" is to connect a LED to my Pico W and toggle it on/off from Home Assistant. I saw an onboard LED, labeled GPIO25 on a pinout chart, and thought I would use that. When that didn't work, I looked closer and realized I had mistakenly referenced the <a href="https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#pinout-and-design-files">pinout chart for a Pico</a> (not W) and <a href="https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#pinout-and-design-files19">Pico W's onboard LED is actually connected to its WiFi chip</a> instead of 25. Oops! It's not clear to me where pin 25 was routed on a Pico W, so I switched gears: I connected an external LED with current-limiting resistor to pin 15. And since the board was already running ESPHome firmware, I could do an OTA update to use pin 15 instead.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

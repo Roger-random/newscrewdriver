@@ -1,0 +1,74 @@
+---
+layout: post
+title: 'Idea: Unity LEGO Microgame in VR'
+date: 2023-09-06 12:30:00.000000000 +00:00
+type: post
+post_id: '38827'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Games
+tags:
+- LEGO
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25093'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1698985045
+  _publicize_job_id: '87333805818'
+  timeline_notification: '1694028627'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/06/idea-unity-lego-microgame-in-vr/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A quick survey found no official LEGO-branded VR titles, but there were <a href="https://newscrewdriver.com/2023/09/05/building-with-non-lego-bricks-in-vr/">a few LEGO-adjacent brick building VR titles</a> each catering to slightly different target demographic. And it's quite possible that people would find none of them appealing, since VR is still a new area of development and has no shortage of novel ideas that might be worth a try. [Update: <a href="https://www.youtube.com/watch?v=gjZG94IKHtc" target="_blank" rel="noreferrer noopener">there is a LEGO MR title now</a>.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unity 3D built its userbase on the sales pitch of realizing ideas quickly and go to market. While a competent software development team can write their own variation of all functionalities provided by Unity, it might not be cost/time effective to do so. Might it be true here? Here's what I see after thinking over such a project idea:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Take LEGO Art Assets...</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>To prototype a LEGO VR idea in Unity, it wouldn't be necessary to build LEGO art assets from scratch. There's already a lot available in the <a rel="noreferrer noopener" href="https://learn.unity.com/project/lego-template" target="_blank">Unity LEGO Microgame tutorial</a>. Certainly not the full slate of LEGO pieces, but more than enough to try out ideas. If those ideas pan out, only then would the legal questions come into play. There were a lot of Terms &amp; Conditions attached to the officially licensed LEGO assets made available for the Unity tutorial, preventing any commercial exploitation. As I understand it, we can't even publish it for free except at the dedicated Unity tutorial sharing portal. Which is based on WebGL and runs within a browser, so it's probably not a VR-friendly deployment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hobbyists toying with ideas are probably fine, anybody contemplating going beyond will need to hire lawyers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Add Unity XR Interaction Toolkit...</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Unity LEGO Microgame tutorial plays from an over-the-sholuder third-person perspective using standard game movement. (Keyboard WASD, gamepad joystick, etc.) To port that into a VR environment, we can pull in <a rel="noreferrer noopener" href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.5/manual/index.html" target="_blank">Unity's XR Interaction Toolkit</a> which is advertised to handle all of the low-level VR/AR mechanics. Things shared by all VR titles like tying headset movement into camera movement. Interfacing with generic VR handheld controller capabilities, from buzzing motor tactile feedback to piping controller motion and position back into the game engine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Then Things Get Complicated!</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once we have a simplified palette of LEGO art assets to work with, and low-level VR infrastructure taken care of, the challenge is designing the user experience for a fun game. This is the hard part. As an improvement over non-VR LEGO titles (Builder's Journey, Bricktales, etc) I wanted to make camera viewpoint control intuitive by tying it to VR headset movement. Moving a LEGO brick around means somehow tying it to the 6DOF data coming in from a handheld controller. These would be the foundational aspects of building LEGO bricks in VR.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Things get more uncertain from there. What's the best way to organize and manage the palette of available LEGO pieces in a VR environment? I don't want to put up virtual shelves of boxes of LEGO pieces that a user has to go paw through, that would be an unnecessary and frustrating level of skeuomorphism. We're in a digital world, we should be able to build what's effectively a database query to narrow down the set of pieces we want. How would that work in a VR world? I feel there's room for improvement (even without VR) over some existing search mechanisms for LEGO parts (examples from <a rel="noreferrer noopener" href="https://library.ldraw.org/tracker/list" target="_blank">LDraw</a> and <a rel="noreferrer noopener" href="https://www.bricklink.com/catalogTree.asp?itemType=P" target="_blank">Bricklink</a>) but it's only a vague feeling without any well thought out design proposals on my part.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once we have a part in our virtual hand, we have an entirely different set of problems. We'd need what amounts to a physics engine that can solve constraints of LEGO pieces fitting together. For the classic LEGO build experience, it would need to understand how LEGO studs fit together. To support Technic-style studless construction, it would need to understand the pins and holes on the beams. If ambition gets as far as building and running Technic motors and gearboxes... I don't even know where to start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">So, Probably Not</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is where my line of thought stopped. At this point it is already far more ambitious of a project than I can reasonably expect to carry to completion. I'll shelve the project idea so not to bite off more than I can chew. I'm sure somebody (or multiple somebodies) will take a stab at the general idea. I wish them success and look forward to playing around with what they've built.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: After writing the above, search engines picked up on my interest and showed me links to <a rel="noreferrer noopener" href="https://www.youtube.com/@brickmastervr6366" target="_blank">BrickMasterVR</a>, another brick-building VR title currently under development.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

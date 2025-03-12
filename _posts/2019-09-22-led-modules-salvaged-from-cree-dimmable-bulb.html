@@ -1,0 +1,47 @@
+---
+layout: post
+title: LED Modules Salvaged From Cree Dimmable Bulb
+date: 2019-09-22 13:57:47.000000000 +00:00
+type: post
+post_id: '19224'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _thumbnail_id: '19196'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _wp_old_date: '2019-09-20'
+  timeline_notification: '1569185870'
+  _publicize_job_id: '35565613085'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/22/led-modules-salvaged-from-cree-dimmable-bulb/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Earlier this year I brought a <a href="https://newscrewdriver.com/2019/03/17/cree-dimmable-led-bulb-teardown/">failed dimmable Cree LED light bulb</a> to SGVHAK for a teardown. We determined the LEDs were fine and the problem <a href="https://hackaday.com/2019/02/05/what-happened-to-the-100000-hour-led-bulbs/">was in its power supply</a> but we couldn't figure out exactly where. I stashed the board aside, intending to someday pull the LED modules off for potential reuse elsewhere. That "someday" has finally rolled around.</p>
+<p><img class="alignnone size-full wp-image-19201" src="https://newscrewdriver.com/wp-content/uploads/2019/08/removing-10-led-module-from-light-bulb.jpg" alt="Removing 10 LED module from light bulb" width="1600" height="900"></p>
+<p>I deployed the heat gun I've used to remove many components from PCBs before. It is usually just for fun, or for removing hardy components like switches, transformer coils, and power connectors. This would be the first time I tried removing a silicon component with intention of reuse.</p>
+<p> </p>
+<p>[gallery ids="19193,19194" type="square" columns="2"]</p>
+<p>Out of eight modules, two were damaged when I tried to remove them. These LED modules were composed of two parts: a substrate to which the set of 10 LEDs were mounted, and a diffuser/cover module over them. And much to my chagrin - they weren't bonded very tightly to each other. Here are pictures of one of the damaged modules. One LED was clearly torn off and embedded in the cover, or else I would have been tempted to power it up just to see if it works. (The LEDs are not powered in the picture, they appear bright via reflected ambient light.)</p>
+<p><img class=" size-full wp-image-19199 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/08/led-module-with-ruler.jpg" alt="LED module with ruler" width="1600" height="900"></p>
+<p>I considered trying to repair that module, by adding a blob of solder to bridge the gap where the damaged LED used to live. But it proved beyond my skill level to work at such sub-millimeter scales. Here is one of the successfully removed modules next to a ruler showing millimeters.</p>
+<p><img class="alignnone size-full wp-image-19198" src="https://newscrewdriver.com/wp-content/uploads/2019/08/led-module-with-3-soldered-wires.jpg" alt="LED module with 3 soldered wires" width="1600" height="900"></p>
+<p>There are three solderable contacts at the bottom of each module where I expected just two. So they would be positive, negative, and... something else? To try to figure out which pad did what, I soldered a small wire (trimmed from the end of a resistor) to each pad. This turned out to be even more difficult than its small size suggested. The first wire wasn't too bad, but when I tried to solder on a second wire I understood the challenge. This module is so small there's very little heat dissipation between adjacent pads. As soon as I heat up one solder joint, it is hot enough to melt solder on remaining pads too. This was really designed for SMD soldering by machine, where the solder is supposed to all melt at once. Soldering one at a time by hand was hard.</p>
+<p>Once soldered, I connected power to two of the three pins. It appears the center solder point is not for power. My best guess is that it is for heat dissipation and apparently a wire soldered to the pad does not offer enough dissipation to tolerate abuse. As a test I cranked up the power (over 30V and over 40mA). That heated up the LED enough to melt the solder and escape, falling off the wires onto my workbench.</p>
+<p><img class="alignnone size-full wp-image-19197" src="https://newscrewdriver.com/wp-content/uploads/2019/08/led-module-with-2-soldered-wires.jpg" alt="LED module with 2 soldered wires" width="1600" height="900"></p>
+<p>Which meant another opportunity to practice patience while soldering. This time I didn't bother soldering to the center pad, and I didn't crank the power up as high.</p>
+<p><img class="alignnone size-full wp-image-19196" src="https://newscrewdriver.com/wp-content/uploads/2019/08/led-module-illuminated.jpg" alt="LED module illuminated" width="1600" height="900"></p>
+<p>These LED modules give a dull glow at 24V, drawing less than 10 mA while doing so. They start growing brightly at roughly 27V, drawing approximately 20mA. I'll need to provide better heat dissipation, connected to that center pad, before I push through power any higher again.</p>
+<p></body></html></p>

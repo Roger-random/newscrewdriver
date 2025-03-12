@@ -1,0 +1,74 @@
+---
+layout: post
+title: Adafruit Memento a.k.a. PyCamera Photography Parameters
+date: 2024-07-05 12:30:00.000000000 +00:00
+type: post
+post_id: '44064'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44045'
+  timeline_notification: '1720207851'
+  wordads_ufa: u:wpcom-ufa-v4:1720295916
+  firehose_sent: '1720207850'
+  _publicize_job_id: '96003200984'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-06 20:00:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/05/adafruit-memento-a-k-a-pycamera-photography-parameters/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I would love to build upon Adafruit's work and make something cool with their Memento camera module at its core, but before I brainstorm ideas I need to know what's already on hand. After reviewing the <a href="https://newscrewdriver.com/2024/07/04/adafruit-memento-camera-hardware/">hardware side of this system</a>, I moved on to the software side. Looking at sample code I immediately saw mention of a "PyCamera". As far as I can tell, it's the same thing. Adafruit's <a href="https://learn.adafruit.com/adafruit-memento-camera-board/pycamera-library-test">Arduino sample code documentation</a> use the two names interchangeably. Perhaps PyCamera was a development code name for the product that eventually launched as the Memento? Perhaps Adafruit was afraid Arduino fans would pass over a product named PyCamera thinking it implied CircuitPython exclusivity?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One angle Adafruit used to promote Memento is the programmatic control we have over our photography. Given this sales pitch, I wanted to check out this camera's capability in photography terms I'm familiar with. Between reading Adafruit source code and "<em>OV5640 register datasheet</em>" available <a href="https://learn.adafruit.com/adafruit-memento-camera-board/downloads">on their downloads page</a>, here is my understanding:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Aperture</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found nothing that I recognize as a counterpart to controlling camera aperture. Maybe I'll find something later, but for now I believe aperture is fixed and we can't play with our depth of field or other aperture controlled photography techniques.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Shutter Speed</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's no physical shutter in an OV5640, but "exposure" affects how much time the camera takes to read sensor values. The default setting is to use its built-in automatic exposure control (AEC) which varies image integration time based on an internal algorithm, but it is also possible to switch the camera over to manual exposure mode for deliberately over- or under-exposed pictures. To a limited degree, at least. Even manual control is limited to range of "normal" photography so no multi-hour exposures here. The register datasheet outlines range of values but I don't understand what they mean yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Sensitivity (ISO)</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The conceptual counterpart for OV5640 is "gain", and there is again the default of automatic gain control (AGC) with the option to turn off AGC and write values to specific registers to control gain. The register datasheet discusses the range of values, but I don't understand what they mean yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">White Balance</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can turn automatic white balance (AWB) on or off, but that's all I know from this document. What happens when AWB is turned off is out of scope. Adafruit library exposes <code>set_camera_wb()</code> but then we're out of luck for the actual values passed into that API. "<em>For advanced AWB settings, contact your local OmniVision FAE.</em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Focus</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was the most excitement part for me, because vast majority of camera modules available to electronics hobbyists have a fixed focus. The OV5640 on board the Memento has a voice coil motor (VCM) to move its optical path and adjust focus. One of the Adafruit demos <a href="https://learn.adafruit.com/memento-focus-stacking/code-the-focus-stacker">performed focus-stacking</a> so I know we have programmatic access, and the camera test app exposes the ability to perform auto-focus. I was looking forward to seeing an auto-focus algorithm in detail!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately my hopes were dashed. Indeed we have programmatic access to move the lens within its range of positions, and indeed we have access to an auto-focus algorithm, but the two are separate things. The auto-focus algorithm is an opaque binary blob uploaded to the camera running on its built-in microcontroller. We do not get to see how it works.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, there are a few auto-focus modes we should be able to select and allow us to specify a region for focus. These controls were designed to support the "tap to focus" usage pattern common to touchscreen cell phone camera apps. So while we don't get to see the magic inside the box, we have some amount of control over what happens inside. On the downside, this capability is not exposed via Adafruit PyCamera CircuitPython library API so some modifications will be required before experimentation can commence. If I might be doing that, I should dig in to <a href="https://newscrewdriver.com/2024/07/06/adafruit-pycamera-library-includes-custom-ov5640-support/">see what's under the hood</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

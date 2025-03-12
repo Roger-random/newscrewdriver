@@ -1,0 +1,101 @@
+---
+layout: post
+title: Successful LinuxCNC Stepper Motor Test
+date: 2022-12-28 12:30:00.000000000 +00:00
+type: post
+post_id: '20815'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '20803'
+  _last_editor_used_jetpack: block-editor
+  _oembed_b3449fcc95937b5ff0295cf6d88239b3: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    got a single motor moving under command of LinuxCNC stepper configuration wizard
+    &quot;Test Axis&quot; tool. A good step towards goal of building a gantry mill.
+    <a href="https://t.co/tuXs4dixyY">pic.twitter.com/tuXs4dixyY</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1232185123816144898?ref_src=twsrc%5Etfw">February
+    25, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_b3449fcc95937b5ff0295cf6d88239b3: '1671924123'
+  _oembed_f8993aa1cd54a4afc839474fa2a724b1: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    got a single motor moving under command of LinuxCNC stepper configuration wizard
+    &quot;Test Axis&quot; tool. A good step towards goal of building a gantry mill.
+    <a href="https://t.co/tuXs4dixyY">pic.twitter.com/tuXs4dixyY</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1232185123816144898?ref_src=twsrc%5Etfw">February
+    25, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '80047545410'
+  timeline_notification: '1672259403'
+  _oembed_time_f8993aa1cd54a4afc839474fa2a724b1: '1672259413'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672265167
+  _oembed_381f2a144d0a0c4f8a73599a24f1be03: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    got a single motor moving under command of LinuxCNC stepper configuration wizard
+    &quot;Test Axis&quot; tool. A good step towards goal of building a gantry mill.
+    <a href="https://t.co/tuXs4dixyY">pic.twitter.com/tuXs4dixyY</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1232185123816144898?ref_src=twsrc%5Etfw">February
+    25, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_381f2a144d0a0c4f8a73599a24f1be03: '1708471126'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/28/successful-linuxcnc-stepper-motor-test/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Setting up an old PC to explore LinuxCNC was pretty easy. I had most of the hardware sitting around, the only thing I had to buy was <a href="https://newscrewdriver.com/2022/12/27/pci-express-parallel-port-card-for-linuxcnc/">a PCIe parallel board built around a MCS9900 chip</a> which I chose for its LinuxCNC support. The next step is to connect it to some mechanical hardware to see if it even works. In order to do that, I had to find the physical addresses assigned to the parallel port card. I've been playing around with PC hardware long enough to remember add-on cards that required fussing with jumpers to set hardware addresses, but that hasn't been necessary for decades. PCIe cards are assigned their resources automatically and modern software had ways to enumerate and find those values. For LinuxCNC we had the first part -- automatic assignment without jumpers or such -- but for whatever reason we do not have the second part.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":20807} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2020/02/pcie-netmos-9900-parallel-controller-at-e010.jpg" alt="PCie NetMos 9900 parallel controller at e010" class="wp-image-20807"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instead of LinuxCNC automatically finding the parallel card and figuring out what to do with it, the setup person has to run Linux command line utilities to find these numbers and write them down for input to LinuxCNC later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next task is to find an old school parallel cable. This was surprisingly difficult in this day and age. Every longtime PC user would claim they have several in a box somewhere, but unable to find the right box because it's been so long.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":20806} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2020/02/parallel-cable-beheaded.jpg" alt="Parallel cable beheaded" class="wp-image-20806"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Eventually one was found so I could cut it up to access wires within. I just need two signal wires (plus ground wire) for the first test, driving "step" and "direction" control signals of a motor controller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/Regorlas/status/1232185123816144898","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1232185123816144898
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:paragraph --></p>
+<p>The motor hardware visible here was a <a href="https://amzn.to/3jvd3Ms" target="_blank" rel="noreferrer noopener">hybrid stepper motor system</a>(*) that was sitting on a shelf and available for experimentation. The "hybrid" in this case meant something that could accept step/direction commands like a stepper motor, but unlike normal stepper motors this system has a closed-loop feedback system. Normal stepper motors are open-loop, meaning they just go through their motions but have no idea what the motor output shaft is actually doing. It might miss a step or two and the system wouldn't know. This hybrid system includes a motor shaft position encoder, so it knows when a step is missed and can compensate. Such systems are more expensive but allows more efficient operation (use just enough electric power to deliver commanded steps) and more usable power (don't need to allocate as much to error margin.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This successful was completely within the LinuxCNC stepper motor configuration wizard and its "Test Axis" button. It established step/direction works as expected, and that acceleration/deceleration curves are smooth in practice. But this is very far from running a G-Code program in LinuxCNC. It doesn't tell me if multiple axes will coordinate successfully in multi-axis motion, and it is far too short in duration to prove long-term reliability. Still, it's a good start, and I'm a little sad I didn't get to go further.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We had our pandemic lockdown shortly after this milestone. The workspace where I had been working on this homebrew CNC project was no longer available. I got my LinuxCNC PC back, but the hybrid stepper motor is now out of reach. I was given the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/08/12/new-project-xy-stage/" target="_blank">Parker XY stage itself</a> (including the two driver boxes) and the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/12/23/examining-air-cooled-er11-cnc-spindle/" target="_blank">spindle I bought</a>, but the rest of the gantry test system was disassembled and returned to their respective owners. I hope to resurrect this project at some point, but its future is uncertain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

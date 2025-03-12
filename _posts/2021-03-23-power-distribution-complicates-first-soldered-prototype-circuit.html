@@ -1,0 +1,48 @@
+---
+layout: post
+title: Power Distribution Complicates First Soldered Prototype Circuit
+date: 2021-03-23 12:30:00.000000000 +00:00
+type: post
+post_id: '25744'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25743'
+  _publicize_job_id: '56300259497'
+  timeline_notification: '1616527807'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/23/power-distribution-complicates-first-soldered-prototype-circuit/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One of my ESP32 dev kit modules was <a href="https://newscrewdriver.com/2021/03/22/another-esp32-dev-kit-layout/">too wide to be breadboard-friendly</a>. But it had reduced pin count, making for a smaller overall footprint on a circuit board so I used it as the centerpiece for a perforated board prototype. This Micro Sawppy control board has the functionality of <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/19/cardboard-rover-testbed-wheels-turning-and-steering/" target="_blank">my breadboard prototype</a> plus a few enhancements.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I set out to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/16/assigning-pins-for-sawppy-rover-esp32/" target="_blank">plan my ESP32 control pin assignments</a>, I laid them out roughly in the same physical relationship as they would be on a rover, hoping this would make control wire routing easier. I'm happy to report that this planning paid off, the motor control signal wires were very straightforward to route. For the servo control signals I reused wires from <a href="https://newscrewdriver.com/2021/03/21/aftermath-of-exceeding-sg90-micro-servo-six-volt-maximum/" target="_blank" rel="noreferrer noopener">micro servos I negligently destroyed</a>, and for DC motor control signal pairs I pulled solid core wires out of a CAT5E cable which was conveniently in already-twisted together pairs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What I did not plan out was power distribution, which was something <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/20/initial-thoughts-on-micro-sawppy-rover-battery-power/" target="_blank">I knew was a challenge</a> yet I had no plan beyond "maybe soldering would help". Well, the lack of planning really showed in the utter mess of wiring that resulted, as more than half of the wires visible are for power distribution of one context or another. Which wasn't helped by the fact I used thicker 22AWG wires for power distribution taking up far more space than low-amperage control signal wires. I definitely need to put some thought into power distribution for the next control board revision.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the middle of the title image is a yellow jumper. When it is in place, the ESP32's VIN pin is connected to this board's battery power, letting it run standalone. This jumper must be removed before I upload new software to my ESP32. If not removed and the battery is not connected, the rover will try to run on power from the computer's USB port which will not work possibly destroying the USB port. Or if the battery is connected, it will send battery voltage into the computer's USB port which is also a bad thing. Unfortunately this setup doesn't have the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/18/cardboard-box-rover-esp32-power-supply/" target="_blank">physical exclusion design in my solid-core wire breadboard version</a>. I am scared of forgetting this jumper and want to bring physical exclusion back in a future revision.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have another jumper on this soldered prototype board, but it <a href="https://newscrewdriver.com/2021/03/24/configurable-micro-sawppy-servo-power-supply/">serves a completely different purpose</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,66 @@
+---
+layout: post
+title: TP-Link 8-Port Ethernet Switch (TL-SG108)
+date: 2022-08-22 12:30:00.000000000 +00:00
+type: post
+post_id: '32123'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32125'
+  _publicize_job_id: '76002855160'
+  timeline_notification: '1661196607'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666690379
+  _elasticsearch_data_sharing_indexed_on: '2024-05-14 06:37:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/22/tp-link-8-port-ethernet-switch-tl-sg108/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Latest visitor to the teardown workbench is a TP-Link 8-port Gigabit Ethernet Switch. When plugged in to power, I see the power LED illuminate. But when I plug in an Ethernet cable, its corresponding activity LED stays dark. It's not just an indicator light failure, no networking traffic flows through this switch at all. All the cables act as if they were not plugged in.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32126,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/tp-link-tl-sg108-switch-intact.jpg?w=1024" alt="" class="wp-image-32126"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't expect to see very much inside, but I still wanted to take a look. Also, disassembly will allow me to separate its metal enclosure (sent to normal recycle) from its internal circuit board (for electronic waste.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32125,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/tp-link-tl-sg108-switch-disassembled.jpg?w=1024" alt="" class="wp-image-32125"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Removing two externally accessible fasteners allow me to slide the top lid away, reveling the circuit board held by four more fasteners. Removing them released the circuit board. Nothing tricky here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32128,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/tp-link-tl-sg108-switch-pcb-top.jpg?w=1024" alt="" class="wp-image-32128"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is one obvious large chip in charge of the operation, but there is a heatsink epoxied to its surface so I could not read its label. There are eight large rectangular <a rel="noreferrer noopener" href="http://www.group-tek.com/en/networktransformer/49-179.html" target="_blank">Group-Tek HST-2027DAR network transformers</a>, one per port. Each of them embeds many little coils inside to carry network data while keeping things electrically isolated. (A picture showing internals of a similar Ethernet transformer <a href="https://newscrewdriver.com/2022/08/12/notes-on-open-circuits-by-eric-schlaepfer-and-windell-h-oskay/">is available in <em>Open Circuits</em></a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32124,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/tp-link-tl-sg108-switch-c88-is-gone.jpg?w=640" alt="" class="wp-image-32124"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With so few components, it didn't take long for me to inspect them and verify there were no obvious signs of failure. There were several unpopulated footprints, but those looked deliberate. The lone exception is C88 which looks to have been torn off. There should have been a tiny capacitor complementing its twin C87. I don't think a single capacitor would explain a complete failure of the switch, though.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another feature visible in this closeup is a large sprinkling of dimples that I associate with circuit board vias - holes drilled through the substrate to connect to another circuit board layer. They're usually done to conduct signal to another layer. (For an example see the near end of R38, visible in this picture towards the left.) But this board had so <em><strong>so </strong></em>many vias! Do they all go to the other side of the board?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32127,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/tp-link-tl-sg108-switch-pcb-bottom.jpg?w=1024" alt="" class="wp-image-32127"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yes they do! I've seen generous vias done in the name of heat dissipation, but thermal management vias would be concentrated around heat-generating components. These vias are scattered throughout the board, surrounding the many traces carrying Ethernet data. Which leads to my new hypothesis: these are all part of the ground plane, helping maintain integrity of signal traveling over data wires.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

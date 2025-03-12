@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'Notes on Codecademy "Learn CSS: Transitions and Animations"'
+date: 2022-11-03 13:50:27.000000000 +00:00
+type: post
+post_id: '33423'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33429'
+  timeline_notification: '1667508631'
+  _publicize_job_id: '78376569961'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/03/notes-on-codecademy-learn-css-transitions-and-animations/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After an <a href="https://newscrewdriver.com/2022/11/02/notes-on-codecademy-learn-css-flexbox-and-grid/">interesting and occasionally challenging time</a> with Codecademy's "<em>Learn CSS: Flexbox and Grid</em>" course, I followed their recommended CSS curriculum onward to "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-css-transitions-and-animations" target="_blank">Learn CSS: Transitions and Animations</a></em>". It was an interesting and worthwhile unit, and thankfully shorter than the previous course on flexbox + grid. This is in part helped by a narrower scope: the CSS animation system does not attempt to cover all possible animations anyone may want to put on screen. It only animates <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties" target="_blank">a specified subset of CSS properties</a>, but doing so covers majority of animation effects useful for adding visual interest and improving the user experience. As opposed to early HTML <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blink" target="_blank">&lt;BLINK&gt;</a></code>, a design misstep which definitely did <em>not </em>improve user experience.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every animation system shares some fundamentals: what to change, where+when to start, where+when to stop, and how to move between start and stop points. That's quite a few parameters to change and managing them quickly becomes cumbersome as the number of adjustable knobs increase. But CSS animation has a narrow scope, limiting the complexity somewhat. It also has a benefit: the start and stop state are specified by existing CSS mechanisms, leaving the transition system to deal with the animation-specific parameters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This actually plays into an advantage of using CSS shorthand, which usually annoys me as presenting multiple ways to describe the same thing. Here multiple transition parameters can be collapsed into a single <code>transition</code>. It has all the annoyances of shorthands: it is another way to describe the same thing, and it requires memorizing an arbitrary order of parameters. But here <code>transition</code> has an advantage. We have the option to list multiple transitions in a comma-separated list and they will all execute simultaneously when triggered. The course called this "chaining" animations. I don't know if the word "chain" was part of CSS specification or just a word choice by the author of this Codecademy course, but I found it misleading because "chain" implies animations that run consecutively (one after the other) instead of all animations running simultaneously in parallel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another way to specify multiple animations that run simultaneously is to specify "all" as the animated property. (The "what to change" parameter.) This would apply the same animation duration, easing function, and timing delay to all transitions that apply to an element. This is possible because the start &amp; stop states were specified elsewhere in CSS. I see this as a very powerful mechanism in an "easy to shoot myself in the foot" kind of power. By specifying "all" we commit to animating all applicable property changes now <em>and in the future</em>. Which certainly means surprising behavior in the future when we add another change then surprised to see it animate. Followed by a debugging session that ends with "Oh, this transition applied to 'all'."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I did not see is a way to create animated transitions between different layouts, for example when triggered by mechanisms covered in the <a href="https://newscrewdriver.com/2022/11/05/notes-on-codecademy-learn-css-variables-and-functions/">CSS Responsive Design</a> course. Perhaps that is not a scenario the CSS people deemed important enough?</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

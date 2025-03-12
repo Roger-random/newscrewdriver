@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Toshiba Chromebook 2 (CB35-B3340): Developer Mode'
+date: 2020-03-01 12:30:49.000000000 +00:00
+type: post
+post_id: '20696'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- CB35-B3340
+- NUCC
+meta:
+  _thumbnail_id: '20562'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '41297490581'
+  timeline_notification: '1583094725'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/01/toshiba-chromebook-2-cb35-b3340-developer-mode/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The upside of a Chromebook is that the user never has to worry about <a href="https://newscrewdriver.com/2020/02/29/toshiba-chromebook-2-cb35-b3340-hardware-specifications/">hardware specifications</a>, applications minimum requirements, or any of the typical headaches of computer ownership. It's all handled through the Chrome browser. The downside of a Chromebook is that the user is <em>not allowed</em> to install traditional computer applications. Or at least, not by default. Under the hood, Chrome OS runs a Linux kernel, and it's possible to use that as a foundation to extend computing experience outside the walled garden of Chrome OS. I started learning about <a href="https://github.com/dnschneid/crouton">Crouton</a>, a project using <code>chroot</code> capability of Linux kernel to allow a variant of Ubuntu or Debian to run on Chromebooks.</p>
+<p>Documentation for Crouton referenced the <a href="https://en.wikipedia.org/wiki/Chrome_OS#Linux_Apps">Crostini project</a>, a way to get a <a href="https://chromium.googlesource.com/chromiumos/docs/+/master/containers_and_vms.md">Linux shell and container support without putting a Chromebook into developer mode</a>. It sounds like a great thing to try first! But unfortunately this particular Chromebook<a href="https://chromium.googlesource.com/chromiumos/docs/+/master/containers_and_vms.md#Supported-Now"> is not supported</a>. More specifically, this Chromebook hardware generation with <a href="http://dev.chromium.org/chromium-os/developer-information-for-chrome-os-devices">the code name 'Swanky'</a> does not meet the hardware virtualization support required for Crostini.</p>
+<p>Especially frustrating is the explanation that, while the <a href="https://ark.intel.com/content/www/us/en/ark/products/82103/intel-celeron-processor-n2840-1m-cache-up-to-2-58-ghz.html">Intel spec sheet says the Celeron N2840</a> has the required hardware virtualization support, 'swanky' Chromebooks actually use a special variant of the chip without such support. I guess it saved them some money at the time? Keeping in mind the original intent of Chromebooks, it made sense to cut out virtualization support. But that decision now cuts this laptop off from Crostini.</p>
+<p>So no Crostini for this machine, back to looking at Crouton. And the next critical step is to switch this Chromebook <a href="https://chromium.googlesource.com/chromiumos/docs/+/master/debug_buttons.md#Firmware-Keyboard-Interface">into Developer Mode</a>. Holding down <code>ESC</code> + <code>Refesh</code> then pressing power, I can see the broken display is illuminated but the external monitor is not. It appears the recovery/developer mode menu is shown only on the built-in display, which I can't read. And unlike the power wash menu earlier, the screen mirror key combination has no effect on the developer mode menu.</p>
+<p>I searched online for a complete procedure to put this Chromebook into developer mode. Unfortunately all I found were"press control-D from recovery screen and follow menus" which isn't helpful when I can't read the screen!</p>
+<p>It appears if I want to venture outside the Chrome OS sandbox, I have to look into screen replacement and the first step is <a href="https://newscrewdriver.com/2020/03/02/toshiba-chromebook-2-cb35-b3340-screen-removal/">investigating its removal</a>.</p>
+<p></body></html></p>

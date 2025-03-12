@@ -1,0 +1,80 @@
+---
+layout: post
+title: 'Xbox 360 Kinect and RTAB-Map: Handheld 3D Environment Scanning'
+date: 2019-01-26 13:30:05.000000000 +00:00
+type: post
+post_id: '17693'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- Kinect
+- OpenKinect
+- RTAB-Map
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26962873469'
+  timeline_notification: '1548538284'
+  _oembed_2e2f71f0e1a013f47cbf367b499120af: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Also
+    playing with a Kinect that belongs to <a href="https://twitter.com/Regorlas?ref_src=twsrc%5Etfw">@Regorlas</a>.
+    It&#39;s running with some software that builds a 3D map of its surroundings.
+    This is cool! <a href="https://t.co/1jZ38Q6lvO">pic.twitter.com/1jZ38Q6lvO</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1090101923263393792?ref_src=twsrc%5Etfw">January
+    29, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_2e2f71f0e1a013f47cbf367b499120af: '1548815872'
+  _oembed_91f5acecbf2aceea99049744b3dc14c9: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Also
+    playing with a Kinect that belongs to <a href="https://twitter.com/Regorlas?ref_src=twsrc%5Etfw">@Regorlas</a>.
+    It&#39;s running with some software that builds a 3D map of its surroundings.
+    This is cool! <a href="https://t.co/1jZ38Q6lvO">pic.twitter.com/1jZ38Q6lvO</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1090101923263393792?ref_src=twsrc%5Etfw">January
+    29, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_91f5acecbf2aceea99049744b3dc14c9: '1548826437'
+  _oembed_db19332a4d25321976a48f9dfba42d6b: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Also
+    playing with a Kinect that belongs to <a href="https://twitter.com/Regorlas?ref_src=twsrc%5Etfw">@Regorlas</a>.
+    It&#39;s running with some software that builds a 3D map of its surroundings.
+    This is cool! <a href="https://t.co/1jZ38Q6lvO">pic.twitter.com/1jZ38Q6lvO</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1090101923263393792?ref_src=twsrc%5Etfw">January
+    29, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_db19332a4d25321976a48f9dfba42d6b: '1548883832'
+  wordads_ufa: u:wpcom-ufa-v3-beta:1666690409
+  _oembed_e1e4a9b517b21de9db1bda7ab10fbc96: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/26/xbox-360-kinect-and-rtab-map-handheld-3d-environment-scanning/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I brought my modified Xbox 360 Kinect and my laptop to <a href="https://www.meetup.com/SGVTech/events/xknvdlyzcbcc/">this week's SGVTech meetup</a>. My goal for the evening was to show everyone what can be done with an old game console accessory and publicly available open source code. And the best place to start showcasing RTAB-Map is to go through the very first tutorial: <a href="http://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping">Handheld Mapping with RGB-D sensor</a>.</p>
+<p>When I installed OpenKinect on my Ubuntu laptop, I was pleasantly surprised that it was offered as part of Ubuntu software repository making installation trivial. I had half expected that I would have to download the source code and struggle to compile without errors.</p>
+<p>Getting handheld RGB-D mapping up and running under ROS using RTAB-Map turned out to be almost as easy. They're all available on ROS software repositories, again sparing me the headache of understanding and fixing compiler errors. That is, as long as a computer already has ROS Kinetic installed, which is admittedly a bit of work.</p>
+<p>But if someone is starting with a working installation of ROS Kinetic on Ubuntu, they only need to install three packages via <code>sudo apt install</code>:</p>
+<ul>
+<li>
+<code>freenect</code> : <a href="https://openkinect.org/wiki/Getting_Started#Official_packages">OpenKinect drivers</a> to talk to a Xbox 360 Kinect sensor bar.</li>
+<li>
+<code>ros-kinetic-freenect-launch</code> : <a href="http://wiki.ros.org/freenect_launch">ROS integration</a> for OpenKinect.</li>
+<li>
+<code>res-kinetic-rtabmap-ros</code> : <a href="http://wiki.ros.org/rtabmap_ros">ROS integration</a> for RTAB-Map.</li>
+</ul>
+<p>Once they are installed, follow instructions on RTAB-Map <a href="http://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping">handheld RGB-D mapping tutorial</a> to execute two ROS launch files. First one launches the ROS node to match the sensor device (in my case the Xbox 360 Kinect), second one launch RTAB-Map itself along with a visualization GUI.</p>
+<p>I had fun scanning the shop environment where we hold our meetups. I moved the sensor around, both panning left-right and up-down, to get data from one side of the room. RTAB-Map created a pretty decent 3D representation of the shop. Here's a camera view of one experiment. The Kinect is sitting on the workbench behind the laptop screen. The visualization GUI has the raw video image (upper left), an image with dots highlighting the features RTAB-Map is tracking (lower left), and a big window with 3D point cloud compilation of Kinect data.</p>
+<p><img class="alignnone size-full wp-image-17694" src="https://newscrewdriver.com/wp-content/uploads/2019/01/workshop-shelves-3d-reconstruction-camera.jpg" alt="workshop shelves 3d reconstruction - camera" width="1600" height="1200"></p>
+<p>Here's the screenshot. It is even more impressive in person because we could interact with the point cloud window, rotate and zoom in 3D space to see the area from angles that the Kinect was never at. Speaking of which, look at the light teal line drawn in the lower right: this represents what RTAB-Map reconstructed as the path (in three dimensional space) I waved the Kinect through.</p>
+<p><img class="alignnone size-full wp-image-17695" src="https://newscrewdriver.com/wp-content/uploads/2019/01/workshop-shelves-3d-reconstruction-screencap.jpg" alt="Workshop Shelves 3D reconstruction - screencap.jpg" width="1855" height="1056"></p>
+<p>RTAB-Map is a lot of fun to play with, and shows huge potential for robot project applications.</p>
+<p>https://twitter.com/MLE_Online/status/1090101923263393792</body></html></p>

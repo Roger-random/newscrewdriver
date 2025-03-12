@@ -1,0 +1,63 @@
+---
+layout: post
+title: Reverse Bits To Draw With adafruit_framebuf
+date: 2024-06-03 12:30:00.000000000 +00:00
+type: post
+post_id: '43627'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43612'
+  timeline_notification: '1717443013'
+  firehose_sent: '1717443011'
+  _publicize_job_id: '95141891845'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-04 21:14:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/03/reverse-bits-to-draw-with-adafruit_framebuf/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2024/06/02/missing-initialization-command-for-frame-buffer-offset-on-mx340-lcd/">found and fixed a missing command within my initialization sequence</a>, I have gained full programmatic control over the LCD screen of a control panel I salvaged from a Canon MX340 multi-function inkjet. The main point of the exercise was to learn, because it's a relatively simple black-and-white screen 196 pixels wide by 34 pixels tall and not terribly exciting on its own. Still, now that I know how to send it frame buffer data... what can I do with it?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm not interested in re-implementing standard graphics routines myself, so I went looking for one already available. While learning about MicroPython I recall coming across mention of <a href="https://docs.micropython.org/en/latest/library/framebuf.html">a <code>framebuf</code> utility class</a> for basic graphical operations on a frame buffer. As a fork of MicroPython, Adafruit has a corresponding CircuitPython implementation named <code><a href="https://docs.circuitpython.org/projects/framebuf/en/latest/api.html">adafruit_framebuf</a></code> so I thought I'd take a look.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the frame buffer byte formats supported is called MVLSB. The M stands for monochrome, and the V means each byte represents a vertical column of eight pixels. LSB means least significant bit is the highest pixel, and the most significant bit is the lowest. This is very close to what I have on hand except for the bit order. On this screen, the least significant bit is the lowest pixel and they go up from there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43630,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-framebuf-line-vertically-inverted-per-stripe.jpg?w=800" alt="" class="wp-image-43630"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is the result of drawing a diagonal line from upper left (0,0) to lower right (195,33). Since bit order is reversed within each byte, each horizontal stripe of data gets rendered vertically inverted from what they are supposed to be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43632,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-framebuf-text-vertically-inverted-within-stripe.jpg?w=800" alt="" class="wp-image-43632"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Drawing text results in gibberish when it crosses stripes. But if I position the text so it sits entirely within a single stripe, the result is legible as vertically inverted text. "Hello Framebuffer" in this case.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could write some code to laboriously step through each bits in a byte and generate a bit-reversed counterpart value, but since there are only 256 possibilities, a lookup table would be much faster at the expense of a bit of memory. I went online looking for such a lookup table and found one in this Stack Overflow thread: <em><a href="https://stackoverflow.com/questions/746171/efficient-algorithm-for-bit-reversal-from-msb-lsb-to-lsb-msb-in-c">Efficient Algorithm for Bit Reversal (from MSB-&gt;LSB to LSB-&gt;MSB) in C</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43634,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-framebuf-line-correctly-rendered.jpg?w=800" alt="" class="wp-image-43634"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I modified that lookup table from C to Python syntax, and used it to reverse a stripe of frame buffer data before transmitting it to the LCD. Now my diagonal line renders as expected. Unfortunately, text rendering now fails with "<code>RuntimeError: pystack exhausted</code>". This was unexpected. The lookup table itself would have consumed at least 256 bytes, and there's an additional 196 bytes of working buffer for me to perform bit reversal on a single stripe. I didn't think I was skating close to RP2040 limits yet here we are. Also, it's not a general out of memory error, but specifically about call stack size and the bit reversal mechanism didn't increase the call depth at all. Weird!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well, reversing bits was just a hack anyway. The right approach is to <a href="https://newscrewdriver.com/2024/06/04/improve-drawing-via-mvmsb-for-adafruit_framebuf/">add support for this byte format directly</a> so convoluted bit reversal workaround becomes unnecessary. And it restored text rendering, too.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,37 @@
+---
+layout: post
+title: Animated GIF For When A Screenshot Is Not Enough
+date: 2018-10-03 09:00:32.000000000 +00:00
+type: post
+post_id: '16934'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22800487888'
+  timeline_notification: '1538582455'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/03/animated-gif-for-when-a-screenshot-is-not-enough/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Trying to write up <a href="https://newscrewdriver.com/2018/10/02/robot-disorientation-traced-to-timing-mismatch/">yesterday's blog post</a> posed a challenge. I typically write up a blog post with one or more images to illustrate the topic of the day. Two days ago I <a href="https://newscrewdriver.com/2018/10/01/using-rviz-to-validate-motor-movement-against-lidar-data/">talked about lining up Phoebe's orientation before and after a turn</a>. For that topic, a screenshot was appropriate illustration. But yesterday's topic is about Phoebe's RViz plot of LIDAR data moving strangely. How do I convey "moving strangely" in a picture?</p>
+<p>After thinking over the problem for a while, I decided that I can't do it with a static image. What I need is a short video. This <a href="https://newscrewdriver.com/2018/07/14/reclaiming-bearings-from-3d-printed-parts-round-2/">has happened before</a> on this blog, but doing a full YouTube video clip seems excessive for this particular application. I only need a few frames. An animated GIF seems like just the thing.</p>
+<p>I went online looking for ways to do this, and there were an overwhelming number of answers. Since my project is relatively simple, I didn't want to spend a lot of time learning a new powerful tool that can do far more than what I need. When a tool is described as simple and straightforward, that gets my attention.</p>
+<p>So for this project I went with <a href="https://launchpad.net/kazam">Kazam</a> that was described <a href="https://www.ubuntupit.com/15-best-linux-screen-recorder-and-how-to-install-those-on-ubuntu/">on this page</a> as a "lightweight screen recorder for Ubuntu". Good enough for me. The only hiccup in my learning curve was in the start/stop sequence. Recording can be started by clicking "Capture" button from the application dialog box, but there was no counterpart for stopping. Recording had to be stopped from the icon in the upper right corner of the screen.</p>
+<p>[gallery ids="16936,16935" type="rectangular"]</p>
+<p>Everything else was straightforward and soon I had a MP4 video file of RViz displaying LIDAR movement. Then it was off to <a href="https://askubuntu.com/questions/648603/how-to-create-an-animated-gif-from-mp4-video-via-command-line">this particular Ubuntu answer page</a> to turn MP4 into an animated GIF using command line tools <code>ffmpeg</code> and <code>convert</code>. However, that results in a rather large multi-megabyte GIF file, far larger than the MP4 source at a little over 100 kilobytes! Fortunately these instructions also pointed to the <code>convert</code> option <code>-layers optimize</code> which reduced the size drastically. At over 200 kilobytes, it was still double the size of the captured MP4, but at least it's well under a megabyte. And more importantly, it is allowed for embedding at my blog hosting subscription tier.</p>
+<p>This RViz plot has only simple colors and lines, ideally suited for animated GIF so it could have been even smaller. I suspect a tool dedicated to representing simple geometries on screen could produce a more compact animated GIF. If I ever need to do this on a regular basis, I'll spend more time to find a better solution. But for today Kazam + ffmpeg + convert was good enough.</p>
+<p></body></html></p>

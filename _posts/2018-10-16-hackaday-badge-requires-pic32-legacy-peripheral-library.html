@@ -1,0 +1,39 @@
+---
+layout: post
+title: Hackaday Badge requires PIC32 Legacy Peripheral Library
+date: 2018-10-16 09:00:01.000000000 +00:00
+type: post
+post_id: '16522'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23256296822'
+  timeline_notification: '1539705601'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/16/hackaday-badge-requires-pic32-legacy-peripheral-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The <a href="https://hackaday.io/superconference/">Hackaday Superconference</a> is in a few weeks, and as part of preparing for the conference, I have a <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">badge from the Hackaday event this past May in Belgrade</a>. Supposedly the upcoming Supercon badge will be a very close successor to this badge so I'm going to dig in and understand as much as I can about it.</p>
+<p>The first task is to get the badge firmware project file up and running. There is <a href="https://github.com/Hack-a-Day/basic-badge">a repository up on Github</a>. I see the device is built around Microchip's PIC32 line of processors, so obviously I needed to get my MPLAB X IDE updated and running.</p>
+<p>When I tried to build the project as-is, my first errors were related to C standard compliance, which <a href="https://newscrewdriver.com/2018/07/21/microchips-new-xc8-compiler-appears-incompatible-with-mcc-boilerplate/">I've seen before</a> in the context of working with Microchip's 8-bit chips but could be addressed the same way.</p>
+<p>Then I ran into the second compiler error:</p>
+<blockquote><p><code>fatal error: peripheral/adc10.h: No such file or directory</code></p></blockquote>
+<p>An internet search found <a href="https://www.microchip.com/forums/m911260.aspx">this thread</a> on Microchip's developer forums, which indicated I need to download something called "PIC32 Legacy Peripheral Libraries" which is a separate download link <a href="http://www.microchip.com/mplab/compilers">on the same page as</a> the XC32 compiler download.</p>
+<p><img class=" size-full wp-image-16523 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/07/pic32-legacy-peripheral-library.png" alt="PIC32 Legacy Peripheral Library" width="993" height="374"></p>
+<p>It is an archive file that, once unpacked, is an executable installer. Everything was relatively straightforward except for the installation path. By default it puts all the library files under my home directory and used version number of an old compiler. (On my Ubuntu machine, that translated to <code>/home/roger/microchip/xc32/v1.40</code>) which I guess could work given some project path updates. But it made more sense to install into the directory for my currently installed compiler, so the project path doesn't have to be updated. (On my Ubuntu machine, that translated to <code>/opt/microchip/xc32/v2.10</code>.)</p>
+<p>Once installed, the project built successfully!</p>
+<p>And after I did this investigative work, I found that there were <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade/log/146229-guide-for-programming-in-c">already instructions telling me I'd need the legacy library</a>. So this turned out to be a failure to RTFM but I learned something in the process, so all good.</body></html></p>

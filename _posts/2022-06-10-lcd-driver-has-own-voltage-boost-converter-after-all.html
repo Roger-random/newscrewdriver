@@ -1,0 +1,49 @@
+---
+layout: post
+title: LCD Driver Has Own Voltage Boost Converter After All
+date: 2022-06-10 12:30:00.000000000 +00:00
+type: post
+post_id: '30757'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30814'
+  _publicize_job_id: '73518978668'
+  timeline_notification: '1654889421'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/10/lcd-driver-has-own-voltage-boost-converter-after-all/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took apart an AT&amp;T CL84209 cordless phone system and kept one of the handset's circuit boards attached to its LCD unit. This allowed me to power up the circuit board and probe how its main processor controlled what's shown on the LCD. I then <a href="https://newscrewdriver.com/2022/06/09/unsoldering-cl84209-handset-lcd/">took the LCD off of its board</a> to take a closer look at the related circuitry.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30758,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-handset-inductor-and-diode.jpg?w=1024" alt="" class="wp-image-30758"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Probing data indicated there was +5.2V on one of the LCD pins, and I had guessed it was supplied by a voltage boost converter somewhere else on the circuit board. I learned what they usually look like from the time I dug into the circuit board for a laptop screen, which <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/06/07/ti-tps61187-circuits-boost-converter/" target="_blank">included a boost converter</a> to power its white LED backlight. On this handset circuit board, I see at least one assembly of an inductor next to a diode close to a capacitor, all the elements I now associated with a boost coverter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But when I traced the phone handset circuit board, I didn't find a +5.2V line going to the LCD. I found only a pair of capacitors. One of which connected the two square-wave generating pins (7 and 8) and another capacitor connected the +5.2V line to the +3.3V line. (Pins 5 and 6.) I don't recognize what this arrangement does, but I could replicate it on my breadboard and see what happens.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30781,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-saleae-trace-startup-100nf-56-and-78.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-saleae-trace-startup-100nf-56-and-78.png?w=1024" alt="" class="wp-image-30781"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The analog capture showed what happened: We now see pin 6 sit at 3.3V immediately upon initial power-up and rise up to +5.4V in response to the first I<sup>2</sup>C configuration message. Finally matching <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/30/cordless-handset-lcd-power-up-in-saleae-analog-mode/" target="_blank">the pattern I saw on the original capture</a>. This is amazing! The LCD driver chip only needs a +3.3V power supply and from that it generates its own +5.4V. There must be a built-in voltage boost converter with inductor and diode (or their functional equivalents) internal to work alongside an external capacitor. I thought I had learned enough about boost converters to recognize them when I see them, now I know I'm wrong. Earlier I had put a capacitor between the boost converter output line and ground, and that didn't do what it did when I put the capacitor between boost output and +3.3V. I clearly have more to learn more about boost converters. But at least now I'm <a href="https://newscrewdriver.com/2022/06/11/cl84209-handset-lcd-segment-map/">finally driving this LCD properly</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

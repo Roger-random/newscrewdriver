@@ -1,0 +1,47 @@
+---
+layout: post
+title: Arduino tone() Can Play Sparky Danger Organ
+date: 2024-06-12 12:30:00.000000000 +00:00
+type: post
+post_id: '43755'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ignition coil
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43731'
+  firehose_sent: '1718220635'
+  _publicize_job_id: '95385715384'
+  timeline_notification: '1718220638'
+  wordads_ufa: u:wpcom-ufa-v4:1719010623
+  _elasticsearch_data_sharing_indexed_on: '2024-06-21 22:59:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/12/arduino-tone-can-play-sparky-danger-organ/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got <a href="https://newscrewdriver.com/2024/06/10/sparky-danger-organ/">a spark plug to sing a song</a>, but it was singing out of tune and I didn't know why. I barely know enough about music to get this far. My friend Emily had more sheet music reading skill and offered to double-check my music translation. If her translation sounds good, then we'll know the problem was my sheet music translation. If her translation also sounds odd, we'll know the problem is with my timing code controlling spark frequency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I replaced my version of the song with hers, and it sounded great! So that's settled: Sparky's first performance sounded bad because I didn't know how to read sheet music. I also received feedback that the way I represented music in my Arduino code was peculiar. No argument from me, because I wrote it out of ignorance and it was what I could hack together at the time. Emily then asked if there was a reason why I'm not using <code>tone()</code> if I'm using an Arduino anyway. The answer was that I didn't know it existed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Prompted by this question, a bit of searching on "Arduino tone library" found a GitHub repository at <a href="https://github.com/bhagman/Tone">https://github.com/bhagman/Tone</a>, whose <code>README</code> explained it was a library to use AVR timers to generate 50% duty cycle square waves of a specified frequencies along with a list of <code>#define</code> that mapped musical notes to frequencies. It also said a single-timer version of the library has been incorporated into Arduino core, so for single-voice applications like Sparky we wouldn't even need to install an additional library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought the 50% duty cycle (half of time signal is on, half off) might be a problem, because I've been using 0.5ms signal pulses and leaving the pin off the rest of the time. I looked in the tone library but wasn't familiar enough with AVR timer configuration registers to understand how I might convert it over. Then I remembered the always-useful mantra: check the easy thing first. Maybe Sparky doesn't mind if the trigger pulse was longer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the single-timer version of tone was now built into Arduino, I looked for Arduino built-in examples illustrating its use. I found "<code>Examples/02.Digital/toneMelody</code>" which was <a href="https://docs.arduino.cc/built-in-examples/digital/toneMelody/">designed to work with a piezo buzzer</a>. I pointed it to Sparky's IGT pin and heard it play the little melody. Great! Sparky doesn't mind longer IGT pulses and I can throw out all of my hacked-up music-hampering playback code and just use <code>tone()</code>. I don't even need to struggle with sheet music or convert them to MIDI notes anymore, I can play songs other people have already translated for <code>tone()</code> playback. I found several collections and the first collection with its own take on Beethoven's "Ode to Joy" is <a href="https://github.com/robsoncouto/arduino-songs">https://github.com/robsoncouto/arduino-songs</a>. I gave to Sparky and yeah, <a href="https://hachyderm.io/@regorlas/112606102223651729">way better than my version</a> and a lot easier too. I wish I knew <code>tone()</code> existed a few days ago, but at least I know now. This <code>tone()</code> music earned Sparky <a href="https://newscrewdriver.com/2024/06/21/sparky-danger-organ-now-on-the-autopian/">15 minutes of fame on <em>The Autopian</em></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

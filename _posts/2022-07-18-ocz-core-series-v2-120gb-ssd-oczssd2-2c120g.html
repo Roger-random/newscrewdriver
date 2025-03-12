@@ -1,0 +1,68 @@
+---
+layout: post
+title: OCZ Core Series V2 120GB SSD (OCZSSD2-2C120G)
+date: 2022-07-18 12:30:00.000000000 +00:00
+type: post
+post_id: '31677'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31487'
+  _publicize_job_id: '74851831050'
+  timeline_notification: '1658172665'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/18/ocz-core-series-v2-120gb-ssd-oczssd2-2c120g/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My first SSD was a Patriot WARP V.2 32GB SSD. It not <em>quite </em>the bleeding edge, that "V.2" signified a revision that solved some issues in the first wave. Early experience with my first SSD was amazing enough for me to look for a larger 120GB unit to gain a little more elbow room in day-to-day use. They both represented early technology with flaws that needed solving before SSD became long-term reliable. I didn't know that when I bought them, but it was certainly made clear as their performance degraded over a few years and then dying entirely when they no longer showed up as SATA drives when plugged them in. <a href="https://newscrewdriver.com/2022/07/17/patriot-warp-v-2-32gb-ssd-pe32gs25ssd/">I took apart the first Patriot drive</a>, now it's time for the second OCZ drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":31482,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ocz-core-v2-120gb-top.jpg?w=600" alt="" class="wp-image-31482"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":31481,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ocz-core-v2-120gb-bottom.jpg?w=600" alt="" class="wp-image-31481"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since they were both built around the JMF602 controller and arrived on market around the same time, I expected them to both utilize a JMF602 reference design. Before I opened up this SSD, I expected the circuit board to look identical to the smaller Patriot, just with higher capacity flash memory chips.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31485,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ocz-core-v2-120gb-bottom-removed.jpg?w=1024" alt="" class="wp-image-31485"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found I was wrong when I opened up the case, this drive used a very different circuit board layout. This design placed the JMF602 at the center, and I don't see an obvious debug header. There is still a connector adjacent to the SATA data port and it is populated on this drive: a USB mini-B socket that lets this SSD act as a USB flash drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":31487,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ocz-core-v2-120gb-disassembled.jpg?w=1024" alt="" class="wp-image-31487"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Four more flash chips live on the other side of this board, again in a different layout compared to the Patriot drive. They seem to have the same production information sticker, but that might be some sort of industry standard sticker.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31489,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ocz-core-v2-120gb-ssd-write-response-time-478ms.png?w=439" alt="" class="wp-image-31489"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thanks to the USB port, I could still access this drive even though the SATA port no longer enumerates. It is only an USB 2.0 connection, but I don't think that is a constraint. Write performance has degraded to an atrocious level on this drive. Here I'm copying a single large ISO file to the drive. 25MB/sec throughput and a response time of nearly 500ms are well below limits of USB2.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31491,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ocz-core-v2-120gb-ssd-read-response-time-20ms.png?w=437" alt="" class="wp-image-31491"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Read throughput is only slightly better at nearly 40MB/sec and a 20ms read response time is significantly faster but still not great. Since this drive still works via USB, for now I'll spare it the hot air treatment I performed to the Patriot. But given this level of performance I'm not sure if I can do anything useful with it.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

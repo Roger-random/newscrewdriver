@@ -1,0 +1,38 @@
+---
+layout: post
+title: Developer Mode and Crouton on Toshiba Chromebook 2 (CB35-B3340)
+date: 2020-04-13 12:30:51.000000000 +00:00
+type: post
+post_id: '20824'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- CB35-B3340
+- NUCC
+meta:
+  _thumbnail_id: '20852'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42985980497'
+  timeline_notification: '1586806288'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/13/developer-mode-and-crouton-on-toshiba-chromebook-2-cb35-b3340/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Having replaced a cracked and illegible screen with <a href="https://newscrewdriver.com/2020/04/12/secondhand-replacement-screen-for-toshiba-chromebook-2-cb35-b3340/">a lightly blemished but perfectly usable module</a>, I can finally switch this Toshiba Chromebook 2 (CB35-B3340) into developer mode. It's not a complicated procedure, but the critical menus are displayed only on the main display and not an external monitor. With the earlier illegible screen, there was no way to tell when I needed to push the right keys. I might have been able to do it blind if I had a timeline reference... which is a potential project for another day.</p>
+<p>Today's project was to get <a href="https://github.com/dnschneid/crouton">Crouton</a> up and running on this Chromebook. Following instructions for the most mainstream path, I went through a bunch of procedures where I only had a vague idea of what was happening. Generally speaking it's not a great idea to blindly run scripts downloaded from the internet, but Crouton is fairly well known and I had no personal data on this Chromebook, something enforced by Chrome OS.</p>
+<p>Until I put this Chromebook into developer mode myself I hadn't known that user data is erased whenever a Chrome OS device transitions into or out of developer mode. This meant whatever data is saved on a Chrome OS device can't be snooped upon in developer mode. Also, any tools or utilities that might have been installed to view system internals in developer mode are erased and no longer usable once the machine is in normal mode. This policy increased my confidence in privacy and security of Chrome OS. I'm sure it's not perfect as all software have bugs, but it told me they had put thought into the problem.</p>
+<p>What it meant for me today was that everything I had put on that Chromebook was wiped before I could start playing with Crouton. Whose default instructions quickly got me up and running on Ubuntu 16 (Xenial) with the xfce desktop. Running two full user-mode GUI on top of a single kernel noticeably stresses this basic machine, with user response becoming a little sluggish. Other than that, it felt much like any other Ubuntu installation except it's all running simultaneously with full Chrome OS on the exact same machine.</p>
+<p>Raw performance concerns aside, it seemed to work well. And the wonder of chroot meant it's pretty easy to erase and restart with a different configuration. Which is <a href="https://newscrewdriver.com/2020/04/14/ubuntu-18-and-ros-on-toshiba-chromebook-2-cb35-b3340/">what I'll tackle next</a>, because ROS Melodic is intended for Ubuntu 18 (Bionic).</p>
+<p></body></html></p>

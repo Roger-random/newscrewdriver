@@ -1,0 +1,93 @@
+---
+layout: post
+title: Magnetometer Service as RxJS Practice
+date: 2023-04-09 12:30:00.000000000 +00:00
+type: post
+post_id: '36144'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36104'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685821700
+  _publicize_job_id: '83055588526'
+  timeline_notification: '1681068611'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/09/magnetometer-service-as-rxjs-practice/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm still struggling to master CSS, but at least I got far enough to put everything I want on screen roughly where I want them, even <a href="https://newscrewdriver.com/2023/04/08/angular-component-dynamic-resizing/">after the user resizes their window</a>. Spacing and proportion of my layout is still not ideal, but it's good enough to proceed to the next step: piping <a href="https://newscrewdriver.com/2023/03/28/magnetometer-api-in-android-chrome-browser/">data from W3C Generic Sensor API for Magnetometer</a> into my Angular app. My <a href="https://newscrewdriver.com/2023/03/30/visualizing-magnetometer-data-with-three-js/">initial experiment</a> was a much simpler affair where I could freely use global variables and functions, but that approach would not scale to my future ambition to execute larger web app projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Installation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Magnetometer API is exposed by the browser and not a code library, so I didn't need to "npm install" any code. However, as it is not a part of core browser API, I do need to install <a href="https://www.npmjs.com/package/@types/w3c-generic-sensor">W3C Generic Sensor API type definition</a> for the TypeScript compiler. This information is only used at development time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>npm install --save-dev @types/w3c-generic-sensor</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>After this, TypeScript compiler still complains that it can't find type information for Magnetometer. After a brief search I found I also need to edit <code>tsconfig.app.json</code> and add <code>w3c-generic-sensor</code> to "types" array under "compilerOptions".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  "compilerOptions": {
+    "types": [
+      "w3c-generic-sensor",
+    ]
+  },</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That handles <strong><em>what</em></strong> I had to do, but I'm ignorant as to <em><strong>why</strong></em> I had to do it. I didn't have to do the same for @types/three when I installed Three.js, why was this different?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Practicing Both RxJS and Service Creation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll need a mechanism to communicate magnetometer data when it is available. When the data is not available, I want to be able to differentiate between reasons why that data is not available. Either the software API is unable to connect to a hardware sensor, or the software API is not supported at all. The standard Angular architectural choice for such a role is to <a href="https://angular.io/guide/architecture-services">package it up as a service</a>. Furthermore, magnetometer data is an ongoing stream of data, which makes it a perfect practice exercise for <a href="https://newscrewdriver.com/2023/03/14/notes-on-angular-observables-rxjs-guide/">using RxJS</a> in my magnetometer service. It will distribute magnetometer data as a <a href="https://rxjs.dev/guide/subject">Subject</a> (multicast Observable) to all app components that subscribe to it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Placeholder Data</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I had it up and running, I realized everything is perfectly setup for me to generate placeholder data when real magnetometer data is not available. Client code for my magnetometer data service doesn't have to change anything to receive placeholder data. In practice, this lets me test and polish the rest of my app without requiring that I run it on a phone with real magnetometer hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">State and Status Subjects</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Happy with how this first use turned out, I converted more of my magnetometer service to use RxJS. The current state of the service (initialized, starting the API, connecting to magnetometer hardware, etc) was originally just a publicly accessible property, which is how I've always written such code in the past. But if any clients want to be notified as soon as the state changes, they either have to poll state or I have to write code to register &amp; trigger callbacks which I rarely put in the effort to do. Now with RxJS in my toolbox, I can use a Behavior Subject to communicate changes in my service state, making it trivial to expose. And finally, I frequently send stuff to <code>console.log()</code> to communicate status messages, and I converted that to a Behavior Subject as well so I can put that data onscreen. This is extra valuable once my app is running on phone hardware, as I can't (easily) see that debug console output.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">RxJS Appreciation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After a very confused introduction to RxJS and a <a href="https://newscrewdriver.com/2023/03/11/tiny-step-on-rxjs-learning-curve/">frustrating climb</a> up the learning curve, I'm glad to finally see some payoff for my investment in study time. I'm not yet ready to call myself a fan of RxJS, but I feel I have enough confidence to wield this tool for solving problems. This story is to be continued!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a successful Angular service distributing data via RxJS, I think this "rewrite magnetometer test in Angular" is actually going to happen. Good enough for it to <a href="https://newscrewdriver.com/2023/04/10/compass-web-app-project-gets-own-repository/">move into its own code repository</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: After learning more about Angular and what's new in Angular v16, everything Idescribed in this post has been <a href="https://newscrewdriver.com/2023/06/03/compass-project-updated-with-angular-signals/">converted to Angular Signals</a>.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

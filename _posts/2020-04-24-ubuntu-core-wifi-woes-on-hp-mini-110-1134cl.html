@@ -1,0 +1,51 @@
+---
+layout: post
+title: Ubuntu Core WiFi Woes on HP Mini (110-1134CL)
+date: 2020-04-24 12:30:51.000000000 +00:00
+type: post
+post_id: '21319'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 110-1134CL
+- NUCC
+meta:
+  _thumbnail_id: '21208'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '43437546949'
+  timeline_notification: '1587756662'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/24/ubuntu-core-wifi-woes-on-hp-mini-110-1134cl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Last time <a href="https://newscrewdriver.com/2019/08/09/ubuntu-core-18-web-kiosk-on-dell-inspiron-11-3180/">I played with Ubuntu Core</a>, I followed through their tutorial for building a simple minimalist web kiosk whose state is wiped clean upon every reboot. At the time I had no idea why I would ever want to build such a thing, but now I have my answer: <a href="https://newscrewdriver.com/2020/04/23/esa-iss-tracker-on-hp-mini-110-1134cl/">build an "appliance" for displaying ESA's HTML Live International Space Station Tracker</a>.</p>
+<p>I had put Ubuntu Server and Ubuntu Core on this HP Mini (110-1134CL) earlier for a quick look to verify it <a href="https://newscrewdriver.com/2020/03/16/hp-mini-110-1134cl-command-line-adept/">works well for command line</a> based usage. One thing I didn't notice earlier was the fact Ubuntu Core only recognized the wired Ethernet port and not the WiFi hardware. It's nice to have WiFi if I'm want to set up an ISS display away from my wired networking infrastructure.</p>
+<p>I saw some red text flash by quickly upon boot. I had to retrieve the message after startup with the <code>journalctl</code> command to see what it complained about.</p>
+<blockquote><p>
+<code>b43-phy0: Broadcom 4312 WLAN found (core revision 15)</code><br />
+<code>b43-phy0: Found PHY: Analog 6, Type 5 (LP), Revision 1</code><br />
+<code>b43-phy0: Found Radio: Manuf 0x17F, ID 0x2062, Revision 2, Version 0</code><br />
+<code>b43 ssb0:0: Direct firmware load for b43/ucode15.fw failed with error -2</code><br />
+<code>b43 ssb0:0: Direct firmware load for b43/ucode15.fw failed with error -2</code><br />
+<code>b43 ssb0:0: Direct firmware load for b43-open/ucode15.fw failed with error -2</code><br />
+<code>b43 ssb0:0: Direct firmware load for b43-open/ucode15.fw failed with error -2</code><br />
+<code>b43-phy0 ERROR: Firmware file "b43/ucode15.fw" not found</code><br />
+<code>b43-phy0 ERROR: Firmware file "b43-open/ucode15.fw" not found</code><br />
+<code>b43-phy0 ERROR: You must go to http://wireless.kernel.org/en/users/Drivers/b43#devicefirmware and download the correct firmware for this driver version. Please carefully read all instructions on this website.</code>
+</p></blockquote>
+<p>I like error messages that point me to instructions telling me what to do. Unfortunately <a href="http://wireless.kernel.org/en/users/Drivers/b43#devicefirmware"><code>http://wireless.kernel.org/en/users/Drivers/b43#devicefirmware</code></a> is no longer a valid URL and returns a <code>HTTP 404</code> error. Searching the web for combinations of "Broadcom WiFi b43 Linux driver" led me to <a href="http://forums.debian.net/viewtopic.php?f=20&amp;t=136707">this forum post</a> by someone asking for help. A helpful response pointed to <a href="https://wiki.debian.org/bcm43xx#b43_and_b43legacy">this Debian support page</a>, and from there to <a href="https://wireless.wiki.kernel.org/en/users/Drivers/b43#Supported_devices">Linux kernel information</a>. Apparently there is a licensing issue, requiring extra steps to install these driver packages. Those extra steps are where I got stuck with Ubuntu Core as it only accepts software modules in the form of snaps.</p>
+<p>First we need to identify the exact hardware to see if it is in the <code>b43</code> or <code>b43legacy</code> package. The command is <code>lspci -nn -d 14e4:</code> but <code>lspci</code> is not part of Ubuntu Core. Flailing, I tried to <code>snap find lspci</code> and came up empty.</p>
+<p>If I had been able to determine which hardware I had, I could <a href="https://wireless.wiki.kernel.org/en/users/Drivers/b43">look it up on this chart</a> which determines if I should <code>sudo apt install <a href="https://packages.debian.org/stretch/firmware-b43-installer">firmware-b43-installer</a></code> or its legacy counterpart <code>sudo apt install <a href="https://packages.debian.org/buster/firmware-b43legacy-installer">firmware-b43legacy-installer</a></code>. But again Ubuntu Core does not allow installation of software via <code>apt</code>, only via <code>snap</code>.</p>
+<p>For the moment I'm stuck on getting WiFi for Ubuntu Core on this HP Mini, but that is not the biggest obstacle: my showstopper is that <a href="https://newscrewdriver.com/2020/04/25/aborted-ubuntu-core-web-kiosk-adventure-with-hp-mini-110-1134cl/">the tutorial kiosk has gone away</a>.</body></html></p>

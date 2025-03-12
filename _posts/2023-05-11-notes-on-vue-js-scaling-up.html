@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on Vue.js "Scaling Up"
+date: 2023-05-11 12:30:00.000000000 +00:00
+type: post
+post_id: '36646'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36516'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683925075
+  _publicize_job_id: '83971511504'
+  timeline_notification: '1683833447'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/11/notes-on-vue-js-scaling-up/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Reading through Vue.js documentation on "Built-in Components" I learned about <a href="https://newscrewdriver.com/2023/05/10/notes-on-vue-js-built-in-components/">powerful tools doing things a Vue application developer could not do on their own</a>. But as a practically matter, I don't think a beginner like myself would need to worry about them just yet. The same goes for the next section: "Scaling Up", but I still wanted to skim through to see what scaling problems Vue thought deserved solving. This section was shorter than I had anticipated, because a lot of complexity has been delegated to other tools. These core Vue.js documentation pages would link to <em>their </em>documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The section actually starts small by talking about Vue components and the Single-File Component (SFC) format because that is <a href="https://vuejs.org/guide/scaling-up/sfc.html">the basic unit of building large Vue apps</a>. One of the first items is actually a pointer to scaling <em>down</em> via <code><a href="https://github.com/vuejs/petite-vue">petite-vue</a></code> for the progressive enhancement (sprinkle tiny bits of Vue in static site) usage scenario. Then it talks about tooling like an extension for editing Vue code in Visual Studio Code, and browser extension for debugging Vue code in browser.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The topic then moves to testing. Generic web application testing frameworks would work, but the <a href="https://vitest.dev/">Vitest test runner</a> is optimized for unit testing Vue components. Once we get beyond unit tests, there's a pointer to Cypress and a link to a <a href="https://vitest.dev/guide/comparisons.html#cypress">Vitest vs. Cypress comparison</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For client-side routing, documentation gives a simple router implementation and a reference to <a href="https://router.vuejs.org/">Vue Router</a> for a full power routing solution. For state management, we again have a simple implementation and a reference to <a href="https://pinia.vuejs.org/">Pinia</a> for a more complete solution.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Server-side rendering (SSR) can get very complex, so the discussion started with the very important question: do we really need it? Sometimes goals <a href="https://vuejs.org/guide/scaling-up/ssr.html#ssr-vs-ssg">can be satisfied with static-site generation</a> (SSG) in which case we can use <a href="https://vitepress.dev/">VitePress</a>. But if actual SSR is required, there are multiple paths depending on the developer's desire for control. <a href="https://vuejs.org/guide/scaling-up/ssr.html#higher-level-solutions">Higher-level tools</a> include <a href="https://nuxtjs.org/">Nuxt.js</a>, which can also do static-site generation. And <a href="https://quasar.dev/">Quasar</a>, which proclaims PWA capability as well as compiling to mobile apps and browser extensions. Plus it features its own Material Design compliant UI components, making it appear to be the "and the kitchen sink" solution. Which, depending on the project, may or may not be a fit for <a href="https://newscrewdriver.com/2023/05/12/notes-on-vue-js-best-practices/">following best practices</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

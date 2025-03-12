@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'ROS Notes: Downgrading from Lunar to Kinetic'
+date: 2018-08-04 15:08:45.000000000 +00:00
+type: post
+post_id: '16566'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20740549596'
+  timeline_notification: '1533420529'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/04/ros-notes-downgrading-from-lunar-to-kinetic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16574 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/08/kinetic-400.png" alt="kinetic 400" width="400" height="331">After realizing my beginner's mistake of <a href="https://newscrewdriver.com/2018/08/03/ros-notes-choosing-which-distribution/">choosing the wrong ROS distribution</a> to start my self-education, I set out to downgrade my ROS distribution from the newer but less supported "L" (Lunar) release to the previous "K" (Kinetic) release. Given the sheer number of different packages involved in a ROS installation, I had been worried this was going to be a tangled mess chasing down files all over the operating system. Fortunately, this was not the case, though there were a few hiccups that I'll document today for other fellow beginners in the future.</p>
+<p>The first step is to undo the package installation, which can be accomplished by asking the Ubuntu package manager to remove the desktop package I used to install.</p>
+<p><code>sudo apt remove ros-lunar-desktop-full</code></p>
+<p>Once the top-level package was removed, all of its related packages were marked as unnecessary and could be auto-removed.</p>
+<p><code>sudo apt autoremove</code></p>
+<p>At this point ROS Lunar is gone. If a new terminal is opened at this point, there will be an error because the Lunar setup script called by <code>~/.bashrc</code> is gone.</p>
+<p><code>bash: /opt/ros/lunar/setup.bash: No such file or directory</code></p>
+<p>This is not an immediate problem. We can leave it for now and install Kinetic.</p>
+<p><code>sudo apt install ros-kinetic-desktop-full</code></p>
+<p>After this completes, we can edit <code>~/.bashrc</code> and change the reference from <code>/opt/ros/<span style="color:#ff0000;">lunar</span>/setup.bash</code> to <code>/opt/ros/<span style="color:#ff0000;">kinetic</span>/setup.bash</code>. This will address the above "No such file or directory" error when opening up a new terminal.</p>
+<p>Then we can fix up the build environment. If we now go into the catkin workspace and run <code>source devel/setup.bash</code> as usual, that command will succeed but trying to run <code>catkin_make</code> will result in an error:</p>
+<p><code>The program 'catkin_make' is currently not installed. You can install it by typing:</code></p>
+<p><code>sudo apt install catkin</code></p>
+<p>This is a misleading error message because catkin_make was installed as part of ROS Kinetic. However, <code>devel/setup.bash</code> still pointed to ROS Lunar which is now gone and that's why our system believes catkin_make is not installed.</p>
+<p>How to fix this: open a new terminal window but do NOT run <code>source devel/setup.bash</code>. Go into the catkin workspace and run <code>catkin_make</code> there. This will update <code>devel/setup.bash</code> for ROS Kinetic. After this completes, it is safe to run <code>source devel/setup.bash</code> to set up ROS Kinetic. Now <code>catkin_make</code> will execute successfully using ROS Kinetic version of files, and we're back in business!</body></html></p>

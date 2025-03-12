@@ -1,0 +1,48 @@
+---
+layout: post
+title: Learning How To Use Pololu Stepper Driver Modules
+date: 2018-07-22 09:00:27.000000000 +00:00
+type: post
+post_id: '16514'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20277242043'
+  timeline_notification: '1532275414'
+  _thumbnail_id: '16516'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/22/learning-how-to-use-pololu-stepper-driver-modules/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>My first experience with stepper motors is with <a href="https://amzn.to/2oVQZ1a" target="_blank" rel="noopener">this very inexpensive Amazon offering</a>. (*) I've since learned that these stepper motors are termed "<a href="https://en.wikipedia.org/wiki/Stepper_motor#Unipolar_motors">unipolar</a>" which incurs some trade-offs. From the price tag I knew they were cheap, and from the description I knew they were easy to control from a simple program. What I did not know about is the fairly significant headwinds if one wishes to get beyond the basics.</p>
+<p>The simple driver module that goes with these simple motors only works for straightforward on/off control. When I <a href="https://newscrewdriver.com/2017/11/09/supercon-2017-badge-pan-base-mechanical-assembly/">tried to modulate the power</a> to be somewhere between on and off, mysterious electromagnetic stuff started happening causing erratic motor behavior. At the time I decided to postpone solving the issue and to look into it later. Well, now is later and I'm going to solve my problem by ignoring unipolar motors entirely. Because it's more productive to look at the bipolar stepper motors used by pretty much every halfway decent piece of hardware.</p>
+<p>The motors themselves are more expensive, and the drivers are as well. Fortunately economies of scale meant "more expensive" is still only a few dollars. Pololu <a href="https://www.pololu.com/category/120/stepper-motor-drivers">sells a line of stepper motor driver modules</a> that are popular with the 3D printing crowd. (Or at least that's where I learned of them.) The module's physical form factor and pinout has become something of a de-facto industry standard. And a bipolar stepper motor for experimentation is equally easy to obtain as pretty much any stepper motor salvaged from consumer electronics will be a bipolar motor. For the purposes of my experiment, this motor came from a dead inkjet printer's paper-feed mechanism.</p>
+<p>Hooking up the electronics is a fairly straightforward exercise in reading data sheet and following instructions. The only thing I neglected was a capacitor across the motor input pins, something pointed out to me when I brought this experimental rig to a local maker meet. Fortunately I had been playing with a small enough motor that the absence of said capacitor didn't fry everything.</p>
+<p>All I needed to do was generate two data signals: direction and step. This is apparently a fairly common interface, even <a href="https://amzn.to/2odA0a1" target="_blank" rel="noopener">industrial-type stepper motor controllers</a> (*) accept similar inputs, so a Pololu is a great way to start. I created a small program to run on an 8-bit PIC microcontroller to generate these pulses, and the motor is off and running. It was super easy to get started, and this setup is enough for me to play around and build some basic understanding of stepper motor behavior. How they trade torque for speed, and how they respond to higher voltage/amperage. It's a good foundation for designing future robotics projects.</p>
+<p>Components on the breadboard, from left to right:</p>
+<ol>
+<li>
+<a href="https://amzn.to/2nfgM43" target="_blank" rel="noopener">Breadboard Power Supply</a> (*)</li>
+<li><a href="https://www.pololu.com/product/1201">Pololu A4983 Stepper Driver</a></li>
+<li>
+<a href="https://www.microchip.com/wwwproducts/en/PIC16F18345">PIC16F18345</a> with program to generate step/direction based on potentiometer value.</li>
+<li>LEDs hooked up in parallel with step and direction signals.</li>
+<li>Potentiometer</li>
+</ol>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

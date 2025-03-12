@@ -1,0 +1,69 @@
+---
+layout: post
+title: LRWave Audio Under Multichannel Oscilloscope
+date: 2022-08-26 12:30:00.000000000 +00:00
+type: post
+post_id: '32221'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- LRWave
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32228'
+  _publicize_job_id: '76133530081'
+  timeline_notification: '1661542205'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/26/lrwave-audio-under-multichannel-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I <a href="https://newscrewdriver.com/2022/08/25/notes-on-siglent-sds1104x-e-oscilloscope-users-guide/">read through the user's guide</a> for my new 4-channel oscilloscope, one of the features that jumped out at me was "XY mode". Normally signals are displayed with their voltage on the vertical axis and time on the horizontal axis. But XY mode allows us to plot one channel on the vertical axis against another channel on the horizontal axis. Aside from its more technical applications, people have used this to display vector art on their oscilloscope. And the simplest vector art are <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Lissajous_curve" target="_blank">Lissajous curves</a>, which Emily Velasco introduced me to. We've had several projects for Lissajous curves including <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/12/07/crt-test-rig-produced-lissajous-curves/" target="_blank">this old CRT projection TV tube</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Motivated by these Lissajous experiments, I created <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/12/18/lrwave-1-0-complete/" target="_blank">my software project LRWave</a> to give us a basic function generator using our cell phones. Or really anything that has an audio output jack and a web browser. It's not nearly as good as a real function generator instrument, but I didn't really know how far away from "good" it is. Now that I have an oscilloscope, I can look closer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32228,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/stereo-headphone-cable.jpg?w=1024" alt="" class="wp-image-32228"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Digging into my pile of discarded electronics, I found a set of stereo headphones. Cutting its cable, I pulled out three wires corresponding to left audio, right audio, and common ground reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32230,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/stereo-headphone-cable-soldered-pin.jpg?w=1024" alt="" class="wp-image-32230"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These wire strands had an insulating coating that had to be removed. Hot solder seemed to work well melting them off, also conveniently giving me a surface to attach a short segment of wire for oscilloscope probes to hook onto. Now I can see what LRWave output looks like under an oscilloscope.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32226,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/lrwave-440hz-single-low-volume.jpg?w=1024" alt="" class="wp-image-32226"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's not very pretty! Each vertical grid on this graph is 20mV according to the legend on the top right. The waveform is far from crisp, smearing across a range of about 50mV. This is very bad when the maximum and minimum levels are only separated by roughly 120mV. The narrow range was because my phone was set at very low audio volume.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32233,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/lrwave-440hz-single.jpg?w=1024" alt="" class="wp-image-32233"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cranking my phone volume up to maximum increased the amplitude to about 1.5V, so the maximum and minimum levels are separated by about 3V. (Each vertical grid is now 500mV.) With this range, the 50mV variation is a lot less critical and we have a usable sine wave. Not as good as a real function generator, but usable. Also, actual performance will vary depending on the audio hardware. Different cell phones/tablets/computers will output audio to varying levels of fidelity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is as far as I could have gone with my cheap DSO-138 single-channel oscilloscope, but now that I have more than one channel, I can connect both stereo audio channels to the oscilloscope and activate XY mode to plot them against each other and get some nice Lissajous curves on my oscilloscope screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32235,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/siglent-scope-lissajous.jpg?w=1024" alt="" class="wp-image-32235"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yeah, that's what I'm talking about! I expect this line would be finer (thinner) if I used a real wave generation instrument instead of the headphone output jack of a cell phone, but it's more than enough for a fun graph. Onwards to my <a href="https://newscrewdriver.com/2022/08/27/fan-blade-counter-fail-ir-receiver-is-not-simple-phototransistor/">next multichannel oscilloscope experiment</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

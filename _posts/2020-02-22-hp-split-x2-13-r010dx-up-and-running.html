@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'HP Split X2 (13-r010dx): Up And Running'
+date: 2020-02-22 12:30:44.000000000 +00:00
+type: post
+post_id: '20642'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- 13-r010dx
+- NUCC
+meta:
+  _thumbnail_id: '20554'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40997818501'
+  timeline_notification: '1582403447'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/22/hp-split-x2-13-r010dx-up-and-running/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I've looked over exterior <a href="https://newscrewdriver.com/2020/02/21/hp-split-x2-13-r010dx-hardware-specifications/">and spec sheet</a> for the first of three research project laptops from <a href="https://www.nuccinc.org/">NUCC</a>. With its battery charged, I turned it on to see what we have. I was greeted with the login screen for an installation of Ubuntu 14. This was enough to verify the system boots and runs. I do not have the password, so it was time to wipe the disk and install a fresh operating system. I have a suitable USB flash drive on hand with the Ubuntu 18.04 installer.</p>
+<p>I usually work with Dell laptops, whose typical convention is to hold down F12 while turning it on to select booting from a USB installation drive. This did not work, so I went back to HP documentation to find it is actually F9 for this laptop. Furthermore, since this keyboard is the type to make function keys pull multi duty, it appears I had to also hold down the Fn key at the same time as F9. It's important not to lose the docking base as neither F9 upon powerup nor USB installation disk is possible with just the tablet module.</p>
+<p>It took a few tries before system boot selector recognized the Ubuntu 18 installation USB drive. I don't think it is random when USB drives are recognized as a boot option. But if it is not random, it was definitely following a system I did not quite understand. Still, I eventually got Ubuntu 18 installer to run successfully.</p>
+<p>Normal everyday functionality appears to work under Ubuntu 18, surprisingly this included the portrait/landscape orientation sensor and a touch friendly on-screen keyboard. When Ubuntu <a href="https://www.nuccinc.org/">abandoned Unity</a> in version 18, I thought their ambition of a unified tablet-friendly interface also died. I now know I was wrong. But even though single-point touch worked well, multi-point touch support is lacking. One example: two finger pinch failed to zoom in/out as expected.</p>
+<p>Which meant if I wanted consistent multi-touch support on this screen, I will need to install Windows. Touchscreen tablet/laptop convertibles like this are likely to be from the Windows 8 era, which meant it's likely to <a href="https://newscrewdriver.com/2018/01/07/windows-10-can-activate-with-windows-8-hardware-key/">have a Windows license key embedded in the hardware</a>. This hypothesis was confirmed when Windows 10 build 1911 reported itself activated after an uneventful installation onto this laptop.</p>
+<p>Both Ubuntu and Windows were more sluggish than I had expected for this machine. A look at system activity shows a lot of time waiting for disk. I guess neither OS is compact enough to fit within the 8GB NAND cache of this hybrid drive. To verify this hypothesis, I'll <a href="https://newscrewdriver.com/2020/02/23/hp-split-x2-13-r010dx-sata-but-not-as-i-know-it/">try to upgrade the SATA hybrid drive to a full SATA SSD</a> and see if it makes the system more responsive.</p>
+<p></body></html></p>

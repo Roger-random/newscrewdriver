@@ -1,0 +1,68 @@
+---
+layout: post
+title: Migrate rxbb8.com from AWS to GitHub Pages
+date: 2023-07-10 12:30:00.000000000 +00:00
+type: post
+post_id: '37866'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- rxbb8
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37867'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689123855
+  _publicize_job_id: '85625889663'
+  timeline_notification: '1689017404'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/10/migrate-rxbb8-com-from-aws-to-github-pages/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/07/09/removing-rxbb8-plasti-dip/">peeling the BB-8 inspired art from my Mazda RX-8</a>, it seems like a good time to do some long-overdue cleanup on the project site as well. Six years ago, I wasn't sure whether it's better to build a website for each project or just put everything here on a single personal blog. With experience, I now know my scatterbrained nature is a better fit for the latter. Also, domain registration costs add up quick!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had created <a href="http://rxbb8.com/">http://rxbb8.com</a> to be a small static web site served via Amazon Web Services, and one of the earlier entries on this blog was <a href="https://newscrewdriver.com/2017/05/02/static-web-site-hosting-with-amazon-s3/">an outline of my experience</a> setting it up. What I have forgotten (and did not write down) was why I chose this approach as opposed to using <a href="https://pages.github.com/">GitHub Pages</a>. I already had <a href="https://github.com/Roger-random/rxbb8.com">a GitHub repository</a> for the markup files, though without the image files. I suspect there was something about GitHub policy six years ago that made it impractical. Was there a file size limit that prevented image files? Another data point was that project predated Microsoft acquiring GitHub which changed a lot of policies. Also, a lot of features were added to GitHub over these years. Is it possible GitHub pages didn't exist at the time? I no longer remember.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What I do know is that I would like to move it off AWS now. Hosting this site via AWS has been quite affordable. Every month I pay $0.50 USD for the Route 53 name service and a few cents for S3 bandwidth. Historically that has added up to less than half of the domain registration itself, which was $18/yr via DreamHost. However, there's a hidden risk on that S3 expense: there is no upper bound. If someone decides to write a script to repeatedly download all of my images as quickly as possible, my bill will go up accordingly and I won't know until I see my bill next month. Sure, it'd cost them bandwidth as well, but most bandwidth are cheaper than S3 rates and that's assuming they aren't doing something unethical like consuming some innocent third party's bandwidth. Six years ago, I dismissed such worry as "Nobody would have a reason to do that." Now I am older and more cynical. The truth is all it'd take is for one person to decide "because I can" is a good enough reason and cause me grief.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the time I've been learning web development, I've come across horror stories of unexpected AWS bills. Always inconvenient, sometimes it leads to people getting fired from their job, and occasionally a startup has to declare bankruptcy and shut down because they can't pay their AWS bill surprise. Thinking about that possibility has me on edge and I have enough to worry about in my life. I don't need that stress.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another reason is to eliminate a recurring stream of nag mail. Setting up a static web site as I have done means setting an Amazon S3 bucket to be globally readable by everyone. This wasn't a big deal six years ago but there have been multiple cases of people finding confidential data stored in publicly accessible S3 buckets. Because of this, public buckets are now rightly treated as potentially risky. So, Amazon sends periodic email reminding me I have a public bucket and to review that I'm <em>really, really sure</em> I wanted it that way. This is good security practice, but I have enough email spam. I don't need another stream.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I've finally gotten around to moving the site, my steps are:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Upload project image files to existing GitHub repository.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Enable GitHub pages for the repository, which becomes available at https://roger-random.github.io/rxbb8.com/</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Log into DreamHost control panel and reset DNS references back to default DreamHost DNS instead of Amazon Route 53 DNS.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Tell DreamHost DNS to forward http://rxbb8.com requests to https://roger-random.github.io/rxbb8.com/</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>After waiting a day to ensure all DNS changes have propagated, I can deactivate my AWS Route 53 hosted zone and delete my AWS S3 bucket. With the new forwarding action, browser URL bar would visibly change to https://roger-random.github.io/rxbb8.com/ as well. I'm fine with that. If I really wanted to keep the URL bar at http://rxbb8.com, I can read up on how to <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site">use a custom domain with GitHub Pages</a>. But right now, my priority is on making what is likely to be <a href="https://newscrewdriver.com/2023/07/11/final-update-to-rxbb8-com/">the final update to the site</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

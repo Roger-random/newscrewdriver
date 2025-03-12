@@ -1,0 +1,81 @@
+---
+layout: post
+title: Initial Budibase Documentation Lessons
+date: 2024-08-25 12:30:00.000000000 +00:00
+type: post
+post_id: '44891'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- Python
+tags:
+- budibase
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  firehose_sent: '1724614206'
+  _publicize_job_id: '97304923245'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-24 21:26:56'
+  timeline_notification: '1724614208'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/25/initial-budibase-documentation-lessons/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Going from Budibase "Quickstart" to a basic understanding of application structure was <a href="https://newscrewdriver.com/2024/08/24/budibase-documentation-mind-the-gap/">a bigger step than I had expected</a>, but I think I'm there now. Here are some notable lessons from my first (and second) passes through Budibase documentation with the caveatI wouldn't know for sure I got this right until I get some hands-on app-building experience.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Blocks Are Not Components</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>When reading Budibase documentation on user interface elements, I came across terms like "Form", "Form component", and "Form block". I thought they all referred to the same thing, that words "block" and "component" were synonyms. I was wrong, which caused a lot of confusion. A component in Budibase parlance is a single interface unit (example: textbox) and a block is a predefined composition built from multiple components to address common scenarios. (example: form block contains many textboxes.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The ability to "Eject block" was mentioned in "Quickstart" but I didn't understand what it meant at a time. I had understood it as a way to break up into smaller pieces so I can access its internals for customization, which should be great for learning how it was built under the hood. But most of the time when I wanted to look inside something I couldn't find that "Eject" button. Eventually I figured out I had been trying to eject components and that's why I got nowhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Data Provider, Repeater, and Binding</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've learned that things are a little more complex than 'database stores data, components display data, binding connect them together.' A few additional pieces are required. First is the fact we don't want everything in the database all at once. For tasks like filtering or pagination, there are "data provider" components that fetch a desired subset from the database. The subset is still a collection of data, so a "repeater" component is deployed as an enumerator. Child components of a repeater will receive that data one row at a time, and that's when UI components can use a binding to pick up the exact information they want. A hypothetical example:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>Database: "Employees" table</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Data provider: "Name" of first 50 employees sorted by name.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Repeater: for each of those employees...</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Paragraph: display text of "name" binding.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>When we use a Table block (like the auto-generated screens in the tutorial) these steps are handled automatically. But if we want to built tailored UI, implementing these details become our job.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">App State</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sometimes an app will need to convey data between parts outside of the standard data flow hierarchy. (Provider, binding, etc.) I was curious how it was done and hit "eject" on an existing block to see its implementation details. The answer is <a href="https://docs.budibase.com/docs/app-state">app state</a>, an application-wide key/value store. Or in other words: global variables!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these lessons in mind, I am ready to start building my Budibase app to work with my existing data on personal transactions. And wow, <a href="https://newscrewdriver.com/2024/08/26/jupyter-notebook-for-spreadsheet-clean-up/">it's a mess</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

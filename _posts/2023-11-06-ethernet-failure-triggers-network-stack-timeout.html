@@ -1,0 +1,136 @@
+---
+layout: post
+title: Ethernet Failure Triggers Network Stack Timeout
+date: 2023-11-06 12:30:00.000000000 +00:00
+type: post
+post_id: '40121'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- '7577'
+- Dell
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39972'
+  _publicize_job_id: '89133161595'
+  timeline_notification: '1699302639'
+  wordads_ufa: s:wpcom-ufa-v4:1699391583
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/06/ethernet-failure-triggers-network-stack-timeout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was curious about Proxmox VE capability to migrate virtual machines from one cluster node to another. I set up a small cluster to try it and <a href="https://newscrewdriver.com/2023/11/05/proxmox-cluster-vm-migration/">found it to be as easy as advertised</a>. After migrating my VM experiments to a desktop computer with Intel networking hardware, they have been running flawlessly. This allowed me to resume tinkering with a laptop computer that would drop off the network at unpredictable times. This unfortunate tendency makes it a very poor Proxmox VE server. [UPDATE: Network connectivity stabilized after installing Proxmox VE kernel update from 6.2.16-15-pve to 6.2.16-18-pve.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Repeating Errors From r8169</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After it dropped off the network, I have to log on to the computer locally. The screen is usually filled with error messages. I ran <code>dmesg</code> and saw the same messages there as well. Based on associated timestamp, this block of messages repeats every four minutes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>[68723.346727] r8169 0000:3b:00.0 enp59s0: rtl_chipcmd_cond == 1 (loop: 100, delay: 100).
+[68723.348833] r8169 0000:3b:00.0 enp59s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).
+[68723.350921] r8169 0000:3b:00.0 enp59s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).
+[68723.352954] r8169 0000:3b:00.0 enp59s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).
+[68723.355097] r8169 0000:3b:00.0 enp59s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).
+[68723.357156] r8169 0000:3b:00.0 enp59s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).
+[68723.359289] r8169 0000:3b:00.0 enp59s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).
+[68723.389357] r8169 0000:3b:00.0 enp59s0: rtl_eriar_cond == 1 (loop: 100, delay: 100).
+[68723.415890] r8169 0000:3b:00.0 enp59s0: rtl_eriar_cond == 1 (loop: 100, delay: 100).
+[68723.442132] r8169 0000:3b:00.0 enp59s0: rtl_eriar_cond == 1 (loop: 100, delay: 100).</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching on that led me to Proxmox forums, and one of the workarounds was to set the <a href="https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html" target="_blank" rel="noreferrer noopener">kernel flag</a> <code>pcie_aspm=off</code>. I tried that, but the computer still kept dropping off the network. Either I'm not doing this correctly (editing <code>/etc/default/grub</code> then running <code>update-grub</code>) or the change doesn't help my situation. Perhaps it addressed a different problem with similar symptoms, leaving open the mystery of what's going with my machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">NETDEV WATCHDOG</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for more clues, I scrolled backwards in <code>dmesg</code> log and found this block of information just before the repeating series of r8169 errors:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>[67717.227089] ------------[ cut here ]------------
+[67717.227096] NETDEV WATCHDOG: enp59s0 (r8169): transmit queue 0 timed out
+[67717.227126] WARNING: CPU: 1 PID: 0 at net/sched/sch_generic.c:525 dev_watchdog+0x23a/0x250
+[67717.227133] Modules linked in: veth ebtable_filter ebtables ip_set ip6table_raw iptable_raw ip6table_filter ip6_tables iptable_filter bpfilt&gt;[67717.227254]  iwlwifi ttm snd_timer pcspkr drm_display_helper intel_wmi_thunderbolt btintel dell_wmi_descriptor joydev processor_thermal_mbox&gt;[67717.227374]  i2c_i801 xhci_pci i2c_hid_acpi crc32_pclmul i2c_smbus nvme_common i2c_hid realtek xhci_pci_renesas ahci libahci psmouse xhci_hc&gt;[67717.227401] CPU: 1 PID: 0 Comm: swapper/1 Tainted: P           O       6.2.16-15-pve #1
+[67717.227404] Hardware name: Dell Inc. Inspiron 7577/0P9G3M, BIOS 1.17.0 03/18/2022
+[67717.227406] RIP: 0010:dev_watchdog+0x23a/0x250
+[67717.227411] Code: 00 e9 2b ff ff ff 48 89 df c6 05 ac 5d 7d 01 01 e8 bb 08 f8 ff 44 89 f1 48 89 de 48 c7 c7 90 87 80 bc 48 89 c2 e8 56 91 30&gt;[67717.227414] RSP: 0018:ffffae88c014ce38 EFLAGS: 00010246
+[67717.227417] RAX: 0000000000000000 RBX: ffff99129280c000 RCX: 0000000000000000
+[67717.227419] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[67717.227421] RBP: ffffae88c014ce68 R08: 0000000000000000 R09: 0000000000000000
+[67717.227423] R10: 0000000000000000 R11: 0000000000000000 R12: ffff99129280c4c8
+[67717.227425] R13: ffff99129280c41c R14: 0000000000000000 R15: 0000000000000000
+[67717.227427] FS:  0000000000000000(0000) GS:ffff991600480000(0000) knlGS:0000000000000000
+[67717.227429] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[67717.227432] CR2: 000000c0006e1010 CR3: 0000000165810003 CR4: 00000000003726e0
+[67717.227434] Call Trace:
+[67717.227436]  &lt;IRQ&gt;
+[67717.227439]  ? show_regs+0x6d/0x80
+[67717.227444]  ? __warn+0x89/0x160
+[67717.227447]  ? dev_watchdog+0x23a/0x250
+[67717.227451]  ? report_bug+0x17e/0x1b0
+[67717.227455]  ? irq_work_queue+0x2f/0x70
+[67717.227459]  ? handle_bug+0x46/0x90
+[67717.227462]  ? exc_invalid_op+0x18/0x80
+[67717.227465]  ? asm_exc_invalid_op+0x1b/0x20
+[67717.227470]  ? dev_watchdog+0x23a/0x250
+[67717.227474]  ? dev_watchdog+0x23a/0x250
+[67717.227477]  ? __pfx_dev_watchdog+0x10/0x10
+[67717.227481]  call_timer_fn+0x29/0x160
+[67717.227485]  ? __pfx_dev_watchdog+0x10/0x10
+[67717.227488]  __run_timers+0x259/0x310
+[67717.227493]  run_timer_softirq+0x1d/0x40
+[67717.227496]  __do_softirq+0xd6/0x346
+[67717.227499]  ? hrtimer_interrupt+0x11f/0x250
+[67717.227504]  __irq_exit_rcu+0xa2/0xd0
+[67717.227507]  irq_exit_rcu+0xe/0x20
+[67717.227510]  sysvec_apic_timer_interrupt+0x92/0xd0
+[67717.227513]  &lt;/IRQ&gt;
+[67717.227515]  &lt;TASK&gt;
+[67717.227517]  asm_sysvec_apic_timer_interrupt+0x1b/0x20
+[67717.227520] RIP: 0010:cpuidle_enter_state+0xde/0x6f0
+[67717.227524] Code: 12 57 44 e8 f4 64 4a ff 8b 53 04 49 89 c7 0f 1f 44 00 00 31 ff e8 22 6d 49 ff 80 7d d0 00 0f 85 eb 00 00 00 fb 0f 1f 44 00&gt;[67717.227526] RSP: 0018:ffffae88c00ffe38 EFLAGS: 00000246
+[67717.227529] RAX: 0000000000000000 RBX: ffffce88bfc80000 RCX: 0000000000000000
+[67717.227531] RDX: 0000000000000001 RSI: 0000000000000000 RDI: 0000000000000000
+[67717.227533] RBP: ffffae88c00ffe88 R08: 0000000000000000 R09: 0000000000000000
+[67717.227534] R10: 0000000000000000 R11: 0000000000000000 R12: ffffffffbd2c3a40
+[67717.227536] R13: 0000000000000008 R14: 0000000000000008 R15: 00003d96a543ec60
+[67717.227540]  ? cpuidle_enter_state+0xce/0x6f0
+[67717.227544]  cpuidle_enter+0x2e/0x50
+[67717.227547]  do_idle+0x216/0x2a0
+[67717.227551]  cpu_startup_entry+0x1d/0x20
+[67717.227554]  start_secondary+0x122/0x160
+[67717.227557]  secondary_startup_64_no_verify+0xe5/0xeb
+[67717.227563]  &lt;/TASK&gt;
+[67717.227565] ---[ end trace 0000000000000000 ]---</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>A watchdog timer went off somewhere in the networking stack while waiting to transmit data. The data output starts with <code>[ cut here ]</code> but I have no idea where this information should be pasted into. I recognize the format of a call trace alongside a dump of CPU register data, but the actual call trace is incomplete. There are a lot of "<code>?</code>" in here because I am not running the debug kernel and symbols are missing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking in the <a href="https://www.kernel.org/category/faq.html">FAQ for Kernel.org</a>, I followed a link to <a href="https://kernelnewbies.org/">kernelnewbies.org</a> and from there their page "<a href="https://kernelnewbies.org/FoundBug" target="_blank" rel="noreferrer noopener">So, you think you've found a Linux kernel bug?</a>" I see the section on "Oops messages" and they look very similar to what I see here, except without the actual line with "Oops" in it. From there I was linked to the <a href="https://bugzilla.kernel.org" target="_blank" rel="noreferrer noopener">kernel bug tracking database</a>. A search on watchdog timer expiration in r8169 got several dozen hits across many years, including <a href="https://bugzilla.kernel.org/show_bug.cgi?id=217814" target="_blank" rel="noreferrer noopener">217814</a> which I found earlier via Proxmox forum search, thus coming full circle.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see some differences between my call trace with that in 217814, but that's possibly expected differences between my kernel (6.2.16-15-pve) and what generated 217814 (6.2.0-26-generic). In any case, the call stack appears to be for the watchdog timer itself and not whatever triggered it. Supposedly disabling ASPM would resolve 217814. Since it didn't do anything for me, I conclude there's <em>something else </em>clogging up the network stack. Teasing out that "something else" requires learning more about Linux kernel inner workings. I'm not enthusiastic about that prospect so <a href="https://newscrewdriver.com/2023/11/07/reported-pci-express-error-was-unrelated/">I looked for other things to try</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Featured image created by <em><a href="https://www.bing.com/images/create" target="_blank" rel="noreferrer noopener">Microsoft Bing Image Creator powered by DALL-E 3</a></em> with prompt "<em>Cartoon drawing of a black laptop computer showing a crying face on screen and holding a network cable</em>"</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

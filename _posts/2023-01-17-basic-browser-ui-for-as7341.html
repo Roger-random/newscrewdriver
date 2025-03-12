@@ -1,0 +1,51 @@
+---
+layout: post
+title: Basic Browser UI for AS7341
+date: 2023-01-17 12:30:00.000000000 +00:00
+type: post
+post_id: '34638'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+- ESP32
+- HTML
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34639'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674078085
+  _publicize_job_id: '80641827413'
+  timeline_notification: '1673987414'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/17/basic-browser-ui-for-as7341/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wrote an ESP32 Arduino sketch that exposes Adafruit AS7341 library <code>readAllChannels()</code> <a href="https://newscrewdriver.com/2023/01/16/esp32-webserver-made-as7341-accessible-via-http-get/">to be accessible via HTTP GET</a>. Now I need to write browser-side code to use it. My first version will be bare bones: plain HTML and as little JavaScript as I can get away with. No consideration will be given for page layout aesthetics, so no CSS will be involved.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Input controls are direct translation of AS7341 parameters: atime, astep, and gain. Output will be JSON returned by my ESP32 sketch, direct with no processing. Making the AS7341 parameters more user-friendly is out of scope for this first version, as is any of the processing and visualization of AS7341 data. I want to do both in the future, but not at first. I wanted to start with this level of direct input/output because I intend to keep this first version around for debugging purposes: when my future fancy version goes awry, I want to be able to bring up this basic version to verify the sensor itself and the network API is still working correctly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I deviated from that bare-bones intent pretty quickly, because as soon as I started moving those setting sliders around, I wanted more. I added some JavaScript code to calculate the integration time (in milliseconds) described by atime and astep parameters, and I also added a slider to control milliamps of current to illuminate onboard LED during measurement. (Zero milliamps to turn LED off.) After a few measurements of LED flashing in my face, I added another parameter: whether or not to leave LED illuminated after taking a measurement. A steady-on LED is less annoying than a rapidly blinking one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another reason for keeping the user interface bare-bones is to verify all behind-the-scenes infrastructure are working as I expected. They did not! Debugging those failures led me to realize my ignorance with some security-related web development concepts. This is great: I wanted a learning project, and <a href="https://newscrewdriver.com/2023/01/18/html-location-matters-for-cors-and-mixed-content/">now I'm learning about</a> "CORS" and "Mixed Content".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui/tree/main/basic" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

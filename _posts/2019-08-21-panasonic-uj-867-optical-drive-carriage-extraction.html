@@ -1,0 +1,43 @@
+---
+layout: post
+title: Panasonic UJ-867 Optical Drive Carriage Extraction
+date: 2019-08-21 12:30:02.000000000 +00:00
+type: post
+post_id: '19277'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19247'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1566415964'
+  _publicize_job_id: '34381342704'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/21/panasonic-uj-867-optical-drive-carriage-extraction/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The Panasonic UJ-867 is a slot loading optical drive. This particular unit was salvaged from a dead Dell XPS M1330 previously featured when I <a href="https://newscrewdriver.com/2018/01/20/del-xps-m1330-power-port-salvaged-using-desoldering-tool/">pulled its power port</a>, and <a href="https://newscrewdriver.com/2018/01/21/dell-xps-m1330-battery-pack-teardown/">disassembled its battery</a>, plus trying to use its AC power adapter to <a href="https://newscrewdriver.com/2019/03/24/trying-to-charge-neato-xv-21-without-a-charging-dock/">charge a Neato vacuum</a>. A web search indicated this drive was better known as a drive used in certain models of Apple MacBooks. An optical drive typically has a carriage for its laser assembly driven by a stepper motor, and that carriage is my target for <a href="https://newscrewdriver.com/2019/08/20/resuming-pololu-stepper-driver-adventures-with-arduino-and-a4988/">further stepper motor experimentation</a>.</p>
+<p><img class="alignnone size-full wp-image-19248" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-20-norton-inside.jpg" alt="Panasonic UJ-867 20 Norton inside" width="1600" height="900"></p>
+<p>When the lid was removed, the age of this device was clear: it still held a disk! The Windows edition of Norton AntiVirus confirms this was not from a MacBook. The year also spoke to the vintage of this drive.</p>
+<p><img class="alignnone size-full wp-image-19249" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-30-mechanicals-top.jpg" alt="Panasonic UJ-867 30 mechanicals top" width="1600" height="900"></p>
+<p>With the disk removed, we can see all the mechanical linkages. This was far more than I had expected, because I had never taken apart a slot-loading drive before. Many of the pieces were involved in the slot loading mechanism, which is in the "disk inserted" position. (The Norton disk was not properly ejected - I removed the lid and popped it off!) Various mechanisms in this position block fasteners making it difficult to take apart.</p>
+<p><img class="alignnone size-full wp-image-19250" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-40-eject-motor.jpg" alt="Panasonic UJ-867 40 eject motor" width="1600" height="900"></p>
+<p>Tracing through the mechanical bits, I guessed this motor is the heart of the drive loading and ejection mechanism. It is a simple DC motor so I should be able to put power on these pins to move the mechanism to their eject state. However, there are a few parts nearby that I might bump into if I powered from the top, so to be safe I soldered some pins from the bottom.</p>
+<p><img class="alignnone size-full wp-image-19251" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-50-eject-motor-wired.jpg" alt="Panasonic UJ-867 50 eject motor wired" width="1600" height="900"></p>
+<p>Applying power to this motor did indeed run through the ejection sequence, even though I've already removed the disk. Now it became fairly straightforward to take apart the drive.</p>
+<p><img class="alignnone size-full wp-image-19252" src="https://newscrewdriver.com/wp-content/uploads/2019/08/panasonic-uj-867-60-eject-motor-gearbox.jpg" alt="Panasonic UJ-867 60 eject motor gearbox" width="1600" height="900"></p>
+<p>Almost all of the pieces are specifically tailored to this usage, making reuse unlikely. But I do enjoy seeing the eject motor gearbox run. This is a distraction, though. The optical carriage was the goal and that was removed for the next step: <a href="https://newscrewdriver.com/2019/08/22/panasonic-uj-867-optical-carriage-briefly-under-a4988-control/">connecting it to my Arduino + A4988 test breadboard</a>.</p>
+<p></body></html></p>

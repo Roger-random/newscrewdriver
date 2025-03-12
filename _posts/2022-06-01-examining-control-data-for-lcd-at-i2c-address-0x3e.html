@@ -1,0 +1,90 @@
+---
+layout: post
+title: Examining Control Data for LCD at I2C Address 0x3E
+date: 2022-06-01 12:30:00.000000000 +00:00
+type: post
+post_id: '30609'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30051'
+  _publicize_job_id: '73187342292'
+  timeline_notification: '1654111838'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/01/examining-control-data-for-lcd-at-i2c-address-0x3e/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My Saleae Logic 8 <a href="https://newscrewdriver.com/2022/05/31/cordless-handset-lcd-is-i2c-device/">listening to the communication traffic on the I<sup>2</sup>C data bus</a> of an AT&amp;T CL84209 cordless phone headset heard thousands of messages within ten seconds of startup, addressed to ten different device addresses. I only cared about the messages related to its LCD screen and, fortunately, that data stood out and now I know this LCD is an I<sup>2</sup>C device with address of 0x3E.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Curious if knowing the I<sup>2</sup>C address will help me find more information on this LCD, I went online and... didn't have much luck. Adafruit organizes <a rel="noreferrer noopener" href="https://learn.adafruit.com/i2c-addresses/the-list" target="_blank">a list of their I<sup>2</sup>C product addresses</a>, but as of writing there's nothing listed for 0x3E. I found the JHD1313 LCD module online, whose AiP31068 controller is an I<sup>2</sup>C device on address 0x3E. This chip is controlled with a series of command words, which is a control byte followed by a data byte. Different from the pattern I see on my Saleae decoded data, where character data is sent consecutively without command bytes in between. (Also, the datasheet annoyingly doesn't give                                its I<sup>2</sup>C device address in hexadecimal or decimal form, only in binary form "011 1110" in the serial interface protocol chart.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Empty-handed from this detour, I returned to my Python program parsing Saleae-decoded output. Out of  2569 captured messages, only 143 of them (5.57%) were addressed to 0x3E. This is a much more manageable number.  Looking at that set, I found there were many two-byte messages and a few of the longer 18/19 byte messages.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The sequence of two-byte messages is almost identical throughout the capture, only difference is that the very first instance is one message shorter. (It omitted the final 0x00,0x02.) After that, the whole sequence repeats once every second. Lacking datasheet, I'm calling this the configuration sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>write to 0x3E ack data: 0x00 0x39 
+write to 0x3E ack data: 0x00 0x39 
+write to 0x3E ack data: 0x00 0x1C 
+write to 0x3E ack data: 0x00 0x70 
+write to 0x3E ack data: 0x00 0x5F 
+write to 0x3E ack data: 0x00 0x6C 
+write to 0x3E ack data: 0x00 0x0C 
+write to 0x3E ack data: 0x00 0x02 (Omitted from initial startup)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Shortly after this is sent, three lines of display data are sent. The capture included three variations. The first one is sent only once, immediately after the initial configuration sequence is sent:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px;"><code>write to 0x3E ack data: 0x80 0x81 0x40 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 
+write to 0x3E ack data: 0x80 0xC1 0x40 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 
+write to 0x3E ack data: 0x80 0x40 0x40 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 </code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first two lines are all spaces, and the third line is all zeros. I interpret this as the "clear screen" for this LCD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Afterwards, we have two variations of display data with "CONNECTING..." text. The first one:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px;"><code>write to 0x3E ack data: 0x80 0x81 0x40 0x20 0x43 0x4F 0x4E 0x4E 0x45 0x43 0x54 0x49 0x4E 0x47 0x2E 0x2E 0x2E 0x20 
+write to 0x3E ack data: 0x80 0xC1 0x40 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 
+write to 0x3E ack data: 0x80 0x40 0x40 0x00 <mark style="background-color:#fcb900;" class="has-inline-color">0x00</mark> 0x10 0x02 0x01 0x04 0x00 0x10 0x00 0x04 0x01 0x00 0x02 0x10 0x04 0x00 </code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Differs from the second one by only a single bit in the third line, 0x00 vs. 0x10:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px;"><code>write to 0x3E ack data: 0x80 0x81 0x40 0x20 0x43 0x4F 0x4E 0x4E 0x45 0x43 0x54 0x49 0x4E 0x47 0x2E 0x2E 0x2E 0x20 
+write to 0x3E ack data: 0x80 0xC1 0x40 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 
+write to 0x3E ack data: 0x80 0x40 0x40 0x00 <mark style="background-color:#fcb900;" class="has-inline-color">0x10</mark> 0x10 0x02 0x01 0x04 0x00 0x10 0x00 0x04 0x01 0x00 0x02 0x10 0x04 0x00 </code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is consistent with handset LCD behavior blinking the "battery low" icon in the custom segmented LCD area. From here we can tell the first two lines are alphanumeric text, and the third line are bits for segmented LCD control where 0 is clear and 1 is active.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the screen, I see the battery icon blinking once a second. (Half second on, half second off.) Given this, I had expected to see the two variations of display data to alternate. Instead, it's usually two of one style followed by one of the other. This mystery was solved once I looked at the timestamps: once every second, the configuration sequence is sent immediately followed by the current display state. Even if the display state hadn't changed from the previous display update. In between these configuration sequences, the battery icon state is toggled every half second without sending the configuration sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thanks to Saleae Logic software and a bit of Python, I feel I've gained a working grasp of digital control communication for this LCD. I don't know what any of those control flags individually mean, but I wouldn't need to fully understand them if I just wanted to send alphanumeric data and toggle segments. Outside of these digital signal pins, there's still the unknown of analog voltage pins. But looking at the timeline, I <a href="https://newscrewdriver.com/2022/06/02/lcd-analog-activity-started-by-digital-signal/">noticed an interesting correlation</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

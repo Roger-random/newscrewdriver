@@ -1,0 +1,81 @@
+---
+layout: post
+title: Western Digital My Book 1TB (WDBACW0010HBK-01) Teardown
+date: 2021-05-28 12:30:00.000000000 +00:00
+type: post
+post_id: '23849'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Shucking
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26792'
+  _oembed_66285521ef37dba78420fb59c9f854cd: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    interactive RGB332 8-bit color picker can now be toggled between HSV cylinder
+    and RGB cube modes. Half of the cubes (green-yellow) aren&#39;t doing what I want
+    because I clearly don&#39;t understand quaternions. Still a nifty animation, though.
+    <a href="https://t.co/jtRMMVNboP">pic.twitter.com/jtRMMVNboP</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1388265529228480512?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '58942258384'
+  timeline_notification: '1622230255'
+  _oembed_time_66285521ef37dba78420fb59c9f854cd: '1622231180'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/28/western-digital-my-book-1tb-wdbacw0010hbk-01-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2021/05/27/seagate-expansion-external-drive-1-5-tb-9sf2a6-500-teardown/">took apart an external USB 2.0 hard drive</a> I had formerly used for MacOS Time Machine, but haven't touched in years. It was the second of three external drives under two terabytes that I had gathering dust. The third and final drive to be disassembled in this work session was used for a similar purpose: the Windows Backup tool that (as far as I can recall) was introduced in Windows 8. Now it will serve that role again, sort of, by becoming part of my fault-tolerant ZFS RAIDZ2 storage array running under TrueNAS.  Which does not support USB external drives, so I am removing the bare drive within for its SATA connection.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like the other two drives, this one lacked external fasteners and had to be taken apart by prying at its seams to release plastic clips. (Not all of the clips survived the process.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26803,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/western-digital-wdbacw0010hbk-01-20-lid-cracked-open.jpg?w=1024" alt="" class="wp-image-26803"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The geometry was confusing to me at first, but following the seams (and releasing clips) made it clear this enclosure was made of two C-shaped pieces that are orthogonal to each other. I thought it was a creative way to approach the problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26802,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/western-digital-wdbacw0010hbk-01-30-case-slides-apart.jpg?w=1024" alt="" class="wp-image-26802"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was also happy to see that the cooling vents on this drive was more likely to be useful than the other two, since the drive is actually exposed to the airflow and it is designed to stand on its edge so warm air can naturally escape by convection. There is no cooling fan, and none was expected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like the other two drives, there's a surface mounted indicator LED on the circuit board. To carry its light to the front façade, there's an intricately curved light pipe. It might look like a flexible piece of clear plastic in the picture but it is actually rigid. I was a little sad to see that, because its precision fixed curvature means there's almost no chance I can find a way to reuse it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26801,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/western-digital-wdbacw0010hbk-01-40-light-pipe.jpg?w=1024" alt="" class="wp-image-26801"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two circuit boards are visible here. The duller green board is the actual hard drive controller circuit, the brighter green board is the USB3 adapter board converting it to an external drive. My goal is to remove the bright green board to expose the bare drive's SATA interface so I could install it in my TrueNAS server. It was quite stoutly attached! On the other two drives, once the internals were exposed I could easily pull the drive loose from the adapter board. This board was rigidly fastened to the drive with two screws, including this one that took me an embarrassingly long time to find. On the upside, this rigidly fastened metal reinforcement meant the USB3 port is the strongest I've seen by far. Another neat feature visible here is a power button, a feature I don't often see on external drives. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26800,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/western-digital-wdbacw0010hbk-01-50-securely-fastened.jpg?w=1024" alt="" class="wp-image-26800"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This assembly was mounted inside the external case with some very custom shaped pieces of rubber for vibration isolation. Like the light pipe, I doubt I would be able to find a use for these pieces elsewhere. But that's fine, the main objective was to retrieve the SATA HDD within this enclosure and that was successful.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26799,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/western-digital-wdbacw0010hbk-01-60-bare-drive-removed.jpg?w=1024" alt="" class="wp-image-26799"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is enough hard drive "shucking" for one work session. I have more retired drives (two terabytes and larger) awaiting disassembly, but I think I have enough to satisfy my TrueNAS array replacement needs for the near future.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

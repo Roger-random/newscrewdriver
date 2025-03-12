@@ -1,0 +1,42 @@
+---
+layout: post
+title: Notes on ROS2 and rosserial
+date: 2020-08-05 12:30:54.000000000 +00:00
+type: post
+post_id: '22006'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- ROS
+tags:
+- ROS2
+meta:
+  _thumbnail_id: '22004'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1596655896'
+  _publicize_job_id: '47386624102'
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667982916
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/05/notes-on-ros2-and-rosserial/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I'm happy to see ROS2 improve over the past several releases, each release more mature and suitable for adoption than the last. Tackling some <a href="https://newscrewdriver.com/2020/08/04/ros2-receives-cross-compile-love/">long standing problems like cross compilation</a> and also new frontiers. I know a lot of my current reservations about ROS2 are on the to-do list, but there's a fairly significant item that appears to be deliberately absent: <code>rosserial</code>.</p>
+<p>In ROS, the <code><a href="http://wiki.ros.org/rosserial">rosserial</a></code> module is the default way of for something simple to communicate with the rest of a ROS robot. It's been a popular way for robot builders to add small dedicated modules that serve their little niche simply and effectively with only an Arduino or similar 8-bit microcontroller. By following its conventions for translating ROS messages into simple serial byte sequences, robot builders don't have to constantly reinvent this wheel. However, it is only really applicable when we are in control of both the computer and Arduino end of the communication. When one side is outside of our control -- such as the case for LX-16A servos used on Sawppy -- we can't use the <code>rosserial</code> protocol and a custom node has to be created.</p>
+<p>But while I couldn't use <code>rosserial</code> for communication with the servos on my own Sawppy, I've seen it deployed for other Sawppy builds in different contexts. <a href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/">Rhys Mainwaring's Curio rover ROS stack</a> uses <code>rosserial</code> to <a href="https://newscrewdriver.com/2020/05/11/notes-on-exploring-curio-ros-arduino-mega/">communicate with its Arduino Mega</a>, and Steve [jetdillo] has just <a href="https://hackaday.io/project/167736-tenacity-yet-another-sawppy-project/log/181664-remote-powerbattery-management">installed a battery voltage monitor</a> that reports via <code>rosserial</code>.</p>
+<p>With its proven value to budget robotics, I'm sad to see it's not currently in the cards for ROS2. Officially, <a href="https://micro-ros.github.io/docs/concepts/middleware/rosserial/">the replacement for <code>rosserial</code></a> is <a href="https://micro-ros.github.io/docs/overview/">micro-ROS</a> built on the <a href="https://micro-ros.github.io/docs/concepts/middleware/Micro_XRCE-DDS/">Micro XRCE-DDS</a> Client. DDS is the standardized communication protocol used by ROS2, and XRCE stands for "eXtremely Resource Constrained Environment." It's an admirable goal to keep the protocol running with low resource consumption, but "low" is relative. Micro XRCE-DDS proudly listed its resource requirements as thus:</p>
+<blockquote><p><em>From the point of view of memory footprint, the latest version of this library has a memory consumption of less than <strong>75 KB of Flash memory</strong> and <strong>2.5 KB of RAM</strong> for a complete publisher and subscriber application.</em></p></blockquote>
+<p>If we look at the <a href="https://www.microchip.com/wwwproducts/en/ATmega328p">ATmega328P</a> chip at the heart of a basic Arduino, we see it has 32KB of Flash and 2KB of RAM and that's just not going to work. A straightforward port of <code>rosserial</code> <a href="https://github.com/ros2/ros2/issues/365">was aborted</a> due to intrinsic ties to ROS, but that Github issue still sees traffic because people want the thing that does not exist. [UPDATE: Now we have <a href="https://discourse.ros.org/t/micro-ros-on-arduino/17009">a ROS Discourse discussion thread</a> about it too.]</p>
+<p>I <a href="https://github.com/ROBOTIS-GIT/ros2arduino">found a <code>ros2arduino</code> library</a> built on Micro XRCE DDS, and was eager to see how it managed to fit on a simple ATmega328. Disappointingly, it doesn't. The "Arduino" in the name referred to newer high end boards like the Arduino MKR ZERO, leaving the humble ATmega328 Arduino boards out in the cold.</p>
+<p>As far as I can tell, this is by design. Much as how ROS2 has <a href="https://newscrewdriver.com/2020/08/03/update-on-arm64-ros2-on-pi/">focused on 64-bit computing platforms over 32-bit</a> CPUs, their "low end microcontroller support" is graduating from old school 8-bit chips to newer designs <a href="https://newscrewdriver.com/2020/08/29/micro-ros-now-supports-esp32/">like the ESP32</a> and various ARM Cortex flavors such as the STM32 family. Given how those microcontrollers have fallen to single digit dollar amounts of cost, it's hard to argue for the economic advantage of old 8-bit chips. (The processing power per dollar argument was lost long ago.) So even though the old 8-bit chips <a href="https://newscrewdriver.com/2020/08/06/why-i-still-like-the-8-bit-chips/">still hold some advantages</a>, I can see the reasoning, and have resigned to accept it as the way of the future.</body></html></p>

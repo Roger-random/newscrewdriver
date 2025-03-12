@@ -1,0 +1,111 @@
+---
+layout: post
+title: Dell XPS 8950 Bug Check Codes List
+date: 2024-03-21 12:30:00.000000000 +00:00
+type: post
+post_id: '40649'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  reader_suggested_tags: '["Discord","Computer Security","Rom","Firmware","Computers","Programming","Strings"]'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _thumbnail_id: '37181'
+  wordads_ufa: u:wpcom-ufa-v4:1711136057
+  firehose_sent: '1711049412'
+  _publicize_job_id: '92916779276'
+  timeline_notification: '1711049414'
+  _elasticsearch_data_sharing_indexed_on: '2024-03-22 19:36:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/03/21/dell-xps-8950-bug-check-codes-list/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My Dell XPS 8950 I bought primarily for SteamVR started exhibiting bug checks at around six months old. It was eventually fixed under Dell's one-year warranty, but the journey started with an attempt to diagnose it myself. <a href="https://newscrewdriver.com/2024/03/20/dell-xps-8950-stress-test-with-foldinghome/">Stressing it with Folding@Home</a> would crash it once roughly every 12-24 hours.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When Windows halts with a bug check, a memory dump file is written to disk for debug purposes. It takes significant expertise to dig through a memory dump file to pinpoint a root cause. However, it's pretty easy to get a general idea of what we are dealing with. We can <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/">install Windows debugger</a> (WinDbg) and use its <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-analyze">built-in automated analyzer</a> to extract a top-level error code we can then look up online. Over the course of two weeks I ran Folding@Home to build a collection of memory dump files, hoping to find commonalities that might point at a source.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The best case scenario is to have the same bug check code on every dump, occurring in the same operating system component. What I got instead is a list of thirteen codes (appended at the bottom of this post), some more often than others. And even worse, they didn't all happen at the same place in the system but was spread all around. The only vague commonality between them is an invalid memory operation. Sadly, "invalid memory operation" is too broad of a category to tie to a root cause. I became quite discouraged looking over those memory dumps.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know Dell tech support has a database of bug check codes and a list of diagnostic steps to address each of them. First level support technicians are trained to tell the customer to try each item in turn. Figure a half dozen things they want me to try (probably starting with "please turn off and back on again"...) for each of 13 possible codes means I will have to trudge through <em><strong>a lot</strong></em> of those procedures.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Eventually my support ticket will establish a widespread pattern that escalate my case to more senior support staff who will look at the problem more holistically, but I have to earn it with persistence! I will be spending a lot of time with Dell tech support, starting with <a href="https://newscrewdriver.com/2024/03/22/notes-on-dell-supportassist/">their preinstalled troubleshooting tool called SupportAssist</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bug check codes encountered, with URL of the Microsoft reference page and the first sentence of their explanation pasted in after the code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>0x00A IRQL_NOT_LESS_OR_EQUAL This bug check indicates that Microsoft Windows or a kernel-mode driver accessed paged memory at an invalid address while at a raised interrupt request level (IRQL). The cause is typically a bad pointer or a pageability problem. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xa--irql-not-less-or-equal">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xa--irql-not-less-or-equal</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x01A MEMORY_MANAGEMENT The bug check indicates that a severe memory management error occurred. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x1a--memory-management">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x1a--memory-management</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x03B SYSTEM_SERVICE_EXCEPTION This can happen because a NULL pointer dereferenced or a random incorrect address was accessed. This in turn can be caused by memory being freed prematurely, or data structure corruption. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x3b--system-service-exception">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x3b--system-service-exception</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x04E PFN_LIST_CORRUPT This indicates that the page frame number (PFN) list is corrupted. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x4e--pfn-list-corrupt">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x4e--pfn-list-corrupt</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x050 PAGE_FAULT_IN_NONPAGED_AREA This indicates that invalid system memory has been referenced. Typically the memory address is wrong or the memory address is pointing at freed memory. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x50--page-fault-in-nonpaged-area">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x50--page-fault-in-nonpaged-area</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x07E SYSTEM_THREAD_EXCEPTION_NOT_HANDLED This bug check indicates that a system thread generated an exception that the error handler didn't catch. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x7e--system-thread-exception-not-handled">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x7e--system-thread-exception-not-handled</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x0D1 DRIVER_IRQL_NOT_LESS_OR_EQUAL This indicates that a kernel-mode driver attempted to access pageable memory while the process IRQL that was too high. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xd1--driver-irql-not-less-or-equal">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xd1--driver-irql-not-less-or-equal</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x0EF CRITICAL_PROCESS_DIED This check happens when the state of the process is corrupted or damaged. When the corruption or damage happens, as these processes are critical to the operation of Windows, a system bug check occurs as the operating system integrity is in question. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xef--critical-process-died">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0xef--critical-process-died</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x109 CRITICAL_STRUCTURE_CORRUPTION This indicates that the kernel has detected critical kernel code or data corruption. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x109---critical-structure-corruption">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x109---critical-structure-corruption</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x124 WHEA_UNCORRECTABLE_ERROR a fatal hardware error has occurred. This bug check uses the error data provided by the Windows Hardware Error Architecture (WHEA). <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x124---whea-uncorrectable-error">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x124---whea-uncorrectable-error</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x139 KERNEL_SECURITY_CHECK_FAILURE This bug check indicates that the kernel has detected the corruption of a critical data structure. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x139--kernel-security-check-failure">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x139--kernel-security-check-failure</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x13A KERNEL_MODE_HEAP_CORRUPTION This bug check indicates that the kernel mode heap manager has detected corruption in a heap. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x13a--kernel-mode-heap-corruption">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x13a--kernel-mode-heap-corruption</a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>0x18B SECURE_KERNEL_ERROR This indicates that the secure kernel has encountered a fatal error. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x18b--secure-kernel-error">https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x18b--secure-kernel-error</a>
+</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --><br />
+</body></html></p>

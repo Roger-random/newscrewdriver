@@ -1,0 +1,52 @@
+---
+layout: post
+title: Visualizing Magnetometer Data with Three.js
+date: 2023-03-30 12:30:00.000000000 +00:00
+type: post
+post_id: '35970'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- JavaScript
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35972'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680301623
+  _publicize_job_id: '82773939779'
+  timeline_notification: '1680204725'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/30/visualizing-magnetometer-data-with-three-js/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm happy that my simple exploratory web app was able to obtain data from my phone's integrated magnetometer. I recognize <a href="https://newscrewdriver.com/2023/03/29/magnetometer-api-privacy-concerns/">there are some downsides to how easy it was</a>, but right now I'm happy I can move forward. Ten times a second (10Hz is the maximum supported update rate) my callback receives x, y, and z values in addition to auxiliary data like a timestamp. That's great, but the underlying meaning is not very intuitive for me to grasp. What I want next is a visualization of that three-axis magnetometer data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I turned to the JavaScript 3D graphics library <a href="https://threejs.org/">Three.js</a>. The last time I used Three.js was to <a href="https://newscrewdriver.com/2021/05/13/hsv-color-wheel-of-256-rgb332-colors/">visualize the RGB332 color space</a>, using a 2D projection to help me make sense of data along three dimensions of color: a cylinder representing HSV color space and a rectangular solid representing RGB. Now I want to visualize a single vector in three-dimensional space representing the local magnetic field as reported by my phone's magnetometer. I was a little intimidated by the math for calculation 3D transforms. I tried to make my RGB332 color app transition between HSV and RGB color space but it never looked right because <a href="https://newscrewdriver.com/2021/05/15/notes-of-a-three-js-beginner-euler-angles-vs-quaternions/">I didn't understand the 3D transform math</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, this time I didn't have to do any of my own math at all. Three.js has a built-in function that accepts the x, y, and z components of a target coordinate and calculates the rotation required to have a 3D project <a href="https://threejs.org/docs/#api/en/core/Object3D.lookAt">look at that point</a>. My responsibility is to create an object that will convey this information. I chose to follow the precedence of an analog compass which is built out of a small magnetic needle. Shaped like a narrow diamond with one half painted red and the other half painted white. For this 3D visualization I created a shape out of two cones, one red and one white. When this shape looks at the magnetometer vector, it functions very similarly to the sliver of magnet inside a compass.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a precaution, I added <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/By_example/Detect_WebGL">a check for WebGL</a> before firing up Three.js code. I was pretty confident any Android Chrome that supported the magnetometer API would support WebGL as well, but it was good practice to confirm.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I'm not doing (but should) is to account for screen orientation. Chrome developers have added <a href="https://developer.chrome.com/articles/generic-sensor/#synchronization-with-screen-coordinates">a feature to automatically adjust for screen orientation</a> but right now I'm just going to deactivate auto-rotate on my phone (<a href="https://newscrewdriver.com/2023/03/31/array-of-android-magnetometers/">or... phones</a>!)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for my exploratory project is <a href="https://github.com/Roger-random/nodejs_tests/tree/main/magnetometer">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,64 @@
+---
+layout: post
+title: Array of Android Magnetometers
+date: 2023-03-31 12:30:00.000000000 +00:00
+type: post
+post_id: '35983'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35986'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680388412
+  _publicize_job_id: '82804530899'
+  timeline_notification: '1680291016'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/31/array-of-android-magnetometers/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Curious about magnetometers, I wrote a small web app that used a Chrome preview feature that allowed me to access three-axis magnetometer hardware integrated into many Android phones. I <a href="https://newscrewdriver.com/2023/03/30/visualizing-magnetometer-data-with-three-js/">showed that three-dimension data in the form of a virtual compass needle</a> and had fun seeing it react to holding magnets near my phone.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then for more fun, I ran my web app on more phones! I pulled out my entire stockpile of retired Android phones. This is a collection of my own retired phones and those retired by my friends for one reason or another. (I ask my friends for them after they moved on to new phones.) It's a collection of cracked screens, flaky touch input, exhausted batteries, and other reasons why people decide to get a new phone.  I found the subset that could boot up and run my web app. I had to go to "chrome://flags" on all of them to activate the preview feature, of course, but I believe that was still less onerous than if I had written a native Android app. To install my own native app, I would have to put the phone into developer mode and sideload my app via USB, which would have been a more complex procedure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35987,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/magnetometer-phone-array-round-1-disorganized.jpg?w=1024" alt="" class="wp-image-35987"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First round of this experiment with seven running old phones exposed some problems, immediately visible by the fact these virtual compass needles were pointing in wildly different directions. They should all be aligned to Earth's magnetic field! Tracking down various ideas, I found two made the biggest difference:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>The values given to web apps were apparently "calibrated" values, but the calibration routine has not yet been run. This is something that happens behind the scenes. All I had to do was to pick up each phone and do the figure-8 twirl. My app continued running while this was occurring and, once I set the phone back down, my virtual compass needle pointed in a different direction than it had a minute earlier.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The phones needed to be spaced further apart. Obvious in hindsight: there are a few strong magnets inside a phone for their speakers and possibly other peripherals. While each phone might have properly isolated their magnetometer from their own magnets, they aren't necessarily isolated from another phone sitting nearby.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:image {"align":"center","id":35986,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/magnetometer-phone-array-round-2-more-consistent.jpg?w=1024" alt="" class="wp-image-35986"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Things look better on the second round of this experiment. After taking account for those two factors and waking up an eighth phone to join the fun. They still don't completely agree but at least they all point in the same general direction. And when I wave a strong magnet through the air, <a href="https://hachyderm.io/@regorlas/110108356912987788">all of those virtual needles react and point to my magnet</a>. It was more fun than I had expected, even if it was ridiculously underutilizing the capabilities of these old phones and not anywhere near the best tool for the job. If the goal was to visualize magnetic fields, we have far easier and cheaper ways to do it. Like using <a href="https://newscrewdriver.com/2023/04/01/fun-with-magnetic-field-viewing-film/">a sheet of magnetic field viewing film</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">My exploratory project is <a href="https://github.com/Roger-random/nodejs_tests/tree/main/magnetometer">publicly availble on GitHub</a> to run on your own Android phone (or phones)</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

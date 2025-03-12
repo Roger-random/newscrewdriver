@@ -1,0 +1,38 @@
+---
+layout: post
+title: Hackaday Badge LCD Screen
+date: 2018-10-22 09:00:27.000000000 +00:00
+type: post
+post_id: '17031'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1540224081'
+  _publicize_job_id: '23464878916'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/22/hackaday-badge-lcd-screen/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The main user interface for the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> is the LCD screen up front and center. Looking at the badge's main menu, we can tell it can display text characters. 40 columns in width, and 20 rows in height according to <code>DISP_BUFFER_WIDE</code> and <code>DISP_BUFFER_HIGH</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.h">hw.h</a>. This is just a little under an Apple II's capabilities, which are 40 columns wide and 24 characters high.</p>
+<p><img class="alignnone size-full wp-image-17012" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-main-menu-straight.jpg" alt="Hackaday Badge Main Menu Straight" width="1024" height="683"></p>
+<p>Based on badge startup animation and the user program demo art, this screen is not strictly limited to character display. However, at first glance it's hard to tell if what we saw are <a href="https://en.wikipedia.org/wiki/ANSI_art">creative text art</a> or if we can do general purpose graphics on this screen. Where can we get this information? The datasheet for the screen, of course. Based on the badge schematic, we have a model number to use in a web search.</p>
+<p><img class=" size-full wp-image-17036 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-lcd.png" alt="Hackaday Badge LCD" width="397" height="232"></p>
+<p>And it was a very easy search! The display unit is from a company whose product model numbers correspond to the unit's capabilities. It starts with NHD which is the company name Newhaven Display Inc, followed by a 2.4 indicating screen's physical size of 2.4" in diagonal, and 240320 meaning a graphics resolution of 240 by 320 pixels, etc.</p>
+<p>One unexpected attribute of this LCD module is that it has an integrated controller chip. The display module datasheet has all the relevant electrical details, but for the specifics of data flow and command set, it asks the user to go look in the datasheet for the Sitronix ST7789V controller.</p>
+<p>Newhaven Display's web site has an "<a href="https://www.newhavendisplay.com/app_notes.html">Application Notes</a>" section for their products. Clicking on the link for the 2.4" display with ST7789 controller points to <a href="https://newhavendisplay.com/appnotes/excode/txt/TFT/24TFT_ST7789.txt">this fragment of C code</a>, which looks a lot like some of the badge display interface code in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/disp.c">disp.c</a>.</p>
+<p>Also in disp.c is the text display code and a hard-coded basic font. So all the character display stuff is on the badge for us to hack. This is a very promising start to exploring the graphics capability of the badge. I'll definitely return to dig deeper.</p>
+<p></body></html></p>

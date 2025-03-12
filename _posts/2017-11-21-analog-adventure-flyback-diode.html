@@ -1,0 +1,35 @@
+---
+layout: post
+title: 'Analog Adventure: Flyback Diode'
+date: 2017-11-21 19:07:06.000000000 +00:00
+type: post
+post_id: '15492'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11698735314'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/21/analog-adventure-flyback-diode/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Every once in a while I learn the real world analog behavior of electronics components that I only think about in abstract digital terms. The most recent lessons come from my exposure to electrically operated switches a.k.a. <a href="https://en.wikipedia.org/wiki/Relay">relays</a>. This exposure came from two fronts: one is the small failed relay module that I pulled out of my 3D printer, the other are the larger industrial-strength relays that were recently installed on the Tux-Lab thermoforming machine.</p>
+<p>In the idealized digital world, these are just switches that control the flow of a large amount of electrical power on command of a much smaller electric signal. The control signal goes on, the big power goes on. Signal off, power off.</p>
+<p>In the real world, this is implemented with an electromagnetic coil that generates the field necessary to move a physical armature. The tricky part comes from the time when the coil is de-energized. When the control signal is cut, the magnetic field collapses and is turned back into electrical energy on the circuit. This is actually the heart of my recent analog electronics project: a "<a href="https://en.wikipedia.org/wiki/Joule_thief">Joule Thief</a>" is a very simple <a href="https://en.wikipedia.org/wiki/Flyback_converter">flyback converter</a> circuit to convert low battery voltage into a higher-voltage spike that can illuminate a LED.</p>
+<p>But when the intent of the circuit is actually to just switch something on and off with a relay, such a voltage spike is unwelcome. It may in fact damage nearby components in the circuit. This is why I learned I needed to add flyback diode to protect the circuit for controlling the relays in the thermoforming machine.</p>
+<p>Adding this array of diodes to protect against voltage spike complicates the prototype circuit, but it is good insurance to have. Once the control circuit is finalized, we plan to have a real circuit board fabricated so we don't have to deal with this nest of wires. Unfortunately, in the near term I expect some headaches associated with the additional complexity.</p>
+<p><img class=" size-full wp-image-15493 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/11/flybackdiodes.jpg" alt="FlybackDiodes" width="1024" height="768"></p>
+<p></body></html></p>

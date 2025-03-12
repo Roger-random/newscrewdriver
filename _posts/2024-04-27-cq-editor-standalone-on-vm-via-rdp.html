@@ -1,0 +1,71 @@
+---
+layout: post
+title: CQ-editor Standalone On VM Via RDP
+date: 2024-04-27 13:47:01.000000000 +00:00
+type: post
+post_id: '43205'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43206'
+  firehose_sent: '1714250823'
+  timeline_notification: '1714250824'
+  _publicize_job_id: '94036941398'
+  wordads_ufa: u:wpcom-ufa-v4:1714370457
+  _elasticsearch_data_sharing_indexed_on: '2024-04-29 06:02:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/04/27/cq-editor-standalone-on-vm-via-rdp/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm looking forward to learning CadQuery and I'm happy to learn <a href="https://newscrewdriver.com/2024/04/26/cadquery-constraints-friend-or-foe/">constraint solver capability exists</a>. It may be experimental, and it may yet prove to be as frustrating as its FreeCAD counterparts, but knowing it exists gives me a goal to learn enough CadQuery to get there. As part of that journey I thought I would take another attempt at getting its default GUI tool CQ-editor up and running.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On my first pass, I followed instructions to install CadQuery components in a Python virtual environment then installed CQ-editor as an add-on within that Python virtual environment. Sadly I only got into an useless state where I could launch CQ-editor but nothing ever showed on screen. Did I make a mistake somewhere? Or is this a bug? I had no diagnostic feedback. Very FreeCAD-like, and not a great start! At least I could get Jupyter working in that Python virtual environment, so I had something.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Re-reading CadQuery installation instructions again, I noticed there was a <a href="https://cadquery.readthedocs.io/en/latest/installation.html#adding-a-nicer-gui-via-cq-editor">standalone installer for CQ-editor</a>. So instead of installing CadQuery as a collection of Python libraries then installing CQ-editor as a consumer of those libraries, we have an installer more along the line of standard desktop software installer. Which in this case means installing CQ-editor and pulling in CadQuery as its dependency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Wary of the possibility that this installer may go sour and collide with what I have running (it is just a "nightly" build and not an official release) I decided to try it on a virtual machine first. I spun up a new VM with <a href="https://newscrewdriver.com/2023/04/27/first-impressions-proxmox-ve-vs-truenas-scale/">Proxmox</a> and booted it into a <a href="https://www.debian.org/CD/netinst/">network installer for Debian</a>. For most experiments that is enough, as I can remotely control the machine via a command line using SSH. But CQ-editor is a graphical interface tool and my main machine runs Windows 11 so I wanted to access its graphical interface via Microsoft's Remote Desktop Protocol.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a job <code>xrdp</code>. Multiple tutorials exist on the internet for more details (<a href="https://itslinuxfoss.com/xrdp-server-on-debian-11/">example</a>) but the succinct note for my future self is:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Install the component with <code>sudo apt install xrdp</code>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Give <code>xrdp</code> user permission to access SSL resources (to establish RDP connection) with <code>sudo adduser xrdp ssl-cert</code>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Restart <code>xrdp</code> so it can access its new SSL permissions with <code>sudo systemctl restart xrdp</code>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Verify it is back up and running with <code>sudo systemctl status xrdp</code>
+</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This procedure allowed me to connect to this fresh virtual machine via "Remote Desktop Connection" application from my Windows machine, and I could follow instructions for CQ-editor standalone installer without any issue. And this time, when I launched CQ-editor, I saw its interface on screen come up and I could use it. Fantastic! I now have that option in addition to the Jupyter interface so I could play with both. I'm happy to have these tools at hand as <a href="https://newscrewdriver.com/2024/04/28/cadquery-concepts-overview/">I dive into CadQuery primer</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

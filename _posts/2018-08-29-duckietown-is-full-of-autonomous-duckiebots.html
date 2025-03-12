@@ -1,0 +1,37 @@
+---
+layout: post
+title: Duckietown Is Full Of Autonomous Duckiebots
+date: 2018-08-29 09:00:46.000000000 +00:00
+type: post
+post_id: '16707'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- TIL
+tags:
+- Duckietown
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1535558705'
+  _publicize_job_id: '21587262160'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/29/duckietown-is-full-of-autonomous-duckiebots/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16708 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/08/duckietown-duckiebot.png" alt="Duckietown duckiebot" width="150" height="134">The previous blog post outlined some points of concern against using <a href="https://www.raspberrypi.org/">Raspberry Pi</a> 3 as the brains of an autonomous robot. But it's only an inventory of concerns and not condemning the platform against robotics use. A Raspberry Pi is quite a capable little computer in its own right and that's even before considering its performance in light of low cost. There are certainly many autonomous robot projects where a Raspberry Pi provides sufficient computing power for their respective needs. As one example, we can look at the robots ferrying little rubber duckies around the city of <a href="https://www.duckietown.org/">Duckietown</a>.</p>
+<p>According to its website, the Duckietown started as a platform to teach a 2016 MIT class on autonomous vehicles. Browsing through their <a href="https://github.com/duckietown/Software">public Github repository</a> it appears all logic is expressed as a ROS stack and executed on board its Raspberry Pi, no sending work to a desktop computer over network like the TurtleBot 3.  A basic Duckiebot has minimal input and output to contend with - just a camera for input and two motors for output. No wheel encoders, no distance scanners, no fancy odometry calculations. And while machine vision can be computationally intensive, it's the type of task that can be dialed back and shoehorned into a small computer like the Pi.</p>
+<p>Making this task easier is assisted by Duckietown, an environment designed to help Duckiebots function by leveraging its strengths and mitigating its weaknesses. Roads have clear contrast to make vision processing easier. Objects have machine-friendly markers to aid object identification. And while such measures imply a Duckiecar won't function very well away from a Duckietown, it's still a capable little robotics platform for exploring basic concepts.</p>
+<p>At first glance the "<a href="https://docs.duckietown.org/">Duckiebooks</a>" documentation area has a lot of information, but I was quickly disappointed by finding <a href="https://docs.duckietown.org/software_architecture/out/lane_control_stack.html">many pages filled with TODO</a> and links to "404 Not Found". I suppose it'll be filled out in coming months, but for today it appears I must look elsewhere for guidelines on building complete robots running ROS on Raspberry Pi.</p>
+<p><img class=" size-full wp-image-16719 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/duckietown-todo.png" alt="Duckietown TODO" width="715" height="781"><br />
+</body></html></p>

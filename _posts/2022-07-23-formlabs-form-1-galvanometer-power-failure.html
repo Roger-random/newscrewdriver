@@ -1,0 +1,71 @@
+---
+layout: post
+title: FormLabs Form 1+ Galvanometer Power Failure
+date: 2022-07-23 12:30:00.000000000 +00:00
+type: post
+post_id: '31571'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+- Teardown
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31573'
+  _publicize_job_id: '75036512889'
+  timeline_notification: '1658604614'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/23/formlabs-form-1-galvanometer-power-failure/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I tried to revive a FormLabs Form 1+ resin printer that had been sitting unused for years, but <a href="https://newscrewdriver.com/2022/07/22/formlabs-form-1-printed-a-shapeless-blob/">the test print was a failure</a>. Comparing against videos on YouTube showing a Form 1/1+ in action, I noticed two differences. First, the resin vat tilting action (to peel it off a print between layers) was not happening. And more seriously, the laser beam was not moving around to trace out the shape. Instead, it stayed focused on one spot solidifying resin and damaging the resin vat at that point. There are four mechanical actuators on this device: the vat tilt stepper motor, X/Y-axis <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Galvanometer" target="_blank">galvanometers</a> (shortened below to galvos), and the Z-axis stepper motor. Out of four, three aren't working! Quite disappointing, but at least they should be electromechanical issues that I have a better chance of fixing than software issues. I'll take it apart and look around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My disassembly was guided by <a rel="noreferrer noopener" href="https://www.bunniestudios.com/blog/?p=3110" target="_blank">Bunny Studios' Form 1 teardown blog post</a> from almost ten years ago. I was glad for the reference, but as the blog post pointed out, FormLabs designed the machine for easy disassembly, inspection, and repair. All fasteners are easily accessible and use the same 2.5mm hex key.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31575,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/form-1-rear-panel-removed.jpg?w=1024" alt="" class="wp-image-31575"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I got to remove the back panel, majority of control circuitry became accessible. Only one circuit board is not visible in this picture, as it is mounted in the front for power button and screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The large horizontal circuit board has a power-handling section to the right, as indicated by the presence of many transistors, diodes, and inductors. To the left is the brain, including a SanDisk 4GB SD card that wasn't accessible until the back panel was removed. The smaller vertical circuit board on the right is dedicated to X/Y position control, judging by cables connecting it to the X/Y galvos.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This printer had been shipped around without its original packaging materials, so I had hoped the problem was as easy as a loose connector I could plug back in. Thus my attention was immediately drawn to headers on these circuit board without a wire, but there were no candidate loose wires to plug into those headers. Apparently FormLabs has intentionally chosen not to use those connections, likely related to changes from original Form 1 to this Form 1+.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31574,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/form-1-galvo-y-power-unused.jpg?w=1024" alt="" class="wp-image-31574"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the unused connectors was labeled <code>GALVO Y POWER</code>. I see cables on <code>GALVO Y SIGNAL</code> and <code>GALVO X SIGNAL</code> as well as <code>GALVO X POWER</code>. I guess both galvos are powered from <code>GALVO X POWER</code> cable. This might be relevant to what I find later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Disappointed that I didn't find a loose connector I could plug back in or any other obvious easy-to-fix problems, I proceeded to unplug and reinstall every connector to reseat them. Working from left-to-right, everything looked and felt fine until I unplugged the right-most galvo connector. Once it was removed, I got a clear view of the galvo power connector below it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31573,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/form-1-galvo-x-power-plug-burned.jpg?w=1024" alt="" class="wp-image-31573"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Discoloration from overheating and possibly soot from a small fire. The toasty connector is the other end of <code>GALVO X POWER</code>. I don't know enough about this device to say sharing X and Y galvo power from a single connector caused the failure, but it certainly looks suspicious.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saw no obvious places where <code>GALVO Y POWER</code> could have connected to this galvo control board. I guess it is a later revision that integrated both galvo controls on a single board powered by a single cable. Compare this to Bunny's earlier device, where we <a rel="noreferrer noopener" href="http://bunniefoo.com/form1/f1td-drivers.jpg" target="_blank">see two separate and seemingly identical galvo control boards</a>, one for X and one for Y, each with their own power and signal cables.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This device is long out of warranty, and official support ended in 2017. I don't expect FormLabs to have a replacement galvo control board for this Form 1+, but it wouldn't hurt to ask and <a href="https://newscrewdriver.com/2022/09/08/formlabs-form-1-next-steps/">see what they say</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

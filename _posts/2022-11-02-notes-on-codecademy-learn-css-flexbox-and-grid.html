@@ -1,0 +1,87 @@
+---
+layout: post
+title: 'Notes on Codecademy "Learn CSS: Flexbox and Grid"'
+date: 2022-11-02 18:12:21.000000000 +00:00
+type: post
+post_id: '33393'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33410'
+  timeline_notification: '1667437944'
+  _publicize_job_id: '78348043418'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/02/notes-on-codecademy-learn-css-flexbox-and-grid/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I took Codecademy's "<em>Learn CSS</em>" course, I figured out it packaged together four shorter courses. Some of these short lessons were all material I've learned before and are just a review, so I flew through them quickly enough that putting together in a single "Learn CSS" made sense to me. This situation changed dramatically for the next item on the list: "<em><a href="https://www.codecademy.com/learn/learn-intermediate-css" target="_blank" rel="noreferrer noopener">Learn Intermediate CSS</a></em>" is again a packaging of several shorter courses, except now the material is new to me and started with CSS <code>flexbox</code>. This was a new and challenging concept for me to grasp, so now I'm in favor of going by the shorter courses instead of the (now quite hefty) package.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-css-flexbox-and-grid" target="_blank">Learn CSS: Flexbox and Grid</a></em> covers the first two lessons of <em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-intermediate-css" target="_blank">Learn Intermediate CSS</a></em>. As soon as we started with CSS <code>flexbox</code> I could tell it was a powerful tool. However, this particular course fell short of the normal Codecademy standards. For each function of flexbox, we run through simple illustrative examples, which is good. Unfortunately, these small examples were too simplified for me to understand how they would be applied. In other words, we see a lot of small pieces but the course never pulled them together in a bigger picture.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My personally attempt at summarizing <code>flexbox</code> is: a CSS construct that attempts to capture rules for laying out child elements in a way that is flexible to changes in screen size and aspect ratio. Since there's no way to capture every possible way to lay things out, the subset supported by <code>flexbox</code> thus becomes a de-facto prescription of best-practice layout from the people who designed this CSS feature. Nevertheless, there are more than enough (possibly too many) knobs we can adjust to build a layout.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While going through the simple examples, I did see certain values that appealed to my personal style. They were, however, usually not the default value. For example, when covering <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content" target="_blank">justify-content</a></code> I thought <code>space-between</code> (evenly distribute available space between elements, spread across available width, leaving no wasted space at left and right edges) looks best, but the default value is actually <code>flex-start </code>(pack elements to the start of flow (left) and leaving empty space to the end (right)). I understand choosing a default value is challenging and I'm ignorant of many of the concerns that went into a final decision. Sometimes the default behavior to "makes sense" are actually inconsistent. For example, the default <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink" target="_blank"><code>flex-shrink</code></a> value is 1, but its counterpart <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow" target="_blank">flex-grow</a></code> has a default value of 0.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the chaos of JavaScript shorthands, I thought I was freed from that thinking in CSS. No such luck. To specify dynamic scaling behavior in a flexbox, somebody thought it would be useful to combine <code>flex-grow</code>, <code>flex-shrink</code>, and <code>flex-basis</code> parameters into a single <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex" target="_blank">flex</a></code> shorthand. As a beginner, I am not a fan of memorizing an arbitrary order of numbers, but maybe I'll grow to love it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The feature of flexbox that most surprised me is ability to flip its two axis with <code><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction">flex-direction</a></code>. Not only would this let us build right-to-left layouts (for Hebrew, Arabic, etc.) this even hints at the ability to build layout for traditional Chinese layout. (Words top-to-bottom in a column, then columns laid out right-to-left.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Codecademy project for flexbox "Tea Cozy" is simultaneously really great and really awful. They gave us a set of images, most of which are pictures to use in a layout except one image which is actually the specification for laying out a page. So we are given a picture of what the result should look like, including some key dimensions, and told to go make it happen. I understand this is highly representative of the workflow of a web developer in charge of laying out a page according to a design specification, so that is really great. But given this course has been short on the "why" of things (each lesson is "do X and Y" instead of the much more useful "Do X and Y <em>to accomplish Z</em>.") it was difficult to figure out which of the tools we just learned were applicable. I faced a wide knowledge gap between course material and building "Tea Cozy". Still, I enjoyed the challenge of this exercise. And for better or worse, I did come out of "Tea Cozy" with a better understanding of <code>flexbox</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Outside of Codecademy, I was told about <em><a rel="noreferrer noopener" href="https://flexboxfroggy.com/" target="_blank">Flexbox Froggy</a></em>, an interactive game for teaching flexbox. It was fun and the frogs were cute. I doubt anyone could learn the full power of flexbox just from playing this game but seeing how some of the concepts were applied was good review after my course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next lesson introduces CSS grid, for layouts where regular spacing makes more sense than the dynamic rules of flexbox. Laying out elements in a grid was very familiar to me, it reminded me of the early days of HTML where I would hack a layout using <code>&lt;TABLE&gt;</code>. The bad news for me is that shorthand-itis is even worse for grid. We started with <code>grid-template-rows</code> and <code>grid-template-columns</code>, then we learn the two can be shortened to <code>grid-template</code>. Similarly, <code>row-gap</code> and <code>column-gap</code> become <code>gap</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Aside: I was annoyed we didn't have consistency on whether column/row are used as prefix or suffix for these parameters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to the shorthand infestation: Not only do we have shorthand, now we have <em>multiple levels</em> of shorthand. We start with <code>grid-row-start</code> and <code>grid-row-end</code>, which are shortened in <code>grid-row</code>. But that's not all! Their was the expected counterparts <code>grid-column-start</code> and <code>grid-column-end</code> shortened to <code>grid-column</code>. Then <code>grid-row</code> and <code>grid-column</code> -- already shorthand themselves -- are shortened into <code>grid-area</code>. Gah!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But CSS grid has more to offer over <code>&lt;TABLE&gt;</code> than just annoying shorthand, it also has ability to control justification and alignment of elements within the grid. But the names of these control knobs are pretty unintuitive and confusing. While I can see how <code>justify-item</code> controls justification of items inside a grid, I don't understand why <code>justify-content</code> moves the entire grid. Why is the entire grid considered 'content'? Adding to this confusion is <code>justify-self</code>, which is how an item inside the grid can override justification settings from the container grid. I look at all of this and think "here be dragons."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had hoped the project associated with grid would be as hands-on as "Tea Cozy" but it was "merely" laying out the grid in a to-do list, far more straightforward than "Tea Cozy". Ah well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Outside of Codecademy: the people who made <em>Flexbox Froggy</em> also made <em><a rel="noreferrer noopener" href="https://cssgridgarden.com/" target="_blank">Grid Garden</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>After this instructive though occasionally challenging course, <a href="https://newscrewdriver.com/2022/11/03/notes-on-codecademy-learn-css-transitions-and-animations/">CSS Transitions and Animations</a> felt a lot easier.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

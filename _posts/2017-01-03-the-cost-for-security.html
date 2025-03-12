@@ -1,0 +1,40 @@
+---
+layout: post
+title: The Cost for Security
+date: 2017-01-03 15:32:29.000000000 +00:00
+type: post
+post_id: '3547'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Adventure Book
+- Rails
+- TIL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '374837204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/01/03/the-cost-for-security/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>In the seemingly never-ending bad news of security breaches, a recurring theme is "they knew how to prevent this, but they didn't." Usually in the form of editorializing condemning people as penny-pinching misers caring more about their operating cost than the customer.</p>
+<p>The accusations may or may not be true, it's hard to tell without the other side of the story. What's unarguably true is that security has <em>some</em> cost. Performing encryption obviously takes more work than not doing any! But how expensive is that cost? Reports range wildly anywhere from less than 5% to over 50%, and it likely depends on the specific situations involved as well.</p>
+<p>I really had no idea of the cost until I stumbled across the topic in the course of my own <a href="https://github.com/Roger-random/rr-adventurebook">Rails self-education project</a>.</p>
+<p>I had designed my Rails project with an eye towards security. The Google ID login token is validated against Google certificates, and the resulting ID is salted and hashed for storage. The code for this added security were deceptively minor, as they triggered huge amounts of work behind the scenes!</p>
+<p>I started on this investigation because I noticed my Rails test suite ran quite slowly. Running the test suite for the <a href="https://www.railstutorial.org/">Rails Tutorial</a> sample app, the test framework ran through ~120 assertions per second. My own project test suite ran at a snail's pace of ~12 assertions/second, 10% of the speed. What's slowing things down so much? A few hours of experimentation and investigation pointed the finger at the encryption measures.</p>
+<p>Obviously security is good for the production environment and should not be altered. However, for the purposes of development &amp; test, I could weaken them because there would be no actual user data to protect. After I <a href="https://github.com/Roger-random/rr-adventurebook/commit/aac2c76eb4724b825eeffe4d85ca6dcd06f15374">made a change</a> to bypass some code and reducing complexity in others, my test suite speed rose to the expected &gt;100 assertions/sec.</p>
+<p>Granted, this is only an amateur at work and I'm probably making other mistakes doing security inefficiently. But as a lesson to experience "Security Has A Cost" firsthand it is eye-opening to find a <strong><em>1000%</em> </strong>performance penalty.</p>
+<p>For a small practice exercise app like mine, where I only expect a handful of users, this is not a problem. But for a high-traffic site, having to pay ten times the cost would be the difference between making or breaking a business.</p>
+<p>While I still don't agree with the decisions that lead up to security breaches, at least now I have a better idea of the other side of the story.</p>
+<p></body></html></p>

@@ -1,0 +1,36 @@
+---
+layout: post
+title: Setting Up Raspberry Pi GPIO Pins For Device Control
+date: 2017-10-10 09:00:48.000000000 +00:00
+type: post
+post_id: '13528'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+- Thermoforming Machine Rebuild
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10175412532'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/10/setting-up-raspberry-pi-gpio-pins-for-device-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A rough draft of the thermoformer touchscreen control panel application, witting in Python with the Qt UI framework, is now up and running. Now it is time to see how it works controlling some physical hardware. We're going to build up to this in steps on the way towards actually controlling the thermoform machine. The first step is to have the Pi light up some LEDs as commanded by the control panel application.</p>
+<p>I had been playing with a Microchip PIC16F18456 earlier, which can drive LEDs effortlessly. Each pin can handle 50mA which is more than enough to drive LEDs as they typically require no more than 20mA each. I had assumed the Pi would be even more capable with its onboard voltage regulators, but I thought it'd be better to check just to be safe. I'm glad I did! It turns out the pins on the Raspberry Pi has significantly lower power capability than the pins on the PIC16F18345.</p>
+<p>The consensus on the <a href="https://www.raspberrypi.org/forums/viewtopic.php?t=151871">Raspberry Pi forums</a> says the limit is 16mA per pin, and 50mA total across all pins. A bunch of LEDs would quickly exceed the 50mA total cap. Given this, we're going to take two baby steps at once.</p>
+<p>We've known we couldn't drive the thermoforming machine directly with Pi. And even if we could, a direct connection is not the best idea. The plan had always called for the use of <a href="https://en.wikipedia.org/wiki/Opto-isolator">opto-isolators</a> to keep some separation between the delicate low-power circuitry on the Raspberry Pi chip and the high-power components of the machine. I just didn't expect that bright LEDs to qualify as "high power" in this context. But since they are, we're going to use opto-isolators to build the LED proof of concept.</p>
+<p>The current design for the control has 9 outputs to relays, and 1 input from a limit switch. For the outputs we're starting with the Vishay <a href="https://www.vishay.com/docs/81865/4n324n33.pdf">4N32</a> chip to see how they work. For input, we wanted a chip that works in the reverse direction, and we're starting with the Toshiba <a href="https://toshiba.semicon-storage.com/info/docget.jsp?did=16819&amp;prodName=TLP2200">TLP2200</a>. With the help of a Raspberry Pi I/O breakout board we could hook everything up on a breadboard for the first test.</p>
+<p><img class=" size-full wp-image-13576 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/img_5266.jpg" alt="IMG_5266" width="1024" height="768"></p>
+<p></body></html></p>

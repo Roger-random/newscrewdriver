@@ -1,0 +1,47 @@
+---
+layout: post
+title: Using RViz to Validate Motor Movement Against LIDAR Data
+date: 2018-10-01 09:00:50.000000000 +00:00
+type: post
+post_id: '16886'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1538410377'
+  _publicize_job_id: '22727256232'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/01/using-rviz-to-validate-motor-movement-against-lidar-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The <a href="https://github.com/Roger-random/roboclaw_ros">Roboclaw ROS node</a> is responsible for calculating odometry information based on encoder values read from each wheel. In order to translate them into standard ROS units, it needs two parameters:</p>
+<ul>
+<li>
+<code>ticks_per_meter</code> : To calculate physical distance traversed by each wheel, the code needs to know how many encoder counts it takes for the wheels to travel one meter.</li>
+<li>
+<code>base_width</code> : To calculate how much the robot has turned, the code needs to know how far apart the two drive wheels are placed.</li>
+</ul>
+<p>Both of these values needed updating after upgrading Phoebe to the second chassis. I got impatient with the slow speed of the first draft, so the motor gearboxes were changed out with ones that deliver less torque and precision but much faster top speed. This change of gearing would need a new <code>ticks_per_meter</code> value. And the second chassis is slightly wider than the first, which obviously changes the <code>base_width</code> value. Both of these could be calculated on paper, but that is only a starting point. Real world is always a little different from the theoretical and needs a little adjustment.</p>
+<p>The easiest place to start is <code>ticks_per_meter</code>. Phoebe is placed on a flat surface, next to a ruler, and commanded to drive straight forward for a short distance. During this activity, the odometry data is monitored with <code>rostopic echo /odom</code> to see how far Phoebe thinks it has actually gone. If the ruler said Phoebe didn't go as far as it thought it did, increase <code>ticks_per_meter</code>. If Phoebe overshot, reduce that value.</p>
+<p>Once wheel travel was verified with a ruler, LIDAR is added to the picture. RViz is commanded to plot odometry data and LIDAR data together, and Phoebe is placed facing a door serving as a large flat surface for reference. The red arrow represents where Phoebe thinks it is, facing the horizontal line representing its LIDAR's view of the door.</p>
+<p><img class="alignnone size-full wp-image-16887" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-door-test-1-start.png" alt="Phoebe Door Test 1 Start" width="1227" height="932"></p>
+<p>Then Phoebe was commanded to move backwards 0.5m. If odometry data agrees with LIDAR data, the movement away from door and the door's distance from robot would match, canceling each other out so the line representing the door would not move on the RViz plot. It looks like the ruler calibration worked out well, as we're only a tiny bit off.</p>
+<p><img class="alignnone size-full wp-image-16888" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-door-test-2-back-0-5m.png" alt="Phoebe Door Test 2 Back 0.5m.png" width="1227" height="932"></p>
+<p>Once distance was verified, we move on to rotation. Command Phoebe to make a 90 degree turn clockwise and see if LIDAR plot agrees. Again, ideally the turn calculated from odometry would agree with the LIDAR plot, leaving the door in roughly the same place on the RViz plot. Ideally.</p>
+<p><img class="alignnone size-full wp-image-16889" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-door-test-3-90-deg-right-bad.png" alt="Phoebe Door Test 3 90 Deg Right Bad" width="1227" height="932"></p>
+<p>In this case, however, the door shows a minor clockwise rotation. This change of position in LIDAR data indicates Phoebe didn't turn as far as it thought it did. To adjust parameters so Phoebe's calculations better align with actual motion, we can increase the <code>base_width</code> parameter. And if the door had rotated the other way (Phoebe turned further than it thought it did) the parameter should be decreased.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/153657-using-rviz-to-validate-motor-movement-against-lidar-data">Hackaday.io</a>)</body></html></p>

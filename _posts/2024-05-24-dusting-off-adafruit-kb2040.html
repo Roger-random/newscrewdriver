@@ -1,0 +1,41 @@
+---
+layout: post
+title: Dusting Off Adafruit KB2040
+date: 2024-05-24 12:30:00.000000000 +00:00
+type: post
+post_id: '43496'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- rp2040
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43498'
+  timeline_notification: '1716579014'
+  firehose_sent: '1716579013'
+  wordads_ufa: u:wpcom-ufa-v4:1716589716
+  _publicize_job_id: '94866431590'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-24 22:30:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/24/dusting-off-adafruit-kb2040/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My latest distraction is a <a href="https://newscrewdriver.com/2024/05/14/new-toy-raspberry-pi-pico-w/">Raspberry Pi Pico W</a>, a promising alternative to ESP32 for a WiFi-capable microcontroller board. After a cursory experiment with a single LED, I'm ready to connect more components to the board to explore its capabilities. Since it's new hardware, though, there's always the chance I'll goof up somewhere and destroy the microcontroller. I don't want to take that risk because I'm borrowing this particular Pico W. It's not mine to blow up! Thinking over my options, I remembered that I already had microcontrollers built around the same RP2040 chip: a pair of <a href="https://www.adafruit.com/product/5302">Adafruit KB2040</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I got my KB2040 as an Adafruit promotion. They typically have something set up to entice us to put a few more items in our shopping cart, and these were "Free KB2040 with $X dollar purchase" type of deal I got across two separate purchases. As the product page made clear, KB2040 was designed for people building their own custom keyboards. So it was built to be physically compatible with an existing board (Pro Micro) popular with that niche. I had no intention of building my own custom keyboard, but I thought the RP2040 chip was worth a look at some point in the future. That time is now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are a few tradeoffs of using a KB2040 to substitute a Pico W. The first and most obvious problem is the fact KB2040 doesn't have the WiFi/Bluetooth chip, so I could only practice aspects of programming a RP2040 before I bring in wireless connectivity. Equally obvious is the different physical form factor, which means a different pinout. I didn't think that was a huge deal because I'm not trying to install the board on anything that expects a specific pinout. I printed Adafruit's pinout reference chart and I thought I was good to go, but I wasn't. While the RP2040 chip lies at the heart of both a Pico W and a KB2040, they have different peripheral chips. This means I'd need a KB2040-specific build of software and it is not on <a href="https://micropython.org/download/?vendor=Adafruit">MicroPython's list of supported Adafruit boards</a>. D'oh! Fortunately, Adafruit <a href="https://circuitpython.org/board/adafruit_kb2040/">supports KB2040 for CircuitPython</a>. Is it close enough for my purposes? I now have motivation to find out.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

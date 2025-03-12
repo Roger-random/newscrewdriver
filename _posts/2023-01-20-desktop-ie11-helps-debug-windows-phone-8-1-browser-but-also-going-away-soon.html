@@ -1,0 +1,55 @@
+---
+layout: post
+title: Desktop IE11 Helps Debug Windows Phone 8.1 Browser but Also Going Away Soon
+date: 2023-01-20 12:30:00.000000000 +00:00
+type: post
+post_id: '34648'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- HTML
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34658'
+  timeline_notification: '1674246609'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674340027
+  _publicize_job_id: '80739747593'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/20/desktop-ie11-helps-debug-windows-phone-8-1-browser-but-also-going-away-soon/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm playing with the AS7341 spectral color sensor and decided to use it as an exercise in browser app development. I've learned a lot as I went. Serving the HTML file from my ESP32 was <a href="https://newscrewdriver.com/2023/01/19/esp32-arduino-web-server-no-file-upload/">more annoying than I think it ought to be</a> under Arduino IDE, certainly more complex than creating the HTTP API endpoint to begin with, but I'm setting that aside for now. I wanted to revisit another idea: browser apps on Windows Phone 8.1. Since Microsoft has long since shut down the app development platform for Windows Phone, its browser is the only remaining entry point to utilize those old phones rather than dump them in electronics recycle.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I booted up my old Lumia 920 (a decade old at this point) and pointed it at my ESP32. I saw my static HTML input controls render on screen, but none of the interactive features worked. Something is wrong with my JavaScript, but what? I ran into this challenge earlier, trying to get ESP32 Micro Sawppy control working on the same Lumia 920. Debugging the issue was an exercise in frustration because Microsoft had <a href="https://newscrewdriver.com/2021/04/25/windows-phone-debug-tools-rode-into-sunset/">removed all development resources including debugger support</a>. Which meant I was staring at a blank screen with no error message to point me in the right direction. Just tedious trial and error. I knew I must find a better way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since then, I had an idea I wanted to try: <a href="https://en.wikipedia.org/wiki/Windows_Phone_8.1#Web">according to Wikipedia</a>, the Windows Phone 8 browser was built out of Internet Explorer 11 code base. And I still have IE11 on my Windows 10 machines. I had hoped it would give me error messages to guide my debugging, and it did! IE11 Developer Tools console gave me an error message complaining about a backtick as an invalid character. This was because IE11 did not support <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template literals</a>, and now with an error message I knew to switch to a different way to manipulate strings. The next "invalid character" error was for "=&gt;" and that was because IE11 didn't do <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow function expressions</a>, again easily addressed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I ran into "Object doesn't support this action" error pointing at the URL class constructor. Double-checking <a rel="noreferrer noopener" href="https://caniuse.com/?search=URL" target="_blank">caniuse.com confirmed IE11 lacked URL class</a>. This would take more effort to address, so I aborted my IE11-friendliness experiment at this point. Before my web app would work on IE11 (and hopefully Windows Phone 8.1 browser) I would have to convert the URL class. I probably also have to switch my input control event listeners from "<a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event" target="_blank">input</a>" event (which never fired under IE11) to "<a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/change_event" target="_blank">change</a>".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But even as I found this solution to debug under IE11, the solution may soon be taken away from me. IE11 reached end of life on 2022/6/15. In a few weeks (2023/2/14 as of this writing) Microsoft plan to <a rel="noreferrer noopener" href="https://techcommunity.microsoft.com/t5/windows-it-pro-blog/internet-explorer-11-desktop-app-retirement-faq/ba-p/2366549" target="_blank">forcibly remove IE11 from Windows machines</a>. The official alternative is <a rel="noreferrer noopener" href="https://support.microsoft.com/en-us/microsoft-edge/internet-explorer-mode-in-microsoft-edge-6604162f-e38a-48b2-acd2-682dbac6f0de" target="_blank">running Microsoft's Edge browser to run in Internet Explore mode</a>, but its own developer tools are not available while running in that mode. I have to kick off <a href="https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/ie-mode/">something called "IEChooser"</a> (%systemroot%\system32\f12\IEChooser.exe) in order to get a debugger experience, and only a partial one at that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew Windows Phone 8.1 itself has long gone off into the sunset, and soon IE11 will follow. Web platforms have been dropping IE11 support for years. For example, Angular <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/12/02/a-quick-look-at-angular-15/" target="_blank">stopped supporting IE11 in November 2021</a> with their version 13. If I am to make use of my old Windows Phone 8.1 devices via a browser app, I could use desktop IE11 to help me debug compatibility issues for now, but probably not for long. With all of its limitations, <a href="https://newscrewdriver.com/2023/01/21/windows-phone-8-1-browser-effectively-a-separate-platform-now/">it might as well be an entirely different platform</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code changes for this experiment is <a href="https://github.com/Roger-random/as7341_webui/commit/1101087dd7a97454fe2d6bf45bcad432d2c62cbe#diff-1ee07846e0c2be51ba73ae9647ccde022db9b44d7839f80bc73c1a9e0275c46e">publicly visible on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

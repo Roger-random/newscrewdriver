@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'Hackaday Badge Nyan Cat: Run Length Encode Is Good Enough To Proceed'
+date: 2018-11-02 09:00:42.000000000 +00:00
+type: post
+post_id: '17092'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23850517281'
+  timeline_notification: '1541174552'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/02/hackaday-badge-nyan-cat-run-length-encode-is-good-enough-to-proceed/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17086 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/poptartcat320240.gif" alt="poptartcat320240" width="320" height="240">At first glance, converting the Nyan Cat animated GIF to a run length encoded image doesn't make a lot of sense: I'd need to decode the GIF at some point anyway, why go through the effort?</p>
+<p>The key point is that the conversion process can be done on a desktop PC, with far more powerful and user-friendly tools. Yes, I could have done the work to port a GIF library to the PIC32 chip running the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>, but on a desktop computer I could fire up Python, "<a href="https://pillow.readthedocs.io/en/5.3.x/handbook/tutorial.html">from PIL import Image</a>", and be off and running manipulating a decoded GIF image sequence.</p>
+<p>Once I got over the (small) hump of initial learning, it was easy to write a Python script to do everything I wanted to do to the image:</p>
+<ol>
+<li>Downscale from original 400x400 resolution to 320x320</li>
+<li>Crop off the top and bottom to obtain a 320x240 image</li>
+<li>Perform run-length encoding of resulting image.</li>
+<li>Output encoded bytes.</li>
+</ol>
+<p>In step 4, the output comes in the form of text: specifically, C source code. Each encoded image is a static C array declaration that I could copy and paste into MPLAB X for storage into PIC32 program memory.</p>
+<p>I had hoped the simple GIF would compress well with run length encoding, and the first results were quite promising: a little over 2 kilobytes for the first frame, and there are 12 frames in total implying the neighborhood of 24-28 kilobytes.</p>
+<p>The original Nyan Cat GIF takes up 30 kilobytes. Granted, it is higher resolution and different aspect ratio, but this is going to make the PIC32 side programming far <em><strong>FAR</strong></em> easier. Which not only makes it easier for me to write, but also for others to read and understand in a little demo. I'm willing to trade a bit of space for those benefits.</p>
+<p>(The Python script used for Nyan Cat encoding lives in <a href="https://github.com/Roger-random/transcode_gif">this minimal Github repository</a>.)</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</body></html></p>

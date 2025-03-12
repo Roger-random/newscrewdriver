@@ -1,0 +1,56 @@
+---
+layout: post
+title: LCD Analog Activity Started By Digital Signal
+date: 2022-06-02 12:30:00.000000000 +00:00
+type: post
+post_id: '30627'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30595'
+  _publicize_job_id: '73226248844'
+  timeline_notification: '1654198250'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/02/lcd-analog-activity-started-by-digital-signal/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I feel I have a <a href="https://newscrewdriver.com/2022/06/01/examining-control-data-for-lcd-at-i2c-address-0x3e/">working understanding of the I<sup>2</sup>C control messages</a> necessary for controlling an LCD salvaged from an AT&amp;T CL84209 landline phone system. But that is only part of the puzzle, because this LCD had input/output pins beyond I<sup>2</sup>C clock and data lines: there were <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/30/cordless-handset-lcd-power-up-in-saleae-analog-mode/" target="_blank">four more pins to figure out</a>. Represented by channel 4-7 in this logic analyzer trace:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30587,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg?w=1024" alt="" class="wp-image-30587"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Upon system power-up, one started at 3.3V and the others at 0V. Roughly two seconds after power-up, they come alive with two of them going up to 5.2V and the other two generating ~8kHz square waves. One between 0V and 3.3V, the other between 3.3V and 5.2V. I had assumed I would have to build circuitry to mimic these voltage values, but maybe I wouldn't.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30595,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-ramp-all.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-ramp-all.jpg?w=1024" alt="" class="wp-image-30595"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When zoomed in to when these pins became active, I could see the analog activity was immediately preceded by activity on the I<sup>2</sup>C bus. Comparing the timestamp against the list of decoded I<sup>2</sup>C messages, I found the I<sup>2</sup>C message visible on this graph is actually the very first set of messages sent to the LCD at address 0x3E.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This implies the LCD is not just a passive receiver of these signals, but an active participant who started something in response to the first initialization command sent over I<sup>2</sup>C bus. What we see here is some combination of functionality onboard the embedded chip, and some contribution from the circuit board. But I have no guesses at the division of labor between them. I assume the circuit board must contribute <em>something </em>to the process, otherwise the embedded controller could have just kept things internal and not incur the manufacturing cost of bringing those pins out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I looked to the Sanyo LC75853N LCD controller datasheet I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/" target="_blank">previously referenced for a different device</a> to see if it had a counterpart to these pins. I note the OSC pin that required an external resistor and capacitor, and the V<sub>DD</sub>1 and V<sub>DD</sub>2 pins that required external voltage supply. None of these explanations fit the two pins that rose to 5.2V. The square wave between 0V and 3.3V might be an external oscillator, but I don't know what that means for the other square wave between 3.3V and 5.2V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On a quest for more data, I am going to try wiring these two LCDs in parallel again. The previous time <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/" target="_blank">was a risky experiment</a> done in ignorance armed only with the fact I had very little to lose. This time I'm a little better informed which I hoped should translate to lower risk on <a href="https://newscrewdriver.com/2022/06/03/lcd-in-parallel-test-round-2-5v-power/">the second try</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

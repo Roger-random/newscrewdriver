@@ -1,0 +1,49 @@
+---
+layout: post
+title: Proxmox Cluster Node Removal
+date: 2024-04-05 12:30:00.000000000 +00:00
+type: post
+post_id: '41651'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _thumbnail_id: '42873'
+  wordads_ufa: u:wpcom-ufa-v4:1712345591
+  firehose_sent: '1712345407'
+  _publicize_job_id: '93316677446'
+  timeline_notification: '1712345409'
+  _elasticsearch_data_sharing_indexed_on: '2024-04-05 19:30:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/04/05/proxmox-cluster-node-removal/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've transferred the core of a computer <a href="https://newscrewdriver.com/2024/04/04/modcase-mass-mini-itx-case-free/">into a 3D-printed case</a>, reducing the volume it took up on my shelf. It's been part of my Proxmox experimentation, getting a feel for the software by playing with different capabilities. One notable experiment was putting two machines together into a cluster, and seeing how easy and seamless it was to <a href="https://newscrewdriver.com/2023/11/05/proxmox-cluster-vm-migration/">migrate virtual machines between them</a>. It was really neat!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thankfully, the Realtek network problems which forced my hand with VM migration has been resolved, and my Dell 7577 has run reliably for several months. Since it draws less power than a Mini-ITX desktop, I decided to migrated all my virtual machines back to the 7577. This will free my Mini-ITX system to be powered down for now and available for other experiments in the future. I found <a href="https://pve.proxmox.com/pve-docs/chapter-pvecm.html#_remove_a_cluster_node">instructions for removing a Proxmox cluster node</a>, but the command failed with the error message: "<code>cluster not ready - no quorum? (500)</code>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Major cluster operations requires quorum, defined as a majority of nodes ((number of nodes/2)+1) to be online and actively participating in cluster operations. Adding and removing cluster nodes qualify but apparently there are built-in exceptions for adding the first few nodes because by definition we have to start with a single node and build our way up. But there is no built-in exception for removal and thus I'm prevented from dropping node count back down to one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching Proxmox forums, I found a workaround in thread <em><a href="https://forum.proxmox.com/threads/another-cluster-not-ready-no-quorum-500-case.56104/">Another "cluster not ready - no quorum? (500)" case</a></em>. We can suppress quorum requirements with the command "<code>pvecm expected 1</code>", then proceed with the operation that typically require quorum like removing a cluster node. Since quorum requirement exists to make sure we don't fatally damage a Proxmox cluster, this is a very powerful hammer that needs to be wielded carefully. We have to know what we are doing, which may include requirements outside of the actual act of removing a node.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my case, I am responsible for making sure that the removed node never gets on the network again in its current state. I unplugged the network cable from the back of the motherboard and used a Windows 10 installation USB drive to overwrite Proxmox with Windows 10. That should do it.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

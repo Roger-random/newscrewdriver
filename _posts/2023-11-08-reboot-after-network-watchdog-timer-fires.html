@@ -1,0 +1,86 @@
+---
+layout: post
+title: Reboot After Network Watchdog Timer Fires
+date: 2023-11-08 12:30:00.000000000 +00:00
+type: post
+post_id: '40166'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Linux
+- Proxmox
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39972'
+  footnotes: ''
+  timeline_notification: '1699475409'
+  wordads_ufa: s:wpcom-ufa-v4:1699475771
+  _publicize_job_id: '89192490365'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/08/reboot-after-network-watchdog-timer-fires/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My Dell Inspiron 7577 is not happy running Proxmox VE. For reason I don't yet understand, its onboard Ethernet would quit at unpredictable times. [UPDATE: Network connectivity stabilized after installing Proxmox VE kernel update from 6.2.16-15-pve to 6.2.16-18-pve. The hack described in this post is no longer necessary.] Running <code>dmesg</code> to see error messages logged on the system, I searched online and found <a href="https://newscrewdriver.com/2023/11/07/reported-pci-express-error-was-unrelated/">a few Linux kernel flags to try as potential workarounds</a>. None of them have helped keep the system online. So now I'm falling back to an ugly hack: rebooting the system after it falls offline.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first session stayed online for 36 hours, so my first attempt at this workaround was to reboot the system once a day in the middle of the night. That wasn't good enough because it frequently failed much sooner than 24 hours. The worst case I've observed so far was about 90 minutes. Unless I wanted to reboot every half hour or something ridiculous, I need to react to system state and not a timer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the Proxmox forum thread I read, one of the members said they wrote a script to ping Google at regular intervals and reboot the system if that should fail. I started thinking about doing the same for myself but wanted to narrow down the variables. I don't want to my machine to reboot if there's been a network hiccup at a Google datacenter, or my ISP, or even when I'm rebooting my router. This is a local issue and I want to focus my scope locally.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So instead of running <code>ping</code> I decided to base my decision off of what I've found so far. I don't know why the Ethernet networking stack fails, but when it does, I know <a href="https://newscrewdriver.com/2023/11/06/ethernet-failure-triggers-network-stack-timeout/" target="_blank" rel="noreferrer noopener">a network watchdog timer fires and logs message</a> into the system. Reading about this system, I learned it is called a journal and can be accessed and queried using the command line tool <code>journalctl</code>. Reading about its options, I wrote a small shell script I named <code>/root/watch_watchdog.sh</code>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>#!/usr/bin/bash
+if /usr/bin/journalctl --boot --grep="NETDEV WATCHDOG"
+then
+  /usr/sbin/reboot
+fi</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every executable (bash, journalctl, and reboot) are specified with full paths because I had problems with context of bash scripts executed as cron jobs. My workaround, which I decided was also good security practice, is to fully qualify each binary file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code>--boot</code> parameter restricts the query to the current running system boot, ignoring messages from before the most recent reboot.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code>--grep="NETDEV WATCHDOG"</code> parameter looks for the network watchdog error message. I thought to restrict it to exactly the message I saw: <code>"kernel: NETDEV WATCHDOG: enp59s0 (r8169): transmit queue 0 timed out"</code> but using that whole string returned no entries. Maybe the symbols (the colon? the parentheses?) caused a problem. Backing off, I found just <code>"NETDEV"</code> is too broad because there are other networking messages in the log. Just <code>"WATCHDOG"</code> is also too broad given unrelated watchdogs on the system. Using <code>"NETDEV WATCHDOG"</code> is fine so far, but I may need to make it more specific later if that's still too broad.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most important part of this is the exit code for <code>journalctl</code>. It would be nonzero if messages are found from the query, and zero if no entries are found. This exit code is used by the <code>"if"</code> statement to decide whether to reboot the system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the shell script file in place and made executable with <code>chmod +x /root/watch_watchdog.sh</code>, I could add it to the cron jobs table by running <code>crontab -e</code>. I started by running this script once an hour on the top of the hour.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>0 * * * * /root/watch_watchdog.sh</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>But then I thought: what's the downside to running it more frequently? I couldn't think of anything, so I expanded to running once every five minutes. (I learned the pattern syntax from <a href="https://crontab.guru/" target="_blank" rel="noreferrer noopener">Crontab guru</a>.) If I learn a reason not to run this so often, I will reduce the frequency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>*/5 * * * * /root/watch_watchdog.sh</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This ensured network outages due to Realtek Ethernet issue are no longer than five minutes in length. This is a vast improvement over what I had until now, which is waiting until I noticed the 7577 had dropped off the network (which may take hours), pulling it off the shelf, log in locally, and type "reboot". Now this script will do it within five minutes of watchdog timer message. It's a really ugly hack, but it's something I can do today. Fixing this issue <em>properly </em>requires a lot more knowledge about Realtek network drivers, and that knowledge seemed to be <a href="https://newscrewdriver.com/2023/11/09/realtek-r8168-driver-is-not-r8169-driver-predecessor/">spread across multiple drivers</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Featured image created by <em><a href="https://www.bing.com/images/create" target="_blank" rel="noreferrer noopener">Microsoft Bing Image Creator powered by DALL-E 3</a></em> with prompt "<em>Cartoon drawing of a black laptop computer showing a crying face on screen and holding a network cable</em>"</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

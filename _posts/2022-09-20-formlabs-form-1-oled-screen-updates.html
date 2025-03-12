@@ -1,0 +1,47 @@
+---
+layout: post
+title: FormLabs Form 1+ OLED Screen Updates
+date: 2022-09-20 12:30:00.000000000 +00:00
+type: post
+post_id: '32654'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32614'
+  _publicize_job_id: '76925863643'
+  timeline_notification: '1663702204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/20/formlabs-form-1-oled-screen-updates/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It looks like the OLED dot matrix display in my broken FormLabs Form 1+ laser resin 3D printer uses a SSD1305 controller, <a href="https://newscrewdriver.com/2022/09/19/formlabs-form-1-oled-control-consistent-with-ssd1305/">based on communication traffic captured during its initial power-up sequence</a>. Walking through that data while cross-referencing with the SSD1305 datasheet taught me a lot, and now I can apply this knowledge to examine logic analyzer traces from OLED reacting to other printer activities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Form 1+ doesn't really have a power switch. When the 24VDC power supply is plugged in, it immediately starts running which includes the OLED power-up sequence I examined. But the user doesn't see anything, because OLED display frame buffer has been filled with all black pixels. It's not until they press the front panel button does the OLED start displaying visible pixels, and I have a logic analyzer trace of this startup sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Visually, the startup sequence is a short animation of FormLabs text and butterfly logo. From off the bottom of the screen, it translates upwards until the text and logo is centered on screen for a brief second marking the end. From that point on, the screen is used to display up to four lines of text. Before this animation started, I see an initialization sequence identical to the power-up sequence: set all parameters and clear all eight memory pages to zero. After that, the animation starts running. When reading the SSD1305 datasheet, I saw it had a vertical scroll mode where bitmap in memory can be scrolled by changing the rendering start address. I thought that's what the FormLabs animation used, but it wasn't. Each frame of the animation is a full screen update sending four blocks of data for pages 0-3.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It appears memory pages 4-7 are not actively used for this application, which makes sense as the SSD1305 is designed for up to 132x64 pixels and we only have 128x32 on this OLED. However, those four pages of update data are transmitted in reverse order. Page 3 first, then 2, then 1, then 0. I wonder why? <strong>Hypothesis</strong>: This is to minimize visual artifacts. Imagine what happens if we update a memory page at the exact same time SSD1305 is displaying data from that page. We'd see a part of the old image mixed in with the updated image. Assuming the SSD1305 renders in increasing page order, sending data in the same increasing order means worst case unlucky timing will mess up all four pages. But if we update page in decreasing order, even the unluckiest timing scenario means only one out of four pages would be messed up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Guesses or not, I feel like I have a pretty grasp of this OLED display module. Enough to <a href="https://newscrewdriver.com/2022/09/21/first-test-with-adafruit-ssd1305-library/">try controlling it with my own code</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

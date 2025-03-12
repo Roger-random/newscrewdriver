@@ -1,0 +1,70 @@
+---
+layout: post
+title: Power Control Board for TrueNAS Replication Raspberry Pi
+date: 2022-03-24 12:30:00.000000000 +00:00
+type: post
+post_id: '29146'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Raspberry Pi
+tags:
+- ESP32
+- ESPHome
+- Home Assistant
+- TrueNAS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29149'
+  timeline_notification: '1648150233'
+  _publicize_job_id: '70578502378'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/24/power-control-board-for-truenas-replication-raspberry-pi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Encouraged by <a href="https://newscrewdriver.com/2022/03/23/home-assistant-mobile-app-data-reporting-rate-varies-greatly/">(mostly) success of controlling my Pixel 3a phone's charging</a>, the next project is to control power for a Raspberry Pi dedicated to data backup for my TrueNAS CORE storage array. (It is a <a rel="noreferrer noopener" href="https://www.truenas.com/docs/core/tasks/replicationtasks/remote/" target="_blank">remote target for replication</a>, in TrueNAS parlance.) There were a few reasons for dedicating a Raspberry PI for the task. The first (and somewhat embarrassing) reason was that I couldn't figure out how to set up a remote replication target using a non-root account. With full root level access wide open, I wasn't terribly comfortable using that Pi for anything else. The second reason was that I couldn't figure out how to have a replication target wake up for the replication process and go to sleep after it was done. So in order to keep this process autonomous, I had to leave the replication target running around the clock, and a dedicated Raspberry Pi consumes far less power than a dedicated PC.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I want to take a step towards power autonomy and do the easy part first. I have my TrueNAS replications kick off in response to snapshots taken, and by default that takes place daily at midnight. The first and easiest step was then to turn on my Raspberry Pi a few minutes before midnight so it is booted up and ready to receive replication snapshot shortly after midnight. For the moment, I would still have to shut it down manually sometime after replication completes, but I'll tackle that challenge later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From an electrical design perspective, this was no different from the Pixel 3a project. I plan to dedicate another buck converter for this task and connect enable pin (via a cable and a 1k resistor) to another GPIO pin on my existing ESP32. This would have been easy enough to implement with a generic perforated prototype circuit board, but I took it as an opportunity to play with a prototype board tailored for Raspberry Pi projects. Aside from the form factor and pre-wired connections to Raspberry Pi GPIO, these prototype kits also usually come with appropriate pin header and standoff hardware for mounting on a Pi. Looking over the various offers, I chose <a rel="noreferrer noopener" href="https://amzn.to/3qdwAl1" target="_blank">this particular four-pack of blank boards</a>. (*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29148,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/pi-hat-prototype-pcb-blank.jpg?w=1024" alt="" class="wp-image-29148"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Somewhat surprisingly for cheap electronics supply vendors on Amazon, this board is not a direct copy of an existing Adafruit item. Relative to <a rel="noreferrer noopener" href="https://www.adafruit.com/product/2310" target="_blank">the Adafruit offering</a>, this design is missing the EEPROM provision which I did not need for my project. Roughly two-thirds of the prototype area has pins connected as they are on a breadboard, and the remaining one-third are individual pins with no connection. In comparison the Adafruit board is breadboard-like throughout.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My concern with this design is in its connection to ground. It connects only a single pin, designated #39 in most Pi GPIO diagrams and lower-left in my picture. The <em><strong>many </strong></em>remaining GND pins: 6,9,14,20,25,30, and 34 appear to be unconnected. I'm not sure if I should be worried about this for digital signal integrity or other reasons, but at least it seems to work well enough for today's simple power supply project. If I encounter problems down the line, I can always solder more grounding wires to see if that's the cause.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29149,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/pi-hat-prototype-pcb-with-buck-converter-power.jpg?w=1024" alt="" class="wp-image-29149"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I added a buck converter and a pair of 220uF capacitors: one across input and one across output. Then a JST-XH board-to-wire connector to link back to my ESP32 control board. I needed three wires: +V<sub>in</sub>, GND and enable. But I used a four-pin connector just in case I want to surface +5V<sub>out</sub> in the future. (Plus, I had more four-pin connectors remaining in <a rel="noreferrer noopener" href="https://amzn.to/3qlyvns" target="_blank">my JST-XH assortment pack</a> than three-pin connectors. *)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought about mounting the buck converter and capacitors on the underside of this board. There's enough physical space between the board and the Raspberry Pi to fit them. I decided against it on concern of heat dissipation, and I was glad I did. After this board was installed on top of the Pi, the CPU temperature during replication rose from 65C to 75C presumably due to reduced airflow. If I had mounted components underneath, that probably would have been even worse. Perhaps even high enough to <a href="https://newscrewdriver.com/2018/09/06/detecting-raspberry-pi-thermal-throttling-from-console/" target="_blank" rel="noreferrer noopener">trigger throttling</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I plan to have my ESP32 control board run around the clock, so this particular node doesn't have the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/17/two-problems-controlling-buck-converter/" target="_blank">GPIO deep sleep state problem</a> of my earlier project with ESP8266. However, I am still concerned about making sure power stays on, and the <a href="https://newscrewdriver.com/2022/03/25/flash-memory-wear-effects-of-esphome-recovery-esp8266-vs-esp32/">potential problems of ensuring so</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

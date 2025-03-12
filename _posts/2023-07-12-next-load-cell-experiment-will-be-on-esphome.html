@@ -1,0 +1,43 @@
+---
+layout: post
+title: Next Load Cell Experiment Will Be On ESPHome
+date: 2023-07-12 12:30:00.000000000 +00:00
+type: post
+post_id: '37892'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37896'
+  timeline_notification: '1689190218'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689277333
+  _publicize_job_id: '85686619422'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/12/next-load-cell-experiment-will-be-on-esphome/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A few years ago, I <a href="https://newscrewdriver.com/2020/09/04/start-simple-with-low-cost-load-cell/">bought a cheap set of load cells</a> to play with. The kind that performs weight measurement in an inexpensive bathroom scale. I got them up and running with the bundled HX711 board, sending data to Node-RED. Using this infrastructure, I performed a silly little (but interesting!) <a href="https://newscrewdriver.com/2020/09/18/packing-bubble-squish-test-data/">experiment measuring squishing behavior</a> of packing material. I then got distracted with other Node-RED explorations and haven't done anything with the HX711 load cell setup since. Now I'm going to dust it off (quite literally) and play with it again. This time, instead of Node-RED, I'll be using the ESPHome + Home Assistant infrastructure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are multiple reasons for this switch. After a few experiments with Node-RED, I haven't found it to be a good fit for the way I think. I like the promise of flow-based programming, and I like Node-RED's implementation of the idea, but I have yet to find enough of an advantage to justify changing over. Node-RED promised to make prototyping fast, but I found something that got my prototypes up and running even quicker: ESPHome and Home Assistant. In my experiments to date, ESPHome's YAML-based configuration lets me get simple straightforward components up and running even more quickly than I ever managed under Node-RED. And when I need to venture beyond the simple defaults, I can <a href="https://esphome.io/guides/automations.html?highlight=lambda+syntax#templates-lambdas">embed small fragments of C code</a> to do just the special thing I need. This comes to me more naturally than using Node-RED's counterpart <a href="https://nodered.org/docs/user-guide/writing-functions">function node</a> with a snippet of JavaScript. It's also very quick to put together simple UI using Home Assistant, though admittedly with far less control over layout than <a href="https://newscrewdriver.com/2020/09/16/fast-and-easy-ui-via-node-red-dashboard/">Node-RED's dashboard</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But the primary motivation this time around is that I already had an instance of Home Assistant running, so I don't need to set up logging infrastructure for longer-duration projects. Node-RED is <a href="https://newscrewdriver.com/2022/02/06/move-calculation-off-microcontroller-to-node-red/">perfectly capable of working with a database</a>, of course, but I'd have to set something up. Home Assistant already has one built-in. By default, it stores data only locally, and only for ten days, making it much more privacy-friendly than internet-based solutions with wildly varying levels of respect for privacy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hardware changeover was pretty simple. The HX711 board needed four wires: power, ground, data, and clock. I unsoldered the Arduino Nano I previously installed and replaced it with an ESP8266. It will need to run <a href="https://esphome.io/components/sensor/hx711.html">ESPHome's HX711 integration</a>, which under the hood used the <a href="https://newscrewdriver.com/2020/09/07/hx711-library-on-arduino-nano-via-platformio/">same PlatformIO library I had used earlier</a> for the Arduino Nano. A few lines of YAML later, load cell data started streaming to my Home Assistant server <a href="https://newscrewdriver.com/2023/07/13/observations-on-24-hours-of-hx711-data/">for me to examine</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

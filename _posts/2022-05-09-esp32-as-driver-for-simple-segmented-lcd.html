@@ -1,0 +1,71 @@
+---
+layout: post
+title: ESP32 as Driver for Simple Segmented LCD
+date: 2022-05-09 12:30:00.000000000 +00:00
+type: post
+post_id: '30185'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- PAC-215
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30186'
+  _publicize_job_id: '72335812837'
+  timeline_notification: '1652124610'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/09/esp32-as-driver-for-simple-segmented-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I have some confidence that I can write ESP-IDF code to <a href="https://newscrewdriver.com/2022/05/08/switching-to-esp-idf-for-pwm-waveform-control/">control voltage levels at a speed relevant for driving a LCD</a>, it was time to move beyond a simple breadboard test circuit. Onward to a perforated prototype board for all ten pins of a simple 2-digit 7-segment LCD, salvaged from an electric blanket controller. In the interest of keeping the wiring simple, I chose ten GPIO pins on one side of <a href="https://amzn.to/37mW1KI">this ESP32 dev module I'm using</a> (*) so I could wire everything (almost) parallel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30194,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-lcd-driver-pcb-top.jpg?w=1024" alt="" class="wp-image-30194"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A 1kΩ resistor connects each ESP32 GPIO pin to an LCD pin, and a 330pF capacitor connects each ESP32 GPIO pin to ground. It isn't quite a straight shot of ten parallel pins, with a two-wide gap on the left (serial communication TX/RX pins) and a single pin gap on the right (GPIO2, which this dev board connected to a blue LED that I'm using as a system heartbeat indicator.) On the far right is a loop of wire connected to the ground plane, so I have a convenient place for my oscilloscope to clip onto.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30196,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-lcd-driver-pcb-bottom.jpg?w=1024" alt="" class="wp-image-30196"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That completes the hardware side for my initial test. Moving on to my ESP-IDF project, I started hard-coding a sequence of LEDC PWM duty cycle adjustments that would drive this LCD in a fashion that I believe is called 1/2 duty, 1/2 bias. I think 1/2 duty means switching off between two common segments so each set of segments has 1/2 of the time, and 1/2 bias means the inactive common pin is held at 1/2 of the voltage difference of the active pins. I'm still a beginner so that might be wrong!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30186,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-lcd-driver-pcb-42.jpg?w=1024" alt="" class="wp-image-30186"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I chose to hard code the test because it avoids all the lookup table code I'd have to do if this were to become an interactive changeable display. I have two number digits to work with, so my test pattern is <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#The_Answer_to_the_Ultimate_Question_of_Life,_the_Universe,_and_Everything_is_42" target="_blank">a <em>Hitchhiker's Guide</em> reference</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The result is clearly legible at the optimal viewing angle, but it fades off quite a bit as the perspective changes. I remember a much wider range of legible viewing angles in its original use, I assume it means I'm doing something different from real LCD driver circuits in this little hack. Possibly related is the observation that, if I illuminate this screen from behind with a LED, its light washes out the LCD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30132,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sunbeam-pac-215-lcd-backlight.jpg?w=1024" alt="" class="wp-image-30132"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The original device used two LEDs behind the LCD for backlight, and it didn't make the digits hard to read, so there's definitely something missing in my amateur hour LCD controller. But the fact remains it is under ESP32 control, and I learned a lot on my way here. This was the first tangible result of a lot of fumbling around after listening to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/04/28/inspired-by-joey-castillos-introduction-to-segmented-lcd/" target="_blank">Joey Castillo's Remoticon talk on hacking LCDs</a>. Seeing "42" show up on screen is a good milestone to stop and <a href="https://newscrewdriver.com/2022/05/10/segmented-lcd-from-sunbeam-pac-215/">review what I've learned</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this experiment is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/bare_lcd_2digit" target="_blank">available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

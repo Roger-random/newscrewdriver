@@ -1,0 +1,54 @@
+---
+layout: post
+title: CadQuery Definitely Under Active Development
+date: 2024-05-11 23:01:34.000000000 +00:00
+type: post
+post_id: '43373'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: u:wpcom-ufa-v4:1715556756
+  firehose_sent: '1715493696'
+  _thumbnail_id: '43374'
+  timeline_notification: '1715493697'
+  _publicize_job_id: '94481970757'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-12 23:34:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/11/cadquery-definitely-under-active-development/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>CadQuery is definitely under active development, with a <a href="https://cadquery.readthedocs.io/en/latest/roadmap.html">long to-do list</a> they still want to tackle. For a beginner, it can be occasionally disorienting learning a moving target. Generally speaking it's better to have an active and evolving project rather than relying on something that has been abandoned, but it's definitely a double-edged sword.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, new features are being added. Reading through documentation I noticed a new section "<a href="https://cadquery.readthedocs.io/en/latest/free-func.html">Free function API</a>" just popped up. That page doesn't explain exactly why someone would or would not use this new API. Or at least, if it did the explanation didn't make sense to this beginner.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And on the downside, sometimes things break. I am still learning the basics of CadQuery assemblies, so I noticed the assembly constraint solver demonstrations have gone out of whack. What used to be a nicely laid out door with doorway built of aluminum enclosures is now a jumbled arrangement of parts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43374,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/05/cadquery-assemblies-documentation-solver-error.jpg?w=1024" alt="" class="wp-image-43374"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I copy/pasted the example code into my copy of <code>cq-editor</code> and it looks OK. I wonder if a newer build of <code>cq-editor</code> would mirror this regression. Whatever generated this documentation page certainly had some sort of problem I don't understand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's one upside to this bug: it told me these aren't static screenshot images. And I thought "I wonder if these are actual 3D viewer controls" and they are! I could click inside the area and change my viewpoint. There were no visible controls or anything giving me a hint this might have been the case, until I noticed the error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I looked on CadQuery issues database and didn't see anything that directly mentions this problem, so I opened <a href="https://github.com/CadQuery/cadquery/issues/1585">issue #1585</a>. We'll see where this goes. [UPDATE: the developers found an angle unit degree/radian mixup in conversion to JSON, a code path used by sphinx-doc interface to generate documentation. The bug was inadvertently introduced alongside free function API, and the bug has been fixed.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

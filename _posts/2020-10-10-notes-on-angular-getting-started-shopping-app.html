@@ -1,0 +1,55 @@
+---
+layout: post
+title: Notes on Angular Getting Started Shopping App
+date: 2020-10-10 12:30:00.000000000 +00:00
+type: post
+post_id: '22682'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22766'
+  timeline_notification: '1602358209'
+  _publicize_job_id: '49780096825'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/10/notes-on-angular-getting-started-shopping-app/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Wading into <a href="https://newscrewdriver.com/2020/10/09/siren-call-of-angular-material/">a new domain</a> always means learning a new vocabulary as well. The first thing I read was <em><a rel="noreferrer noopener" href="https://angular.io/guide/architecture" target="_blank">Introduction to Angular Concepts</a></em>, knowing full well not all of it would make sense until later. The most valuable thing it taught me is that certain generic-sounding words actually have specific meanings within an Angular context, which is an <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/08/22/my-problem-was-one-of-control/" target="_blank">important lesson to learn</a> while reading documentation. In this case, I have to be careful when coming across words like "modules", "components", and "services".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Angular's "Getting Started" section starts out with a "<a href="https://angular.io/start">Try It</a>" walk through building a sample Angular application. It is a mock shopping app with a product list, a shopping cart, and checkout UI. They do the usual web app things like creating forms (got to have those forms) and communicate over HTTP. Following along with this sample, I got to see the concepts of "components" and "services" put into practice. I'm still a little fuzzy on "modules", though. I believe it is because modules don't really come into their own until we have a much larger project. At which point it makes sense to group lots of components into modules, something that would not be necessary in a small sample tutorial.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also got to see the good and bad sides of using TypeScript. The good news is that some mistakes will trigger compile-time errors for me to fix before proceeding. I find this a vast and compelling improvement over JavaScript standard operating procedure of watching things going awry at runtime and trying to debug what went wrong. The bad news is that it'll take some experience before I can understand what those error messages are trying to tell me. Here's one example of an error message that I found bewildering. It wasn't immediately obvious to me that I used too many curly braces, three instead of two.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Template parse errors:
+Parser Error: Missing expected : at column 9 in [ {{{product.name}}} ] in ng:///AppModule/ProductListComponent.html@3:6 ("
+
+&lt;div *ngFor="let product of products"&gt;
+&lt;h3&gt;[ERROR -&gt;]
+{{{product.name}}}
+&lt;/h3&gt;
+"): ng:///AppModule/ProductListComponent.html@3:6
+Parser Error: Unexpected end of expression: {{{product.name}}} at the end of the expression [ {{{product.name}}} ]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Going through the exercise I learned that an Angular component typically associates the three parts of web development (HTML, CSS, JavaScript) into a functional unit. The JavaScript file defines the component class. The HTML is modified with Angular-specific annotations and called the component template. And the component style sheet was a pleasant surprise, since I had struggled with how to best organize my style sheet files in earlier projects. Hopefully Angular components will make it easier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I felt it was an effective introduction, giving a quick tour of major components of Angular and giving me enough of a vague idea of what's going on, enough to proceed further and learn more. But before I go deeper into Angular, a little detour to <a href="https://newscrewdriver.com/2020/10/11/stackblitz-a-web-app-for-building-web-apps/">look at the infrastructure</a> behind this "Try It" walkthrough.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

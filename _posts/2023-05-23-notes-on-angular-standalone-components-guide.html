@@ -1,0 +1,49 @@
+---
+layout: post
+title: Notes on Angular "Standalone Components" Guide
+date: 2023-05-23 12:30:00.000000000 +00:00
+type: post
+post_id: '36863'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22766'
+  timeline_notification: '1684870229'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684963931
+  _publicize_job_id: '84302265230'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/23/notes-on-angular-standalone-components-guide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2023/05/22/notes-on-getting-started-with-standalone-components-code-lab/">went through the code lab</a> <em>Getting Started with Angular Standalone Components</em> to see standalone components in action. The exercise provided a quick overview and a useful background to keep me focused while reading through corresponding documentation on the topic: Angular's <a href="https://angular.io/guide/standalone-components">developer guide for standalone components</a>. The opening paragraph advertised reducing the need for <code>NgModule</code>. Existing Angular applications can convert to using standalone components in a piecemeal fashion: it's not an all-or-nothing choice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Current standard Angular code structure packages one or more related components in a <code>NgModule</code>, which defines their shared configuration such as dependency injection. This made sense for solving problems like reducing duplication across similar components. Unfortunately, it would also bring its own set of problems which standalone components are intended to solve. Here is my current beginner's understanding of these problems. (Likely with some mistake in the details):</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first and most relevant problem for Angular beginners like me is that every change to component dependency requires editing files in two locations. Beginners have to remember to jump back and forth: it's not enough to add a new dependency in the component we are working on, we also have to remember to add new import references to the associated <code>NgModule</code>. (Which, for small beginner projects, is a single global <code>NgModule</code>.) This got to be pretty annoying when I was playing with adding <a href="https://newscrewdriver.com/2023/03/06/hello-angular-material/">Angular Material to Tour of Heroes tutorial</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Eventually an Angular developer would want to graduate beyond a single <code>NgModule</code>, at which point they're faced with the challenge of code refactoring. Which dependencies were brought in for which components needed to be sorted out to see which imports can be omitted from a <code>NgModule</code> and which ones needs to be duplicated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One motivation for splitting an Angular application into multiple <code>NgModule</code> is to speed up application load time. Load just what we need to run, when we need to run them. This is especially important on startup, put something up on screen as fast as possible for the user to know the application hasn't frozen. Changing around which components are loaded, and when, is a lot easier when they are standalone and Angular introduced new lazy-loading mechanisms to take advantage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are other advantages to standalone components, but those three are enough for me to get an idea of the general direction. Enough motivation to learn all the new mechanisms introduced to replace what used to be done with <code>NgModule</code>. Starting with the root component, which every application has. If we want to make that standalone, we need to use <code>bootstrapApplication()</code> to define application-level configuration. Some framework level providers have added a standalone-friendly counterpart. A standalone component can use <code>provideRouter()</code> instead of <code>importProvidersFrom(RouterModule.forRoot)</code>. The challenge is to find them in the documentation when we need them! I'm sure this will be a recurring issue as I <a href="https://newscrewdriver.com/2023/05/24/angular-standalone-components-for-future-projects/">intend to adopt standalone components</a> for my future Angular projects.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,77 @@
+---
+layout: post
+title: Angular Signals Code Lab CSS Requires "No-Quirks" Mode
+date: 2023-05-31 12:30:00.000000000 +00:00
+type: post
+post_id: '36972'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- CSS
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36912'
+  timeline_notification: '1685561438'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685656362
+  _publicize_job_id: '84525823014'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/31/angular-signals-code-lab-css-requires-no-quirks-mode/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The sample application for "Getting Started with Angular Signals" is designed to run on the StackBlitz cloud-based development environment. Getting it <a href="https://newscrewdriver.com/2023/05/30/running-getting-started-with-angular-signals-code-lab-locally/">up and running properly on my local machine</a> (after solving <a href="https://newscrewdriver.com/2023/05/28/installing-getting-started-with-angular-signals-code-lab-locally/">installation</a> and <a href="https://newscrewdriver.com/2023/05/29/compiling-getting-started-with-angular-signals-code-lab-locally/">compilation</a> errors) took more effort than I had expected. I wouldn't call the experience <em>enjoyable</em>, but it was certainly an <em>educational</em> trip through all the infrastructure underlying an Angular app. Now I have all the functional components up and running, I turn my attention to the visual appearance of the app. The layout only seems to work for certain window sizes and not others. I saw a chance for me to practice my CSS layout debugging skills, but what it also taught me was "HTML quirks mode".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The sample app was styled to resemble a small hand-held device in the vein of the original Nintendo Game Boy: a monochrome screen up top and a keyboard on the bottom. (On second thought, maybe it's supposed to be a Blackberry.) This app didn't have audio effects, but there's a little fake speaker grill in the lower right for a visual finish. The green "enclosure" of this handheld device is the <code>&lt;body&gt;</code> tag of the page, styled with border-radius for its rounded corners and box-shadow to hint at 3D shape.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When things go wrong, the screen and keyboard spills over the right edge of the body. Each of which had CSS specifying a <code>height</code> of <code>47%</code> and an almost-square <code>aspect-ratio</code> of <code>10/9</code>. The width, then, would be a function of those two values. The fact that they become too wide and spill over the right edge means they have "too much" height for the specified aspect ratio.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36912,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/05/angular-signals-cipher-code-lab-with-layout-error.jpg?w=1024" alt="" class="wp-image-36912"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Working my way up the component tree, I found the source of "too much" height was the <code>body</code> tag, which has CSS specifying a <code>width</code> (clamped within a range) and an <code>aspect-ratio</code> of 10/17. The height, then, should be a function of those two values. When things go wrong, the width seems to be clamped to maximum of specified range as expected, but the body is too tall. Something has taken precedence over <code>aspect-ratio:10/17</code> but that's where I got stuck: I couldn't figure out what the CSS layout system had decided was more important than maintaining aspect ratio.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After failing to find an explanation on my own, I turned to the StackBlitz example which worked correctly. Since I've learned the online StackBlitz example isn't exactly the same as the GitHub repository, the first thing I did is to compare CSS. They seemed to match minus the syntax errors I had to fix locally, so that's not it. I had a hypothesis that StackBlitz has something in their IDE page hierarchy and that's why it worked in the preview pane. But clicking "Open in new tab" to run the app independent of the rest of StackBlitz IDE HTML still looks fine. Inspecting the object tree and associated stylesheets side-by-side, I saw that my local copy seems to have duplicated styles. But since that just meant one copy completely overrides the other identical copy, it wouldn't be the explanation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next difference I noticed between StackBlitz and local copy is the <a href="https://www.w3schools.com/tags/tag_doctype.asp">HTML document type declaration</a> at the top of <code>index.html</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>&lt;!DOCTYPE html&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is absent from project source code, but StackBlitz added it to the root when it opened the app in a new tab. I doubted it had anything to do with my problem because it isn't a CSS declaration. But in the interest of eliminating differences between them, I added <code>&lt;!DOCTYPE html&gt;</code> to the top of my <code>index.html</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36986,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/05/angular-signals-cipher-code-lab.jpg?w=1024" alt="" class="wp-image-36986"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was amazed to find that was the key. CSS layout now respects <code>aspect-ratio</code> and constrains <code>height</code> of the <code>body</code>, which kept screen and keyboard from spilling over. But... why does the HTML document type declaration affect CSS behavior? A web search eventually led me to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Quirks_Mode_and_Standards_Mode">the answer: backwards compatibility or "Quirks Mode".</a> By default, browsers emulate behavior of older browsers. What are those non-standards-compliant behaviors? That is a deep dark rabbit hole I intend to avoid as much as I can. But it's clear one or more quirks affected <code>aspect-ratio</code> used in this sample app. Having the HTML document type declaration at the top of my HTML activates the "no-quirks" mode that intends to strictly adhere to modern HTML and CSS standards, and now layout works as intended.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The moral of today's story: Remember to put <code>&lt;!DOCTYPE html&gt;</code> at the top of my <code>index.html</code> for every web app project. If things go wrong, at least the mistake is likely my own fault. Without the tag, there are intentional weirdness because some old browser got things wrong years ago and I don't want that to mess me up. (Again.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Right now, I have a hard enough time getting CSS to do my bidding for normal things. Long term, I want to become familiar enough with CSS to make it do not just functional but also <a href="https://newscrewdriver.com/2023/06/01/angular-signals-code-lab-decorative-css/">fun decorative things</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">My code changes are made in <a href="https://github.com/Roger-random/codelabs/tree/signals-get-started">my fork of the code lab repository in branch <code>signals-get-started</code></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

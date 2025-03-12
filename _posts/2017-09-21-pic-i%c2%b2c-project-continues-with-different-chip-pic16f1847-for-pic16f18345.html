@@ -1,0 +1,41 @@
+---
+layout: post
+title: PIC I²C Project Continues with Different Chip (PIC16F1847 for PIC16F18345)
+date: 2017-09-21 09:00:34.000000000 +00:00
+type: post
+post_id: '12092'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9522590645'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/21/pic-i%c2%b2c-project-continues-with-different-chip-pic16f1847-for-pic16f18345/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>My <a href="http://www.microchip.com/wwwproducts/en/PIC16F18345">PIC16F18345</a> has stopped working properly as an I²C device. It could send data (I could read from it) but it could not receive (I could not write to it.) Debugging this behavior, I got as far as determining a flag on a status register is not being set correctly by the MSSP module. This is beyond my means to repair or work around in software. In the last post I described an ugly hack of a I²C protocol to let me get a little bit of work done, but what I really need is a new chip. I placed an order from <a href="http://www.microchipdirect.com/">Microchip Direct</a> and the replacements are on their way.</p>
+<p>In the meantime, I borrowed a PICkit 3 programmer and a tube of chips from Tux-Lab to see if I can continue working until my order arrived. The chip is <a href="http://www.microchip.com/wwwproducts/en/PIC16F1847">PIC16F1847</a>, an older design with fewer features but in the same general family as the PIC16F18345 I've been learning. I could not load the exact same compiled code onto the chip, but the C code I wrote was fairly painless to migrate. The steps were:</p>
+<ol>
+<li>Created a new PIC16F1847 project in <a href="http://microchipdeveloper.com/mplabx:start">MPLAB X</a>.</li>
+<li>Configured the chip for I²C communication in <a href="http://microchipdeveloper.com/mcc:start">MCC</a>.</li>
+<li>Click "Generate" to create all the boilerplate code.</li>
+<li>Copy the C code I wrote (not the generated boilerplate) from the PIC16F18345 project to the PIC16F1847 project.</li>
+</ol>
+<p>That compiled successfully right away, freeing me to make other changes. The pin layout of the PIC16F1847 pin is nothing like that for my existing board, so I had to set it up on a new breadboard. Since I'm rewiring anyway, I incorporated a different, brighter 7-segment LED display unit. This unit uses common anode pins to select the active digit each of which demand more current than a PIC can source. So I also incorporated some <a href="https://en.wikipedia.org/wiki/2N2222">2N2222</a> transistors to let the PIC control sourcing that current from the positive power rail instead of supplying that power itself.</p>
+<p>The remaining key difference is that the PIC16F1847 is an 18-pin chip, where the PIC16F18345 is a 20-pin chip. Before, I had an extra pin unused, but now I'm one pin short for my project. I decided to temporarily sacrifice the decimal point until my 20-pin chip shipment arrives.</p>
+<p>This is good enough to get me back up and running. Here's the setup displaying "1847"</p>
+<p><img class=" size-full wp-image-12221 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/upandrunningpic16f1847.jpg" alt="UpAndRunningPIC16F1847" width="1024" height="467"></p>
+<p> </body></html></p>

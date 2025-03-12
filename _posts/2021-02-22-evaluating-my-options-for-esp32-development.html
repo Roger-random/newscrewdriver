@@ -1,0 +1,47 @@
+---
+layout: post
+title: Evaluating My Options for ESP32 Development
+date: 2021-02-22 12:30:00.000000000 +00:00
+type: post
+post_id: '25212'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ESP32
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '19200'
+  timeline_notification: '1614025805'
+  _publicize_job_id: '55136148667'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668328480
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/22/evaluating-my-options-for-esp32-development/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2021/02/21/micro-rover-esp32-brain-is-feasible/">decided I could use ESP32 as a micro Sawppy rover brain</a>, the next decision is how I intend to write my code to run on an ESP32. Since it's such a popular microcontroller, I have many options that I've narrowed down to top three candidates: ESP-IDF, Arduino, and MicroPython.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The lowest level option is ESP-IDF: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/" target="_blank" rel="noreferrer noopener">Espressif IoT Development Framework</a>. This is the software development kit released by the same people who made the ESP32 hardware. All sample code in <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/index.html" target="_blank" rel="noreferrer noopener">Espressif documentation</a> will be targeted to ESP-IDF, so this is the best option if I'm working from the official reference sources. This is important when working with less-popular features like the MCPWM module designed for motor control: I can be confident the feature will be supported.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The mid-level option is <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32" target="_blank">Arduino adapted for the ESP32 hardware</a>. Setting up the Arduino IDE for ESP32 development is a very simple process compared to the setup procedures for ESP-IDF. It also allows access to the huge catalog of Arduino libraries that exist out there. Or at least the subset that don't have hardware dependencies. Code that is hard-coded for ATmega328P won't run on an ESP32, but that problem is shared with other non-AVR Arduino compatibles like Teensy or even the newer Arduino boards. Architecturally this is a translation layer on top of ESP-IDF, so non-ATmega328P features like MCPWM can be accessible as long as the proper header declarations are in place. Which, in the case of MCPWM, <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/blob/master/tools/sdk/include/driver/driver/mcpwm.h" target="_blank">they appear to be</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The high-level option is <a href="https://docs.micropython.org/en/latest/esp32/quickref.html">MicroPython for ESP32</a>. Where the user doesn't even really need to install anything on their computer: anything that can open a serial terminal will do. The Python language itself is much more beginner friendly than the C language used by Arduino and ESP-IDF. However, a search for MCPWM support found that it is <a rel="noreferrer noopener" href="https://github.com/micropython/micropython/pull/5818" target="_blank">currently a work-in-progress</a>, eliminating it from consideration for this project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that elimination my choices are between using ESP-IDF directly versus the Arduino translation layer, I favor direct usage because I saw it as eliminating a variable. When my code doesn't work, I won't have to wonder if it's a bug in my code or in ESP32 Arduino core. While not a huge concern in the well-trodden paths, it is a worry when I venture to less popular sections like MCPWM. And since I'm using an ESP32-specific peripheral, this code won't run on any other Arduino-compatible boards anyway. Might as well <a href="https://newscrewdriver.com/2021/02/23/esp-idf-up-and-running-on-ubuntu/">go straight to the source</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,50 @@
+---
+layout: post
+title: Adafruit WebUSB Arduino Example
+date: 2024-08-15 12:30:00.000000000 +00:00
+type: post
+post_id: '44768'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- USB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44769'
+  wordads_ufa: u:wpcom-ufa-v4:1724030557
+  _publicize_job_id: '97058401098'
+  firehose_sent: '1723750238'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-14 22:44:57'
+  timeline_notification: '1723750238'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/15/adafruit-webusb-arduino-example/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I knew WebUSB existed but not much more than the name implying some sort of USB capability for web applications. I was motivated to <a href="https://newscrewdriver.com/2024/08/14/android-chrome-device-log-strangely-empty/">look into it a bit more</a> after learning about an <a href="https://newscrewdriver.com/2024/08/13/looking-under-a-browsers-hood/">index of browser diagnostics tools</a>. Initial inconclusive signs were not promising but I kept looking. After a bit I thought: I want to explore this capability for my electronics projects. Maybe somebody at Adafruit has already looked into this? Searching for WebUSB on Adafruit Learn gave me a hit: <em><a href="https://learn.adafruit.com/using-webusb-with-arduino-and-tinyusb/overview">Using WebUSB with Arduino and TinyUSB</a></em>. So yes, they have!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was happy to see the hardware in this example was Adafruit's <a href="https://www.adafruit.com/product/3333">Circuit Playground Express</a> (3333), because <a href="https://newscrewdriver.com/2022/12/09/google-pixel-7-camera-off-axis-blur-in-closeups/">I have one already on hand</a>. When following an example for the first time, it's always nice to have the exact same hardware that I know <em>will </em>work, rather than similar hardware that <em>should </em>work. Despite that advantage it was not smooth sailing. I got stuck when it came to changing my Arduino IDE's Tools/USB Stack to "TinyUSB": there wasn't a "USB Stack" option under "Tools" menu! I ran around in circles for a while before I eventually figured out I was using the wrong Arduino board support package. This example required "Adafruit SAMD Boards" and not "Arduino SAMD Boards". I was thrown off because "Arduino SAMD Boards" included support for a bunch of Arduino boards and Adafruit's Circuit Playground Express. I was able to select the proper board without realizing I was in the wrong board support library. I don't know why Arduino claims support for boards that aren't theirs, when the manufacturer has provided their own board support. It's confusing, this is <a href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/44">the second time they bit me</a>, and I'm not happy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, once I installed Adafruit's board support library and selected Circuit Playground Express under Adafruit's umbrella, I had a "USB Stack" option under "Tools" and could proceed to follow along with the example with no further issues. My first run used Chrome on my desktop computer, and after that success I tried it with Chrome on my Android phone. It works there, too!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44769,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/08/android-chrome-device-log-showing-adafruit-circuit-playground-express.jpg?w=1024" alt="" class="wp-image-44769"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And I can verify <code>chrome://device-log</code> is no longer empty on the phone, it now shows the newly-connected USB hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is huge! WebUSB might enable many project ideas that involve using one of my retired Android phone as the display (or more) of an electronics project. Which ones? I won't know for sure until I learn more about the constraints of Android Chrome WebUSB support. I would have to pick a relatively simple one as a starting point before jumping into the more complex ideas. There's a lot of study ahead. This Adafruit example was unfortunately lacking on background and theory of WebUSB so I'm on my own. I think it was written for people who already have the appropriate background, and that's not me. Well, not yet. I need a refresher course on web development, and I will need to <a href="https://newscrewdriver.com/2024/08/16/potential-webusb-study-syllabus/">learn technical details of USB as well</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

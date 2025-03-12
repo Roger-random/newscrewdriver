@@ -1,0 +1,76 @@
+---
+layout: post
+title: Notes on Micro Servo Enclosure
+date: 2020-12-26 12:30:00.000000000 +00:00
+type: post
+post_id: '21799'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Servo
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24325'
+  _publicize_job_id: '52683613968'
+  timeline_notification: '1609014635'
+  _oembed_a3de8e6e28b3ce7e1ae1495f97eeaf28: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Baby
+    <a href="https://twitter.com/hashtag/Sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#Sawppy</a>
+    rover takes first steps! This is an early prototype to make sure wheel and suspension
+    parts work together as designed. Real rovers <a href="https://twitter.com/MarsCuriosity?ref_src=twsrc%5Etfw">@MarsCuriosity</a>
+    and <a href="https://twitter.com/NASAPersevere?ref_src=twsrc%5Etfw">@NASAPersevere</a>
+    had a similar test, read more about <a href="https://twitter.com/NASAJPL?ref_src=twsrc%5Etfw">@NASAJPL</a>
+    &quot;Scarecrow&quot; here: <a href="https://t.co/thAfoPwnC3">https://t.co/thAfoPwnC3</a>
+    <a href="https://t.co/QmX7xKyqcK">pic.twitter.com/QmX7xKyqcK</a></p>&mdash; Sawppy
+    (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1279565059262304258?ref_src=twsrc%5Etfw">July
+    4, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_a3de8e6e28b3ce7e1ae1495f97eeaf28: '1609040267'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/12/26/notes-on-micro-servo-enclosure/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've used a few micro-servos before in earlier projects, but only in the context of quick hack projects where I grabbed one and only had to make that one work. This is the first time I approached these things with the idea of <a href="https://newscrewdriver.com/2020/12/25/commodity-micro-servos-for-rover-actuator/">using more of them and in a project that I want others to be able to build as well</a>. So I will invest some study time to better under the micro servos sold under generic names <a rel="noreferrer noopener" href="https://amzn.to/3aByYuF" target="_blank">SG90</a> (plastic gear) and <a rel="noreferrer noopener" href="https://amzn.to/2Kl5BCr" target="_blank">MG90S</a> (metal gear) by buying a few batches from different vendors on Amazon.(*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24322,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/sg90-mg90s-micro-servo-depths.jpg?w=1024" alt="" class="wp-image-24322"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First, the good news: From their top view, facing their output shaft, the external dimensions of the case and the two mounting tabs are all very close. As is the position of the output shaft relative to those mounting holes. These appear to be de-facto standard dimensions that generic variants more or less adhere to, so they can all bolt into the same holes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24323,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/sg90-mg90s-micro-servo-heights.jpg?w=1024" alt="" class="wp-image-24323"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Rotate the devices 90 degrees to look at them from the side, though, and we see many differences. Based on their names, I had thought the two types differ only in the material used for their gears, but that turns out to be a misconception. The mounting tabs may look the same when viewed from the top, but a side view shows they have different thicknesses. The metal gears are also sometimes accompanied by a bigger and sturdier box around the gears, which pushes the bottom of the servo further out, resulting in a taller overall height. So even if they can fit in the same sized rectangular hole, they might different depths of that hole.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24318,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/sg90-and-two-mg90s-on-their-side.jpg?w=1024" alt="" class="wp-image-24318"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And a rectangular hole would not be enough, because we need to leave room for the servo control wire, which exit at different locations in different variations of the design. I have two batches of SG90 and four batches of MG90S, and they all had slightly different wire locations! At least they all agreed to exit on the side closer to the output shaft. While we're on the topic of wiring: one of the ways these manufacturers cut cost is skipping strain relief. A few sets of control wires broke at their soldered end just from me handling them during these examinations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The close-but-not-identical exterior dimensions means I can't use a snug non-fastened bracket <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/blob/master/docs/Print%20Servo%20Parts.md#bracket" target="_blank">like what I designed on Sawppy V1</a> for the LX-16A servos. What's snug for one generic servo might be too loose or too tight for another. I will have to mount these servos by following convention: two self-tapping screw points for the tabs on either side of a rectangular bracket. And that bracket can only be a few millimeters deep on the output shaft side in order to ensure there is clearance for the control wire.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is enough information to let me get started with designing something that can mount generic micro servos, but mounting the servo is only half the challenge. In order to do anything useful, I have to be able to <a href="https://newscrewdriver.com/2020/12/27/notes-on-micro-servo-output-shaft/">mount stuff on the output shaft</a> as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

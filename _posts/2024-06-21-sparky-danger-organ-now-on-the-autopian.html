@@ -1,0 +1,44 @@
+---
+layout: post
+title: Sparky Danger Organ Now On The Autopian
+date: 2024-06-21 15:45:57.000000000 +00:00
+type: post
+post_id: '43860'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ignition coil
+meta:
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1719009961'
+  _publicize_job_id: '95633885314'
+  _thumbnail_id: '43693'
+  timeline_notification: '1719009960'
+  wordads_ufa: u:wpcom-ufa-v4:1719010740
+  _elasticsearch_data_sharing_indexed_on: '2024-06-21 23:00:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/21/sparky-danger-organ-now-on-the-autopian/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Discovering I can just <a href="https://newscrewdriver.com/2024/06/12/arduino-tone-can-play-sparky-danger-organ/">treat Sparky Danger Organ like a piezo buzzer for making music</a> was great, it opened up a world of already-written Arduino sketches playing music with <code>tone()</code>. Now Sparky is getting its 15 minutes of fame with Emily's <em><a href="https://www.theautopian.com/this-is-how-electronic-ignition-works-and-also-how-to-make-a-spark-plug-play-music/">This Is How Electronic Ignition Works And Also How To Make A Spark Plug Play Music</a></em> published on <em>The Autopian</em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In Emily's article, she compared modern electronic ignition with electromechanical ignition from BC (before computers) era of cars. The distributor diagram is a pretty good explanation why I couldn't do very much with an old ~1950s Chrysler ignition coil my neighbor had sitting on a shelf: I needed something to interrupt power to the ignition coil so its primary winding's 12V field can collapse and induce high-voltage in its secondary winding. Since I usually play with electronics manipulating 5V or less, at well under 1A, I didn't have anything on hand suitable to handle such power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, a modern electronic ignition coil has that switch built-in. (The "Igniter" box in the LS1 Coil diagram of Emily's article.) So to repurpose a retired coil+plug only requires a 5V, low-current, digital control signal to be sent on its IGT pin. Now that's something Arduino <code>tone()</code> can do easily and help Sparky find its singing voice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So what's next? There was a bit of confusion between Emily and I about Arduino <code>tone()</code>. She referred to an installed library, but I found it as a built-in function. Investigating this confusion led me to <a href="https://github.com/bhagman/Tone">https://github.com/bhagman/Tone</a> where I learned we were both right. There's a full non-core version that Emily had to install into her (presumably older) Arduino IDE, and Arduino had incorporated a simplified version of this library into core which is what I found. The simplified version can only generate one voice. The full version can generate more voices: one per hardware timer on the AVR chip. ATmega8-based chips have two timers so two voices. ATmega328P (like that on the Arduino Nano I used) can do three voices, and an ATmega1280-based board like the <a href="https://store-usa.arduino.cc/products/arduino-mega-2560-rev3">Arduino Mega</a> can control six spark plugs. Useful facts to keep in mind whenever Emily or I get our hands on more retired electronic ignition coils.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

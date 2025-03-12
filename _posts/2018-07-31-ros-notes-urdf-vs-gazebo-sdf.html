@@ -1,0 +1,48 @@
+---
+layout: post
+title: 'ROS Notes: URDF vs. Gazebo SDF'
+date: 2018-07-31 09:00:41.000000000 +00:00
+type: post
+post_id: '16536'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- Gazebo
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1533052861'
+  _publicize_job_id: '20590644759'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667464540
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/31/ros-notes-urdf-vs-gazebo-sdf/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16549 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/07/sdformat.png" alt="SDFormat" width="147" height="212">One of the higher-level mysteries to this ROS beginner is why Gazebo, a sibling product, has a separate XML-based description format <a href="http://sdformat.org/">SDF</a> instead of using the same URDF files of ROS. The answer came in <a href="http://gazebosim.org/tutorials?tut=ros_urdf">this particular pag</a>e in Gazebo's collection of tutorials. "<em>Tutorial: Using a URDF in Gazebo</em>" explains why a different format was invented, but it also outlines Gazebo features to bridge the two worlds. By adding Gazebo-specific tags to URDF files, authors can specify all the information necessary for Gazebo to convert it to a SDF for internal use.</p>
+<p>My understanding can be boiled down to this: URDF specifies a robot, but SDF also specifies a world for the robot to live in, which is a much larger set of things. Based on this premise, SDF is designed to represent a superset of everything that can be represented in URDF.</p>
+<p>Which leads to the obvious next question: if SDF is a proper superset, why not standardize on SDF across the board? The best answer I could find is the <a href="https://discourse.ros.org/t/urdf-ng-ros2-urdf2-discussion/511">idea being floated</a> (and shot down?) as something to do for ROS2. I can understand the perspective that ROS really only cares about the robot and doesn't need all the extra features of specifying a simulation world.</p>
+<p>And while reading that discussion thread, I also learned Gazebo isn't the only one unhappy with URDF. There's also a <a href="http://wiki.ros.org/srdf">SRDF</a> file format for describing things not in a URDF, and I have even less of an idea how SRDF relates to SDF. Fortunately, there is an enlighening comment block in the generic example on that page:</p>
+<pre>This does not replace URDF, and is not an extension of URDF.</pre>
+<p>So whatever SRDF may be, it's not yet another way to specify a robot, which is a relief.</p>
+<p>Summary of my current understanding:</p>
+<ul>
+<li>URDF is the established format for describing robot structure in ROS, and it is not going away anytime soon.</li>
+<li>URDF could not specify information necessary for other robotics domains.
+<ul>
+<li>SDF was devised by Gazebo to meet simulation needs, but Gazebo can consume URDF when it is augmented by information within <code>&lt;gazebo&gt;</code> tags.</li>
+<li>SRDF was devised to meet needs of <a href="http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/urdf_srdf/urdf_srdf_tutorial.html">MoveIt! Motion Planning Framework</a> and does not replace URDF.</li>
+</ul>
+</li>
+</ul>
+<p>Given the above, as a beginner I should be safe to start with URDF when I start defining my own physical robots (like Sawppy) for ROS. But that's a ways down the road, for now it's back to tutorials.</body></html></p>

@@ -1,0 +1,89 @@
+---
+layout: post
+title: Power for USB C is More Complicated Than Red Wire/Black Wire
+date: 2022-03-20 12:30:00.000000000 +00:00
+type: post
+post_id: '29071'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- USB-C
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29094'
+  _publicize_job_id: '70417425350'
+  timeline_notification: '1647804616'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666946167
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/20/power-for-usb-c-is-more-complicated-than-red-wire-black-wire/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My <a href="https://newscrewdriver.com/2022/03/19/vertically-mounted-construction-experiment/">power output board</a> had a USB-A socket because the first thing I wanted to automate was charging a Pixel 3a phone. It is not my primary phone, so it usually sits and slowly drains its battery until I remember to charge it up again. Draining a battery to empty isn't good for longevity but I also don't want to leave it on the charger all the time either. (The latter is liable to accelerate <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/01/20/degraded-nexus-5-battery-demands-immediate-removal/" target="_blank">battery problems like swelling</a>.) So I want to use Home Assistant+ESPHome and automate charging the phone for a few hours a day.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The initial test using an USB-A socket wired directly to the +5V plane of the board that also fed the on-board ESP32. Using a USB-A to USB-C adapter cable, I could charge the phone slowly at the baseline 2.5W (5V at 500mA) of USB power. A good start! But I didn't want to use a bulky USB-A socket and tie up a perfectly good USB-A to USB-C cable for this purpose. I thought I could use one of my retired USB-C cables. Its insulation has hardened with age and broken up right at the plug due to insufficient strain relief.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29094,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/usb-c-cable-with-broken-strain-relief.jpg?w=1024" alt="" class="wp-image-29094"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can see the outer protective sheath is broken, exposing the wires within. I no longer trust this cable for tasks like data transfer or USB-C high power delivery, but I thought maybe it can still be used for low power USB charging if I wired it up like it was a USB-A to USB-C cable. Since this is a USB2 cable with type C connectors, I had expected to find the usual wires of an USB2 cable: red for +5V, black for GND, green for D+ and white for D-. I cut it open and this is what I found instead:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29095,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/usb-c-cable-inside-wires.jpg?w=1024" alt="" class="wp-image-29095"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Wrapped inside the outer metal mesh and foil I found:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Wires without insulation, presumably GND.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Not one but FOUR red wires. Two of them a slightly thicker gauge than the other two.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Green and white wires as expected for D+/D-</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Yellow wire for...?</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the Wikipedia page for USB-C I found <a href="https://en.wikipedia.org/wiki/USB-C#Cables_2">this color-coded chart</a>. It does show four pins for V<sub>bus</sub> which probably corresponds to the four red wires. Uninsulated wires are likely GND. Green and white are probably D+/D- as originally anticipated. And it shows yellow as the recommended color for V<sub>conn</sub>, power supply for powered cables.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a cheap USB2 cable with Type-C ends, so I doubted it was a powered cable. Elsewhere on the same page was this chart describing what's expected for <a href="https://en.wikipedia.org/wiki/USB-C#USB_2.0/1.1">USB-C cables in USB2 mode</a>. It didn't list anything that would explain the yellow cable. There's an option for CC (configuration channel) but that's supposed to be blue. Perhaps this yellow wire is CC? I need a way to probe the pins on my Type-C connector to know exactly what the yellow wire is connected to, but I don't have a breakout board for that purpose on hand. Perhaps something like <a rel="noreferrer noopener" href="https://amzn.to/3MXW8fQ" target="_blank">this item</a>? (*) I'll put that on my shopping list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the meantime I'm going to leave those wires alone and do the basic USB2 thing: tie all red wires together and put +5V on them, with all the uninsulated at ground. This was enough for basic USB power on my USB tester, an older USB-C phone (<a href="https://en.wikipedia.org/wiki/Moto_X4">Moto X4</a>), and an ESP32 camera board with USB-C. But it didn't work for the Pixel 3a. What else is that phone expecting?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the page for <a href="https://en.wikipedia.org/wiki/USB_hardware#USB_Power_Delivery">USB Power Delivery</a>, I saw a section that said a dedicated charging port should have a resistance not exceeding 200Ω across the D+/D- line. I soldered a resistor across green and white wires and... still no response from the Pixel 3a.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In hindsight that was a risk: what if the green and white wires weren't D+/D-? I had no way to verify that assumption and I could have destroyed my phone trying to cheap out on a cable. So I stopped my experimentation until I have a better handle on type C connectors. Experiments like <a rel="noreferrer noopener" href="https://community.infineon.com/t5/Knowledge-Base-Articles/Termination-Resistors-Required-for-the-USB-Type-C-Connector/ta-p/253544" target="_blank">adding termination resistors</a> or following <a href="https://pinoutguide.com/CellularPhones-A-N/USB-C_Type-C_to_USB_cable_pinout.shtml">pinout guides</a> will have to wait. Maybe in the future I can determine why a Pixel 3a is unsatisfied with simple red +5V/black GND scheme, but at least I know <a href="https://newscrewdriver.com/2022/03/21/successful-quick-esphome-test-m5stack-esp32-camera/">M5Stack's ESP32Cam was fine with it</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: I bought the USB-C breakout board linked above for the <a href="https://newscrewdriver.com/2022/08/30/resistors-negotiate-5v-power-in-usb-type-c/">next round of experiments</a>. Includes more information about how 5V power over USB-C is managed by a pair of voltage dividing resistors. I can now control Pixel 3a charging rate between 0.5A and 1.5A.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator {"opacity":"css"} --></p>
+<hr class="wp-block-separator has-css-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

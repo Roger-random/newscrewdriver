@@ -1,0 +1,44 @@
+---
+layout: post
+title: Adafruit Spooky Eyes On Raspberry Pi
+date: 2019-04-21 12:30:49.000000000 +00:00
+type: post
+post_id: '18371'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Raspberry Pi
+tags:
+- Spooky Eyes
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30006494900'
+  timeline_notification: '1555875091'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/21/adafruit-spooky-eyes-on-raspberry-pi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>[<a href="https://twitter.com/mle_online">Emily</a>] and I were first exposed to Adafruit's "Spooky Eyes" in the context of their <a href="https://newscrewdriver.com/2018/11/19/eyes-at-supercon-adafruit-hallowing/">HalloWing </a>given out to all Superconference 2018 attendees. We think it looks like a lot of fun and thought it would be nice to make it available on other hardware platforms. We <a href="https://newscrewdriver.com/2019/02/05/looking-under-the-hood-of-adafruit-spooky-eyes/">looked under the hood</a> to see how it has been packed tightly for low power microcontrollers, but as a result of its simplicity it was a fairly simple task to <a href="https://newscrewdriver.com/2019/02/06/using-libpng-to-encode-spooky-eye-data/">translate encoded Spooky Eyes data into PNG image files</a>. This would make the image data more easily usable on less constrained hardware like a Raspberry Pi.</p>
+<p>But as it turned out, Adafruit was way ahead of us. They <a href="https://learn.adafruit.com/animated-snake-eyes-bonnet-for-raspberry-pi?view=all">already offer Spooky Eyes running on a Raspbbery Pi</a>! I thought I had looked for this earlier but if so I had missed it.</p>
+<p><img class="alignnone size-full wp-image-18372" src="https://newscrewdriver.com/wp-content/uploads/2019/04/adafruit-raspberry-pi-eyes.jpg" alt="Adafruit Raspberry Pi Eyes" width="1600" height="900"></p>
+<p>Reading the details of that tutorial, a few interesting items of note:</p>
+<ul>
+<li>Just like the HalloWing, there's provision for light reactivity. However, a HalloWing has an onboard light sensor but a Raspberry Pi does not. The user would have to install a photocell.</li>
+<li>By default the eyes move randomly, but there's also provision for a joystick to steer their gaze direction. Again this is an analog joystick the user would have to install.</li>
+<li>By default the eyes blink at random intervals, but there's also the option to add buttons to trigger eyelid blinks.</li>
+<li>Even though the product image shows a Raspberry Pi zero, the documentation says <em>A Raspberry Pi 3 or Pi 2 is highly recommended. The code will run on a Pi Zero or other single-core Raspberry Pi boards, but performance lags greatly.</em>
+</li>
+<li>It is designed for Adafruit's little display units, but the code could just as happily render to a Raspberry Pi's standard HDMI output. Bypassing all the Adafruit hardware is possible as described in the <a href="https://learn.adafruit.com/animated-snake-eyes-bonnet-for-raspberry-pi?view=all#using-just-the-software"><em>Using Just the Software</em></a> section.</li>
+</ul>
+<p>Browsing through the <a href="https://github.com/adafruit/Pi_Eyes">source code repository</a>, I see it uses quite a few Raspberry Pi specific code libraries. In addition code dealing interfacing the Adafruit display units, there's also GPIO code to handle the joysticks and buttons above. And lastly, rendering is handled by the <a href="https://pi3d.github.io/html/ReadMe.html">pi3d library</a> to take advantage of a Raspberry Pi's GPU. If I wanted to make Spooky Eyes run on, say, my Linux laptop, all those pieces of code would require modification.</body></html></p>

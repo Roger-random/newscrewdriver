@@ -1,0 +1,58 @@
+---
+layout: post
+title: Angular CLI Setup Adventures on MacOS
+date: 2020-10-12 12:30:00.000000000 +00:00
+type: post
+post_id: '22689'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22940'
+  timeline_notification: '1602531002'
+  _publicize_job_id: '49846693470'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668501276
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/12/angular-cli-setup-adventures-on-macos/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was fun to get a taste of Angular completely risk free, without installing anything on my computer <a href="https://newscrewdriver.com/2020/10/11/stackblitz-a-web-app-for-building-web-apps/">courtesy of StackBlitz</a>. I saw enough to believe Angular is worth additional exploration, so it's time to go ahead and install those developer tools. For this run, I decided to set it up on my Macbook Air running MacOS X Catalina. Following <a rel="noreferrer noopener" href="https://angular.io/guide/setup-local" target="_blank">installation directions</a>, Angular CLI installation failed with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>warn checkPermissions Missing write access to /usr/local/lib/node_modules</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I probably could get past this problem with <code>sudo</code>, but I looked around for a better way. According to <a href="https://stackoverflow.com/questions/54802330/missing-write-access-in-mac-to-usr-local-lib-node-modules/55495984">this StackOverflow thread</a> I need to take ownership of a few directories important to Node.JS. Rather than following the list blindly, I only took ownership as needed. Starting with <code>/usr/local/lib/node_modules</code> because that was the specifically named in that error message. After that, I saw a different error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>┌──────────────────────────────────────────────────────────┐ <br>│                 npm update check failed                  │ <br>│           Try running with sudo or get access            │ <br>│           to the local update config store via           │ <br>│ sudo chown -R $USER:$(id -gn $USER) /Users/roger/.config │ <br>└──────────────────────────────────────────────────────────┘</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I grabbed ownership of <code>.config</code>, and all seems sorted on the permissions front. With the CLI tools installed, I tried to create a new app. It appeared to mostly work but towards the end I saw an error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have no idea what <code>xcrun </code>had to do with anything. Searching around for what this message might mean, I <a rel="noreferrer noopener" href="https://apple.stackexchange.com/questions/254380/why-am-i-getting-an-invalid-active-developer-path-when-attempting-to-use-git-a" target="_blank">found a hit on StackExchange</a> explaining this is a very cryptic way to tell me I haven't yet installed developer tools on my Macbook. In this specific case, <code>git </code>has not yet been installed. I don't know what <code>xcrun </code>has to do with <code>git</code>, but it appears to be involved in Angular CLI setting up a new project. I guess it calls <code>git init</code> as part of the project creation? In any case, running <code>xcode-select --install</code> got me started. Once <code>git </code>was installed, I configured my required global settings (name and email.) Once that was done I could successfully run the new Angular creation script, whose output at the end confirms it initializes the project as a git repository.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>✔ Packages installed successfully.
+    Successfully initialized git.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running <code>ng serve</code> allowed me to load up the boilerplate default Angular application screen in my browser, confirming project creation success and green light to proceed <a href="https://newscrewdriver.com/2020/10/13/additional-preparation-for-angular-tutorial/">setting up for the tutorial</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

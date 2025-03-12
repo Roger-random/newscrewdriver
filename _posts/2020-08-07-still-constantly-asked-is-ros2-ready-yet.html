@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Still Constantly Asked: Is ROS2 Ready Yet?'
+date: 2020-08-07 12:30:00.000000000 +00:00
+type: post
+post_id: '22024'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- ROS2
+meta:
+  _thumbnail_id: '22004'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '47464141057'
+  timeline_notification: '1596828605'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/07/still-constantly-asked-is-ros2-ready-yet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One more note on this series of "keeping a pulse on ROS2" before returning to my own projects: we're still very much in the stage where people are constantly asking if ROS2 is ready yet, and the answer has moved from "probably not" to "maybe, depending on what you are doing." I noticed that <a href="https://newscrewdriver.com/2019/06/05/first-ros-2-lts-has-arrived-lets-switch/">since the first LTS was declared</a>, the number of people who have dived in and started using ROS2 has grown. Thanks to the community of people willing to share their work, it helps growing the amount of developer resources available. It also means a lot of reports based on first-hand experience, one pops up on my radar once every few days. The most recent one being this article: <a href="https://www.therobotreport.com/ros-2-5-features-robotics-developers-2020/"><em>5 features ROS 2 needs in 2020</em></a>.</p>
+<p>The most encouraging thing about this particular post is towards the end: the author listed several problems that he had wanted to write about when he started, but before it was published, then the community had found answers! This highlights how the field is still growing and maturing rapidly. Whenever anyone reads a published article on "Is ROS 2 ready yet?" they must understand that some subset of facts would already be obsolete. Check the publication date, and discount accordingly.</p>
+<p>Out of the issues on this list, there were two I hadn't known about so I'm thankful I could learn about them here. I knew ROS 2 introduced the concept of having different QoS (Quality of Service) guarantees for messages. This allows a robot builder to make sure when the going gets tough, the robot knows which less important messages can be dropped to make sure the important ones get through. What I didn't know was the fact QoS also introduced confusion in ROS2 debugging and diagnostics tools. I can see how it becomes a matter of perspective: to keep a robot running, the important messages need to get to their recipients and at that very second, it's not as important to deliver them to a debugger. But if the developer is to understand what went wrong, they need to see the debugger messages! It'll be interesting to see how those tools reconcile these perspectives.</p>
+<p>The other one I hadn't know about was the lack of visibility into subscriber connections and disconnections. Theoretically in an ideal world robot modules don't have to care about who is listening to whatever they have to say, but it's definitely one of the areas where the real world hasn't matched up well with the theory. Again it'll be interesting to see how this one evolves.</p>
+<p>The next phase of "Is ROS2 ready yet?" will be "yeah, unless you're doing something exotic" and judging by the pace so far, that's only a year or two away. I'm definitely seeing a long term trend towards the day when the answer is "Ugh, why are you still using ROS 1?"</p>
+<p></body></html></p>

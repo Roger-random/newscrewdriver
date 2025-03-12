@@ -1,0 +1,51 @@
+---
+layout: post
+title: Create A Board To Test XY Stage Switches
+date: 2019-08-26 12:30:58.000000000 +00:00
+type: post
+post_id: '19321'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19322'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1566848011'
+  _publicize_job_id: '34591636008'
+  _oembed_f589f6eb5a92320d25fd361b7579a16a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Unnecessarily
+    complex circuit is at least homing properly under Grbl ESP32. Hardware amateur
+    hour continues... <a href="https://t.co/PwATjsl08v">pic.twitter.com/PwATjsl08v</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1163896910844850176?ref_src=twsrc%5Etfw">August
+    20, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_f589f6eb5a92320d25fd361b7579a16a: '1566933359'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/26/create-a-board-to-test-xy-stage-switches/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>It was fun to tear apart an old optical drive for its stepper driven carriage, but the main objective was to figure out why my Grbl configuration didn't work. When it <a href="https://newscrewdriver.com/2019/08/25/successful-axis-homing-test-in-grbl/">worked on the first try</a> with my home stepper test configuration, suspicion went to switches on the salvaged XY stage. Something about it did not behave as originally expected and I intend to find out why.</p>
+<p>The first thing to do was to hunt for a manual. I found the manual for the ZETA4 controller on Parker Motion's web site, and this time I returned in an attempt to find the manual for the switches. This type of mechanism no longer appears to be Parker's main line of business, but hunting around their product pages I eventually found the <a href="http://www.parkermotion.com/products/Ball_Screw_and_Lead_Screw_Tables__5751__30_32_80_567_29.html">Open Frame Series 300AT</a> that is either the same XY stage still in production, or more likely a product that is its successor. But even if it's not the exact same thing, the specifications table is instructive: this table is quite capable for every project we had in mind as a potential project candidate.</p>
+<p>Backing off from daydreaming of possibilities, I found what I was looking for on that page in the link to a PDF titled <em>Linear-Rotary Product Manual</em>. This appears to be a scan of a paper document and not a digital original, but the important wiring diagram is perfectly legible.</p>
+<p><img class="alignnone size-full wp-image-19337" src="https://newscrewdriver.com/wp-content/uploads/2019/08/daedal-switch-wiring.jpg" alt="Daedal switch wiring" width="1634" height="594"></p>
+<p>This information matches what we've found by probing with a meter, giving us greater confidence our expected behavior is indeed the intended behavior. Using this information I planned to wire up each of these switches to their own 3-pin JST-XH connector in the following order:</p>
+<ol>
+<li>Normally Closed</li>
+<li>Common</li>
+<li>Normally Open</li>
+</ol>
+<p>Each of these three connectors were then connected to a pair of LEDs that shared a connection to pin 2. One LED would illuminate when the "Normally Closed" circuit is closed, and the other would illuminate when "Normally Open" circuit is closed. If neither illuminate, there's a problem somewhere. If both illuminate, we have a more serious problem somewhere! If all goes well, as long as this board receives power three out of six LEDs would illuminate. As each switch closes, the LED that is illuminated would switch within its pair of LEDs.</p>
+<p>This test board is simple and, as it turned out, effective in <a href="https://newscrewdriver.com/2019/08/27/xy-stage-switch-test-board-helped-find-loose-wire-inside-connector/">successfully finding the problem</a>.</body></html></p>

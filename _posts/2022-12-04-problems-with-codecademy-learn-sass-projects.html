@@ -1,0 +1,70 @@
+---
+layout: post
+title: Problems with Codecademy "Learn Sass" Projects
+date: 2022-12-04 12:30:00.000000000 +00:00
+type: post
+post_id: '33901'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33906'
+  _publicize_job_id: '79337307624'
+  timeline_notification: '1670185827'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1670276930
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/04/problems-with-codecademy-learn-sass-projects/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph {"placeholder":"What are your two favorite things to wear?"} --><html><body></p>
+<p>I revisited Codecademy's "<em>Learn Sass</em>" class <a href="https://newscrewdriver.com/2022/12/03/notes-on-codecademy-learn-sass/">for a quick review</a> and also to check out new material added since my first run. I'm also a Codecademy Pro subscriber this time, which opened up the practice project assignments. The lessons went fine, but the projects did not. The learning environment was supposed to automatically compile SCSS to CSS every time I hit "Run". But it was quickly obvious that changes I made to SCSS file were not being reflected in the corresponding CSS file nor visible in HTML. Is it another back-end failure like <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/23/notes-on-codecademy-learn-mongodb/" target="_blank">what foiled my Codecademy MongoDB course</a>? Some debugging later, I figured out the problem: if I make a mistake in the SCSS file and create invalid Sass syntax, the background compiler runs and fails. This is a part of learning and is OK. What is NOT OK is the fact it silently fails without showing me an error message. This infuriating behavior is <a href="https://newscrewdriver.com/2022/11/21/notes-on-codecademy-learn-node-sqlite/">not the first time</a> Codecademy did this to me. Fortunately, this time project material is easy enough for me to port elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The quickest and easiest (if not the most efficient) way to do this was to fire up Visual Studio Code and tell it to build me <a rel="noreferrer noopener" href="https://code.visualstudio.com/docs/devcontainers/containers" target="_blank">a dev container</a>. I could replicate most of this functionality on my own, launching a Node.js Docker container instance and mapping a volume to my <a rel="noreferrer noopener" href="https://github.com/Roger-random/sass-tests" target="_blank">GitHub repository working directory</a>. But by using a published configuration file for Node.js JavaScript projects, I was up and running in a half dozen mouse clicks and much quicker than doing it on my own. After the container was up and running, I followed <a rel="noreferrer noopener" href="https://sass-lang.com/install" target="_blank">Sass installation directions</a> to run <code>npm install -g sass</code>. Now I could run sass compiler myself and get error messages to help me fix my mistakes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"placeholder":"What are your two favorite things to wear?"} --></p>
+<p>Even with that, though, I'm not out of the woods. This course is several years old and shows signs of lacking maintenance. One project stumbled into deprecated behavior that generated compile-time warnings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Deprecation Warning: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tons-produced, 3) or calc($tons-produced / 3)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+54 │     height: #{$tons-produced/3}px;
+   │               ^^^^^^^^^^^^^^^^
+   ╵
+    main.scss 54:15  root stylesheet</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph {"placeholder":"What are your two favorite things to wear?"} --></p>
+<p>Fortunately fixing this one is fairly easy, following the recommendation to wrap the calculation inside a call to <code>calc()</code>. But then it gets worse: we get a non-obvious error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Error: Undefined operation "null % 3".
+   ╷
+56 │     @if($i % 3 == 0){
+   │         ^^^^^^
+   ╵
+  main.scss 56:9  root stylesheet</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph {"placeholder":"What are your two favorite things to wear?"} --></p>
+<p>I understand the intent of the project, but I don't know why this code isn't working. Even after I copied directly from the answer key to verify I'm not just making a silly typo somewhere. <code>$i</code> was defined in the <code>@each</code> loop and we could use at the top level of the loop successfully. But this line is in an inner scope and using <code>$i</code> is an error here. My hypothesis is that I stumbled into a Sass breaking change regarding variable scopes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even if I ignore these technical errors, I'm not terribly fond of these projects. This particular error was from a project using CSS to build bar charts. Would anyone actually do this? It feels like a pointless demo showing something <em>could </em>be done but not something actually <em>useful</em>. Due to this and the fact we are looking at old material, I didn't get as much out of these projects as I had hoped. I shrug <a href="https://newscrewdriver.com/2022/12/05/notes-on-codecademy-learn-bash-scripting/">and move on</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

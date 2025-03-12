@@ -1,0 +1,48 @@
+---
+layout: post
+title: Running ESP8266 on Tired Alkaline AA Batteries
+date: 2022-03-09 12:30:00.000000000 +00:00
+type: post
+post_id: '28891'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28892'
+  _publicize_job_id: '69970215417'
+  timeline_notification: '1646857825'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/09/running-esp8266-on-tired-alkaline-aa-batteries/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I retreated from trying to run a voltage &amp; current sensor node exclusively on solar power. I'll add some rechargeable batteries instead, but before I tackle the complexity of incorporating charging circuit (and charging logic) I took a side trip. I'm <a href="https://newscrewdriver.com/2022/03/08/start-simple-with-alkaline-aa-batteries/">running the circuit on non-rechargeable alkaline AA batteries</a> for a few days. And not even fresh batteries, these were already-weakened batteries from which I wanted to extract some more utility before I put them in a Joule thief LED circuit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These batteries have open voltage of only around 1.1V, which is very low by standard of alkalines. (Fresh alkaline AAs measure over 1.5V.) And that open circuit voltage drops very quickly when I put it under strain of powering an ESP8266. So I keep usage brief, with sensor measurement and reporting run of just 30 seconds. (I later reduced it to 15 seconds.) Then I put the ESP8266 to sleep for five minutes. That five minutes give the chemistry inside these very weak batteries a chance to balance out and recover a little power before I hit them with another read+report session.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To measure how those batteries held up under the strain, I was going to wire up another voltage divider to the ESP8266 analog pin A0. But then I saw ESP8266 had an existing provision to report its chip input voltage VCC, no additional wiring necessary, and that capability is <a href="https://esphome.io/components/sensor/adc.html#esp8266-measuring-vcc">exposed in ESPHome</a>. I chose this option out of laziness because it meant I didn't have to warm up the soldering iron again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The results: these weakened batteries could still give me a few days of readings before they started fading too much. I could see this in the Home Assistant log of reported VCC values.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28892,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/esp8266-vcc-and-four-weak-aa-batteries.jpg?w=1024" alt="" class="wp-image-28892"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the first day or so, the batteries could deliver enough power that the ESP8266 didn't see any drop in VCC voltage. But on the second or third day, voltage sags below 2.9V towards the end of my read+report session. This is visible as the lower bound of the VCC graph. During the five-minute sleep period, voltage recovers slightly and this is visible as the upper bound of the VCC graph. As the batteries continue to fade, both the upper bound (how much power the batteries could recover) and the lower bound (how low the voltage sags at the end of the session) decline over time. Eventually, VCC sagged to 1.75V and the ESP8266 could not run far enough to go back to sleep. That's all I could get out of that particular batch of AAs. I'm happy they could run this circuit for a few days. They taught me some limits of running ESP8266 on low power, and <a href="https://newscrewdriver.com/2022/03/10/plotting-solar-panel-voltage-and-power/">gathered some interesting data</a> along the way.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

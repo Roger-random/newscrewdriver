@@ -1,0 +1,207 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel IC Pinout (NEC K13988)
+date: 2023-12-22 12:30:00.000000000 +00:00
+type: post
+post_id: '41145'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41177'
+  firehose_sent: '1703277018'
+  wordads_ufa: s:wpcom-ufa-v4:1704491059
+  _publicize_job_id: '90505630232'
+  timeline_notification: '1703277021'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm looking at a Canon Pixma MX340 multi-function inkjet's control panel circuit board, and I'm slowly peeling back the curtain on its implementation details. After tracing through the circuitry to <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/">label every pin on the connector for communicating with the main board</a>, I turned my attention to the biggest component on the board: a 30-pin chip marked with NEC K13988. I didn't have any luck finding an official datasheet describing this chip so I have to infer its functionality by how it is connected to everything else on the circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Starting with the just-deciphered main board connector, I found three wires connected to K13988 which probably meant some sort of digital serial data communication. (Data, Clock, and...?) K13988 also communicates with the LCD screen with five wires, but I don't have a good candidate on 5-wire protocols. I'll look at that later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Also provided by the main board are power and ground. The power line is relatively straightforward, but there were several K13988 pins indirectly going to ground via a component labeled NF104. NF104 is tiny and lack markings other than the NF104 label. I believe Canon engineers would have used common prefix if it was a resistor (R), a capacitor (C), or a fuse (F). I don't know what the NF prefix means and it's not on <a href="https://en.wikipedia.org/wiki/Reference_designator" target="_blank" rel="noreferrer noopener">Wikipedia's list of common reference designation prefix</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two pins control LEDs indicating WiFi and Memory/In Use. Two pins go to a component X1. I associate the form factor with <a href="https://en.wikipedia.org/wiki/Crystal_oscillator" target="_blank" rel="noreferrer noopener">crystal oscillators</a>, and this one was marked with 6.1AKSSOHT. I don't know how to interpret that in terms of an <a href="https://en.wikipedia.org/wiki/Crystal_oscillator_frequencies" target="_blank" rel="noreferrer noopener">oscillator frequency</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Eleven pins are wired to a matrix of buttons. Tracing them took me all around the circuit board. I lost track several times and unknowingly jumped to a different trace, leading to conclusions that made no sense and had to be redone. It took a few tries to generate this table. Accuracy is still dubious, but it is at least consistent and plausible. I'm not sure if convention is to call this 4 rows and 7 columns, or 7 rows and 4 columns. They read status of 27 buttons not under direct main board control. (One short of maximum possible combination of 7*4=28 buttons.) I color-coded them in this table, but I'm not sure if that actually makes it any more readable. The ordering of buttons in this list corresponds to the order in which the copper traces visited them, starting from the K13988. Example: starting from K13988 pin 1, following that trace will reach SW220 first, then SW213, then SW207, and finally SW227.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Pin</th>
+<th class="has-text-align-center" data-align="center">Connection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#8ed1fc" class="has-inline-color">SW220 (-)</mark> <mark style="background-color:#7bdcb5" class="has-inline-color">SW213 (+)</mark> <mark style="background-color:#f78da7" class="has-inline-color">SW207 (OK)</mark> <mark style="background-color:#fcb900" class="has-inline-color">SW227 (Hook)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">Transistor Q101 for WiFi LED104</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#f78da7" class="has-inline-color">SW201 (7)</mark> <mark style="background-color:#8ed1fc" class="has-inline-color">SW214 (*)</mark> <mark style="background-color:#fcb900" class="has-inline-color">SW221 (4)</mark> <mark style="background-color:#7bdcb5" class="has-inline-color">SW208 (1)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#8ed1fc" class="has-inline-color">SW219 (Back)</mark> <mark style="background-color:#f78da7" class="has-inline-color">SW206 (Fax Quality)</mark><mark style="background-color:#7bdcb5" class="has-inline-color"> SW212 (Settings)</mark> <mark style="background-color:#fcb900" class="has-inline-color">SW226 (Menu)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#8ed1fc" class="has-inline-color">SW215 (0)</mark> <mark style="background-color:#f78da7" class="has-inline-color">SW202 (8)</mark> <mark style="background-color:#fcb900" class="has-inline-color">SW222 (5)</mark> <mark style="background-color:#7bdcb5" class="has-inline-color">SW209 (2)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#8ed1fc" class="has-inline-color">SW216 (#)</mark> <mark style="background-color:#f78da7" class="has-inline-color">SW203 (9)</mark> <mark style="background-color:#fcb900" class="has-inline-color">SW223 (6)</mark> <mark style="background-color:#7bdcb5" class="has-inline-color">SW210 (3)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#f78da7" class="has-inline-color">SW204 (Copy)</mark> <mark style="background-color:#fcb900" class="has-inline-color">SW224 (Scan)</mark> <mark style="background-color:#8ed1fc" class="has-inline-color">SW217 (Fax)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">
+<mark style="background-color:#fcb900" class="has-inline-color">SW225 (Coded Dial)</mark> <mark style="background-color:#7bdcb5" class="has-inline-color">SW211 (Redial/Pause)</mark> <mark style="background-color:#f78da7" class="has-inline-color">SW205 (Black)</mark> <mark style="background-color:#8ed1fc" class="has-inline-color">SW218 (Color)</mark>
+</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">LCD pin 4</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">10</td>
+<td class="has-text-align-center" data-align="center">LCD pin 5</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">11</td>
+<td class="has-text-align-center" data-align="center">C135 + C136 to NF104 to Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">12</td>
+<td class="has-text-align-center" data-align="center">One leg of X1</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">13</td>
+<td class="has-text-align-center" data-align="center">Other leg of X1</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">14</td>
+<td class="has-text-align-center" data-align="center">NF104 to Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">15</td>
+<td class="has-text-align-center" data-align="center">NF104 to Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">16</td>
+<td class="has-text-align-center" data-align="center">Main board connector pin 1<br>(<a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">Main board to K13988</a> asynchronous serial 250000 8E1)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">17</td>
+<td class="has-text-align-center" data-align="center">47k ohm (R114) to NF104 to Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">18</td>
+<td class="has-text-align-center" data-align="center">Main board connector pin 2<br>(<a href="https://newscrewdriver.com/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/" target="_blank" rel="noreferrer noopener">K13988 to main board</a> asynchronous serial 250000 8E1)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">19</td>
+<td class="has-text-align-center" data-align="center">47k ohm (R115) to NF104 to Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">20</td>
+<td class="has-text-align-center" data-align="center"><mark style="background-color:#f78da7" class="has-inline-color">SW204 (Copy) SW206 (Fax Quality) SW207 (OK) <br>SW201 (7) SW202 (8) SW203 (9) SW205 (Black)</mark></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">21</td>
+<td class="has-text-align-center" data-align="center">LED103- (Memory/In Use)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">22</td>
+<td class="has-text-align-center" data-align="center"><mark style="background-color:#fcb900" class="has-inline-color">SW226 (Menu) SW224 (Scan)<br>SW221 (4) SW222 (5) SW223 (6) SW225 (Coded dial) SW227 (Hook)</mark></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">23</td>
+<td class="has-text-align-center" data-align="center"><mark style="background-color:#7bdcb5" class="has-inline-color">SW208 (1) SW209 (2) SW210 (3)<br>SW211 (Redial/Pause) SW213 (+) SW212 (Settings)</mark></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">24</td>
+<td class="has-text-align-center" data-align="center"><mark style="background-color:#8ed1fc" class="has-inline-color">SW218 (Color) SW216 (#) SW215 (0) SW214 (*)<br>SW220 (-) SW219 (Back) SW217 (Fax)</mark></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">25</td>
+<td class="has-text-align-center" data-align="center">(None)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">26</td>
+<td class="has-text-align-center" data-align="center">LCD pin 2</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">27</td>
+<td class="has-text-align-center" data-align="center">LCD pin 3</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">28</td>
+<td class="has-text-align-center" data-align="center">LCD pin 1</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">29</td>
+<td class="has-text-align-center" data-align="center">Main board connector pin 3<br>(<a href="https://newscrewdriver.com/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/" target="_blank" rel="noreferrer noopener">K13988 Chip Enable</a>)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">30</td>
+<td class="has-text-align-center" data-align="center">3.3V DC Power</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>After all that, the circuit board left nothing I could find for pin 25. I think it is unused.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My trio of pinout charts (<a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/" target="_blank" rel="noreferrer noopener">for main board cable connector</a>, <a href="https://newscrewdriver.com/2023/12/16/canon-pixma-mx340-control-panel-lcd-connector/" target="_blank" rel="noreferrer noopener">one for LCD</a>, and this chart for K13988) has demystified the physical connections on this control panel circuit board. Armed with this knowledge I'll start <a href="https://newscrewdriver.com/2023/12/23/canon-pixma-mx340-control-panel-button-presses-under-oscilloscope/">looking at their electrical behavior under an oscilloscope</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

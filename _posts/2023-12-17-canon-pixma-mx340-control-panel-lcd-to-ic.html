@@ -1,0 +1,56 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD to IC
+date: 2023-12-17 13:36:18.000000000 +00:00
+type: post
+post_id: '41082'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41083'
+  firehose_sent: '1702848980'
+  _publicize_job_id: '90364188665'
+  timeline_notification: '1702848981'
+  wordads_ufa: s:wpcom-ufa-v4:1703391211
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/17/canon-pixma-mx340-control-panel-lcd-to-ic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm examining the control panel circuit board from a Canon Pixma MX340 multi-function inkjet to see what I can learn. After <a href="https://newscrewdriver.com/2023/12/16/canon-pixma-mx340-control-panel-lcd-connector/">identifying all but five LCD screen connector pins</a>, I'm obviously inclined to follow those five pins. Again, I took the best picture I could and edited the photo to highlight traces and make them easier to follow. The good news is that all five wires traveled together to a conspicuous feature on this board: a row of five resistors marked 331 for 330 ohms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I noticed this row of resistors in my initial cursory examination and had been curious to their purpose, now they've been moved to the top of the queue. One bit of oddity that caught my attention was the fact their marking numbers didn't all align the same way: three were installed one direction, and two the other. I'm pretty sure they would have been all in the same orientation from the product reel, yet the pick-and-place machine decided on different orientations. While the orientation doesn't matter for resistor functionality, there must have been a reason to <em>not </em>do the same thing five times and I wonder what it was.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Between each resistor and the LCD connector, each wire also has a capacitor to ground. (C123-C127 inclusive.) C124 is also accompanied by R136, which looks like a pull-down resistor. There were no other features I could see, aside from test points labeled with the CP prefix. "Check Point", maybe? On the other side of the resistor, all five wires were routed under a few zero ohm resistors labeled with the JP prefix (probably meaning "jumper") and went under the biggest (only?) chip on this circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The chip is marked NEC K13988 1022MM1H. A search for this designation found several electronic component distributors offering to sell some to me. I checked two of those links: neither actually had the chip in stock, and both used a placeholder image instead of a picture of the actual chip. More importantly, while both pages had a "Datasheet" link, they didn't link to a PDF. Instead, they were links to different datasheet dump sites, both of which helpfully offer "Here are some datasheets for components starting with K139..." none of which was K13988 and none were made by NEC.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Without a datasheet, I'll have to infer this chip's functionality. This is a 30-pin part mounted on a single-layer board serving a known purpose, so this should be a tractable problem. In addition to normal power and ground wires, there are the five pins for communication with the LCD. A few pins would be routed to the cable connector to communicate with the main board. Some of the pins are likely used as outputs to indicator LEDs, but there's a small chance the main board directly handle all LEDs. (There are only a few of them.) The rest would be used to read button status, likely with a row/column matrix of wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To find these answers, I'll need to follow copper traces over much longer distances, possibly across the entire width of this control panel circuit board. I couldn't do this by eye because the contrast is too poor for me to follow narrow traces. I need the photo editing contrast enhancement. But if I pull my camera back far enough to encompass the entire board, those narrow traces become too blurry. I'll have to <a href="https://newscrewdriver.com/2023/12/18/canon-pixma-mx340-control-panel-circuit-board-stitch/">take multiple pictures and stitch them together</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

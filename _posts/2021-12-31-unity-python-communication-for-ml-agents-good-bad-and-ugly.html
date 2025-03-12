@@ -1,0 +1,49 @@
+---
+layout: post
+title: 'Unity-Python Communication for ML-Agents: Good, Bad, and Ugly'
+date: 2021-12-31 12:30:00.000000000 +00:00
+type: post
+post_id: '28117'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags:
+- ML-Agents
+- Reinforcement Learning
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27869'
+  _publicize_job_id: '67145676135'
+  timeline_notification: '1640982629'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/31/unity-python-communication-for-ml-agents-good-bad-and-ugly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've only just learned that Unity DOTS exists and <a href="https://newscrewdriver.com/2021/12/30/unity-dots-data-oriented-technology-stack/">it seems like something interesting to learn</a> as an approach for utilizing resources on modern multicore computers. But based on what I've learned so far, adopting DOTS by itself won't necessarily solve the biggest bottleneck in Unity ML-Agents <a href="https://forum.unity.com/threads/why-ml-agents-dont-use-all-my-system-resources.1151201/">as per this forum thread</a>: the communication between Unity and Python.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which is unfortunate, because this mechanism is also a huge strength of this system. Unity is a native code executable with modules written in C# and compiled, while deep learning neural network frameworks like TensorFlow and PyTorch runs under a Python interpreted environment. The easiest and most cross-platform friendly way for these two types of software to interact is via network ports even though data is merely looped back to the same computer and not sent over a network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a documented communication protocol, it allowed ML-Agents components to evolve independently as long as they conform to the same protocol. This was why they were able to change the default deep learning framework from TensorFlow to PyTorch between ML-Agents version 1.0 and 2.0 but without breaking backwards compatibility. (They did it in <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/releases/tag/release_10" target="_blank">release 10</a>, in case it's important) Developers who prefer to use TensorFlow could continue doing so, they are not forced to switch to PyTorch as long as everyone talks the same language.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Functional, capable, flexible. What's not to love? Well, apparently "performance". I don't know the details for Unity ML-Agents bottlenecks but I do know "fast" for a network protocol is a snail's pace compared to high performance <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Inter-process_communication" target="_blank">inter-process communications</a> mechanisms such as shared memory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To work around the bottleneck, the current recommendations are to manually stack things up in parallel. Starting at the individual agent level: multiple agents can train in parallel, if the environment supports it. This explains why the 3D Ball Balancing example scene has twelve agents. If the environment doesn't support it, we can manuall copy the same training environment several times in the scene. We can see this in the Crawler example scene, which has ten boxes one for each crawler. Beyond that, we now have the capability to run multiple Unity instances in parallel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of these feel... suboptimal. The ML-Agents team is aware of the problem and working on solutions but have nothing to announce yet. I look forward to seeing their solution. In the meantime, learning about DOTS has sucked up all of my time. No, not learning... <a href="https://newscrewdriver.com/2022/01/01/spaceship-teardowns-in-hardspace-shipbreaker/">I got sucked into Hardspace:Shipbreaker</a>, a Unity game built with DOTS.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

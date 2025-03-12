@@ -1,0 +1,79 @@
+---
+layout: post
+title: LRWave Core Functions Complete
+date: 2018-12-17 13:30:28.000000000 +00:00
+type: post
+post_id: '17454'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- LRWave
+- MDC Web
+meta:
+  _oembed_9c20b3e2131cd60e7b732d0188c52c08: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1545082310'
+  _publicize_job_id: '25574580743'
+  _oembed_a6f1415ba9156112bf65d6213fe16724: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">This
+    stained glass spray paint comes in several colors. I chose purple because it looked
+    like it had the most saturated color. Cleaned the tube, masked it off, and added
+    several coats. Left it to dry <a href="https://t.co/HqXlDUBHBR">pic.twitter.com/HqXlDUBHBR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1074028413847928833?ref_src=twsrc%5Etfw">December
+    15, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_a6f1415ba9156112bf65d6213fe16724: '1545115861'
+  _oembed_c17fb5614421b21604bd34925f8636c2: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Let&#39;s
+    take a look at my failed experiment of the day: Can you change the color of a
+    white CRT with stained-glass spray paint? <a href="https://t.co/lrB07EATyC">pic.twitter.com/lrB07EATyC</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1074027103044042752?ref_src=twsrc%5Etfw">December
+    15, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_c17fb5614421b21604bd34925f8636c2: '1545115883'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/12/17/lrwave-core-functions-complete/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>After a few hours of JavaScript coding, all the core functionality I set out to implement is running. At least, at a basic level. (<a href="https://roger-random.github.io/lrwave/">This link</a> will go to the live version of LRWave, which should continue to improve as I learn.)</p>
+<ul>
+<li>Two-channel (left and right) function generator</li>
+<li>Frequency adjustment
+<ul>
+<li>User can type in anything from 0 to 24 kHz</li>
+<li>Buttons to adjust frequency up/down in 1Hz steps.</li>
+</ul>
+</li>
+<li>Waveform selection available in Web Audio API
+<ul>
+<li>Sine</li>
+<li>Square</li>
+<li>Sawtooth</li>
+<li>Triangle</li>
+</ul>
+</li>
+<li>Gain adjustment
+<ul>
+<li>User can type in anything from 0% to 100%</li>
+</ul>
+</li>
+<li>Play/pause button.</li>
+</ul>
+<p><img class="alignnone size-full wp-image-17461" src="https://newscrewdriver.com/wp-content/uploads/2018/12/LRWave-on-Nexus-5.jpg" alt="LRWave on Nexus 5" width="1024" height="1024"></p>
+<p>Since I hate web pages that start playing some sound upon load without user interaction, I don't start playing sound until the user has pushed the play button. It turns out I have accidentally followed the guidance from Google, which will <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio">not allow pages using Web Audio API to play sound before user input</a>. I don't always agree with Google, but I'm glad we're aligned here.</p>
+<p>The JavaScript portion of this project have been relatively easy. I found Web Audio API to be straightforward to use in my simple little function generation app. There are some refinements to be made: there are audible pops as settings are updated. Right now I perform those updates immediately, but they should ramp from old to new value in order to avoid abrupt changes. Everything else dealing with user interface are standard event handler code.</p>
+<p>What I found challenging is the aesthetics side of things. Proper HTML layout is still a struggle for me, but I know projects like this will eventual lead to mastery (or at least competence) with responsive web layout. In the meantime, my app looks fine on a phone in portrait orientation but things start to get weird quickly as browser window size grows.</p>
+<p>Individual components in <a href="https://material.io/develop/web/">MDC Web</a> have worked well so far, with the exception of the <a href="https://github.com/material-components/material-components-web/tree/master/packages/mdc-slider">slider control</a>. I tried to use it for gain but it didn't behave as I expected so, after a half an hour scratching my head, I set it aside for later. Another difficulty was <a href="https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme">MDC theming</a>. I wanted the background to be black and I haven't found my mistake when trying to do it within MDC theming module.</p>
+<p>On the web browser interaction side, I designed an icon and added a reference in the header. Google Chrome recognizes it enough to use the icon on the recently opened sites window, but it doesn't use the icon on the browser tab and I don't understand why.</p>
+<p>Lots of learning so far, but more learning plus refinement ahead...</body></html></p>

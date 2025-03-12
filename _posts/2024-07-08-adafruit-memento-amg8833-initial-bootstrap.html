@@ -1,0 +1,69 @@
+---
+layout: post
+title: Adafruit Memento + AMG8833 Initial Bootstrap
+date: 2024-07-08 12:30:00.000000000 +00:00
+type: post
+post_id: '44112'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44123'
+  wordads_ufa: u:wpcom-ufa-v4:1720556316
+  firehose_sent: '1720467004'
+  _publicize_job_id: '96077151346'
+  timeline_notification: '1720467006'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-09 20:20:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/08/adafruit-memento-amg8833-initial-bootstrap/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2024/07/07/amg8833-module-finally-unwrapped/">taped an AMG8833 thermal sensor to the side of an Adafruit Memento camera</a>, just a quick hack for mechanical attachment while I experiment. I want to get them to work together and show something interesting, which means I need to figure out the software side. Here were my initial bootstrap steps:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Boarding An Existing I2C Bus</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first test was to see if the device is properly visible on Adafruit Memento's I2C bus. Adafruit sample code failed when it tried to create a I2C <code>busio</code> object because it was written with an implicit assumption the AMG8833 was the only I2C device present. When mounted on an Adafruit Memento, I need to grab the existing I2C object instead of creating a new one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Data Elements Are Floating Point Celsius</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing that I didn't see explicitly called out (or I missed it) was the format of data points returned by calling Adafruit library. Many places explaining it will be an 8x8 list of list. That is, a Python list of 8 elements where each of those elements is a list of 8 data points. But what are the individual data points? After printing them to console I can finally see each data point is a floating point number representing temperature reading in Celsius.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">I2C Operation On Every <code>pixels</code> Property Getter Call</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>One lesson I had to learn was to be careful how I call the <code>pixels</code> property getter. One of the sample code snippets had this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>for row in sensor.pixels:
+    for temperature in row:
+        ...[process temperature]...</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And while I was experimenting, I wrote this code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>for y in range(8):
+    for x in range(8):
+        sensor.pixels[y][x]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Conceptually they are very similar, but at run time they are very different. Mine ran extremely slowly! <a href="https://github.com/adafruit/Adafruit_CircuitPython_AMG88xx/blob/main/adafruit_amg88xx.py">Looking at the library source code</a> revealed why: every call to the <code>pixels</code> property getter initiates an I2C operation to read the entire sensor array. In the first loop above, this happens once. The second loop with my "write Python like C code" habit meant doing that 64 times. Yeah, that would explain why it was slow. This was an easy mistake to fix, and it didn't take much more effort before <a href="https://newscrewdriver.com/2024/07/09/adafruit-memento-amg8833-overlay-alpha-blending/">I had a working first draft</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

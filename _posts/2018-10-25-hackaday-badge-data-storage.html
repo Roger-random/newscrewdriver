@@ -1,0 +1,52 @@
+---
+layout: post
+title: Hackaday Badge Data Storage
+date: 2018-10-25 09:00:48.000000000 +00:00
+type: post
+post_id: '17027'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23576322702'
+  timeline_notification: '1540483284'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/25/hackaday-badge-data-storage/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The PIC32 chip at the heart of <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> has a fixed program memory for storing machine code. There's also a pool of random access memory for program data during execution. But what happens to user data? It wouldn't belong in fixed code memory, and if it is kept in RAM it would be lost when the battery is removed.</p>
+<p>The answer is a small block of nonvolatile memory that the user can read and write but would also maintain their data when the chip is shutdown or reset. It is a little chip with eight legs that sit to the right of the main PIC32 processor who has <em>many more</em> than eight legs.</p>
+<p><img class=" size-full wp-image-17029 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-storage.jpg" alt="Hackaday Badge Storage" width="1024" height="534"></p>
+<p>A comment block in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/badge_settings.h">badge_settings.h</a> outlines how this flash memory storage is allocated by the default badge firmware:</p>
+<blockquote><p>
+<code>/*</code><br />
+<code>* FLASH organization is as follows</code><br />
+<code>* 0x000000-0x003FFF - first slot</code><br />
+<code>* 0x004000-0x007FFF - second slot</code><br />
+<code>* ...etc</code><br />
+<code>* 0x03C000-0x03FFFF - 16-th slot</code><br />
+<code>* 0x040000-0x07FFFF - empty space</code><br />
+<code>* 0x080000-0x0FFFFF - D disk of CP/M machine</code><br />
+<code>*/</code>
+</p></blockquote>
+<p>The slots refer to BASIC program storage, where users can load from and save to up to sixteen BASIC programs, up to 16 kilobytes each. (<code>BPROG_LEN</code>) These 16 slots * 16 kilobytes takes up the first 256 kilobytes of flash memory. (<code>0x00000-0x3FFFF</code>) The second 256 kilobytes (<code>0x040000-0x07FFFF</code>) are unclaimed and available for custom user programs to use. The 512 kilobytes that follow (<code>0x080000-0xFFFFF</code>) is exposed as drive D: of the Z80 emulator running CP/M.</p>
+<p>Custom user programs that wish to access that 256 kilobytes of unclaimed flash memory can access that space by referencing the code used to load and save BASIC programs. Flash memory can be read from, written to, and erased using the <code>fl_*</code> series of functions in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/Z80/hwz.c">hwz.c</a>. See <code>basic_save_program</code> and <code>basic_load_program</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/badge.c">badge.c</a>.</p>
+<p>If a custom user program needs more than the available 256 kilobytes of flash memory, it'd have to take away from some one else... or does it? There's one piece of mystery at hand. The memory allocation described above (256 kilobytes for BASIC, 256 kilobytes unclaimed, 512 kilobytes for CP/M drive D) add up to 1 megabyte. Is that all of flash storage?</p>
+<p>Yes. No. Maybe.</p>
+<p><img class=" size-full wp-image-17028 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-storage.png" alt="Hackaday Badge Storage" width="215" height="193">The <a href="https://hackaday.io/project/80627/gallery#516d5bd730684b8318e2fa9119565b8f">schematic</a> and silkscreen on the Belgrade badge both name the flash chip as MX25V1635F. The datasheet for this chip indicates it has 2 megabyte capacity. However, the number actually printed on the chip is AT25DF081A, which is a 1 megabyte chip. The chip identity was confirmed by the <a href="https://www.findchips.com/u/list/81709-badge18bomxlsx">badge Bill of Materials on Findchips</a>.</p>
+<p>But for the Hackaday Superconference badge, the flash chip is <a href="https://hackaday.com/2018/10/17/the-supercon-badge-is-a-freakin-computer/">quoted to be</a> a Microchip SST26VF016BT, which is a 2 megabyte chip. Maybe we'll have a second megabyte of flash to play with at Supercon!</p>
+<p><img class=" size-full wp-image-17064 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-belgrade-flash-chip.jpg" alt="Hackaday Belgrade flash chip" width="780" height="612"><br />
+</body></html></p>

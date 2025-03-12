@@ -1,0 +1,53 @@
+---
+layout: post
+title: Detect and Disconnect Inactive Web Sockets
+date: 2021-04-21 12:30:00.000000000 +00:00
+type: post
+post_id: '26194'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26019'
+  _publicize_job_id: '57438299814'
+  timeline_notification: '1619033410'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/21/detect-and-disconnect-inactive-web-sockets/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Constraining my Sawppy rover logic to <a href="https://newscrewdriver.com/2021/04/20/sawppy-rover-driver-max-occupancy-one/">only a single rover operator</a> was good, but that code immediately exposed the next problem: a web socket on one side doesn't always know when it has lost contact with the other end. When this happens to my ESP32 server on the rover, it means the rover doesn't know its driver is gone. And thanks to the code I just added, it means nobody else can get into the driver's seat, either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a known failure mode for web sockets, and there's a prescribed mechanism to deal with it: a <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#pings_and_pongs_the_heartbeat_of_websockets" target="_blank">web socket heart beat with the "ping" and "pong" control frames</a>. Either end of a web socket can choose to send a ping. Upon receipt of this ping a web socket implementation is obligated to reply with a pong. Doing this on a regular basis lets us check to verify the connection is still alive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started writing code to send pings, but then I realized it's not really necessary. The browser client is obligated to send steer and speed values on a regular basis, and that can serve as my heartbeat. I can set a timer each time the rover receives the steer and speed commands, and if it's been too long since the last transmission, the rover can proactively terminate the web socket so another rover operator can assume command.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As usual I started with my Node.js server running on my desktop to explore the concept and get an idea of how it's supposed to work. For JavaScript I start a timer with <code><a href="https://nodejs.dev/learn/discover-javascript-timers#settimeout" target="_blank" rel="noreferrer noopener">setTimeout()</a></code> and every time I receive a client command I call <code>refresh()</code> on that timer to reset the clock. If the timer goes off, it's been too long and I call <code>terminate()</code> on the web socket instance. Which I need to keep track of now, something I managed to avoid earlier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I understood how it was supposed to work, I moved on to implementation on ESP32. For this task I chose to use a <a rel="noreferrer noopener" href="https://www.freertos.org/FreeRTOS-timers-xTimerCreate.html" target="_blank">FreeRTOS software timer</a>. With mostly the same semantics as in JavaScript. When a new web socket is accepted, I call <code>xTimerStart()</code>. Every time the rover receives a command, <code>xTimerReset()</code> is called. If a reset does not occur in time, I <a rel="noreferrer noopener" href="https://www.esp32.com/viewtopic.php?f=13&amp;t=16501&amp;start=10#p63142" target="_blank">queue up a web socket control frame</a> set to <code>HTTPD_WS_TYPE_CLOSE</code> to close up shop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That code took care of the server side logic, but that left a problem on the client side: How can I <a href="https://newscrewdriver.com/2021/04/22/make-disconnected-client-visually-obvious/">make it obvious</a> when the server has decided to quit listening to commands from a particular controller?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

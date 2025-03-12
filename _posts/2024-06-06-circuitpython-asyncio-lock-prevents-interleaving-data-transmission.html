@@ -1,0 +1,48 @@
+---
+layout: post
+title: CircuitPython asyncio.Lock Prevents Interleaving Data Transmission
+date: 2024-06-06 12:30:00.000000000 +00:00
+type: post
+post_id: '43662'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43586'
+  firehose_sent: '1717702216'
+  _publicize_job_id: '95226908673'
+  timeline_notification: '1717702217'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-08 01:19:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/06/circuitpython-asyncio-lock-prevents-interleaving-data-transmission/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have built up a rough set of CircuitPython code that sends a bitmap to show on LCD screen of a salvaged Canon Pixma MX340 multi-function inkjet. I <a href="https://newscrewdriver.com/2024/06/05/these-arent-the-frame-buffers-youre-looking-for/">abandoned my effort to get sprite compositing via <code>displayio</code></a>, but I still want to do something fun with this screen. As an experiment, I wrote a loop that continuously sent LCD frames to display, exploring its theoretical ~14fps top speed. The result was very jerky, and CircuitPython console output showed a lot of my error message indication transmission failures that had to be retried.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first data point was adding a small delay between frames to see if that changes behavior. It did not, so I believe these failures were not caused by a relentless nonstop stream of frames. The next data point was to remove my heartbeat LED, and that stopped the stream of errors. Interesting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The heartbeat LED is a separate task, with <code>asyncio</code> switching back and forth between LCD updates and heartbeat LED updates. Heartbeat is a simple loop that blinks the "In Use/Memory" LED on and off by transmitting <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/">corresponding control flags</a>. Each toggle is a two-byte transmission, but the LCD screen update is <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/">a much longer sequence of data transmissions</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Task switching could occur at any <code>await</code> statement, which means it is possible for heartbeat LED update command to barge in the middle of a LCD sequence. The most inconvenient time would be right after the <code>0x04 0xC4</code> command "Bulk transfer of 196 bytes incoming". If the next transmission is a two-byte LED toggle instead of the expected 196 byte transfer, everything would understandably go awry.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To prevent interleaving data transmission between tasks, I need to add a locking mechanism so heartbeat LED updates will hold off until LCD screen update is complete. And in case of continuous nonstop LCD animation, it needs to make sure heartbeat LED update gets a chance in between frames. Out of habit I started writing my own locking mechanism but then realized I was being silly. I went to read documentation and confirmed a lock is already available as <code><a href="https://docs.circuitpython.org/projects/asyncio/en/latest/api.html#asyncio.lock.Lock">asyncio.Lock</a></code>. I only had to create a single instance of the object, then as per documentation add an "<code>async with</code>" statement on that instance to prevent my two data transmission tasks from stepping into each other's sequences.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It worked! I could put my heartbeat LED back into the system, spin the LCD animation updates to full speed, and they both run. No longer interrupt each other and causing transmission errors. But this experience really gives me a feeling I'm wielding powers beyond my comprehension. I barely understand <code>async</code>/<code>await</code> and now I'm adding "<code>with</code>" context management which I also barely understand. This is probably a good time to pause my uninformed code-slinging and <a href="https://newscrewdriver.com/2024/06/07/learning-from-python-enhancement-proposals/">read some tutorials and/or specifications</a> to understand what's going on.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

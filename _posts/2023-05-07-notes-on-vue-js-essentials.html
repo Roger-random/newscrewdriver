@@ -1,0 +1,94 @@
+---
+layout: post
+title: Notes on Vue.js "Essentials"
+date: 2023-05-07 12:30:00.000000000 +00:00
+type: post
+post_id: '36570'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36516'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683626188
+  _publicize_job_id: '83855644667'
+  timeline_notification: '1683487805'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/07/notes-on-vue-js-essentials/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I went through a short tutorial on Vue.js site and <a href="https://newscrewdriver.com/2023/05/06/notes-on-vue-js-tutorial/">found it to be a succinct overview</a>. It doesn't go very deep in any single topic, instead introducing a breadth of Vue concepts with links for deeper reading. The recommended step to follow that tutorial is the documentation section labeled "Essentials". It was instructive reading and some items I found notable were:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">HTML</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Vue.js essentials logically started with <em><a href="https://vuejs.org/guide/essentials/application.html">Creating an Application</a></em> where I was happy to learn HTML is at the forefront acting as I thought markup should. An Vue application instance mounts to an element on the page. This is in contrast to Angular (and <a href="https://newscrewdriver.com/2023/04/02/webpack-first-look-did-not-go-well/">what I understood of webpack</a>) where JavaScript is at the forefront and primary job of <code>index.html</code> is to load that JavaScript. It has almost no content of its own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Because of this, <code>innerHTML</code> markup on Vue-bound components can act as template for that component. Which is convenient, but I wonder if there's a way to have fallback text to show the user before Vue loads. Or if Vue fails to load because the user turned off JavaScript in their browser.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another effect of this architecture is that it's valid to have multiple Vue applications on a single page, each mounted on a different HTML container element. I don't think I can do this with Angular, which I've only ever seen control the entire page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Or maybe I can mount no Vue application at all? I don't understand the nuts and bolts yet, but it seems feasible to let the markup load quickly for the user to see. And sometime after that, mount Vue components as needed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A downside of this approach is that Vue might have stuffed <em>too much </em>into the HTML file. One example is <a href="https://vuejs.org/guide/essentials/template-syntax.html#directives">Vue dynamic arguments</a>, which look just like HTML attributes to the browser and is liable to get coerced to lowercase by browser's parser causing "name not found" errors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Reactivity</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <em><a href="https://vuejs.org/guide/essentials/reactivity-fundamentals.html">Reactivity Fundamentals</a></em> section was the first Vue documentation section where I saw large differences between Vue's 'Options API' and 'Composition API' variations. Using options API means letting Vue handle everything behind the scenes, but using composition means the author has to be aware of what goes on behind that curtain and have to correctly participate in the process.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A core part of Vue 3 is the use of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy">JavaScript proxy</a> around component data so Vue knows when data has changed and need to react accordingly. Some notable side effects are that <code>this</code> pointer behaves slightly differently. We should avoid arrow functions and avoid tracking state outside of data. If we inadvertently share static data across instances, that will become a source of problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reactivity infrastructure leads to a significant difference between computed properties and methods. Computed values are updated only when their reactive dependencies (through their proxies) are updated. This allows performance optimizations like returning a cached value rather than running the computation again. In contrast, methods are always called.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Compared to Angular, Vue's reactivity system is much more constrained in scope. Nothing like Angular's use of RxJS, which was its own big sprawling thing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Components</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Vue Essentials section ends with <em><a href="https://vuejs.org/guide/essentials/component-basics.html">Component Basics</a></em> which lived up to its name covering the very basics of Vue components. Enough for us to understand how the various concepts tie together, even if we don't understand them in detail just yet. For those that want to get deeper, there are plenty of links for more details.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Communication between components and their parents are usually handled in one of three channels: (1) Hosts can set value on a component's <code>props</code>. (2) Component can <code>emit</code> events to handlers on the host. (3) Host can send template fragment via <code>slots</code>. Hosts can dynamically control what components are loaded with &lt;component&gt; which seems like a very powerful tool, illustrated with a simple tabbed interface where each tab is a different component.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Compared to Angular, I didn't see a mechanism for code to interact with components beyond parent-child relationships. The good news is that there's no counterpart to the headache of Angular service registration and injection. The bad news is that I don't know how to get similar functionality in Vue. [UPDATE: I found Vue's Provide/Inject.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Infrastructure</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://play.vuejs.org/">Vue Playground</a> is used for live code examples that we can play with in the browser. It seems to be an openly available tool, I didn't see any restrictions constraining it to Vue documentation examples. This is a very promising option for experimenting with Vue concepts hands-on later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At several locations, there were links to video courses on <a href="https://vueschool.io/courses">Vue School</a>. Normally, I'm not a fan of video instruction but perhaps I should at least try a few of their free courses to see how well I can learn. The bar is high: it needs to be pretty impressive for me to start <a href="https://vueschool.io/plans">paying a subscription</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>The "Essentials" section ends with a page "Component Basics", good preparation for me to <a href="https://newscrewdriver.com/2023/05/08/notes-on-vue-js-components-in-depth/">read the next section: "Components in Depth"</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

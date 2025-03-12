@@ -1,0 +1,44 @@
+---
+layout: post
+title: FreeNAS Box V1 Design
+date: 2017-06-08 09:00:18.000000000 +00:00
+type: post
+post_id: '5661'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Design
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '5910204311'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/06/08/freenas-box-v1-design/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignleft size-medium wp-image-5783" src="https://newscrewdriver.com/wp-content/uploads/2017/06/freenasv1_cad.jpg?w=446" alt="FreeNASv1_CAD" width="223" height="300">Once the components are gathered, we start thinking about designing an enclosure for them. The tool of choice is the <a href="http://tux-lab.com/">Tux-Lab</a> laser cutter. The material of choice is acrylic sheet. The objective of the exercise is to learn how to build with acrylic and ideally create something novel and unique.</p>
+<p>Since my mind is already on acrylic, it was a short jump to think about the Apple <a href="https://en.wikipedia.org/wiki/Power_Mac_G4_Cube">Power Mac G4 Cube</a>. A landmark of industrial design. Obviously what I make won't be as pretty, but it'll be my homage to the cube. Here are the two main design considerations in my FreeNAS experiment #1.</p>
+<p><em><strong>Hard Drive Cooling</strong></em></p>
+<p>[caption id="attachment_5727" align="alignleft" width="214"]<img class="alignleft size-medium wp-image-5727" src="https://newscrewdriver.com/wp-content/uploads/2017/06/heightwise.jpg?w=428" alt="Heightwise" width="214" height="300"> Airflow along the sides has small surface area.[/caption]</p>
+<p>[caption id="attachment_5731" align="alignleft" width="300"]<img class="alignnone size-medium wp-image-5731" src="https://newscrewdriver.com/wp-content/uploads/2017/06/lengthwise.jpg?w=600" alt="Lengthwise" width="300" height="278"> Airflow lengthwise has large surface area, but will be obstructed by data and power cables.[/caption]</p>
+<p> </p>
+<p>[caption id="attachment_5737" align="alignleft" width="300"]<img class="alignnone size-medium wp-image-5737" src="https://newscrewdriver.com/wp-content/uploads/2017/06/crosswise.jpg?w=600" alt="Crosswise" width="300" height="257"> Airflow crosswise has large surface area and will not be obstructed by data and power cables.[/caption]</p>
+<p>Since the goal is for low power, low noise, and small size, I didn't want to add any fans. The small fan on the processor and the large fan in the power supply will take care of their respective components. That leaves the two hard drives without their own cooling, so the enclosure will have to utilize airflow created by the power supply fan.</p>
+<p>We desire the maximum cooling surface area that presents the fewest obstructions to the air stream. And we want to work with (instead of against) natural convection forces. Evaluating the possibilities, the best choice is to align cross-wise airflow to be vertical by sitting the hard drives on their long sides.</p>
+<p><em><strong>Power Supply Spacing</strong></em></p>
+<p><img class="alignleft size-medium wp-image-5747" src="https://newscrewdriver.com/wp-content/uploads/2017/06/psu-upright.jpg?w=386" alt="PSU Upright" width="193" height="300">Following the lead of the G4 Cube, air intake will be on the bottom and the power supply (with its fan) will sit at the top to work alongside natural convection and exhaust hot air.<img class=" size-medium wp-image-5752 alignright" src="https://newscrewdriver.com/wp-content/uploads/2017/06/psu-tilted.jpg?w=418" alt="PSU Tilted" width="209" height="300"></p>
+<p>With the power supply sitting at the top, and the hard drives sitting on their sides against the bottom, that leaves a fairly large piece of unused space. The wires protruding from the power supply is also a concern. We either have to force those wires to make sharp downward turns to reach the system components, or we have to increase the depth of the enclosure to give the wires room.</p>
+<p>Our experiment #1 tilts the power supply downward 30 degrees to utilize the available space to relieve the wire spacing issue.</p>
+<p>Will these ideas work? Let's build it and find out...</p>
+<p> </body></html></p>

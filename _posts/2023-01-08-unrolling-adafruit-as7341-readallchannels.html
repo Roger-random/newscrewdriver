@@ -1,0 +1,140 @@
+---
+layout: post
+title: Unrolling Adafruit AS7341 readAllChannels()
+date: 2023-01-08 12:30:00.000000000 +00:00
+type: post
+post_id: '34479'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- AVR
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34514'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673296309
+  _publicize_job_id: '80364741188'
+  timeline_notification: '1673209820'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/08/unrolling-adafruit-as7341-readallchannels/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/01/07/hello-as7341-id-via-non-blocking-i2c/">successfully reading an AS7341's product ID</a> via a non-blocking I2C API, I have gained confidence I can replicate any existing AS7341 library's actions with the non-blocking I2C API. This way it will play nice with Mozzi library. I decided to focus on <code><a rel="noreferrer noopener" href="https://github.com/adafruit/Adafruit_AS7341/blob/master/Adafruit_AS7341.cpp#L122" target="_blank">Adafruit_AS7341::readAllChanels()</a></code> because it seemed like the most useful one to convert to non-blocking operation. It was used in multiple examples as well as <a rel="noreferrer noopener" href="https://github.com/emilyvelasco/color_organ" target="_blank">Emily's color organ project</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>bool Adafruit_AS7341::readAllChannels(uint16_t *readings_buffer) {
+
+  setSMUXLowChannels(true);        // Configure SMUX to read low channels
+  enableSpectralMeasurement(true); // Start integration
+  delayForData(0);                 // I'll wait for you for all time
+
+  Adafruit_BusIO_Register channel_data_reg =
+      Adafruit_BusIO_Register(i2c_dev, AS7341_CH0_DATA_L, 2);
+
+  bool low_success = channel_data_reg.read((uint8_t *)readings_buffer, 12);
+
+  setSMUXLowChannels(false);       // Configure SMUX to read high channels
+  enableSpectralMeasurement(true); // Start integration
+  delayForData(0);                 // I'll wait for you for all time
+
+  return low_success &amp;&amp;
+         channel_data_reg.read((uint8_t *)&amp;readings_buffer[6], 12);
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining this code, we can see it does the same thing twice, differing only in a single boolean parameter to <code>setSMUXLowChannels</code>. This reflects AS7341 architecture where we have more sensors than ADCs so we have to configure SMUX to read a subset then reconfigure SMUX to read remaining sensors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>void Adafruit_AS7341::setSMUXLowChannels(bool f1_f4) {
+  enableSpectralMeasurement(false);
+  setSMUXCommand(AS7341_SMUX_CMD_WRITE);
+  if (f1_f4) {
+    setup_F1F4_Clear_NIR();
+  } else {
+    setup_F5F8_Clear_NIR();
+  }
+  enableSMUX();
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Digging into <code>setSMUXLowChannels</code> we see the following actions:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>
+<code>enableSpectralMeasurement</code> disables a register bit to turn off spectral measurement, necessary preparation for SMUX reconfiguration.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>setSMUXCommand </code>flips a different register bit to notify AS7341 that a new SMUX configuration is about to be uploaded.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Upload one of two SMUX configurations, depending on boolean parameter.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>enableSMUX</code> repeatedly reads a register bit until it flips to 0, which is how AS7341 signifies that SMUX reconfiguration is complete.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Steps 1-3 above are I2C writes and can be done quickly. Step 4 will add complication: not only is it an I2C read, but we might also need to read it several times before the bit flips to zero.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Backing out to <code>readAllChannels</code>, we see spectral measurement bit is flipped back on after SMUX reconfiguration. According to the datasheet, flipping this bit back on is a signal to start a new reading. How do we know when sensor integration is complete? That's indicated by yet another register bit. <code>delayForData</code> repeatedly reads that until it flips to 1, clearing the way for us to read 12 bytes of sensor data. Representing data from all six ADCs channels, each of which gives us 16 bits (2 bytes) of data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unrolling all of the above code in terms of I2C operations, <code>readAllChannels</code> breaks down to:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>I2C register write to turn OFF spectral measurement.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I2C register write to notify incoming SMUX configuration data.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I2C write to upload SMUX configuration for ADC to read sensors F1 through F4, plus Clear and NIR channels.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Repeated I2C read for "SMUX reconfiguration" flag until that bit flips to 0.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I2C register write to turn ON spectral measurement. (Starts new sensor integration.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Repeated I2C read for "Sensor integration complete" flag until that bit flips to 1.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I2C read to download sensor data</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Repeat 1-7, except step #3 uploads SMUX configuration for sensors F5 through F8 instead of F1 through F4.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like this plan but before I roll up my sleeves, I wanted to <a href="https://newscrewdriver.com/2023/01/09/sample-code-gave-incomplete-picture-of-as7341-smux-configuration/">take a closer look at SMUX configuration</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/color_organ/blob/main/nonblock_example/nonblock_example.ino" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

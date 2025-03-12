@@ -1,0 +1,104 @@
+---
+layout: post
+title: Canon Pixma MX340 Electronics Plan
+date: 2023-11-28 12:30:00.000000000 +00:00
+type: post
+post_id: '40695'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40370'
+  wordads_ufa: s:wpcom-ufa-v4:1703391378
+  _publicize_job_id: '89793686437'
+  timeline_notification: '1701203421'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/28/canon-pixma-mx340-electronics-plan/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm <a href="https://newscrewdriver.com/2023/11/27/canon-pixma-mx340-teardown-phase-1-complete/">pausing mechanical disassembly</a> of a Canon Pixma MX340 multi-function inkjet so I can explore its electrical aspects while everything is still running. I know I won't understand everything and that is OK. Roughly in order of my self-confidence going in, the electrical subsystems I expect to find are:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Motors and Sensors: Yes</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I expect to be able to understand all of the motors and mechanical sensors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>There are two stepper motors, one for the automatic document feeder and one for the scanner. Determine open-circuit resistance for their coils, and monitor the voltage they see during printer startup sequence. That should give me a ballpark figure of their electrical current capacity.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Determine pin-out of photo-interrupter sensors in this printer. This printer seem to use the same unit throughout, one that integrates the LED sender and the photosensitive receiver in a plastic package. Figure out which pins are power, ground, signal, and their voltage ranges.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Determine the typical voltage sent to the two DC motors, one for paper feed and the other for print head carriage. Since they are used in a closed-loop control system for precise positioning, I don't expect them to see full 24V DC from the power supply.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Determine if pin-out of the paper feed motor's encoder are power/ground/A/B as expected. Print carriage encoder is not currently accessible and will have to wait for later.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Control Panel: Hopefully Yes</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll take a look at the control panel, full of buttons and an integrated LCD. I managed to decipher the front panel of <a href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/" target="_blank" rel="noreferrer noopener">a Toyota tape deck</a> and <a href="https://newscrewdriver.com/2022/06/28/lcd-driver-pinout-for-honda-cd/" target="_blank" rel="noreferrer noopener">a Honda CD unit</a>, and I'm optimistic that experience will help me understand what I will find on this front panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Scanner: Unlikely</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I'm pretty confident I can understand the stepper motor in the scanner, I'm less optimistic about the image capture side. A bit of web search found <a href="https://forum.arduino.cc/t/flatbed-scanner-with-hackable-interface/66018" target="_blank" rel="noreferrer noopener">this Arduino forum thread</a>, where I learned the imaging bar that moves across a scanner's glass bed is called a <a href="https://en.wikipedia.org/wiki/Contact_image_sensor" target="_blank" rel="noreferrer noopener">contact image sensor (CIS)</a>. I haven't found much in the way of publicly available documentation on any CIS modules. The prospects are even lower here because, as a worldwide leader in imaging technology, Canon probably produced this particular CIS for internal consumption. Meaning there's even less reason for related documentation to be public.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found a few YouTube videos that purport to cover all the things you can do to repurpose scanner components. They usually talk about the glass, the motor, the gears, the illumination light bar, etc. The sensor? "You're not going to be able to reuse that." Bah.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Maybe they're right, but I'll poke around anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">WLAN Module: Not Interested</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will ignore the Canon WiFi module, as I don't foresee reusing that component. If I have a project idea that involves WiFi, I'm far more likely to pull out an ESP8266 or ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Ink Cartridges: Hell No</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will ignore the ink cartridges as well. I have a hard enough time understanding electronics without trying to untangle deliberate obfuscation. Ink cartridges are the profit center for inkjet manufacturers and encumbered with all sorts of trickery to discourage aftermarket ink cartridges. I'm going to steer clear of that mess.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Main Board: Examination Only</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm interested in the motherboard only as far as looking it over for generalities. Try to figure out where the power handling areas are, identify peripherals like the stepper motor and DC motor control chips, stuff like that. Most of the components will be too small for me to reuse, and I'm not interested in trying to modify the firmware or running my own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think that plan is within my current capabilities, and I'll start with the simplest things: <a href="https://newscrewdriver.com/2023/11/29/canon-pixma-mx340-cover-switch-and-power-supply/">a switch and power input</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

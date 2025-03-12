@@ -1,0 +1,48 @@
+---
+layout: post
+title: Async/Await For Responsive Universal Windows Platform Applications
+date: 2020-05-14 12:30:55.000000000 +00:00
+type: post
+post_id: '21503'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- async/await
+- UWP
+meta:
+  _thumbnail_id: '21029'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44245328392'
+  timeline_notification: '1589484725'
+  _oembed_f63f5c176939f8fac256242960102003: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here&#39;s
+    an awesome collection of well-written material for learning TONS of computer vision
+    topics and methods from <a href="https://twitter.com/PyImageSearch?ref_src=twsrc%5Etfw">@PyImageSearch</a>!
+    <a href="https://t.co/4suRYheiaD">https://t.co/4suRYheiaD</a></p>&mdash; Edje
+    Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1181928508723011584?ref_src=twsrc%5Etfw">October
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_f63f5c176939f8fac256242960102003: '1589534465'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/14/async-await-for-responsive-universal-windows-platform-applications/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I have decided to sit down and put in the time to learn how to write software for asynchronous events using the <a href="https://newscrewdriver.com/2020/05/13/new-to-me-programming-toy-async-await-pattern/">relatively new (and certainly new to me) async/await pattern</a>. I had several options for which language/platform to use as my first hands-on experience, and I chose Microsoft's C#/UWP for multiple reasons. It was something I <a href="https://newscrewdriver.com/2020/03/30/window-shopping-universal-windows-platform-fluent-design/">looked at briefly</a>, there's a <a href="https://visualstudio.microsoft.com/vs/community/">free Community Edition of the Visual Studio software tool</a> to explore (and debug) them, and most importantly, I saw lots of documentation available on Microsoft's <a href="https://docs.microsoft.com/en-us/">documentation site (formerly MSDN.)</a> While I have no problem learning little things via reading posts on Stack Overflow, for something bigger I wanted a structured approach and I was familiar with Microsoft's style.</p>
+<p>Before I dove in, I was curious why Microsoft saw an incentive to invest in this pattern. This is a significant effort: it meant adding support the .NET platform, adding support in related languages like C#, adding support in tools like Visual Studio. Accompanied by tutorials, documentation, code libraries, and examples. And from what I can tell, their motivation is that using async/await pattern in UWP applications will keep the user interfaces responsive.</p>
+<p>Responsive user interfaces have been a desire ever since there were user interfaces, because we want the user to get feedback for their actions. But it's hard to keep everything running when the code is waiting on something to finish, which is why every user has the experience of clicking a button and watching the entire application freeze up until some mysterious thing is done. On the web the problem is both better and worse: better because the web browser itself usually stays responsive so the user can still click on things, worse because the web developer no longer has control and has to do silly things like warn the user not to click "refresh" or "back" buttons on their browser.</p>
+<p>Back to the desktop: application platforms have the concept of an "UI thread" where all the user interaction happens, including events handlers for user actions. It is tempting to do all the work inside the event handler, but that is running on the UI thread. If the work takes time the UI thread is unable to handle other events, leaving the user with no feedback and unable to interact with the application. They are left staring at an hourglass (or spinning "beach ball", etc) wondering what's going on.</p>
+<p>Until async/await came along the most common recommendation is to split up the work. Keep UI thread event handlers light doing as little as possible. Offload the time-consuming work to somewhere else, commonly another thread. Once the work is done, that worker is supposed to report its results back to the UI. But orchestrating such communications is time consuming to design, hard to get right in code, and even harder to debug when things go wrong. Between lazy developers who don't bother, and honest mistakes by those who try, we still have a lot of users facing unresponsive frozen apps.</p>
+<p>This is where async/await helps UWP and other application platforms: it is a way to design the platform interfaces so that they can tell app developers: "You know what, fine. Go ahead and run your code on the UI thread. But use async/await so we can handle the complicated parts for you." By encouraging the pattern, UWP could potentially offer both a better developer experience and a better end-user experience. Success would lead to increased revenue, thus the incentive to release bountiful documentation for async/await under their umbrella of <a href="https://newscrewdriver.com/2020/05/15/first-steps-learning-task-based-asynchronous-pattern-tap/">Task-based Asynchronous Pattern. (TAP)</a></p>
+<p></body></html></p>

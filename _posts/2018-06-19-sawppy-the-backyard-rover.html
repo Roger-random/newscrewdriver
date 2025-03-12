@@ -1,0 +1,40 @@
+---
+layout: post
+title: Sawppy the Backyard Rover
+date: 2018-06-19 09:00:16.000000000 +00:00
+type: post
+post_id: '16151'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1529424194'
+  _publicize_job_id: '19132156194'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/06/19/sawppy-the-backyard-rover/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The Google AIY Vision box installed atop the camera mast is mostly for looks and, once powered up, will run its own "Joy Detector" demo independently of the rest of the rover. Once physical mounting and electrical power for the box was done, attention returned to the webcam.</p>
+<p>As a first step, the easiest thing to do is to attach it to the Raspberry Pi 3 sitting in the rover chassis via USB. This is never going to be the long-term solution. For remote operation, a Raspberry Pi 3 doesn't have the grunt to do a good job at real-time video compression and streaming. For autonomous operation, a Raspberry Pi 3 doesn't have the grunt to do a good job at image recognition and analysis. We hope the AIY Vision box can handle the latter role in the future, but that's not where things are now. At the moment Sawppy is strictly a real-time remotely operated rover and what we want is live video.</p>
+<p>One solution is to use a webcam that has onboard h.264 video compression hardware. Such cameras exist, but they are pricy, and getting the video stream out of the camera without its dedicated Windows software can get tricky.</p>
+<p>The alternative is to sacrifice bandwidth efficiency to get a quick solution. It is relatively straightforward to pull individual frames out of a webcam in the form of JPEG still images, and it is computationally trivial to send them one after another in rapid succession to create a <a href="https://en.wikipedia.org/wiki/Motion_JPEG">Motion-JPEG</a> video stream.</p>
+<p>It took less than an hour to get basic camera operation up and running on <a href="https://github.com/jacksonliam/mjpg-streamer">mjpg-streamer</a> thanks to <a href="https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&amp;-Setup-&amp;-FFMpeg-Recording">these instructions</a>. We have a video stream that is crystal clear and we are not straining the Raspberry Pi 3 processor to do it. We are, however, putting a load on the wireless network because the 1280x720 Motion-JPEG video stream takes up about 30 megabits per second (mbps) of bandwidth. This is a tremendous bandwidth hog when considering Netflix can deliver full 1920x1080 high-definition video in less than 5 mbps.</p>
+<p>But that's something to be addressed later. In the meantime, it's time for Sawppy to roam the backyard!</p>
+<p><img class=" size-full wp-image-16150 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/05/backyard-explorer1.jpg" alt="Backyard Explorer" width="1024" height="841"></p>
+<p>Here's the rover's eye view:</p>
+<p><img class=" size-full wp-image-16149 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/05/backyard-explorer.jpg" alt="Backyard Explorer" width="1332" height="842"></p>
+<p></body></html></p>

@@ -1,0 +1,53 @@
+---
+layout: post
+title: Notes on PEP 343 The “with” Statement
+date: 2024-06-14 12:30:00.000000000 +00:00
+type: post
+post_id: '43783'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  timeline_notification: '1718393452'
+  firehose_sent: '1718393450'
+  _publicize_job_id: '95440957726'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-15 19:34:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/14/notes-on-pep-343-the-with-statement/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I don't like Python shorthands that are so short, it <a href="https://newscrewdriver.com/2024/06/13/not-a-fan-of-python-succinct-syntax/">leaves a beginner up a creek</a> without any keywords they could use for searching and learning. But I'm OK with shorthands that clean up code while still leaving something for a beginner to look up. Such is the case with <a href="https://peps.python.org/pep-0343/">PEP 343 <em>The “with” Statement</em></a>. I've been using "<code>with</code>" in Python for a while, but never really sat down to understand what's going on when I do. Thankfully there is a keyword I could use to find appropriate documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My introduction was in the context of example #2:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>with opened("/etc/passwd") as f:
+    for line in f:
+        print line.rstrip()</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Opening a file for data operations, "<code>with</code>" guarantees all cleanup will also be handled behind the scenes. PEP 343 explains the problems it intended to solve, and explaining how this convenience is handled behind the scenes. There were two explanations that I could follow. The first explains using an implementation specified with a set of methods with special names "<code>__enter__()</code>" and "<code>__exit__()</code>". I understood Python will look for these names under conditions specified in PEP 343. Then the same concept was rewritten in a way that built upon <a href="https://newscrewdriver.com/2024/06/11/notes-on-pep-342-coroutines-via-enhanced-generators/">PEP 342</a>: a context manager called upon via <code>with</code> can be implemented as a generator that calls "<code>yield</code>" at a single point within a "<code>try</code>/<code>finally</code>" block. This neatly packages all associated components together. Any setup code runs before "<code>yield</code>". Within the "<code>try</code>" block, "<code>yield</code>" hands control over to client code. (In the above example, the "<code>for</code>" loop reading text in a file line by line.) Then code inside either "<code>except:</code>" or "<code>finally:</code>" can cleanup after client code completes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like this pattern, ensuring setup and cleanup code can be kept together while allowing other code to run in between them. While I have not yet fully absorbed Python generators, I think I understand enough of this particular application to appreciate it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Coverage of this topic in <a href="https://docs.python.org/3/tutorial/">the official Python tutorial</a> is under "<em><a href="https://docs.python.org/3/tutorial/errors.html#predefined-clean-up-actions">Predefined Clean-up Actions</a></em>" within the "<a href="https://docs.python.org/3/tutorial/errors.html"><em>Errors and Exceptions</em></a>" section. As appropriate for a tutorial, it focuses on how to use it and how it's useful and leaves all the history and design thinking and implementation nuts and bolts to PEP 343.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next lesson: what did it mean when I saw <a href="https://newscrewdriver.com/2024/06/15/notes-on-pep-380-syntax-for-delegating-to-a-subgenerator/">"<code>yield from</code>" instead of just "<code>yield</code>"</a>?</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

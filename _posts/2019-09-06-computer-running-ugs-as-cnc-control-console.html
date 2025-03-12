@@ -1,0 +1,65 @@
+---
+layout: post
+title: Computer Running UGS As CNC Control Console
+date: 2019-09-06 12:30:16.000000000 +00:00
+type: post
+post_id: '19466'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19467'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_ada7a7ecc1cb2c23eb66ff99008886bb: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    <a href="https://twitter.com/Regorlas?ref_src=twsrc%5Etfw">@Regorlas</a> and I
+    made a pen plotter. He by meticulously wiring up an ESP32-based CNC controller
+    and writing code to make it run. My by standing in as the worst Z axis ever <a
+    href="https://t.co/iyGmFduYmX">pic.twitter.com/iyGmFduYmX</a></p>&mdash; Emily
+    Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1168760826880090114?ref_src=twsrc%5Etfw">September
+    3, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '35010208619'
+  timeline_notification: '1567798221'
+  _oembed_time_ada7a7ecc1cb2c23eb66ff99008886bb: '1567798238'
+  _oembed_6b96e3f9611ce7307f26a36b53bdcf67: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    turn! <a href="https://t.co/Uga80HVuoI">pic.twitter.com/Uga80HVuoI</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1169785741787877376?ref_src=twsrc%5Etfw">September
+    6, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_6b96e3f9611ce7307f26a36b53bdcf67: '1567843571'
+  _oembed_6614aedf4b14265a17437f0b473e27ce: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Yo
+    <a href="https://twitter.com/helenleigh?ref_src=twsrc%5Etfw">@helenleigh</a> <a
+    href="https://twitter.com/Regorlas?ref_src=twsrc%5Etfw">@Regorlas</a> and I made
+    you some art <a href="https://t.co/PeFpPsmYJJ">pic.twitter.com/PeFpPsmYJJ</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1169810616120266752?ref_src=twsrc%5Etfw">September
+    6, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_6614aedf4b14265a17437f0b473e27ce: '1567845100'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/06/computer-running-ugs-as-cnc-control-console/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One thing that didn't go quite according to plan <a href="https://newscrewdriver.com/2019/09/05/freehand-cnc-pen-plotter/">during our first system test</a> was how we sent our G-code file to the controller. I had planned to dedicate my <a href="https://newscrewdriver.com/2018/08/31/dell-inspiron-11-3000-3180-as-robot-brain-candidate/">Dell Inspiron 11 (3180)</a> to the task of CNC control console, but it didn't turn on at the workshop.</p>
+<p>This was a problem, because I had hoped the G-code sender program I had installed on that laptop would help us understand what's going on as we drive the machine. While CNC G-code is officially standardized, the standards still left a lot to the individual machine makers to define. Grbl (mostly) follows example set by LinuxCNC, so for the most part I can use <a href="http://linuxcnc.org/docs/html/gcode.html">LinuxCNC reference guide</a>. I doubt I could memorize everything immediately, so a little software help might have been nice.</p>
+<p>Grbl ESP32 is capable of operating completely independently using web interface. This is a basic interface which is extremely streamlined and missing some of the luxury features of other control interfaces. Furthermore, there is not enough onboard storage for CNC programs. To address the latter, there's provision for attaching a SD card for storage via four pins on the ESP32. This is great for building small self-contained (maybe even portable!) machines.</p>
+<p>But since our project is not very easily portable, I thought it'd be better to have a more full featured control console for this CNC. Grbl project wiki included <a href="https://github.com/gnea/grbl/wiki/Using-Grbl">a list of popular G-code senders</a>, after reading that list I decided to try <a href="https://winder.github.io/ugs_website/">UGS</a> and installed it on the little Dell. Since it was written for Grbl, it understands the Grbl-specific subset of G-code and also has a visualization module so we know what to expect when we run a program. All of these would have been useful in an initial system run.</p>
+<p>At the workshop I pulled the Dell out of my backpack, pushed the power button, and nothing happened. After a few failed efforts to wake the machine, I resorted to using <a href="https://github.com/gnea/grbl/wiki/Using-Grbl#python-streaming-scripts-officially-supported-by-grbl-cross-platform"><code>simple_stream.py</code></a> from the Grbl site, a flat Python script with absolutely no user friendly features whatsoever.</p>
+<p>I brought the little Dell home in order to debug the problem. Once I got home, I determined the machine is running but stuck. I held the power button for longer than 4 seconds, which per ACPI spec will power down the machine regardless of state. I thought I had tried that at the workshop but I guess I didn't quite hold it long enough? In any case the computer is <a href="https://newscrewdriver.com/2019/09/07/making-our-way-to-a-z-axis-gantry/">ready for another attempt</a>.</p>
+<p>[Update: UGS didn't pan out, <a href="https://newscrewdriver.com/2019/09/19/unreliable-serial-communication-with-ugs-try-bcnc-next/">more details here</a>.]</p>
+<p></body></html></p>

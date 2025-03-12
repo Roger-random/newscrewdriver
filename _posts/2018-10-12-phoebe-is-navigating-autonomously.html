@@ -1,0 +1,40 @@
+---
+layout: post
+title: Phoebe Is Navigating Autonomously
+date: 2018-10-12 09:00:15.000000000 +00:00
+type: post
+post_id: '16983'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539360542'
+  _publicize_job_id: '23120396787'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/12/phoebe-is-navigating-autonomously/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I've been making progress (slowly but surely) thorough the ROS navigation stack tutorial to get it running on Phoebe, and finally reached the finish line.</p>
+<p>After all the configuration YAML files were created, they were tied together <a href="https://github.com/Roger-random/phoebe/blob/master/launch/move_base.launch">into a launch file</a> as parameters to the ROS node <code>move_base</code>. For now I'm keeping the pieces in independent launch files, so <code>move_base</code> is ran independently of Phoebe's <a href="https://github.com/Roger-random/phoebe/blob/master/launch/chassis.launch">chassis functionality launch file</a> and AMCL (launched using its default <code>amcl_diff.launch</code>).</p>
+<p>After they were all running, a <a href="https://github.com/Roger-random/phoebe/commit/b486823b8a651ec198ca31075220217844d77b4f">new RViz configuration</a> was created to visualize local costmap and amcl particle cloud. And it was a huge mess! I was disheartened for a few seconds before I remembered seeing a similar mess when I <a href="https://newscrewdriver.com/2018/08/12/turtlebot3-demo-navigating-gazebo-simulation-world/">first looked at navigation</a> on a Gazebo simulation of TurtleBot 3 Burger. Before anything would work, I had to set the initial "2D Pose Estimate" to locate Phoebe on the map.</p>
+<p>Once that was done, I set a "2D Nav Goal" via RViz, and Phoebe started moving! Looking on RViz I could see the map along with LIDAR scan plots and Phoebe's digital representation from URDF. Those are all familiar from earlier. New to the navigation map is a planned path plotted in green taking account of the local cost map in gray. AMCL contributed the rest of the information on screen, with individual estimates drawn as little yellow arrows and estimated position in red.</p>
+<p><img class="alignnone size-full wp-image-16984" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-nav2d-2.png" alt="Phoebe Nav2D 2" width="1423" height="692"></p>
+<p>It's pretty exciting to have a robot with basic intelligence for path planning, and not just a fancy remote control car.</p>
+<p>Of course, there's a lot of tuning to be done before things actually work <strong><em>well</em></strong>. Phoebe is super cautious and conservative about navigating obstacles, exhibiting a lot of halting and retrying behavior in narrower passageways even when there are still 10-15cm of clearance on each side. I'm confident there are parameter I could tune to improve this.</p>
+<p>Less obvious are what I need to adjust to increase Phoebe's confidence in relatively wide open areas, Phoebe would occasionally brake to a halt and hunt around a bit before resuming travel even when there's plenty of space. I didn't see an obstacle pop up on the local costmap, so it's not clear what triggered this behavior.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154412-ros-navigation-up-and-running">Hackaday.io</a>)</p>
+<p></body></html></p>

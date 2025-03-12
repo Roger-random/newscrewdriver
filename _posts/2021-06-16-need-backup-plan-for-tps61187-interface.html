@@ -1,0 +1,87 @@
+---
+layout: post
+title: Need Backup Plan For TPS61187 Interface
+date: 2021-06-16 12:30:00.000000000 +00:00
+type: post
+post_id: '27086'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27088'
+  _publicize_job_id: '59672538785'
+  timeline_notification: '1623871826'
+  _oembed_811417de98a29af339b4577856637a63: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Many
+    thanks to <a href="https://twitter.com/xxv?ref_src=twsrc%5Etfw">@xxv</a> for pointing
+    out the *riduculously* simple installer for WLED on an ESP (<a href="https://t.co/Pgp7O0uGum">https://t.co/Pgp7O0uGum</a>)
+    WLED is open source LED control software that I&#39;d been meaning to check out,
+    and it took only minutes to get it installed and running with the link. <a href="https://t.co/LTnXsgePEZ">pic.twitter.com/LTnXsgePEZ</a></p>&mdash;
+    Geek Mom Projects (@GeekMomProjects) <a href="https://twitter.com/GeekMomProjects/status/1405301671194812416?ref_src=twsrc%5Etfw">June
+    16, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_811417de98a29af339b4577856637a63: '1623942934'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/16/need-backup-plan-for-tps61187-interface/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had thought I was near the finish line for my backlight revival project, but then I tugged on one wire a little bit too hard and <a href="https://newscrewdriver.com/2021/06/15/installing-arduino-circuit-caused-setback/">destroyed the circuit board test point I had soldered to</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27083,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-35-led_en-test-point-destroyed.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-35-led_en-test-point-destroyed.jpg?w=800" alt="" class="wp-image-27083"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is bad, and it got worse. As I tried to gently unwind this LED_EN wire, it was not gentle enough and the soldered points for V<sub>in</sub> and GND started unraveling as well. For those two wires I had soldered to either end of a (relatively) large surface mount decoupling capacitor bridging those two voltage planes, because the tops of these capacitors presented a metallic surface area for me to solder to. I had thought they were metal end pieces, but they were actually a thin layer of metal that I just learned would peel under stress. The good news was that I was able to melt the solder and remove those wires before they did any permanent damage, the bad news is that I'll need another approach for these connections as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I've already proved to be clumsy with three out of four wires, I pulled out my hot glue gun to better secure my solder points starting with my PWM wire that still remains. I dropped a dollop of hot glue and, as I pulled my hot glue gun away, I felt the now-dreaded "pop" sensation in my fingertip holding the wire in place. I think I just lifted the PWM copper pad, too! Fortunately, my meter said I still had electrical continuity. So even if I <em>did </em>lift the pad, it is still connected, held in position by my drop of hot glue. But just in case I needed it, I probed around the board and managed to find a backup location for the PWM signal next to the main display control chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27092,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-39-pwm-plan-b.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-39-pwm-plan-b.jpg?w=800" alt="" class="wp-image-27092"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Backing up further, I found another test point to the left of the LED_EN test point I destroyed. It was labeled VLED and it was connected to the backlight supply voltage line. As fragile as these test points have proven to be, I think they're still better than the end of a surface mount capacitor. I'll use this one and hope I don't rip this one out as well. Finding a replacement location to solder to the ground plane was easy, as the entire circuit board shared a common ground plane and I had many choices for ground. Including the metal housing of the now-unused data connector that formerly connected to the rest of the laptop. So I'm not worried about a ground connection, I have a plan C, D, E, F, etc. For now I found what looks like a test data bus will use the ground pad for that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which leaves me with the original problem: the LED EN pad that I've destroyed. I had no luck finding another test point, and while I expect it is connected to one of the pins on the main LG Display ANX2804 chip, I couldn't find a good contact point for that either. Then I remembered the TPS61187 datasheet, where it said it was valid to connect EN to VDDIO which will cause the chip to be enabled whenever it receives power on V<sub>in</sub>. From my notes probing the components around the chip, I knew there were some surface mount components adjacent to each other. They are tiny, but I was able to get a short length of wire to solder across those two components. Since I won't be tugging on this wire, I should be OK here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27096,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-36-en-tied-to-vddio.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-36-en-tied-to-vddio.jpg?w=800" alt="" class="wp-image-27096"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I verified the VDDIO and EN pins are now connected, I realized there was another way: Since these two pins are adjacent to each other on the TPS61187 itself, a blob of solder can theoretically bridge those two pins right on the TPS61187. I'll keep that in mind as a potential plan C if I should need it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To minimize the chances I'll need any of those backup-to-the-backup plans, I became very generous with my hot glue application. I sincerely hope I won't have to take this apart again, because I don't see how I can undo all this hot glue without destroying these solder points.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27099,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-40-even-more-hot-glue.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-40-even-more-hot-glue.jpg?w=1024" alt="" class="wp-image-27099"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately I wouldn't have to undo anything because <a href="https://newscrewdriver.com/2021/06/17/installing-arduino-circuit-round-2/">my second attempt at system integration</a> was a success.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

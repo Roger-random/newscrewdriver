@@ -1,0 +1,85 @@
+---
+layout: post
+title: HTML Features For ESP32 Sawppy Rover
+date: 2021-04-12 12:30:00.000000000 +00:00
+type: post
+post_id: '23192'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26024'
+  _oembed_fa4f1744c4190a41018c9bfd08c8f7d5: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '57086217589'
+  timeline_notification: '1618255809'
+  _oembed_time_fa4f1744c4190a41018c9bfd08c8f7d5: '1618303466'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/12/html-features-for-esp32-sawppy-rover/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I am now <a href="https://newscrewdriver.com/2021/04/11/notes-after-node-js-introduction/">running the Node.js static web server</a> <code>node-static</code> in a Docker container, with the help of <a rel="noreferrer noopener" href="https://nodemon.io/" target="_blank"><code>nodemon</code></a> I have set up my own infrastructure rapidly iterate HTML/CSS/JavaScript development. I expect this will be very useful during development, much faster than reflashing an ESP32 on every update. Making the interface in HTML lets rover drivers use the touchscreen phone they're probably carrying around anyway, but I also wanted the option of using older out-of-date phones which meant I can't use the latest and greatest browser APIs. For my target example I chose Internet Explorer built in to Windows Phone 8 (WP8 IE from now on) mainly because I have a Nokia Lumia 920 just sitting here. It is in great physical condition, so I kept it long after its retirement as I was reluctant to toss it as electronic waste.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To give this old phone a new job as rover driver I need to know what subset of modern web standards are functional in the browser built into a Nokia Lumia 920. To ensure I'm not inadvertently locking myself into proprietary features, I won't use any Microsoft reference material. Only stuff I find on non-proprietary sites like <a rel="noreferrer noopener" href="https://www.w3schools.com/" target="_blank">w3schools</a>, backed up by information from sites like <a rel="noreferrer noopener" href="https://www.caniuse.com/" target="_blank">caniuse</a>. I will also verify on an Android phone and iOS tablet as I go.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Drawing on screen</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For SGVHAK rover software I used the <a rel="noreferrer noopener" href="https://www.w3schools.com/html/html5_canvas.asp" target="_blank">HTML Canvas drawing API</a> directly, and I thought I would investigate tools that might make that easier. There aren't very many options, as HTML graphics frameworks have mostly moved on to WebGL. On a lark I <a rel="noreferrer noopener" href="https://get.webgl.org/" target="_blank">checked WebGL support</a> on WP8 IE, and was mildly surprised to see the answer was yes. Well, sort of. The test pages says the browser reports WebGL as an incomplete 'experimental' feature, which sounds about right for the browser's vintage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lacking much knowledge in the area, I picked <a rel="noreferrer noopener" href="https://www.pixijs.com/" target="_blank">PixiJS</a> as a representative 2D HTML graphics framework that renders to WebGL and automatically falls back to HTML Canvas as needed. This particular framework seems to subscribe to the "move fast and break things" philosophy, as my attempt to <a rel="noreferrer noopener" href="https://github.com/kittykatattack/learningPixi" target="_blank">follow a learning tutorial</a> quickly aborted due to a breaking change in how textures are loaded. But that doesn't matter, because PixiJS won't run on my Nokia Lumia 920 with the error "Requires ES6 Support" so that is out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Verdict</strong>: WebGL was a fun distraction, but I only really need to draw a rectangle and a circle. HTML <code>&lt;Canvas&gt;</code> will be fine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Receiving User Input</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For SGVHAK rover software I had two parallel code paths listening to input events. One path listens to mouse events, another listens to touch inputs, and they work together to call into a shared set of pointer event handlers. Looking at this code in hindsight, I can't remember why I didn't <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank">subscribe to HTML's own pointer events</a> that performs this input unification in a standardized way. My requirements for Sawppy control isn't esoteric, pointer down/up/move and capture are all fairly standard things and they seem to work in WP8 IE.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Verdict</strong>: The new project will switch to Pointer Events until I discover (or rediscover?) why I would need to subscribe to mouse and touch events separately.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Communicating with Server</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For SGVHAK rover software, my control software submitted user input in the most standard HTML technique I knew for sending data to server: the <a href="https://en.wikipedia.org/wiki/POST_(HTTP)">HTTP POST</a>. Designed for submitting form data on a web page, it was a really inefficient way to submit a user's control input multiple times a second. When I described my amateurish approach to people with knowledge of actual web programming, their faces usually turn to open horror.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But the good thing with honesty about being an amateur and open to learning is that I received advice to investigate something called WebSocket. Thankfully, just like WebGL above, someone has set up a page to <a rel="noreferrer noopener" href="https://www.websocket.org/echo.html" target="_blank">check if a browser supports WebSocket</a>. I was happy to discover that it was supported in WP8 IE. A quick check on Espressif documentation <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/protocols/esp_http_server.html#websocket-server" target="_blank">confirmed there is some level of WebSocket support</a>, good enough for me to go explore the possibility.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Verdict</strong>: Stop using HTTP POST and <a href="https://newscrewdriver.com/2021/04/13/sawppy-html-canvas-and-websocket/">switch to WebSocket</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

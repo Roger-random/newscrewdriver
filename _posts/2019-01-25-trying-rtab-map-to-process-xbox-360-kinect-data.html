@@ -1,0 +1,39 @@
+---
+layout: post
+title: Trying RTAB-Map To Process Xbox 360 Kinect Data
+date: 2019-01-25 13:30:15.000000000 +00:00
+type: post
+post_id: '17684'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- Kinect
+- OpenKinect
+- RTAB-Map
+meta:
+  _wp_old_date: '2019-01-26'
+  _rest_api_published: '1'
+  timeline_notification: '1548495452'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26946057570'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/25/trying-rtab-map-to-process-xbox-360-kinect-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17697 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/xbox-360-kinect-with-modified-plugs-12v-usb.jpg" alt="xbox 360 kinect with modified plugs 12v usb" width="1600" height="632">Depth sensor data from a Xbox 360 Kinect <a href="https://newscrewdriver.com/2019/01/24/xbox-360-kinect-depth-sensor-data-via-openkinect-freenect/">might be imperfect</a>, but it is good enough to proceed with learning about how a machine can make sense of its environment using such data. This is an area of active research with lots of options on how I can sample the current state of the art. What looks the most interesting to me right now is <a href="http://introlab.github.io/rtabmap/">RTAB-Map</a>, from <a href="https://introlab.3it.usherbrooke.ca/mediawiki-introlab/index.php/Mathieu_Labbe">Mathieu Labbé</a> of IntRoLab at Université de Sherbrooke (Quebec, Canada.)</p>
+<p><img class="alignright size-medium wp-image-17702" src="https://newscrewdriver.com/wp-content/uploads/2019/01/rtab-map.png?w=300" alt="rtab-map" width="300" height="300">RTAB stands for Real-Time Appearance-Based, which neatly captures the constraint (fast enough to be real-time) and technique (extract interesting attributes from appearance) of how the algorithm approaches mapping an environment. I learned of this algorithm by reading the research paper behind <a href="https://hackaday.com/2018/11/02/smores-robot-finds-its-own-way-to-the-campfire/">a Hackaday post of mine</a>. The robot featured in that article used RTAB-Map to generate its internal representation of its world.</p>
+<p>The more I read about RTAB-Map, the more I liked what I found. Its home page lists events dating back to 2014, and the <a href="https://github.com/introlab/rtabmap">Github code repository</a> show updates as recently as two days ago. It is encouraging to see continued work on this project, instead of something that was abandoned years ago when its author graduated. (Unfortunately quite common in the ROS ecosystem.)</p>
+<p>Speaking of ROS, RTAB-Map itself is not tied to ROS, but the lab provides a <a href="http://wiki.ros.org/rtabmap_ros">rtab-ros module</a> to interface with ROS. Its <a href="https://github.com/introlab/rtabmap_ros">Github code repository</a> has also seen recent updates, though it looks like a version for ROS Melodic has yet to be generated. This might be a problem later... but right now I'm still exploring ROS using Kinetic so I'm OK in the short term.</p>
+<p>As for sensor support, RTAB-Map supports everything I know about, and many more that I don't. I was not surprised to find support for OpenNI and OpenKinect (<code>freenect</code>). But I was quite pleased to see that it also supports the second generation Xbox One Kinect via <code>freenect2</code>. This covers all the sensors I care about in the foreseeable future.</p>
+<p>The only downside is that RTAB-Map requires significantly more computing resources than what I've been playing with to date. This was fully expected and not a criticism of RTAB-Map. I knew 3D data would far more complex to process, but I didn't know how much more. RTAB-Map will be my first solid data point. Right now my rover Sawppy is running on a Raspberry Pi 3. According to RTAB-Map author, a RPi 3 could only <a href="http://official-rtab-map-forum.67519.x6.nabble.com/RGB-D-SLAM-example-on-ROS-and-Raspberry-Pi-3-td1250.html">perform updates four to five times a second</a>. Earlier I had <a href="https://newscrewdriver.com/2018/08/30/the-spectrum-of-ros-robot-brain-candidates/">outlined the range of computing power</a> I might summon for a rover brain upgrade. If I want to run RTAB-Map at a decent rate, it looks like I have to go past Chromebook level of hardware to Intel NUC level of power. Thankfully I don't have to go to the expensive realm of NVIDIA hardware (either a Jetson board or a GPU) just yet.</body></html></p>

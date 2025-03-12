@@ -1,0 +1,46 @@
+---
+layout: post
+title: Looking Under A Browser's Hood
+date: 2024-08-13 12:30:00.000000000 +00:00
+type: post
+post_id: '27679'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44744'
+  firehose_sent: '1723577417'
+  _publicize_job_id: '97006648651'
+  timeline_notification: '1723577419'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-12 02:22:16'
+  wordads_ufa: u:wpcom-ufa-v4:1723577724
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/13/looking-under-a-browsers-hood/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Every aspiring web developer quickly learns about <a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools">the collection of developer tools</a> built into a browser, where we can look at how the browser has interpreted the HTML/CSS/JavaScript for the current page. It's a very powerful set of diagnostic tools, but they're about the content. What about the browser itself? There's an entirely different set of tools to look at how the browser itself functions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've seen bits and pieces of these behind-the-scenes browser configuration and diagnostics pages before. Like when I had to enable <a href="https://newscrewdriver.com/2023/03/28/magnetometer-api-in-android-chrome-browser/">Android Chrome's compass API</a>, or switch <a href="https://newscrewdriver.com/2023/10/02/make-firefox-pdf-viewer-default-to-page-fit-zoom/">Firefox PDF viewer to full page zoom</a> default. While I didn't know the full extent of what's available, I had assumed there would be a central directory buried somewhere in their respective developer documentation. I was half right: there is indeed a directory, but it's not buried in documentation, it's accessible right in the browser itself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For Google Chrome, the master index is <code>chrome://chrome-urls/</code>. I learned of this from <a href="https://twitter.com/mbanzi/status/1434482893024382976">an old Tweet</a> by Massimo Banzi (a.k.a. Mr. Arduino) who pointed to <code>chrome://device-log/</code> and from there to the master list of all similar URLs. <code>chrome://device-log/</code> shows all USB-related activity visible to Chrome and helps diagnose problems with things like <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebUSB_API">WebUSB</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">WebSerial</a>. It's a sensible introduction for someone deep into the Arduino world.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But <code>chrome://chrome-urls/</code> opens up a much broader view into Chrome browser internals. I was fascinated by <code>chrome://omnibox/</code> which shows what happens when we type into what was originally Chrome's address bar but had grown into so much more. How does Chrome choose to interpret what I typed as an address, or as a search term, or if I'm trying to go back in my browser history? <code>chrome://omnibox/</code> shows all. And that's just one of many special URLs listed by <code>chrome://chrome-urls/</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For Microsoft Edge, which is now a Chromium-based browser, it has its own counterpart with search-and-replaced name <code>edge://edge-urls</code>. Mozilla Firefox went to a slightly different route, with their index available at <code>about:about</code>. I didn't find an equivalent index for Apple Safari. Maybe there isn't one built-in like the rest? I don't use Safari as much anyway.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

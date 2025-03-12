@@ -1,0 +1,79 @@
+---
+layout: post
+title: Form 1+ Galvanometer Control Board IC Roll Call
+date: 2022-09-09 12:30:00.000000000 +00:00
+type: post
+post_id: '32480'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32489'
+  _publicize_job_id: '76574778900'
+  timeline_notification: '1662751879'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/09/form-1-galvanometer-control-board-ic-roll-call/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>This Form 1+ laser resin printer has <a href="https://newscrewdriver.com/2022/09/08/formlabs-form-1-next-steps/">a scorched galvanometer control board</a>, and replacements are no longer available from FormLabs. I don't have any background to make heads or tails of a laser galvanometer control board, but I might get a vague idea and learn something by examining its collection of components. Here's a roll call based on markings on those chips.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32487,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-board-front-full.jpg?w=1024" alt="" class="wp-image-32487"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The board controls both X and Y axis galvanometers, probably why the middle section of this board a pair of identical assemblies.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32489,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-board-top-cpu.jpg?w=1024" alt="" class="wp-image-32489"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Starting from the upper left, component U4 looks to be the brains of this operation: a ST Microelectronics <a rel="noreferrer noopener" href="https://www.st.com/en/microcontrollers-microprocessors/stm32f030k6.html" target="_blank">STM32F030K6T6</a> with its ARM Cortex-M0 core running at up to 48MHz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>U5 in the upper right is an <a href="https://www.onsemi.com/products/power-management/linear-regulators-ldo/ncp1117" target="_blank" rel="noreferrer noopener">On Semiconductor NCP1117</a>, a low-dropout (LDO) voltage regulator marked with 17-33G indicating it outputs 3.3V. This would supply power to the STM32 and other 3.3V digital logic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back towards the centerline, U6 is a <a rel="noreferrer noopener" href="https://www.microchip.com/en-us/product/MCP4802" target="_blank">Microchip MCP4802 digital-to-analog converter</a> (DAC) with dual 8-bit resolution channels controlled via SPI.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just below that is U7, a <a href="https://www.ti.com/product/TL032" target="_blank" rel="noreferrer noopener">TI TL032</a> dual-channel op-amp.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On either side of U7 is a collection of 8 chips, four on each side. (U104, U105, U106, and U107 on the left. U204, U205, U206, and U207 on the right.) They are all marked with Microchip logo and 41H51103, which I found to be a <a rel="noreferrer noopener" href="https://www.microchip.com/en-us/product/mcp41hv51" target="_blank">MCP41HV51 SPI-controlled digital potentiometer</a>. In section 11.1 <em>Package Marking Information</em> of the MCP41HVx1 datasheet, 41H51103 is identified as MCP41HV51-103E/ST variant. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32488,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-board-mid-connectors.jpg?w=1024" alt="" class="wp-image-32488"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are a lot of surface mount passives in the center section with two copies of the layout left and right. Each copy gets a trio of chips marked with On Semiconductor logo and MC33274ADG. <a rel="noreferrer noopener" href="https://www.onsemi.com/products/signal-conditioning-control/amplifiers-comparators/operational-amplifiers-op-amps/mc33274a" target="_blank">These MC33274A chips</a> are each a quad-pack of op-amps. Each side has an additional component that is mounted vertically so we only see their top here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32472,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-x-power-plug-burned-side.jpg?w=1024" alt="" class="wp-image-32472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Going back to an earlier picture focused on the burnt and melted connector, we can see one of those vertical standing components clearly on the right. They are <a rel="noreferrer noopener" href="https://www.onsemi.com/products/discrete-power-modules/general-purpose-and-low-vcesat-transistors/bd139" target="_blank">On Semiconductor BD139</a> NPN power transistors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32486,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-board-bottom-power.jpg?w=1024" alt="" class="wp-image-32486"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three components are bolted to a heat sink at the bottom. To the left is a single <a rel="noreferrer noopener" href="https://www.ti.com/product/LM1876" target="_blank">Texas Instruments LM1876</a>. It is a dual 20W audio power amplifier. Adjacent to that amplifier are a mirror pair of ST Microelectronics voltage regulators. <a rel="noreferrer noopener" href="https://www.st.com/en/power-management/l79.html" target="_blank">The L79 <em>negative </em>voltage regulator</a> accept up to -35V DC and output a regulated -15V DC. <a href="https://www.st.com/en/power-management/l78.html">L78 is its symmetric positive voltage sibling</a>, accepts up to +35V DC and output a regulated +15V DC.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Those components are major pieces of my "how did this board work" puzzle, but I'm still fuzzy on how they fit together. If I want more data, I'll have to probe around while the system is powered up and I'm <a href="https://newscrewdriver.com/2022/09/10/considerations-exploring-formlabs-form-1-while-powered-up/">not entirely sure I want to do that</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

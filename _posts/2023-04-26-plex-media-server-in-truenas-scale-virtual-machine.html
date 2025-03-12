@@ -1,0 +1,45 @@
+---
+layout: post
+title: Plex Media Server in TrueNAS SCALE Virtual Machine
+date: 2023-04-26 12:30:00.000000000 +00:00
+type: post
+post_id: '36400'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36395'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682537590
+  _publicize_job_id: '83556721381'
+  timeline_notification: '1682537408'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/26/plex-media-server-in-truenas-scale-virtual-machine/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/04/25/truenas-and-plex-media-server/">trying and failing to use the default method</a> to run Plex Media Server via TrueNAS SCALE's "App" catalog, I'm falling back to a manual route: spinning up a virtual machine with Ubuntu Server 22.04 to run Plex Media Server with my own preferred settings. I suppose I could learn about Helm charts so I could write one to run Plex my way, but at the moment I'm not too motivated to do so.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Recently I had been running Plex in a Docker container, which resolved my old gripes about FreeNAS plug-ins and FreeBSD <a href="https://www.freshports.org/multimedia/plexmediaserver/">freshports</a> versions of Plex falling out of date. Plex developers <a href="https://github.com/plexinc/pms-docker">maintain the container themselves</a> and it gets updated in sync with official releases. A really nifty feature of their Docker container is that it doesn't really have Plex in it: it has code to download and run Plex. In order to pick up an updated version of Plex, I don't have to pull a new container. I just have to stop and restart it, and it downloads the latest and starts running it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One subtlety of running Plex in Docker is the warning I shouldn't use a mapped network drive for server configuration data. I had thought it would be a good way to keep my Plex database constantly backed up on a TrueNAS ZFS redundant drive array, but I abandoned that plan after reading a scary disclaimer on the Docker repository README: "<em>Note: the underlying filesystem needs to support file locking. This is known to not be default enabled on remote filesystems like NFS, SMB, and many many others. The 9PFS filesystem used by FreeNAS Corral is known to work but the vast majority will result in database corruption. Use a network share at your own risk.</em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could install Docker Engine in my virtual machine for Plex, and repeat my configuration, but it seems weird to have nested virtualization mechanisms. (Docker inside KVM.) So this time I will run Docker as a service installed to my virtual machine, <a href="https://support.plex.tv/articles/235974187-enable-repository-updating-for-supported-linux-server-distributions/">installed from Plex-maintained official repository</a>. Migrating my Plex database started by <a href="https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/">finding the correct directory</a> in both my existing Docker container volume and my new Ubuntu Server virtual machine at "<code>/var/lib/plexmediaserver/</code>". Copying the files directly was not sufficient (Plex Media Service would fail to launch) because I forgot to update file permissions as well. That was fixed by running "<code>chown -R plex:plex Library</code>" on the library database directory tree.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One unexpected obstacle is that a VM running under TrueNAS SCALE couldn't see the server itself. Doesn't matter if I'm trying to use NFS mapping, SSH, or HTTP, the server address is unreachable and times out with the error "No route to host". I confirmed this is not a general KVM issue, as my Ubuntu Desktop laptop with KVM and Proxmox VE had no such problems. I hypothesize it has something to do with how TrueNAS SCALE configured network bridge for virtual machines, but I don't know enough Linux networking to know for sure. As a workaround, I could bind my virtual machine to the Realtek chipset Ethernet port integrated on my server's motherboard. TrueNAS runs on an Intel NIC (network interface card) because FreeNAS didn't support the Realtek onboard port years ago. Now under TrueNAS SCALE I have access to both ports, so I run the TrueNAS server on the Intel NIC and bind my virtual machines to motherboard onboard Ethernet. Not the most satisfying solution, but it uses what I have on hand and is good enough to inform <a href="https://newscrewdriver.com/2023/04/27/first-impressions-proxmox-ve-vs-truenas-scale/">my first impressions</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

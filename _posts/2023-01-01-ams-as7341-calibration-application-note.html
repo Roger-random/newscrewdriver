@@ -1,0 +1,49 @@
+---
+layout: post
+title: AMS AS7341 Calibration Application Note
+date: 2023-01-01 12:30:00.000000000 +00:00
+type: post
+post_id: '34399'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34288'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672605168
+  _publicize_job_id: '80158941928'
+  timeline_notification: '1672605037'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/01/ams-as7341-calibration-application-note/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm learning the ropes of using an AMS AS7341 11-channel spectral color sensor, figuring out what I absolutely need and what I will <a href="https://newscrewdriver.com/2022/12/31/additional-ams-as7341-sensor-functionality/">wait to explore later</a>. So far, I have found AMS product datasheet to be lacking. The topmost irritation was missing information on configuring the sensor multiplexor, a critical component inside the chip. It was also missing information on higher-level concepts for a color sensor and how the AS7341 implements them. I found some of this information in the document titled <em>Spectral Sensor Calibration Methods</em> which is <a rel="noreferrer noopener" href="https://ams.com/as7341#tab/documents" target="_blank">listed as an Application Note</a> <em>Calibration Methods AS7341 EVKs</em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This document taught me how an ideal spectral detector would activate on a specific wavelength, but real-world implementation is sensitive to a range of wavelengths near that target. This is why its documented response curve is a series of bell curves and not a set of spikes. Furthermore, there may be responses far from the target wavelength due to a variety of other factors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This foundation led to an explanation of why, in addition to 8 different wavelengths within the visible spectrum, the sensor also had three additional sensors: A "Clear" sensor with no color filter, a near-infrared sensor, and a flicker detection system. Originally I had thought they were just thrown in for the sake of more features, but this application note explains they support the 8 color sensors by detecting problems that throw off readings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have to admit I did not understand much of the discussion about plotting sensor readings into CIE color space. Color science is a field with a long history and <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/CIE_1931_color_space" target="_blank">reading Wikipedia pages</a> only taught me that there is a lot I don't know. Clearly this application note is aimed at an audience who is already familiar with the topic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But even if I was familiar with CIE color spaces, this document left a lot of gaps in information. This application note referenced a piece of software called "AS7341 Software GUI, running on a Windows personal computer" but that software is nowhere to be found on AMS website. It appears to be something I can obtain by contacting my AMS account representative, which I don't have. There are also snippets of a large Excel spreadsheet, with the disclaimer "<em>Tables were interrupted. See the full tables in the original MS Excel File.</em>" And is this MS Excel file on the website? Apparently not: "<em>Ask the ams support team for the original XLS file</em>" And there was a section that ended with "<em>For more details, please refer to the Sensor ECGs manual</em>." What is ECG? That was not explained. And so on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I learned a lot from AMS documentation for AS7341 but I felt there were significant room for improvement. Nevertheless, I am confident enough in my understanding to get hands-on with AS7341 sensor.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,43 @@
+---
+layout: post
+title: Micro Rover ESP32 Brain Is Feasible
+date: 2021-02-21 12:30:00.000000000 +00:00
+type: post
+post_id: '24967'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24836'
+  _publicize_job_id: '55092344461'
+  timeline_notification: '1613939518'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/21/micro-rover-esp32-brain-is-feasible/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was a little disappointed when I learned that the ESP32 can only use a tiny fraction of its vast peripheral interface capabilities due to the fact there are <a href="https://newscrewdriver.com/2021/02/20/notes-on-esp32-input-output-pins/">only a few physical I/O pins</a> to be allocated among them. But to be honest, roughly 20 is a fair number in terms of controllers in this price range. It's only "few" when compared to literally hundreds of possible uses for those pins. It also makes sense when we think about the target market for the ESP32: it was derived from the ESP8266, and they are both intended to act as a WiFi interface to some device, not to be in charge of a large complex thing. So does my little rover qualify as a small focused-purpose device that needs a WiFi interface? I think so, but it's a tight fit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I originally intended to drive L298N by digitally setting the direction on its two input pins and put a PWM signal on the enable pin to control velocity. The straightforward implementation of this would require 3 pins per wheel. Six wheels mean 18 pins, and I still need four more. One for each of the four corner steering servos. I don't think I can get 22 output pins on the ESP32 dev board I have. Fortunately it isn't quite that bad, because all three wheels on one side of the rover are always rotating in the same direction, so they can share the same direction control pins. Two pins to control all left wheels, two more to control all right wheels, and one pin for each of the six wheels for PWM add up to ten pins, plus four more for corner steering servos add up to fourteen pins. This will work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Alternatively, I can implement the control scheme used by Espressif's <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/mcpwm/mcpwm_brushed_dc_control" target="_blank">sample program for controlling a L298N motor controller</a> using ESP32 MCPWM peripheral. I'm skeptical of this one, though. It wants the enable pin to be tied high, and controls speed by using PWM signal on the direction pins. As per my understanding of L298 data sheet, this toggles between powered state and brake state. Which sounds like an extremely inefficient way to control velocity. Nevertheless, doing this would require 2 PWM pins for each of the six wheels. Plus the four corner steering pins for sixteen output pins. Even though there are only fifteen easy to use output pins, I can probably make one of the caveat-encumbered pins work for the sixteenth.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final consideration: what would happen if I decide I don't want to use the L298, and want to use a different motor controller instead? I haven't studied them as much as I've <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/25/notes-on-l298-dual-full-bridge-driver/" target="_blank">studied the L298</a>, but the few I've glanced at appear to use one of the two above control schemes. Perhaps the L298 is established enough that most newer DC motor controller offer drop-in compatibility with L298 control signals? Even if not, I believe a mini rover using another DC motor controller would still be feasible to implement on an ESP32. And the best way to know for sure is to <a href="https://newscrewdriver.com/2021/02/22/evaluating-my-options-for-esp32-development/">start writing some code</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

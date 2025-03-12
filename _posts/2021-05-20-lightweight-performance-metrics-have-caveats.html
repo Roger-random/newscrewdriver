@@ -1,0 +1,65 @@
+---
+layout: post
+title: Lightweight Performance Metrics Have Caveats
+date: 2021-05-20 12:30:00.000000000 +00:00
+type: post
+post_id: '26637'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26661'
+  _publicize_job_id: '58610651575'
+  timeline_notification: '1621539004'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/20/lightweight-performance-metrics-have-caveats/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Before I <a href="https://newscrewdriver.com/2021/05/19/double-buffering-coordinated-via-tasknotify/">implemented double-buffering</a> for my <code>ESP_8_BIT_composite</code> Arduino library, the only way we know we're overloaded is when we start seeing visual artifacts on screen. After I implemented double-buffering, when we're overloaded we'll see the same data shown for two or more frames because the back buffer wasn't ready to be swapped. A binary good/no-good feedback is better than nothing but <a href="https://newscrewdriver.com/2021/04/25/windows-phone-debug-tools-rode-into-sunset/" target="_blank" rel="noreferrer noopener">it would be frustrating to work with</a> and I knew I could do better. I wanted to collect some performance metrics a developer can use to know how close they're running to the edge before going over.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is another feature I had originally planned as some type of configurable data. My predecessor <code>ESP_8_BIT</code> handled it as a compile-time flag. But just as I decided to make double-buffering run all the time in the interest of keeping the Arduino API easy to use, I've decided to collect performance metrics all the time. The compromise is that I only do so for users of the Adafruit GFX API, who have already chosen ease of use over maximum raw performance. The people who use the raw frame buffer API will not take the performance hit, and if they want performance metrics they can copy what I've done and tailor it to their application.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The key counter underlying my performance measurement code goes directly down to a feature of the Tensilica CPU. CCount, which I assume to mean cycle count, is incremented at every clock cycle. When the CPU is running at full speed of 240MHz, it increments by 240 million within each second. This is great, but the fact it is a 32-bit unsigned integer limits its scope, because that means the count will overflow every 2<sup>32</sup> / 240,000,000 = 17.895 seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started thinking of ways to keep a 64-bit performance counter in sync with the raw CCount, but in the interest of keeping things simple I abandoned that idea. I will track data through each of these ~18 second periods and, as soon as CCount overflows, I'll throw it all out and start a new session. This will result in some loss of performance data but it eliminates a ton of bookkeeping overhead. Every time I notice an overflow, statistics from the session is output to logging INFO level. The user can also query the running percentage of the session at any time, or explicitly terminate a session and start a new one for the purpose of isolating different code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The percentage reported is the ratio of of clock cycles spent in <code>waitForFrame()</code> relative to the amount of time between calls. If the drawing loop does no work, like this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>void loop() {
+  videoOut.waitForFrame();
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then 100% of the time is spent waiting. This is unrealistic because it's not useful. For realistic drawing loops that does more work, the percentage will be lower. This number tells us roughly how much margin we have to spare to take on more work. However, "35% wait time" does not mean 35% CPU free, because other work happens while we wait. For example, the composite video signal generation ISR is constantly running, whether we are drawing or waiting. Actual free CPU time will be somewhere lower than this reported wait percentage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The way this percentage is reported may be unexpected, as it is an integer in the range from 0 to 10000 where each unit is a percent or a percent. The reason I did this is because the floating-point unit on an ESP32 <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/freertos-smp.html?#floating-point-arithmetic" target="_blank">imposes its own overhead</a> that I wanted to avoid in my library code. If the user wants to divide by 100 for a human-friendly percentage value, that is their choice to accept the floating-point performance overhead. I just didn't want to force it on every user of my library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lastly, the session statistics include frames rendered &amp; missed, and there is an overflow concern for those values as well. The statistics will be nonsensical in the ~18 second session window where either of them overflow, though they'll recover by the following session. Since these are unsigned 32-bit values (<code>uint32_t</code>) they will overflow at 2<sup>32</sup> frames. At 60 frames per second, that's a loss of ~18 seconds of data once every 2.3 years. I decided not to worry about it and <a href="https://newscrewdriver.com/2021/05/21/allocating-frame-buffer-memory-4kb-at-a-time/">turn my attention to memory consumption instead</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

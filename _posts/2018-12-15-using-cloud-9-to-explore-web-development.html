@@ -1,0 +1,46 @@
+---
+layout: post
+title: Using Cloud 9 To Explore Web Development
+date: 2018-12-15 13:30:34.000000000 +00:00
+type: post
+post_id: '17435'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Amazon Web Services
+- Software Tools
+tags:
+- LRWave
+- MDC Web
+meta:
+  _oembed_e88b6a23e698ef9828ea1088c1566b58: "{{unknown}}"
+  _oembed_0f5511979bdf96107d540bedac7540f5: "{{unknown}}"
+  _oembed_4f433b688e1d64847b4b715a4dda473d: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '25485872734'
+  timeline_notification: '1544909445'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668706122
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/12/15/using-cloud-9-to-explore-web-development/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I've started going through the <a href="https://github.com/material-components/material-components-web/blob/master/docs/getting-started.md">Getting Started guide</a> for Google's Material Design Components for Web (MDC Web). This is a prerequisite for <a href="https://material.io/collections/developer-tutorials/#web">Material tutorials</a> and I've already run into one problem traced to an <a href="https://newscrewdriver.com/2018/12/14/first-step-in-material-design-adventure-foiled-by-ubuntus-default-old-nodejs/">out-of-date installation of Node.js</a>. Given that I'm learning a new piece of software, I'm sure I'll run into more problems that require modifying my computer. As mistakes are likely due to my learning status, I'm wary of potentially messing up my main Ubuntu environment.</p>
+<p>What I need right now is an enclosed sandbox for experimentation, and I've already set up virtual machines I could use for this purpose. But since this is a web-based project, I decided to go all-in on the web world and try doing it online with a web-based development environment: <a href="https://aws.amazon.com/cloud9">Cloud 9</a>.</p>
+<p><img class="alignright size-medium wp-image-17450" src="https://newscrewdriver.com/wp-content/uploads/2018/12/cloud-9-logo-color.png?w=300" alt="Cloud 9 logo color" width="300" height="220">I've <a href="https://newscrewdriver.com/2016/03/12/the-other-cloud-development/">played with Cloud 9 before</a>, back when it was a startup with big dreams. It has since been acquired by Amazon and folded into the wide portfolio of Amazone Web Services (AWS). As far as I knew Cloud 9 has always run on AWS behind the scenes, but now a user is exposed to the underlying mechanisms. It means we now have better control over the virtual machines we're running, which is mostly good. It also means users have to pay for those virtual machine resources, which is fairly inexpensive (I expect to pay less than $1 for this experiment) but isn't as good as the "Free" it used to be. The saddest part is that it's no longer "point-click-go" simple to get started. Getting Cloud 9 properly setup means climbing the learning curve for managing AWS security and permissions, which can be substantial.</p>
+<p><em>Access Permissions</em></p>
+<p>AWS has an entire document focused on <a href="https://docs.aws.amazon.com/cloud9/latest/user-guide/auth-and-access-control.html">authorization and access control for Cloud 9</a>. For someone like myself, who just want to play with Cloud 9 but also want to safely partition it off from the rest of my AWS account, the easiest thing to do is to create a new user account within my AWS dashboard. This account can be assigned a <a href="https://docs.aws.amazon.com/cloud9/latest/user-guide/auth-and-access-control.html#auth-and-access-control-managed-policies">predefined access policy called <em>AWSCloud9User</em></a>, and that'll be enough to get started. When logged in to this dedicated account I can be confident mistakes won't accidentally damage anything else I have in AWS.</p>
+<p><em>Network Permissions</em></p>
+<p>With the power of fine-grained virtual machine control comes the responsibility of configuring it to act the way we want. When I last used Cloud 9, launching a piece of web hosting software on my VM meant it was immediately accessible from the internet. That meant I could bring it up on another browser window at my desk to see how it looks. However, this is no longer the default behavior.</p>
+<p>When running my VM in the form of an Amazon EC2 instance like now, it has its own network firewall settings to deal with. Not only that, the VM is in its own private network (Amazon VPC) which has its own network firewall settings. Both of these firewalls must be configured to allow external access if I'm to host web content (as when exploring MDC Web) and wish to see it on my own machine.</p>
+<p>There's a lot of documentation online for using Cloud 9. The specific configuration settings that need to be changed are found under "<a href="https://docs.aws.amazon.com/cloud9/latest/user-guide/app-preview.html">Previewing Running Applications</a>" in section "<a href="https://docs.aws.amazon.com/cloud9/latest/user-guide/app-preview.html#app-preview-share">Share a Running Application over the Internet</a>"</p>
+<p></body></html></p>

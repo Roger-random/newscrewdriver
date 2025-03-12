@@ -1,0 +1,61 @@
+---
+layout: post
+title: First Lithium Iron Phosphate Battery Runtime Test
+date: 2023-10-29 12:30:00.000000000 +00:00
+type: post
+post_id: '40103'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40091'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1703575162
+  _publicize_job_id: '88908804642'
+  timeline_notification: '1698607825'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/29/first-lithium-iron-phosphate-battery-runtime-test/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My uninterruptible power supply (UPS) was designed to work with sealed lead-acid (SLA) batteries. <a href="https://newscrewdriver.com/2023/10/28/lithium-iron-phosphate-battery-upgrade-for-uninterruptible-power-supply/">I've just upgraded it</a> to use lithium iron phosphate (LiFePO4 or LFP) battery packs built to be drop-in replacements for such commodity form factor SLA batteries. The new setup should give me better calendar life longevity so I won't have to replace these batteries as often, and the tradeoff is a shorter runtime capacity for extended power outages. Time will tell whether I get my wish for better longevity, but I can test the runtime now while it is brand new.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cheap batteries off Amazon (as these were) have an unfortunate tendency to under-perform their advertised capacities. I'm not too interested in whether I have the full advertised seven amp-hours (closer to five, given the partially charged nature of using it at SLA standby voltage) as a metric but I am interested in knowing how long they can run for as more relevant metric.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I am also concerned by the difference between SLA and LFP battery discharge curves. They will have different voltages as they run down, which will throw off my UPS estimate of runtime remaining. It is my understanding LFP voltages typically stay higher than SLA voltages as they discharge. This may lead to the UPS over-estimating amount of time remaining, up until the time the LFP battery is nearly empty and the voltage drops too fast to meet that overly optimistic time estimate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What happens after that? That's an unknown as well. There are two low-voltage shutoff mechanisms in play: the UPS has one, and there's an integrated battery management system (BMS) inside these LFP modules as well. If the UPS shuts down first, that should be fine and I should be able to plug it back in to start charging things again. But if the battery's integrated BMS shuts down first, the UPS may interpret that as a dead battery and possibly throw a different error. Maybe even refuse to charge it, in which case I'd have to pull the battery module out. Charge it externally for a while, then put it back in.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For rigorous testing with controlled variables, I should test the UPS discharging into a known, controlled, and constant load. This is usually something that burns off the energy as heat, which I find incredibly wasteful. So I'm going to do a less scientific test and run what's typically plugged into this UPS: my cable modem, wireless router, and a lightly-loaded desktop computer not in sleep mode. Together they draw an indicated 25W. As a rough approximation, 13.8V * 5 Ah * 2 batteries = no more than 138 Wh of capacity. Divide by 25 and that's a ceiling of 5.5 hours or 331 minutes. The real runtime will be shorter for many reasons. Obviously the voltage will drop as power is drawn out of the battery. And there are many other electrical losses in the system, for example in converting battery DC to household AC.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the beginning of the test, with the battery charged to SLA standby voltage, the UPS estimates a runtime of 228 minutes. The first surprise came when I pulled the plug: estimated runtime jumped up to 295 minutes. What happened? I toggled the display and saw the measured power draw has dropped from 25W when running on AC power down to 18W when running on battery power. This doesn't make any sense but the experiment continues. I set a timer so I can check back and note down the estimated runtime remaining every five minutes. Here is an Excel chart of my data:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40114,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/apc-ups-running-on-lfp-battery-runtime-test-00-new.png?w=1024" alt="" class="wp-image-40114"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the initial surprise jump to 295 minutes, most of the following data points were pretty linear. Usually a ~5 minute drop for every 5 minutes of actual runtime, an encouraging sign. There was the exception of two larger dips on either side of the 60 minute mark, I'm not sure what that's about. Maybe the desktop computer had a background task that spun up and needed a bit of extra power, an uncertainty I added to this test because I couldn't stand the thought of just burning energy off as heat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The anticipated "over optimistic estimate" effect started at around 180 minutes. The estimate stayed at just under 60 minutes despite continued battery draw. It still read 57 minutes when I checked at the 255 minute mark. When I came back at 260 minutes, everything has gone dark. That's the end of that!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I plugged the UPS back in. It started recharging the battery without any complaints about battery condition, which is great! Looks like I now have a baseline for these batteries in new condition. I intend to repeat this experiment in the future, maybe once every six months or annually. [UPDATE: Runtime test #2 performed 9 months later <a href="https://newscrewdriver.com/2024/07/26/lithium-iron-phosphate-battery-ups-runtime-test-2-9-months/">showed minimal degradation</a>.] In the best case scenario I can run the same test on the same hardware. If any of them change (modem, router, or computer) I will have to come up with some sort of data normalization so I could compare graphs. That is a problem for future me. Right now I have to deal with <a href="https://newscrewdriver.com/2023/10/30/dell-latitude-e6230-getting-benched/">a different uncooperative battery</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

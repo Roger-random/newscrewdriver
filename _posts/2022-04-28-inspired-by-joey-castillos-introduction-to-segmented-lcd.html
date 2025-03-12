@@ -1,0 +1,61 @@
+---
+layout: post
+title: Inspired by Joey Castillo's Introduction to Segmented LCD
+date: 2022-04-28 12:30:00.000000000 +00:00
+type: post
+post_id: '29935'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29973'
+  _publicize_job_id: '71934751474'
+  timeline_notification: '1651174222'
+  _oembed_ae06fe6c75a4ac57467bf2cc8082eca1: <div class="embed-youtube"><iframe title="Remoticon
+    2021 // Joey Castillo Teaches Old LCDs New Tricks" width="700" height="394" src="https://www.youtube.com/embed/fhKYbJMW5_U?feature=oembed"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+    gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe></div>
+  _oembed_time_ae06fe6c75a4ac57467bf2cc8082eca1: '1724999071'
+  _oembed_75126be383f2b74c47f63f20834aaeee: <div class="embed-youtube"><iframe title="Remoticon
+    2021 // Joey Castillo Teaches Old LCDs New Tricks" width="750" height="422" src="https://www.youtube.com/embed/fhKYbJMW5_U?feature=oembed"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+    gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe></div>
+  _oembed_time_75126be383f2b74c47f63f20834aaeee: '1729624691'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/28/inspired-by-joey-castillos-introduction-to-segmented-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I have a laptop LCD display panel less than full HD (1920x1080) resolution I have resorted <a href="https://newscrewdriver.com/2021/07/03/the-great-backlight-liberation-begins/">salvaging just their LED backlights</a> and discarding the rest. I considered these panels in an awkward zone where the data signal requirements are too high to be practical for me to drive with my own electronics projects, and their resolution too low to justify spending money to buy a driver board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But computer screens aren't the only <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Liquid-crystal_display" target="_blank">liquid-crystal displays</a>, we are surrounded by numerous smaller and simpler LCD used in household electronics. For many years I had the intent to learn how to reuse them, but I never got around to putting any effort into it. Until I watched <a href="https://hackaday.com/2022/02/24/remoticon-2021-joey-castillo-teaches-old-lcds-new-tricks/">Joey Castillo's talk at Hackaday Remoticon 2021</a>. The topic of this talk: repurposing segmented LCD of wristwatches like the classic Casio F-91W, which covers some general information on LCD in general.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://www.youtube.com/watch?v=fhKYbJMW5_U","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} --></p>
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio">
+<div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=fhKYbJMW5_U
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most importantly, it covered some of the basics from an electronics hobbyist perspective, which was missing from the general Wikipedia page for LCD. I was encouraged to see that the wiring multiplex scheme usually resembles what I'm already familiar from common-anode/common-cathode LED arrays. I was initially dismayed to learn that dedicated segment LCD driver modules apply alternating voltage on several voltage planes, which is a hassle to do with microcontroller general purpose IO pins. But good news! For the purpose of probing and experimentation, we can use two microcontroller GPIO pins and alternatively raising one pin while lowering the other. This, I can do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After watching the video, I went online looking for more information on the topic. I found things like this Electronics StackExchange thread "<em><a rel="noreferrer noopener" href="https://electronics.stackexchange.com/questions/339984/how-does-a-microcontroller-drive-an-lcd" target="_blank">How does a microcontroller drive an LCD</a></em>?" and "<em><a href="https://electronics.stackexchange.com/questions/94480/found-an-old-lcd-in-an-old-radio-how-to-test-it">Found an old LCD in an old radio, how to test it?</a></em>" I also found things like this Atmel application note AVR241 "<em><a rel="noreferrer noopener" href="https://ww1.microchip.com/downloads/en/AppNotes/doc2569.pdf" target="_blank">Direct driving of LCD display using general IO</a></em>" for directly driving a simple segment LCD without a dedicated peripheral. They all line up with the broad strokes of Joey's Remoticon talk, making me feel encouraged enough to <a href="https://newscrewdriver.com/2022/04/29/mystery-desk-phone-lcd/">start digging up</a> some salvaged LCD to see if I can make anything happen.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,62 @@
+---
+layout: post
+title: Micro Sawppy Beta 1 Electronics
+date: 2021-01-09 12:30:00.000000000 +00:00
+type: post
+post_id: '24489'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Raspberry Pi
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '23999'
+  _publicize_job_id: '53229101651'
+  timeline_notification: '1610224206'
+  _oembed_a3de8e6e28b3ce7e1ae1495f97eeaf28: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Baby
+    <a href="https://twitter.com/hashtag/Sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#Sawppy</a>
+    rover takes first steps! This is an early prototype to make sure wheel and suspension
+    parts work together as designed. Real rovers <a href="https://twitter.com/MarsCuriosity?ref_src=twsrc%5Etfw">@MarsCuriosity</a>
+    and <a href="https://twitter.com/NASAPersevere?ref_src=twsrc%5Etfw">@NASAPersevere</a>
+    had a similar test, read more about <a href="https://twitter.com/NASAJPL?ref_src=twsrc%5Etfw">@NASAJPL</a>
+    &quot;Scarecrow&quot; here: <a href="https://t.co/thAfoPwnC3">https://t.co/thAfoPwnC3</a>
+    <a href="https://t.co/QmX7xKyqcK">pic.twitter.com/QmX7xKyqcK</a></p>&mdash; Sawppy
+    (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1279565059262304258?ref_src=twsrc%5Etfw">July
+    4, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_a3de8e6e28b3ce7e1ae1495f97eeaf28: '1610234620'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/09/micro-sawppy-beta-1-electronics/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The past several posts have described various aspects of Micro Sawppy Beta 1 (MSB1) that are explorations of new ideas for a little rover. Since there were already <a href="https://newscrewdriver.com/2021/01/08/micro-sawppy-beta-1-differential-link/">many new ideas</a> piled onto the little guy, I decided the control electronics and software should step back and reuse known quantities. Even though I don't intend this to be the final approach, I wanted to reuse existing components here just to keep things from going too wild and confused if the little rover should encounter problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hence the onboard electronics of MSB1 is very close to those used on Sawppy, which was in turn adapted from code written for SGVHAK Rover. Not from the official JPL Open Source Rover instructions, but the hack I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/04/17/sgvhak-rover-steering-restored-with-servo-hack/" target="_blank">hastily slammed together</a> for its <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/04/18/sgvhak-rover-and-predecessor-at-scale-16x/" target="_blank">world premier at Southern California Linux Expo</a>. Back then we faced the problem of a broken steering gearbox a week ahead of the event, and it would take over a week for replacements to arrive. So while Emily hacked up a way for a full-sized RC servo to handle steering, I hacked up the rover software to add option to control a servo via what I had on hand: the <a rel="noreferrer noopener" href="https://www.adafruit.com/product/2327" target="_blank">Adafruit PWM/Servo HAT</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Years later, I still have that same HAT on hand and now I have a rover full of micro servos. Putting them together was an obvious thing to try. My software for that servo steering hack turned out to be very easy to adapt for continuous rotation servos powering the wheels. (Only a single bug had to be fixed.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was another happy accident: since the SGVHAK rover software already had software provisions for steering trim, it was easy to use that for throttle trim as well. This was useful to compensate for the fact that the <a href="https://newscrewdriver.com/2021/01/04/converting-mg90s-metal-gear-micro-servo-to-continuous-rotation/" target="_blank" rel="noreferrer noopener">converted continuous rotation servos</a> in the six wheels aren't necessarily centered like they theoretically were. Resistors with identical markings don't actually offer perfectly equal resistance, and the control circuit of a cheap micro servo isn't very good about precise voltage measurements anyway. If I didn't have this software throttle trim control, it might have been much more difficult to get MSB1 up and running.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For power supply I had a small 2-cell Lithium Polymer battery on hand, previously seen on these pages in exploration of <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/02/27/replacement-battery-test-for-thrift-store-neato-xv-21/" target="_blank">a thrift store Neato</a>. Dropping its voltage (8.4V when fully charged) down to something that <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/12/29/notes-on-micro-servo-electronics/" target="_blank">wouldn't fry the micro servos</a> was the job of MP1584 buck converters. <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/" target="_blank">I had discovered these worked well for powering a Raspberry Pi</a> and one of them is again enlisted into that role. In order to reduce the chances of a power sag causing the Raspberry Pi to reset, I added a second buck converter to give the micro servos an independent power plane. Both buck converters are soldered onto the little prototyping area Adafruit provided on their HAT. Once I had the electronics circuit stack assembled, I could start <a href="https://newscrewdriver.com/2021/01/10/micro-sawppy-beta-1-wiring/">wiring up all the components</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

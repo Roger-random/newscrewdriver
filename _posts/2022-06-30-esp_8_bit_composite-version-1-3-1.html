@@ -1,0 +1,62 @@
+---
+layout: post
+title: ESP_8_BIT_Composite Version 1.3.1
+date: 2022-06-30 12:30:00.000000000 +00:00
+type: post
+post_id: '31176'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31177'
+  _publicize_job_id: '74216192513'
+  timeline_notification: '1656617421'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/30/esp_8_bit_composite-version-1-3-1/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Over a year ago I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/09/esp_8_bit-color-composite-video-out-on-arduino-library-manager/" target="_blank">released my first Arduino library</a>, not knowing if anyone would care. The good news is that they do: people have been using ESP_8_BIT_Composite to drive composite video devices. The bad news is that they have been filing issues for me to fix. This backlog has piled up over several months and long overdue for me to go in and get things fixed up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two of the issues were merely compiler warnings, but I should still address them to minimize noise. What was weird to me that I didn't see either of those warnings myself in the Arduino IDE. I had to switch over to using PlatformIO under Visual Studio Code, where I learned I could <a rel="noreferrer noopener" href="https://docs.platformio.org/en/latest//projectconf/index.html" target="_blank">edit my <code>platformio.ini</code> file</a> to add <code>build_flags = </code>[...] to enable warnings of my choosing. <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/24" target="_blank">Issue #24</a> was a <code>printf()</code> formatting issue that I couldn't see until I added <code>-Wformat</code>, and <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/35" target="_blank">issue #35</a> was invisible to me until I added <code>-Wreturn-type</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I was on the subject anyway, I executed a build with all warnings turned on. (<code>-Wall</code>) This gave me far too many warnings to review. Not only did this slow down compilation to a snail's pace, most of the hits were outside my code. Of items in my code, some appear to be overzealous rules giving me false positives. But I did see a few valid complaints of unused variables (<code>-Wunused-variable</code>) and <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/commit/2e950020fe01e5b322aea630a5cc8e4765296527" target="_blank">I removed them</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p><a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/27" target="_blank">Issue #27</a> took a bit more work, mostly because I started out "knowing" things that were later proven to be wrong. I had <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/04/screen-rotation-support-for-esp_8_bit_composite-arduino-library/" target="_blank">added support for <code>setRotation()</code></a> and I tested it with some text drawn via the AdafruitGFX library. (This test code became my example project <code>GFX_RotatedText</code>) I didn't explicitly test drawing rectangles because when I reviewed code for <code>Adafruit_GFX::drawChar()</code> I saw that they use <code>writePixel()</code> for text size 1 and <code>fillRect()</code> for text sizes greater than one. So when my rotated text sample code worked correctly, I inferred that meant <code>fillRect()</code> was correct as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was wrong, and because I didn't know it was wrong, I kept looking in wrong places. Not realizing that my coordinate transform math for <code>fillRect()</code> (and <code>drawRect()</code>) were fundamentally broken. These APIs passed in X/Y coordinates for the rectangle's upper-left corner, and my mistake was forgetting that drawing commands are always in the original non-rotated orientation. When the rectangles are rotated, their upper-left corner is no longer the upper-left for the actual low-level drawing operations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My incorrect foundation blinded me to the real problem, even though I saw failures across multiple test programs. Test programs evolved until one drew four rectangles every frame, one in each supported orientation, and cycle through modifying one of four parameters in a one-second-long animation. Only then could I see a pattern in the error and realize my mistake. This test code became my new example project <code>GFX_RotatedRect</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Finally, I had no luck with <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/23" target="_blank">issue #23</a>. I was not able to reproduce the compilation error myself and therefore I could not diagnose it. I reluctantly closed it out as "unable to reproduce" before <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/releases/tag/v1.3.2" target="_blank">tagging version 1.3.2 for release</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

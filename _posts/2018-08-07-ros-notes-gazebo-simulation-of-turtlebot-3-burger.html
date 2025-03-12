@@ -1,0 +1,66 @@
+---
+layout: post
+title: 'ROS Notes: Gazebo Simulation of TurtleBot 3 Burger'
+date: 2018-08-07 09:00:00.000000000 +00:00
+type: post
+post_id: '16582'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20833229496'
+  timeline_notification: '1533657815'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668242178
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/07/ros-notes-gazebo-simulation-of-turtlebot-3-burger/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<a href="https://www.turtlebot.com/">TurtleBot</a> 3 is the least expensive standard <a href="http://www.ros.org/">ROS</a> introductory robot, and its creator Robotis has put online a fairly extensive <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/overview">electronic manual</a> to help owners. The information is organized for its target audience, owners of the physical robot, so someone whose primary interest is simulation will have to dig through the manual to find the relevant bits. Here are the pieces I pulled out of the manual.</p>
+<p><em>Operating System and ROS</em></p>
+<p>Right now the target ROS distribution is Kinetic Kame, the easiest way is to have a computer running Ubuntu 16.04 ('Xenial') and follow <a href="http://wiki.ros.org/kinetic/Installation/Ubuntu">ROS Kinetic instructions</a> for a full desktop installation.</p>
+<p><em>Additional Packages</em></p>
+<p>After ROS is installed, <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/pc_setup/#install-dependent-ros-packages">additional packages are required to run a TurtleBot 3</a>. Some of these, though probably not all, are required to run TB3 in simulation.</p>
+<blockquote><p><code> sudo apt-get install ros-kinetic-joy ros-kinetic-teleop-twist-joy ros-kinetic-teleop-twist-keyboard ros-kinetic-laser-proc ros-kinetic-rgbd-launch ros-kinetic-depthimage-to-laserscan ros-kinetic-rosserial-arduino ros-kinetic-rosserial-python ros-kinetic-rosserial-server ros-kinetic-rosserial-client ros-kinetic-rosserial-msgs ros-kinetic-amcl ros-kinetic-map-server ros-kinetic-move-base ros-kinetic-urdf ros-kinetic-xacro ros-kinetic-compressed-image-transport ros-kinetic-rqt-image-view ros-kinetic-gmapping ros-kinetic-navigation ros-kinetic-interactive-markers</code></p></blockquote>
+<p><em>TurtleBot 3 Code</em></p>
+<p>The Catkin work environment will need to pull down a few Github repositories for <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/pc_setup/#install-dependent-ros-packages">code behind TurtleBot 3</a>, plus one repo <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/">specific to simulation</a>, then run catkin_make to build those pieces of source code.</p>
+<blockquote><p>
+<code>$ cd ~/catkin_ws/src/</code><br />
+<code>$ git clone https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git</code><br />
+<code>$ git clone https://github.com/ROBOTIS-GIT/turtlebot3.git</code><br />
+<code>$ git clone https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git</code><br />
+<code>cd ~/catkin_ws &amp;&amp; catkin_make</code>
+</p></blockquote>
+<p><em>Simple Simulation</em></p>
+<p>There are several simulations available in the manual's "<a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation">Simulation</a>" chapter, here is my favorite. First: launch a Gazebo simulation with a TurtleBot 3 Burger inside the turtle-shaped test environment. At a ROS-enabled terminal, run</p>
+<blockquote><p>
+<code>$ export TURTLEBOT3_MODEL=burger</code><br />
+<code>$ roslaunch turtlebot3_gazebo turtlebot3_world.launch</code>
+</p></blockquote>
+<p>(Note: If this is the first run of Gazebo, it will take several minutes to start. )</p>
+<p>Once started, there will be a little virtual TurtleBot 3 Burger inside a turtle-shaped virtual room, sitting still and not doing anything. Which isn't terribly interesting! But we can open a new ROS-enabled terminal to launch a very simple control program. This performs a random walk of the robot's space, using the distance sensor to avoid walls.</p>
+<blockquote><p>
+<code>$ export TURTLEBOT3_MODEL=burger</code><br />
+<code>$ roslaunch turtlebot3_gazebo turtlebot3_simulation.launch</code>
+</p></blockquote>
+<p><img class="alignnone size-full wp-image-16585" src="https://newscrewdriver.com/wp-content/uploads/2018/08/turtle-room.png" alt="Turtle Room" width="1232" height="848"></p>
+<p>Which is great, but I also want to see what the robot sees with its laser distance sensor. This information can be explored using Rvis, the data visualization tool built into ROS. Open up yet another ROS-enabled terminal to launch it.</p>
+<blockquote><p>
+<code>$ export TURTLEBOT3_MODEL=burger</code><br />
+<code>$ roslaunch turtlebot3_gazebo turtlebot3_gazebo_rviz.launch</code>
+</p></blockquote>
+<p>This opens up an instance of Rvis, which will plot out the relative location of the robot and where it sees return pulses from its laser distance sensor.</p>
+<p><img class="alignnone size-full wp-image-16586" src="https://newscrewdriver.com/wp-content/uploads/2018/08/laser-rangefinder.png" alt="Laser Rangefinder" width="918" height="612"><br />
+</body></html></p>

@@ -1,0 +1,51 @@
+---
+layout: post
+title: Problems Making ESP32 Hold GPIO While Asleep
+date: 2022-02-08 14:09:36.000000000 +00:00
+type: post
+post_id: '28500'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28453'
+  timeline_notification: '1644358179'
+  _publicize_job_id: '68737861004'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668706017
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/08/problems-making-esp32-hold-gpio-while-asleep/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had several motivations for <a href="https://newscrewdriver.com/2022/02/07/switching-to-esp32-for-next-exercise/">using an ESP32 for my next exercise</a>. In addition to those outlined earlier, I also wanted to explore using these microcontrollers to control things. Not just report a measurement. In other words, I wanted to see if they can be output nodes as well as data input nodes. This should be a straightforward use of GPIO pins, except for another twist: I also want the ESP32 to be asleep most of the time to save power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The ESP32 has <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/sleep_modes.html" target="_blank">several sleep modes available</a>, and I decided to go straight for the most power-saving deep sleep as my first experiment. It was straightforward to call <code><a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/sleep_modes.html#_CPPv414esp_deep_sleep8uint64_t" target="_blank">esp_deep_sleep()</a> </code>at the end of my program, and this was the easiest sleep mode because I don't have to do much configuration or handling different cases of things that might happen during sleep. When an ESP32 wakes up from deep sleep, my program starts from the beginning as if it had just been powered up. This gives me a clean slate. I don't have to worry about testing to see if a connection is still good and maybe reconnecting if not: I always have to start from scratch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So what are the states of GPIO pins while an ESP32 is asleep? Reading the documentation, I thought I could command digital output pins to be held either high or low while the ESP32 was in deep sleep. However, my program calling <code><a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/gpio.html#_CPPv423gpio_deep_sleep_hold_env" target="_blank">gpio_deep_sleep_hold_en()</a></code> didn't actually hold output state like I thought it would. I think my program is missing a critical step somewhere along the line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Some research later, I haven't figured out what I am missing, but I have learned I'm not alone in getting confused. I found <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/issues/3370" target="_blank">ESP-IDF issue #3370</a>, which was resolved as a duplicate of <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/issues/2712" target="_blank">ESP32 Arduino Core issue #2712</a>. Even though it was marked as resolved, it is still getting traffic from people confused about why GPIO states aren't held during sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a workaround, I can use an IO expander chip <a rel="noreferrer noopener" href="https://www.ti.com/lit/ds/symlink/pcf8574.pdf" target="_blank">like the PCF8574</a>. Letting that hold output pin state high or low while the ESP32 is asleep. As a relatively simple chip, I expect the PCF8574 wouldn't use a lot of power to do what it does. But it would still be an extra chip adding extra power draw. I intend to figure out ESP32 sleep mode GPIO at some point, but for now the project is both moving on. Well, at least in software, the hardware side is <a href="https://newscrewdriver.com/2022/02/09/next-practice-round-micropython-on-esp8266/">taking a step back to ESP8266</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Source code for this project (flaws and all) is <a href="https://github.com/Roger-random/ESP32Tests/tree/main/mqtt">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

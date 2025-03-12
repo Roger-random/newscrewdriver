@@ -1,0 +1,57 @@
+---
+layout: post
+title: Installing Arduino Circuit Caused Setback
+date: 2021-06-15 12:30:00.000000000 +00:00
+type: post
+post_id: '27077'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27080'
+  _publicize_job_id: '59634256240'
+  timeline_notification: '1623785406'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/15/installing-arduino-circuit-caused-setback/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I didn't understand why <a href="https://newscrewdriver.com/2021/06/14/arduino-nano-failed-to-power-backlight-via-usb/">I couldn't pull USB power through the existing jack on my Arduino Nano</a>, but I was willing to create a small circuit board to wire up VUSB directly as a workaround and move on. I originally soldered two 0.1" headers next to each other for power and ground, but the first test run instantly pulled those wires out of the socket. So I wired up JST-XH connector for that beheaded USB cable instead. I wanted a connection more mechanically secure than the generic 0.1" headers and towards that goal I used JST-XH 4-conductor connector. Even though I needed just two conductors, I wanted the wider connector for two reasons. (1) I hoped a wider connector will latch more securely, and (2) I was running low on 2- and 3- conductor connectors in <a rel="noreferrer noopener" href="https://amzn.to/3iOMjDY" target="_blank">my assortment box</a>. (*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next to the power input connector is the <a href="https://amzn.to/35pe2n3" target="_blank" rel="noreferrer noopener">potentiometer</a>(*), now soldered and fixed to this perforated prototype board instead of dangling off somewhere via wires. I plan to mount this board on the sheet metal backing of the light, near the lower left corner so the knob for this potentiometer can be accessible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next we have the two rows used for seating an Arduino Nano. Even though I'm only using four pins, I soldered all the points on these two rows so this header will sit securely. I had originally thought I would run wires around the outside of these headers, but it turns out I could put all the wires, resistors, etc. in between these two rows so I did that. I doubt it makes much of a cosmetic difference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, the star of the show, my four-conductor connector to the wires I've soldered to various points on the LG LP133WF2(SP)(A1) LCD panel control circuit board. The connector is standard hobbyist stuff, relatively large and easy to work with for my projects. But the other end of the wires soldered to points on the control circuit board which were quite a bit smaller, so I had been concerned about the strength of my soldered joints. And when I lifted the connector to plug into my newly created perf board, I heard a "pop" and knew instantly that was bad news. I had destroyed the LED_EN connection. It was intended as a test point so it was small, but I had soldered to the tiny circle of copper and handling this circuit placed too much stress on this connection. The wire I added ripped off the copper pad, leaving non-conductive (and non-useful) bare circuit board material behind. This is <strong><em>not</em></strong> good. I need <a href="https://newscrewdriver.com/2021/06/16/need-backup-plan-for-tps61187-interface/">a backup plan</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27083,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-35-led_en-test-point-destroyed.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-35-led_en-test-point-destroyed.jpg?w=800" alt="" class="wp-image-27083"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

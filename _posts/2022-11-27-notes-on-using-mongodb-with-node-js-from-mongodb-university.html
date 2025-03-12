@@ -1,0 +1,62 @@
+---
+layout: post
+title: Notes on "Using MongoDB with Node.js" from MongoDB University
+date: 2022-11-27 12:30:00.000000000 +00:00
+type: post
+post_id: '33794'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Node.js
+- Online Schools
+tags:
+- MongoDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33798'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669581377
+  _publicize_job_id: '79123868527'
+  timeline_notification: '1669581033'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/27/notes-on-using-mongodb-with-node-js-from-mongodb-university/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Most instructional material (<a href="https://newscrewdriver.com/2022/11/26/many-paths-to-mongodb-shell-mongosh/">and experimentation</a>) for MongoDB uses the MongoDB Shell (mongosh), which is "<em>a fully functional JavaScript and Node.js 16.x REPL environment for interacting with MongoDB deployments</em>" <a rel="noreferrer noopener" href="https://www.mongodb.com/docs/mongodb-shell" target="_blank">according to mongosh documentation</a>. Making mongosh the primary command line interface useful for exploration, experimentation, and education like on Codecademy or MongoDB University.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the JavaScript focus of MongoDB, I was not surprised there is a set of <a rel="noreferrer noopener" href="https://www.mongodb.com/docs/drivers/" target="_blank">first-party driver libraries</a> to translate to/from various programming languages. But I was surprised to find that Node.js (JavaScript) was among the list of drivers. If this was all JavaScript anyway, why do we need a driver? The answer is that we don't use JavaScript to talk to the underlying database. That is the job of BSON, the binary data representation used by MongoDB for internal storage. Compact and machine-friendly, it is also how data is transmitted over the network. Which is why we need a Node.js library to convert from JSON to BSON for data transmission. I started the MongoDB University course "<em><a rel="noreferrer noopener" href="https://learn.mongodb.com/learn/learning-path/using-mongodb-with-nodejs-y13d" target="_blank">Using MongoDB with Node.js</a></em>" to learn more about using this library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was a short course, as befitting the minimal translation required of this JavaScript-focused database. The first course covered how to connect to a MongoDB instance from our Node.js environment. I decided to do my exercises with a Node.js Docker container.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>docker run -it --name node-mongo-lab -v C:\Users\roger\coding\MongoDB\node-mongo-lab:/node-mongo-lab node:lts /bin/sh</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The exercise is "Hello World" level, connecting to a MongoDB instance and listing all available databases. Success means we've verified all libraries &amp; their dependencies are install correctly, that our MongoDB authentication is set up correctly, and that our networking path is clear. I thought that was a great starting point for more exercises, and was disappointed that we actually didn't use our own Node.js environment any further in this course. The rest of the course used the Instruqt in-browser environment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We had a lightning-fast review of MongoDB CRUD Operations and how we would do them with the Node.js driver library. All the commands and parameters are basically identical to what we've been doing in mongosh. The difference is that we need an instance of the client library as the starting point, from which we could obtain object representing a database and a collection with it. (<code>client.db([database name]).collection([collection name]</code>) Once we have that reference, everything else looks exactly as they did in mongosh. Except now they are code to be executed by Node.js runtime instead of typed. One effect of running code instead of typing commands is that it's much easier to ensure transaction sessions complete within 60 seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For me, a great side effect of this course is seeing JavaScript async/await in action doing more sophisticated things than simple straightforward things. The best example came from this code snippet demonstrating MongoDB Aggregation:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>    let result = await accountsCollection.aggregate(pipeline)
+    for await (const doc of result) {
+      console.log(doc)
+    }</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first line is straightforward: we run our aggregation pipeline and await its result. That result is an instance of <a href="https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/read-operations/cursor/">MongoDB cursor</a> which is not the entire collection of results but merely access to a portion of that collection. Cursors allow us to start processing data without having to load everything. This saves memory, bandwidth, and processing overhead. And in order to access bits of that collection, we have this "<code>for await</code>" loop I've never seen before. Good to know!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

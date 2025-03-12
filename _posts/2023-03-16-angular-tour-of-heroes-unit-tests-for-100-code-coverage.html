@@ -1,0 +1,87 @@
+---
+layout: post
+title: Angular "Tour of Heroes" Unit Tests For 100% Code Coverage
+date: 2023-03-16 12:30:00.000000000 +00:00
+type: post
+post_id: '35730'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35748'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1678995215
+  _publicize_job_id: '82368997741'
+  timeline_notification: '1678995082'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/16/angular-tour-of-heroes-unit-tests-for-100-code-coverage/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After learning <a href="https://newscrewdriver.com/2023/03/15/notes-on-angular-http-client-guide/">all the ways an Angular web app can perform HTTP communication</a>, I have a better understanding more of Angular's "Tour of Heroes" tutorial app. And even better, I have a better idea of how I could write unit tests for it! That wasn't something covered by the tutorial itself, so writing tests for the tutorial app is my self-assigned extracurricular activity. This follows my previous self-assigned homework, an aesthetic overhaul <a href="https://newscrewdriver.com/2023/03/06/hello-angular-material/">using Angular Material component library</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An Angular project created via "ng new" command sets up a unit testing pipeline and a few boilerplate tests. "Tour of Heroes" was created this way but it was never touched in the tutorial. Every time we call "ng create" to add a component, that boilerplate also added a simple test to verify that component could be created in the test framework. By the end of the tutorial, we have a handful of these simple creation tests. Most of which would fail, because those components have become more complex than the original boilerplate and the test hasn't been updated to match.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Import Dependencies</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>First step was to import all the missing dependencies so a component can even be created in the test harness. I first did this mostly by searching for error messages and copying the answers, but it was an unsatisfying approach because I didn't understand what I was doing. To address this, I paused my mindless copy/paste and started studying. I <a href="https://newscrewdriver.com/2023/03/10/notes-on-angular-developer-guide-to-testing/">started with Angular Developer Guide to Testing</a> which led to my reactive programming tangent with RxJS. Now I'm back, and I understand how to use <code>import</code> section of <code>TestBed.configureTestingModule</code> to bring in dependencies needed by component under test.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">HttpClientModule to HttpClientTestingModule</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once components could be created, I was faced with a long list of HTTP failures. They all had the same cause: components that need to perform HTTP communication imported HttpClientModule, which tried to make actual HTTP calls to a server that isn't online. For unit tests, we need to <a href="https://angular.io/guide/http#testing-http-requests">use HttpClientTestingModule</a> to redirect component HTTP activity to behavior controlled by unit test infrastructure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Mock Services and overrideComponent</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once tests were in place for services that used HTTP directly, errors came from components that indirectly used HTTP via those services. To keep tests small (the whole point of unit tests) I stubbed out those services with mockups that had just enough behavior to support specific unit tests and no more. Hooking them into the system required <a href="https://angular.io/guide/testing-components-scenarios#override-component-providers">using <code>overrideComponent</code></a> to switch out real services for their simpler mockups.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my first pass, I wrote mockups directly as TypeScript classes. This is a simpler and more direct first pass, but I think I'm supposed to use "Spy" mechanism provided by Jasmine testing framework for such mockups. <a href="https://jasmine.github.io/tutorials/spying_on_properties">Learning to use Spy</a> is still on the to-do list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Code Coverage Report</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running "ng test --code-coverage" activates code coverage report courtesy of <a href="https://istanbul.js.org/">Istanbul</a>. A brief coverage summary is printed to console every time the test suite is executed, but I wanted more details to see where I need to focus my effort. The detailed report is in HTML format under the /coverage/ subdirectory. I'm supposed to go double-click on that file to bring it up in a web browser, but I'm running Angular inside a VSCode Dev Container and I can't "just" go and double-click that file as it is not accessible to my local web browser.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Solution: quickly whip up a static file web server with the <a href="https://www.npmjs.com/package/serve-static">serve-static package</a>, letting my local web browser access the report via a port opened on my dev container. I <a href="https://github.com/Roger-random/angular-tour-of-heroes/commit/524b91d8bc29460d7c0ab6d397a95654be3f7c59">added that file along with a shortcut to my packages.json file</a> so I can bring it up by running "npm run coverage."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">100% Is Not 100%</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>=============================== Coverage summary ===============================
+Statements   : 100% ( 82/82 )
+Branches     : 100% ( 7/7 )
+Functions    : 100% ( 47/47 )
+Lines        : 100% ( 75/75 )
+================================================================================</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>These mechanisms helped me to write unit tests that exercised all code paths: 100% code coverage! But this metric is misleading, because there's much more to an Angular app than its TypeScript code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Many important pieces of functionality live within HTML templates and are not covered by code coverage statistics. That requires accessing <a href="https://angular.io/guide/testing-components-basics#nativeelement"><code>ComponentFixture.nativeElement</code></a>. From there we can navigate the DOM tree, query for elements, and verify they are expected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's much more to Angular testing. I haven't even gotten into other things like <a href="https://angular.io/guide/testing-components-scenarios#routing-component">verifying Angular router functionality</a> but I am getting tired of Tour of Heroes. Time for a change of pace.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

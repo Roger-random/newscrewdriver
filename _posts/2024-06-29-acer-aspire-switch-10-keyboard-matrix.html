@@ -1,0 +1,243 @@
+---
+layout: post
+title: Acer Aspire Switch 10 Keyboard Matrix
+date: 2024-06-29 12:30:00.000000000 +00:00
+type: post
+post_id: '43983'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43988'
+  wordads_ufa: u:wpcom-ufa-v4:1719780979
+  _publicize_job_id: '95840749098'
+  firehose_sent: '1719689416'
+  timeline_notification: '1719689416'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-30 20:58:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/29/acer-aspire-switch-10-keyboard-matrix/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a keyboard salvaged from an Acer Aspire Switch 10, and <a href="https://newscrewdriver.com/2024/06/28/jumper-wire-between-adapter-and-pi-pico-skips-breadboard/">wired up a Raspberry Pi Pico microcontroller</a> with the goal of running "<a href="https://learn.adafruit.com/commodore-keyboard-to-usb-hid-with-circuitpython/key-matrix-whisperer">Key Matrix Whisperer</a>". A CircuitPython program published by Adafruit to help automate the task of probing an unknown keyboard matrix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To minimize confusion, I lined up pin numbers as much as I can between the keyboard FPC (flexible printed circuit) cable adapter and Pi Pico pin numbers. Adapter pin1 connected to Pi Pico pin GP1, adapter pin 2 to Pico pin GP2, etc. This worked up until pin 22. Because the Pico didn't expose GP23 or GP24, adapter pin 23 was connected to the next available pin GP26 a.k.a. ADC0 a.k.a. A0 and adapter 24 went to GP27 a.k.a. A1. After creating my wiring harness I plugged it in and ran Key Matrix Whisperer. It worked exactly as advertised listing a pair of pins every time I held down a key.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I printed out a lightened grayscale picture of the keyboard so I can write pin numbers directly on each key. After iterating through all the keys, I learned this keyboard's 24 wires are used in a 8x16 matrix for a maximum of 128 possible combinations. There were only 83 keys on this keyboard leaving 45 combinations unused. It feels rather inefficient to set up a matrix and use only ~2/3 of possible combinations. Perhaps this keyboard design is a simplified counterpart of a full keyboard that included a numeric keypad and other keys?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I ran Key Matrix Whisperer twice, and all but one key matched up on both runs. Number key 9 reported as 12+22 on my first pass but 6+15 on my second pass. Reviewing the chart, I see 12+22 is the Windows key. I must have accidentally pressed Windows while reaching for 9 on my first pass, and Key Matrix Whisperer registered the Windows key instead of my intended 9. I'm glad I went through a second confirmation pass and caught this mistake.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know of any keyboard matrix domain specific conventions on which set of pins are rows and which set are columns. By English language convention, columns are laid out left-right and rows are laid out top-bottom. But looking at this particular keyboard matrix, I didn't notice any particular association between the pins and their physical locations, they seem to be all over the place. For example, pin 1 connects to the up and down arrows which are physically located in the lower right corner. Pin 1 also connects to the Escape key, which is diagonally opposite on the upper left corner. Absent any further understanding of how this matrix was formed, I decided the smaller set of 8 pins are columns for my own convenience: a matrix table that is narrower than it is tall ("portrait" and not "landscape") is easier to fit here before <a href="https://newscrewdriver.com/2024/06/30/kmk-firmware-revives-acer-aspire-switch-10-keyboard-module/">I put this matrix table to work</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Pin</th>
+<th class="has-text-align-center" data-align="center">12</th>
+<th class="has-text-align-center" data-align="center">13</th>
+<th class="has-text-align-center" data-align="center">14</th>
+<th class="has-text-align-center" data-align="center">15</th>
+<th class="has-text-align-center" data-align="center">16</th>
+<th class="has-text-align-center" data-align="center">17</th>
+<th class="has-text-align-center" data-align="center">18</th>
+<th class="has-text-align-center" data-align="center">19</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Up</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Down</td>
+<td class="has-text-align-center" data-align="center">Escape</td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">Backspace</td>
+<td class="has-text-align-center" data-align="center">Del</td>
+<td class="has-text-align-center" data-align="center">]</td>
+<td class="has-text-align-center" data-align="center">'</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Enter</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">Page Up</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">\</td>
+<td class="has-text-align-center" data-align="center">Page Down</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">PrtSc<br>SysRq</td>
+<td class="has-text-align-center" data-align="center">Ins</td>
+<td class="has-text-align-center" data-align="center">=</td>
+<td class="has-text-align-center" data-align="center">[</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">.</td>
+<td class="has-text-align-center" data-align="center">C</td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">-</td>
+<td class="has-text-align-center" data-align="center">Pause<br>Break</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">L</td>
+<td class="has-text-align-center" data-align="center">M</td>
+<td class="has-text-align-center" data-align="center">,</td>
+<td class="has-text-align-center" data-align="center">Space</td>
+<td class="has-text-align-center" data-align="center">Left</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">F12</td>
+<td class="has-text-align-center" data-align="center">F11</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">K</td>
+<td class="has-text-align-center" data-align="center">J</td>
+<td class="has-text-align-center" data-align="center">N</td>
+<td class="has-text-align-center" data-align="center">O</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">F10</td>
+<td class="has-text-align-center" data-align="center">F9</td>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">I</td>
+<td class="has-text-align-center" data-align="center">H</td>
+<td class="has-text-align-center" data-align="center">B</td>
+<td class="has-text-align-center" data-align="center">U</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">F8</td>
+<td class="has-text-align-center" data-align="center">F7</td>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">T</td>
+<td class="has-text-align-center" data-align="center">G</td>
+<td class="has-text-align-center" data-align="center">V</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Y</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">F6</td>
+<td class="has-text-align-center" data-align="center">F5</td>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">E</td>
+<td class="has-text-align-center" data-align="center">D</td>
+<td class="has-text-align-center" data-align="center">F</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">R</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">10</td>
+<td class="has-text-align-center" data-align="center">F4</td>
+<td class="has-text-align-center" data-align="center">F3</td>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">S</td>
+<td class="has-text-align-center" data-align="center">Right</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">W</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">11</td>
+<td class="has-text-align-center" data-align="center">F2</td>
+<td class="has-text-align-center" data-align="center">F1</td>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">A</td>
+<td class="has-text-align-center" data-align="center">Z</td>
+<td class="has-text-align-center" data-align="center">X</td>
+<td class="has-text-align-center" data-align="center">Q</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">20</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Shift<br>(Left)</td>
+<td class="has-text-align-center" data-align="center">/</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Shift<br>(Right)</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">21</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Control</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">0</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">22</td>
+<td class="has-text-align-center" data-align="center">Window</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">P</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">23</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">;</td>
+<td class="has-text-align-center" data-align="center">Alt Gr<br>(Right)</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Alt<br>(Left)</td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">24</td>
+<td class="has-text-align-center" data-align="center">~</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Tab</td>
+<td class="has-text-align-center" data-align="center">Caps Lock</td>
+<td class="has-text-align-center" data-align="center">Menu</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center">Fn</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --><br />
+</body></html></p>

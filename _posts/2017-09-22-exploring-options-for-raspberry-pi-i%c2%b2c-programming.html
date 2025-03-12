@@ -1,0 +1,34 @@
+---
+layout: post
+title: Exploring Options For Raspberry Pi I²C Programming
+date: 2017-09-22 09:00:53.000000000 +00:00
+type: post
+post_id: '12139'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9557432731'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/22/exploring-options-for-raspberry-pi-i%c2%b2c-programming/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-12213 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/09/i2cbuslogo.png" alt="i2cbuslogo" width="123" height="136">Now that I have a rudimentary I²C implementation up and running on my PIC, it's time to figure out how I'll control it from code running on a Raspberry Pi. Which means it's time for this novice to go bumping around in the dark looking for a place to start.</p>
+<p>The first thing I looked at was the Raspberry Pi <a href="https://www.raspberrypi.org/products/sense-hat/">Sense HAT</a>. I bought one along with my Raspberry Pi and it was a fun little thing to play with, learning some basic Python along the way. The Sense HAT communicates with the Pi via I²C. I found the <a href="https://github.com/RPi-Distro/python-sense-hat">Github repository</a> where the source code for the <a href="http://pythonhosted.org/sense-hat/">SenseHat module</a> is published, but my Python knowledge is too thin to trace to their low-level I²C communications code.</p>
+<p>The next thing I thought of was the <a href="https://www.adafruit.com/product/2327">Adafruit PWM/Servo HAT</a>, which I also purchased for experimentation. Looking at that <a href="https://learn.adafruit.com/adafruit-16-channel-pwm-servo-hat-for-raspberry-pi/library-reference?view=all">HAT's tutorial</a> and the <a href="https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup?view=all">Adafruit I²C tutorial</a>, I found their <a href="https://github.com/adafruit/Adafruit_Python_GPIO/blob/master/Adafruit_GPIO/I2C.py">I²C library</a> which worked well enough for me to do rough tests of my I²C code running on the PIC. Adafruit code seem to be Python 2 specific with no Python 3 version. This is not an immediate problem because I intend to use ROS which is also on Python 2, but I wanted something with broader (more than Adafruit) support and more future-proofing.</p>
+<p>On the logic of "If there's something on Adafruit, there's probably also something on Sparkfun." I found the <a href="https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial">SparkFun Raspberry Pi I²C tutorial</a> which uses the <a href="http://wiringpi.com/">wiringPi</a> library to access the Pi's GPIO pins. This library looks pretty popular, and it includes an <a href="http://wiringpi.com/reference/i2c-library/">I²C library</a>. The downside is that wiringPi is focused on C programs. A Python interface layer exists but not maintained by the owner.</p>
+<p><img class=" size-thumbnail wp-image-5172 alignright" src="https://newscrewdriver.com/wp-content/uploads/2017/05/raspberry-pi-logo.png?w=254" alt="raspberry-pi-logo" width="127" height="150">I felt there must be another way since the Raspberry Pi is focused on education and making technology accessible. A little more web searching paid off: The <a href="http://abyz.co.uk/rpi/pigpio/">pigpio</a> library. It is the default option for <a href="https://www.raspberrypi.org/documentation/usage/python/more.md">GPIO control in Raspberry Pi</a> documentation. Built into recent builds of Raspbian so it is a part of the stock Raspberry Pi. I can interface with it in C, Python 2, Python 3, or even the command line utility. <a href="https://github.com/joan2937/pigpio">Source code is public</a> if I ever wanted to dig deeper.</p>
+<p>This looks like the best option. I'll start using it and see how far I get.</body></html></p>

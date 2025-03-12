@@ -1,0 +1,86 @@
+---
+layout: post
+title: MX340 Print Carriage Range of Motion
+date: 2024-02-20 12:30:00.000000000 +00:00
+type: post
+post_id: '42032'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '42022'
+  firehose_sent: '1708461002'
+  wordads_ufa: s:wpcom-ufa-v4:1708577987
+  _publicize_job_id: '92128420532'
+  timeline_notification: '1708461006'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/20/mx340-print-carriage-range-of-motion/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Before I remove the print carriage motor assembly from my retired Canon Pixma MX340 multi-function inkjet, I thought it'd be a good idea to better understand its motion and how it interacts with the rest of the machine. I <a href="https://newscrewdriver.com/2024/02/19/mx340-teardown-phase-3-begins-with-print-carriage/">found a little "parking brake" for the print carriage</a>, and that was a good start to help me dig deeper.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42022,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-print-carriage-centered-intact.jpg?w=1024" alt="" class="wp-image-42022"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The print carriage moves two ink cartridges together. One for cyan/magenta/yellow color inks marked "C" and another for black ink marked "B". Each cartridge has an integrated print head that is replaced whenever the cartridge is replaced. The carriage is attached to a loop of toothed belt, turned by a DC motor. Like the paper feed motor, there's an optical encoder to provide feedback for closed-loop motor control. Except here it is a linear strip instead of a round disc, read by a sensor buried somewhere inside the carriage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":42039,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-print-carriage-encoder-strip-left.jpg?w=800" alt="" class="wp-image-42039"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":42040,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-print-carriage-encoder-strip-right.jpg?w=800" alt="" class="wp-image-42040"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are some close-up pictures of the encoder strip and motor belt drive, showing details at either end. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the left (as viewed from the front of the printer here) side, the encoder strip is held in tension by a small spring. The left side toothed belt pulley is directly mounted on the motor output shaft, a direct-drive system with no intervening gears.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the right side, the encoder strip is held against spring tension with a small stamped sheet metal hook. The right side toothed belt pulley is held in tension with its own spring on the back side of the assembly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40553,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-behind-print-carriage.jpg?w=1024" alt="" class="wp-image-40553"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The belt pulley tension spring is visible towards the lower left corner of this picture. During normal operation, I could see some horizontal motion (roughly 1-3 mm) in this spring assembly whenever the print carriage started moving, and it likely continues moving in less-visible ways afterwards as the print carriage changes direction or speed. In contrast, the encoder strip tension spring never moves, as expected for something serving as reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On either end of the encoder strip, a big circle is present beyond the line pattern. I initially thought this served as some kind of "end of the line" marker, an optical replacement for a physical homing switch. (Precedent: its scanner module <a href="https://newscrewdriver.com/2023/12/03/canon-pixma-mx340-scanner-homing-marker/">uses an optical marker</a>.) But I no longer think so due to two observations. The first is the 34cm width of the line pattern, wider than the print carriage's maximum range of motion of 32.5cm which means the sensor inside the print carriage never has to move beyond the line pattern and would never see the big circles.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":42044,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-print-carriage-track-stop-left.jpg?w=800" alt="" class="wp-image-42044"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":42045,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-print-carriage-track-stop-right.jpg?w=800" alt="" class="wp-image-42045"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Without physical homing switch or special encoder strip markers, how would the system calibrate carriage position upon startup? Watching its startup sequence again, it appears the control board runs the carriage slowly in one direction until it bumps up against the end. Encoder feedback determines when it could move no further, at which point the process is repeated in the other direction. Proof of actual physical contact is visible as smears of grease left by the carriage on either end of its track.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After checking out the far left and far right limits of this mechanism, I started looking at what else it might do (beyond printing) <a href="https://newscrewdriver.com/2024/02/21/mx340-print-carriage-motor-and-actuation/">in between those ends</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

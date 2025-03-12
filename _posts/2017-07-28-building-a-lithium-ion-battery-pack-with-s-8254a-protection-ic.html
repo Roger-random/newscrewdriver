@@ -1,0 +1,39 @@
+---
+layout: post
+title: Building a Lithium Ion Battery Pack with S-8254A Protection IC
+date: 2017-07-28 09:00:14.000000000 +00:00
+type: post
+post_id: '8771'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- MP1584
+meta:
+  _thumbnail_id: '8792'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7602175879'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/28/building-a-lithium-ion-battery-pack-with-s-8254a-protection-ic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Encouraged by my earlier success buying somebody's implementation of an IC reference design off Amazon, I went looking for more. The previous project used a MP1584 chip to regulate the variable voltage of a battery to a constant level for a Raspberry Pi 3. Now I want to improve upon the battery side.</p>
+<p>The battery pack had three <a href="https://en.wikipedia.org/wiki/List_of_battery_sizes#Lithium-ion_batteries_.28rechargeable.29">18650-sized</a> lithium-ion battery cells in series. These cells were salvaged from an old Dell laptop's power pack. Since they were ten years old, there's a bit of a question mark hovering over them. A battery pack that simply wires them in series risks over-charging or over-discharging the weakest cell. This abuse of lithium-ion cells usually ends in a fire.</p>
+<p>I searched for a battery management circuit board to help me avoid setting my projects on fire. I settled on <a href="https://amzn.to/2nUHHSC" target="_blank" rel="noopener">this item</a> (*) which is built around the <a href="http://datasheet.sii-ic.com/en/battery_protection/S8254A_E.pdf">Seiko Instruments' S-8254A IC</a>. This circuit board will monitor individual cells. If any of the voltage levels exceed safe limits for lithium-ion cells during either charging of discharging, the chip will disconnect the whole pack.</p>
+<p>Once everything was connected according to instructions, I have a battery pack that I can use with much higher confidence.</p>
+<p> </p>
+<p>Using my <a href="http://www.astroflight.com/101n">Astro-Flight power meter</a>, I put this battery pack through a full charge and discharge cycle. Something I was squeamish to do before the battery protection board. Upon completion of the cycle, the power meter counted 1.65 amp-hours. The text printed on the cells say LGDA2E18650, which had a nominal 2.25 amp-hour capacity when new. Ten years old and 73% of nominal capacity is not bad, and perfectly usable for a wide range of future projects.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

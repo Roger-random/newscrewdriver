@@ -1,0 +1,90 @@
+---
+layout: post
+title: 'ESPHome Remote Receiver Test: Simplistic Shooting Game'
+date: 2022-04-02 12:30:00.000000000 +00:00
+type: post
+post_id: '29355'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- Infrared
+- Roku
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29354'
+  _publicize_job_id: '70925266085'
+  timeline_notification: '1648927822'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/02/esphome-remote-receiver-test-simplistic-shooting-game/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2022/04/01/roku-premiere-4620x-cooper-infrared-receiver/">salvaged an infrared remote control receiver from a Roku Premier 4620X ("Cooper")</a> and dumped out some codes using an ESP32 microcontroller running ESPHome software's <a href="https://esphome.io/components/remote_receiver.html">Remote Receiver component</a>. This is great, but before I moved on, I ran a simple introduction to actually using it. The "Hello World" of ESPHome remote receiver, so to speak.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The idea is a very simple shooting game. I will add an LED to the breadboard connected to GPIO 18. I will count to five seconds in an <a rel="noreferrer noopener" href="https://esphome.io/components/esphome.html#on-loop" target="_blank"><code>on_loop</code> lambda</a> and illuminate the LED using <a rel="noreferrer noopener" href="https://esphome.io/components/output/gpio.html" target="_blank">ESPHome GPIO output component</a>. Once illuminated, it will wait for the signal sent by a Roku RC108 remote when the "OK" button is pressed. Once received, I will darken the LED for five seconds before turning it back on. With this very simple game I pretend to "shoot out" the light with my remote.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was silly and trivially easy as far as shooting games go. Infrared remote controls are designed so the couch potato doesn't have to aim very accurately for them to work. The emitter sends out the signal in a very wide cone, and the receiver is also happy to receive that signal from within a wide cone. If I am to evolve this into an actually challenging target practice contraption, I would have to figure out how to narrow the cone of effectiveness on the emitter, or the receiver, or both!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that was not the objective today. Today it was all about dipping my toes in that world before I <a href="https://newscrewdriver.com/2022/04/03/roku-premiere-4620x-cooper-power-socket/">continued with my Roku teardown</a>.  I wanted to keep the hardware trivial and the code simple, so here is the ESPHome code excerpt for this super easy shooting game:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>esphome:
+  on_loop:
+    then:
+      - lambda: |-
+          if (id(ulNextOn) &lt; millis())
+          {
+            id(led_01).turn_on();
+          }
+
+status_led:
+  pin:
+    number: 2
+
+output:
+  - platform: gpio
+    pin:
+      number: 18
+      inverted: true
+    id: led_01
+
+globals:
+  - id: ulNextOn
+    type: unsigned long
+    restore_value: no
+    initial_value: '0'
+
+remote_receiver:
+  pin:
+    number: GPIO36
+    inverted: true  
+  dump: nec
+  tolerance: 10
+  on_nec:
+    then:
+      - lambda: |-
+          unsigned long ulTurnOff;
+          
+          if (0x55AA == x.command)
+          {
+            id(led_01).turn_off();
+            id(ulNextOn) = millis() + 5000;
+          }
+</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

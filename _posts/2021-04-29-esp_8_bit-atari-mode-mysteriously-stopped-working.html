@@ -1,0 +1,76 @@
+---
+layout: post
+title: ESP_8_BIT Atari Mode Mysteriously Stopped Working
+date: 2021-04-29 12:30:00.000000000 +00:00
+type: post
+post_id: '26312'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26321'
+  _publicize_job_id: '57771138317'
+  timeline_notification: '1619724632'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/29/esp_8_bit-atari-mode-mysteriously-stopped-working/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was interested in getting my hands on some code that could generate color NTSC composite video without esoteric hardware hacking, and <a href="https://newscrewdriver.com/2021/04/28/ntsc-color-composite-video-from-esp_8_bit-by-rossumur/">rossumur's ESP_8_BIT promised to do that</a>. As soon as I had it loaded on my own ESP32 and turned on my old tube TV with composite input, I could see it delivered on that promise. Everything else in this project would just be icing on the cake.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sadly I had a lot of trouble getting the rest of ESP_8_BIT to work for me, so there were precious little icing for me. The first problem I encountered was that I didn't have audio. This was expected for the Atari logo screen, but I checked <a rel="noreferrer noopener" href="https://www.youtube.com/watch?v=qFRkfeuTUrU" target="_blank">the ESP_8_BIT YouTube video</a> and saw there was supposed to be sound when the robot came on screen. Mine stayed silent, darn.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next step was to get an input device working. ESP_8_BIT included a Bluetooth HID stack to interface with Bluetooth peripherals. One of the options is a Bluetooth Classic (not BLE) keyboard, and I had a <a rel="noreferrer noopener" href="https://www.microsoft.com/accessories/en-ca/products/keyboards/wedge-mobile-keyboard/u6r-00006" target="_blank">Microsoft Wedge Mobile Keyboard</a> on hand for this test. This is a keyboard I knew worked for my Bluetooth-enabled computers as well as an Apple iPad, so I did not expect problems. Unfortunately after going through the ESP_8_BIT pairing procedure, my ESP32 went into an endless reboot loop. As an alternate to Bluetooth, ESP_8_BIT also supported some infrared controllers, but I didn't have any compatible device on hand. So unless I'm willing to buy an IR controller or buy another Bluetooth keyboard, it appears that there will be no ESP_8_BIT gaming for me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was one other mystery. This initial test pass was made several weeks ago. Afterwards, I set down ESP_8_BIT to be explored later. I worked on a few other projects (including Micro Sawppy rover) in the meantime. When I returned to ESP_8_BIT, I could no longer run the Atari emulator. It now enters a failure reboot loop with an error of insufficient memory. Not by a lot, either: the largest available segment of memory was only a few hundred bytes short of what's requested.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>esp_8_bit
+
+mounting spiffs (will take ~15 seconds if formatting for the first time)....
+... mounted in 99 ms
+frame_time:0 drawn:1 displayed:0 blit_ticks:0-&gt;0, isr time:0.00%
+emu_task atari800 running on core 0 at 240000000mhz
+MALLOC32 235820 free, 113792 biggest, allocating Screen_atari:92160
+MALLOC32 allocation of Screen_atari:92160 3FFE4374
+MALLOC32 143644 free, 64864 biggest, allocating MEMORY_mem:65540
+MALLOC32 FAILED allocation of MEMORY_mem:65540!!!!####################
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:1
+load:0x3fff0018,len:4
+load:0x3fff001c,len:1216
+ho 0 tail 12 room 4
+load:0x40078000,len:10944
+load:0x40080400,len:6388
+entry 0x400806b4
+
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hadn't touched the code, and the hardware was only changed in that I actually have it on a circuit board this time. So I'm at a loss what might have caused this difference. One hypothesis is that an underlying Arduino library had been updated and took a little more memory than it used to, leaving not quite enough for the Atari emulator. Another hypothesis is that my Micro Sawppy code left something behind on this ESP32, impacting behavior of ESP_8_BIT.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Without more data or knowledge I couldn't track down the source of this problem. So with the Atari emulator out of commission, my study course <a href="https://newscrewdriver.com/2021/04/30/studying-nes-section-of-esp_8_bit/">moved on to the Nintendo emulator</a> for me to gain that knowledge.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

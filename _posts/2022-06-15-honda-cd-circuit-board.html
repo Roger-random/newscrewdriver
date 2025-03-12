@@ -1,0 +1,77 @@
+---
+layout: post
+title: Honda CD Circuit Board
+date: 2022-06-15 12:30:00.000000000 +00:00
+type: post
+post_id: '30846'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+- LC75883
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30815'
+  _publicize_job_id: '73697694541'
+  timeline_notification: '1655321448'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/15/honda-cd-circuit-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a circuit board assembly that appears to be the <a href="https://newscrewdriver.com/2022/06/14/next-segmented-lcd-challenge-honda-cd/">stock CD player and HVAC control board from a Honda Accord</a>, integrated together instead of separate audio controls in DIN form factor. The front is dominated by a large LCD that I wanted to control as part of my current adventures into segmented LCD units. Unlike the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/03/powering-up-toyota-audio-head-unit-86120-08010/" target="_blank">Toyota tape deck</a>, I don't have the mainboard to get this up and running and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/12/wires-to-probe-toyota-audio-head-unit-86120-08010/" target="_blank">probe its internal communication</a>. Would I be able to talk to its built-in LCD driver, or would I have to control the LCD directly by <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/08/switching-to-esp-idf-for-pwm-waveform-control/" target="_blank">generating my own voltages</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30818,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-front.jpg?w=1024" alt="" class="wp-image-30818"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to the large LCD, there were other elements of interest. This panel has three large knobs. The largest center knob is for audio control, the two side knobs are for air circulation fan speed (left) and temperature (right). All three knobs appear to use the same basic (if not identical) rotary encoders mounted to the circuit board, which is curious because they expose quite different user interfaces. The center knob has no end position and can rotate infinitely in either direction, which makes sense for a quadrature encoder. But the two side knobs each have their own distinct left and right endpoints and would need to know their absolute position. I would have expected them to be potentiometers instead of quadrature encoders, but at first glance all three appear identical. This will be interesting to look at later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30816,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-blue-light-covered.jpg?w=1024" alt="" class="wp-image-30816"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was not surprised to find numerous green LEDs to indicate status of various settings. (LD6 and LD7 visible in above picture.) But I was surprised to discover the little blue background illumination lights (PL422 visible in picture above) were not blue LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30817,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-blue-light-uncovered.jpg?w=1024" alt="" class="wp-image-30817"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>They are actually tiny incandescent (filament) light bulbs underneath a blue cover. I guess this device was designed when blue LEDs were considered desirable but still expensive? If so, it's pretty hilarious to see itty bitty light bulbs masquerading as blue LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All the buttons are surface-mounted units (SW7 visible in above picture) instead of the conductive wire trace type frequently seen in <a href="https://newscrewdriver.com/2018/12/01/xbox-360-steering-wheel-teardown/">consumer electronics</a> including <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/22/button-presses-on-tape-deck-faceplate-toyota-86120-08010/" target="_blank">the tape deck</a> I took apart earlier. Small and compact, though their tactile feel is nothing spectacular.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30815,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-back.jpg?w=1024" alt="" class="wp-image-30815"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Around the back, I see two electrical connectors. A large and sturdy green unit in the upper-left corner typical of automotive-grade connections, and a smaller black one just below and to the right of center.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30820,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-connector.jpg?w=1024" alt="" class="wp-image-30820"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This reminds me of the connector for the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/" target="_blank">Toyota tape deck faceplate</a>, but with 24 conductors instead of 16. Pins 1 and 2 are labeled on the right, and pins 23 and 24 are labeled on the left. Unlike the Toyota faceplate, none of the pins were labeled with their functionality.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A row of through-hole pins just above the central CD slot are consistent with all the common/segment pins for a segmented LCD array. These pins and its surrounding area are protected from the environment by a blue <a href="https://en.wikipedia.org/wiki/Conformal_coating">conformal coating</a> that will make experimentation annoying. It's a lot of bad news so far discouraging further exploration, until I followed LCD traces back to their control chip:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30822,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-controller-sanyo-lc75883.jpg?w=1024" alt="" class="wp-image-30822"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Barely readable through the conformal coating is "Sanyo LC75883", which sounds very similar to the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/" target="_blank">Sanyo LC75853</a> used on the Toyota tape deck faceplate. I found a datasheet for LC75883 and confirmed it is a sibling chip, speaking the same proprietary Sanyo CCB protocol. This is promising enough for me to try <a href="https://newscrewdriver.com/2022/06/16/soldering-practice-with-honda-cd-lcd-driver/">getting past that blue coating</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

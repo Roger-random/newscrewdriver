@@ -1,0 +1,77 @@
+---
+layout: post
+title: Sawppy Rover Ground Clearance
+date: 2020-11-23 12:30:00.000000000 +00:00
+type: post
+post_id: '21825'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  _thumbnail_id: '23608'
+  timeline_notification: '1606163407'
+  _publicize_job_id: '51397084599'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/11/23/sawppy-rover-ground-clearance/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When it comes time for Ingenuity to <a href="https://newscrewdriver.com/2020/11/22/ingenuity-the-mars-helicopter-technology-demonstrator/">demonstrate Mars helicopter technology</a>, it will be dropped to the surface then wait for Perseverance to move a small distance away to prepare for the experiment. This arrangement is possible because the rover's rocker-bogie suspension gave it more than enough ground clearance for a hitchhiking helicopter to ride along, holding on to the belly of the rover.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":21977,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/07/m2020-launch-red-circle-logo-black-text-side-stacked.png?w=1024" alt="" class="wp-image-21977"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This ample ground clearance is also visible in the <a rel="noreferrer noopener" href="https://mars.nasa.gov/mars2020/multimedia/resources/" target="_blank">Mars 2020 Mission Identifier</a>. The first I saw of this logo was on the side of the rocket payload aerodynamic fairing protecting the rover against the atmosphere during launch. I love this blocky minimalist design of the rover's front view and believe this little logo hasn't been used nearly enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, back to ground clearance: it is something obviously useful for a wheeled vehicle traversing off-road, which is desirable given the lack of roads on Mars. But raising the height of rover's main body is only part of the equation, because it's not the only thing that might collide with obstacles on the ground. We also have to worry about suspension components. This is something I noticed with JPL's Open Source Rover design: if a ground obstacle is offset from a wheel, there's a chance it will collide with aluminum structure. This picture uses a Roomba virtual wall marker to represent a rock on the ground, which is about to collide with suspension structure:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":23607,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/11/jpl-osr-wheel-motor-obstacle-clearance.jpg?w=1024" alt="" class="wp-image-23607"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I designed Sawppy, I thought I could improve upon this specific issue by taking advantage of the flexibility of 3D printing. I also chose Sawppy wheel motors with the requirement they must fit within the wheel with no protrusions. If Sawppy should encounter a Roomba virtual wall marker slightly offset from a wheel, there is no risk of collision:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":23608,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/11/sawppy-wheel-motor-obstacle-clearance.jpg?w=1024" alt="" class="wp-image-23608"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I this was a pretty good Sawppy feature. However, after looking at how other Sawppy builders have customized their rovers, it appears this feature isn't as valued as I thought it would be. There have been many Sawppy modifications that did not preserve this clearance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For example, Marco Walther [mw46d] replaced wheel motors with much longer units that risks collision. He is aware of the risk, because he designed shielding to protect the motor encoders from damage. It's a different approach, shielding vs. avoidance. Steve [jetdillo] adopted Marco's design to good effect.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":23612,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/11/marco-walther-mw46d-25d_motor_1.jpg?w=1024" alt="" class="wp-image-23612"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Chris Bond <a rel="noreferrer noopener" href="https://www.bondrobotics.com/sawppy/" target="_blank">swapped out the wheels for RC monster truck wheels</a>, similar to those used by JPL Open Source Rover. However, my wheel mounting arm design does not fit within the wheel. To compensate for this, Chris decided to push the wheels out. This leaves almost the entire wheel mounting arm out where it could collide with ground obstacles. It also means the steering axis is no longer aligned with the wheel, but Chris seems happy with his design so I guess it works well enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":23618,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/11/chris-bond-rover-mvimg_20190618_140817-1080x675-1.jpg?w=1024" alt="" class="wp-image-23618"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My lesson is that ground clearance isn't as important as I thought it was. Or at least, not seen as important enough relative to features other builders wanted for their own rovers. This is valuable feedback for future iterations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the topic of rover iterations, I want to take a quick detour from my own rover to recognize some <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/11/24/the-less-famous-rovers-marie-curie-dusty-and-maggie/" target="_blank">lesser-known counterparts</a> to our robotic Mars explorers before returning to the topic of <a href="https://newscrewdriver.com/2020/11/25/sawppy-issue-heat-set-insert-shaft-coupling/">Sawppy builder feedback</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

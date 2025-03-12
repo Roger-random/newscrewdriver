@@ -1,0 +1,54 @@
+---
+layout: post
+title: HP Stream 7 Refuses to Believe in Free Energy
+date: 2021-12-03 12:30:00.000000000 +00:00
+type: post
+post_id: '27713'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- HP Stream 7
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27711'
+  _publicize_job_id: '66090727102'
+  timeline_notification: '1638563479'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2021/12/02/chunghwa-claa133ua01-circuit-board-and-led-backlight/">salvaging the LED backlight from a Chunghwa CLAA133UA01 display panel</a>, I have processed all the disembodied panels in my hardware stack. But I still have plenty of other displays still embodied in some type of hardware of varying levels of usefulness. The least useful item in the pile is my HP Stream 7 Windows tablet. For reasons I don't understand, <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/04/29/hp-stream-7-power-problems/" target="_blank">it doesn't want to charge its battery while it is up and running</a>. It seems the only way to charge the battery is to plug it in while it is powered off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I wanted to use this tablet as portable electronics as originally intended, this is annoying but workable. But there's not much this old tablet could do that my phone (which has grown nearly as large...) can't do, so I wanted to use it as a display. But if it can't charge while running, and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/04/30/hp-stream-7-battery-disconnect-test/" target="_blank">it can't run without its battery</a>, then it's not going to be useful as an always-on display. After <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/05/01/hp-stream-7-hardware-internals/" target="_blank">poking around its internals</a>, I set the tablet aside in case I have ideas later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It is now later! And here is the idea: if I can't convince the tablet to charge its battery while running, perhaps I can do the charging myself. I peeled back some protective plastic to expose the battery management circuit board, and soldered a <a rel="noreferrer noopener" href="https://www.jst.com/products/wire-to-wire/rcy-connector/" target="_blank">JST-RCY</a> compatible <a rel="noreferrer noopener" href="https://amzn.to/3I3RMRT" target="_blank">power connector</a>(*) in parallel with the lithium-polymer battery cell.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting this idea to the test, I first ran the tablet until the battery voltage dropped to 3.7V, the nominal voltage for a LiPo battery cell. I then connected my benchtop power supply to this newly soldered connector. The power supply was adjusted to deliver a steady 3.7V. In theory this means the battery would drain no further, and all power for the tablet would be supplied by my bench power supply.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To test longevity, I turned off all power-saving functions so the tablet would not turn off the screen or try to go to sleep. The tablet was content to run in this condition for many hours, and after the first day I was optimistic it would be happy to run indefinitely. Unfortunately, this budget tablet was smart enough to notice something was wrong. I'm not sure how it knew, but it definitely refused to believe the illusion its battery is an endless source of energy. Despite the fact that battery voltage was held steady at 3.7V, on-screen battery percentage started dropping after about forty hours. Eventually the indicated charge dropped below 10% and entered battery-saver mode, followed by shutting itself down. Despite the fact its battery voltage was held at 3.7V, this tablet acted as if the battery has been depleted.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the failure of this test, I contemplated pulling it apart and extract the tablet backlight <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/06/23/amazon-fire-sr043kl-display-disassembly/" target="_blank">as I did to a broken Amazon Fire tablet</a>. But I decided against doing anything destructive, and I put it aside yet again hoping to think of something else later. In the meantime I switch gears <a href="https://newscrewdriver.com/2021/12/04/screen-rotation-support-for-esp_8_bit_composite-arduino-library/">from this digital tablet to an analog glass tube TV</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

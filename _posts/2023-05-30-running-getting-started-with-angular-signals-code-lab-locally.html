@@ -1,0 +1,58 @@
+---
+layout: post
+title: Running “Getting Started with Angular Signals” Code Lab Locally
+date: 2023-05-30 12:30:00.000000000 +00:00
+type: post
+post_id: '36948'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36912'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685564176
+  _publicize_job_id: '84496026222'
+  timeline_notification: '1685475006'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/30/running-getting-started-with-angular-signals-code-lab-locally/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/05/29/compiling-getting-started-with-angular-signals-code-lab-locally/">fixing local Angular build errors</a> for the <em>Getting Started with Angular Signals</em> code lab sample application, I saw it was up and running but not running correctly. Given the fact I had to fix installation errors for this sample before fixing the build errors, seeing runtime errors were not a surprise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, some of the missing functionality is intentional, because this is a hands-on code lab where we fill in a few intentional gaps to see Angular signals in action. I've done the exercise once before on StackBlitz so I knew what to expect. The <code><a href="https://codelabs.developers.google.com/angular-signals#3">signal()</a></code> and <a href="https://codelabs.developers.google.com/angular-signals#4"><code>computed()</code></a> exercises went smoothly, but the <a href="https://codelabs.developers.google.com/angular-signals#5"><code>effect()</code></a> had no effect. Every time <code>solvedMessage</code> signal changed, our <code>effect()</code> was supposed to compare it against <code>superSecretMessage</code>. And if they matched, launch a little <a href="https://www.npmjs.com/package/canvas-confetti">confetti effect</a>. I saw the completion confetti on StackBlitz, and nothing on my local version. Time to start debugging.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were no error messages, so I started by adding a few <code>console.log()</code> to see what is and isn't happening. It led me to the conclusion that the code inside my <code>effect()</code> call was not getting executed. This is a bit of a pickle. Standard debugging procedure is to attach a breakpoint to an interesting piece of code and see what happens when it is called. But in this case, my problem is that the code was <em><strong>not </strong></em>getting called. D'oh! A breakpoint on code inside <code>effect()</code> would be useless because it is never hit. In these situations, the next thing to try is setting a breakpoint somewhere upstream. Ideally in the bit of logic that decided whether to call my code or not. Unfortunately, here it means setting a breakpoint somewhere inside Angular's implementation of <code>effect()</code> and I don't know where that is or where to even start looking. I barely understand code in an Angular application, digging into Angular framework internals is beyond my current skill level.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a loss on how to find my answer in code, I decided to revisit the documentation. Specifically, re-reading <a href="https://angular.io/guide/signals"><em>Angular Signals</em> developer guide</a>. Since it's a new feature in developer preview, it's still relatively sparse document and not something overwhelmingly long. I hoped to find an answer here and the most promising information is about <a href="https://angular.io/guide/signals#injection-context">Injection context</a>. It explained <code>effect()</code> requires something called an injection context and gave a few examples of how to make sure an <code>effect()</code> has what it needs. The document didn't say what happens if an <code>effect()</code> did not have an injection context so I have no idea if my problem match the expected symptoms. Still, it was worth a shot.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the code lab, we were instructed to put our <code>effect()</code> inside the <code>ngOnInit()</code> function. I don't know if <code>ngOnInit()</code> has an injection context, but it isn't in any of the examples listed in documentation. I followed the first example of putting my <code>effect()</code> in the constructor. Once <a href="https://github.com/Roger-random/codelabs/commit/ad4b5a0a7c6f31fd6ed5696d0d6dca2aa0a64685">that code was moved</a>, my <code>console.log()</code> messages inside started sending data to the developer console and, when I solved the cipher, I see a pop of confetti. Success!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm glad that worked, because it was a stab in the dark and I'm not sure what I would try next if it had not worked. So how did the StackBlitz example's <code>effect()</code> throw up confetti upon completion if <code>ngOnInit()</code> had no injection context? Comparing code I see a difference: in the StackBlitz project, the prompt "<code>// TODO(3): Add your first effect()</code>" was in the constructor and not <code>ngOnInit()</code> as per both the GitHub repository and code lab instruction text. I had wrongly thought StackBlitz cloned from the same GitHub repository. And now that I know the code is different, it helps explain "How the heck did this even work on StackBlitz" mystery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm glad I got the code lab application up and running correctly locally on my own computer, but <a href="https://newscrewdriver.com/2023/05/31/angular-signals-code-lab-css-requires-no-quirks-mode/">there's something weird with its CSS layout I need to investigate</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">My code changes are made in <a href="https://github.com/Roger-random/codelabs/tree/signals-get-started">my fork of the code lab repository in branch <code>signals-get-started</code></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

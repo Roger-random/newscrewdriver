@@ -1,0 +1,51 @@
+---
+layout: post
+title: 'A Tale of Three Corners: Design Evolution'
+date: 2017-03-29 19:52:38.000000000 +00:00
+type: post
+post_id: '4560'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Projects
+- Design
+- Luggable PC
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '3426517920'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/03/29/a-tale-of-three-corners-design-evolution/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The use of threaded rods to hold the Luggable PC case together was borne out of necessity: The print volume of the 3D printer is much smaller than the volume of a PC case so it must be printed in pieces then fastened together. A threaded rod provides strength along its length, but how do we best handle the inevitable corners?</p>
+<p>The key constraint is the strength of a 3D printed part, especially the adhesion between layers. This is an unavoidable fact of life for FDM-type printers: the part is weakest between layers, so designing for 3D printers must consider the layers similar to how designing for wood must consider the grain.</p>
+<h2>Version 1: basic asymmetric</h2>
+<p>In this design (as used in the "Easel PC" iteration) two of the rod axis are aligned with the direction of the layer. Stress along those two axis would mostly be held in check by the strength within each layer, but a fraction of the force would try to push the layers apart. To guard against this, the third axis is orthogonal so its fastening nuts would also try to hold the layers together.</p>
+<p>[caption id="attachment_4562" align="alignnone" width="768"]<img class="alignnone size-large wp-image-4562" src="https://newscrewdriver.com/wp-content/uploads/2017/03/corner-1-b.jpg?w=768" alt="Corner 1 B" width="768" height="1024"> Two of the rods are co-planar with the print layer. (Rod pointing left, and rod pointing down.) The nuts fastening the third rod (Rod pointing away) also exerts a clamping force on the layers.[/caption]</p>
+<p>[caption id="attachment_4561" align="alignnone" width="768"]<img class="alignnone size-large wp-image-4561" src="https://newscrewdriver.com/wp-content/uploads/2017/03/corner-1-a.jpg?w=768" alt="Corner 1 A" width="768" height="1024"> Same hinge viewed from a different angle.[/caption]</p>
+<p>The problem with this design is that the corners are asymmetric by nature. Not just in appearance, the loads it can tolerate are also asymmetric.</p>
+<h2>Version 2: symmetric but space consuming</h2>
+<p>The goal of a corner that handle loads symmetrically across the plastic layers means finding a way to make sure the plastic grain is equally strong across all three axis. The solution is to print at an orientation that lies at the same angle to all three axis.</p>
+<p>[caption id="attachment_4610" align="alignnone" width="698"]<img class="alignnone size-full wp-image-4610" src="https://newscrewdriver.com/wp-content/uploads/2017/03/cornercura.jpg" alt="CornerCura" width="698" height="624"> The corner laid flat on the print bed for slicing in Cura.[/caption]</p>
+<p>[caption id="attachment_4565" align="alignnone" width="768"]<img class="alignnone size-full wp-image-4565" src="https://newscrewdriver.com/wp-content/uploads/2017/03/corner-2-b.jpg" alt="Corner 2 B" width="768" height="1024"> Results in a corner that is equally strong across all three axis.[/caption]</p>
+<p>While this design solved the problem of symmetric appearance and strength, it introduced a new problem: by printing this way, the hinge consumes a lot of the enclosed volume making it unusable. When the goal is to pack the computer components inside a minimalist PC case, every cubic centimeter counts!</p>
+<p>[caption id="attachment_4563" align="alignnone" width="768"]<img class="alignnone size-full wp-image-4563" src="https://newscrewdriver.com/wp-content/uploads/2017/03/corner-2-a.jpg" alt="Corner 2 A" width="768" height="1024"> Angle showing the problem with this design - it consumes a lot of space inside the enclosed volume.[/caption]</p>
+<p>This hinge was used in the "<a href="https://hackaday.io/project/19583-luggable-pc/log/53004-threaded-rod-box-v1">Threaded Rod Box V1</a>" and the space it consumed severely hampered the packaging of that layout. It is definitely not the optimal solution so the search continues.</p>
+<h2>Version 3: Let's All Huddle Close!</h2>
+<p>The previous two designs both depended on the plastic to take some part of the load and hold on to a few steel rods. These rods were a few centimeters apart because we needed room for a wrench to tighten the nuts. We needed the nuts to sit inside the corner because...</p>
+<p>... um, why do we need them inside? The key for version 3 is the realization that we don't need that. By offsetting the rods slightly, we can extend the rods past the corner so the fastening nuts are outside of the enclosed volume and not competing for space with the components inside the box.</p>
+<p>When the nuts (and the required wrench clearance) are no longer inside the volume, it allows the rods to sit much closer to each other. Now the closest distance between rods are measured in millimeters instead of centimeters. It also means the three sets of fastening nuts help exert a clamping force across all three axis, compressing everything together. This compression means the alignment of the print layers become much less critical allowing significantly more freedom in designing the rest of the case.</p>
+<p>This corner design was used successfully in <a href="https://hackaday.io/project/19583-luggable-pc/log/54071-threaded-rod-box-v2">Threaded Rod Box V2</a> as shown. (In these pictures, some of the threaded rods have yet to be trimmed to length.)</p>
+<p><img class="alignnone size-full wp-image-4567" src="https://newscrewdriver.com/wp-content/uploads/2017/03/corner-3-b.jpg" alt="Corner 3 B" width="768" height="1024"><img class="alignnone size-full wp-image-4566" src="https://newscrewdriver.com/wp-content/uploads/2017/03/corner-3-a.jpg" alt="Corner 3 A" width="768" height="1024"><br />
+</body></html></p>

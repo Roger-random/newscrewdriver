@@ -1,0 +1,38 @@
+---
+layout: post
+title: Arduino Mozzi Wilhelm Exercise
+date: 2020-01-20 12:30:04.000000000 +00:00
+type: post
+post_id: '20285'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Projects
+tags:
+- Mozzi
+meta:
+  _thumbnail_id: '20239'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '39761791443'
+  timeline_notification: '1579552208'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/20/arduino-mozzi-wilhelm-exercise/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After completing <a href="https://newscrewdriver.com/2020/01/14/arduino-mozzi-space-core-exercise/">a quick Mozzi exercise</a>, I found a few problems that I wanted to fix in round 2.</p>
+<p>The first problem was the use of audio clip from Portal 2. While Valve Software is unlikely to pursue legal action against a hobbyist exercise project for using one short sound from their game, they indisputably own the rights to that sound. If I wanted a short code exercise as any kind of example I can point people to, I should avoid using copyrighted work. Hunting around for a sound that would be recognizably popular but less unencumbered by copyright restrictions, I settled on the famous stock sound effect known as the <a href="https://en.wikipedia.org/wiki/Wilhelm_scream">Wilhelm scream</a>. Information about this effect -- as well as the sound clip itself -- is found all over, making it a much better candidate.</p>
+<p>The second problem was audible noise even when not playing sampled audio. Reading through Mozzi sound code and <a href="https://sensorium.github.io/Mozzi/learn/under-the-hood/">under-the-hood diagram</a> I don't understand why this noise is coming through. I explicitly wrote code to emit zero when there's no sound, which I thought meant silence, but something else was happening that I don't understand yet.</p>
+<p>As a workaround, I will call <code>stopMozzi()</code> when playback ends, and when the button is pressed, I'll call <code>startMozzi()</code>. The upside is that the noise between playback disappears, the downside is that I now have two very loud pops, one each at the start and end of playback. If connected to a powerful audio amplifier, this sudden impulse can destroy speakers. But I'll be using it with a small battery-powered amplifier chip, so the destruction might not be as immediate. I would prefer to have neither the noise nor the pop, but until I figure out how, I would have to choose one of them. The decision today is for quick pops rather than ongoing noise.</p>
+<p>This improved Arduino Mozzi exercise <a href="https://github.com/Roger-random/mozzi_wilhelm">is publicly available on Github</a>.</p>
+<p></body></html></p>

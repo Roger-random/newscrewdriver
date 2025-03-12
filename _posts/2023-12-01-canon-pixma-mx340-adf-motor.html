@@ -1,0 +1,92 @@
+---
+layout: post
+title: Canon Pixma MX340 ADF Motor
+date: 2023-12-01 12:30:00.000000000 +00:00
+type: post
+post_id: '40760'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40761'
+  wordads_ufa: s:wpcom-ufa-v4:1703391787
+  _publicize_job_id: '89898827864'
+  timeline_notification: '1701462602'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/01/canon-pixma-mx340-adf-motor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Working to understand the electronics of a Canon Pixa MX340 multi-function inkjet, I started with the automatic document feeder (ADF) on top of the machine and believe I've fully <a href="https://newscrewdriver.com/2023/11/30/canon-pixma-mx340-adf-sensors/">deciphered its paper presence sensors</a>. Next objective is to measure the ADF motor's electrical parameters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40444,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-motor-and-gearbox.jpg?w=1024" alt="" class="wp-image-40444"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Seeing four wires leading to the motor, I guessed it was a <a href="https://en.wikipedia.org/wiki/Stepper_motor#Bipolar_motors">bipolar stepper motor</a>. I disconnected its cable from the mainboard to measure resistance between each of these wires. I found two 8.8 Ohms pairs and open circuit in other combinations. This is consistent with the guess.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't find identifying labels around the perimeter. There might be something on the side facing the gearbox, but I didn't want to disassemble it just yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40766,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-motor-qk1-6332-oxkt.jpg?w=800" alt="" class="wp-image-40766"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The non-gearbox side is marked with QK1-6332 OXKT. Searching on that designation found a few eBay vendors selling replacement motors for a Canon MX340. This is oddly model-specific. I would have expected the same motor to be used across multiple devices. Perhaps this is not a designation for the motor but designation for a MX340 replacement part.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40761,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-motor-wired-for-oscilloscope.jpg?w=1024" alt="" class="wp-image-40761"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Taking advantage of the fact I still have a running printer, I soldered some wires onto the motor interface board to see their behavior during the printer's startup sequence. The upper pair of wires (green and blue wires) is one of the 8.8-Ohm pairs, the lower pair (yellow and red) is the other pair. I expect to see four square waves alternating in a pattern consistent with driving bipolar stepper motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40770,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-mx340-adf-motor-all.png?w=1024" alt="" class="wp-image-40770"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's a snapshot of them during the startup sequence. Yep, bunch of square waves! I see the voltage level swings between 24V DC and ground, getting full power from the power supply. With 8.8 Ohm coils, straightforward <a href="https://en.wikipedia.org/wiki/Ohm%27s_law" target="_blank" rel="noreferrer noopener">Ohm's Law calculation</a> says the MX340 is driving this motor at 2.7A. Higher than I would have guessed, but within the range of power figures for a small stepper motor. It should also be noted that the ADF motor doesn't seem to get powered on at a single coil for an extended period of time. Some stepper motor usage scenarios do this to hold position, but apparently not here. This is good because when power pulses are rapid and short in duration, the motor can tolerate higher amperage levels without burning out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":40776,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-mx340-adf-motor-1-1.png?w=800" alt="" class="wp-image-40776"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40777,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-mx340-adf-motor-2-2.png?w=800" alt="" class="wp-image-40777"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Isolating each of the wires, here's the yellow-red coil. In the short time period of this snapshot, the coil is always energized one way or another.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":40779,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-mx340-adf-motor-3.png?w=800" alt="" class="wp-image-40779"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40778,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-mx340-adf-motor-4.png?w=800" alt="" class="wp-image-40778"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>And the green-blue coil doing the same. I'm not sure exactly what's going on at the time of this particular snapshot, but it doesn't have the regular pattern of a motor turning at a constant rate in a single direction. Perhaps I just happened to catch the motor as it switched direction? Digging for further details may be important if I am here to repair the document feeder. But as someone who only expects to repurpose the stepper motor in a future project, it is enough for me to confirm this looks reasonable for a bipolar stepper motor and knowing I can drive it at up to 2.7A at least for short periods.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's everything I wanted out of the ADF in this pass, I'm <a href="https://newscrewdriver.com/2023/12/02/canon-pixma-mx340-scanner-homing-sequence/">moving on to the scanner</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

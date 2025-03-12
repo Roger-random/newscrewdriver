@@ -1,0 +1,51 @@
+---
+layout: post
+title: 'Micro Sawppy Beta 2: The Runaway Rover'
+date: 2021-01-20 12:30:00.000000000 +00:00
+type: post
+post_id: '24508'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Micro Servo
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24548'
+  _oembed_d4924a30c8242d4dc008c637bb93df31: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Mechanically
+    loose play + simplistic control algorithm = tendency for self-perpetuating oscillations.
+    Ah, the joys of working with inexpensive micro servos. <a href="https://t.co/2q6Y3DYuey">pic.twitter.com/2q6Y3DYuey</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1341888336764358656?ref_src=twsrc%5Etfw">December
+    23, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '53695678658'
+  timeline_notification: '1611174602'
+  _oembed_time_d4924a30c8242d4dc008c637bb93df31: '1611189673'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/20/micro-sawppy-beta-2-poor-proportional-response/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I built up my little rover Micro Sawppy Beta 2 (MSB2) I observed that its steering servos were acting differently from the batch I used for MSB1. Beyond the clearly visible physical differences, these servos also had different control logic that can <a href="https://newscrewdriver.com/2021/01/19/micro-sawppy-beta-2-steering-oscillation/">get into a never-ending oscillation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A contributing factor here (if not the main factor) is that this micro servo's motor control logic is far too eager in its corrections. It applies too much power and, if that power is not absorbed by damping, we have over-correction which repeats the cycle. In theory the motor controller uses power in proportion to the error in position. If the target position is close, it should use less power than if the target was far away. This particular servo control board has poor (or at least poorly tuned) proportion control. It seems to use the same amount of power whether the target position is close or far away.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The occasional oscillation is moderately annoying for rover steering, but at least it is usually damped out when the rover is sitting on its wheels. I didn't experience the full impact of control algorithm used in these micro servos until I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/04/converting-mg90s-metal-gear-micro-servo-to-continuous-rotation/" target="_blank">converted them to continuous rotation</a> for rover's six wheel drive. Now the poor proportional response manifests in a rover that I can't run at partial power. I could make MSB1 crawl slowly up obstacles, but MSB2 didn't want to crawl slowly like a real Mars rover would. It is either stopped or booking across the landscape at full speed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In this scenario I suppose I could also apply damping by increasing the workload. Which means either adding friction to the drivetrain or making the rover heavier. This is assuming the motor will exhibit proportional behavior at higher load levels, which is possible but not yet proven. But despite the light weight causing other problems, I didn't like the idea of adding friction or weight purely for the sake of ballast. So I am going to explore a different venue by removing the flawed servo control board. I'll have to find some other motor controller and <a href="https://newscrewdriver.com/2021/01/21/micro-sawppy-beta-2-wire-channels-hinder-motor-conversion/">use only the mechanical portions of these micro servos</a> as a DC gearmotor assembly.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

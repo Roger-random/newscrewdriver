@@ -1,0 +1,39 @@
+---
+layout: post
+title: Perforated Board Iteration of Grbl ESP32 Control
+date: 2019-08-29 12:30:30.000000000 +00:00
+type: post
+post_id: '19374'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- TIL
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19373'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1567107085'
+  _publicize_job_id: '34720407326'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/29/perforated-board-iteration-of-grbl-esp32-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<a href="https://github.com/bdring/Grbl_Esp32">Grbl ESP32</a> packed a lot of functionality in software, so it was relatively simple to put it to work controlling the salvaged industrial XY table. An ESP32 development board already included voltage and USB serial converter on board, all I really had to provide for the project are <a href="http://www.buildlog.net/blog/2019/03/using-large-motor-drivers-with-3-3v-micro-controllers/">a few simple components</a> to stand between the delicate 3.3V pins of a ESP32 and the physical world. If the goal was maximum simplicity, I would have used an ATmega based Arduino board  with its robust 5V IO pins that could have been used directly. But I was enticed by the feature set of Grbl ESP32 and willing to put in a little more effort.</p>
+<p>These components were first proven out <a href="https://newscrewdriver.com/2019/08/17/esp32-grbl-controller-breadboard-prototype/">on a temporary breadboard</a>, and a <a href="https://newscrewdriver.com/2019/08/28/successful-single-axis-homing-on-xy-stage/">successful single axis home</a> gave me the confidence to move that circuit to a perforated circuit board with soldered instead of jumper wires, and also duplicate the circuit so we could control both X and Y axis.</p>
+<p><img class="alignnone size-full wp-image-19372" src="https://newscrewdriver.com/wp-content/uploads/2019/08/grbl-esp32-board-abandoned-layout.jpg" alt="Grbl ESP32 board abandoned layout" width="1600" height="900"></p>
+<p>I first laid out the ESP32 development module in the center, with roughly equal space for circuitry all around. As I started planning on component layout, though, I quickly realized this was silly. Even spacing was not a feature, it was actually very constrictive. Thankfully I had not yet soldered everything down so I could rotate the layout 90 degrees giving more space to the left and right of my ESP32 dev board for components. It didn't matter this reduced the free space top and bottom - they weren't convenient to use in this layout anyway.</p>
+<p>For the step and direction lines on both axis, there's a simple 2N2222 transistor allowing delicate ESP32 output pins (via a 1 kΩ resistor) to control the ground line of a much larger 5V circuit going into the Parker ZETA4 stepper motor driver. In parallel with the output ground pin going to the ZETA4, there's also a LED (with a 470 Ω current limiting resistor) to indicate activity on that line. Following the footstep of my <a href="https://newscrewdriver.com/2019/07/06/pixelblaze-pattern-rgb-xyz-3d-sweep/">Pixelblaze axis test</a>, I used two red LEDs for X and two green ones for Y.</p>
+<p>I had originally intended to install an optoisolator for each of the two homing switch input pins, but I ran short on time for the work session. I was too squeamish to connect the pins directly so I put in another 1 kΩ resistor between the ESP32 pin and the input that would be shorted to ground. It's not a very robust level of protection, but it is better than nothing. A future iteration will have to revisit the topic of ESP32 protection measures, potentially after one is damaged from insufficient protection...</p>
+<p>But that's a problem for later. For the purposes of this work session, we have to <a href="https://newscrewdriver.com/2019/08/30/deciding-machine-axis-for-xy-table-project/">decide how we want our machine axis to be configured</a>.</body></html></p>

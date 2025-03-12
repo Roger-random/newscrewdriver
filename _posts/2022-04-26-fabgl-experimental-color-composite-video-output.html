@@ -1,0 +1,70 @@
+---
+layout: post
+title: FabGL Experimental Color Composite Video Output
+date: 2022-04-26 12:30:00.000000000 +00:00
+type: post
+post_id: '29911'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- FabGL
+meta:
+  _publicize_job_id: '71855446260'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29923'
+  timeline_notification: '1651001420'
+  _oembed_debf97fd9715944edc12ca293a158b0a: <div class="embed-youtube"><iframe title="Composite
+    color video output (ESP32 - FabGL) - experimental" width="700" height="394" src="https://www.youtube.com/embed/5QteUItkyVs?feature=oembed"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+    gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe></div>
+  _oembed_time_debf97fd9715944edc12ca293a158b0a: '1724989676'
+  _oembed_cb5270dcc1931997770ae91f8d6e831f: <div class="embed-youtube"><iframe title="Composite
+    color video output (ESP32 - FabGL) - experimental" width="750" height="422" src="https://www.youtube.com/embed/5QteUItkyVs?feature=oembed"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+    gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe></div>
+  _oembed_time_cb5270dcc1931997770ae91f8d6e831f: '1729624690'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/26/fabgl-experimental-color-composite-video-output/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I don't fully understand the magic of <code><a rel="noreferrer noopener" href="https://github.com/rossumur/esp_8_bit" target="_blank">ESP_8_BIT</a></code> color composite video generation code, but I understood enough to extract just the video display portion to render a frame buffer. Since that was a bit too low-level, for <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank">my <code>ESP_8_BIT_Composite</code> Arduino library</a> I added an implementation of Adafruit GFX library. Before I committed to Adafruit GFX, I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/06/window-shopping-fabgl/" target="_blank">window-shopped FabGL</a> as an alternate candidate. I decided against FabGL because unlike Adafruit GFX, it was not designed for others to extend to different video output devices. The only practical way for FabGL to gain color composite video output support is if the author tackles the challenge directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And this, apparently, is happening! I learned of this <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/discussions/34" target="_blank">via a post</a> to my Arduino library's discussion forum on GitHub. This is very exciting, because <a rel="noreferrer noopener" href="https://github.com/fdivitto/FabGL/discussions/192" target="_blank">FabGL author's show-and-tell thread</a> shows they are tackling this problem with far more resources than I had invested in my library. They start out with an advantage in knowledge built over time, as FabGL has been under development for several years. They also have an advantage in equipment, as this effort is aided by a Tektronix VM700 instrument to analyze the results and find problems. I didn't even have a decent oscilloscope to tell me what happened when things went wrong!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like the potential here, so I installed FabGL via Arduino Library Manager to take a look. This was a mistake, as the composite video feature is an experimental work in progress and not part of the most recent official release v1.0.6. I deleted that library and cloned the FabGL repository directly into my Arduino Libraries folder, and this time I could build and run the basic composite video test.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>FabGL author said they're not happy with the results yet and there are lots more work to be done, but what already exists today looks very promising. Visual contents look as stable as can be reasonably expected of analog composite video. However, the color capability isn't quite there yet. On my TV, the red test block fades to pink in its horizontal center. The blue test block has difficulty transitioning from the adjacent green test block. As the beam scans horizontally from green to blue, it makes an initial transition to blue and then overshoots (?) to purple before returning back to blue. None of this is visible in the demo YouTube video (embedded below) so perhaps this is a problem with my hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm curious if any existing FabGL features would prove to be incompatible with color composite video output. I suspect the sound output feature might go, as color composite video generation uses several of the same ESP32 peripherals and outputs to the same pin GPIO 25. (Similar to ESP_8_BIT.) Regardless of the tradeoffs that FabGL users may have to make, I hope this experiment will eventually succeed and become a part of a future official FabGL release.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:embed {"url":"https://www.youtube.com/watch?v=5QteUItkyVs","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} --></p>
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio">
+<div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=5QteUItkyVs
+</div>
+</figure>
+<p><!-- /wp:embed --><br />
+</body></html></p>

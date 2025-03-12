@@ -1,0 +1,84 @@
+---
+layout: post
+title: Canon 210 (Black) And 211 (Color) Cartridges
+date: 2024-03-25 12:30:00.000000000 +00:00
+type: post
+post_id: '42678'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '42679'
+  firehose_sent: '1711395027'
+  wordads_ufa: s:wpcom-ufa-v4:1711395330
+  _publicize_job_id: '93018367647'
+  timeline_notification: '1711395028'
+  _elasticsearch_data_sharing_indexed_on: '2024-03-25 19:30:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/03/25/canon-210-black-and-211-color-cartridges/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While reviewing my notes about <a href="https://newscrewdriver.com/2024/03/24/dell-xps-8950-components-replaced-under-warranty/">getting my Dell XPS 8950 fixed</a>, I realized an item from <a href="https://newscrewdriver.com/2024/03/19/canon-pixma-mx340-teardown-index/">my inkjet teardown</a> slipped through the cracks: an aborted teardown of its 210XL and 211 ink cartridges. I wasn't terribly interested in their internals. So when I encountered its robust construction I just shrugged and moved on. Still, there were a few interesting observations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42679,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-top.jpg?w=1024" alt="" class="wp-image-42679"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When <a href="https://newscrewdriver.com/2024/03/10/mx340-print-carriage-internals/">I looked at the print carriage internals</a>, I was not surprised to see the black cartridge had <em>fewer</em> electrical contact points than the color cartridge. However, I was surprised to see it's not <em>one-third</em> the amount. It has to deal with just black instead of cyan, magenta, and yellow. Why does it have well over 1/3 the contact points?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42682,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-bottom.jpg?w=800" alt="" class="wp-image-42682"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saw the answer when I flipped those two cartridges over and compared them side by side. The single-color black ink print head is double the height of the three-color ink print head. When printing purely in monochrome, it can print a band twice as high in a single pass so the <a href="https://newscrewdriver.com/2024/02/05/quadrature-decode-mx340-print/">paper can advance twice the distance</a> basically doubling print speed. Assuming all else are equal, it would imply the black ink cartridge would need 2/3 the contact points of the color cartridge rather than 1/3. The actual numbers are 20 contacts for black and 36 contacts for color. Close enough for me to declare mystery solved.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42685,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-cut-one-rivet.jpg?w=800" alt="" class="wp-image-42685"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Those contact points are on a thin flexible printed circuit and held down by four melted plastic rivets. I could cut them flush with a knife to free the thin sheet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42687,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-contact-fpc-freed-outside.jpg?w=800" alt="" class="wp-image-42687"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once freed, I took a picture of the exterior side...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42689,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-contact-fpc-freed-inside.jpg?w=800" alt="" class="wp-image-42689"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>... and the interior side. The print head is to the left of these two pictures so it's no surprise a bunch of copper traces lead that direction, but I was intrigued by the traces running off the edge to the right. What purpose did that serve?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42691,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-contact-ripped-off-from-slight-tug.jpg?w=800" alt="" class="wp-image-42691"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't see any more rivets I could cut, and I couldn't see anything else I could release. Trying to see what might be holding things in place, I gave the thin sheet a firm tug and it ripped off. The answer is, apparently, glue. Underneath the ripped-off sheet is the print head embedded inside cartridge enclosure. I saw no fasteners or clips. I think it is either glued in or molded in.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42693,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-brittle-print-head-embedded.jpg?w=800" alt="" class="wp-image-42693"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried prying against a corner and ended up braking off a piece. The whole thing is made of a very strong material. When it is over stressed, its brittle nature causes it to shatter instead of bend.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42695,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-210-211-ink-cartridges-brittle-print-head-embedded-closeup.jpg?w=800" alt="" class="wp-image-42695"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like the enclosure is bonded strongly enough to the actual print head that they broke apart together. There's no way to get further inside without being extremely destructive about it, which won't teach me anything interesting, so I stopped here.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

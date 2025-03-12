@@ -1,0 +1,46 @@
+---
+layout: post
+title: Hackaday Badge Keyboard
+date: 2018-10-24 10:27:18.000000000 +00:00
+type: post
+post_id: '17041'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23541278266'
+  timeline_notification: '1540402042'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/24/hackaday-badge-keyboard/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The most visible physical feature of the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a>, taking up most of the space on its circuit board, is an array of tiny little tactile clicky buttons making up a QWERTY keyboard. This is where badge hackers can type in BASIC programs and run them for an easy entry into this badge's retrocomputing theme.</p>
+<p>I'm no electronics expert, but I've seen enough circuit boards to recognize the convention for components to be lined up nicely in a grid. The keyboard buttons didn't follow this pattern and sat at a slight angle. I had thought this was done just for aesthetics, standing apart from convention, but I was wrong. <a href="https://hackaday.com/2018/07/20/belgrade-badge-hacks/">There was a functional goal at work</a>: the slight angle allowed the button's pins to be staggered and thus packed more closely together. Neat!</p>
+<p><img class=" size-full wp-image-17047 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-keys.jpg" alt="Hackaday Badge Keys" width="1024" height="530"></p>
+<p>Electrically, most of the keys are laid out across a matrix of 10 columns and 5 rows. This allows the PIC32 chip to detect any single press of these 50 buttons using just 15 pins on the chip. The default firmware has a timer that fires regularly for household maintenance, and one of the tasks is to scan these pins for keyboard activity in function <code>keyb_tasks</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.c">hw.c</a>. Each timer slice checks one row on the keyboard, so it may take up to five time slices to scan the entire keyboard.</p>
+<p>This is simple and efficient, but only works properly when one key at a time is pressed. When more than one key is pressed, the combination is ambiguous. For example, the following key combinations:</p>
+<p><img class=" size-full wp-image-17043 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-keyboard-main.png" alt="Hackaday Badge Keyboard Main" width="397" height="229"></p>
+<ul>
+<li>E + D</li>
+<li>E + D + R</li>
+<li>E + D + S</li>
+<li>E + R + S</li>
+<li>E + D + R + S</li>
+</ul>
+<p>Would all light up the same four pins: B10, B11, B13, and B14 and there's no way to tell them apart. This ambiguity will present a challenge for projects that require multiple simultaneous key presses. For example, some games require the user to press up and right simultaneously to command a movement to the upper right. Fortunately, this specific scenario is possible because the arrow keys are all on the same row, so a game that depends on arrow keys has to implement a custom variant of <code>keyb_tasks</code> that scan just pin F4's row for one or more arrow keys. However, other typical sets of game directional keys ("WASD" and "IJKL") could not be supported in the same way.</p>
+<p><img class=" size-full wp-image-17042 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-keyboard-other.png" alt="Hackaday Badge Keyboard Other" width="189" height="201"></p>
+<p>A few special keys on the keyboard have their own pins and read by other places in the firmware. The power button, break, and each of the two shift buttons have their own pin. The reset button is wired in series with the left shift key, so they both must be pressed to reset the badge. They do not share the D10 pin as the schematic might be interpreted to imply. A press of left shift + reset actually goes to MCLR pin, the PIC32 chip's hardware reset guaranteeing that reset always works regardless of any potential firmware bugs.</p>
+<p> </body></html></p>

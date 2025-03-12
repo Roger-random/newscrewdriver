@@ -1,0 +1,73 @@
+---
+layout: post
+title: Windows SFC (System File Checker) Revived Explorer
+date: 2022-08-16 12:30:00.000000000 +00:00
+type: post
+post_id: '32195'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32213'
+  _publicize_job_id: '75815224661'
+  timeline_notification: '1660678248'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/16/windows-sfc-system-file-checker-revived-explorer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>On a computer running Microsoft Windows operating system, the executable application <code>explorer.exe</code> is very important. It handles the start bar and is the starting point for almost every activity on the system. Its core position means if Explorer breaks for any reason, it's very hard to do anything else on that system! Yet its complexity and wide span of responsibilities also means having wide exposure to things that go wrong. Countering this risk, Explorer has recovery measures built-in as well. If it freezes up, there's a watchdog time to restart the process. If it should crash, there are mechanisms to relaunch it. And if the relaunch immediately leads to a problem, it relaunches with gradually decreasing capability until it finds a configuration that is stable enough for the user to go in and figure out what went wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This happened to my Windows machine. Something went wrong and Explorer went into a failing loop that restarted once every 10-15 seconds. This continued for several minutes (Explorer restarting a few dozen times) until it stabilized in a <strong><em>very </em></strong>reduced configuration that was unfortunately pretty difficult to use. The Start menu is missing, but at least Window+E shortcut key still worked to open File Explorer. That allowed me to launch diagnostics tools, though I had to use my phone to search for their paths on the system so I could find them in File Explorer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first stop to diagnose Windows problems is the Event Viewer, which I had to launch from File Explorer by double-clicking <code>C:\Windows\System32\eventvwr.exe</code>. Clicking the root node in the tree "Event Viewer (Local)" will show a summary of events. My system showed over four hundred "Error" events in the past hour, an obvious place to start looking. Expanding that tree took me to a list of those hundreds of Application Error logs, here is one example:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32213,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/event-viewer-showing-explorer.exe-faulted-in-wintypes.dll_-1.png?w=1024" alt="" class="wp-image-32213"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, the details of this Application Error were not scaled for high DPI displays and pretty unreadable in that screenshot, so here is a copy of the text shown inside that "General" tab:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Faulting application name: explorer.exe, version: 10.0.22000.832, time stamp: 0x8947d46c
+Faulting module name: wintypes.dll, version: 10.0.22000.778, time stamp: 0xb903efeb
+Exception code: 0xc0000005
+Fault offset: 0x0000000000022b20
+Faulting process id: 0x1f44
+Faulting application start time: 0x01d8b13598ecfee1
+Faulting application path: C:\Windows\explorer.exe
+Faulting module path: C:\Windows\SYSTEM32\wintypes.dll
+Report Id: d0fb6df2-0bad-45bd-aff3-dee9c438b3d2
+Faulting package full name: 
+Faulting package-relative application ID: </code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like explorer is pointing a finger at its dependency <code>wintypes.dll</code>. Unfortunately, there isn't enough data here to tell us if the problem is in <code>wintypes</code> itself or a dependency in turn. But at least it is a narrower scope than explorer, whose scope covers damned near everything. A search for "wintypes corrupt" found many websites advertising "Download wintypes to fix your system!" But downloading replacements for Windows system executables off the internet is a recipe for security disaster and I'm not going to do that. There were a few promising diagnostics steps, the one that was eventually successful was <a rel="noreferrer noopener" href="https://answers.microsoft.com/en-us/windows/forum/all/wintypesdll-is-corrupted-on-windows-10-and-getting/3a0c1f52-ce99-49b6-99b3-dbe4deca3ff7" target="_blank">this Microsoft community forums thread</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The repair procedure was to first run the <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/what-is-dism" target="_blank">Deployment Image Servicing and Management tool</a> (DISM) to ensure my system has a valid copy of the system image. Followed by running the <a rel="noreferrer noopener" href="https://support.microsoft.com/en-us/topic/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system-files-79aa86cb-ca52-166a-92a3-966e85d4094e" target="_blank">System File Checker tool</a> (SFC) to scan through my Windows system files. SFC will compare what's on my system against the system image archive. If a mismatch is found, SFC will replace the corrupted file with a clean copy from the system image. These are system-level administrative tools. In order to run them, I had to launch an administrator command prompt from File Explorer.  (Right click on <code>C:\Windows\System32\cmd.exe</code> and select "Run as administrator")</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It took several minutes for those tools to complete. After SFC reported scan and repair was complete, I rebooted my system. And this time, Windows explorer started with full functionality. Success! I went back to take a look at the log file (<code>C:\Windows\Logs\CBS\CBS.log</code>) and searched for mentions of "repair". I found these two lines:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>2022-08-15 23:15:56, Info                  DEPLOY [Pnp] Corrupt file: C:\Windows\System32\drivers\bthmodem.sys
+2022-08-15 23:15:56, Info                  DEPLOY [Pnp] Repaired file: C:\Windows\System32\drivers\bthmodem.sys</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Huh. The Bluetooth communications driver caused me all this grief? It is indeed part of my Windows system, because I've been playing with <a href="https://www.microsoft.com/en-us/windows/sync-across-your-devices" target="_blank" rel="noreferrer noopener">Microsoft Phone Link</a> and it connects to my Android phone over Bluetooth. I didn't think a problem with this file would bring down Explorer, but now I know it can. I also don't know how this file got corrupted to begin with, and that might be important to know if it should happen again. For now, I'm happy my computer is back up and running.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

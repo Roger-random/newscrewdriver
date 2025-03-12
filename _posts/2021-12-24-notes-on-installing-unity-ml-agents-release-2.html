@@ -1,0 +1,55 @@
+---
+layout: post
+title: Notes on Installing Unity ML-Agents (Release 2)
+date: 2021-12-24 12:30:00.000000000 +00:00
+type: post
+post_id: '27995'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags:
+- ML-Agents
+- Reinforcement Learning
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27869'
+  _publicize_job_id: '66892852610'
+  timeline_notification: '1640377856'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/24/notes-on-installing-unity-ml-agents-release-2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I thought it would be fun to <a href="https://newscrewdriver.com/2021/12/23/switching-back-to-unity-ml-agents/">play with reinforcement learning via Unity ML-Agents</a>. The official product landing page sends us to <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents" target="_blank">the ml-agents repository</a> on GitHub. And just like every other repository, it's always a good idea to look over the README.md to understand their branch organization. Especially before we start cloning anything.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And indeed, the README includes a handy chart of releases. As of this writing there are eight releases listed plus main which is labeled as unstable. I'm glad I didn't blindly clone main! Of the eight stable releases, six are named "Release 13" to "Release 18" inclusive. The final two are named "Verified Package 1.0.7" and "Verified Package 1.0.8".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The "Verified" label is a guarantee of safety in <a href="https://docs.unity3d.com/Manual/upm-lifecycle.html" target="_blank" rel="noreferrer noopener">the lifecycle of Unity packages</a>. Therefore the most recent release with the highest guarantee of functionality is "Verified Package 1.0.8". In Unity's world, these verified packages are good enough for commercial production use. If our needs aren't quite that rigorous, we can use the builds labeled "Release." These numbers are explained in <a href="https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Versioning.md" target="_blank" rel="noreferrer noopener">the ML-Agents versioning page</a>, and it's something we can play with if we aren't shouldering the weight of commercial Unity production.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think I'm fine to play with more recent "Release" builds, but I wanted to start with the most guarantee build to make sure I can at least get that working. Which meant cloning the build labeled "Verified Package 1.0.8" and that maps to "Release 2."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to open the Unity Project that is a part of this release, I wanted to get the version of Unity that exactly matched the version number <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/blob/release_2/Project/ProjectSettings/ProjectVersion.txt" target="_blank">in ProjectVersion.txt</a>: 2018.4.17f1. If I tried to install Unity 2018 in Unity Hub, it offers me 2018.4.36f1 because that was the most recent supported version. In order to match version, I had to click <a href="https://unity3d.com/get-unity/download/archive" target="_blank" rel="noreferrer noopener">the download archive link</a> and look for 2018.4.17 under 2018 builds. (It was released February 11th, 2020.) Once found, I could click the "Unity Hub" button to prompt Unity Hub to install the build on my machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While Unity installed, I cloned the repository tagged <code>release_2</code> and installed corresponding Python binaries. I encountered no problems following installation directions for this release, though there were slight modifications as I used Anaconda Individual to manage my Python virtual environments. I had the option of installing the locally cloned versions of the <code>ml-agents-envs</code> and <code>ml-agents</code> packages and I did so. I noticed that the installation had TensorFlow in CPU-only mode, but running without GPU acceleration is <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/18/old-pytorch-without-gpu-is-enough-to-start/" target="_blank">perfectly OK for a starting point</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once Unity Editor 2018.4.17 was installed, I used it to open the Project directory of my cloned <code>release_2</code> repository. It opened without errors. I proceeded to the <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/blob/release_2_verified_docs/docs/Getting-Started.md" target="_blank">Getting Started Guide for this release</a> and verified I had basic functionality both running the pretrained 3D Balance Ball model and training a model of my own. The training was pretty quick, it took just under 8 minutes on the <a rel="noreferrer noopener" href="https://ark.intel.com/content/www/us/en/ark/products/97456/intel-core-i57300hq-processor-6m-cache-up-to-3-50-ghz.html" target="_blank">Core i5-7300HQ CPU</a> of <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/03/in-a-distorted-computer-component-market-buying-is-better-than-building/" target="_blank">my Dell 7577 laptop</a> plugged in to an AC power adapter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Encouraged by this success, I proceeded to <a href="https://newscrewdriver.com/2021/12/25/notes-on-installing-unity-ml-agents-release-18/">try Release 18 as well</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

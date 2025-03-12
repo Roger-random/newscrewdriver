@@ -1,0 +1,43 @@
+---
+layout: post
+title: The cross-site rabbit hole
+date: 2016-03-05 00:26:31.000000000 +00:00
+type: post
+post_id: '632'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HTML
+- JavaScript
+- jQuery
+tags: []
+meta:
+  _edit_last: '98499281'
+  geo_public: '0'
+  _publicize_job_id: '20453022034'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/03/05/the-cross-site-rabbit-hole/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Wow, cross-site issues are huge cans of worms!</p>
+<p>In the absence of first-hand experience dealing with network-centric development, my knowledge of cross-site vulnerabilities has been limited to broad descriptions covered in tech press.</p>
+<p>While educating myself in the <a href="http://learn.jquery.com/">jQuery Learning Center</a>, I came across the <a href="http://learn.jquery.com/ajax/working-with-jsonp/">JSONP utility functions of jQuery</a>. Trying to understand the utility meant I had to look up <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>. Trying to understand JSONP required learning what problem it is trying to solve. Which dropped me into the rabbit hole of web security. Starting with a web browser's <a href="https://en.wikipedia.org/wiki/Same-origin_policy">same-origin policy</a>, through cross-site scripting (<a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS</a>), cross-site request forgery (<a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>), and others.</p>
+<p>The short version: Communication across multiple web domains is a very powerful thing. And like everything that's powerful, there are people who will use it for evil. The various browser policies are efforts to shut down such activity to protect users from evil.</p>
+<p>Like every effort to control great powers that can be used for good or evil, both sides continue to find ways to do what they want despite the walls erected to block them.</p>
+<ol>
+<li>Because it is so powerful for nefarious purposes: Hackers continue to find ways to circumvent cross-domain protection with clever exploitation. To keep me grounded in jQuery education, Wikipedia helpfully pointed to a <a href="https://bugs.jquery.com/ticket/9521">cross-site security issue in jQuery</a> itself. Problems can hide anywhere.</li>
+<li>Because it is so powerful for legitimately useful purposes: Developers continue to find ways to communicate across domains in a relatively safer manner. (Usually until a creative hacker comes along to prove why it isn't safe.) JSONP, which started my whole adventure, is one such method.</li>
+</ol>
+<p>Like everything else I'm learning about web programming, this will have to be a brief overview and I have to come back later. Right now I don't even understand all the vocabulary yet.</p>
+<p>I'm unsettled by this topic. The importance of network security grows with every passing day. This feels like a very fundamental area of network security, and it is a huge nasty hairball that has proven to be difficult to untangle. This can only be a recipe for more security vulnerabilities in the future.</p>
+<p>Maybe even one that I inadvertently create.</p>
+<p>Ugh.</body></html></p>

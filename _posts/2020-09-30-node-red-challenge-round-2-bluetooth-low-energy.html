@@ -1,0 +1,52 @@
+---
+layout: post
+title: 'Node-RED Challenge Round 2: Bluetooth Low Energy'
+date: 2020-09-30 12:30:00.000000000 +00:00
+type: post
+post_id: '22441'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- 13-r010dx
+- Node-RED
+meta:
+  _thumbnail_id: '22444'
+  _publicize_job_id: '49413673866'
+  timeline_notification: '1601494240'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667205362
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/30/node-red-challenge-round-2-bluetooth-low-energy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My <a href="https://newscrewdriver.com/2020/09/24/node-red-challenge-round-1-battery-level-reporting/">first challenge to Node-RED</a> was a success: I was able to read battery voltage and charge percentage from a slow Samsung 500T tablet stuck on an old 32-bit build of Windows 10, and the hardest part of that process was retrying installation after it timed out because the computer was so slow.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This next challenge is significantly more difficult: connect to peripherals via Bluetooth Low Energy. Despite Bluetooth in the name, BLE is actually a completely different protocol from the earlier grand wireless protocol to rule them all. (Sometimes called "Bluetooth Classic" now.) But it is now administered by the same consortium,. so there we go.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As its name implies, a primary goal for BLE is reducing power requirements to make it feasible for battery powered devices. And in this context "battery" is not a gigantic brick of rechargeable lithium-ion cells, BLE wants to be practical for devices to run for months on little coin cell batteries. It's new, with its own set of rules, and tricky to get right. Thus the perfect advanced level challenge.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This time the hardware is the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/26/hp-split-x2-13-r010dx-first-pass-evaluation/" target="_blank">HP Split X2</a> from NUCC, an old Windows laptop with built-in Bluetooth. It has a decent processor and RAM but hobbled by <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/23/hp-split-x2-13-r010dx-sata-but-not-as-i-know-it/" target="_blank">an old hard drive that's difficult to upgrade</a>. As a result installing Node-RED took almost as long as it did on the Samsung 500T's slow eMMC storage, but at least the CPU was fast enough to avoid a timeout.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Node-RED extension of interest here is <code><a rel="noreferrer noopener" href="https://flows.nodered.org/node/node-red-contrib-noble-bluetooth" target="_blank">node-red-contrib-noble-bluetooth</a></code>. Out of all the nodes claiming Bluetooth capability, this one seems to be the one that has general BLE capability (not tied to specific devices) and updated most recently. I installed that extension, started a query for nearby BLE devices, and Node-RED crashed. Not throwing an error that a flow might try to handle, not an error message, Node-RED itself crashed with an error thrown by Noble.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><code>No compatible USB Bluetooth 4.0 device found!</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ah well, I didn't expect it to be as easy as <a href="https://newscrewdriver.com/2020/09/26/monitoring-samsung-500t-discharge-charge-cycle/" target="_blank" rel="noreferrer noopener">reading battery level</a> and fully anticipated some bumps on the road to this advanced challenge. Time to <a href="https://newscrewdriver.com/2020/10/01/adding-noble-specified-hardware-failed-to-enable-ble-discovery/">do a little investigation</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

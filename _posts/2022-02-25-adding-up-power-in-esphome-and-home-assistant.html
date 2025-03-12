@@ -1,0 +1,60 @@
+---
+layout: post
+title: Adding Up Power in ESPHome and Home Assistant
+date: 2022-02-25 12:30:00.000000000 +00:00
+type: post
+post_id: '28738'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- ESPHome
+- Home Assistant
+- INA219
+meta:
+  timeline_notification: '1645821013'
+  _publicize_job_id: '69472685391'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28706'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/25/adding-up-power-in-esphome-and-home-assistant/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Using an INA219 breakout board, I could continuously measure voltage and current passing through a circuit. Data is transmitted by an ESP8266 running ESPHome software and reported to Home Assistant. In order to avoid getting flooded with data, we can <a href="https://newscrewdriver.com/2022/02/24/esphome-sensor-filters-help-manage-flood-of-data/">use ESPHome sensor filters</a> to aggregate data points. Once we have voltage and current, multiplying them gives us power at a particular instant. The next step is to sum up all of these readings over time to calculate energy produced/consumed. We have two methods to perform this power integration: onboard the microcontroller with ESPHome, or on the Home Assistant server.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="esphome">ESPHome</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <a rel="noreferrer noopener" href="https://esphome.io/components/sensor/total_daily_energy.html" target="_blank"><em>Total Daily Energy</em> component</a> accumulates value from a specified power sensor and integrates a daily tally. (It also needs the <a rel="noreferrer noopener" href="https://esphome.io/components/time.html" target="_blank"><em>Time</em> component</a> to know when midnight rolls around, in order to reset to zero.) The downside of doing this calculation on the controller is that our runny tally must be saved somewhere, or else we would start from zero every time we reset. By default, the tally is saved in flash memory every time a power reading arrives. If power readings are taken at high frequency, this could wear out flash storage very quickly. ESPHome provides two parameters to mitigate wear: we could set <code>min_save_interval</code> to a longer duration in order to reduce the number of writes, or we could set <code>restore</code> to false and skip writing entirely. The former means we lose some amount of data when we reset, the latter means we lose all the data. But your flash memory will thank you!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="home-assistant">Home Assistant</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Alternatively, we can perform this calculation on Home Assistant server with the unfortunately named <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/integration/" target="_blank">integration integration</a>. The first "integration" refers to the math, called Riemann sum integral. The second "integration" is what Home Assistant calls its modules. Hence "integration integration" (which is also very annoying to search for).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Curiously, I found no way in Home Assistant user interface to add this to my instance, I had to go and manually edit <code>configuration.yml</code> as per documentation. After I restarted Home Assistant, a new tally started counting up on my dashboard, but I could not do anything else with the user interface element. I just get an error "<a href="https://www.home-assistant.io/faq/unique_id">This entity does not have a unique ID</a>".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, doing this math on the server meant data in progress will be tracked and saved in a real database, kept on a real storage device instead of fragile flash memory. But by default it does not reset at midnight, so the number keeps ticking upwards. Doing more processing with this data is on the to-do list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Should we do our computation on the microcontroller or on the server? There are certainly advantages to either approach, but right now I lean towards server-side because that lets us <a href="https://newscrewdriver.com/2022/02/26/exploring-low-power-esphome-nodes/">put the microcontroller to sleep</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,66 @@
+---
+layout: post
+title: CadQuery Concepts Overview
+date: 2024-04-28 22:59:56.000000000 +00:00
+type: post
+post_id: '43220'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43206'
+  firehose_sent: '1714370398'
+  wordads_ufa: u:wpcom-ufa-v4:1714420879
+  timeline_notification: '1714370399'
+  _publicize_job_id: '94076950215'
+  _elasticsearch_data_sharing_indexed_on: '2024-04-29 20:02:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/04/28/cadquery-concepts-overview/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a few failed attempts, I got CadQuery's default UI <code>CQ-editor</code> <a href="https://newscrewdriver.com/2024/04/27/cq-editor-standalone-on-vm-via-rdp/">up and running</a> which means it's time to dive in! Here are some notes after reading <a href="https://cadquery.readthedocs.io/en/latest/primer.html">CadQuery Concepts overview page</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Workplane vs. workplane</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>My biggest confusion came from two identically named things that I could only occasionally differentiate from context and capitalization. There is the Workplane class, whose name is always capitalized, and it is the Python object type serving as the main entry point for majority of CadQuery's top level API. Then there is the general CAD workplane concept, usually defined by two parallel global axes ("XY"). If someone understands that there are two different things going on and understand their context, the next paragraph will make perfect sense. If they don't, they'll be hopelessly lost:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A sequence of CadQuery operations is represented by a chain/tree of Workplane objects, each with a reference to its parent except for the root Workplane. Each Workplane has a reference to a workplane and a workplane may be referenced by multiple Workplane objects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Selectors</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like the theory of CadQuery selectors. It should be a more robust way to specify objects for various operations. Rather than specifying a target via, say, "Face #12" I can specify "Face with the greatest Z coordinate". "Face #12" is closest to mechanisms within underlying <a href="https://en.wikipedia.org/wiki/Open_Cascade_Technology">Open Cascade Technology platform</a>, but it is also the root of all FreeCAD "Topological Naming Problem" evil. From my brief look at <a href="https://newscrewdriver.com/2023/07/21/window-shopping-cascade-studio/">Cascade Studio</a> I didn't see it offer a solution to the problem, but a brief look at <a href="https://newscrewdriver.com/2023/07/22/window-shopping-replicad/">Replicad</a> found "Finders" which have some superficial similarity to CadQuery selectors. I'm looking forward to learning how well CadQuery selectors work in practice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">API Layers</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>CadQuery's top level API, the one with all its user-friendly features like Selectors, is called the "Fluent API" in CadQuery documentation. It's what I plan to learn, but I'm happy to see I won't be restricted to the Fluent API. Architecturally underneath is the "Direct API", which organizes underlying Open Cascade capabilities into Python classes. And underneath that is the "OCCT API" which are minimalist Python translations of the basic C++ API.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are methods to translate data structures from one layer to another, and it is valid for CadQuery code to move between those layers. Such capabilities greatly reduce any concern of being limited by any one API.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a quick general concepts overview in mind, I moved onward to learning about <a href="https://newscrewdriver.com/2024/04/29/cadquery-sketch-overview/">2D sketching in CadQuery</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

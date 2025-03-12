@@ -1,0 +1,99 @@
+---
+layout: post
+title: Realtek Network r8169 Woes with Linux Kernel 6
+date: 2023-11-03 12:30:00.000000000 +00:00
+type: post
+post_id: '39944'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- '7577'
+- Dell
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39972'
+  timeline_notification: '1699039810'
+  _publicize_job_id: '89053824479'
+  wordads_ufa: s:wpcom-ufa-v4:1699134443
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/03/realtek-network-r8169-woes-with-linux-kernel-6/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>[UPDATE: After installing Proxmox VE kernel update from 6.2.16-15-pve to 6.2.16-18-pve, this problem no longer occurs, allowing the machine to stay connected to the network.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After <a href="https://newscrewdriver.com/2023/11/02/running-home-assistant-os-under-proxmox-ve/">setting up a Home Assistant OS virtual machine in Proxmox VE</a> alongside a few other virtual machines, I wondered how long it would be before I encounter my first problem with this setup. I got my answer roughly 36 hours after I installed Proxmox VE. I woke up in the morning with my ESP microcontrollers blinking their blue LEDs, signaling a problem. The Dell Inspiron 7577 laptop I'm using as a light-duty server has fallen off the network. What happened?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I pulled the machine off the shelf and opened the lid, which is dark because of my screen blanking configuration earlier. But tapping a key woke it up and I saw it filled with messages. Two messages were dominant. There would be several lines of this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>r8169 0000:03:00.0 enp3s0: rtl_chipcmd_cond == 1 (loop: 100, delay: 100).</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Followed by several lines of a similar but slightly different message:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>r8169 0000:03:00.0 enp3s0: rtl_ephyar_cond == 1 (loop: 100, delay: 10).</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the machine is no longer on the network, I couldn't access Proxmox VE's web interface. About the only thing I could do is to log in at the keyboard and type "reboot". A few minutes later, the system is back online.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While it was rebooting, I performed a search for <code>rtl_ephyar_cond</code> and found a hit on the Proxmox subreddit: <em><a href="https://www.reddit.com/r/Proxmox/comments/14kahk8/system_hanging_intermittently_after_upgraded_to_8" target="_blank" rel="noreferrer noopener">System hanging intermittently after upgraded to 8</a></em>. It pointed the finger at Realtek's 8169 network driver, and to a Proxmox forum thread: <em><a href="https://forum.proxmox.com/threads/system-hanging-after-upgrade-nic-driver.129366" target="_blank" rel="noreferrer noopener">System hanging after upgrade…NIC driver?</a></em> It sounds like Realtek's 8169 drivers have a bug exposed by Linux kernel 6. <a href="https://bugzilla.proxmox.com/show_bug.cgi?id=4807" target="_blank" rel="noreferrer noopener">Proxmox bug #4807</a> was opened to track this issue, which led me down a chain of links to <a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2031537">Ubuntu bug #2031537</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <a href="https://lists.ubuntu.com/archives/kernel-team/2023-September/142666.html">code change intended to resolve this issue</a> doesn't fix anything on the Realtek side, but purportedly avoids the problem by disabling PCIe ASPM (<a href="https://en.wikipedia.org/wiki/Active_State_Power_Management">Active State Power Management</a>) for Realtek chip versions 42 and 43. I couldn't confirm this is directly relevant to me. I typed <code>lspci</code> at the command line and here's the line about my network controller: </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>3b:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This matches some of the reports on Proxmox bug 4807, but I don't know how "rev 15" relates to "42 and 43" and I don't know how to get further details to confirm or deny. I guess I have to wait for the bug fix to propagate through the pipeline to my machine. I'll find out if it works then, and whether there's another problem hiding behind this one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So if the problem is exposed by the combination of new Linux kernel and new Realtek driver and only comes up at unpredictable times after the machine has been running a while, what workarounds can I do in the meantime? I've seen the following options discussed:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Use <a href="https://forum.proxmox.com/threads/system-hanging-after-upgrade-nic-driver.129366/page-3#post-581875">Realtek driver r8168</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Revert to <a href="https://forum.proxmox.com/threads/system-hanging-after-upgrade-nic-driver.129366/page-3#post-581388" target="_blank" rel="noreferrer noopener">previous Linux kernel 5.12</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2031537/comments/36" target="_blank" rel="noreferrer noopener">Disable PCIe ASPM on everything</a> with <code>pcie_aspm=off</code> <a href="https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html">kernel parameter</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Reboot the machine regularly.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought I'd try the easy thing first with regular reboots. I ran "<code><a href="https://en.wikipedia.org/wiki/Cron" target="_blank" rel="noreferrer noopener">crontab</a> -e</code>" and added a line to the end. "<code>0 4 * * * reboot</code>" This should reboot the system every day at four in the morning. It ran for 36 hours the first time around, so I thought a reboot every 24 hours would suffice. This turned out to be overly optimistic. I woke up the next morning and this computer was off the network again. Another reboot and I could log in to Home Assistant and saw it stopped receiving data from my ESPHome nodes just after 3AM. If the 4AM reboot happened, it didn't restore the network. And it doesn't matter anyway because the Realtek crapped out before then.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oh well! It was worth a try. I will now try disabling ASPM, which is also an opportunity to <a href="https://newscrewdriver.com/2023/11/04/a-quick-look-at-aspm-and-power-consumption/">learn its impact on electric power consumption</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Featured image created by <em><a href="https://www.bing.com/images/create" target="_blank" rel="noreferrer noopener">Microsoft Bing Image Creator powered by DALL-E 3</a></em> with prompt "<em>Cartoon drawing of a black laptop computer showing a crying face on screen and holding a network cable</em>"</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

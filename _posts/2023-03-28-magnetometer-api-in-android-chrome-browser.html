@@ -1,0 +1,54 @@
+---
+layout: post
+title: Magnetometer API in Android Chrome Browser
+date: 2023-03-28 12:30:00.000000000 +00:00
+type: post
+post_id: '35927'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35951'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680118446
+  _publicize_job_id: '82714208071'
+  timeline_notification: '1680031824'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/28/magnetometer-api-in-android-chrome-browser/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I became <a href="https://newscrewdriver.com/2023/03/27/magnetometer-quick-look/">curious about magnetometers</a> and was deep into shopping for a prototype breakout board when I remembered I already had some on hand. The bad news is that they're buried inside mobile devices, the good news is that they're already connected to all the supporting circuitry they need. Accessing them is then "merely" a software task.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Android app developers can access magnetometer values via <a href="https://developer.android.com/guide/topics/sensors/sensors_position">position sensor APIs</a>. It's possible to query everything from raw uncalibrated values to device orientation information computed from calibrated magnetometer data fused with other sensor data. Apple iOS app developers have the <a href="https://developer.apple.com/documentation/coremotion/cmmagnetometerdata">Core Motion library</a> from which they can obtain similar information.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I prefer not to develop a native mobile app because of all the overhead involved. For Android, I would have to install Android Studio (a multi-gigabyte download) and put my device into Developer Mode which hampers its ability to run certain security-focused tasks. For iOS I would have to install Xcode, which is at least as big of a hassle, and I'm not sure what I'd have to do on an iOS device. (Installing <a href="https://testflight.apple.com/">TestFlight</a> is part of the picture, but I don't know the whole picture.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for an alternative: What if I could access sensor data from something with lower overhead, like a small web app? Checking on the ever-omniscient caniuse.com, I found that a <a href="https://caniuse.com/?search=magnetometer">magnetometer API does exist</a>. However, it is not (yet?) standardized and hidden behind an optional flag that the user has to explicitly enable. I typed chrome://flags into my address bar and found the "Generic Sensor Extra Classes" option to switch from "Default" to "Enable". After making this change, the associated <a href="https://caniuse.com/tests/?feat=magnetometer">caniuse.com magnetometer test</a> turned from red to green.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One annoyance of working with magnetometer on Android is that I have to work against an actual device. While Chrome developer tools has an area for <a href="https://developer.chrome.com/docs/devtools/sensors/">injecting sensor data into web apps under test</a>, it does not (yet?) include ability to emulate magnetometer data. And looking over Android Studio documentation, I found <a href="https://developer.android.com/studio/run/managing-avds#hpproperties">settings to emulate sensors like an accelerometer</a> but no mention of magnetometer either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking online for some sample code, I found small code snippets in <a href="https://developer.chrome.com/articles/generic-sensor">Google Chrome Developer's blog about the Sensor API</a>. Lots of useful reference on that page but I wanted a complete web app to look at. I found what I was looking for in <a href="https://intel.github.io/generic-sensor-demos/sensor-info/build/bundled/">a "Sensor Info" web app</a> published from Intel's GitHub account. (This was a surprising source, pretty far from Intel's main moneymaker of CPUs. What is their interest in this field? Sadly, that corporate strategic answer is not to be found in this app. I choose to be happy that it exists.) Launching the app, clicking "+" allowed me to add the magnetometer sensor and start seeing data stream through. After looking through this Intel web app's <a href="https://intel.github.io/generic-sensor-demos">source code repository</a>, I wrote my own minimalist test app streaming magnetometer data. Success! I'm glad it was this easy, but <a href="https://newscrewdriver.com/2023/03/29/magnetometer-api-privacy-concerns/">perhaps that was <em>too </em>easy</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this exploratory project is <a href="https://github.com/Roger-random/nodejs_tests/tree/main/magnetometer">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

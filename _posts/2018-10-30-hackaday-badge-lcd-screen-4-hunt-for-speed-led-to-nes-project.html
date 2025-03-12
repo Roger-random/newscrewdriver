@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Hackaday Badge LCD Screen 4: Hunt for Speed Led To NES Project'
+date: 2018-10-30 09:00:34.000000000 +00:00
+type: post
+post_id: '17076'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23744708610'
+  timeline_notification: '1540915305'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/30/hackaday-badge-lcd-screen-4-hunt-for-speed-led-to-nes-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that I have a better idea of programming against the LCD screen in the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> (similar to upcoming <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>) I went searching online for other people's projects. The idea is that, with my newfound knowledge, I can better comprehend other projects.</p>
+<p>Disappointingly, I wasn't able to find many projects online, but the lack of quantity is made up by the quality of <a href="https://github.com/RealityVoid/basic-badge-nes">one extremely interesting project</a>: someone tried to put a NES (Nintendo Entertainment System) emulator on the Belgrade badge. And a lot of the work went into increasing frame rate to be appropriate for Nintendo games.</p>
+<p>My newfound knowledge turned out not to apply - the author has tore up major portions of the code base in order to fit in the arcade emulation layer. But reading the Github commits, I can tell that a major breakthrough was making use of a <a href="http://microchipdeveloper.com/32bit:mx-arch-peripherals-overview">PIC32 feature called PMP</a> (Parallel Master Port).</p>
+<p><img class=" size-full wp-image-17077 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/microchip-pic32-pmp.png" alt="Microchip PIC32 PMP" width="665" height="423"></p>
+<p>Designed precisely to help interface with peripherals like a LCD screen, this peripheral can take over large data transfers (like sending data to a screen) without the CPU being directly involved as when running <code>tft_fill_area()</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/disp.c">disp.c</a>. Looks like the performance advantage is twofold: first, PMP can update data and clock pins faster and more efficiently than doing it in CPU. And second, this frees up CPU to work on another task while PMP handles the transfer at the same time.</p>
+<p>Further reading of work history indicated this person has also ran into screen tearing issues in the absence of VSYNC, and this problem was left to be solved later. And how did they create a buffer for PMP to transfer, when there isn't enough for a full screen buffer? They didn't use the full screen: the game only renders in a center rectangle subset of the screen.</p>
+<p>I saw a burst of activity around Hackaday Belgrade in May, but activity stopped after June 4th. I'm inferring this has become an abandoned project.</p>
+<p>Curious if I could take the project further, I cloned the repository, opened up the project in MPLAB X, and hit compile. And that's when I found the final roadblock: as part of the hunt for performance, this person also changed code to require code optimization features of the paid version of PIC tools. I could not compile the project on my free tier.</p>
+<p>Oh well, that was a fun detour, but I guess it's time to get back to focusing on what I can actually use for Hackaday Superconference 2018.</p>
+<p></body></html></p>

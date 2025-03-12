@@ -1,0 +1,49 @@
+---
+layout: post
+title: XY Stage Position Detection Switches
+date: 2019-08-19 12:30:58.000000000 +00:00
+type: post
+post_id: '19217'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19218'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34293102932'
+  timeline_notification: '1566243103'
+  _oembed_e207cec343a70a21906a8acaa1019047: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    decades old industrial stepper motor takes orders from modern darling ESP32 running
+    GRBL. <a href="https://t.co/P1A4GZ945h">pic.twitter.com/P1A4GZ945h</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1161094071437279232?ref_src=twsrc%5Etfw">August
+    13, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_e207cec343a70a21906a8acaa1019047: '1566247199'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/19/xy-stage-position-detection-switches/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When I built my prototype Grbl ESP32 controller on a breadboard, I thought I would get X and Y axis to start moving before looking at other parts of the system. <a href="https://newscrewdriver.com/2019/08/18/successful-first-commands-from-grbl-esp32-to-parker-zeta4/">Once I got X moving</a>, though, I changed my mind. Instead of getting Y to run, I wanted to make sure I understand more of X. Which meant learning about limit switches and homing routine in Grbl.</p>
+<p>But first, a look at the actual hardware, which meant picking up the other wiring harness leading inside the linear actuator. There were nine wires, only six of which were connected from its previous usage. Three of the six were connected together resulting in a total of four unique pins.</p>
+<p>On the assumption the three wires twisted together is a common ground, I probed between it and the remaining wires. I found two of them were closed circuit and the remaining one was open. This is consistent with a homing switch and two limit switches. The homing switch is normally open and, during homing operation, the controller looks for that switch to close. When that happens, the controller knows where home is. The limit switches are normally closed because that allows them all to be wired together in series. If any limit is reached, the circuit opens, and the controller stops. For the purposes of machine protection, it didn't really matter which limit was reached, as long as it was detected.</p>
+<p>With the ZETA4 unplugged, the stage could be moved by hand. Watching the output from a meter wired up to these pins, I looked for positions where these switches were tripped. The initial results were very disappointing! The limit switches would trip when there were still over ~10cm of travel remaining, and the home switch is ~5cm further inside of that range. This severely constrains the usable area to a very small subset of total area. When I reported this finding to the rest of SGVHAK, I was told "Oh. Why don't you move them, then?"</p>
+<p>Move them?</p>
+<p>I didn't know these switches are adjustable to fit specific installations. In its previous life, this tables only needed to deliver a small range of its overall motion and were set appropriately. An allen wrench was all I needed to remove the cover and look inside: I saw three devices labeled Hamlin 59135, still in production and <a href="https://www.digikey.com/product-detail/en/littelfuse-inc/59135-030/59135-030-ND">available from Digi-Key for $7.48</a> in single quantities. Each of these is a reed switch with a normally-open and normally-closed wire in addition to their common wire.</p>
+<p>This explains the nine wires in the bundle: three wires for each of the switches, and the previous installation only used the common wire plus one of the other wires, leaving the remaining unconnected.</p>
+<p>I loosened the screws holding these reed switches in place, and move them as far to the ends as I could push them with existing wiring. This still leaves approx ~3cm on either end, but I'm content to leave them as safety margin. The physical size of the home reed switch meant it couldn't get within ~4cm of the limit switch. I don't know if this is a problem yet. Next step: <a href="https://newscrewdriver.com/2019/08/20/resuming-pololu-stepper-driver-adventures-with-arduino-and-a4988/">figure out how to interface these switches into Grbl</a>.</p>
+<p></body></html></p>

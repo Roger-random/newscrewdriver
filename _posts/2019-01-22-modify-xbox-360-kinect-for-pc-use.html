@@ -1,0 +1,52 @@
+---
+layout: post
+title: Modify Xbox 360 Kinect for PC Use
+date: 2019-01-22 13:30:48.000000000 +00:00
+type: post
+post_id: '17666'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Kinect
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26819042716'
+  timeline_notification: '1548192686'
+  _thumbnail_id: '17670'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/22/modify-xbox-360-kinect-for-pc-use/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I want to get some first hand experience working with depth cameras in a robotics context, and a little research implied the Xbox 360 Kinect sensor bar is the cheapest hardware that <em><strong>also</strong></em> has decent open source software support. So it's time to dust off the Kinect sensor bar from my Halo 4 Edition Xbox 360.</p>
+<p>I was a huge Halo fan and I purchased this Halo 4 console bundle as an upgrade from my first generation Xbox 360. My Halo enthusiasm has since faded and so has the Xbox 360. After I upgraded to Xbox One, I lent out this console (plus all accessories and games) to a friend with young children. Eventually the children lost interest in an antiquated console that didn't play any of the cool new games and it resumed gathering dust. When I asked if I could reclaim my Kinect sensor bar, I was told to reclaim the whole works. The first accessory to undergo disassembly at <a href="https://www.meetup.com/SGVTech">SGVTech</a> was the <a href="https://newscrewdriver.com/2018/12/01/xbox-360-steering-wheel-teardown/">Xbox 360 Racing Steering Wheel</a>. Now it is time for the second accessory: my Kinect sensor bar.</p>
+<p>The sensor bar connected to my console via a proprietary connector. Most Xbox 360 accessories are wireless battery-powered devices, but the Kinect sends far more data than normal wireless controllers and requires much more power than rechargeable AA batteries can handle. Thus the proprietary connector is a combination of a 12 volt power supply alongside standard USB 2.0 data at 5 volts. To convert this sensor bar for computer use instead of a Xbox 360, the proprietary connector needs to be replaced by two separate connectors: A standard USB 2.0 plug plus a 12V power supply plug.</p>
+<p>Having a functioning Xbox 360 made the task easier. First, by going into the Kinect diagnostics menu, I could verify the Kinect is in working condition before I start cutting things up. Second, after I severed the proprietary plug and splayed out wires in the cable, a multimeter was able to easily determine the wires for 12 volt (tan), 5 volt (red), and ground (black) by detecting the voltages placed on those wires by a running Xbox 360.</p>
+<p>That left only the two USB data wires, colored green and white. Thankfully, this appears to be fairly standardized across USB cables. When I cut apart a USB 2.0 cable to use as my new plug, I found the same red, black, green, and white colors on wires. To test the easy thing first, I matched wire colors, kept them from shorting each other with small pieces of tape, and put 12V power on the tan wire using a bench power supply.</p>
+<p>Since I was not confident on this wiring, I used <a href="https://newscrewdriver.com/2018/08/31/dell-inspiron-11-3000-3180-as-robot-brain-candidate/">my cheap laptop</a> to test my suspect USB wiring instead of using <a href="https://newscrewdriver.com/2018/06/03/in-a-distorted-computer-component-market-buying-is-better-than-building/">my good laptop</a>. Fortunately, the color matching appeared to work and the sensor bar enumerated properly. Ubuntu's <code>dmesg</code> utility lists a Kinect sensor bar as a USB hub with three attached devices:</p>
+<ol>
+<li>Xbox NUI Motor: a small motor that can tilt the sensor bar up or down.</li>
+<li>Xbox Kinect Audio: on board microphone array.</li>
+<li>Xbox NUI Camera: this is our depth-sensing star!</li>
+</ol>
+<p><img class=" size-full wp-image-17668 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/xbox-nui-camera-detected-1.png" alt="xbox nui camera detected" width="761" height="99"></p>
+<blockquote><p>
+<code>[ 84.825198] usb 2-3.3: new high-speed USB device number 10 using xhci_hcd</code><br />
+<code>[ 84.931728] usb 2-3.3: New USB device found, idVendor=045e, idProduct=02ae</code><br />
+<code>[ 84.931733] usb 2-3.3: New USB device strings: Mfr=2, Product=1, SerialNumber=3</code><br />
+<code>[ 84.931735] usb 2-3.3: Product: Xbox NUI Camera</code><br />
+<code>[ 84.931737] usb 2-3.3: Manufacturer: Microsoft</code>
+</p></blockquote>
+<p><img class="alignnone size-full wp-image-17697" src="https://newscrewdriver.com/wp-content/uploads/2019/01/xbox-360-kinect-with-modified-plugs-12v-usb.jpg" alt="xbox 360 kinect with modified plugs 12v usb" width="1600" height="632"><br />
+</body></html></p>

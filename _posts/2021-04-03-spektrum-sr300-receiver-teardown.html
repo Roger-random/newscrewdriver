@@ -1,0 +1,72 @@
+---
+layout: post
+title: Spektrum SR300 Receiver Teardown
+date: 2021-04-03 12:30:00.000000000 +00:00
+type: post
+post_id: '25899'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+- Teardown
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25916'
+  _publicize_job_id: '56738181375'
+  timeline_notification: '1617478204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/03/spektrum-sr300-receiver-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a <a href="https://newscrewdriver.com/2021/04/02/micro-sawppy-rover-and-spektrum-dx3e-radio-controller/">Spektrum DX3E transmitter designed for radio control ground vehicles</a>, with a matching Spektrum SR300 receiver for mounting on the vehicle. I want radio control equipment like this to be one of many options for controlling a Micro Sawppy rover, and my DX3E will be my example RC equipment for developing corresponding ESP32 software. Before I dive into the software, though, there is a minor hardware modification I wanted to make.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are several conventions for radio control servo plugs, which look superficially similar to generic 0.1" pitch wire connectors but aren't quite identical. From my past experience I knew of the "Futaba" style, with a tab to help with proper alignment. I didn't have many of those on my radio control toys. Most of my old equipment conformed to the "JR" style, which lack the tab but have tiny bevels to prevent plugging a servo into the receiver backwards. Commodity micro servo plugs do not have this bevel, and neither will Micro Sawppy ESP32 plug. While it is theoretically possible to manually cut the necessary bevel in a generic 0.1" pitch three-position connector, I have several connectors in mind for experimentation and that would quickly get tedious. So for my own experimentation purposes, I decided to cut off the wedges that enforce bevel direction on the receiver instead. This is not necessarily something I recommend for others. If they only have a single device, it'll probably be better to cut bevels.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't want to cut off those wedges with with the receiver intact, because a slip of the blade might damage its circuit board. So I'll take it apart, which gives me a chance to look inside as well, something I always enjoy. There were no elaborate security measures, merely four small Philips head screws. Once they were removed, the case comes apart easily. In my case, a few grams of dirt fell out as well. Results of my RC cars going off track due to pilot error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is the top side of the receiver. Marked with the year 2008, it reminded me how long it's been since I played in this hobby. Looking over the components, I was not surprised by capacitors to buffer power input and the oscillator to maintain accurate frequency. There is a large IC clearly in charge of the operation, but it is unmarked. We do see an array of five pins marked J1 that looks like a debug header, but I'm not terribly interested in poking into this chip right now. The output signals pins were a surprise. I had expected some sort of a transistor array to let the main IC toggle signals on and off at the same output voltage as the input voltage. However, all I see are little resistors (R2 - R5) implying they are merely there to limit current draw on IC output pins. This is worth following up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25918,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/spektrum-sr300-receiver-pcb-top.jpg?w=1024" alt="" class="wp-image-25918"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The back side of the circuit board confirms power and ground pins are connected in parallel across all output pins, with the four signal pins separate as expected. I see a lot of surface imperfection here. It looks like corrosion which might be reaction to the dirt that has been trapped in here. It may also be something from the factory, possibly excess soldering flux that was not cleaned up. I also see a sticker marked ST104M but I have no idea what that represents. Maybe a firmware revision number?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25917,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/spektrum-sr300-receiver-pcb-bottom.jpg?w=1024" alt="" class="wp-image-25917"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The circuit board was interesting, but for today they were merely a side show. I just wanted it out of the way as I cut into the enclosure. With the PCB removed I could confidently wield my blade, and the little wedges were quickly removed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"ids":[25915,25914],"linkTo":"none"} --></p>
+<figure class="wp-block-gallery columns-2 is-cropped">
+<ul class="blocks-gallery-grid">
+<li class="blocks-gallery-item">
+<figure><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/spektrum-sr300-enclosure-before.jpg?w=1024" alt="" data-id="25915" class="wp-image-25915"></figure>
+</li>
+<li class="blocks-gallery-item">
+<figure><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/spektrum-sr300-enclosure-after.jpg?w=1024" alt="" data-id="25914" class="wp-image-25914"></figure>
+</li>
+</ul>
+</figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>The receiver reassembled easily, and a quick test confirmed I could now plug in and use generic micro servos (<a href="https://newscrewdriver.com/2021/04/04/spektrum-sr300-signals-under-saleae-logic-8-analyzer/">or other devices</a>) without interference from those now-gone little wedges.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

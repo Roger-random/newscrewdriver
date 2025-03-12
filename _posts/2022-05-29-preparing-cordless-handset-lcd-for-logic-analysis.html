@@ -1,0 +1,43 @@
+---
+layout: post
+title: Preparing Cordless Handset LCD for Logic Analysis
+date: 2022-05-29 12:30:00.000000000 +00:00
+type: post
+post_id: '30571'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30572'
+  _publicize_job_id: '73076328087'
+  timeline_notification: '1653852608'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/29/preparing-cordless-handset-lcd-for-logic-analysis/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've decided to take another look at a pair of LCD units salvaged from an AT&amp;T CL84209 landline phone system. I have a bare LCD from the base station, and an LCD still attached to the remnants of a cordless handset. I had <a href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/" target="_blank" rel="noreferrer noopener">wired those two LCDs in parallel</a>, a crazy roll of the dice that paid off in knowledge that those two LCDs use the same communication protocol. Now I am armed with a logic analyzer (Saleae Logic 8) and intend to get more details.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first step is to attach wires to the handset LCD so I could probe communication traffic, similar to how I attached the bare LCD earlier but with less risk and higher chance of doing something useful. I recycled the bundle of wires I had used to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/12/wires-to-probe-toyota-audio-head-unit-86120-08010/" target="_blank">perform the same task</a> on a Toyota tape deck faceplate, which had more wires that I folded out of the way for this project. Having done similar tasks a few times, I'm starting to think about buying <a href="https://sensepeek.com/">PCBite probes</a> that promise to let me skip this soldering task. But I'm not yet at the point where I expect to use them enough to justify the expense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30003,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-lcd-pin-numbering.jpg?w=960" alt="" class="wp-image-30003"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are nine pins on this LCD, which given my lack of official datasheet I've arbitrarily numbered from left to right as shown in the picture above. Earlier I had <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/04/30/landline-answering-system-handset-lcd-cl84209/" target="_blank">probed these connection points</a> with a voltmeter while the handset circuit board was running. All of the pins appear to be safely within <a href="https://support.saleae.com/user-guide/supported-voltages">Saleae logic analyzer 25V limit</a> relative to ground, which I determined to be pin 4. That left 8 pins I don't understand and conveniently, my Saleae has 8 inputs so I could connect them all and not have to make decisions on which pins to omit. Once connected, I could <a href="https://newscrewdriver.com/2022/05/30/cordless-handset-lcd-power-up-in-saleae-analog-mode/">take my first look</a> with the Saleae in analog mode.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

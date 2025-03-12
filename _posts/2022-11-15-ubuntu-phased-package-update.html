@@ -1,0 +1,81 @@
+---
+layout: post
+title: Ubuntu Phased Package Update
+date: 2022-11-15 12:30:00.000000000 +00:00
+type: post
+post_id: '33444'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags:
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33448'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1670994267
+  _publicize_job_id: '78755326680'
+  timeline_notification: '1668544213'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/15/ubuntu-phased-package-update/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm old enough to remember a time when it was a point of pride when a computer system can stay online for long periods of time (sometimes years) without crashing. It was regarded as one of the differentiations between desktop and server-class hardware to justify their significant price gap. Nowadays, a computer with years-long uptime is considered a liability: it certainly has not been updated with the latest security patches. Microsoft has a regular Patch Tuesday to roll out fixes, Apple rolls out their fixes on a less regular schedule, and Linux distributions are constantly releasing updates. For my computers running Ubuntu, running "<code>sudo apt update</code>" followed by "<code>sudo apt upgrade</code>" then "<code>sudo reboot</code>" is a regular maintenance task.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Recently (within the past few months) I started noticing a new behavior in my Ubuntu 22.04 installations: "<code>sudo apt upgrade</code>" no longer automatically installs all available updates, with a subset listed as "The following packages have been kept back". I first saw this message before, and at that time it meant there were version conflicts somewhere in the system. This was a recurring headache with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/06/06/installing-nvidia-gpu-accelerated-tensorflow-on-ubuntu-18-04-now-relatively-easier/" target="_blank">Nvidia drivers in past years</a>, but that has been (mostly) resolved. Also, if this were caused by conflicts, explicitly upgrading the package would list its dependencies. But when I explicitly upgrade a kept-back package, it installed without further complaint. What's going on?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>$ <strong>sudo apt upgrade</strong>
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Calculating upgrade... Done
+Try Ubuntu Pro beta with a free personal subscription on up to 5 machines.
+Learn more at https://ubuntu.com/pro
+<strong><mark style="background-color:#ffff00" class="has-inline-color has-black-color">The following packages have been kept back:
+  distro-info-data gnome-shell gnome-shell-common tzdata</mark></strong>
+The following packages will be upgraded:
+  gir1.2-mutter-10 libmutter-10-0 libntfs-3g89 libpython3.10 libpython3.10-minimal libpython3.10-stdlib mutter-common ntfs-3g python3.10 python3.10-minimal
+10 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+7 standard LTS security updates
+Need to get 1,519 kB/9,444 kB of archives.
+After this operation, 5,120 B disk space will be freed.
+Do you want to continue? [Y/n]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search on "The following packages have been kept back" found lots of ways this message might come up. Some old problems <a rel="noreferrer noopener" href="https://askubuntu.com/questions/601/the-following-packages-have-been-kept-back-why-and-how-do-i-solve-it" target="_blank">going way back</a>. But since this symptom may be caused by a large number of different causes, we can't just blindly try every possible fix. We also need some way to validate the cause so we can apply the right fix. I found several different potential causes, and none of the validations applied, so I kept looking until I found <a href="https://askubuntu.com/questions/1420969/how-to-force-packages-that-have-been-kept-back-to-be-installed-as-automat/1421130#1421130" target="_blank" rel="noreferrer noopener">this AskUbuntu thread</a> suggesting I am seeing the effect of a phased rollout. In other words: this is not a bug, it is a feature!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When an update is rolled out, sometimes the developers find out too late a problem has escaped their testing. Rolling an update out to everyone at once also means such problems hit everyone at once.  <a rel="noreferrer noopener" href="https://wiki.ubuntu.com/PhasedUpdates" target="_blank">Phased update</a> rollout tries to mitigate the damage of such problems: when an update is released, it is only rolled out to a subset of applicable systems. If those rollouts go well, the following phase will distribute the update to more systems, repeating until it is available to everyone. But sometimes somebody wants to skip the wait and install the new thing before their turn in a phased rollout, so they are allowed to "<code>sudo apt upgrade</code>" a package explicitly without error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So back to the problem validation step: how would we know if a package is kept back due to phased rollout? We can pull up the "<code>apt-cache policy</code>" associated with a package and look for a "phased" percentage associated with the latest version. If so, that means the update is in the middle of a phased rollout. If the updated package is important to us, we can explicitly upgrade now. But if it is not, we can just wait for the phases to include us and be installed in a future "<code>sudo apt upgrade</code>" run.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>$ <strong>apt-cache policy tzdata</strong>
+tzdata:
+  Installed: 2022e-0ubuntu0.22.04.0
+  Candidate: 2022f-0ubuntu0.22.04.0
+  Version table:
+     2022f-0ubuntu0.22.04.0 500 <strong><mark style="background-color:#ffff00" class="has-inline-color has-black-color">(phased 10%)</mark></strong>
+        500 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages
+        500 http://us.archive.ubuntu.com/ubuntu jammy-updates/main i386 Packages
+        500 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages
+        500 http://security.ubuntu.com/ubuntu jammy-security/main i386 Packages
+ *** 2022e-0ubuntu0.22.04.0 100
+        100 /var/lib/dpkg/status
+     2022a-0ubuntu1 500
+        500 http://us.archive.ubuntu.com/ubuntu jammy/main amd64 Packages
+        500 http://us.archive.ubuntu.com/ubuntu jammy/main i386 Packages</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

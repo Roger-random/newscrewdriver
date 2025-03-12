@@ -1,0 +1,83 @@
+---
+layout: post
+title: Canon Pixma MX340 Contact Image Sensor Connector
+date: 2023-12-07 12:30:00.000000000 +00:00
+type: post
+post_id: '40890'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40892'
+  timeline_notification: '1701981013'
+  wordads_ufa: s:wpcom-ufa-v4:1703391667
+  firehose_sent: '1701981012'
+  _publicize_job_id: '90086044224'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/07/canon-pixma-mx340-contact-image-sensor-connector/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to see how much I can understand of the scanner image sensor bar I pulled out of a Canon MX340 multi-function inkjet. A little <a href="https://newscrewdriver.com/2023/12/06/canon-contact-image-sensor/">research side quest</a> helped me feel better prepared for the task of figuring out what happens over the twelve wires connecting the sensor bar to the printer main board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40864,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-led-pins.jpg?w=1024" alt="" class="wp-image-40864"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the copper traces on the circuit board, I can see some of them are directly wired to the <a href="https://newscrewdriver.com/2023/12/05/canon-pixma-mx340-scanner-led/" target="_blank" rel="noreferrer noopener">pins for LED illumination</a>. Verifying continuity between those connector pins and LED pins identified the left-most five of twelve wires. Probing for continuity with chassis ground, I found one more ground wire. Measuring the remaining wires while the system is powered up, I found one pin that held steady at 3.3V. A good power source candidate for image sensor logic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40901,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-connector-labels-1.jpg?w=800" alt="" class="wp-image-40901"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That left five unknowns whose voltages fluctuate. Too quickly for my volt meter to catch what's happening, hinting at data signals. My oscilloscope has four channels so I need to choose four to solder wires to and leave one for later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40892,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-connector-wires-on-6-7-8-11.jpg?w=1024" alt="" class="wp-image-40892"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This connector also has 1.0mm pitch and this time I managed to solder wires without creating bridges. Luck or improving skill I don't know yet, either way I expect my MX340 teardown project will give me many more practice opportunities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40908,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-11-oscilloscope-freeze.png?w=800" alt="" class="wp-image-40908"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I turned on the MX340 and saw this on my oscilloscope screen. The yellow wire is attached to a pretty steady wave at 2.375MHz, possibly a clock signal. Its adjacent red and blue wires seem to track pretty closely to each other, the green wire looks much the same but at roughly 1V higher.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, that's pretty much everything I got. I see this pattern as soon as the printer powers up, and it looks much the same during the homing sequence and afterwards. I waved my hand and shined a light at the sensor bar and saw no significant change in these signals. If I were looking at LVDS, <a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling" target="_blank" rel="noreferrer noopener">according to Wikipedia</a> I should see a 350mV change, but I don't.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That said, there is something that occasionally flashes past this screen, but I didn't know how to isolate it yet. Whatever it was, it occurred too infrequently to be image data. (Later I would determine it is a line sync signal on the red wire.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40910,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-connector-wires-on-6-7-8-12.jpg?w=1024" alt="" class="wp-image-40910"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Could the magical data wire be the fifth and final wire I had yet to examine? On paper it was a 20% chance I missed the most important wire, but Murphy's Law raises those odds. Besides, I'm so close and it'd be silly to give up now. I turned off the printer and oscilloscope and turned on the soldering iron. The green wire was moved one pin over, and I tried again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40912,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-12-oscilloscope-freeze.png?w=800" alt="" class="wp-image-40912"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Jackpot! I have a candidate <a href="https://newscrewdriver.com/2023/12/08/canon-pixma-mx340-contact-image-sensor-signal/">image sensor data signal</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

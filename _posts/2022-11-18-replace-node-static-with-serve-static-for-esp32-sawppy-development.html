@@ -1,0 +1,49 @@
+---
+layout: post
+title: Replace node-static with serve-static for ESP32 Sawppy Development
+date: 2022-11-18 12:30:00.000000000 +00:00
+type: post
+post_id: '33645'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+- Sawppy the Rover
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33648'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668803754
+  _publicize_job_id: '78852200017'
+  timeline_notification: '1668803512'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/18/replace-node-static-with-serve-static-for-esp32-sawppy-development/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One of the <a href="https://newscrewdriver.com/2022/11/17/notes-on-express-getting-started-guide/">optional middleware modules</a> maintained by the Expressjs team is <a rel="noreferrer noopener" href="https://expressjs.com/en/starter/static-files.html" target="_blank"><code>express.static</code></a>, which can handle serving static assets like HTML, CSS, and images. It was used in code examples for Codecademy's Learn Express course, and I made a mental note to investigate further after class. I thought it might help me with a problem I already had on hand, and it did!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I started writing code for a micro Sawppy rover running on an ESP32, I wanted to be able to iterate on client-side code without having to reflash an ESP32. So as an educational test run of Node.js, I wrote a JavaScript counterpart to the code I wrote (in C/C++) for running on ESP32. While they are two different codebases, I intended for the HTTP interface to be identical and indistinguishable by the HTML/CSS/JavaScript client code I wrote. Most of this server-side work was <a href="https://newscrewdriver.com/2021/04/12/html-features-for-esp32-sawppy-rover/">focused around websocket</a>, but I also needed to serve some static files. I looked on nodejs.org and found "<a rel="noreferrer noopener" href="https://nodejs.org/en/knowledge/HTTP/servers/how-to-serve-static-files/" target="_blank">How to serve static files</a>" in their knowledge base. That page gave an example using the <a rel="noreferrer noopener" href="https://www.npmjs.com/package/node-static" target="_blank"><code>node-static</code> module</a>, which I copied for my project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Things were fine for a while, but then I started getting messages from the <a rel="noreferrer noopener" href="https://github.com/dependabot" target="_blank">Github Dependabot</a> nagging me to fix a critical security flaw in my repository due to its use of a library called <code><a rel="noreferrer noopener" href="https://www.npmjs.com/package/minimist" target="_blank">minimist</a></code>. It was an indirect dependency I picked up by using <code>node-static</code>, so I figured it'll be fixed after I pick up an update to <code>node-static</code>. But that update never came. As of this writing, the <code>node-static</code> package on NPM hadn't been updated for four years. I see <a rel="noreferrer noopener" href="https://github.com/cloudhead/node-static/commits/master" target="_blank">updates made on the GitHub repository</a>, but for whatever reason NPM hasn't picked that up and thus its registry remains outdated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that my code isn't deployed on an internet-facing server. This Node.js server is only for local development of my ESP32 Sawppy client-side browser code, which vastly minimizes the window of vulnerability. But still, I don't like running known vulnerable code, even if it is only accessible from my own computer and only while I'm working on ESP32 Sawppy code. I want to get this fixed somehow.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I got <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/11/local-development-web-host-nginx-docker-container/" target="_blank">nginx set up as a local web server</a>, I thought maybe I could switch to using nginx to serve these static files too. But there's a hitch: a websocket connection starts as a HTTP request for an upgrade to websocket. So the HTTP server must interoperate with the websocket server for a smooth handover. It's possible to set this up with nginx, but <a rel="noreferrer noopener" href="http://nginx.org/en/docs/http/websocket.html" target="_blank">the instructions to do so</a> is above my current nginx skill level. To keep this simple I need to stay within Node.js.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which brought me back to Express and its <code>express.static</code> file server. I thought maybe I could fire up an Express app, use just this <code>express.static</code> middleware, and almost nothing else of Express. It's overkill but it's not stupid if it works. I just had to figure out how it would handover to my websocket code. Reading <a rel="noreferrer noopener" href="https://expressjs.com/en/4x/api.html#express.static" target="_blank">Express documentation for <code>express.static</code></a>, I saw it was built on top of a NPM module called <a href="https://www.npmjs.com/package/serve-static"><code>serve-static</code></a>, and was delighted to learn it can be used independent of Express! Their README included an example: <a rel="noreferrer noopener" href="https://github.com/expressjs/serve-static#serve-files-with-vanilla-nodejs-http-server" target="_blank">Serve files with vanilla node.js http server</a> and this was exactly what I needed. By using the same Node.js http module, my websocket upgrade handover code will work in exactly the same way. At the end, switching from <code>node-static</code> to <code>serve-static</code> was nearly a direct replacement requiring <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/commit/e53858b1f8efefa7f6a7ee1ef94031ad2bd2ba9d#diff-7c12496b61c25f6117651e9dd50742388691cf61ab3da1b5f5cb3330458e45e1" target="_blank">minimal code edit</a>. And after removing <code>node-static</code> from my package.json, GitHub dependabot was happy and closed out my security issue. I will be free from nagging messages, at least until the next security concern. That might be serious if I had deployed to be internet accessible, but the odds of that just dropped.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

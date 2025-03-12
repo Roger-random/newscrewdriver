@@ -1,0 +1,61 @@
+---
+layout: post
+title: Acer Aspire Switch 10 Keyboard Wiring
+date: 2024-06-26 12:30:00.000000000 +00:00
+type: post
+post_id: '43934'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43935'
+  wordads_ufa: s:wpcom-ufa-v4:1719521725
+  firehose_sent: '1719430210'
+  _publicize_job_id: '95761440071'
+  timeline_notification: '1719430213'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-27 20:57:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/26/acer-aspire-switch-10-keyboard-wiring/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to experiment with turning a salvaged laptop keyboard module into a USB HID keyboard. My test subject is <a href="https://newscrewdriver.com/2024/06/25/dusting-off-acer-aspire-switch-10-keyboard/">this keyboard pulled from an Acer Aspire Switch 10</a>. I have successfully unsoldered its connector in the hopes I can solder it onto a breakout board I had ordered. While I wait for the board to be shipped to me, I can do a little scouting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43938,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/acer-aspire-switch-10-keyboard-cable-connector-end-2-pins-unused.jpg?w=800" alt="" class="wp-image-43938"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The easiest observation was that 2 out of 26 pins appear to be unused. They are present at the flex cable connector but immediately disappear into nothingness.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43940,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/acer-aspire-switch-10-keyboard-cable-24-wires.jpg?w=800" alt="" class="wp-image-43940"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The remaining 24 wires are seen going into the keyboard module underneath a piece of black fabric tape. Peeling that tape off may gain more insight, but I'm not going to. Flex cables can only flex a finite number of times before something breaks, so I'm trying to keep handling and manipulation to a minimum.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43935,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/acer-aspire-switch-10-keyboard-connector-pcb-traces-front.jpg?w=1024" alt="" class="wp-image-43935"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining the circuit board, I looked for traces that are significantly wider than others or maybe wires that span multiple pins in parallel. Both are typical indications of power or ground wires, but I didn't see anything of the sort. I then looked for components like decoupling capacitors or current-limiting resistors, and didn't notice any good candidates either. This is consistent with my memory this keyboard was not backlit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43944,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/acer-aspire-switch-10-keyboard-connector-pcb-traces-back.jpg?w=800" alt="" class="wp-image-43944"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking on the back side, I see very few wires and they are mostly consistent with wires jumping over other perpendicular wires on the front. Not all of the vias lined up with traces I could see, which would be consistent with a circuit board with more than two layers. Though there are traces I couldn't see, I think it is possible all 24 wires are connected directly to the chip adjacent to the now-unsoldered connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I read the chip marking as IT8595E-128 and the logo matches that of Taiwan-based ITE Tech, Inc. But there's <a href="https://www.ite.com.tw/en/product/category?cid=1">no IT8595E-128 listed on their product website</a> today. The closest I found is an IT8596 under "Notebook product line", advertised to be a laptop peripheral controller. Sounds about right, but there's no datasheet download for me to see if it might be a sibling of this IT8595. Perhaps IT8595 is a discontinued product, or perhaps it was a custom design exclusive to Acer. Either way, I'm not going to get any more information here. To get any more information on how this keyboard module is wired, I will need to wait for <a href="https://newscrewdriver.com/2024/06/27/proto-advantage-fpc-connector-dip-adapter-fpc080p030/">my adapter board to arrive</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

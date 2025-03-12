@@ -1,0 +1,43 @@
+---
+layout: post
+title: Self-Hosting Budibase (Docker Compose)
+date: 2024-08-21 12:30:00.000000000 +00:00
+type: post
+post_id: '44836'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- budibase
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  firehose_sent: '1724268701'
+  _publicize_job_id: '97207271524'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-21 04:32:05'
+  timeline_notification: '1724268703'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/21/self-hosting-budibase-docker-compose/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I went through Budibase quick start guide and <a href="https://newscrewdriver.com/2024/08/20/budibase-quickstart-is-a-great-tour/">it made a great first impression</a>. I want to learn it and add it to my toolbox for times when I need to build a data web app in a hurry. The quick start used Budibase cloud hosting for an easy low-friction way to kick the tires. Good enough for me to continue, but before I do it was important that I continue with an instance of Budibase I run for my own use. Wary of the example set by AWS Honeycode, which Amazon had shut down and took all user data offline with it, it was critically important that I can run my own local instance on data I control. This is a pretty common requirement so Budibase offers many alternatives to their cloud-hosted solution. I clicked on <a href="https://docs.budibase.com/docs/docker-compose">the link for deploying via Docker Compose</a> and it turned out to be really easy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't expect it to be that easy. I was no stranger to install procedures that went awry and causing collateral damage elsewhere. I spun up a Proxmox virtual machine running Ubuntu server 24.04 LTS for the exclusive purpose of experimenting with Budibase. If anything goes wrong in a VM, damage should be contained and I can easily erase everything and start over. I followed Budibase instructions to install Docker Compose then downloaded their <code>docker-compose.yaml</code> file for deploying Budibase and an <code>.env</code> file for configuration variables. I didn't edit their <code>docker-compose.yaml</code> file, just the <code>.env</code> file to set my own passwords. I then typed "<code>docker compose up</code>", waited for all the startup and deployment procedures to run, then pointed my browser at the address for my Budibase virtual machine. I was greeted with the initial setup screen to create an account on my newly-created Budibase instance. No mysterious failures, no inscrutable error messages, excellent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I repeated the quick start tutorial on my own instance, and it worked exactly as it did on the cloud hosted instance. For the most part this is good, but not always. My first rude surprise was finding that Budibase app backup was locked off. Backup was <a href="https://budibase.com/pricing/">clearly indicated as a Premium subscription tier feature</a>, but I had thought that applied only to the cloud-hosted service. I was wrong: subscription features are <a href="https://docs.budibase.com/docs/backups-1">locked away</a> whether I'm running on their cloud hosting platform or on my own. If Budibase is truly and fully open source I suppose I can clone their GitHub repository and build my own version without these locks. Even if I don't want to do that, the fact I'm running with Docker Compose means I can back up my data via Docker volumes. So, yes, there are solutions, but this is proof that levers still exist for Budibase to restrict self-hosted instances.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a demerit against Budibase, but not a deal-breaker. After all, I'm putting up with much the same risk in other self-hosted services like Plex Media Server, though in that case <a href="https://newscrewdriver.com/2024/08/10/window-shopping-plex-alternative-jellyfin/">I have an alternative Jellyfin</a> lined up. For now it'll just be a note here on my project notebook and <a href="https://newscrewdriver.com/2024/08/22/quick-survey-of-budibase-foundation/">I will continue exploring Budibase</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

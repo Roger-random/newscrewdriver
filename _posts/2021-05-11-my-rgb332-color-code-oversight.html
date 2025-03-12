@@ -1,0 +1,57 @@
+---
+layout: post
+title: My RGB332 Color Code Oversight
+date: 2021-05-11 12:30:00.000000000 +00:00
+type: post
+post_id: '26506'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+- RGB332
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26514'
+  _publicize_job_id: '58243164714'
+  timeline_notification: '1620761437'
+  _oembed_15a689a27a4d0379dde8009368d8c84b: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Me:
+    This 8-bit color chart sucks. I can make one that makes more sense. <br><br>Also
+    me: <a href="https://t.co/i7uYBIbPya">pic.twitter.com/i7uYBIbPya</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1386893522767286272?ref_src=twsrc%5Etfw">April
+    27, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_15a689a27a4d0379dde8009368d8c84b: '1620769589'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669883624
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/11/my-rgb332-color-code-oversight/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I felt a certain level of responsibility after my library was accepted to the Arduino library manager, and <a href="https://newscrewdriver.com/2021/05/10/initial-issues-with-esp_8_bit-color-composite-video-out-library/">wrote down all the things I knew I could work on</a> under <a href="https://github.com/Roger-random/ESP_8_BIT_composite/issues" target="_blank" rel="noreferrer noopener">GitHub issues for the project</a>. I also filled out the README file with usage basics, and I had felt pretty confident I have enabled people to generate color composite video out signals from their ESP32 projects. This confidence was short-lived. My first <s>guinea pig</s> volunteer for a test drive was Emily Velasco, <a rel="noreferrer noopener" href="https://twitter.com/Regorlas/status/1388529050537271297" target="_blank">who I credit</a> for instigating this quest. After she downloaded the library and ran my examples, she looked at the source code and asked a perfectly reasonable question: "Roger, what are these color codes?"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oh. <strong><em>CRAP</em></strong>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having many years of experience playing in computers graphics, I was very comfortable with various color models for specifying digital image data. When I read niche jargon like "RGB332", I immediately know it meant an 8-bit color value with most significant three bits for red channel, three bits for green, and least significant two bits for blue. I was so comfortable, in fact, that it never occurred to me that not everybody would know this. And so I forgot to say anything about it in my library documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thanked Emily for calling out my blind spot and frantically got to work. The first and most immediate task was to update the README file, starting with a link to the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/List_of_monochrome_and_RGB_color_formats#8-bit_RGB_(also_known_as_3-3-2_bit_RGB)" target="_blank">Wikipedia section about RGB332 color</a>. I then followed up with a few example values, covering all the primary and secondary colors. This resulted in a list of eight colors which can also be minimally <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/List_of_monochrome_and_RGB_color_formats#3-bit_RGB" target="_blank">specified with just 3 bits</a>, one for each color channel. (RGB111, if you will.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought about adding some of these RGB332 values to my library as <code>#define</code> constants that people can use, but I didn't know how to name and/or organize them. I don't want to name them something completely common like <code>#define RED</code> because that has a high risk of colliding with a completely unrelated <code>RED</code> in another library. Technically speaking, the correct software architecture solution to this problem is <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/cpp/cpp/namespaces-cpp" target="_blank">C++ namespace</a>. But I see no mention of namespaces in the <a rel="noreferrer noopener" href="https://www.arduino.cc/en/Reference/APIStyleGuide" target="_blank">Arduino API Style Guide</a> and I don't believe it is considered a simple beginner-friendly construct. Unable to decide, I chickened out and did nothing in my Arduino library source code. But that doesn't necessarily mean we need to leave people up a creek, so Emily and I set out to <a href="https://newscrewdriver.com/2021/05/12/brainstorming-ways-to-showcase-rgb332-palette/">build some paddles</a> for this library.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

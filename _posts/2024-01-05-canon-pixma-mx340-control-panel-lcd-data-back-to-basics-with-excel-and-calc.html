@@ -1,0 +1,57 @@
+---
+layout: post
+title: 'Canon Pixma MX340 Control Panel LCD Data: Back to Basics with Excel and Calc'
+date: 2024-01-05 12:30:00.000000000 +00:00
+type: post
+post_id: '41428'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41429'
+  firehose_sent: '1704486605'
+  _publicize_job_id: '90846680229'
+  timeline_notification: '1704486607'
+  wordads_ufa: s:wpcom-ufa-v4:1704587418
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/05/canon-pixma-mx340-control-panel-lcd-data-back-to-basics-with-excel-and-calc/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm learning the internal workings of a Canon Pixma MX340 multi-function inkjet. At the moment, my attention is on data communicated between its main board and its control panel. My Saleae Logic 8 logic analyzer could pull out the raw bytes, but it doesn't tell me what those bytes meant. The biggest question mark right now is: how to interpret the data burst I associate with a LCD screen update? I researched and decided <a href="https://newscrewdriver.com/2024/01/04/window-shopping-custom-saleae-high-level-analyzer-extension/">a custom high-level analyzer (HLA) extension to Saleae Logic was not the way to go</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I'm a software developer by nature, I started thinking about writing code to help me decipher this data. I started thinking about wiring a microcontroller in parallel with the Saleae Logic Analyzer to pick up the asynchronous serial data. This might be the start of an interesting project down the line, but not for right now. I still don't know enough about this data stream, so there will be a lot of trial-and-error. Uploading a new program to a microcontroller only takes 20-30 seconds, but that time adds up if I'm doing a lot of trial-ing and error-ing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since Saleae Logic 2 has already parsed the data, I could export that data to a file for further processing. Python should be a good choice here. A Jupyter Notebook would allow quick experimentation, with each iteration taking an eyeblink versus 20-30 seconds. Saleae Logic 2 can export the data as a CSV file, which is easily imported into <a href="https://pandas.pydata.org/">Pandas</a> for manipulation and processing in Python.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I realized I was overthinking the problem. If Saleae Logic 2 exports to CSV, the first thing I should do is try examining the information with the King of CSV Processing: Microsoft Excel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I exported the capture data for <a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/" target="_blank" rel="noreferrer noopener">LCD screen sleep and wake</a>, because I now recognize the sleep and wake commands. Removing them leaves just the bytes for a single screen update. I scroll down to the bottom of the spreadsheet and saw there were 1020 rows. Earlier examination found <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/">a screen update is sent in five chunks</a>. So 1020/5 = 204 bytes per chunk. Each chunk starts with a command sequence of four 2-byte commands. 204-8 = 196 bytes of data per chunk. 196 can be factored a number of different ways: 2*98, 4*49, 7*28, or 14 squared. None of those possibilities immediately jumped out at me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well, at least I now know <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">my earlier guess of 256 bytes of data per chunk</a> was wrong, and I'm very thankful I didn't end up counting those bytes by hand. And since I have this data in Excel already, I should see <a href="https://newscrewdriver.com/2024/01/06/canon-pixma-mx340-control-panel-lcd-screen-data-as-excel-background-fill/">how much more I can do in Excel</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

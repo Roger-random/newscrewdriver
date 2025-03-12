@@ -1,0 +1,69 @@
+---
+layout: post
+title: Sanyo LC75853N LCD Driver Archaeology
+date: 2022-05-14 12:30:00.000000000 +00:00
+type: post
+post_id: '30268'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- LC75853N
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30075'
+  _publicize_job_id: '72519462576'
+  timeline_notification: '1652556629'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669019838
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've soldered wires to the connector between the mainboard and faceplate of the stock tape deck audio head unit from a 1998 Toyota Camry LE. (86120-08010) My goal is to learn enough to control the faceplate with my own creation independent of the mainboard. Since these two circuit boards can still be powered up, I can <a href="https://newscrewdriver.com/2022/05/13/probing-voltage-range-of-tape-deck-faceplate-interface/">probe their voltages</a> and listen to communications between them. A skilled electronics hacker can make sense out of the waterfall of bits, but I don't have that level of skill yet. I need a little more information, and I started with this very prominent chip on the faceplate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30075,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-sanyo-lc75853n-7jk4.jpg?w=1024" alt="" class="wp-image-30075"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I couldn't find where Sanyo hosts their electronic component datasheets, I kept stumble into unrelated areas like <a rel="noreferrer noopener" href="https://www.sanyo-av.com/us/" target="_blank">their consumer electronics site</a>. This is a common problem when dealing with products made by huge companies with diverse product lines. There's also the problem that Sanyo has been acquired by Panasonic in 2011 (<a href="https://en.wikipedia.org/wiki/Sanyo">Wikipedia</a>) so it's quite possible the relevant divisions have been merged or shut down and their website disappeared.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Seeking another source, I searched for this chip at Digi-Key. Their database did not list this exact item, but there were a few other <a rel="noreferrer noopener" href="https://www.digikey.com/en/products/filter/pmic-display-drivers/729?s=N4IgTCBcDaIDIGEDsBWAHCgzCAugXyA" target="_blank">LC7583 variants</a> listed as "Obsolete" and without datasheet. I ultimately resorted to going through one of those internet sites that archive old PDFs. I find it annoying to have to wade through a bunch of "Click here to download!" ads that try to trick you into downloading irrelevant things that may or may not hide malware. It's always a hunt for the actual link to the PDF we want, which may or may not have been modified maliciously. But eventually I ended up with Sanyo datasheet for "LC75853NE, 75853NW" which is hopefully close enough. The PDF was also slathered with the annoying site's watermark, but I hope that's all the annoyances in that file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is the summary and high-level block diagram:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><em>1/3 duty LCD display drivers that can directly drive up to 126 segments and can control up to four general-purpose output ports. These products also incorporate a key scan circuit that accepts input from up to 30 keys</em></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30269,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sanyo-lc75853n-lcd-controller-block-diagram.jpg?w=1024" alt="" class="wp-image-30269"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Digging further into the datasheet, I learned of caveats with that summary. It is not possible to have <em>simultaneous </em>control 126 segments, four output pins, <em>and </em>scan 30 keys. In order to get 126 segments, we have to reallocate two key scan pins cutting the number of scannable keys by 10. And in order to use four output ports, we have to reallocate four segment pins cutting the number of addressable segments by 12. I'm sure such flexibility is useful for adapting to different usages, but it also means I will have to figure out the specific configuration used by this faceplate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The operating voltage range is listed as 4.5V to 6V, so if I am to build a project to control this faceplate I might have an easier time with 5V parts like Arduino ATmega328P or PIC16F18345. Using parts like ESP32 would require voltage level shifters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30077,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-connector-labels.jpg?w=1024" alt="" class="wp-image-30077"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I examined the connector labels, I noticed enable (LCD-CE), clock (LCD-CLK), data input (LCD-DI), and data output (LCD_DO) pins. I optimistically hoped it meant this chip <a rel="noreferrer noopener" href="https://docs.arduino.cc/learn/communication/spi" target="_blank">communicated via SPI</a>, but the datasheet said it actually used a Sanyo proprietary protocol called CCB (Computer Control Bus). I found no official Sanyo documentation here, either, but fortunately CCB was used in enough products that some electronics hackers had preserved a copy of CCB documentation. Like <a href="https://kbiva.wordpress.com/2013/04/06/kenwood-kdc-mp6090r-face-plate/">this page</a>, where the author reverse engineered a different car audio head unit (Kenwood KDC-MP6090R) that used a different Sanyo CCB controller (LC75808) so they could control it from a STM32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CCB have similar pinout as SPI, but its electrical behavior is different. Each device has a hard-coded address similar to I2C. There is a variation of CCB that merges DI and DO into a single half-duplex line, making it even closer to I2C but not still the same. I'm pretty certain I couldn't use hardware SPI or I2C peripherals to talk to this chip, but in the CCB specification there's a line "<em>Using <strong>software </strong>or serial I/O facilities</em>" which implied the creators explicitly supported doing CCB in software. (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Bit_banging" target="_blank">bit-banging</a>) Looks like some people have claimed success <a rel="noreferrer noopener" href="https://forum.arduino.cc/t/ccb-data-reading/418509/3" target="_blank">doing so in Arduino</a> so their precedents might be worth a look when I aim to do the same. But before I do that, I need to learn what <a href="https://newscrewdriver.com/2022/05/15/sanyo-ccb-close-enough-to-spi-for-logic-analyzer/">normal CCB communication</a> looks like.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

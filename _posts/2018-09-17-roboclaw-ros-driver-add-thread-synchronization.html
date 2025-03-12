@@ -1,0 +1,47 @@
+---
+layout: post
+title: 'Roboclaw ROS Driver: Add Thread Synchronization'
+date: 2018-09-17 12:04:27.000000000 +00:00
+type: post
+post_id: '16799'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  timeline_notification: '1537211070'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22247355884'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/17/roboclaw-ros-driver-add-thread-synchronization/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">I now turn my attention to finding the root cause of random sporadic failures when the <a href="https://github.com/sonyccd/roboclaw_ros">Roboclaw ROS driver</a> makes calls into Roboclaw API. The most common symptom of these failures is the <code>TypeError</code> I addressed earlier, but avoiding crash by <code>TypeError</code> is only a band-aid. There were still other issues. Sometimes Phoebe's movement stutters. And even more mysteriously, sometimes when Phoebe was supposed to be standing still, it would twitch for a fraction of a second.</p>
+<p>Looking into ROS logs, the node never intended to send a movement. But it does send a continuous stream of "run at speed X" commands at a rate of ten per second, whether it is trying to move the robot or not. When staying still, that stream continues at the same rate constantly sending "run at speed zero". The fact that my robot twitches when it's supposed to be standing still tells me that "run at speed zero" command is occasionally corrupted into a "run at speed X" command. Which starts the motor moving for 1/10th of a second until it is stopped by the next non-corrupted "run at speed zero" command.</p>
+<p>Any time there is a random sporadic failure, my instinct is to look for places where threading collisions may be taking place. Programming for multi-threaded environments can get tricky. When I wrote code for SGVHAK Rover, the intent was to make that code easy to understand and pick up. In that spirit, I explicitly kept everything on a single thread to avoid multi-threading issues.</p>
+<p>But now we're playing in the major leagues and there's no avoiding multiple threads. ROS itself runs across multiple processes and threads, so it could scale to robots that have multiple on board computers, each of which has multiple processing cores. Fortunately, ROS implementation takes care of almost everything, each ROS node just has to make sure they're doing the right thing with their own private data.</p>
+<p>There are at least three different ROS topics involved in this Roboclaw ROS node:</p>
+<ol>
+<li>Driving commands received via <code>/cmd_vel</code>
+</li>
+<li>Odometry computation broadcast to <code>/odom</code>
+</li>
+<li>Diagnostics information</li>
+</ol>
+<p><a href="https://answers.ros.org/question/9543/rospy-threading-model/">Each ROS topic is processed in own thread</a>, so given three topics, we should expect at least three different threads who might all call into Roboclaw API at the same time to perform their tasks. Armed with this knowledge, I looked for code managing cross-thread access. My plan was to review that code to see if I can find any obvious problems with it.</p>
+<p>That plan was changed when I found no code managing cross-thread access. I guess its absence qualifies as an obvious problem and it would certainly explain the kind of behavior I saw.</p>
+<p>Not being a Python expert, I cruised StackOverflow for a pattern I could use to implement Python thread synchronization. I decided it was most straightforward to use the <code>with</code> keyword described on one of the later replies on <a href="https://stackoverflow.com/questions/31508574/semaphores-on-python">this "Semaphores on Python" thread</a>. Using this pattern makes the code change delta very straightforward to read.</p>
+<p>There were a few initial calls into Roboclaw API to set things up, I left those alone. But as soon as the code started kicking off events that would have other threads (specifically, when it started the diagnostics thread) every following call into Roboclaw API is synchronized by a <code>threading.Lock()</code> object. With this modification, we can guarantee that only one thread will be performing serial communication to Roboclaw motor controller at any given time, and avoid data corruption by multiple threads trying to talk to the serial port at the same time.</p>
+<p>Phoebe ran smoothly and reliably after this work. No more stutter in motion, and no more twitching when standing still. I've <a href="https://github.com/sonyccd/roboclaw_ros/pull/17">submitted the fix</a> as a pull request.</body></html></p>

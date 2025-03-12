@@ -1,0 +1,56 @@
+---
+layout: post
+title: Window Shopping ESP32 Pulse Counter (PCNT)
+date: 2024-01-31 12:30:00.000000000 +00:00
+type: post
+post_id: '41805'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25702'
+  firehose_sent: '1706733029'
+  wordads_ufa: s:wpcom-ufa-v4:1706829062
+  _publicize_job_id: '91571296807'
+  timeline_notification: '1706733031'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/31/window-shopping-esp32-pulse-counter-pcnt/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>To help me understand internal workings of a Canon Pixma MX340 multi-function inkjet, I would like some signal analysis tools. Specifically for recording data coming from a quadrature encoder attached to the paper feed motor gear train. After I found out Saleae Logic could not do this, I started reading about sigrok. <a href="https://newscrewdriver.com/2024/01/30/notes-on-arduino-and-sigrok/">Thanks to a documented protocol</a>, sigrok could run with not-officially-supported data acquisition hardware such as an ATmega328 Arduino or ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It started to look like too much of a distraction, though, so I refocused on my specific problem at hand: I just need quadrature decoding. And for that specific purpose, ESP32 has a hardware peripheral for the job. <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/pcnt.html" target="_blank" rel="noreferrer noopener">Pulse Counter (PCNT)</a> can certainly do what its name says and count pulses on a single input, but it can be more general than that. Espressif designers had added provision for PCNT to act in response to multiple inputs and configure their interaction. One specific configuration, demonstrated in <a href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/pcnt/rotary_encoder">an official example</a>, turns PCNT into a quadrature decoder.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my purpose I need something that can keep up with quadrature phase changes of this encoder, roughly on the order of 10-20 kHz. I found a forum thread <em><a href="https://esp32.com/viewtopic.php?f=13&amp;t=7011&amp;sid=40c0f00f704fe35bf36857bf357ce140" target="_blank" rel="noreferrer noopener">ESP32 pulse counter speed (max frequency)</a></em> which says PCNT can keep up with signals up to 40MHz. That's plenty fast for my needs!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41036,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-encoder-backwards-fast.png?w=826" alt="" class="wp-image-41036"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In fact, that might be too fast. At that high rate of sensitivity, small changes -- like the little dip visible in one phase when the other phase is pulled to ground -- may register with PCNT and that would spell trouble. Fortunately Espressif engineers thought of that too: PCNT includes <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/pcnt.html#set-glitch-filter" target="_blank" rel="noreferrer noopener">an optional glitch filter</a> to reject signals changing outside of its configured speed range. This may be an useful tool in my toolbox if I see spurious data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESP32 PCNT looks like a promising approach for me to build the tool I want. I would have to install ESP-IDF (probably <a href="https://github.com/espressif/vscode-esp-idf-extension" target="_blank" rel="noreferrer noopener">in VSCode Extension</a> form) before I could compile the official sample and start modifying it for my needs. Seems pretty easy on paper, but then I realized I had <a href="https://newscrewdriver.com/2024/02/01/quadrature-decoding-with-arduino/">an even easier option I should try first</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

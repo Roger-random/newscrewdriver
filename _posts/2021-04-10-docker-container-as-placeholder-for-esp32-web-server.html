@@ -1,0 +1,44 @@
+---
+layout: post
+title: Docker Container as Placeholder For ESP32 Web Server
+date: 2021-04-10 12:30:00.000000000 +00:00
+type: post
+post_id: '26051'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26019'
+  _publicize_job_id: '57010261476'
+  timeline_notification: '1618083018'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/10/docker-container-as-placeholder-for-esp32-web-server/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>To control my micro Sawppy rover, I want to present a HTML-based control pad that works even on <a href="https://newscrewdriver.com/2021/04/09/windows-phone-8-as-sawppy-rover-controller/">older phones like my Nokia Luma 920 running Windows Phone 8.1</a>. This will require that I revisit the world of HTML development and this time I'm trying to avoid client-side frameworks like jQuery. Eventually, these HTML files will be served from an ESP32 on board the rover, but I didn't want to use an ESP32 while I'm focused on client-side development. The most obvious reason is that I didn't want to upload a new ESP32 image every time I made a change in my client-side code. Fortunately, the nature of Jamstack-style web development meant that my HTML (&amp; associated files) sent to the browser are all static files. So I could use any static file web server to act as a placeholder for the ESP32 while I work on the HTML side of things.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But given <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/23/esp-idf-up-and-running-on-ubuntu/" target="_blank">my recent experience</a> installing development frameworks, I was squeamish about installing another one on my desktop without some way of keeping it isolated from the rest of my system. Again I turned to solutions already developed for the web world and decided to use Docker containers. I've dabbled with Docker on a few prior occasions, and this project is a chance for more experience.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once Docker Desktop for Windows was installed, the opening screen invites me to run the <a rel="noreferrer noopener" href="https://registry.hub.docker.com/_/getting-started" target="_blank"><code>docker/getting-started</code></a> container. This is a Docker tutorial on multiple levels. Not only does it take me through an increasingly complex set of scenarios on how Docker can be used, it is itself a container that has a web server hosting the tutorial content. (For those that want to take a look before installing Docker, a <a rel="noreferrer noopener" href="https://docs.docker.com/get-started/" target="_blank">substantially similar tutorial is on docker.com</a>.) So after running through the tutorial, I understood enough to come back and poke around inside the <code>getting-started</code> container to see how it was done. Which was very useful for me, because a container acting as a web server is exactly what I want to do right now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As neat as Docker looks, there are a few problems preventing me from using it for everything. The major limitation for me, <a rel="noreferrer noopener" href="https://github.com/microsoft/WSL/issues/4322" target="_blank">at least on Windows</a>, is the lack of hardware access. This rules out all the projects that need access to a USB port. So while I could run ESP-IDF inside a container, I wouldn't be able to flash the resulting image to a ESP32 nor would I be able to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/26/platformio-jtag-debug-adventure-on-esp32/" target="_blank">use JTAG debugging</a>. Docker is most closely associated with network applications, not hardware, so it's best to stick with its strengths as I <a href="https://newscrewdriver.com/2021/04/11/notes-after-node-js-introduction/">use it to solve my project problems</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

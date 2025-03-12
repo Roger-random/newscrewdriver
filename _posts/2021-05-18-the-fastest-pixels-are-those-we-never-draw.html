@@ -1,0 +1,54 @@
+---
+layout: post
+title: The Fastest Pixels Are Those We Never Draw
+date: 2021-05-18 12:30:00.000000000 +00:00
+type: post
+post_id: '26633'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26664'
+  timeline_notification: '1621366211'
+  _publicize_job_id: '58524448183'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/18/the-fastest-pixels-are-those-we-never-draw/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It's always good to have someone else look over your work, they find things you miss. When Emily Velasco started writing code to run on my ESP_8_BIT_composite library, her experiment quickly ran into <a href="https://newscrewdriver.com/2021/05/17/overriding-adafruit-gfx-hline-vline-defaults-for-performance/">flickering problems with large circles</a>. But that's not as embarrassing as another problem, which triggered ESP32 Core Panic system reset.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I started implementing a drawing API, I specified X and Y coordinates as unsigned integers. With a frame buffer 256 pixels wide and 240 pixels tall, it was a great fit for 8-bit unsigned integers. For input verification, I added a check to make sure Y did not exceed 240 and left X along as it would be a valid value by definition.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I put Adafruit's GFX library on top of this code, I had to implement a function with the same signature as Adafruit used. The X and Y coordinates are now 16-bit numbers, so I added a check to make sure X isn't too large either. But these aren't just 16-bit numbers, they are <code>int16_t</code> <em>signed </em>integers. Meaning coordinate values can be negative, and I forgot to check that. Negative coordinate values would step outside the frame buffer memory, triggering an access violation, hence the ESP32 Core Panic and system reset.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was surprised to learn Adafruit GFX default implementation did not have any code to enforce screen coordinate limits. Or if they did, it certainly didn't kick in before my <code>drawPixel()</code> override saw them. My first instinct is to clamp X and Y coordinate values within the valid range. If X is too large, I treat it as 255. If it is negative, I treat it as zero. Y is also clamped between 0 and 239 inclusive. In my overrides of <code>drawFastHLine</code> and <code>drawFastVLine</code>, I also wrote code to gracefully handle situations when their width or heights are negative, swapping coordinates around so they remain valid commands. I also used the X and Y clamping functions here to handle lines that were partially on screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This code to try to gracefully handle a wide combination of inputs added complexity. Which added bugs, one of which Emily found: a circle that is on the left or right edge of the screen would see its off-screen portion wrap around to the opposite edge of the screen. This bug in X coordinate clamping wasn't too hard to chase down, but I decided the fact it even exists is silly. This is version 1.0, I can dictate the behavior I support or not support. So in the interest of keeping my code fast and lightweight, I ripped out all of that "plays nice" code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A height or a width is negative? Forget graceful swapping, I'm just not going to draw. Something is completely off screen? Forget clamping to screen limits, stuff off-screen are just not going to get drawn. Lines that are partially on screen still need to be gracefully handled via clamping, but I discarded all of the rest. Simpler code leaves fewer places for bugs to hide. It is also far faster, because the fastest pixels are those that we never draw. These optimizations complete the easiest updates to make on individual buffers, the next improvement <a href="https://newscrewdriver.com/2021/05/19/double-buffering-coordinated-via-tasknotify/">comes from using two buffers</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank">publicly available on GitHub</a>] </p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

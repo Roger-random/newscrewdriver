@@ -1,0 +1,45 @@
+---
+layout: post
+title: Installing and Updating Plex Media Server in a FreeBSD Jail (FreeNAS) via 'pkg'
+date: 2017-08-28 09:00:18.000000000 +00:00
+type: post
+post_id: '10479'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '8719474119'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669279028
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/08/28/installing-and-updating-plex-media-server-in-freebsd-jail-freenas-via-freshports/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-8410 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/07/plex-logo-e1446990678679.png" alt="plex-logo-e1446990678679" width="1176" height="459">One problem I had with the FreeNAS plug-in architecture is the lack of a user-friendly update system. (Either it is hard to find, or that it doesn't exist, it's not user-friendly either way.) The version of Plex media server I received using the default plug-in installation process was several versions out of date and it looked like I was pretty stuck. In order to update, Google found manual instructions that were... well, let's just call them 'nontrivial'.</p>
+<p>When I found out Plex media server is also offered as part of the <a href="https://www.freebsd.org/ports/" target="_blank" rel="noopener">FreeBSD Ports and Packages Collection</a> (tracked via "<a href="https://www.freshports.org/multimedia/plexmediaserver/">FreshPorts</a>") I hoped that might be a much better way to go. I had to manually create the FreeBSD Jail running on my FreeNAS box, which was harder than the built-in plug-in version but was not horrible. Plus, if this goes well, it would be a one-time cost.</p>
+<p>After the FreeBSD jail was set up, I opened a shell window into it and typed <code>pkg install plexmediaserver</code> which thankfully took care of downloading and installing all the binaries. The install process also ended with a few paragraphs of instructions on how to configure Plex to automatically start every time that instance of FreeBSD (in my case, the FreeBSD Jail) boots up. Copy-pasting the commands worked as advertised and everything was fairly painless.</p>
+<p>I was then able to enjoy my home Plex media server for a few weeks. But there was one unknown: upgrades. I didn't know how upgrades would work until I needed to perform one, so it's just a waiting game for a new version of Plex to be released and see how things propagate. This week, the wait was over!</p>
+<p>The first notification was from my home Plex media server. Apparently it checks for updates periodically and notifies me when one is available. After waiting a day or two, the update propagated to FreshPorts. Once that occurred, I opened a shell window into the FreeBSD jail running Plex and issued the following commands:</p>
+<ul>
+<li>
+<code>service plexmediaserver stop </code>to halt the old running Plex.</li>
+<li>
+<code>pkg update</code> to download the latest database of available packages.</li>
+<li>
+<code>pkg upgrade</code> to perform updates of any new packages, including Plex.</li>
+<li>
+<code>service plexmediaserver start</code> to start the new version of Plex.</li>
+</ul>
+<p>I reconnect to the web interface of Plex running on my FreeNAS box, and I see the latest version up and running. Success!</body></html></p>

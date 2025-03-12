@@ -1,0 +1,39 @@
+---
+layout: post
+title: Don't Burn The Bridge Back to Windows When Installing Ubuntu Linux
+date: 2018-09-04 09:00:12.000000000 +00:00
+type: post
+post_id: '16741'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1536076817'
+  _publicize_job_id: '21789282109'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/04/dont-burn-the-bridge-back-to-windows-when-installing-ubuntu-linux/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The good news is that my new budget laptop Dell Inspiron 11 3000 (3180) can run ROS inside Windows 10 WSL. The bad news is that, with only 32GB of storage, space is really tight for accommodating two operating systems. (OK... one and a half.) Since this computer was purchased to run ROS, the next step is to wipe the entire drive for a clean installation of Ubuntu. Before I do that, though, I wanted to make sure I don't burn my bridge for a return to Windows.</p>
+<p>It used to be that Microsoft makes it difficult to download Windows, and even when I have a copy of the software it's a paper records keeping hassle to keep track of license codes. Nowadays Microsoft <a href="https://www.microsoft.com/en-us/software-download/windows10">makes it easy to download Windows</a>, and computers like this Dell now have the <a href="https://newscrewdriver.com/2018/01/07/windows-10-can-activate-with-windows-8-hardware-key/">license embedded in hardware</a> so it can never get lost. These advances make it much easier to install Windows from scratch.</p>
+<p>Installing the version of Windows 10 direct from Microsoft avoids annoying add-on trial software, but it will also lack power management optimizations from Dell. These optimizations can make a tremendous difference in battery life. When my Lenovo Y480 received a clean install, battery life dropped from four hours to one. Perhaps in time all the power management tricks will be standard and supported by standard Windows, but until then, I need to keep the Dell version.</p>
+<p>The best tool in this situation is the system image backup option built into Windows 7. It seems to have been pushed into the background behind newer data retention features, but it keeps a full copy of all partitions of my storage, which is what I wanted to record before it all gets erased to make room for Ubuntu.</p>
+<p><img class=" size-full wp-image-16744 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/backup-and-restore-windows-7.png" alt="Backup and Restore Windows 7" width="877" height="363">I'm sure part of the reason this backup option is less favored is because it's a hassle to restore from. Not only does the system image backup drive need to be available, the computer needs to recover by booting with something that can make use of system image, meaning the user needs to plug in two drives to perform a recovery. (I've tried several times to make the "recovery boot drive" and "system image drive" the same drive and have never succeeded.)</p>
+<p>In times of Windows 7, the recovery disk would be a bootable CD-ROM. This can be created by clicking "Create a system repair disc" in the menu above, but this Dell laptop has no optical drive and hence the optical disc creation tool is useless. What I need to do is create a bootable recovery USB flash drive instead.</p>
+<p>Strangely, the utility to create a bootable USB recovery drive has been cut off from any menu I've looked in. I've only been able to launch it by pressing the Start button, typing "Recovery", and hope Windows search can find it. This tool is probably getting phased out since the Windows 10 installation USB (created by "Media Creation Tool" linked above) also has the ability to restore from system image. However, I've had problems with version mismatch errors trying to recover using Windows installation USB. So a recovery drive created with the same computer best guarantees this drive boots on this computer to restore this image.</p>
+<p><img class=" size-full wp-image-16743 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/create-a-recovery-drive.png" alt="Create a recovery drive" width="651" height="512"></p>
+<p>Creating a system image plus a bootable USB recovery drive preserves my option to return to Windows 10. Not just any version, the Dell tuned version with power consumption optimized for this specific hardware. Now I can erase this small 32GB eMMC for Ubuntu's exclusive use.</p>
+<p></body></html></p>

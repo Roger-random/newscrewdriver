@@ -1,0 +1,144 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel to Main Board Connector
+date: 2023-12-15 19:45:06.000000000 +00:00
+type: post
+post_id: '41058'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41050'
+  firehose_sent: '1702698308'
+  timeline_notification: '1702698309'
+  _publicize_job_id: '90320595375'
+  wordads_ufa: s:wpcom-ufa-v4:1704491756
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/15/canon-pixma-mx340-control-panel-to-main-board-connector/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have the front control panel of a Canon Pixma MX340 multi-function inkjet and I will <a href="https://newscrewdriver.com/2023/12/14/canon-pixma-mx340-control-panel-round-2/">try to understand of how it worked</a>. I'm starting with this 12-pin connector for the ribbon cable leading to the main board, because all input and output will necessarily go through this connector. Luckily this circuit board only has a single layer of copper traces. Making it much easier to glean information just by looking at the connector and its immediate surroundings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first piece of good news is the fact Canon engineers had drawn an arrow with a number 1 in white silkscreen on the board, sparing me the agony of trying to guess which pin is #1. Using that numbering system, the first circuit observation is that pins 4 and 8 are visibly connected together immediately adjacent to the connector. Pins 5, 6, 7 must go under the connector out the other side, something I'll track down later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having multiple pins connected together with large sections of copper (instead of thin traces) usually indicate multiple pins connected to a common ground. Probing with my multi-meter I confirmed those two pins showed only about a single ohm of resistance to the metal chassis. But the "ground wires are big" is only a rule of thumb, because I probed the remaining pins and found pin 10 -- a thin trace typical of data signals -- is also connected to ground. I assume it is part of a circuit with low power draw so it doesn't need a fat low resistance ground wire.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next circuit observation are the capacitors right next to the connector, sitting between the just-identified ground wires and three other wires. This is typical pattern for <a href="https://en.wikipedia.org/wiki/Decoupling_capacitor" target="_blank" rel="noreferrer noopener">decoupling capacitors</a> and imply those other wires -- pins 3, 9, and 12 -- are power supply wires. Probing with my multi-meter while the printer is turned on, pins 3 and 9 read 3.3V and 5.5V for pin 12. I then repeated the probe with the printer in standby ("turned off") state, and saw pin 9 still had 3.3V while the other two has dropped to zero. Implying certain parts of the board stay active even in standby state while the rest of the board is powered down.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pin 3 has a resistor adjacent to its decoupling capacitor. Marked with "471" indicating 470 Ohms. That is a popular value to use as LED current-limiting resistor when connected to 5V DC. This wire gets 3.3V instead of 5V but that should still result in more than enough current to illuminate a modern LED. When I trace through the circuit later, I will find out if this is a LED illuminated directly by the main board or if the familiar 470 Ohm value is only a coincidence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With this basic exploration, I already have tentative information on half of the pins. [UPDATE: <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/" target="_blank" rel="noreferrer noopener">This later post</a> has filled in the rest of the table.] This is a very encouraging start and motivated me to go look at the other <a href="https://newscrewdriver.com/2023/12/16/canon-pixma-mx340-control-panel-lcd-connector/">connector on this board, for its LCD screen</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Pin Number</th>
+<th class="has-text-align-center" data-align="center">Tentative Guess</th>
+<th class="has-text-align-center" data-align="center">Printer On</th>
+<th class="has-text-align-center" data-align="center">Printer Standby ("Off")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">Maybe LED power?</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+<td class="has-text-align-center" data-align="center">0V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">Always-on power</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">10</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">11</td>
+<td class="has-text-align-center" data-align="center">?</td>
+<td class="has-text-align-center" data-align="center"></td>
+<td class="has-text-align-center" data-align="center"></td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">12</td>
+<td class="has-text-align-center" data-align="center">Power</td>
+<td class="has-text-align-center" data-align="center">5.5V DC</td>
+<td class="has-text-align-center" data-align="center">0V DC</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

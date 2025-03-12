@@ -1,0 +1,45 @@
+---
+layout: post
+title: SGVHAK Rover Control With Polar Coordinates
+date: 2018-05-04 15:13:07.000000000 +00:00
+type: post
+post_id: '16130'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1525471990'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17495527137'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/04/sgvhak-rover-control-with-polar-coordinates/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once an abstraction layer was defined for communication between user interface and rover chassis calculations, I could start trying out various ideas for building a rover driving UI. The baseline rover UI presents two touchscreen controls mimicking joysticks on a traditional remote control vehicle: one moves up/down for controlling forward/back movement, and the other moves left/right for controlling steering. Driving the baseline rover using its UI is a two-thumb affair.</p>
+<p>That is a perfectly valid and functional UI, but my ambitions grew beyond copying it. I wanted to explore ideas around single-finger operation. This decision held firm even after the person who created the UI for baseline rover warned us that it could be tricky to implement - single-point operation was already tried before going with the two-thumb approach. I may yet bow to their wisdom, but I wanted to give it a shot first!</p>
+<p><img class=" size-full wp-image-16114 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/polar-pad.png" alt="Polar Pad" width="571" height="662"></p>
+<p>The first implementation of a one-finger driving control is based around <a href="https://en.wikipedia.org/wiki/Polar_coordinate_system">polar coordinates</a>. It seemed like an obvious match to rover mechanics: polar coordinates on a two-dimensional plane is an angle and a distance, which maps directly to rover control's angle and velocity. The user puts their finger down on the red central control dot, and they can drag it around inside the blue circle to drive the rover. Move the dot up to drive forward, rotate the dot left to steer left, and so forth.</p>
+<p>As I got into it, though, problems started to mount.</p>
+<p>The first and most obvious problem is that our underlying infrastructure - HTML, <code>&lt;canvas&gt;</code> tag, and JavaScript input events - use <a href="https://en.wikipedia.org/wiki/Cartesian_coordinate_system">cartesian coordinates</a>. In order to implement polar coordinate control we need trigonometry math to convert between the two systems. Errors creep in as we perform multiple operations and conversions between coordinate spaces.</p>
+<p>The second problem was a consequence of mapping upper semicircle to forward velocity and lower semicircle to moving backwards. This became problematic when the user wishes to steer at maximum angle.  Turning far left means moving straight left, but at that point small movements can flip between upper and lower semicircle, causing the rover to jerk suddenly between forward and backward movement.</p>
+<p>To mitigate this, a band of dead space between the semicircles was introduced. The user is no longer able to use the full 180 degrees of a semicircle for movement, they are restricted to the middle 140 degrees with the far left 20 and far right 20 degrees blocked off. This was effective to prevent sudden transitions between full speed forward/backwards motion but it wasted screen real estate.</p>
+<p>The third problem of polar coordinates was exposed when trying to maneuver the rover at low-speed around obstacles. When our finger is near the center of the circle, small left-right movement translates into large changes in steering angle. It was more difficult than it should be to make small steering changes at low speed.</p>
+<p>The last problem is makes the above problem worse. When somebody runs into a problem, their first instinct is to lift their finger off the touchscreen. In order to retreat to a known safe condition, our control dot pops back to the center position representing wheels stopped and all steerable wheels pointing straight front-back. This is fine, but when people are frustrated by problem #3 of low-speed maneuverability, this behavior snapping to straight front-back erases whatever angle they were previously driving at, making low-speed maneuvers even more frustrating.</p>
+<p>And what happens when a rover driver is trying to perform delicate maneuvers but find themselves fighting a bad UI that gets in the way and cause frustration? The rover ends up running into things and risk <a href="https://newscrewdriver.com/2018/04/15/sgvhak-rovers-first-brief-drive-session/">breaking gearboxes</a>.</p>
+<p>Now we have experimental evidence polar coordinate driving doesn't work as originally thought, let's take that lesson and create a new UI.</p>
+<p> </p>
+<p></body></html></p>

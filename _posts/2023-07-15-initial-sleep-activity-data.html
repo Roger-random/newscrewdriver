@@ -1,0 +1,55 @@
+---
+layout: post
+title: Initial Sleep Activity Data
+date: 2023-07-15 12:30:00.000000000 +00:00
+type: post
+post_id: '37929'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37930'
+  _publicize_job_id: '85774961181'
+  timeline_notification: '1689449421'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689555380
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/15/initial-sleep-activity-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took an inexpensive HX711-based load cell setup (the type that measures body weight in a bathroom scale) and <a href="https://newscrewdriver.com/2023/07/14/load-cells-for-sleep-activity-logging/">installed them under my mattress</a>. I wasn't interested in measuring my weight while I sleep, I was interested in changes that indicate movement while sleeping. Ideally, I would see pauses in the data implying muscle inhibition associated rapid-eye movement (REM) sleep. I would take lack of movement as an indication of restful sleep. Logged to my Home Assistant database, here's a plot of first night's data:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37930,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/load-cell-delta-values-during-sleep-1.png?w=1024" alt="" class="wp-image-37930"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a relatively restful night where I woke up refreshed. Looking at the plot, I can see when I got into bed and muscle activity gradually reducing as I fell asleep. There are multiple periods of nearly zero movement, implying a nice deep sleep in my cycle. As I started waking up in the morning, the load cell picked up more activity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was one unexplained set of data halfway through the night, where the movement activity is low but not as low as restful periods. The movement resembled my "settling down" period. I wonder if I woke up for some reason and had to fall back asleep? If so, I have no memory of this.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For comparison, here's a graph of a different night's data:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37935,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/load-cell-delta-values-during-sleep-2.png?w=1024" alt="" class="wp-image-37935"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was not a restful night of sleep. I have vague memories of waking up in the middle of the night, tossing and turning. I also woke up exhausted which corroborated with this plot of measured weight delta. It took longer before I fell asleep, there were far fewer periods of restful low movement, and I started to stir much earlier before I got out of bed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll keep the system running for a while, logging information from a time when I'm asleep and unconscious. But that's about as far as I'm going to go. It would take more sleep science knowledge to analyze this data further and I'm not inclined to do so. Partially because this was a really cheap load cell + HX711 amplifier chip combo delivering unreliable data. Some of these "movements" may just be spurious data from the sensor. I wouldn't read too much further into it, it's just a fun project and not a serious health diagnosis tool. But <a href="https://newscrewdriver.com/2023/07/16/code-for-load-cell-experiment-esphome-yaml-lambda/">here's my ESPHome/HX711 code</a> if anyone wants to play with it.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

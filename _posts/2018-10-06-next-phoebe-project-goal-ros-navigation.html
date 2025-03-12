@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Next Phoebe Project Goal: ROS Navigation'
+date: 2018-10-06 09:00:17.000000000 +00:00
+type: post
+post_id: '16920'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _oembed_23d42b06822b8000af93d53806d2d5b5: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1538841716'
+  _publicize_job_id: '22905283568'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/06/next-phoebe-project-goal-ros-navigation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">When I started working on my own TurtleBot variant (before I even decided to call it Phoebe) my intention was to build a hardware platform to get first hand experience with ROS fundamentals. Phoebe's <a href="https://hackaday.io/project/161085-phoebe-turtlebot">Hackaday.io project page</a> subtitle declared itself as a ROS robot for &lt;$250 capable of SLAM. Now that Phoebe can map surroundings using standard ROS SLAM library '<a href="http://wiki.ros.org/gmapping">gmapping</a>', that goal has been satisfied. What's next?</p>
+<p>One disappointment I found with existing ROS SLAM libraries is that the tutorials I've seen (such as <a href="http://wiki.ros.org/turtlebot_navigation/Tutorials/Build%20a%20map%20with%20SLAM">this</a> and <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/slam/">this</a>) expect a human to drive the robot during mapping. I had incorrectly assumed the robot would autonomously exploring its space, but "simultaneous location and mapping" only promises location and mapping - nothing about deciding which areas to map, and how to go about it. That is left to the human operator.</p>
+<p>When I <a href="https://newscrewdriver.com/2018/08/11/running-turtlebot3-mapping-demonstration-with-a-twist/">played with SLAM code earlier</a>, I decided against driving the robot manually and instead invoked an existing module that takes a random walk through available space. A search on ROS Answers web site for something more sophisticated than a random walk resulted in multiple pointers to the <a href="http://wiki.ros.org/explore">explore module</a>, but that code hasn't been maintained since ROS "groovy" four versions ago. So one path forward is to take up the challenge of either update explore or write my own explorer.</p>
+<p>That might be interesting, but once a map is built, what do we do with it? The standard ROS answer is the <a href="http://wiki.ros.org/navigation">robot navigation stack</a>. This collection of modules is what gives a ROS robot the ability to plan a path through a map, watch its progress through that plan, and update the plan in reaction to unexpected elements in the environment.</p>
+<p>At the moment I believe it would be best to learn about the standard navigation stack and getting that up and running on Phoebe. I might return to the map exploration problem later, and if so, seeing how map data is used for navigation will give me better insights into what would make a better map explorer.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154087-next-project-goal-ros-navigation">Hackaday.io</a>)</body></html></p>

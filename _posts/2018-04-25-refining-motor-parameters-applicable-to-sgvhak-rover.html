@@ -1,0 +1,41 @@
+---
+layout: post
+title: Refining Motor Parameters Applicable to SGVHAK Rover
+date: 2018-04-25 16:33:13.000000000 +00:00
+type: post
+post_id: '16014'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17190634801'
+  timeline_notification: '1524699197'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/25/refining-motor-parameters-applicable-to-sgvhak-rover/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once we had a basic HTML UI for tuning RoboClaw PID parameters, we started exploring remaining surface area of RoboClaw API. In the arena of motor control, we have three categories of motion to choose from:</p>
+<ol>
+<li>PWM or duty cycle: This is the most basic type of control, where the motor is given a particular amount of power regardless of its load. If the motor is unloaded, it turns faster. If there is load, the power level does not change so motor slows down (or stalls). Since the quadrature encoder is not involved in this mode, it is particularly useful when diagnosing problems and we want to eliminate encoder error as a potential problem. There's also no PID turning required for this mode to work, so it is also useful when trying to verify whether a problem is caused by bad PID gains or not.</li>
+<li>Velocity: In this mode, quadrature encoder activity matters. RoboClaw monitors encoder pulses and adjusts motor power to maintain the commanded velocity. If there is load of the motor, its slowdown will be apparent via encoder pulses and RoboClaw adds power to maintain commanded velocity. And conversely, when motor load is reduced and it starts speeding up, RoboClaw will see this in the encoder pulses and cut power to maintain commanded velocity. This is the mode we'll use to control the wheel motors' rolling travel. It requires a properly functioning encoder, at a high enough resolution, plus reasonably tuned velocity PID parameters.</li>
+<li>
+<img class=" size-full wp-image-15829 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/01/rovertestconfig.png" alt="RoverTestConfig" width="473" height="899"></p>
+<p>Position: In this mode, RoboClaw is told to move to a specific position and hold there. If external forces move the motor off its commanded position, RoboClaw will increase power to return to position and hold there. We will be using this mode to command motors in charge of wheel steering angle. In addition to the encoder requirement and velocity PID, there is a second set of position PID and both sets need to be tuned for a particular configuration.</li>
+</ol>
+<p>Getting our bearings with RoboClaw motor control, we would first explore a tuning API from the command line then incorporate it into our HTML-based UI so we could rapidly iterate through parameter values.</p>
+<p>The many iterations of this exploratory and tuning adventure (including all the mis-steps along the way) are <a href="https://github.com/Roger-random/RogerPiBot">publicly visible on Github</a>.</body></html></p>

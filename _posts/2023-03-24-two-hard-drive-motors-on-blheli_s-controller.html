@@ -1,0 +1,79 @@
+---
+layout: post
+title: Two Hard Drive Motors on BLHeli_S Controller
+date: 2023-03-24 12:30:00.000000000 +00:00
+type: post
+post_id: '35870'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35871'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679775796
+  _publicize_job_id: '82604002826'
+  timeline_notification: '1679686213'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/24/two-hard-drive-motors-on-blheli_s-controller/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I bought some brushless motor controllers meant for multirotor aircraft: A four-pack intended for quadcoptor drones. But instead of running a motor turning a propeller, I <a href="https://newscrewdriver.com/2023/03/23/cd-dvd-motor-on-blheli_s-controller-under-oscilloscope/">started with a small motor salvaged from a laptop optical drive</a>. (CD or DVD I no longer remember.) It spun up with gusto, and I watched the motor control signals under an oscilloscope. That was interesting, and I shall continue these experiments with more of my teardown detritus: computer hard drive motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35434,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-disassembled.jpg?w=1024" alt="" class="wp-image-35434"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">2.5" Laptop Hard Drive</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:image {"align":"center","id":35873,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/wd500m21k-motor-pads.jpg?w=1024" alt="" class="wp-image-35873"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This hard drive was the performance bottleneck in a Windows 8 era tablet/laptop convertible. The computer was barely usable with modern software <a href="https://newscrewdriver.com/2020/11/13/hp-split-x2-13-r010dx-transformed-with-ssd-upgrade/">until this drive was replaced with an SSD</a>. Once taken out of use, I took it apart to <a href="https://newscrewdriver.com/2023/02/28/western-digital-sff-8784-hybrid-hdd-ssd-teardown-wd5000m21k/">see all the intricate mechanical engineering</a> necessary to pack hard drive mechanicals into 5mm of thickness. The detail important today are these three pads on the back, where its original control board made electrical contact with the spindle motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35875,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/wd500m21k-motor-pads-with-soldered-wires.jpg?w=1024" alt="" class="wp-image-35875"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>They are now an ideal place for soldering some wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35876,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/wd500m21k-ready-for-motor-test.jpg?w=1024" alt="" class="wp-image-35876"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This motor is roughly the same size as CD/DVD motor. But because I never figured out how to remove the hard drive platter, there is significantly more inertia. This probably contributed to the inconsistent startup behavior I saw. Sometimes the drone motor controller could not spin up the motor, it would just twitch a few times and give up. I have to drop PWM control signal back down to zero throttle and try again. Something (maybe the platter inertia, maybe something else) is outside the target zone of the drive controller's spin-up sequence. This has been <a href="https://newscrewdriver.com/2020/01/11/projects-using-brushless-motors-must-account-for-controller-start-up-behavior/">a recurring issue</a> and my motivation to learn more about brushless motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Side note: This motor seemed to have a curious affinity for the "correct" orientation. I had thought brushless motors didn't care much which direction they spun, but when I spun the platter by hand (without power) it would coast for several seconds in the correct orientation but stop almost immediately if I spun it backwards. There's a chance this is just my wrist, applying more power in one direction versus another, or there might be something else. It might be fun to sit down and get scientific about this later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29945,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/hdd-chassis-with-spindle-bldc-motor.jpg?w=1024" alt="" class="wp-image-29945"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">3.5" Desktop Hard Drive</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then switched out the 2.5" laptop hard drive motor for a 3.5" desktop computer hard drive motor. This isn't <a href="https://newscrewdriver.com/2023/02/25/western-digital-wd800-mechanical-bits/">the WD800 I took apart recently</a>, but another desktop drive I took apart even further back.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29947,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/hdd-chassis-with-wires-soldered-to-spindle-bldc-motor.jpg?w=1024" alt="" class="wp-image-29947"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I dug it out of my pile because it already had wires soldered to the motor from a previous experiment trying to <a href="https://newscrewdriver.com/2022/04/27/hard-drive-brushless-motor-as-generator/">use the motor as a generator</a>. The data storage platters had been removed from this hard drive so I expected less problems here, but I was wrong. It was actually more finicky on startup and, even if it starts up, never spins up very fast. If I try turning up the speed control signal beyond a certain (relatively slow) point, the coil energizing sequence falls out of sync with the rotor which jerkily comes to a halt.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was surprised at that observation, because this motor is closest size-wise to the brushless outrunner motors I've seen driving propellers. There must be one or more important differences between this 3.5" hard drive motor and motors used for multirotor aircraft. I'm adding this to a list of observations I hope I can come back to measure and articulate those important differences. Lots to learn still, but at least I know enough now to notice something's very different with brushless motors built from <a href="https://newscrewdriver.com/2023/03/25/brushless-motors-with-two-phases/">even fewer wires and coils</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

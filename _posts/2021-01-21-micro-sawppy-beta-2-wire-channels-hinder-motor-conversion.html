@@ -1,0 +1,56 @@
+---
+layout: post
+title: Micro Sawppy Beta 2 Wire Channels Are Too Hard To Work With
+date: 2021-01-21 12:30:00.000000000 +00:00
+type: post
+post_id: '24598'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Micro Servo
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24696'
+  _oembed_d4924a30c8242d4dc008c637bb93df31: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Mechanically
+    loose play + simplistic control algorithm = tendency for self-perpetuating oscillations.
+    Ah, the joys of working with inexpensive micro servos. <a href="https://t.co/2q6Y3DYuey">pic.twitter.com/2q6Y3DYuey</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1341888336764358656?ref_src=twsrc%5Etfw">December
+    23, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '53738604320'
+  timeline_notification: '1611261015'
+  _oembed_time_d4924a30c8242d4dc008c637bb93df31: '1611261550'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/21/micro-sawppy-beta-2-wire-channels-hinder-motor-conversion/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My little rover project Micro Sawppy Beta 2 (MSB2) turned out to <a href="https://newscrewdriver.com/2021/01/20/micro-sawppy-beta-2-poor-proportional-response/">have (effectively) three speeds</a>: stopped, full speed forward, and full speed reverse. MSB2 originally intended to get its six-wheel drive from inexpensive micro servos <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/04/converting-mg90s-metal-gear-micro-servo-to-continuous-rotation/" target="_blank">modified for continuous rotation</a>. This approached worked for its predecessor MSB1, but MSB2 used servos from a different manufacturer and their feedback control circuit had very poor (or poorly tuned, or nonexistent) proportional control. As a result it was nearly impossible to drive MSB2 at partial throttle.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":24697,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/01/micro-servo-converted-to-just-a-dc-gear-motor.jpg?w=1024" alt="" class="wp-image-24697"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given this <s>setback</s> opportunity to try other ideas, I started modifying all six wheel drive servos. I unsoldered the flawed control circuit board and soldered wires directly to the motor input terminals, intending to route those wires to a motor control H-bridge circuit of my own choosing. This would mean I'm only using the mechanical portions of the micro servos, effectively turning it into a DC gearmotor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I only got halfway. Unsoldering the board and soldering motor wires is well within my comfort zone, but wrangling with wires got very tedious and frustrating. In order to replace the three-wire continuous rotation servo wires with two-wire motor control, I have to struggle with the intricate wiring channels I've designed into suspension components. In fact I have to struggle with it twice: once to remove the wire, and once to add the replacement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's when I realized MSB2 has failed some very important project objectives: making the rover easy to build, easy to diagnose, and easy to repair. For the three wheels I managed to convert, it took far more time to wrestle with the wires than it did to perform soldering, and that's just wrong. I want a design where, if a servo dies, it can be <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/12/16/sawppy-issue-ease-of-repair/" target="_blank">quickly replaced to get the rover back up and running</a>. The wiring channels may give us a tidy looking rover, but not one easy to work with. As a result I've decided MSB2 is going down the wrong path and stopped work on this iteration. But I am thankful for the cute little rover, it taught me the tradeoff for tidy wiring and gave me motivation to examine <a href="https://newscrewdriver.com/2021/01/22/dc-gearmotors-for-little-sawppy-rover/">using DC gear motors to drive a little rover's wheels</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

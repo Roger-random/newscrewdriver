@@ -1,0 +1,38 @@
+---
+layout: post
+title: Examining Battery of Thrift Store Neato XV-21
+date: 2019-02-22 13:30:03.000000000 +00:00
+type: post
+post_id: '17888'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '27926056783'
+  timeline_notification: '1550871060'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/02/22/examining-battery-of-thrift-store-neato-xv-21/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>This Neato XV-21 robot vacuum did not power on when I found it in the thrift store. Now that I've <a href="https://newscrewdriver.com/2019/02/21/digging-into-thrift-store-neato-xv-21/">verified there isn't anything fundamentally broken or missing on the robot</a>, the next thing is to try to charge its batteries. But since the thrift store didn't have its charger, we have to go to plan B: Pull out the batteries and see if we can work with it.</p>
+<p>The <a href="https://newscrewdriver.com/2019/02/21/digging-into-thrift-store-neato-xv-21/">interior component packaging of this vacuum</a> divides its battery into two packs, each in their own battery bay on either side of its dust collection chamber. These two bays are accessible from the bottom of the vacuum, each with a door that opened by unscrewing a pair of Philips screws. Each battery pack has a 4-wire pigtail terminating in a connector that plugs into the vacuum.</p>
+<p>It takes quite a bit of force to remove the connector. One battery was removed without incident, but the other battery required so much force it actually broke something holding the vacuum side connectors to the vacuum body. Fortunately this appears to only be a minor mechanical annoyance and will not derail the project. At worse, we now have a connector that will rattle as the robot moves around.</p>
+<p><img class=" size-full wp-image-17889 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-xv-21-battery-pack.jpg" alt="Neato XV-21 battery pack" width="1600" height="1006"></p>
+<p>Once the battery pack was removed we could read its printed information, identifying itself as a <a href="https://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery">nickel-metal hydride (NiMH)</a> battery pack. The general shape implies six cells, and the stated nominal voltage of 7.2 is consistent with six cells in series. Each cell is rated with a capacity of 3200 milliamp-hours. I didn't know what "4/3A" meant but a quick web search indicated it was the <a href="https://en.wikipedia.org/wiki/List_of_battery_sizes">physical form factor (size)</a> of the battery. "McNair" appears to be the name of a battery manufacturing company, and finally "MC20120924" probably meant this battery was manufactured on September 24th, 2012.</p>
+<p>Attention then turned to the four-wire connector. Typical convention hints black is probably negative and red is probably positive. A voltmeter said there was less than a volt across those wires, which is not just flat but might also indicate damaged battery cells. The next question: What are the two yellow wires? It is something the vacuum control board would want to know about, and our hypothesis is that it is a thermistor to measure battery's temperature. As an experiment to test this hypothesis, we put a ohm meter across the two yellow wires and warmed up the battery pack with our hands. We saw resistance change in response to temperature.</p>
+<p>With some confidence the yellow wires are not directly involved in charging, it's time to <a href="https://newscrewdriver.com/2019/02/24/attempt-to-charge-battery-of-thrift-store-neato-xv-21/">put a little bit of power across those red and black wires to see what happens</a>.</p>
+<p></body></html></p>

@@ -1,0 +1,48 @@
+---
+layout: post
+title: Choosing PostgreSQL As Budibase External Database
+date: 2024-08-29 12:30:00.000000000 +00:00
+type: post
+post_id: '44960'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- postgresql
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44963'
+  timeline_notification: '1724959811'
+  firehose_sent: '1724959809'
+  _publicize_job_id: '97410609006'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-28 21:11:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/29/choosing-postgresql-as-budibase-external-database/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm learning how to build data apps with Budibase and thought it would be a good idea to start with its default database so I minimize the number of moving parts as I learn. Unfortunately I ran into limitations on <a href="https://newscrewdriver.com/2024/08/28/no-budibase-support-for-imported-nested-json/">data imported in JSON</a> (JavaScript Object Notation) format, and that was after I ran into entirely different limitations on <a href="https://newscrewdriver.com/2024/08/27/no-budibase-support-for-csv-data-relationships/">data imported in CSV</a> (comma-separated values) format. I think the default database approach is a bust.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While disappointing, I have decided not to fault Budibase for my problems. As I learn about Budibase I see it is focused on solving relatively simpler problems where people would be tempted to use a spreadsheet. The target audience is unlikely to care about table joins or database normalization so it's no surprise Budibase has not prioritized such things with their default tools. If someone really cares, they can use an external relational database. I've decided that is me so I will need to choose one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>SQLite is a great choice for small-scale database projects like mine, available in a wide variety of ways including <a href="https://docs.python.org/3/library/sqlite3.html">as part of the Python standard library</a>. Unfortunately part of its lightweight design is for SQLite to be built into the client application, and that's <a href="https://github.com/Budibase/budibase/discussions/1486">not a pattern Budibase supports</a>. Next step up in the complexity scale is MySQL, which used to be a darling of the open-source world until it was acquired. Now they're owned by Oracle and I am not fond of their business practices so I will stay clear of MySQL. I don't need big iron like Oracle or competitor like Microsoft SQL Server. My project is certainly not worth spending money on such databases.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's an open-source fork of MySQL called MariaDB that formed in response to MySQL acquisition. I had considered MariaDB until I researched its governance. The people behind MariaDB wants to build a business to sustain the project, which is laudable, but they <a href="https://en.wikipedia.org/wiki/MariaDB#MariaDB_Corporation_Ab">want to do it as a publicly-traded company</a> and that gives me pause. Open source software financials rarely align with Wall Street desires and I don't think that will end well for its users.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So that leaves PostgreSQL, which i briefly looked at earlier <a href="https://newscrewdriver.com/2022/11/22/notes-on-codecademy-design-databases-with-postgresql/">as subject for a Codecademy course</a> and it's been on my "I should try building something with it" list for some time. Reading up on <a href="https://en.wikipedia.org/wiki/PostgreSQL#History">PostgreSQL history</a>, I learned it started as a university research project and is now receiving corporate sponsorships in addition to continued university involvement. I don't know if this is necessarily more financially stable than MariaDB, but at least I don't have to worry about PostgreSQL doing anti-consumer things to maximize shareholder value. I will use PostgreSQL as my external relational database for my Budibase project, and I will <a href="https://newscrewdriver.com/2024/08/30/postgresql-docker-container-has-tools-i-need/">learn more about both PostgreSQL</a> and Budibase as I go.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

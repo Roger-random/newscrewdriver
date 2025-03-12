@@ -1,0 +1,40 @@
+---
+layout: post
+title: Assembling Prototype VFD Driver PCB
+date: 2019-04-17 12:30:32.000000000 +00:00
+type: post
+post_id: '18352'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29872204167'
+  timeline_notification: '1555529951'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/17/assembling-prototype-vfd-driver-pcb/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<a href="https://newscrewdriver.com/wp-content/uploads/2019/04/pic16f18345-vfd-driver-pcb.jpg" target="_blank" rel="noopener"><img class=" size-full wp-image-18326 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/pic16f18345-vfd-driver-pcb.jpg" alt="PIC16F18345 VFD driver PCB" width="1600" height="900"></a>In addition to exploring the idea of <a href="https://newscrewdriver.com/2019/04/16/chip-packing-experiment-on-prototype-vfd-driver-pcb/">aggressively packing chips densely</a>, there were a few other design considerations in building our prototype driver PCB.</p>
+<h2><em>Why I²C?</em></h2>
+<p>When I was tearing my hair out trying to figure out <a href="https://newscrewdriver.com/2019/04/12/old-microchip-mcc-boilerplate-for-mssp-requires-c90-compatibility-mode/">why a tried-and-true piece of template code has stopped working</a>, I was sorely tempted to move to some communication protocol other than I²C... good old TTL Serial always looks good whenever I run into a problem.</p>
+<p>The answer is voltage compatibility: I want my driver board to be capable of running at either 3.3V or 5V, which is easy to do with an old 8-bit chip like the PIC16F18345 I'm using: give it power anywhere in its specified range (and probably a bit beyond that range) and it'll happy run. But this doesn't necessarily apply to whatever my driver board will accept commands from. Fortunately, I²C was designed from the start to accommodate devices that work off different VCC levels. So something like a Raspberry Pi (3.3V) can communicate with my PIC. (5V).</p>
+<h2><em>Pin Assignments</em></h2>
+<p>In addition to moving the decoder output pins so it could be placed immediately adjacent to my PIC, I also took advantage of my particular PIC's feature of Peripheral Pin Select (PPS) by moving the I²C pins (handled by Master Synchronous Serial Peripheral - MSSP) from their default to RA4 &amp; RA5 for easier routing on the PCB and easier data writes in my code.</p>
+<h2><em>Pin Isolation</em></h2>
+<p>This is the first time I planned to use pins RA0 and RA1 on a PIC16F18345 project. I usually avoid them because they are used as in-circuit system programming data (ICSPDAT) and clock (ICSPCLK) pins. They're perfectly usable outside of this scenario, but they must be disconnected from the rest of the circuit during programming. In this case, it meant I had to put in two jumpers that are removed during programming. The jumpers are installed exactly where my PICkit 3 programmer would attach, so there's no way for me to forget to remove them when reprogramming this chip.</p>
+<h2><em>Wires From CAT-5E Network Cable</em></h2>
+<p>Even with all these concessions to easier routing on a prototype PCB, there will still be an unavoidable nest of wires. In order to keep things tamed, I harvest my spool of CAT-5E network cable for wires that are thin and rigid. Thin wires help me fit more wires in a small volume, and rigid wires stay where I've put them. In addition to being affordable and easily available, the four twisted pairs of wires give me eight different insulation colors to help me keep track of which wire goes where.</body></html></p>

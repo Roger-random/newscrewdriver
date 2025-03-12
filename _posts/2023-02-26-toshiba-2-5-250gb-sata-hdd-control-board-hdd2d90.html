@@ -1,0 +1,72 @@
+---
+layout: post
+title: Toshiba 2.5" 250GB SATA HDD Control Board (HDD2D90)
+date: 2023-02-26 12:30:00.000000000 +00:00
+type: post
+post_id: '35396'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35402'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677541370
+  _publicize_job_id: '81851348729'
+  timeline_notification: '1677443536'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/26/toshiba-2-5-250gb-sata-hdd-control-board-hdd2d90/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've taken apart countless numbers of 3.5" desktop hard drives <a href="https://newscrewdriver.com/2023/02/25/western-digital-wd800-mechanical-bits/">like a Western Digital WD800</a>, but I haven't taken apart many (any?) 2.5" laptop drives. There used to be a significant price premium for laptop components, an extra cost that I didn't need to pay for my own needs. This started changing a few years ago: increasing power efficiency requirements and benefits of miniaturization meant small and power efficient components no longer demand a huge price increase, and nowadays laptops outsell desktops. Also, dropping prices of flash memory solid-state drives meant a lot of laptop-sized 2.5" hard drives got replaced. With terabyte SSDs available for well under a hundred bucks, I can't think of any reason why I'd ever want to use a 250GB laptop sized hard drive again, so I'm taking apart this Toshiba HDD2D90.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35400,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/toshiba-hdd2d90-bottom.jpg?w=1024" alt="" class="wp-image-35400"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the bottom I see four wires going into the spindle motor, which I now know to be a brushless motor with "Wye" style winding.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35402,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/toshiba-hdd2d90-pcb-removed.jpg?w=1024" alt="" class="wp-image-35402"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't see an easy way to tap into motor wires while running, so I'm going to skip the <a href="https://newscrewdriver.com/2023/02/23/hard-drive-wd800-motor-control-on-oscilloscope/" target="_blank" rel="noreferrer noopener">oscilloscope examination for this drive</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35406,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/toshiba-hdd2d90-ti-7ccn5nta-g4-tls2502.jpg?w=800" alt="" class="wp-image-35406"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Closest to the motor control contacts is a chip with Texas Instruments logo and text 7CCN5NTA G4 TLS2502.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35408,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/toshiba-hdd2d90-psc-a2v64s40ctp-747afd1n.jpg?w=800" alt="" class="wp-image-35408"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Chip with largest surface area was set at an angle relative to everything else. I don't recognize the logo offhand, but a brief search with PSC acronym found Taiwan-based <a href="http://www.powerchiptech.com/">Powerchip Semiconductor Corp</a> and a matching logo. I didn't find an exact match for text A2V64S40CTP 747AFD1N but similar model numbers designated memory chips.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35410,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/toshiba-hdd2d90-spansion-fl040a005-74699043.jpg?w=800" alt="" class="wp-image-35410"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Spansion was acquired by Cypress Semiconductor which was itself acquired by Infineon Technologies. After multiple mergers, it was pretty hopeless trying to find details on a FL040A005 74699043. But Spansion's main product line were flash memory, so this is probably a chunk of flash holding configuration, calibration, and drive-specific information such as remapping of bad blocks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35404,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/toshiba-hdd2d90-marvell-8816717-tfj1-ft15241.2-0747-c0p-tw.jpg?w=800" alt="" class="wp-image-35404"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In between the DRAM candidate and flash memory candidate is a large chip with an old Marvell logo and text 8816717-TFJ1 FT15241.2 0747 C0P TW</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My failure to find much of any information on the above chips were disappointing, but at this point no longer surprising. I continued onward to <a href="https://newscrewdriver.com/2023/02/27/toshiba-2-5-250gb-sata-hdd-mechanicals-hdd2d90/">mechanical disassembly</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

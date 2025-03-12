@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'FreeNAS USB Flash Boot Drives: Recovering Boot Drives That Don''t Boot.'
+date: 2017-07-18 09:00:18.000000000 +00:00
+type: post
+post_id: '8201'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7221207071'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/18/freenas-usb-flash-boot-drives-recovering-drives-that-no-longer-boot/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-5610 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/06/freenas-logo.png" alt="FreeNAS Logo" width="260" height="73">We've established that FreeNAS can mirror the USB flash drive boot device for redundancy. If one of them should fail, the system can be recovered with the other. I hadn't set out to verify the recovery procedure, but I stumbled into a practice run anyway. In hindsight it's good to get a feel of my recovery options now when I'm still playing with the system, rather than later when I'm in a panic to recover my data.</p>
+<p>Over the past few days I've experimented with the boot volume, setting up the mirroring and using the built-in replacement mechanism to retire my USB sticks with checksum errors. After this was done, I unplugged the checksum-error drives (including the one I originally installed FreeNAS on) and rebooted the system.</p>
+<p>It failed to boot and ended up at the <a href="https://en.wikipedia.org/wiki/GNU_GRUB">GRUB </a>recovery menu. Hmm, that's not good.</p>
+<p>I plugged all the old drives back in... and that didn't improve the situation. Apparently, in the midst of all the mirroring and replacing, I managed to damage <a href="https://en.wikipedia.org/wiki/GNU_GRUB">GRUB </a>configuration so FreeNAS no longer boots.</p>
+<p>Since I expected all the actual operating system files to be OK, I searched for a way to rebuild just the boot loader portion of the USB sticks. There are many ways to do this. The easiest - looking route I took is to perform an in-place upgrade.</p>
+<p>I booted up the FreeNAS installation media, and selected the "Install/Upgrade" option. I pointed it to a USB drive that was free of checksum errors but would not boot. The installer detected an existing installation and offered to generate a new boot environment for the existing FreeNAS installation. Sounds perfect! I hit &lt;OK&gt;</p>
+<p>Ten minutes later, the upgrade failed due to an error writing boot configuration files the installer wants to add. A quick Google search found a few suggestions on how to fix it using command-line tools I wasn't familiar with. I decided to try easier things first.</p>
+<p>I restarted the installation process and chose the other upgrade option: An upgrade with a disk reformat rather than just generating a new boot environment. The installer will preserve a copy of the FreeNAS configuration but wipe everything else from scratch.</p>
+<p>This approached was more destructive and took more time but it worked. My FreeNAS box booted back up as if nothing happened. Success!</body></html></p>

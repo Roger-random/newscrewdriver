@@ -1,0 +1,52 @@
+---
+layout: post
+title: Qt Quick with PyQt5 on Raspberry Pi
+date: 2017-10-17 09:00:33.000000000 +00:00
+type: post
+post_id: '13745'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- Raspberry Pi
+tags:
+- Qt
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: '2697'
+  _publicize_job_id: '10427915078'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/17/a-brief-and-unsuccessful-try-at-qt-quick/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="size-full wp-image-13341 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/10/qtlogo.png" alt="QtLogo" width="87" height="70">The prime motivation for me to go through Qt licensing documentation and installing Qt Creator IDE was to explore the new UI infrastructure introduced in Qt 5 under the umbrella of "<a href="http://doc.qt.io/qt-5/qtquick-index.html">Qt Quick</a>". As far as I can tell, this is an entirely different system for creating user interface of a Qt application. Built with modern ideas such as OpenGL graphics acceleration for animation effects and UI layout declared with a text-based markup language <a href="http://doc.qt.io/qt-5/qmlapplications.html">QML</a> (probably stands for Qt Markup Language.)</p>
+<p>Up to this point my experience with building graphics user interface in Qt was with the QWidget-based infrastructure, which has a long lineage in past editions of Qt. Qt Quick is new for Qt5 and seem to share nothing in common with QWidget other than both a part of Qt5. Now that I've had a bit of QWidget UI work under my belt I wanted to see what Qt Quick has to offer. And this starts with a smoke test to make sure I could run Qt Quick in the environments I care about: Python and Raspberry Pi.</p>
+<p><em><strong>Step 1: Qt Creator IDE Default Boilerplate.</strong></em></p>
+<p>Once the Qt Creator IDE was up and running, I <a href="http://doc.qt.io/qtcreator/quick-projects.html">followed the Qt Quick tutorial</a> to create a bare bones boilerplate Qt Quick application. Even without any changes to the startup boilerplate, it reported error messages complaining of missing modules. Reading the error message, I looked at the output of <code>apt list qml-module-qtquick*</code> and installed the ones that sound right. (From memory:<code>qml-module-qtquick2</code>, <code>qml-module-qtquick-controls2</code>, <code>qml-module-qtquick-templates2</code>, and <code>qml-module-qtquick-layouts</code>)</p>
+<p><img class="size-full wp-image-13796 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/qml-cpp.png" alt="QML CPP" width="654" height="496"></p>
+<p>Once the boilerplate successfully launched, I switched languages...</p>
+<p><em><strong>Step 2: PyQt5</strong></em></p>
+<p>The next goal is to get it up and running on Python via PyQt5. The <a href="http://pyqt.sourceforge.net/Docs/PyQt5/qml.html">PyQt5 documentation claimed support for QML</a> but the example on the introductory page doesn't quite line up with the Qt Creator boilerplate code. Looking at the Qt Creator boilerplate main.cpp for reference, I <a href="https://github.com/Roger-random/python_tutorials/commit/0afc467129b4700296f29402ca23fefc515bc261">translated the application launch code into main.py</a>. This required <code>sudo apt install python3-pyqt5.qtquick</code> in addition to the <code>python3-pyqt5</code> I already had. (If there are additional dependencies I forgot about, look for them in the output of <code>apt list python3-pyqt5*</code>)</p>
+<p><img class="size-full wp-image-13798 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/qml-pyqt.png" alt="QML PyQt" width="572" height="412"></p>
+<p>Once that was done, the application launched successfully on my Ubuntu desktop machine, albeit with visual appearance very different from the C++ version. That's good enough for now, so I pushed these changes up to Github and switched platforms...</p>
+<p><em><strong>Step 3: Raspberry Pi (Ubuntu mate)</strong></em></p>
+<p>I pulled the project git repository to my Raspberry Pi running Ubuntu Mate and tried to run the project. After installing the required packages, I got stuck. My QML's <code>import QtQuick 2.7</code> failed with error <code>module "QtQuick" version 2.7 is not installed</code> The obvious implication is that the version of QtQuick in <code>qml-module-qtquick2</code> was too old, but I couldn't figure out how to verify version number is indeed the problem or if it's a configuration issue elsewhere in the system.</p>
+<p>Searching on the web, I found <a href="https://stackoverflow.com/questions/46146531/module-qtquick-version-2-7-is-not-installed-error-on-raspberry-pi">somebody on stackoverflow.com</a> stuck in the same place. As of this writing, no solution had been posted. I wish I was good enough to figure out what's going on and contribute intelligently to the discussion!</p>
+<p>I don't have a full grasp of what goes on in the world of repositories ran by various Debian-based distributions, but I could see URLs flying by on-screen and I remembered that Ubuntu Mate pulled from different repositories than Raspbian. I switched to Raspbian to give that a shot...</p>
+<p><em><strong>Step 4: Raspberry Pi (Raspbian Stretch)</strong></em></p>
+<p>After repeating the process on the latest Raspbian, the Qt Quick QML test application launches. Hooray! Whether it was some configuration issue or out of date binaries we don't know yet for sure, but it does run.</p>
+<p>That's the good news. Now the bad news: it launches with the error:</p>
+<p><code>JIT is disabled for QML. Property bindings and animations will be very slow. Visit https://wiki.qt.io/V4 to learn about possible solutions for your platform.</code></p>
+<p>And indeed, the transition between "First" and "Second" tabs were slow. Looking on <a href="https://wiki.qt.io/V4">the page that it pointed to</a>, it looks like the V4 JavaScript engine used by Qt for QML applications does not have JIT compilation for Raspberry Pi's ARM chip. That's a shame.</p>
+<p>For now, this excludes Qt Quick as a candidate for writing modern responsive user interfaces for Raspberry Pi applications. If I want to stick with Qt and Python, I'm better off writing Qt interfaces in the old school QWidget style. We'll keep an eye on this - maybe they'll add JIT support for Raspberry Pi in the future.</p>
+<hr>
+<p>(The source code related to this blog post are <a href="https://github.com/Roger-random/python_tutorials/tree/master/qtquick2">publicly available on Github</a>.)</body></html></p>

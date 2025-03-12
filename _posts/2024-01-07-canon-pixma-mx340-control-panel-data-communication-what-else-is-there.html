@@ -1,0 +1,69 @@
+---
+layout: post
+title: 'Canon Pixma MX340 Control Panel Data Communication: What Else Is There?'
+date: 2024-01-07 12:30:00.000000000 +00:00
+type: post
+post_id: '41477'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40677'
+  firehose_sent: '1704659405'
+  _publicize_job_id: '90895014849'
+  timeline_notification: '1704659406'
+  wordads_ufa: s:wpcom-ufa-v4:1704755813
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/07/canon-pixma-mx340-control-panel-data-communication-what-else-is-there/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been looking at communication between control panel and main board of a Canon Pixma MX340 multi-function inkjet. Comparing electronic traffic against user visible behavior, I associated a particular pattern with a LCD screen update. Turns out it transmitted the entire screen buffer, something I was <a href="https://newscrewdriver.com/2024/01/06/canon-pixma-mx340-control-panel-lcd-screen-data-as-excel-background-fill/">able to visualize thanks to Microsoft Excel</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With Excel's help counting and demystifying the screen update payload, I have a pretty good grasp on the <em>shape </em>of the <a href="https://newscrewdriver.com/2023/12/28/canon-pixma-mx340-control-panel-logic-analyzer-capture-targets/" target="_blank" rel="noreferrer noopener">data I captured in six basic scenarios</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>The control panel (more specifically the NEC K13988 chip on board) transmits a report on button matrix data every 9.2ms. Upon initial power-up, this is a two-byte sequence. One of the main board initialization procedure turns off the second byte, so it's usually a single byte report.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Almost every command from the main board is a two-byte sequence, which is acknowledged by the K13988 with a single byte 0x20.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I've seen one exception to the two-byte pattern, a <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">bulk transfer used for LCD screen update</a>. It starts with a two-byte command: 0x06, then 0xC4 representing the length of 196 bytes. Once that is acknowledged with 0x20, a large transfer of the declared length occurs. The K13988 doesn't acknowledge 0x20 until 196 bytes have been transferred. (It continues transmitting button matrix data every 9.2ms while transfer is underway.)</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I've deciphered a few of the two-byte commands, most of them are still mysterious and I know my list is still incomplete.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the "known unknowns" category are two of the LEDs. The control panel has four LEDs total, and I've traced two of them (power and alarm) to wires under direct main board control. The other two (WiFi and "Memory/In Use") are under control of the K13988 and I haven't figured out which commands manage their state.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then there are the "unknown unknowns" category: the six scenarios I captured with my logic analyzer represented the several activities transitioning from one machine state to another, but they add up to less than a minute. The machine must have other states outside of what I've captured.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What I'd like to do next is to set up something to monitor the serial communication stream. I want to teach it to recognize the patterns I now recognize, and alert me if something happens <em>outside </em>of those patterns. <a href="https://newscrewdriver.com/2024/01/08/canon-pixma-mx340-control-panel-data-filter-wish-list/">How might such a thing be implemented</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

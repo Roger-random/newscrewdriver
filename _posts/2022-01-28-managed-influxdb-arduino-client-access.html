@@ -1,0 +1,42 @@
+---
+layout: post
+title: Managed InfluxDB Arduino Client Access
+date: 2022-01-28 12:30:00.000000000 +00:00
+type: post
+post_id: '28358'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28326'
+  _publicize_job_id: '68280850217'
+  timeline_notification: '1643402975'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/28/managed-influxdb-arduino-client-access/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While learning how to <a href="https://newscrewdriver.com/2022/01/27/influxdb-investigation-skipping-1-x-going-straight-to-2-x/">setup and run InfluxDB 2</a> in a docker container, I learned some administrative tasks require dropping to the command line. I had to do this by launching bash in a running instance via <code>docker exec -it influxdb /bin/bash</code>. I looked this up because creating less-privileged user accounts for non-administrative access had to be done in the command line, but it turns out InfluxDB manages access levels using authorization tokens and not user accounts. Creating a key with restricted permissions can be <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/security/tokens/create-token/#manage-tokens-in-the-influxdb-ui" target="_blank">done within the UI</a> and does not need the command line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted restricted access permissions for two main scenarios. The first ability is to add data to a specific table (sorry... um... <em>measurement</em> in InfluxDB terms) but unable to do other things like delete data. This is for my data sources, as I don't want bugs in my data sources to corrupt or delete the database. The second ability is read-only access for analysis and displaying results. Again, I didn't want a bug in a data dashboard to damage data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I learned how to create these authorization keys scoped correctly to the minimum access necessary to fulfill a role, the next step is to use them. Looking over InfluxDB's <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/api-guide/client-libraries/" target="_blank">list of client libraries</a>, I was fascinated to see Arduino listed among the expected list of programming languages. How does an ATMega328 talk to an InfluxDB instance? This got me really curious and clicked that <a rel="noreferrer noopener" href="https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino" target="_blank">link to a GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the README.md I got my answer: this library is not for all Arduino boards, just the ESP8266 and ESP32 WiFi-enabled microcontrollers running their respective Arduino cores. Other Arduino platforms like Teensy or the original ATMega328 are excluded. I've played with the ESP32 for a bit and never had a real reason to look into its ESP8266 predecessor. This project will be the motivation to <a href="https://newscrewdriver.com/2022/01/29/hello-wemos-d1-mini-clone/">play with an ESP8266</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

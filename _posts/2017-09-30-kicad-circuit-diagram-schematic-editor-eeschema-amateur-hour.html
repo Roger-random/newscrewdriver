@@ -1,0 +1,39 @@
+---
+layout: post
+title: KiCad Circuit Diagram Schematic Editor (Eeschema) Amateur Hour
+date: 2017-09-30 09:00:32.000000000 +00:00
+type: post
+post_id: '13070'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- KiCad
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9830696947'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/30/kicad-circuit-diagram-schematic-editor-eeschema-amateur-hour/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The KiCad <a href="http://kicad-pcb.org/help/documentation/#_getting_started">Getting Started</a> guide only covers the basics, but it's enough to let the user embark on exploratory adventures to learn the rest of the tool piece by piece. I know I don't have the knowledge and experience to do a good job at circuit design, but I'm a believer that such knowledge and experience is built up by learning from mistakes. So: let's dive right in and try to implement the circuit board for my LTC-4627JR driver project and see what we learn.</p>
+<p>The circuit diagram portion was relatively straightforward. Most of the lessons in the Getting Started guide applies, up to and including how to build a custom component for my schematic because the LTC-4627JR was not in the KiCad standard library. Somebody had built a library of components that included the LTC-4627JR, and <a href="https://github.com/cpavlina/kicad-pcblib">made it available on Github</a>. But this is a learning exercise and I wanted to learn how to do it myself.</p>
+<p>The PIC16F18345 was not actually in the KiCad library, but a sibling part PIC16F18344 was available with a 20-pin DIP footprint, which is what I want right now. However, the eventual goal is to go to the surface mount version of the part and I hope I'll be able to find another substitute with the same 20-pin SMD footprint.</p>
+<p>There was no specific KiCad part for the 2N2222 transistor, but there are generic NPN transistors and I think that's good enough. I was puzzled by the large number of options until I figured out they were different combination of a transistor's pins. The three pins were labelled in order of pin number. So the variant tagged "BEC" has the base on pin 1, emitter on pin 2, and collector on pin 3. The "BCE" variant has the latter two pin swapped, etc. Looking at my 2N2222, I decided to use the EBC variant because that's the order I see <a href="https://en.wikipedia.org/wiki/2N2222">in the Wikipedia article</a>.</p>
+<p>The resistors were straightforward, as were the two I/O headers on the board. A four-pin connector for power, ground, and the 2 I²C wires. The five-pin connector is for the PICkit 3 to perform in-circuit programming.</p>
+<p>From looking over schematics in the past, I got the distinct feeling of a stylistic convention for laying things out. Much like there are conventions for software source code. But a gut feel is not enough - I needed help from somebody to concretely spell out the rules. A web search for "circuit diagram conventions" pointed me to <a href="https://electronics.stackexchange.com/questions/28251/rules-and-guidelines-for-drawing-good-schematics">this article on Electronics StackExchange</a>.</p>
+<p>Armed with the list of conventions and a few hours to bump my head in KiCad, I got a passable basic schematic.</p>
+<p><img class="alignnone size-full wp-image-13112" src="https://newscrewdriver.com/wp-content/uploads/2017/09/ltc-4627-i2c-schematic.png" alt="LTC-4627 I2C schematic" width="1038" height="911"></p>
+<p>(The work described in this blog post are <a href="https://github.com/Roger-random/I2C_LTC-4627JR">publicly available on Github</a>.)</p>
+<p></body></html></p>

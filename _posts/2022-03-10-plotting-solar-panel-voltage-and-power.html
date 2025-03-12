@@ -1,0 +1,47 @@
+---
+layout: post
+title: Plotting Solar Panel Voltage and Power
+date: 2022-03-10 12:30:00.000000000 +00:00
+type: post
+post_id: '28899'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Solar Power
+tags:
+- ESP8266
+- INA219
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28928'
+  _publicize_job_id: '70012181214'
+  timeline_notification: '1646944209'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/10/plotting-solar-panel-voltage-and-power/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Ever since I bought a cheap solar panel array from Harbor Freight, I've wanted to quantify its output. Most solar power instruments were designed for house-sized (or larger) arrays, overkill for my little panel. I had instruments from the world of remote-control hobbies to measure voltage and current, but they were only instantaneous values displayed on screen. I wanted more! This motivated my journey evaluating software tools like InfluxDB database, Grafana visualizer, Home Assistant, and ESPHome. Plus building on what I knew about hardware components like ESP8266 microcontroller, MP1584 buck converter, and INA219 sensor. All with the goal of building my own solar production monitoring system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had thought I could make the ESP8266+INA219 sensor node run exclusively on solar power, but I gave up on that and have built a temporary setup <a href="https://newscrewdriver.com/2022/03/09/running-esp8266-on-tired-alkaline-aa-batteries/">powered by old tired alkaline AA batteries</a>. Enough to give me a graph!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28928,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/solar-production-20220301.png?w=1024" alt="" class="wp-image-28928"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a fairly sunny day, so cloud cover effects were minimal. The solar panel was connected to a MPPT charger. I could see the power levels (green line) climb smoothly from sunrise, reach a maximum at noon, then smoothly fading off to sunset. This was mostly as expected. The power curve is not symmetric because there are a few things blocking sunlight from the east, reducing morning power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While the power curve was mostly expected, the voltage levels were not. Until this graph I didn't know solar panels would jump up so high on voltage before producing meaningful amount of power. (I don't know if the MPPT charger makes a difference here.) If I had known this, I probably wouldn't have bothered trying to make a solar powered circuit turn on and off based on voltage. Or if I did, I would have tried anyway and knew why it failed. From this graph I learned that if I am to draw upon solar power, I need to base my decision on power and not on voltage. But in order to read power levels, I need power for my INA219! There's probably a clever way to circumvent this Catch-22 without batteries, but I'm going to take the easy way out and <a href="https://newscrewdriver.com/2022/03/11/battery-options-for-solar-monitor/">incorporate a rechargeable battery</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

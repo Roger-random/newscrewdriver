@@ -1,0 +1,55 @@
+---
+layout: post
+title: FPC And Breakout Boards For MX340 Control Panel
+date: 2024-06-22 20:50:50.000000000 +00:00
+type: post
+post_id: '43868'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1719114652'
+  _thumbnail_id: '43871'
+  timeline_notification: '1719114653'
+  _publicize_job_id: '95662471508'
+  wordads_ufa: u:wpcom-ufa-v4:1719266125
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 21:57:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/22/fpc-and-breakout-boards-for-mx340-control-panel/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been using my salvaged Canon Pixma MX340 multi-function inkjet control panel as test target hardware for learning CircuitPython. After <a href="https://newscrewdriver.com/2024/06/20/mx340-circuitpython-key-events/">exposing a keyboard event queue</a>, my first attempt at a CircuitPython library is now feature-complete. Well, it is on the software side. The hardware side still need help but I've recently learned it is a problem I can solve by spending money.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41298,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-pcb-with-wires-soldered-for-saleae-logic-8-to-monitor-main-board-communication.jpg?w=1024" alt="" class="wp-image-41298"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Up until this point, I had been exploring control panel communications by soldering wires to the back side of its FPC (flexible printed circuit) cable connector. This was essential because I still need the cable installed for main logic board and control panel to talk to each other. Now that I have a code library to let any CircuitPython microcontroller take the place of the main logic board, it means I can actually use my own cable and avoid the need to solder any more wires to these pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are vendors on Amazon selling breakout boards for popular FPC sizes, so I searched for 12-pin 1.0mm pitch FPC connector breakout to see my options. Some of these listings were for a bare circuit board, so <a href="https://amzn.to/4ezWnLG">I picked this one</a> (*) as it had the connector already soldered and its output pins were spaced out in a prototype board friendly 0.1"/2.54mm pitch format. Those output pins were also already numbered, which I wanted even though it made the next step a bit harder.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then searched for a short piece of FPC I can use to connect my salvaged control panel with the breakout board. There were again multiple vendors offering 1.0mm pitch 12-position cables, with 150mm being a popular length. I just had to choose if I wanted "<a href="https://amzn.to/3RCNsz6">A-type</a>" (*) with metal contacts on the same side of the ribbon on both ends, or if I wanted "<a href="https://amzn.to/4eBswmc">B-type</a>" (*) with metal contacts on opposite sides of the ribbon. And here I got stuck. I didn't know which side the breakout board's connectors made their metal connections. If I chose wrong, I could flip the board over to make the connection, but that would mean the pin numbers would become reversed. That is a recipe for confusion and potentially project-killing mistakes. After waffling back and forth for a while, I decided on the solution of buying both sets. I felt spending a few extra dollars was worth the guarantee of consistent pin numbers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the products arrived, a little probing indicated A-type was the correct answer for me to <a href="https://newscrewdriver.com/2024/06/23/mx340-control-panel-under-rp2040-control/">wire up a Raspberry Pi Pico microcontroller</a> board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

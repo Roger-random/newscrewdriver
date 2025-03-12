@@ -1,0 +1,91 @@
+---
+layout: post
+title: 'Notes on ML-Agents Development History (Part 1: Up to Version 1.0)'
+date: 2021-12-26 12:30:00.000000000 +00:00
+type: post
+post_id: '28039'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags:
+- ML-Agents
+- Reinforcement Learning
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27869'
+  _publicize_job_id: '66955891771'
+  timeline_notification: '1640550648'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/26/quick-look-at-ml-agents-development-history-part-1-up-to-version-1-0/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've just <a href="https://newscrewdriver.com/2021/12/25/notes-on-installing-unity-ml-agents-release-18/">installed and tested basic functionality of Unity ML-Agents Release 18</a>. And just before that, I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/24/notes-on-installing-unity-ml-agents-release-2/" target="_blank">did the same with Release 2</a> which is also referred to as "Verified 1.0.8". I was surprised at the changes visible just between these releases. This made me curious about how this package evolved, and I went looking for information from its past.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of them were announced on Unity blog, but some just had GitHub release notes. Here is a compilation of links alongside a few highlights that caught my eye, follow these links for a complete list of changes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2017/6/26</strong>: The earliest public information I could find was Unity <a rel="noreferrer noopener" href="https://blog.unity.com/technology/unity-ai-themed-blog-entries" target="_blank">announcing their intent to join in AI research and applications</a>. Annoyingly, some of the linked blog posts have since disappeared, apparently in some sort of migration of their blog hosting system. For example the "second part of this blog series" link now <a rel="noreferrer noopener" href="https://blog.unity.com/machine-learning/unity-ai-reinforcement-learning-q-learning" target="_blank">leads to a 404 error</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2017/9/18</strong>: The <a rel="noreferrer noopener" href="https://blog.unity.com/technology/introducing-unity-machine-learning-agents" target="_blank">ML-Agents Toolkit officially kicks off</a> with version 0.1, describing a general architecture that I'm sure has since evolved and a long list of ambitious ideas they wanted to support. Many of them did come to be! Though of course not all of them, and some have <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/python-rl-control/wiki" target="_blank">since disappeared</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2017/12/8</strong>: <a href="https://blog.unity.com/community/introducing-ml-agents-v0-2-curriculum-learning-new-environments-and-more" target="_blank" rel="noreferrer noopener">Version 0.2</a> introduced curriculum learning, and launched a community challenge to motivate people to play with the toolkit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2018/3/15</strong>: <a href="https://blog.unity.com/technology/ml-agents-v0-3-beta-released-imitation-learning-feedback-driven-features-and-more" target="_blank" rel="noreferrer noopener">Version 0.3</a> introduced imitation learning, multi-brain training, and an optional poll model. Recurrent Neural Networks came in as part of a "Memory-Enhanced Agents" umbrella.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2018/6/18</strong>: <a href="https://blog.unity.com/technology/unity-ml-agents-toolkit-v0-4-and-udacity-deep-reinforcement-learning-nanodegree" target="_blank" rel="noreferrer noopener">Version 0.4</a> allowed training using the Unity editor, no longer requiring a compiled executable. An Udacity nanodegree was introduced, though sadly that's too rich for my blood. More training environments were added, one (Pyramids) specifically demonstrates the "Curiosity" capability. Curiosity <a href="https://blog.unity.com/technology/solving-sparse-reward-tasks-with-curiosity" target="_blank" rel="noreferrer noopener">got its own blog post</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2018/9/11</strong>: <a href="https://blog.unity.com/technology/ml-agents-toolkit-v0-5-new-resources-for-ai-researchers-available-now" target="_blank" rel="noreferrer noopener">Version 0.5</a> added a Gym interface and replicating a few environments from OpenAI Gym. Also expanded capability to enable/disable discrete actions, but not clear if it was related to OpenAI Gym.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2018/12/17</strong>: <a rel="noreferrer noopener" href="https://blog.unity.com/technology/ml-agents-toolkit-v0-6-improved-usability-of-brains-and-imitation-learning" target="_blank">Version 0.6</a> is an architectural revamp changing how ml-agents AI brains fit in the Unity object hierarchy. Introduced "demonstration recorder" for off-line imitation learning. Is that still around?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2019/3/1</strong>: <a href="https://blog.unity.com/technology/unity-ml-agents-toolkit-v0-7-a-leap-towards-cross-platform-inference" target="_blank" rel="noreferrer noopener">Version 0.7</a> is another big infrastructure change, switching runtime neural network inference from external TensorFlowSharp to Unity's own Inference Engine (a.k.a. Barracuda) to support more Unity runtime platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2019/4/15</strong>: <a href="https://blog.unity.com/technology/unity-ml-agents-toolkit-v0-8-faster-training-on-real-games" target="_blank" rel="noreferrer noopener">Version 0.8</a> infrastructure change allows multiple Unity simulations to run in parallel on a single machine. Strange this is the recommended approach to take advantage of machines with many processing cores. (Later research found that Unity is working to improve multicore performance across the board, not just ml-agents, with something called DOTS.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2019/8/1</strong>: Version 0.9 (<a href="https://github.com/Unity-Technologies/ml-agents/releases/tag/0.9.0" target="_blank" rel="noreferrer noopener">release notes</a>) is the first of two releases focused on throughput and efficiency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2019/9/30</strong>: <a rel="noreferrer noopener" href="https://blog.unity.com/technology/training-your-agents-7-times-faster-with-ml-agents" target="_blank">Version 0.10 finished what 0.9 started</a>. Improving sample throughput (asynchronous environments) and sample efficiency via GAIL (0.9) and SAC (0.10) algorithms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2019/11/4</strong>: Version 0.11 (<a href="https://github.com/Unity-Technologies/ml-agents/releases/tag/0.11.0">release notes</a>) changed again the brain's place in Unity object hierarchy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2019/12/2</strong>: Version 0.12 (<a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/releases/tag/0.12.0" target="_blank">release notes</a>) moved from TensorFlow 1 to 2 via the TF1 compatible interfaces. It appears this work was never finished, ml-agents moved to PyTorch instead of finishing TF2 migration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2020/1/8</strong>: Version 0.13 (<a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/releases/tag/0.13.0" target="_blank">release notes</a>)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2020/2/28</strong>: <a href="https://blog.unity.com/technology/training-intelligent-adversaries-using-self-play-with-ml-agents" target="_blank" rel="noreferrer noopener">Version 0.14</a> now has ability to train via adversarial self-play. Includes a short history of learning from self-play.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2020/3/6</strong>: Not a version, but this is when ml-agents <a rel="noreferrer noopener" href="https://blog.unity.com/technology/learn-to-leverage-artificial-intelligence-to-enhance-your-unity-projects" target="_blank">got serious enough</a> to get a course up on Unity Learn (<a rel="noreferrer noopener" href="https://learn.unity.com/course/ml-agents-hummingbirds" target="_blank">Hummingbirds</a>) as well an "AI for Beginners" course on Unity Learn Premium.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>2020/3/18</strong>: Version 0.15 (<a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/releases/tag/0.15.0" target="_blank">release notes</a>) wrapped up a lot of housekeeping in preparation for 1.0 release.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Development focus for ml-agents changed to more refinement after 1.0 release, along with corresponding reduction in blog announcements.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: 'Installing TensorFlow: Adventures in Version Matching'
+date: 2018-07-27 09:00:55.000000000 +00:00
+type: post
+post_id: '16307'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- TensorFlow
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20456452700'
+  timeline_notification: '1532707466'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/27/installing-tensorflow-adventures-in-version-matching/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>[UPDATE: This process <a href="https://newscrewdriver.com/2019/06/06/installing-nvidia-gpu-accelerated-tensorflow-on-ubuntu-18-04-now-relatively-easier/">has grown a little easier</a>.]</p>
+<p>One of the big motivations to get a NVIDIA 1060 GPU is to start playing with deep learning neural networks, using tools like Google's <a href="https://www.tensorflow.org/">TensorFlow</a>. A quick skim of the <a href="https://www.tensorflow.org/install/install_linux">installation instructions</a> didn't look too bad, but once I got hands-on it was clear version mismatches were a recurring issue for running the TensorFlow binaries.</p>
+<p><em><strong>Ubuntu 16.04.4 Operating System</strong></em></p>
+<p>Since I had only a fresh installation of Ubuntu, it was not a big loss (aside from time) to restart from scratch. Goodbye, <a href="https://www.ubuntu.com/download/desktop">new hotness Ubuntu 18.04 LTS</a>, we're leaving you to return to the known quantity <a href="http://releases.ubuntu.com/xenial/">Ubuntu 16.04.4 LTS</a>.</p>
+<p><em><strong>NVIDIA Graphics Driver 390</strong></em></p>
+<p>Once Ubuntu 16.04 was up and running with all its latest operating system updates, we proceed to the only part of TensorFlow setup that doesn't require a specific (old) version: the NVIDIA graphics drivers. Going straight to <a href="https://www.geforce.com/drivers/results/134859">NVIDIA's website</a> found this suggestion:</p>
+<blockquote><p><em>Note that many Linux distributions provide their own packages of the NVIDIA Linux Graphics Driver in the distribution's native package management format. This may interact better with the rest of your distribution's framework, and you may want to use this rather than NVIDIA's official package.</em></p></blockquote>
+<p>Hmm... OK. Checking Ubuntu's user support site AskUbuntu for NVIDIA drivers found <a href="https://askubuntu.com/questions/61396/how-do-i-install-the-nvidia-drivers">this set of instructions</a> to install drivers from a <a href="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa">graphics drivers project</a>. Staffed by volunteers that repackage NVIDIA's raw binaries into Ubuntu installer-friendly "personal package archives" (PPA) infrastructure. Following the instructions, I told my installation of Ubuntu about them via:</p>
+<p><code>sudo add-apt-repository ppa:graphics-drivers/ppa</code><br />
+<code>sudo apt-get update</code></p>
+<p>Then I had to deviate from the directions because <code>sudo apt-get install nvidia-driver-390</code> returned an error <code>E: Unable to locate package nvidia-drivers-390</code>.  A little searching using the <code>apt search</code> command found the correct name in the PPA:</p>
+<p><code>sudo apt-get install nvidia-390</code></p>
+<p>After driver installation, the graphics driver project page recommends that I test my system by running the <a href="https://www.phoronix-test-suite.com/">Phoronix graphics test suite</a>. It gave my system a good workout and provided some pretty visuals while the tests ran. After the tests were complete, I was happy to upload my system information to their database of installation successes.</p>
+<p><em><strong>NVIDIA CUDA Toolkit 9.0</strong></em></p>
+<p>As of this writing, the TensorFlow binaries released by Google requires NVIDIA CUDA toolkit version 9.0. The latest version of CUDA toolkit is 9.2 but sadly it will not work with TensorFlow binaries, so we have to go find the older <a href="https://developer.nvidia.com/cuda-90-download-archive">version 9.0 in NVIDIA's past version archives</a>. Again we have to deviate from instructions because <code>sudo apt-get install cuda</code> would install the latest 9.2. We have to be explicit about the older version with <code>sudo apt-get install cuda-9.0</code>.</p>
+<p>After the toolkit was installed, follow instructions to compile and run the tools <code>deviceQuery</code> and <code>bandwidthTest</code> to verify installation.</p>
+<p><em><strong>NVIDIA cnDNN SDK 7.0.5</strong></em></p>
+<p>TensorFlow instruction specifies cnDNN v7. The <a href="https://developer.nvidia.com/rdp/cudnn-download">latest version is 7.1.4 as of this writing</a> and based on other experience probably wouldn't work, so off we go into the <a href="https://developer.nvidia.com/rdp/cudnn-archive">old version archives</a> again. There we will find two versions corresponding to CUDA 9.0: 7.0.4 and 7.0.5. Which one to use?</p>
+<p>The hint comes from elsewhere in TensorFlow installer documentation talking about an optional component, NVIDIA TensorRT 3.0. The instructions there made a reference to <code>7.0.5.15-1+cuda9.0</code> so that swayed the vote on which version to use.</p>
+<p>After the SDK was installed, follow instructions to compile and run the tool <code>mnistCUDNN</code> to verify installation.</p>
+<p><em><strong>TensorFlow</strong></em></p>
+<p>After all those pre-requisites were satisfied, it was finally time to install TensorFlow itself! I decided to go with Python 3 for my TensorFlow experimentation, and followed recommendation of <code>virtualenv</code>, before installing the GPU-enabled variant of TensorFlow.</p>
+<p><code>pip3 install --upgrade tensorflow-gpu</code></p>
+<p><em><strong>Finish Line</strong></em></p>
+<p>After bumping head in the dark against version mismatch error for hours, it felt great to finally <a href="https://www.tensorflow.org/install/install_linux#ValidateYourInstallation">cross the finish line</a>. Hello, TensorFlow!</p>
+<p><img class=" size-full wp-image-16308 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/06/hello-tensorflow-e1528571501280.png" alt="Hello, TensorFlow" width="603" height="371"></p>
+<p> </body></html></p>

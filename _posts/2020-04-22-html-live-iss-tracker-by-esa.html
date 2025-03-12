@@ -1,0 +1,47 @@
+---
+layout: post
+title: HTML Live ISS Tracker by ESA
+date: 2020-04-22 12:30:56.000000000 +00:00
+type: post
+post_id: '21305'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- ISS Tracker
+- Space
+meta:
+  _thumbnail_id: '21302'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_48d8ff9ed5caafb472dfe0d458618612: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Bonus:
+    an explanation from <a href="https://twitter.com/NASAJPL?ref_src=twsrc%5Etfw">@NASAJPL</a>
+    employee about what it meant (&amp; does not mean) for a piece of hardware to
+    be &quot;flight spare&quot;. Annotated with some tales from front line trenches.</p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1234174436128870400?ref_src=twsrc%5Etfw">March
+    1, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '43353525270'
+  timeline_notification: '1587583882'
+  _oembed_time_48d8ff9ed5caafb472dfe0d458618612: '1587610116'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/22/html-live-iss-tracker-by-esa/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>While looking for <a href="https://newscrewdriver.com/2020/04/21/searching-for-web-based-iss-tracker/">a web-based space station tracker</a> as alternative to the Raspberry Pi-based <a href="http://www.issabove.com/">ISS-Above</a>, I found NASA's <a href="http://spotthestation.nasa.gov/">Spot the Station</a> and embedded on that page is a <a href="https://isstracker.spaceflight.esa.int/">live ISS Tracker by ESA</a>. I've found this ESA component embedded in several other ISS-related web sites. It is the "ISS Tracker" tab of the <a href="http://www.ustream.tv/channel/iss-hdev-payload">High Definition Earth Viewing Experiment page on UStream.tv</a>. And the ESA has a <a href="https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/International_Space_Station/Where_is_the_International_Space_Station">"Where is the International Space Station?" page</a> that also has this tracker embedded. This tracker is nifty and popular enough for a closer look.</p>
+<p>Most of the embeds show two parts to this tracking component. The top part has an ISS track overlaid on top of a global view, and the bottom part is a Google Maps component showing the "For development purposes only" text that is shown when <a href="https://developers.google.com/maps/documentation/javascript/error-messages">there's a problem with the API key</a>. I originally thought these were two separate items because I only saw the ISS track embedded on <a href="https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/International_Space_Station/Where_is_the_International_Space_Station">the ESA "Where is the ISS" page</a> and I saw the Google error on a <a href="http://www.isstracker.com/">different ISS tracker web site</a>. But bringing the ESA tracker up on <a href="http://isstracker.spaceflight.esa.int/">its own web site</a> showed they are both part of the same thing. I would like to understand how the "Where is the ISS" page managed to embed the global view component without the Google Maps part.</p>
+<p>The default view is also quite tiny, but it doesn't have to stay that way. We get the best view when we press the full screen icon just to the right of the Metric / Imperial switch. This drops the problematic Google Maps portion and fills the screen with global view. Despite the tiny default low resolution view, the graphics scale quite well and look pretty good even full screen on an 4K display.</p>
+<p>I would like to know how to jump straight to this screen without user input, but there are deliberate barriers against public web sites going full screen without user input. Such a mechanism is too easy to be abused by malicious people creating spoofs. If I want to display HTML content fullscreen, I'll have to find some other way to present it. One possibility is to <a href="https://newscrewdriver.com/2020/03/31/window-shopping-electronjs/">use ElectronJS</a> turning it into a native app (which doesn't have the same restrictions as a browser for public sites) and <a href="https://www.electronjs.org/docs/api/browser-window">create a window</a> with <code>fullscreen</code> set to <code>true</code>.</p>
+<p>These programming details will need to be sorted out if I want to make a project out of it. In the immediate future, I can experiment by manually pushing the full screen button to see <a href="https://newscrewdriver.com/2020/04/23/esa-iss-tracker-on-hp-mini-110-1134cl/">how the site behaves on obsolete PC hardware</a>.</p>
+<p></body></html></p>

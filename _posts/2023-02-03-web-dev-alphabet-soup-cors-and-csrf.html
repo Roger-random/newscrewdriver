@@ -1,0 +1,60 @@
+---
+layout: post
+title: 'Web Dev Alphabet Soup: CORS and CSRF'
+date: 2023-02-03 12:30:00.000000000 +00:00
+type: post
+post_id: '34874'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+- HTML
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34765'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675545085
+  _publicize_job_id: '81179450967'
+  timeline_notification: '1675456220'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/03/web-dev-alphabet-soup-cors-and-csrf/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a helpful comment helped me find documentation on the <a href="https://newscrewdriver.com/2023/02/02/as7341-project-postscript-smux-mystery-solved/">no-longer-mysterious AS7341 SMUX</a> (sensor multiplexor) I went to learn more about another mystery I stumbled across as a beginner web developer: CORS (<a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank">cross-origin resource sharing</a>.) Why does CORS policy exist? After a bit of poking around, I believe the answer is to mitigate a type of attack under the umbrella of CSRF (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank">cross-site request forgery</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When developing my AS7341 web app, I had the AS7341 accessible via a HTTP GET on my ESP32 and thought I could develop the HTML interface on my desktop machine. But when my desktop-served JavaScript tried to query my ESP32, <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/18/html-location-matters-for-cors-and-mixed-content/" target="_blank">I was blocked by browser CORS policy</a>. By default, JavaScript served from one server (my desktop) is not allowed to query resources on another (my ESP32.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading various resources online, I learned I could set my ESP32's HTTP response header "<code>Access-Control-Allow-Origin</code>" to a wildcard "<code>*</code>" to opt out of CORS protection. But that's merely a "make the error go away" kind of recommendation. I know CORS is security related, but I don't understand the motivation. What security problem does CORS prevent? Without knowing the motivation, I don't know what I am opening up by setting "<code>Access-Control-Allow-Origin : *</code>" In my web app, I started out cautiously by only setting that header when I'm developing the HTML UI, serving from my desktop to query my ESP32. In "production", my ESP32 will serve the HTML and would not need "<code>Access-Control-Allow-Origin : *</code>" in the header to query itself, so that header is absent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Is that the right thing to do, or is that being overly cautious? I set out to learn more. Curiously, reading MDN and other resources give me information about HOW CORS works, but not a lot about WHY CORS exists. I guess CORS documentation assume the reader already knows! Based on that fact, I know I am looking for a relatively common website security issue that is now considered basic knowledge by network professionals.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another data point is the fact that CORS is only applicable to HTTP queries from JavaScript running in the browser. From a command line on my desktop, I can use the "curl" tool to query my ESP32 and CORS does nothing to block that. My browser on my desktop can query the endpoint directly and that is not blocked by CORS policy, either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Things didn't make much sense until I found a key piece of information: HTTP request sent from a browser's JavaScript runtime not only sends the URL and its parameters, but the browser would also attach all cookies set by that host. These cookies may contain user authentication (the "Keep me logged in" checkbox) and it makes sense such capability shouldn't be available to just any piece of JavaScript served by random hosts. Knowing this fact and knowing the kind of abuse such code can cause eventually led me to a category of security attacks known as CSRF (cross-site request forgery.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I understood CORS is here to mitigate a subset of CSRF attacks, I could look at my ESP32 AS7341 access endpoint and decide CSRF is not a problem here. Setting "<code>Access-Control-Allow-Origin : *</code>" does not open me up to security nastiness, so my ESP32 sketch <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui/commit/72b55efa4f6244307356cc12bf1b5c4611ca73cc" target="_blank">sets that header all the time now</a> not just during development. This is a handy bit of knowledge, but it merely scratched the surface of web security. Another item I found to be <a href="https://newscrewdriver.com/2023/02/04/google-oauth-test-tokens-expire-weekly/">big and intimidating is OAuth</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui" target="_blank">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

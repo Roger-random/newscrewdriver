@@ -1,0 +1,75 @@
+---
+layout: post
+title: 'Notes Of A Three.js Beginner: Euler Angles vs. Quaternions'
+date: 2021-05-15 12:30:00.000000000 +00:00
+type: post
+post_id: '26566'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Composite Video
+- ESP_8_BIT
+- HTML
+- JavaScript
+- NTSC
+- RGB332
+- Three.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26546'
+  _oembed_66285521ef37dba78420fb59c9f854cd: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    interactive RGB332 8-bit color picker can now be toggled between HSV cylinder
+    and RGB cube modes. Half of the cubes (green-yellow) aren&#39;t doing what I want
+    because I clearly don&#39;t understand quaternions. Still a nifty animation, though.
+    <a href="https://t.co/jtRMMVNboP">pic.twitter.com/jtRMMVNboP</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1388265529228480512?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '58401709377'
+  timeline_notification: '1621107029'
+  _oembed_time_66285521ef37dba78420fb59c9f854cd: '1621155384'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668155655
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/15/notes-of-a-three-js-beginner-euler-angles-vs-quaternions/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was pretty happy with how quickly I was able to get a static 3D visualization on screen with the three.js library. My first project to <a href="https://newscrewdriver.com/2021/05/14/notes-of-a-three-js-beginner-color-picker-with-raycaster/">turn the static display into an interactive color picker</a> also went smoothly, giving me a great deal of self confidence for proceeding to the next challenge: adding an animation. And this was where three.js put me in my place reminding me I'm still only a beginner in both 3D graphics and JavaScript.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before we get to details on how I fell flat on my face, to be fair <a rel="noreferrer noopener" href="https://threejs.org/docs/index.html#manual/en/introduction/Animation-system" target="_blank">three.js animation system</a> is optimized for controlling animations created using content creation tools such as Blender. In this respect, it is much like Unity 3D. In both of these tools, programmatically generated animations are not the priority. In fact there weren't any examples for me to follow in the manual. I hunted around online and found <em><a rel="noreferrer noopener" href="https://discoverthreejs.com/" target="_blank">DISCOVER three.js</a></em>, which proclaimed itself as "The Missing Manual for three.js". The final chapter (so far) of this online book <a rel="noreferrer noopener" href="https://discoverthreejs.com/book/first-steps/animation-system/" target="_blank">talks about animations</a>. This chapter had an ominous note on animation rotations:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>As we mentioned back in the chapter on transformations, quaternions are a bit harder to work with than Euler angles, so, to avoid becoming bamboozled, we’ll ignore rotations and focus on position and scale for now.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is worrisome, because my goal is to animate the 256 colors between two color model layouts. From the current layout of a HSV cylinder, to a RGB cube. This required dealing with rotations and just as the warning predicted that's what kicked my butt.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first source confusion is between Euler angles and quaternions when dealing with <a rel="noreferrer noopener" href="https://threejs.org/docs/index.html#api/en/core/Object3D" target="_blank">three.js 3D object properties</a>. <code>Object3D.rotation</code> is an object representing Euler angles, so trying to use <code><a rel="noreferrer noopener" href="https://threejs.org/docs/index.html#api/en/animation/tracks/QuaternionKeyframeTrack" target="_blank">QuaternionKeyframeTrack</a></code> to animate object rotation resulted in a lot of runtime errors because the data types didn't match. This problem I blame on JavaScript in general and not three.js specifically. In a strongly typed language like C there would be an error indicating I've confused my types. In JavaScript I only see errors at runtime, in this case one of these two:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>When the debug console complains "NaN error" it probably meant I've accidentally used Euler angles when quaternions are expected. Both of those data types have fields called x, y, and z. Quaterions have a fourth numeric field named w, while Euler angles have a string indicating order. Trying to use an Euler angle as quaternion would result in the order string trying to fit in w, which is not a number hence the NaN error.</li>
+<li>When the debug console complains "THREE.Quaternion: .setFromEuler() encountered an unknown order:" it means I've done the reverse and accidentally used Quaternion when Euler angles are expected. This one is fortunately a bit more obvious: numeric value w is not a string and does not dictate an order.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Getting this sorted out was annoying, but this headache was nothing compared to my next problem: <a href="https://newscrewdriver.com/2021/05/16/notes-of-a-three-js-beginner-quaternionkeyframetrack-struggles/">using <code>QuaternionKeyframeTrack</code> to animate object rotations</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center"> [Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/RGB332_color_wheel_three.js" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

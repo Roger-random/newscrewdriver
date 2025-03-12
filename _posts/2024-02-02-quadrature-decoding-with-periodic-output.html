@@ -1,0 +1,52 @@
+---
+layout: post
+title: Quadrature Decoding With Periodic Output
+date: 2024-02-02 12:30:00.000000000 +00:00
+type: post
+post_id: '41814'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  firehose_sent: '1706905809'
+  wordads_ufa: s:wpcom-ufa-v4:1707035731
+  _publicize_job_id: '91630869829'
+  timeline_notification: '1706905810'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/02/quadrature-decoding-with-periodic-output/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had forgotten (then was reminded) that I already had Arduino Nano-based quadrature decoding capability on hand. After <a href="https://newscrewdriver.com/2024/02/01/quadrature-decoding-with-arduino/">a quick check to verify it should be fast enough</a>, I connected it up to my retired Canon MX340 multi-function inkjet to see what I can glean from its paper feed motor assembly. The initial test used the basic example included with <a href="https://www.pjrc.com/teensy/td_libs_Encoder.html">Paul Stoffregen's quadrature decoder library</a>. It polls the encoder count in a tight loop and, whenever it sees a change, it prints the new value to serial port. I started it, turned on the MX340, and got a stream of numbers on Arduino IDE's Serial Monitor. A good start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As the motor started spinning, the change in encoder values came fast and furious. A backlog quickly developed, which resulted in data display lagging behind actual motor movement. This was easily resolved by kicking up the serial transmission baud rate above the slow-and-reliable 9600 baud. Looking on the drop-down list of baud rates supported by Arduino IDE serial monitor, I chose 250000 because it's easier for me to remember right now as it's what <a href="https://newscrewdriver.com/2023/12/27/canon-pixma-mx340-control-panel-meet-saleae-logic-8/">this MX340 itself uses</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that still left a lot of data flying by as the motor spun. The next change to further reduce output was to change from "every time encoder changes" to "once every 10 milliseconds". This seems to have reduced the output to a manageable flow, but I didn't know what kind of processing to try next. Ideally I would take advantage of characteristics of the system to filter interesting data from extraneous noise, but I don't know its characteristics yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So... I will learn its characteristics! To meet <a href="https://newscrewdriver.com/2024/01/28/canon-pixma-mx340-paper-feed-motion-recording-objectives/">my objectives</a> for this decoder project, I connected two more Arduino Nano digital input wires to photo interrupter sensors in this system. One likely reports paper status, and the other watching something inside a gearbox I plan to dissect later. Both their states are polled at the same 10ms interval and output to serial port. I also changed the serial output to be a set of comma-separated values. After <a href="https://newscrewdriver.com/2024/01/06/canon-pixma-mx340-control-panel-lcd-screen-data-as-excel-background-fill/">my earlier success</a> using Microsoft Excel to make sense of raw captured data, I will use it again now to get a basic outline of <a href="https://newscrewdriver.com/2024/02/03/quadrature-decode-mx340-startup/">what this motor system is doing</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Arduino sketches are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

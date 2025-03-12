@@ -1,0 +1,78 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Screen Data as Excel Background Fill
+date: 2024-01-06 12:30:00.000000000 +00:00
+type: post
+post_id: '41437'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41441'
+  _publicize_job_id: '90871472425'
+  firehose_sent: '1704573122'
+  timeline_notification: '1704573123'
+  wordads_ufa: s:wpcom-ufa-v4:1704837504
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/06/canon-pixma-mx340-control-panel-lcd-screen-data-as-excel-background-fill/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm poking around inside a Canon Pixma MX340 multi-function inkjet, and I've identified a burst of data as its main board updating what's shown on the control panel LCD screen. After <a href="https://newscrewdriver.com/2024/01/05/canon-pixma-mx340-control-panel-lcd-data-back-to-basics-with-excel-and-calc/">exporting data captured by my logic analyzer to Microsoft Excel</a>, it was easy to see the number of bytes in this transmission without laboriously counting it manually. Thanks, Excel!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that success, I looked at my spreadsheet and thought I might be able to go further. This control panel uses a monochrome pixel LCD screen, and the number of bytes is roughly on par with what it would take to represent the frame buffer using one bit per pixel. Earlier I thought about writing a program to read those bytes and render them on screen, but I think I can accomplish something similar in Excel with less coding effort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Excel has extensive charting tools and maybe there's a way to draw a bitmap, but I'm thinking much lower tech than that. Excel can conditionally format cells based on criteria. So if I could get one cell to represent one bit then conditionally format that cell, that would turn each cell into a pixel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first step is to parse the logic analyzer capture data (Example: "0x44") which Excel interpreted as text by default. I found Excel's <code>HEX2DEC()</code> function, but it doesn't want to deal with the "0x" prefix. I had to strip it out myself with <code>RIGHT()</code> function to pull out the rightmost two characters. After the string has been interpreted as a hexadecimal number, I could perform a bitwise AND operation with <code>BITAND()</code>. I repeated this eight times, one for each bit. I manually typed in the values used for each operation: 128, 64, 32, etc. knowing full well there's very likely a more elegant way to do this. I decided manually typing in eight values is faster than <a href="https://xkcd.com/1205/" target="_blank" rel="noreferrer noopener">researching an incrementally better way</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I copied this set of eight cells, each representing one bit in the byte, across all 1020 rows of my spreadsheet. And finally, I selected those eight columns and applied a conditional formatting rule: every cell whose value is greater than zero should be formatted as black text on black background.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41441,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-lcd-screen-update-data-in-excel-background-fill.png?w=1024" alt="" class="wp-image-41441"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That turned my eight columns into graph paper. I adjusted column width so each cell is close to a square, and started scrolling through to see the results. It looked like a reasonable bitmap, not random noise, but my brain didn't recognize anything until I scrolled down to this section. This shape (I think it represent ink levels?) is shown on the control panel screen. I'm definitely on the right track here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41463,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-control-panel-lcd-excel-cell-fill-raw.png?w=346" alt="" class="wp-image-41463"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The data transmission is sent in five 196 byte chunks, so I zoomed out in Excel and snipped these five screenshots in each of those sections. Ah, I see why I didn't immediately recognize the text: the way I did it in Excel gave me a rotated and flipped orientation. Time to pull them into a photo editor for some cropping, transforming, and aligning. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41465,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-control-panel-lcd-excel-cell-fill-aligned.png?w=1024" alt="" class="wp-image-41465"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is quite conclusive: the burst of bytes represent the LCD screen frame buffer. The raw bytes describe an image 196 pixels wide by (5 chunks * 8 pixels per byte = ) 40 pixels tall.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41468,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-control-panel-lcd-real-relative-to-excel-cell-fill.jpg?w=800" alt="" class="wp-image-41468"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the actual LCD, I can see there's only one more addressable pixel under the lowest part of "paper", so lowest 6 pixels in the byte array are cropped. I can't tell if it is cropped in width as well, as there's far more room between that large "01" on the right and the right edge of the screen. Making it difficult to count accurately so that question is inconclusive for the moment. I'll come back to this open question after I make an effort to understand <a href="https://newscrewdriver.com/2024/01/07/canon-pixma-mx340-control-panel-data-communication-what-else-is-there/">what else is being transmitted on these wires</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

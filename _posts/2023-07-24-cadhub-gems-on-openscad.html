@@ -1,0 +1,44 @@
+---
+layout: post
+title: OpenSCAD Gems via CadHub
+date: 2023-07-24 12:30:00.000000000 +00:00
+type: post
+post_id: '38047'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '4953'
+  wordads_ufa: u:wpcom-ufa-v4:1713937004
+  _publicize_job_id: '86029917627'
+  timeline_notification: '1690227004'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-04-24 05:32:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/24/cadhub-gems-on-openscad/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>CadHub is an <a href="https://newscrewdriver.com/2023/07/23/window-shopping-cadhub/">advocate for the general idea of 3D CAD models built from lines of code</a> instead an electronic representation of a drafting board. This approach ("code-cad") holds many promises of meeting <a href="https://newscrewdriver.com/2022/12/17/sawppy-dreams-of-collaborative-cad/">my wishlist</a> for an open-source collaborative CAD solution. While theoretically applicable for all code-based CAD solutions, the current reality is almost exclusively built around OpenSCAD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I <a href="https://newscrewdriver.com/2017/04/29/openscad-for-motion-visualization/">briefly dipped my toes into OpenSCAD</a> for a bit, but I was really turned off when I learned the prescribed method to perform a fillet operation in OpenSCAD is to use operators like <a href="https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#minkowski">Minkowski sums and convex hulls</a>. They are conceptually straightforward but in practice it takes a long time to chew through the math. Making matters worse, OpenSCAD's CSG kernel is limited to a single thread underutilizing modern multicore processors. In contrast, the OpenCascade 3D kernel can easily handle fillets and has partial support for multicore computation. (Whether that capability is enabled in <a href="https://wiki.freecad.org/Multithreading">FreeCAD</a>, CadQuery, etc. is a separate issue that depends on their respective OCCT integration.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite my distain I have to admit such theoretical superiority has to be balanced against OpenSCAD's real-world advantages that are already up and running. CadHub blog talked about <a href="https://learn.cadhub.xyz/blog/codecad-artifacts">integrating code-cad into software CI/CD pipelines</a>. That page linked to two projects which have already put the concept into practice: <a href="https://gitlab.com/openflexure/openflexure-microscope">OpenFlexture Microscope</a> and a <a href="https://github.com/scottbez1/splitflap">DIY Split-Flap display</a>. Both of these projects define their 3D designs via OpenSCAD, enabling automation to keep their project documentation in sync. This is pretty awesome. And some OpenSCAD users shared the same objections I do, except some of them actually helped solve the problem. CadHub itself has something called the "<a href="https://learn.cadhub.xyz/docs/round-anything/overview">Round Anything</a>" library that makes some OpenSCAD fillets (especially internal fillets) less painful.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But those are still just workarounds for what I see as results of fundamental OpenSCAD design decisions. Even CadHub, advocate of code-cad in general and OpenSCAD specifically, admits <a href="https://learn.cadhub.xyz/blog/openscad-review">there are significant downsides as tradeoff for OpenSCAD upsides</a>. Despite its actual proven advantages, I still think it's pretty unlikely for me to put serious effort into using OpenSCAD. Partially because <a href="https://newscrewdriver.com/2023/07/25/to-code-cad-or-not-to-code-cad/">I'm not even sure code-cad is the only way forward</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,36 @@
+---
+layout: post
+title: Old Industrial XY Stage Moves Again On Arduino AccelStepper
+date: 2019-08-13 12:30:47.000000000 +00:00
+type: post
+post_id: '19104'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19108'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34043387683'
+  timeline_notification: '1565724652'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/13/old-industrial-xy-stage-moves-again-on-arduino-accelstepper/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A decades-old piece of industrial equipment has failed and been retired, but <a href="https://newscrewdriver.com/2019/08/12/new-project-xy-stage/">its motion control table was still good and salvaged for a potential future project</a>. It is a far cry from the kind of motion control equipment I see on a hobbyist 3D printer. Much more rigid chassis, more precise linear guides, finer pitch thread, far beefier motor, under the command of a much more capable control box. One example: the A4988 stepper motor popular in 3D printers features the capability to generate up to 16 microsteps in between whole steps of a stepper motor. In contrast this Parker ZETA4 unit features up to 255 microsteps.</p>
+<p>Pulling from the electronic hobbyist world, I set up my Arduino to run the <a href="https://www.airspayce.com/mikem/arduino/AccelStepper/">AccelStepper library</a> generating stepper motor direction and pulse signals. It was connected to one axis of the XY stage for the first test. It was exciting when the motor started turning, but it was very very loud! I doubted it was supposed to sound like that. A bit of examination found two problems: the ZETA4 was configured to take whole steps -- no microsteps -- which is always noisy. And I amplified this mistake by accidentally choosing a speed that caused a resonance.</p>
+<p>Once the ZETA4 was configured to its default of 125 microsteps, things were much quieter and smoother. It also slowed down significantly, because each pulse on the step pin moved 1/125 as far as it did before. (And a full revolution of the motor was only 200 steps.) The obvious answer was to increase frequency of those pulses, but I seemed to top out at around 5,000 pulses per second. This surprised me: The ATmega328 chip on board an Arduino is running at 8MHz. I would have expected it to easily generate pulses faster than 5 kHz. Time to <a href="https://newscrewdriver.com/2019/08/14/arduino-accelstepper-under-the-scope/">put this guy under the oscilloscope</a> and see what we see.</p>
+<p></body></html></p>

@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'Next Challenge For CNC: Electrical Noise'
+date: 2019-12-30 12:30:24.000000000 +00:00
+type: post
+post_id: '20050'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '20020'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '39007676549'
+  timeline_notification: '1577737964'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/12/30/next-challenge-for-cnc-electrical-noise/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>With <a href="https://newscrewdriver.com/2019/12/29/stouter-cutting-tool-for-exploring-cnc/">a stouter cutter installed</a>, we can experiment with less worry about breaking it. I started generating my own G-code programs from Autodesk Fusion 360 and testing them on the machine. (More about this test program later.) A safety practice I learned in my machining class is to test run a G-code program by intentionally setting a too-high Z offset. This way, when the machine runs through the program, it runs through all the motions but is only moving around in air. This lets us verify the range of motion is as expected. Including making sure it would not exceed either the XY limits of the machine or hit any hold down fixtures that are in the work space.</p>
+<p>This process can be repeated any number of times, each time putting the Z a little closer to the workpiece than the last. And even if we don't expect to actually cut material, it's a good idea to power up the spindle just in case the cutter makes contact. While unexpected cuts in the work piece is not great, ramming a non-spinning cutter into the piece is worse.</p>
+<p>Running in air is great for finding major problems, but minor issues aren't always visible. It wasn't until I cut into MDF that I found our latest problem: after the test program made its cut, its final position did not match expectations. Running the program again, we expected it to run through the same motion and not remove any new material, but it did. Checking the coordinate display on bCNC, we saw the machine believed itself to have returned to the same position after each run, counter to our physical evidence on hand. What happened?</p>
+<p>To diagnose this issue, we tried eliminating individual variables from consideration. Running down the list of possibilities, from loose wires to loose fasteners. The key experiment was running the program without powering up the spindle, at which time all motion tracked as expected. (To protect the endmill from possible impact damage, it was removed from the collet for this test.)</p>
+<p>This tells us the source of our unreliable motion was an electrically noisy spindle. A hypothesis is that it degraded our motor controllers' ability to distinguish signal pulses from Grbl, but the precise mechanism is not important. Whatever it was, we need to better protect the system from spindle motor noise. And since every motor will affect nearby electronics to some degree, this is <em>probably</em> not just a consequence of <a href="https://newscrewdriver.com/2019/12/23/examining-air-cooled-er11-cnc-spindle/">using the lowest bidder on Amazon</a>.</p>
+<p>In the immediate term, what we can do for our machine is to make sure the chassis is securely grounded, reroute signal wires further away from the spindle motor subsystem, and add a capacitor across the motor wire terminals to filter some noise. This was not precision tuning, as we just clamped the grounding wire to our gantry and the capacitor was chosen for its voltage tolerance rather than a specific capacitance. Still, the two measures seemed to improve the situation enough to proceed. We know "clean up wiring" is still on our list of technical debt, but this kicks the can a little further down the road and let me return to my test program - <a href="https://newscrewdriver.com/2019/12/31/cnc-test-program-prepares-for-fixtures/">cutting holes for work fixtures</a>.</p>
+<p></body></html></p>

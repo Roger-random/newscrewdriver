@@ -1,0 +1,124 @@
+---
+layout: post
+title: Approximate Color from AS7341 Spectral Data
+date: 2023-01-29 12:30:00.000000000 +00:00
+type: post
+post_id: '34753'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34763'
+  timeline_notification: '1675024258'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675117117
+  _publicize_job_id: '81016554382'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/29/approximate-color-from-as7341-spectral-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It's not going to win any design contests, but I've <a href="https://newscrewdriver.com/2023/01/28/rudimentary-stylesheet-for-as7341-web-app/">updated my AS7341 web app's stylesheet</a> so at least its layout is no longer confusing and no longer an embarrassing eyesore. It's the first of several things I wanted to do for polish. My next challenge is to interpret AS7341 spectrum information into to a color hue a human eye would perceive from looking at the same thing. This is not a trivial conversion, as human color perception has been a long-running area of research. After a few minutes of <a href="https://en.wikipedia.org/wiki/CIE_1931_color_space">trying to get my bearings on Wikipedia</a>, I've reached the conclusion that doing a good job with my own implementation would take more time than I'm willing to spend on it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What about somebody else's implementation? A search for spectrum math library in JavaScript led me to <a rel="noreferrer noopener" href="https://seballot.github.io/spectrum/" target="_blank">a color picker control named Spectrum</a>, which is not helpful to my current project. Looking on NPM, I found <a rel="noreferrer noopener" href="https://www.npmjs.com/package/cie-colorconverter" target="_blank">a CIE color conversion library</a>, but I don't see how to make it perform the type of conversion I seek. Casting my net wider than JavaScript, I found this article titled "<a rel="noreferrer noopener" href="https://scipython.com/blog/converting-a-spectrum-to-a-colour/" target="_blank">Converting a spectrum to a colour</a>" that opens with "<em>This article presents a Python script to map a spectrum of wavelengths to a representation of a colour</em>." This is exactly what I want! Unfortunately, I struggled to understand the Python code, certainly not enough to convert it to JavaScript for my use. Maybe I can come back later to try again, but in the short term I will try a hack.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>AS7341 datasheet tells us which wavelengths each sensors F1-F8 are designed to be sensitive to. Looking online, I found Academo's "<a rel="noreferrer noopener" href="https://academo.org/demos/wavelength-to-colour-relationship/" target="_blank">Wavelength to Colour Relationship</a>" page that lets me input a wavelength and translate that to RGB value. Taking a table of RGB values for wavelengths corresponding to AS7341 sensors F1-F8, I added up each column: all the red in one value, all the green, then all the blue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Wavelength</th>
+<th>Red</th>
+<th>Green</th>
+<th>Blue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>415</td>
+<td>118</td>
+<td>0</td>
+<td>237</td>
+</tr>
+<tr>
+<td>445</td>
+<td>0</td>
+<td>40</td>
+<td>255</td>
+</tr>
+<tr>
+<td>480</td>
+<td>0</td>
+<td>213</td>
+<td>255</td>
+</tr>
+<tr>
+<td>515</td>
+<td>31</td>
+<td>255</td>
+<td>0</td>
+</tr>
+<tr>
+<td>555</td>
+<td>179</td>
+<td>255</td>
+<td>0</td>
+</tr>
+<tr>
+<td>590</td>
+<td>255</td>
+<td>223</td>
+<td>0</td>
+</tr>
+<tr>
+<td>630</td>
+<td>255</td>
+<td>79</td>
+<td>0</td>
+</tr>
+<tr>
+<td>680</td>
+<td>255</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td>Sum</td>
+<td>1093</td>
+<td>1065</td>
+<td>747</td>
+</tr>
+</tfoot>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>We see the highest sum for red, followed by green a bit behind, and blue is significantly lower. This is consistent with datasheet telling us the silicon underneath each wavelength filter is naturally more sensitive to red. Since white (and shades of gray) is represented by equal portions of red, green, and blue, getting there required boosting the blue-focused colors a bit to even things out. I didn't put in rigorous mathematics to make them balanced since I don't even know if this action makes sense in color science. As a quick hack, I used a spreadsheet and fiddled with numbers via trial and error. I found that if I multiplied 415nm by 1.72, 445nm by 1.6, and 480nm by 1.4, I would get red/green/blue within 1% of each other. From here I can multiply them by F1-F8 readings and calculate each of their contribution to red/green/blue channels and generate a color value.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is an empirically derived formula with no basis in color science, but it does generate a color value that is vaguely in the right general ballpark. I piped that color into Chart.js to be used as my chart background color, following <a href="https://www.chartjs.org/docs/latest/configuration/canvas-background.html#color">instructions on their documentation</a>. This is most of what I wanted, and maybe the best I can do without investing the work to understand human color perception. Not great, but good enough for a quick hack project so I can <a href="https://newscrewdriver.com/2023/01/30/sensor-saturation-warning-as-final-v1-feature-of-my-as7341-app/">move on to the next feature</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

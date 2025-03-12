@@ -1,0 +1,141 @@
+---
+layout: post
+title: Programming Mr Robot Badge Mk. 2 with Arduino
+date: 2022-04-15 12:30:00.000000000 +00:00
+type: post
+post_id: '29585'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- ESP8266
+- Mr Robot Badge
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29692'
+  _publicize_job_id: '71419365339'
+  timeline_notification: '1650051005'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/15/programming-mr-robot-badge-mk-2-with-arduino/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>This particular Mr. Robot Badge Mk. 2 was deemed a defective unit with several dark LEDs. I used it as <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/04/07/surface-mount-repair-practice-with-mr-robot-badge/" target="_blank">a practice subject</a> for working with surface-mounted electronic devices, bringing two LEDs back into running order though one of them is the wrong color. Is the badge fully repaired? I couldn't quite tell. The default firmware is big on blinking and flashing patterns, making it difficult to determine if a specific LED is functioning or not. What I needed was a test pattern, something as simple as illuminate all of the LEDs to see if they come up. Fortunately, there was <a rel="noreferrer noopener" href="http://www.mrrobotbadge.tv/" target="_blank">a URL right on the badge</a> that took me to <a href="https://github.com/kscottz/MrRobotStarterPack">a GitHub repository</a> with sample code and instructions. It used Arduino framework to generate code for this ESP8266, and that's something I've worked with. I think we're in business.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the hardware side, I soldered sockets to the unpopulated programmer header and then created a programming cable to connect to <a rel="noreferrer noopener" href="https://amzn.to/3KopLF6" target="_blank">my FTDI serial adapter</a> (*). For the software, I cloned the "Starter Pack" repository, followed installation directions, and encountered a build failure:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Arduino\libraries\Brzo_I2C\src\brzo_i2c.c: In function 'brzo_i2c_write':
+Arduino\libraries\Brzo_I2C\src\brzo_i2c.c:72:2: error: cannot find a register in class 'RL_REGS' while reloading 'asm'
+   72 |  asm volatile (
+      |  ^~~
+Arduino\libraries\Brzo_I2C\src\brzo_i2c.c:72:2: error: 'asm' operand has impossible constraints
+exit status 1
+Error compiling for board Generic ESP8266 Module.
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This looks like <a rel="noreferrer noopener" href="https://github.com/pasko-zh/brzo_i2c/issues/44" target="_blank">issue #44 in the Brzo library</a>, unfixed at time of this writing. Hmm, this is a problem. Reading the code some more, I learned Brzo is used to create I2C communication routines with the IS31FL3741 driver chip controlling the LED array. Aha, there's a relatively easy solution. Since the time the badge was created, Adafruit has released <a rel="noreferrer noopener" href="https://learn.adafruit.com/adafruit-is31fl3741/" target="_blank">a product using the same LED driver chip</a> and corresponding software libraries to go with it. I could remove this custom I2C communication code using Brzo and replace it with Adafruit's library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the conversion was straightforward except for the LED pixel coordinate lookup. The IS31Fl3741 chip treats the LEDs as a linear array, and something had to translate the linear index to their X,Y coordinates. The badge example code has a lookup table mapping linear index to X,Y coordinates. To use Adafruit library's frame buffer, I needed the reverse: a table that converts X,Y coordinates to linear index. I started typing it up by hand before deciding that was stupid: this is the kind of task we use computers for. So I wrote this piece of quick-and-dirty code to cycle through the existing lookup table and print the information back out organized by X,Y coordinates.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>
+      for(uint8_t x = 0; x &lt; 18; x++)
+      {
+        for(uint8_t y = 0; y &lt; 18; y++)
+        {
+          reverseLookup[x][y]=-1;
+        }
+      }
+      for(uint8_t i = 0; i &lt; PAGE_0_SZ; i++)
+      {
+        reverseLookup[page0LUT[i].x][page0LUT[i].y] = i;
+      }
+      for(uint16_t i = 0; i &lt; PAGE_1_SZ; i++)
+      {
+        // Unused locations were marked with (-1, -1) but x and y are
+        // declared as unsigned which means -1 is actually 0xFF so
+        // instead of checking for &gt;0 we check for &lt;18
+        if(page1LUT[i].x &lt; 18 &amp;&amp; page1LUT[i].y &lt; 18)
+        {
+          reverseLookup[page1LUT[i].x][page1LUT[i].y] = i+PAGE_0_SZ;
+        }
+      }
+      for(uint8_t y = 0; y &lt; 18; y++)
+      {
+        Serial.print("{");
+        for(uint8_t x = 0; x &lt; 18; x++)
+        {
+          Serial.print(reverseLookup[x][y]);
+          if (x&lt;17)
+          {
+            Serial.print(",");
+          }
+        }
+        if (y&lt;17)
+        {
+          Serial.println("},");
+        }
+        else
+        {
+          Serial.println("}");
+        }
+      }</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This gave me the numbers I needed in Arduino serial monitor, and I could copy it from there. Some spacing adjustment to make things a little more readable, and we have this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>const uint16_t Lookup[ARRAY_HEIGHT][ARRAY_WIDTH] = {
+  {  17,  47,  77, 107, 137, 167, 197, 227, 257,  18,  48,  78, 108, 138, 168, 198, 228, 258},
+  {  16,  46,  76, 106, 136, 166, 196, 226, 256,  19,  49,  79, 109, 139, 169, 199, 229, 259},
+  {  15,  45,  75, 105, 135, 165, 195, 225, 255,  20,  50,  80, 110, 140, 170, 200, 230, 260},
+  {  14,  44,  74, 104, 134, 164, 194, 224, 254,  21,  51,  81, 111, 141, 171, 201, 231, 261},
+  {  13,  43,  73, 103, 133, 163, 193, 223, 253,  22,  52,  82, 112, 142, 172, 202, 232, 262},
+  {  12,  42,  72, 102, 132, 162, 192, 222, 252,  23,  53,  83, 113, 143, 173, 203, 233, 263},
+  {  11,  41,  71, 101, 131, 161, 191, 221, 251,  24,  54,  84, 114, 144, 174, 204, 234, 264},
+  {  10,  40,  70, 100, 130, 160, 190, 220, 250,  25,  55,  85, 115, 145, 175, 205, 235, 265},
+  {   9,  39,  69,  99, 129, 159, 189, 219, 249,  26,  56,  86, 116, 146, 176, 206, 236, 266},
+  {   8,  38,  68,  98, 128, 158, 188, 218, 248,  27,  57,  87, 117, 147, 177, 207, 237, 267},
+  {   7,  37,  67,  97, 127, 157, 187, 217, 247,  28,  58,  88, 118, 148, 178, 208, 238, 268},
+  {   6,  36,  66,  96, 126, 156, 186, 216, 246,  29,  59,  89, 119, 149, 179, 209, 239, 269},
+  {   5,  35,  65,  95, 125, 155, 185, 215, 245, 270, 279, 288, 297, 306, 315, 324, 333, 342},
+  {   4,  34,  64,  94, 124, 154, 184, 214, 244, 271, 280, 289, 298, 307, 316, 325, 334, 343},
+  {   3,  33,  63,  93, 123, 153, 183, 213, 243, 272, 281, 290, 299, 308, 317, 326, 335, 344},
+  {   2,  32,  62,  92, 122, 152, 182, 212, 242, 273, 282, 291, 300, 309, 318, 327, 336, 345},
+  {   1,  31,  61,  91, 121, 151, 181, 211, 241, 274, 283, 292, 301, 310, 319, 328, 337, 346},
+  {   0,  30,  60,  90, 120, 150, 180, 210, 240, 275, 284, 293, 302, 311, 320, 329, 338, 347}
+};</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This lookup table got Mr. Robot Badge Mk. 2 up and running without Brzo library! I could write that simple "turn on all LED" test I wanted.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29691,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/mr-robot-badge-with-blue-and-missing-led.jpg?w=1024" alt="" class="wp-image-29691"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The test exposed two more problematic LEDs. One of them was intermittent: I tapped it and it illuminated for this picture. If it starts flickering again, I'll give it a dab of solder to see if that helps. The other one is dark and stayed dark through (unscientific) tapping and (scientific) LED test equipment. It looks like I need to find two more surface-mount red LEDs to fully repair this array.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In case anybody else wants to play with Mr. Robot Badge and runs into the same problem, I have collected my changes and updated the README installation instructions in <a rel="noreferrer noopener" href="https://github.com/kscottz/MrRobotStarterPack/pull/3" target="_blank">pull request #3</a> of the badge code sample repository. If that PR rejected, <a href="https://github.com/Roger-random/MrRobotStarterPack" target="_blank" rel="noreferrer noopener">clone my fork</a> directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

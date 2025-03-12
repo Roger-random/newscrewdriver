@@ -1,0 +1,59 @@
+---
+layout: post
+title: Reviving Previously Disassembled Fire TV Stick
+date: 2022-04-21 12:30:00.000000000 +00:00
+type: post
+post_id: '29825'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Amazon Fire
+meta:
+  _thumbnail_id: '29827'
+  _last_editor_used_jetpack: block-editor
+  _oembed_95f8b6ab84cd464c64108f1c03daac99: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Amazon
+    Fire TV stick <a href="https://t.co/BnRqaR1w74">pic.twitter.com/BnRqaR1w74</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1184301986910334976?ref_src=twsrc%5Etfw">October
+    16, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_95f8b6ab84cd464c64108f1c03daac99: '1650048418'
+  _publicize_job_id: '71664752927'
+  timeline_notification: '1650569414'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668846935
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/21/reviving-previously-disassembled-fire-tv-stick/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Before I took apart a pair of Roku streaming devices, I did a quick investigation to see if there's anything interesting I might be able to do with them via software realm. I found that while Roku did release an <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/27/window-shopping-roku-idk-independent-developer-kit/" target="_blank">Independent Developers Kit</a>, those old Roku were not compatible. Even if they were compatible with the IDK, though, I'm not sure they would have been compelling when I could play with a Raspberry Pi zero or Android-based hardware like Amazon's Fire TV.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That train of thought reminded me that I have a Fire TV device, or at least I used to. My first HD digital flat-screen TV was before the age of internet connectivity features, so I tried plugging in a Chromecast. Dissatisfied, I tried a Fire TV streaming stick. I eventually ended up buying a new TV for its UHD resolution, along with bonus benefit of built-in Roku software. (Which is also incompatible with Roku IDK, but that was not a shopping requirement.) After my UHD upgrade both the Chromecast and the Fire TV sat unused a drawer until I brought them to the <a rel="noreferrer noopener" href="https://www.meetup.com/SGVTech/events/265544877/" target="_blank">inaugural Disassembly Academy</a> during Pasadena Connect Week. One of the participants took up <a rel="noreferrer noopener" href="https://twitter.com/Regorlas/status/1184293857569038337" target="_blank">my invitation to take things apart</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29827,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/amazon-fire-tv-stick-second-2nd-gen-disassembled.jpg?w=1024" alt="" class="wp-image-29827"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The whole thing was a single circuit board inside the plastic enclosure. There were no user controls at all, not even the single reset button or status LED of the <a href="https://newscrewdriver.com/2022/03/28/roku-streaming-stick-3500x-sugarland-teardown/">Roku streaming stick</a>. In a plastic bag I found the circuit board and the plastic enclosure, but the misshapen metal RF shields and attached heat dissipation pads visible in this picture are now gone. If I plug it in, I'm optimistic it will run unless overheating and/or RF interference causes problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29841,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/amazon-fire-tv-stick-second-2nd-gen-remote-disassembled.jpg?w=1024" alt="" class="wp-image-29841"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I plugged it in and watch a successful boot sequence on screen, which led to the next problem: its corresponding remote-control unit was superficially intact, but the violence of enclosure disassembly meant nothing fit anymore. Specifically, the keypad no longer fit in the front faceplate, which also lost its fit so it could no longer press the circuit board against battery contact points.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried a few different ways to make it work again, eventually ignoring the faceplate and using my thumb to press circuit board directly against battery tray contacts. If I end up using this for more than a trivial test, I'll solder a battery tray to the circuit board instead. For now, I just got it back up and running on the latest Fire TV software release. The "About" screen called itself a second-generation Fire TV stick, which is enough information for me to <a rel="noreferrer noopener" href="https://developer.amazon.com/docs/fire-tv/device-specifications-fire-tv-streaming-media-player.html?v=ftvstickgen2" target="_blank">look up its specifications</a>. It's pretty close to the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/28/roku-streaming-stick-3500x-sugarland-teardown/" target="_blank">Roku equivalent streaming stick</a>, with two major differences: I have a functional (if annoying) remote control, and I have the <a rel="noreferrer noopener" href="https://developer.amazon.com/docs/fire-tv/setting-up-your-development-environment.html" target="_blank">Android software development platform</a>. I installed Android Studio and deployed a few "Hello World" type Android apps to the Fire TV stick just to prove the tooling pipeline worked. Then I tried installing something I built in Unity... and saw <a href="https://newscrewdriver.com/2022/04/22/unity-without-opengl-es-2-0-is-all-pink-on-fire-tv-stick/">everything was pink</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

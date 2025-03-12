@@ -1,0 +1,42 @@
+---
+layout: post
+title: Raspberry Pi Drives Death Clock
+date: 2019-06-14 12:30:38.000000000 +00:00
+type: post
+post_id: '18648'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- TIL
+tags:
+- Death Clock
+- VFD
+meta:
+  _thumbnail_id: '18450'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31830425992'
+  timeline_notification: '1560540740'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/14/death-clock-raspberry-pi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Since this was the first time Emily and I built something to light up a VFD (vacuum fluorescent display) we expected things to go wrong. Given this expectation, I wanted to be able to easily and rapidly iterate through different VFD patterns to pin down problems. I didn't want to reflash the PIC every time I wanted to change a pattern, so the PIC driver code was written to <a href="https://newscrewdriver.com/2019/04/13/why-and-how-of-simpler-pic-display-driver/">accept new patterns over I2C</a>. Almost anything can send the byte sequences necessary -- Arduino, ESP32, Pi, etc -- but what was handy that day was a Raspberry Pi 3 previously configured as backup Sawppy brain.</p>
+<p>The ability to write short Python scripts to send different bit patterns turned out to be very helpful when <a href="https://newscrewdriver.com/2019/05/02/prototype-vfd-driver-pcb-debugged/">tracking down an errant pin shorted to ground</a>. It was much faster to edit a Python file over SSH and rerun it than it was to reflash the PIC every time. And since we've got it working this far, we'll continue with this system for the following reasons:</p>
+<ul>
+<li>The established project priority is to stay with what we've already got working, not get sidetracked by potential improvements.</li>
+<li>Emily already had a Raspberry Pi Zero that could be deployed for the task. Underpowered for many tasks, a Pi Zero would have no problem with something this simple.</li>
+<li>A Raspberry Pi Zero is a very limited platform and a bit of a pain to develop on, but fortunately the common architecture across all Raspberry Pi implies we can do all our work on a Raspberry Pi 3 like we've been doing. Once done, we can transfer the microSD into a Raspberry Pi Zero and everything will work. Does that theory translate to practice? We'll find out!</li>
+<li>We've all read of Raspberry Pi corrupting their microSD storage in fixed installations like this, where it's impossible to guarantee the Pi will be gracefully shut down before power is disconnected. But how bad is this problem, really? At Maker Faire we talked to a few people who claimed the risk is overblown. What better way to find out than to test it ourselves?</li>
+</ul>
+<p>On paper it seems like a Death Clock could be completely implemented in a PIC. But that requires extensive modification of our PIC code for doubious gain. Yeah, a Raspberry Pi is overkill, but it's what we already have working, and there are some interesting things to learn by doing so. Stay the course and full steam ahead!</body></html></p>

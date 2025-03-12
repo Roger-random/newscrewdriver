@@ -1,0 +1,52 @@
+---
+layout: post
+title: Static Web Site Hosting with Amazon S3 and Route 53
+date: 2017-05-02 15:24:07.000000000 +00:00
+type: post
+post_id: '5046'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Amazon Web Services
+- CSS
+- HTML
+tags:
+- rxbb8
+meta:
+  _thumbnail_id: '5104'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '4634357735'
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688710044
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/05/02/static-web-site-hosting-with-amazon-s3/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-2922 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2016/12/aws_logo.jpg" alt="aws_logo" width="180" height="68">Web application frameworks have the current spotlight, which is why I started learning Ruby on Rails to get an idea what the fuss was about. But a big framework isn't always the right tool for the job. Sometimes it's just a set of static files to be served upon request. No server-side smarts necessary.</p>
+<p>This was where I found myself when I wanted to put up a little web site to document my #<a href="http://rxbb8.com">rxbb8</a> project. I just wanted to document the design &amp; build process, and I already had registered the domain <a href="http://rxbb8.com">rxbb8.com</a>. The HTML content was simple enough to create directly in a text editor and styled with CSS from the <a href="http://materializecss.com/">Materialize</a> library.</p>
+<p>After I got a basic 1.0 version of my hand-crafted site, I uploaded the HTML (and associated images) to an Amazon S3 bucket. It only takes a few clicks to allow files in a S3 bucket to be web-accessible via a long cumbersome URL on Amazon AWS domain <a href="http://rxbb8.com.s3-website-us-west-2.amazonaws.com">http://rxbb8.com.s3-website-us-west-2.amazonaws.com</a>. Since I wanted this content to be accessible via the <a href="http://rxbb8.com">rxbb8.com</a> domain I already registered, I started reading up on the AWS service named in geek-humor style as <a href="https://en.wikipedia.org/wiki/Amazon_Route_53">Route 53</a>.</p>
+<p>Route 53 is designed to handle the challenges of huge web properties, distributing workload across many computers in many regions. (No single computer could handled all global traffic for, say, netflix.com.) The challenge for a novice like myself is to figure out how to pull out just the one tool I need from this huge complex Swiss army knife.</p>
+<p>Fortunately this usage case is popular enough for Amazon to have written a <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/getting-started.html">dedicated developer guide</a> for it. Unfortunately, the page doesn't have all the details. The writer helpfully points the reader to other reference articles, but those pages revert back to talking about complex deployments and again it takes effort to distill the simple basics out of the big feature list.</p>
+<p>If you get distracted or lost, stay focused on this Cliff Notes version:</p>
+<ol>
+<li>Go into Route 53 dashboard, create a Hosted Zone for the domain.</li>
+<li>In that Hosted Zone, AWS has created two record sets by default. One of them is the NS type, write down the name servers listed.</li>
+<li>Go to your domain registrar and tell them to point name servers for the domain to the AWS name servers listed in step 2.</li>
+<li>Create S3 storage bucket for the site, enable static website hosting.</li>
+<li>Create a new Record Set in the Route 53 Hosted Zone. Select "Alias" to "Yes" and point alias target to the S3 storage bucket in step 4.</li>
+</ol>
+<p>Repeat #4 and #5 for each sub-domain that needs to be hosted. (The AWS documentation created example.com and repeated 4-5 for<em><strong> www.</strong></em>example.com.)</p>
+<p>And then... wait.</p>
+<p>The update in step 3 needs time to propagate to name servers across the internet. My registrar said it may take up to 24 hours. In my case, I started getting intermittent results within 2 hours, but it took more than 12 hours before everything stabilized to the new settings.</p>
+<p>But it was worth the effort to see version 1.0 of my created-from-scratch static web site up and running on my domain! And since it's such a small and simple site with little traffic, it will cost me only a few pennies per month to host in this manner.</p>
+<p> </body></html></p>

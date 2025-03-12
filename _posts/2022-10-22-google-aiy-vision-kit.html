@@ -1,0 +1,83 @@
+---
+layout: post
+title: Google AIY Vision Kit
+date: 2022-10-22 12:30:00.000000000 +00:00
+type: post
+post_id: '17400'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Raspberry Pi
+tags:
+- AIY
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '17401'
+  _publicize_job_id: '77979895792'
+  timeline_notification: '1666467057'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/22/google-aiy-vision-kit/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A few years ago, I tried out the Google AIY "Voice" and "Vision" kits. They featured very novel hardware but that alone was not enough. Speaking as someone not already well-versed in AI software of the time, there was not enough documentation support to get people like me onboard to do interesting things with that novel hardware. People like me could load the default demo programs, we could make minor modifications to it, but using that hardware for something new required climbing a steep learning curve.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":17641,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2019/01/backyard-sawppy-1600.jpg?w=1024" alt="" class="wp-image-17641"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>At one point I mounted the box to my Sawppy rover's instrument mast, indicating my aspirations to use it for rover vision, but I never got much of anywhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The software stack also left something to be desired, as it built on top of Raspberry Pi OS but was <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/04/27/google-aiy-system-image-still-fragile/" target="_blank">fragile and easily broken</a> by Raspberry Pi updates. Reviewing my notes, I realized I published my notes on <a href="https://newscrewdriver.com/2019/04/22/hello-google-aiy-voice-kit/">AIY Voice</a> but the information on AIY Vision was still sitting in my "Drafts" section. Oops! Here it is for posterity before I move on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":17401} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2018/12/google-aiy-vision-kit.jpg" alt="Google AIY Vision Kit" class="wp-image-17401"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The product packaging is wonderful. This was from the era of Google building retail products from <a href="https://en.wikipedia.org/wiki/Google_Cardboard">easily recycled cardboard</a>. All parts were laid out and neatly labeled in a cardboard box.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":17402} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2018/12/google-aiy-online-instructions.jpg" alt="Google AIY online instructions.jpg" class="wp-image-17402"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was no instruction booklet in the box, just a pointer to <a rel="noreferrer noopener" href="https://aiyprojects.withgoogle.com/vision/#assembly-guide" target="_blank">assembly instructions online</a>. While fairly easy to follow, note that instructions were written for people who already know how to handle bare electronic circuit boards. Handle the circuit boards by the edges and avoid touching components (especially electrical contacts) and such. Complete beginners unaware of basics might ruin their AIY kit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":17403} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2018/12/google-aiy-vision-kit-major-components.jpg" alt="Google AIY Vision Kit major components" class="wp-image-17403"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>From a hardware architecture perspective, the key is the AIY Vision bonnet that sat on top of a Raspberry Pi Zero WH. (W = WiFi, H = with presoldered header pins.) In addition to connection with all Pi Zero GPIO pins, it also connects to the Pi camera connector for direct access to camera feed. (Normal data path: Camera --&gt; Pi Zero. AIY Vision data path: Camera --&gt; Vision Bonnet --&gt; Pi.) In addition to the camera, there is a piezo buzzer for auditory feedback, a standalone green LED to indicate camera is live ("Privacy LED"), and a big arcade-style button with embedded LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once assembled, we could install and run several <a rel="noreferrer noopener" href="https://aiyprojects.withgoogle.com/vision/#models" target="_blank">visual processing models</a> posted online. If we want to go beyond that, there are instructions on how to <a rel="noreferrer noopener" href="https://aiyprojects.withgoogle.com/vision/#makers-guide--tensorflow-model-compiler" target="_blank">compile trained TensorFlow models</a> for hardware accelerated inference by the AIY Vision Bonnet. And if those words don't mean anything (it didn't to me when I played with the AIY Vision) then we're up a creek. That was bad back then, and now that a few years have gone by, things have gotten worse.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>The <a rel="noreferrer noopener" href="https://github.com/google/aiyprojects-raspbian/releases" target="_blank">official Google AIY system images</a> for Raspberry Pi hasn't been updated since April 2021. And we can't just take it and pick up more recent updates, because that breaks bonnet functionality.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The vision bonnet model compiler is only tested to work on Ubuntu 14.04, <a href="https://ubuntu.com/blog/what-is-an-ubuntu-lts-release">whose maintenance updates ended in 2019</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Example Python code is in Python 2, whose support <a href="https://www.python.org/doc/sunset-python-2/" target="_blank" rel="noreferrer noopener">ended January 1st, 2020</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Example TensorFlow information are for the now-obsolete TensorFlow 1. <a rel="noreferrer noopener" href="https://www.tensorflow.org/guide/migrate/tf1_vs_tf2" target="_blank">TensorFlow 2 was a huge breaking change</a>, and it takes a lot of work -- not to mention expertise -- to migrate from TF1.x to TF2.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of these factors together tell me the Google AIY Vision bonnet has been left to the dusty paths of history. My unit has only ever ran the default "Joy Detection" demo, and I expect <a href="https://newscrewdriver.com/2022/10/23/google-aiy-vision-bonnet-accessories/">this AIY Vision Bonnet</a> will never run anything else. Thankfully, the rest of the hardware (Raspberry Pi Zero WH, camera, etc.) should have better prospects of finding another use in the future.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

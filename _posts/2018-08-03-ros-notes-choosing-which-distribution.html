@@ -1,0 +1,36 @@
+---
+layout: post
+title: 'ROS Notes: Choosing Which Distribution'
+date: 2018-08-03 09:00:32.000000000 +00:00
+type: post
+post_id: '16552'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20700386220'
+  timeline_notification: '1533312098'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/03/ros-notes-choosing-which-distribution/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-medium wp-image-16553 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/07/ros-lunar-400x400.png?w=296" alt="ROS-Lunar 400x400" width="296" height="300">ROS gives creative names to each release, but the key part is that the names are in alphabetical order. When I looked into the ROS nodes to help control Dynamixel serial bus servos, I was confused as to their support of ROS distributions.</p>
+<p>Both options supported the 'K' release (Kinetic Kame.) One of them seemed to have gotten stale, not getting maintenance or newer versions. The other one -- officially built by Robotis -- supported 'K' and 'M', skipping over 'L'. There must be a reason, but why?</p>
+<p>When I picked up learning ROS again this time around, I looked at the latest version M ("Melodic") first. I saw it did not support Ubuntu 16.04. I needed to run Ubuntu 16.04 <a href="https://newscrewdriver.com/2018/07/27/installing-tensorflow-adventures-in-version-matching/">because of TensorFlow</a>, so I went with the newest version that supported 16.04, which is how I ended up with Lunar Loggerhead. In hindsight, this was not the best choice. It appears every other distribution of ROS has a far shorter support life than its siblings, as seen on the <a href="http://wiki.ros.org/Distributions">list of ROS distributions</a>. On this list, Kinetic Kame is marked as "(Recommended)" as of today.</p>
+<p>It appears that "Kinetic" is the long-term support version, which is tied to Ubuntu's 16.04 long term support version. "Melodic" is quite new, built on the recently released Ubuntu 18.04 LTS, so it makes sense that stabilization work is still ongoing. At some point in the near future, I'm sure "Melodic" will become the recommended version.</p>
+<p>"Lunar" seems to be in an awkward middle spot where it is neither the latest release nor the stable long-term supported release. In fact, even though it is younger than "Kinetic", the calendar says it will fall out of support sooner.</p>
+<p>Even worse than that, its shorter lifespan meant people are less motivated to align their software packages to the release. Hence why packages like Robotis Dynamixel SDK has a Kinetic release and a Melodic release, skipping over Lunar. Looks like users like me should stick with the long-term support releases: not just for support from core ROS team, but also from third-parties like Robotis.</p>
+<p>Given that I'm tied to Ubuntu 16.04, I should follow the recommendation and downgrade my installation of ROS to Kinetic Kame.</body></html></p>

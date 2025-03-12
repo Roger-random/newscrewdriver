@@ -1,0 +1,37 @@
+---
+layout: post
+title: LED Practice Exercise May Have Niche Market
+date: 2017-09-27 09:00:37.000000000 +00:00
+type: post
+post_id: '12820'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9725948308'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/27/led-practice-exercise-might-actually-be-useful-product/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I set out to program a PIC to implement an I²C-controlled 4-digit 7-segment LED display because I thought it would be a decently nontrivial practice project to help me learn. I had fully expected it to end up duplicating the functionality of a commercially available product that does it better for a fraction of the price.</p>
+<p>Now that my project is in a decently functional state, I went looking for that commercial product to see what else I can try to imitate for the sake of practice. I was surprised that nothing immediately stood out as both "does it better" <em><strong>and</strong></em> "fraction of the price".</p>
+<p>The first item I found was sold by Adafruit. They have an I²C LED display "backpack" in various colors. <a href="https://www.adafruit.com/product/880">Here's the green version</a>, as one example. The driver chip they used is the MAX7219, which I found curious because the data sheet for the chip does not mention I²C communication. Another curious item is that the complete kit - including populated circuit board and LED - has a list price of $9.95 but if I want to <a href="https://www.adafruit.com/product/453">buy the MAX7219 by itself from Adafruit</a> it costs the same $9.95. <a href="https://www.digikey.com/products/en/integrated-circuits-ics/pmic-display-drivers/729?k=MAX7219">Digi-Key sells the chip for around the same price</a>. I doubt Adafruit get their circuit board and LED for free, so there's something else I'm missing.</p>
+<p>But I couldn't have used that chip anyway. The MAX7219 is for driving a display unit with common cathode, and LTC-4627JR is a common anode unit. Also, Maxim is <a href="https://www.maximintegrated.com/en/app-notes/index.mvp/id/876">telling people to migrate their designs to the MAX6950</a>, which seems to be a surface-mount only chip with no DIP form factor available.</p>
+<p>Looking over Sparkfun catalog I found a <a href="https://www.sparkfun.com/products/11443">similar product</a>, but theirs is controlled by an ATMega328 chip. In fact, it is a baby Arduino complete with the Arduino bootloader. This is closer to what I've built, but I think the PIC is a simpler and less expensive chip to perform the task which may mean a small niche below the Sparkfun unit.</p>
+<p>All this hints at the possibility my project might actually find an audience as a product. If I were to go ahead with this, I would test the market by putting it up on <a href="https://www.tindie.com/">Tindie</a>. It's a marketplace that seems to cater to the right audience and there doesn't seem to be a direct competitor product at the moment.</p>
+<p>Well, that was unexpected. I might as well keep going and see how far I can take this.</p>
+<p><img class=" size-full wp-image-12471 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/img_5255.jpg" alt="IMG_5255" width="1024" height="548"></p>
+<p></body></html></p>

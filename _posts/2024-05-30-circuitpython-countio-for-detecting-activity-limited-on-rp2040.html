@@ -1,0 +1,50 @@
+---
+layout: post
+title: CircuitPython countio For Detecting Activity (Limited on RP2040)
+date: 2024-05-30 12:30:00.000000000 +00:00
+type: post
+post_id: '43568'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43539'
+  wordads_ufa: u:wpcom-ufa-v4:1719279633
+  firehose_sent: '1717097451'
+  _publicize_job_id: '95040119488'
+  timeline_notification: '1717097452'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-25 01:35:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/30/circuitpython-countio-for-detecting-activity-limited-on-rp2040/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a rough idea on how I would use CircuitPython's <code>asyncio</code> capability to <a href="https://newscrewdriver.com/2024/05/29/circuitpython-asyncio-for-cooperative-multitasking/">structure my learning project</a>, but jumping straight into async/await in a new platform is too bold for me. I would rather ramp up gradually starting with running a few CircuitPython samples. Once I was satisfied my KB2040 board is generally working as expected, I started poking at project-specific needs. First task: see if I've soldered serial communication wires correctly by checking for activity on those pins in reaction to enable pin status. (Toggled via <a href="https://docs.circuitpython.org/en/latest/shared-bindings/digitalio/index.html">CircuitPython's <code>digitalio</code> module</a>.) I expect activity on the receive pin when the enable pin is high, and no activity when enable is low. The transmit pin should have no activity in both cases.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had originally intended to check pin status by polling pins in a loop, which is not guaranteed to catch all activity but probably good enough for an "is there activity" check. Polling in a loop would have been trivial in an Arduino test sketch, but CircuitPython made it just as easy to pull in something more sophisticated: <a href="https://docs.circuitpython.org/en/latest/shared-bindings/countio/index.html"><code>countio</code> module</a> counts rising/falling edges driven by hardware interrupts, which would have taken a bit more work to set up on Arduino. Great! Let's do that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I copied <a href="https://learn.adafruit.com/cooperative-multitasking-in-circuitpython-with-asyncio/handling-interrupts#handling-interrupts-with-countio-3106479">sample code from documentation</a> and modified it for my purposes of watching pins D0 and D1, which were default UART transmit and receive pins on my KB2040. I saved my file and promptly got an error telling me I am not allowed to do this on D0. Huh? Re-reading <code>countio</code> documentation I saw a paragraph I had missed:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><em><strong>Limitations:</strong> On RP2040, Counter uses the PWM peripheral, and is limited to using PWM channel B pins due to hardware restrictions. See the pin assignments for your board to see which pins can be used.</em></p>
+<p><!-- /wp:paragraph -->
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reviewing KB2040 pinout reference, I see D0 is also PWM0A and D1 is PWM0B. So they are both PWM-capable pins satisfying the first restriction, but only D1 satisfied the second restriction of channel B. Fortunately D1 on PWM0B is the default UART receive pins, so that's the one I was more interested in checking status for anyway. And the check was good: when enable pin is high, there is a steady stream of activity on D1. When enable pin is low, activity stops. Good enough to take the next step, <a href="https://newscrewdriver.com/2024/05/31/circuitpython-busio-uart-up-and-running-mostly/">connect UART peripheral to those pins</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

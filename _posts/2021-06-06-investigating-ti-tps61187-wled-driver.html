@@ -1,0 +1,51 @@
+---
+layout: post
+title: Investigating TI TPS61187 WLED Driver
+date: 2021-06-06 12:30:00.000000000 +00:00
+type: post
+post_id: '26963'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+- Window Shopping
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26964'
+  _publicize_job_id: '59286555726'
+  timeline_notification: '1623007808'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/06/investigating-ti-tps61187-wled-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took apart a LG LCD panel LP133WF2(SP)(A1) hoping to salvage something useful. After I failed to salvage the polarizer film, my hope lies with the backlight module. Its diffuser had <a href="https://newscrewdriver.com/2021/06/05/lg-lcd-panel-backlight/">a multi-layer construction I didn't understand</a> but found fascinating and wanted to see it light up firsthand. And if I am to do that, I need to figure out how to send power to the backlight LEDs. When I split the panel into the display and backlight modules, I saw the backlight was connected by a ribbon cable with seven conductors. Six of them look identical, and the seventh was wider than the rest, making it a good candidate for either a common anode or a cathode. Which is it, though? For that I looked for hints on the display panel's integrated driver board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26874,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-04-pcb-back.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-04-pcb-back.jpg?w=1024" alt="" class="wp-image-26874"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were three significant-looking ICs on board. The largest is closest to the connector to the rest of the laptop and the top two lines written on it were "LG Display ANX2804". I found no information on this chip online. In the middle of the circuit board is another IC, this one labeled "SM4037 DA1422 AMER038". I found no information on this particular designation, either. (There exists a <a rel="noreferrer noopener" href="https://www.fairviewmicrowave.com/images/productPDF/SM4037.pdf" target="_blank">SM4037 from Fairview Microwave</a>, but it is a connector and not a microchip.) That leaves the chip closest to the backlight connector as the best candidate for a LED driver, and luckily its markings of <a rel="noreferrer noopener" href="https://www.ti.com/product/TPS61187" target="_blank">TPS 61187</a> match that of a Texas Instruments WLED driver. I think this is it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading its <a rel="noreferrer noopener" href="https://www.ti.com/lit/gpn/tps61187" target="_blank">publicly available datasheet</a> reinforced it is the right result, as its "typical application" diagram shows the chip driving six parallel strings of LEDs. The schematic indicates the six strings are connected to a common anode with their own individual cathodes wired to one of six current sinks on the chip. This information is enough for me to wire up this array to my bench power supply to find the right voltage for this string and create my own LED driver circuit. But since I have the datasheet already on hand and a "I know it used to work" backlight control board, I kept reading to see if I could perhaps reuse the board as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It looks pretty promising. There are no handshake or control protocol involved, all the potential configurations for this chip are done via resistance values to certain pins which would be already present in this case. I think for a bare minimum setup I only need to provide a power source and a PWM signal to control brightness. I could also connect the enable pin but I think I could get away with using a pull-up resistor. And under this minimalist plan I would be ignoring the fault signals. Plus <a href="https://newscrewdriver.com/2021/06/07/ti-tps61187-circuits-boost-converter/">one very important lesson about its power supply</a> I had to learn first.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,51 @@
+---
+layout: post
+title: Align Axis of Pixelblaze Accelerometer and LED Array
+date: 2019-07-09 12:35:47.000000000 +00:00
+type: post
+post_id: '18851'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18852'
+  timeline_notification: '1562700950'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32663051969'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/09/align-axis-of-pixelblaze-accelerometer-and-led-array/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once I figured out the <a href="https://newscrewdriver.com/2019/07/08/pixelblaze-accelerometer-axis/">accelerometer directions for a Pixelblaze Sensor Expansion Board</a>, I realized an earlier oversight was going to cause problems.</p>
+<p><img class="alignnone size-full wp-image-18853" src="https://newscrewdriver.com/wp-content/uploads/2019/07/pixelblaze-axis-misaligned.jpg" alt="Pixelblaze axis misaligned" width="1600" height="900"></p>
+<p>The <a href="https://newscrewdriver.com/2019/07/03/3d-printed-end-pieces-complete-led-helix-chassis/">first draft of LED helix top end</a> were designed with the following goals:</p>
+<ol>
+<li>Have an opening for top end of LED strip to enter interior</li>
+<li>Give me something to hold on to.</li>
+<li>Physically mount the Pixelblaze somewhere.</li>
+</ol>
+<p>Goal #1 was simple to meet. I put in two arched bits of plastic for #2, and there wasn't a whole lot of thought put into #3. The only goal at the time was to make sure the Pixelblaze doesn't rattle around and get damaged.</p>
+<p>Now that I want to play with the accelerometer and tie it in to my LED strip with 3D Pixel Mapper coordinates in 3D space, I realized my mistake: the Pixelblaze sensor is offset at an angle to the LED. In the image above, the red line represents X axis, the green the Y axis, and yellow is the Pixelblaze at approximately 15 degrees offset from the Y axis. This meant my initial test programs looked odd because the lights were reacting to a force vector 15 degrees offset from where they physically were.</p>
+<p>While I could address this strictly in software by changing my 3D pixel map coordinates to match my Pixelblaze axis directions, moving the helix around also exposed more problems with the first draft that I could not solve with just software changes. First, the USB power bank started falling out of place as I had only designed a shallow stand. And second, the thin strips of plastic wasn't a very good handle for moving the thing around.</p>
+<p>So a new top end was designed and printed to satisfy slightly different goals:</p>
+<ol>
+<li>Still have the opening for the top end of LED strip.</li>
+<li><del>Give me something to hold on to.</del></li>
+<li>Physically mount the Pixelblaze <em>in a way that aligns accelerometer axis with 3D Pixel Mapper axis</em>.</li>
+<li>Hold the USB battery power pack in place.</li>
+</ol>
+<p>This top piece no longer has to provide handles, instead I'll <a href="https://newscrewdriver.com/2019/07/10/new-sturdier-handle-for-led-helix-project/">add a dedicated and more ergonomic handle (or two)</a> to this project.</body></html></p>

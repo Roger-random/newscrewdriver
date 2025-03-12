@@ -1,0 +1,53 @@
+---
+layout: post
+title: Compass Web App Project Gets Own Repository
+date: 2023-04-10 12:30:00.000000000 +00:00
+type: post
+post_id: '36156'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36104'
+  timeline_notification: '1681155004'
+  _publicize_job_id: '83083453544'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681251473
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/10/compass-web-app-project-gets-own-repository/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I got Three.js <a href="https://newscrewdriver.com/2023/04/09/magnetometer-service-as-rxjs-practice/">and Magnetometer API</a> up and running within the context of an Angular web app, I was satisfied this project is actually going to work. Justifying a move out from my collection of <a href="https://github.com/Roger-random/nodejs_tests">NodeJS tests</a> and into its own repository. Another reason for moving into its own repository is that I wanted to make it easy to use <a href="https://www.npmjs.com/package/angular-cli-ghpages">angular-cli-ghpages</a> to deploy my Angular app to GitHub pages. Where it will be served over HTTPS, a requirement for using sensor API from a web app.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Previously, I would execute such moves with a simple file copy, but that destroys my GitHub commit history. Not such a huge loss for small experiments like this one, but preserving history may be important in the future so I thought this is a good opportunity to practice. GitHub documentation has a page to address my scenario: <em><a href="https://docs.github.com/en/get-started/using-git/splitting-a-subfolder-out-into-a-new-repository">Splitting a subfolder out into a new repository</a></em>. It points us to a non-GitHub utility <a href="https://github.com/newren/git-filter-repo">git-filter-repo</a> which is a large Python script for manipulating git repositories in various ways, in this case isolating a particular directory and trimming the rest. I still had to manually move everything from a <code>/compass/</code> subdirectory into the root, but that's a minor change and git could recognize the files were renamed and not modified.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The move was seamless except for one detail: there is a conflict between local development and GitHub Pages deployment in its <code>index.html</code>. For GitHub Pages, I needed a line <code>&lt;base href="/compass/"&gt;</code> but for local development I needed <code>&lt;base href="/"&gt;</code>. Otherwise the app fails to load because it is trying to load resources from the wrong paths resulting in HTTP404 Not Found errors. To make them consistent, I can tell my local development server to serve files under the compass subdirectory as well so I can use <code>&lt;base href="/compass/"&gt;</code> everywhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>ng serve --serve-path compass</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't recall this being a problem in my "Tour of Heroes" tutorial. What did I miss? I believe <a href="https://angular.io/cli/serve#options">using <code>--serve-path</code></a> is merely a workaround without understanding the root cause, but that's good enough for today. It was more important that GitHub Pages is up and running and I could <a href="https://newscrewdriver.com/2023/04/11/compass-web-app-browser-variations/">test across different browsers</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

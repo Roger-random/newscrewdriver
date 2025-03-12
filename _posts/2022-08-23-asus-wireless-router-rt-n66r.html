@@ -1,0 +1,98 @@
+---
+layout: post
+title: Asus Wireless Router (RT-N66R)
+date: 2022-08-23 12:30:00.000000000 +00:00
+type: post
+post_id: '32140'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32167'
+  _publicize_job_id: '76036083416'
+  timeline_notification: '1661283026'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/23/asus-wireless-router-rt-n66r/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Taking apart <a href="https://newscrewdriver.com/2022/08/22/tp-link-8-port-ethernet-switch-tl-sg108/">a broken Ethernet switch</a> reminded me that I have another piece of networking equipment that had been retired and sitting in a box. It was my Asus RT-N66R wireless router that I retired because its gigabit Ethernet ports started failing. After years of use I lost one port, and within two weeks I lost another port. I took those two consecutive port failures as a sign of impending total failure and quickly replaced it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32144,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-intact.jpg?w=1024" alt="" class="wp-image-32144"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing that I remembered about this router was that it ran hot. Really, really hot. The power supply is rated at 19V DC @ 1.58A. That's 30 watts of electricity pumped into a device without active cooling or even a metal case for passive heat dissipation. I wouldn't be surprised if its failure can be traced to heat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32148,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-enclosure-hook.jpg?w=1024" alt="" class="wp-image-32148"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Four rubber feet on the bottom concealed four Philips-head fasteners. Once they were removed, though, the router was not inclined to come apart. Its top and bottom halves were held together by hooks inside these very robust loops. While undoing these assemblies, I noticed that plastic on one side of the router is much more brittle than the other side. Might this be a result of long-term heat exposure?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32150,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-top-removed.jpg?w=1024" alt="" class="wp-image-32150"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Removing the top exposed this aluminum heatsink up top, oddly situated far away from vents along the sides and bottom of the device. It explained why the top surface was so warm to the touch. Bare copper traces visible on the circuit board show signs of discoloration that may or may not be heat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32152,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-uart-and-microsd.jpg?w=1024" alt="" class="wp-image-32152"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Towards one corner I saw two items of interest: a 4-pin header labeled with VCC, RX, TX, and GND that indicated an UART connection. And not far away, what looks like an empty microSD card slot. Asus routers run their fork of <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/DD-WRT" target="_blank">DD-WRT</a> and <a rel="noreferrer noopener" href="https://forum.dd-wrt.com/phpBB2/viewtopic.php?t=162800" target="_blank">it is possible to install custom builds of DD-WRT</a>. I assume this UART and microSD would be handy for such enterprises. But we now live in the age of Raspberry Pi and BeagleBone so having a small network-capable Linux computer is not the novelty it once was. I'm not going to bother, especially as this hardware has started to fail.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32154,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-bottom-aluminum-sheet.jpg?w=1024" alt="" class="wp-image-32154"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping the assembly over, I expected to see another finned heatsink for dissipating heat out of those ventilation slots on the bottom, but I only saw this sheet of metal. Likely aluminum.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32156,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-bottom-aluminum-sheet-removed.jpg?w=1024" alt="" class="wp-image-32156"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And it's not even a heatsink. There was no surface contact with any electronic components. It made contact only with six brass standoffs, none of which had any connection to the finned heatsink on the other side. If anything, the air trapped between it and the circuit board would have kept heat inside. I'm very mystified by the thermal engineering of this router.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32158,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-heat-sink-retainer-closeup.jpg?w=1024" alt="" class="wp-image-32158"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Said heatsink were held on by four plastic retainers, two on each side. Here's a closeup of one side. They have become very brittle and shattered when I tried to release them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32160,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-top-heatsink-removed.jpg?w=1024" alt="" class="wp-image-32160"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the heatsink was removed, we have our first sighting of thermal pads, but they sat on top of thin metal shields for radio-frequency (RF) isolation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32162,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-rf-shields-removed.jpg?w=1024" alt="" class="wp-image-32162"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Prying off those shields revealed four more thermal pads, one on each of four important-looking chips.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32164,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-broadcom-bcm4706kpbg.jpg?w=1024" alt="" class="wp-image-32164"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest thermal pad sits on the most important looking chip, a Broadcom BCM4706KPBG. A quick web search indicates this is a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/MIPS_architecture#MIPS32/MIPS64" target="_blank">MIPS32 architecture</a> CPU. Remaining three chips with thermal pads all have a Broadcom logo on top, but text information below that logo were very hard to read.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32167,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/asus-router-rt-n66r-disassesmbled.jpg?w=1024" alt="" class="wp-image-32167"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saw no obvious damage that would explain why two out of four Ethernet ports failed, nor do I see anything I could conceivably salvage and reuse with my current skill level. Plastic enclosure will go to landfill, aluminum heat sink and sheet will head to metal recycle, and the circuit board will go to electronic waste disposal.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

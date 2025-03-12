@@ -1,0 +1,37 @@
+---
+layout: post
+title: Supercon 2017 Badge - Pan Base Mechanical Assembly
+date: 2017-11-09 13:37:38.000000000 +00:00
+type: post
+post_id: '15096'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Supercon
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11271140838'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/09/supercon-2017-badge-pan-base-mechanical-assembly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<a href="https://hackaday.io/superconference/">Hackaday Superconference 2017</a> kicks off tomorrow! Clock is ticking for me to complete my preparation work. My 3D printer is hard at work churning out iterations of my motorized base for panning photo/video. I had originally intended to drive the whole works with my three-cell lithium lion battery pack built from cells salvaged from a Dell laptop battery pack. The battery power will go straight to the power coils of the <a href="https://en.wikipedia.org/wiki/Stepper_motor">stepper motor</a> and a voltage step-down converter will reduce the voltage for the <a href="http://www.ti.com/lit/ds/slrs027o/slrs027o.pdf">ULN2003</a> chip driving the steppers and my <a href="http://www.microchip.com/wwwproducts/en/PIC16F18345">PIC16F18345</a> running a program to run the works.</p>
+<p>The stepper motor is designed for nominal operating voltage of 5 volts, but the actual limit on stepper motor operation is the amperage running through its coils. I thought I could drive the coils with pulse-width modulation and keep the power under control. The batteries power is about 12 volts, so a 40% duty cycle should be a good approximation.</p>
+<p>But real life got in the way of my plan with these <a href="https://en.wikipedia.org/wiki/Stepper_motor#Unipolar_motors">unipolar stepper motors</a>. As the coils are energized and de-energized in the PWM cycle, magnetic field and electrical current were getting sent elsewhere in the motor in ways I didn't understand. Causing the motor to behave erratically instead of just turning at a lower power.</p>
+<p>If there wasn't a looming deadline, I would hit the web searches to learn and understand what's going on so I could fix the problem correctly. But I do have a deadline and needed a quick fix. "Just" running the motor at full power isn't a solution. The motor could run at ~12V but it gets very hot. If I was only using the motor to turn infrequently, this might be OK. But a camera pan base is constantly turning slowly.</p>
+<p>In order to keep the coils energized with a lower voltage, I changed the power supply to a 4-pack of NiMH AA batteries. Their nominal voltage of 4.8 is close enough for my purposes. It is smaller and lighter than the Li-Ion pack and also eliminates the need for the voltage regulator. The trade-off is a drop in power capacity... which may or may not be important. We don't know yet. I guess I should pack a NiMH battery charger.</p>
+<p>Once the stepper motor power was sorted out, I added a potentiometer to give manual control of rotation direction and speed. Once I finish 3D printing a case around this, I will have a minimal implementation of the mechanical base.</p>
+<p><img class="alignnone size-full wp-image-15120" src="https://newscrewdriver.com/wp-content/uploads/2017/11/pan-base-mechanicals.jpg" alt="Pan Base Mechanicals" width="1024" height="768"><br />
+</body></html></p>

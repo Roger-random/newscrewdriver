@@ -1,0 +1,39 @@
+---
+layout: post
+title: Preparing For ROS 2 Transition Looks Complicated
+date: 2020-02-07 12:30:52.000000000 +00:00
+type: post
+post_id: '20433'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1581107487'
+  _publicize_job_id: '40434914755'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/07/preparing-for-ros-2-transition-looks-complicated/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Before I decided to embark on a ROS Melodic software stack for Sawppy, I thought about ignoring the long legacy of ROS 1 and going to the newer ROS 2 built on more modern infrastructure. I mean, <a href="https://hackaday.com/2019/06/06/dashing-diademata-delivers-second-generation-ros/">I told people to look into it</a>, so I should walk the walk right? Eventually I decided against putting Sawppy on ROS 2, the deal breaker was that the Raspberry Pi is <a href="https://www.ros.org/reps/rep-2000.html#dashing-diademata-may-2019-may-2021">not a tier 1 platform for ROS 2</a>. This means there's no guarantee on regular binary releases for it, or that it will always function. I may have to build my own arm32 binaries for Raspbian from source code, and I would be on my own to verify functionality. I've done a <a href="https://newscrewdriver.com/2018/08/30/the-spectrum-of-ros-robot-brain-candidates/">superficial survey of other candidates</a> for a Sawppy brain, but for today Sawppy is still thinking with a Raspberry Pi.</p>
+<p>But even after making that decision I wanted to keep ROS 2 in mind. Open Robotics has <a href="https://index.ros.org/doc/ros2/Contributing/Migration-Guide/">a  ROS 2 migration guide</a> for helping ROS node authors navigate the transition, and it doesn't look trivial to me. But then again, I don't have the ROS expertise to accurately judge the effort involved.</p>
+<p>The biggest headache for some nodes will be the lack of Python 2 support. Mainly impact ROS nodes with a long legacy of Python 2 code, it does not impact a new project written against ROS Melodic which is supposed to support Python 3.</p>
+<p>The next headache is the fact that it's not possible to write if/else blocks to allow a single ROS node to simultaneously support ROS 1 and 2. The recommendation is to put all specialized logic into generic non-ROS-specific code in a library that can be shared. Then have separate code tailored to the infrastructure paradigms of ROS and ROS 2. This way all the code integrating with a ROS platform can be separated, but calling into a shared library.</p>
+<p>And it also sounds like the ROS/ROS 2 build systems conflict so they can't even coexist side by side at the same time. Different variants of a node have to live in separate branches of a repository, with the shared library code merged across branches as development continues. Leaving ROS/ROS 2 specific infrastructure code live in their separate branches.</p>
+<p>I can see why a vocal fraction of ROS developers are unhappy with this "best practice". And since ROS is open source, I foresee one or more groups joining forces to keep ROS 1 alive and working with old code even as Open Robotics move on to ROS 2. Right now there are noises being made from people who proclaims to do a similar thing, saying they'll keep Python 2 alive past official EOL. In a few years we can look back and see if those Python 2 holdouts actually thrived, and we can also see how the ROS 1/ROS 2 situation has evolved.</p>
+<p></body></html></p>

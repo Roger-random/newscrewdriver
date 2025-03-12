@@ -1,0 +1,93 @@
+---
+layout: post
+title: HP Windows Mixed Reality Salvaged LED Pinout
+date: 2024-05-23 12:30:00.000000000 +00:00
+type: post
+post_id: '43482'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43483'
+  wordads_ufa: u:wpcom-ufa-v4:1716757085
+  _publicize_job_id: '94835322712'
+  firehose_sent: '1716492617'
+  timeline_notification: '1716492618'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-26 21:00:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/23/hp-windows-mixed-reality-salvaged-led-pinout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While doing a bit of work bench clean up, I found the LED arrays I had intended to salvage from my <a href="https://newscrewdriver.com/2024/03/30/hp-windows-mixed-reality-controller/">HP Windows Mixed Reality headset teardown</a>. The surface mount LEDs were soldered on flexible circuit boards so they're a bit too fragile for me to just toss them in a plastic bag. I found a piece of cardboard to serve as a backing and that should help. Before I put them away folded between sheets of cardboard, I thought I'd pull out <a href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/">my LED tester</a>. Here's what I found out about their pinout, in the hopes such information will be helpful for future project planning.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43487,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/05/hp-wmr-controller-ring-led-connector-pinout.jpg?w=800" alt="" class="wp-image-43487"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two long strips came from <a href="https://newscrewdriver.com/2024/03/30/hp-windows-mixed-reality-controller/">handheld controller location beacon rings</a>. Their shapes are symmetrically mirrored between left and right hand controllers, but they both use the same electrical connector. I saw a small arrow and decided that was pin 1, but it didn't seem to connect to anything? Pin 6 is the common positive power supply, and pins 2 through 5 are grounds, one for each of four strings. Each string of LEDs are wired in parallel, so 3V is enough to start illuminating them with 20mA shared across all LEDs. There are resistors visible on board so current limiting seems to already exist if I'm ready to crank up the voltage. The LEDs are labeled D1 through D32. I had guessed these 32 LEDs would be evenly divided among 4 strings for 8 LEDs each, but it's actually two strings of 7 and two strings of 9.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Connector Pin#</th>
+<th class="has-text-align-center" data-align="center">LED Start</th>
+<th class="has-text-align-center" data-align="center">LED End</th>
+<th class="has-text-align-center" data-align="center">LED Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">D26</td>
+<td class="has-text-align-center" data-align="center">D32</td>
+<td class="has-text-align-center" data-align="center">7</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">D19</td>
+<td class="has-text-align-center" data-align="center">D25</td>
+<td class="has-text-align-center" data-align="center">7</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">D10</td>
+<td class="has-text-align-center" data-align="center">D18</td>
+<td class="has-text-align-center" data-align="center">9</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">D1</td>
+<td class="has-text-align-center" data-align="center">D9</td>
+<td class="has-text-align-center" data-align="center">9</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using my <a href="https://newscrewdriver.com/2022/10/17/miniware-mini-hot-plate-mhp30/">mini hot plate</a> I also salvaged the cable PCB connectors. I don't know if I will use them, but I have the option to do so if I want. At the moment I'm not sure how I might utilize these two very irregularly shaped string of LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43491,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/05/hp-wmr-lcd-backlight-led-connector-pinout.jpg?w=800" alt="" class="wp-image-43491"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two short strips came from <a href="https://newscrewdriver.com/2024/03/29/hp-windows-mixed-reality-headset-vr1000-100-display/">visor LCD backlights</a>. I wanted to keep the entire backlight display but it was so thin and delicate I failed to disassemble them intact. These LED strips are my consolation prize. Two identical units, one for each eye. Four pins on the connector for two LED strings, but again they are not equally sized. The inner pair powers a string of 6 white LEDs in series, around 17.1V DC for 20mA. The outer pair powers a string of 7 white LEDs in series, around 19.9V for 20mA. I don't see current limiting resistors here so something else will have to keep things under control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought about using my hot plate to pull these connectors from the flex circuit board as well, but decided to use scissors to cut off most of the flex circuit board and keep the connectors attached. I think this pair of ex-backlight LEDs will work well as <a href="https://newscrewdriver.com/2023/10/16/side-lit-circuit-board-highlights-copper-traces/">PCB side lights</a>, once I can think of a good design for a light-up PCB holder.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

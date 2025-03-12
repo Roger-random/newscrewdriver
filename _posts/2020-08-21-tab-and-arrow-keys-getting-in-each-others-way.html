@@ -1,0 +1,44 @@
+---
+layout: post
+title: Tab and Arrow Keys Getting In Each Others Way
+date: 2020-08-21 12:30:00.000000000 +00:00
+type: post
+post_id: '22159'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- UWP
+meta:
+  _thumbnail_id: '22069'
+  _publicize_job_id: '47974756670'
+  timeline_notification: '1598038256'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/21/tab-and-arrow-keys-getting-in-each-others-way/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In a UWP application, we have two major ways for <a href="https://newscrewdriver.com/2020/08/18/learning-uwp-keyboard-navigation/">navigating UI controls using the keyboard</a>: a linear path using Tab key (and shift-Tab to go backwards), and a two-dimensional system with the four arrow keys. A part of what makes learning UWP keyboard navigation difficult is the fact that these two methods are both active simultaneously and we have to think about what happens when an user switches between them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Application authors can control tabbing order by setting <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Xaml.Controls.Control?view=winrt-19041#Windows_UI_Xaml_Controls_Control_TabIndex" target="_blank"><code>TabIndex</code></a>. It is also the starting point of keyboard navigation, since the initial focus is on the element with the highest <code>TabIndex</code>. Occasionally the author would want to exclude something from tabbing order, they could turn that off by setting <code><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Xaml.Controls.Control?view=winrt-19041#Windows_UI_Xaml_Controls_Control_IsTabStop" target="_blank">IsTabStop</a></code> to false. I thought that was pretty easy until I started reading about <code><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.uielement?view=winrt-19041#Windows_UI_Xaml_UIElement_TabFocusNavigation" target="_blank">TabFocusNavigation</a></code>. This is where I'm thankful for the animation illustrating the concept <a href="https://docs.microsoft.com/en-us/windows/uwp/design/input/focus-navigation" target="_blank" rel="noreferrer noopener">on this page</a> or else I would have been completely lost.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the arrow navigation side, <code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.uielement.xyfocuskeyboardnavigation" target="_blank" rel="noreferrer noopener">XYFocusKeyboardNavigation</a></code> is how authors can disable arrow navigation. But since it is far from a simple system, selectively disabling certain parts of the app would have wildly different effects than simple "on" or "off" due to how subtrees of controls interact. That got pretty confusing, and that's even before we start trying to understand how to explicitly control the behavior of each arrow direction with the <a href="https://docs.microsoft.com/en-us/windows/uwp/design/input/focus-navigation#2d-directional-navigation-for-keyboard-gamepad-and-remote-control" target="_blank" rel="noreferrer noopener">XY focus navigation strategies</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even with all these complex options, I was skeptical they could cover all possible scenarios. And judging by the fact we have an entire page devoted to <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/input/focus-navigation-programmatic" target="_blank"><em>programmatic</em> focus navigation</a>, I guess they didn't manage. When the UI designer wants something that just can't be declared using existing mechanisms, the application developer has the option of writing code to wrangle keyboard focus.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But right now my problem isn't keyboard navigation behaving differently from what I wanted... the problem is that I don't see keyboard events at all. My answer was elsewhere: <a href="https://newscrewdriver.com/2020/08/22/my-problem-was-one-of-control/">I had no control, in both senses of the word</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

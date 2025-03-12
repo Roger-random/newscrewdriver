@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on Vue.js "Reusability"
+date: 2023-05-09 12:30:00.000000000 +00:00
+type: post
+post_id: '36619'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36516'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683755435
+  _publicize_job_id: '83912392652'
+  timeline_notification: '1683660637'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/09/notes-on-vue-js-reusability/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Vue'js documentation's "Components In-Depth" section <a href="https://newscrewdriver.com/2023/05/08/notes-on-vue-js-components-in-depth/">gave me a pretty good idea</a> of how Vue components are implemented and interact with each other. It's a powerful mechanism of code organization and reuse, and I found it strange Codecademy's "Learn Vue.js" course <a href="https://newscrewdriver.com/2023/05/03/notes-on-codecademy-learn-vue-js/">didn't go into any details</a> on componentization at all. Still, as useful as Vue components are, they can't do everything and there are a few other mechanisms for code reusability in Vue.js. After reading "Reusability" section, my takeaway is that a beginner should know how to <em><strong>use </strong></em>these mechanisms: both to recognize their presence in example code and benefiting from work shared by others. In contrast, <em><strong>implementing </strong></em>these mechanisms is a more advanced topic a beginner can postpone until later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most significant page in this section is the first one: <a href="https://vuejs.org/guide/reusability/composables.html">Vue Composables</a>. These are self-contained packages of pure logic without a visual representation. In that regard it has some resemblance to Angular services but more limited in scope (which probably also means it is lighter weight.) It is possible to implement composable capability as a standard Vue component with no visual template (<a href="https://vuejs.org/guide/components/slots.html#scoped-slots">renderless component</a>) but that incurs wasted overhead. For an even better idea of how a composable relate to other code reuse mechanisms, there's <a href="https://vuejs.org/guide/reusability/composables.html#comparisons-with-other-techniques">a comparisons section</a> on this page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was most fascinated by the <a href="https://vuejs.org/guide/reusability/composables.html#async-state-example">async state composable</a> example, because it seems to be a way to solve many of the problems RxJS wants to solve but with less of a learning curve. Also, this is optional versus RxJS which is required to make real use of Angular. But if we really want RxJS, there exist Vue composable to <a href="https://vueuse.org/functions.html#category=%40RxJS">interoperate with RxJS</a>. It is part of <a href="https://vueuse.org/">VueUse</a>, a collection of Vue composition utilities that cover a lot of ground. I see stuff to help with concepts like an app <a href="https://vueuse.org/core/useFullscreen/">going full screen</a>, an app that wants to <a href="https://vueuse.org/core/useWakeLock/">keep the device awake</a>, and to help an app <a href="https://vueuse.org/core/useWebSocket/">communicate over web sockets</a>. Some of these aren't terribly complex to implement on our own (<a href="https://newscrewdriver.com/2023/04/15/compass-web-app-going-full-screen/">like full screen</a>) but using one of these composable component might be even easier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following the long and instructive page on Vue composable, there were two more pages far shorter in length. First is <a href="https://vuejs.org/guide/reusability/custom-directives.html">custom directives</a>, a mechanism for installing and using code that needs direct low-level HTML DOM manipulation. It reads like a niche tool useful as a tool of last resort for things that can't be done any other way. The page ends with "<em>In general, it is <strong>not</strong> recommended to use custom directives on components.</em>" And second page covers <a href="https://vuejs.org/guide/reusability/plugins.html">plugins</a>, a mechanism to install functionality at the app level. We are warned to use plugins sparingly as too many of them start running into name conflicts and other general downsides of global code. This is partly because a plugin interacts with the rest of the app via non-plugin-specific mechanisms like Provide/Inject, custom directives, and attaching to global properties (<code>app.config.globalProperties</code>). The example on page shows two ways to do internationalization string plugin: attached to global properties, and provide/inject.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's a lot of different ways we can package Vue code to be reusable, but they're limited in how they can participate in framework-level activities. For those, we need to <a href="https://newscrewdriver.com/2023/05/10/notes-on-vue-js-built-in-components/">use Vue's built-in components</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

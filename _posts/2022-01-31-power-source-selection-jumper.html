@@ -1,0 +1,55 @@
+---
+layout: post
+title: Power Source Selection Jumper
+date: 2022-01-31 12:30:00.000000000 +00:00
+type: post
+post_id: '28389'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- ESP8266
+- USB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28375'
+  _publicize_job_id: '68403317616'
+  timeline_notification: '1643661001'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/31/power-source-selection-jumper/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm making a Wemos D1 Mini clone (with an ESP8266 at its heart) into <a href="https://newscrewdriver.com/2022/01/30/setting-up-esp8266-voltage-monitor/">a solar panel output voltage monitor</a>. I plan to run it off the solar panel power as well, since it seems silly to involve another power source when it is already hooked up to one. However, having a buck converter supplying 3.3V to the ESP8266 means I need to avoid taking USB power at the same time. Having multiple voltage regulators on the same voltage plane is a bad thing. I don't want to have dueling regulators when, for example, debugging over USB while it is connected to solar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know this is not a new problem, because every battery-powered USB device knows to switch between battery power and USB power. But I'm having trouble finding the right vocabulary to describe exactly my battery-less scenario. Using search terms like "isolating USB power" I usually find people who are trying to avoid ground loops for audio quality, or optical isolators for data, and other similar tasks which are useful but not the problem I'm trying to solve right now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Momentarily stymied in my research, I switched over to devising my own manual solution. I'm routing the 3.3V output pin of my buck converter through a jumper on the circuit board. When the jumper is installed, the ESP8266 will run on the solar power it is measuring. When the jumper is removed, the module will run on USB power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28374,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/01/esp8266-wemos-d1-mini-clone.jpg?w=1024" alt="" class="wp-image-28374"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I know myself, and I could not trust myself to remember to install/remove the jumper as the situation changes. Hence the next trick: placement of the jumper. I put it right next to the USB port so that the jumper could not be installed at the same time as the USB cable, ensuring that it is impossible to have both power sources active at the same time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28375,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/01/esp8266-wemos-d1-mini-power-jumper-experiment.jpg?w=1024" alt="" class="wp-image-28375"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think this mostly works, but I'm worried about the jumper pins. They are taller than I had expected and reach pretty close to the USB connector as we can see in this side view. When I plug/unplug the USB cable, I have to carefully avoid accidentally touching those pins. Accidentally shorting those pins would probably not damage the dev board, because electrically it is same as the jumper in place and at that point USB is not plugged in. However, touching the pin could connect voltage supply to ground and that might fry either the buck converter or something on my USB host, neither of which is ideal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't like how accident-prone this design is, so I switched to plan B: <a href="https://newscrewdriver.com/2022/02/01/making-a-usb-data-only-cable/">cut the USB power line</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

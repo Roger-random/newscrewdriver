@@ -1,0 +1,63 @@
+---
+layout: post
+title: Hackaday Badge Nyan Cat Sheds A Few More Bytes
+date: 2018-11-08 09:00:42.000000000 +00:00
+type: post
+post_id: '17118'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1541696452'
+  _publicize_job_id: '24055853857'
+  _oembed_1fe1d6fb6b4558943c91e6e6c1f44b37: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here’s
+    a closeup of my Supercon Super Speaker Badge Hack for the <a href="https://twitter.com/hackaday?ref_src=twsrc%5Etfw">@hackaday</a>
+    badge hacking competition! This 5-watt puppy blasted its way into winning the
+    Music Hack competition category. <a href="https://t.co/SQB49elqDH">pic.twitter.com/SQB49elqDH</a></p>&mdash;
+    Edje Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1059485849996292097?ref_src=twsrc%5Etfw">November
+    5, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_1fe1d6fb6b4558943c91e6e6c1f44b37: '1541733724'
+  _oembed_d6a06bb2ce9ec09bf99ac223539e31bf: "<div class=\"embed-twitter\"><blockquote
+    class=\"twitter-tweet\" data-width=\"500\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">\U0001F308✨check
+    out this Nyan cat <a href=\"https://twitter.com/hashtag/badgelife?src=hash&amp;ref_src=twsrc%5Etfw\">#badgelife</a>
+    expansion at <a href=\"https://twitter.com/hashtag/Supercon?src=hash&amp;ref_src=twsrc%5Etfw\">#Supercon</a>
+    ! \U0001F308\U0001F4A5⚡ <a href=\"https://t.co/aQCM9w0WUI\">pic.twitter.com/aQCM9w0WUI</a></p>&mdash;
+    Hackaday.io (@hackadayio) <a href=\"https://twitter.com/hackadayio/status/1059157189967831041?ref_src=twsrc%5Etfw\">November
+    4, 2018</a></blockquote><script async src=\"https://platform.twitter.com/widgets.js\"
+    charset=\"utf-8\"></script></div>"
+  _oembed_time_d6a06bb2ce9ec09bf99ac223539e31bf: '1541734737'
+  _oembed_be40de82e5d533aba0e4685ba4a7b442: "<div class=\"embed-twitter\"><blockquote
+    class=\"twitter-tweet\" data-width=\"500\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">\U0001F4E2<a
+    href=\"https://twitter.com/EdjeElectronics?ref_src=twsrc%5Etfw\">@EdjeElectronics</a>
+    hacked his badge to make a SUPER LOUD SPEAKER!! <a href=\"https://twitter.com/hashtag/badgelife?src=hash&amp;ref_src=twsrc%5Etfw\">#badgelife</a>
+    at <a href=\"https://twitter.com/hashtag/supercon?src=hash&amp;ref_src=twsrc%5Etfw\">#supercon</a>
+    ✨ <a href=\"https://t.co/i9HUa9OmrS\">https://t.co/i9HUa9OmrS</a></p>&mdash; hackaday
+    (@hackaday) <a href=\"https://twitter.com/hackaday/status/1058882840085975040?ref_src=twsrc%5Etfw\">November
+    4, 2018</a></blockquote><script async src=\"https://platform.twitter.com/widgets.js\"
+    charset=\"utf-8\"></script></div>"
+  _oembed_time_be40de82e5d533aba0e4685ba4a7b442: '1541734756'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/08/hackaday-badge-nyan-cat-sheds-a-few-more-bytes/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17086 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/poptartcat320240.gif" alt="poptartcat320240" width="320" height="240">I built my Nyan Cat project on the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a>. Now there's a slim opening for it to be part of the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>. The key is to get Nyan Cat skinny enough to fit through that door. Most of the 512 kilobytes of program storage on the badge's <a href="https://www.microchip.com/wwwproducts/en/PIC32mx370f512h">PIC32MX370F512H</a> chip have already been spoken for, leaving only about 16 kilobytes available. I set out to take up less than half of that space. I'm now just over 10 kilobytes, I need to trim another 2+ kilobytes.</p>
+<p>The first task is to port the code from <a href="https://github.com/Roger-random/hackaday-belgrade-2018/tree/exploration">a fork of the Belgrade repo</a> over to <a href="https://github.com/Hack-a-Day/2018-Supercon-Badge">a fork of the Supercon repo</a>. During this move, Nyan Cat code also migrated from being a customized <code>user_program.c</code> <a href="https://github.com/Roger-random/2018-Supercon-Badge/commit/62a6ff01a2c915186a1233595099d09a61f40c06">to its own <code>nyancat.c</code> source file</a> in order to leave the default user program alone for badge hackers to play with. First I verified it still worked in the new repo - overweight and all - then I got to work trimming more data.</p>
+<p>The key insight for more savings is realizing that we now store a quarter-scale image of 80x60 pixels and scale up at rendering time. Since they are encoded (and decoded) one scanline at a time, this means no single run length of pixels can be longer than 80. Previously, 12 bits were used to store length because a 320x240 image may have a run of 320 - longer than the maximum 8-bit value of 256. Now I only need 8 bits for run length. (The color palette always had only 14 colors, so it still needed only 4 bits.)</p>
+<p>This trims every run in the image, color index + run length, from 16 bits down to 12. This did indeed <a href="https://github.com/Roger-random/2018-Supercon-Badge/commit/47bd602be7c66abf5ea94115492c9dd453a6c31f">trim data down to a little over 8.5 kilobytes</a>. But code readability took a hit as a result: the smallest convenient unit in C is in multiple of 8 bits, so working with 12 bit values involve a lot of bit manipulation to pack and unpack that data.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</body></html></p>

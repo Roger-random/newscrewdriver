@@ -1,0 +1,56 @@
+---
+layout: post
+title: Notes on Codecademy "Learn Node.js"
+date: 2022-11-13 12:30:00.000000000 +00:00
+type: post
+post_id: '33582'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+- Node.js
+tags:
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33592'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668645218
+  _publicize_job_id: '78691168310'
+  timeline_notification: '1668371409'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/13/notes-on-codecademy-learn-node-js/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've taken most of Codecademy's HTML/CSS course catalog for front-end web development, ending with <a href="https://newscrewdriver.com/2022/11/12/notes-on-codecademy-build-a-website-off-platform-projects/">a series of very educational exercises</a> created outside of Codecademy's learning environment. I think I'm pretty well set up to execute web browser client-side portions of my project ideas, but I also need to get some education on server-side coding before I can put all the pieces together. I've <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/11/notes-after-node-js-introduction/" target="_blank">played with Node.js earlier</a>, but I'm far from an expert. It should be helpful to get a more formalized introduction via Codecademy, starting with <em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-node-js" target="_blank">Learn Node.js</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This course recommends going through <em><a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/10/27/notes-on-codecademy-introduction-to-javascript/" target="_blank">Introduction to JavaScript</a></em> as a prerequisite, so the course assumes we already know those basics. The course does not place the same requirement on <em><a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/10/28/notes-on-codecademy-learn-intermediate-javascript/" target="_blank">Intermediate JavaScript</a></em>, so some of the relevant course material is pulled into this Node.js course. Section on Node modules were reruns for me, but here it's augmented with additional details and a <a rel="noreferrer noopener" href="https://nodejs.org/docs/latest-v18.x/api/modules.html" target="_blank">pointer to official documentation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news for the overlap portions is that it meant I already had partial credit for Learn Node.js as soon as I started, the bad news is the Codecademy's own back-end got a little confused. I clicked through "Next" for a quick review, and by doing so it skipped me over a few lessons that I had not yet seen. My first hint something was wrong was getting tossed into a progress checking quiz and being baffled: "I don't remember seeing this material before!" I went back to examine the course syllabus, where I saw the skipped portions. The quiz was much easier once I went through that material!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This course taught me about error-first callback functions, something that is apparently an old convention for asynchronous JavaScript (or just Node) code that I hadn't been aware of. I think I stumbled across this in my earlier experiments and struggled to use the effectively. Here I learn they were the conceptual predecessor to promises, which led to async/await which plays nice with promises. But what about even older error-first callback code? This is where <code><a href="https://nodejs.org/dist/latest-v8.x/docs/api/util.html#util_util_promisify_original" target="_blank" rel="noreferrer noopener">util.promisify()</a></code> comes into the picture, so that everyone can work together. Recognizing what error-first callbacks are and knowing how to interoperate via <code>util.promisify()</code>, should be very useful.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The course instructs us on how to install Node.js locally on our development computers, but I'm going to stick with using Docker containers. Doing so would be inconvenient if I wanted to rely on globally installed libraries, but I want to avoid global installations as much as possible anyway. NPM is perfectly happy to work at project scope and that just takes mapping my project directory as a volume into the Docker container.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After all, I did that as a Docker &amp; Node test run with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/12/html-features-for-esp32-sawppy-rover/" target="_blank">ESP32 Sawppy's web interface</a>. But that brought in some NPM headaches: I was perpetually triggering <a rel="noreferrer noopener" href="https://github.com/dependabot" target="_blank">GitHub dependabot</a> warnings about security vulnerabilities in NPM modules I hadn't even realized I was using. Doing a straight "update to latest" did not resolve these issues, I eventually figured out it was because I had been using <a href="https://www.npmjs.com/package/node-static" target="_blank" rel="noreferrer noopener">node-static</a> to serve static pages in my projects. But the node-static package hadn't been updated in years and so it certainly wouldn't have picked up security fixes. Perhaps I could switch it to another static server NPM module like <a href="https://www.npmjs.com/package/http-server" target="_blank" rel="noreferrer noopener">http-server</a>, or get rid of that altogether and <a href="https://newscrewdriver.com/2022/11/11/local-development-web-host-nginx-docker-container/" target="_blank" rel="noreferrer noopener">keep using nginx</a> as sheer overkill static web server.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I decide, though, this <em>Learn Node.js</em> course ended with a few exercises building our own HTTP server using Node libraries. These were a little more challenging than typical Codecademy in-course exercises. One factor is that the instructions told us to do a lot of things with no way to incrementally test them as we go. We didn't fire it up the server to listen for traffic (<code><a rel="noreferrer noopener" href="https://nodejs.org/api/http.html#serverlisten" target="_blank">server.listen()</a></code>) until the second-from-final step, and by then I had accumulated a lot of mistakes that took time to untangle from the rest of the code. The second factor is that the instructions were more vague than usual. Some Codecademy exercises tell us exactly what to type and on which line, and I think that didn't leave enough room for us to figure things out for ourselves and learn. This exercise would sometimes tell us "fill in the request header" without details or even which Node.js API to use. We had to figure it all out ourselves. I realize this is a delicate balance when writing course material. I feel Codecademy is usually too much "do exactly this" for my taste, but the final project of Learn Node.js might have gone too far in the "left us flailing uselessly" direction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the meantime, I believe I have enough of a start to continue learning about server-side JavaScript. My next step is to <a href="https://newscrewdriver.com/2022/11/16/notes-on-codecademy-learn-express/">learn Express</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

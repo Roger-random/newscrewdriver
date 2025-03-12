@@ -1,0 +1,35 @@
+---
+layout: post
+title: Evaluating Results Of Cutting Tests On Our CNC Project
+date: 2020-01-18 21:29:26.000000000 +00:00
+type: post
+post_id: '20270'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '20255'
+  timeline_notification: '1579411769'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '39705275648'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/18/evaluating-results-of-cutting-tests-on-our-cnc-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Our project CNC, pieced together from stuff around the shop, has performed several very informative test cuts. Several items we've suspected might be potential issues have been proven as such. Our Z-axis was indeed <a href="https://newscrewdriver.com/2020/01/10/project-cnc-mill-is-not-square-and-it-shows/">unreliable in its vertical alignment</a> due to a <a href="https://newscrewdriver.com/2019/12/17/plotter-test-with-new-z-axis-exposed-screw-as-bent/">bent ball screw</a>. Beyond the ball screw, the entire gantry assembly for Z-axis <a href="https://newscrewdriver.com/2020/01/06/problem-of-tool-chatter-dominates-cnc-session/">doesn't have the rigidity to avoid tool chatter</a> when pushing a quarter inch diameter endmill through MDF. The <a href="https://newscrewdriver.com/2020/01/07/z-axis-rollers-contribute-to-tool-chatter/">Z-axis rollers prone to loosening</a> were only the weakest link in this chain, we're confident there are additional problems lying in wait.</p>
+<p>On the upside, some items we worried about have not become limiting factors. Using an inexpensive <a href="https://newscrewdriver.com/2019/08/16/evaluate-grbl-for-xy-stage/">ESP32 for stepper motor control timing</a> was a question mark. We knew the real time guarantees of a shared core were not going to be as precise as a dedicated real-time processor like the PRU of a Beaglebone. But we didn't know if it was good <em>enough</em>. And finally, we didn't know if the <a href="https://newscrewdriver.com/2019/08/12/new-project-xy-stage/">salvaged Parker motion control XY stage</a> at the heart of this project had hidden problems that could have sunk the project. We think it might have been retired <a href="https://newscrewdriver.com/2019/08/27/xy-stage-switch-test-board-helped-find-loose-wire-inside-connector/">due to an electrical problem we fixed</a>, but it might have been retired due to some other problem we couldn't fix. Given the <a href="https://newscrewdriver.com/2020/01/09/running-cnc-program-again-shows-encouraging-consistency/">consistency we saw between runs</a>, it looks like an ESP32 running Grbl is a fine match for the decades old (but still precise) Parker table.</p>
+<p>We've learned a lot of lessons in the software realm as well. From <a href="https://newscrewdriver.com/2019/08/16/evaluate-grbl-for-xy-stage/">configuring GRBL</a> to <a href="https://newscrewdriver.com/2019/09/19/unreliable-serial-communication-with-ugs-try-bcnc-next/">switching G-code sender to bCNC</a> to <a href="https://newscrewdriver.com/2020/01/08/changing-fusion-360-cam-defaults-unsuitable-for-hobbyist-cnc-mills/">CAM parameters of Fusion 360.</a> It feels like there are tons more to learn on the software side of CNC projects, so that's where the focus will remain for the near future. It'd be wonderful to have a rigid and dependably vertical axis capable of swinging large tools, but even without, there's lots to learn using what we've put together to date. The <a href="https://newscrewdriver.com/2020/01/19/cnc-exploration-via-flat-cutting-projects/">next area of exploration will be CNC engraving</a>.</p>
+<p></body></html></p>

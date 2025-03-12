@@ -1,0 +1,39 @@
+---
+layout: post
+title: Communicating With 3D Printer Added A Twist
+date: 2020-05-23 12:30:58.000000000 +00:00
+type: post
+post_id: '21576'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- async/await
+- UWP
+meta:
+  _thumbnail_id: '21533'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44609813518'
+  timeline_notification: '1590262278'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/23/communicating-with-3d-printer-added-a-twist/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I chose to experiment with UWP serial device communication with my 3D printer because (1) it sends out a sequence of text immediately upon connection and (2) it was already sitting on the table. Just trying to read that text was an educational exercise, including a <a href="https://newscrewdriver.com/2020/05/22/simple-logging-to-text-file/">side trip through the world of logging</a>.</p>
+<p>The next obvious step was to send a command and read the printer's response. This is where I learned 3D printers like this MatterHackers Pulse XE behaves a little differently from serial devices I've worked with before. RoboClaw motor controllers or serial bus servos like the Dynamixel AX-12 or LewanSoul/Hiwonder LX-16A have one behavior in common: They listen for a command in a known format, then they send a response also in a known format. This isn't what my 3D printer control board does.</p>
+<p>It wasn't obvious to me until in hindsight, but I should have known as soon as I saw it send out information upon connection before receiving any commands. That's not the only time the printer would send out unprompted information. Sometimes it sends text about SD card status, or to indicate it is busy processing the previous command. Without a 1:1 mapping between command and response, the logic to read and interpret printer response to commands has to be a little more sophisticated than what I've needed to write for earlier projects.</p>
+<p>Which is a great opportunity to learn how to structure my code to solve problems with the async/await pattern. When I had a strict command/response pattern, it was easy to write code that assumes the information I read is in direct response to the command I sent. Now that data may arrive unprompted, the read and write operations have to be separated into their own asynchronous processing loops. When the read loop receives data, it needs to be able to interpret that possibly in the absence of a corresponding command. But if there is a corresponding command, it needs to pair up the response with the command sent. Which meant I needed a queue of commands awaiting responses and logic to decide when to dequeue them and send a response back to their caller.</p>
+<p>Looking at code behavior I can see another potential: that of commands that do not expect a corresponding response. Thankfully I haven't had to deal with that combination just yet, what I have on hand is adding enough challenge for this beginner. Certainly getting confusing enough I was motivated to <a href="https://newscrewdriver.com/2020/05/26/simple-logger-extended-with-subset-list/">extended my logging mechanism</a> to help understand the flow.</p>
+<p>[<a href="https://github.com/Roger-random/UWPTest/blob/master/PollingComms/XYZControl.cs">The crude result of this exercise is available publicly on GitHub</a>]</p>
+<p></body></html></p>

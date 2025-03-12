@@ -1,0 +1,55 @@
+---
+layout: post
+title: 'LinuxCNC has Limited Hardware Support: Wireless Card Example'
+date: 2022-12-26 12:30:00.000000000 +00:00
+type: post
+post_id: '20809'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '20802'
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672187443
+  _publicize_job_id: '79988901860'
+  timeline_notification: '1672086653'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/26/linuxcnc-has-limited-hardware-support-wireless-card-example/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>An important part of my home-built CNC project is to learn more about what goes on under the hood of CNC equipment, arguably more interesting to me than actually getting a machine up and running doing something productive. Which is why I <a href="https://newscrewdriver.com/2022/12/25/window-shopping-rattmmotor-cnc-controller-with-digital-dream/">decided against buying an all-in-one CNC control system</a> and started putting together a machine to play with LinuxCNC instead. I was surprised to learn conventional wisdom for LinuxCNC has a preference for older machines. Steady and predictable is better than infrequent bursts of high performance. Modern PCs tend to be optimized for the latter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another reason is hardware support. While LinuxCNC is indeed built on a Linux kernel, there is little motivation to adopt the latest and greatest Linux features. LinuxCNC aims for steady reliable machines, which means avoiding new features if they might make machines less reliable. Older code means support for older hardware, and fewer hardware. Something that runs on a modern commodity Linux distribution has no guarantee LinuxCNC cares about it. I learned this lesson up front with a wireless card.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The motherboard I chose to use for LinuxCNC exploration is the <a rel="noreferrer noopener" href="https://us.msi.com/Motherboard/AM1I/support" target="_blank">MSI AM1I board</a> that had been the heart of my home FreeNAS (now TrueNAS) server for several years before <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/03/11/freenas-box-decommissioned-after-three-years/" target="_blank">being decommissioned</a>. It is the oldest PC motherboard I have right now, and it has a proven history of reliability. While I had the motherboard accessible for installation in a steel tower case, I thought I'd add wireless Ethernet capability to the system. This motherboard has a Mini-PCIe slot intended for a wireless card, and I had salvaged an appropriately sized card from a retired laptop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":20801} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2020/02/intel-wireless-n-1030-card-installed.jpg" alt="Intel wireless-N 1030 card installed" class="wp-image-20801"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It installed easily.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":20800} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2020/02/intel-wireless-n-1030-card-antenna.jpg" alt="Intel wireless-N 1030 card antenna" class="wp-image-20800"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had also salvaged two antenna that had connected to this card. In the laptop, the wires were routed through screen hinge to connect to these antennae sitting within upper left and right corners of the screen. Now I shall route them to a plastic faceplate covering for an absent optical drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a widely supported Intel wireless card that had worked in the laptop (before it died) and still worked when I booted Ubuntu on this computer. LinuxCNC recognized it as a piece of hardware on the PCIe bus, but there was no networking connectivity. I had a wired Ethernet backup option readily available, so I didn't spend time diagnosing how to connect to a network with this hardware. I've learned my lesson and put more research into the next piece of hardware: a <a href="https://newscrewdriver.com/2022/12/27/pci-express-parallel-port-card-for-linuxcnc/">PCI-Express Parallel port card</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

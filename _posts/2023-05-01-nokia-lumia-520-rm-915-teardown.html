@@ -1,0 +1,135 @@
+---
+layout: post
+title: Nokia Lumia 520 (RM-915) Teardown
+date: 2023-05-01 12:30:00.000000000 +00:00
+type: post
+post_id: '36225'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Nokia Lumia
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36470'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683065886
+  _publicize_job_id: '83694030255'
+  timeline_notification: '1682969420'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/01/nokia-lumia-520-rm-915-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I enjoyed exploring leading edge web development with experimental features like magnetometer API and <a href="https://newscrewdriver.com/2023/04/30/compass-project-now-a-pwa/">evolving standards like PWA</a>. But learning about the trailing edge also has some value for me. I have a stack of old Windows Phone 8 devices. Microsoft had shut down native app development for the platform as part of its end-of-life treatment, leaving its onboard web browser as the only remaining entry point. Based on Internet Explorer 11, support of which has been dropping from platforms left and right, there's <a href="https://newscrewdriver.com/2023/01/21/windows-phone-8-1-browser-effectively-a-separate-platform-now/">definitely a clock ticking away</a> if I want to be able to do anything with those phones.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36472,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-boot-failure-sad-frown-face.jpg?w=1024" alt="" class="wp-image-36472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Assuming, of course, those phones don't decay and die on their own like this Nokia Lumia 520 has done. It's been a guinea pig to <a href="https://newscrewdriver.com/2020/05/05/esa-iss-tracker-on-nokia-lumia-520/">test things like ESA's ISS tracker web app</a>. When I turned it on recently, it failed to boot and crashed to this blue screen of death. Unlike its desktop Windows equivalent, there are no debug information printed onscreen. Documentation has been purged from Microsoft and Nokia websites as they have disowned these devices. So, it was <a href="https://www.ifixit.com/Guide/Nokia+Windows+8+Phone+All+Models+-+Factory+Reset/50251">up to iFixit to preserve documentation on performing factory reset with a hardware key sequence</a>: From powered off state, hold [volume down] and press [power] to start phone. As soon as phone vibrates, release [power]. Once phone boots to exclamation mark, release [volume down]. Press key sequence [volume up], [volume down], [power], [volume down]. Watch spinning gear onscreen for a few minutes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But performing such a reset on this phone didn't help, I just ended back at the sad faced blue screen of death. I don't know what happened to this phone. I hadn't thought electronics would decay with time, but something on this one has failed in a way I lacked information or tools to diagnose. I powered up my remaining Windows Phones and they were able to boot, so it's not a common/widespread failure mode. (Yet?) In any case, today this dead phone gets the teardown treatment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36474,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-battery-and-cover-removed.jpg?w=1024" alt="" class="wp-image-36474"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Nokia Lumia 520 was a simple and basic entry-level phone, dating back to the era when batteries were easily accessible and removable by the user. Not so much anymore, which is sad <a href="https://hackaday.com/2020/11/08/teardown-experts-sing-praise-of-stretch-release-adhesives/">though there are occasional encouraging signs</a>. Popping off the easily-removed blue back cover, we see physical features like a microSD card slot, SIM slot, and headphone jack. All useful features disappearing from modern phones.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36477,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-internal-cover-removed.jpg?w=1024" alt="" class="wp-image-36477"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next layer is a black plastic cover held by multiple Torx fasteners and plastic clips. Removing that cover exposes phone mainboard, where we can see the thickest component is the rear-facing camera. It actually sits in the middle of a hole cut out of the circuit board, protruding both in front and behind of the board. (Lumia 520 does not have a front-facing camera.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36480,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-synaptics-touch-controller.jpg?w=1024" alt="" class="wp-image-36480"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ribbon cable near the top of the device is for touch digitizer input via this <a href="https://www.synaptics.com/">Synaptics</a> chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Synaptics
+S22028
+33120155
+ACAN310</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sadly, a web search with engraved text failed to return anything useful.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36482,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-synaptics-touch-controller-connector.jpg?w=1024" alt="" class="wp-image-36482"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The touch controller communicated with the rest of the phone with ten wires, but they are far too fine-pitched for my current skill level to work with.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36484,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-display-connector.jpg?w=1024" alt="" class="wp-image-36484"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's a similar story with the LCD, connected to mainboard with twenty wires. Far too few to directly control an 800x480x3 LCD array, these must be data buses communicating with a controller somewhere downstream. At least six of these wires visibly hint at differential signal pairs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":36486,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-mainboard-back.jpg?w=576" alt="" class="wp-image-36486"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":36487,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-mainboard-front.jpg?w=576" alt="" class="wp-image-36487"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Front and back views of removed mainboard. Full of tiny components, most of which hidden under RF shields, I see only two components (battery connector and vibration motor) that I could realistically repurpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36489,"width":840,"height":472,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-mainboard-removed.jpg?w=1024" alt="" class="wp-image-36489" width="840" height="472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With mainboard removed, I see no further fasteners to remove, and no obvious seams.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36491,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-touch-digitizer-separated-from-screen.jpg?w=1024" alt="" class="wp-image-36491"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew it was too complex to be a single piece, so I manually twisted the assembly looking for signs of seams between parts. Attacking candidates <a href="https://www.ifixit.com/products/ifixit-opening-picks-set-of-6">with iFixit picks</a> allowed me to separate the front panel touch digitizer from display subassembly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36493,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-screen-separated-from-frame.jpg?w=1024" alt="" class="wp-image-36493"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The display assembly is held to its chassis frame with a few strips of adhesives and could be carefully peeled apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36495,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-screen-backlight-side-emitting-led.jpg?w=1024" alt="" class="wp-image-36495"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Freed from its structural frame, the display assembly feels very delicate. It easily flexes and twists to reveal details like these side-emitting LEDs for backlight illumination.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36496,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-screen-lcd-dense-wires.jpg?w=1024" alt="" class="wp-image-36496"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Peeling back foil tape uncovered ultra fine-pitched LCD array control wires embedded between layers of glass.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36498,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/nokia-lumia-520-screen-lcd-separated-from-backlight.jpg?w=1024" alt="" class="wp-image-36498"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Trying to separate LCD array from backlight, I unfortunately cracked the glass and destroyed the LCD. I might be able to <a href="https://newscrewdriver.com/2021/07/03/the-great-backlight-liberation-begins/">reuse the LED backlight</a> but it's going to be a serious challenge finding (and soldering to) those fine wires for LED power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36470,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/05/nokia-lumia-520-disassembled.jpg?w=1024" alt="" class="wp-image-36470"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Goodbye, Nokia Lumia 520. I'm sad I didn't get around to finding something interesting to reuse you as a whole unit. And your component parts are mostly too tiny for my current skill level to work with. But your death gave me a kick in the pants to <a href="https://newscrewdriver.com/2023/05/02/next-study-topic-vue-js/">get on with my studies</a>. I hope to make use of your surviving contemporaries.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

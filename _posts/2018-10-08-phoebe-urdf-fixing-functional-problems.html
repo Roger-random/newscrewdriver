@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'Phoebe URDF: Fixing Functional Problems'
+date: 2018-10-08 09:00:08.000000000 +00:00
+type: post
+post_id: '16955'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _oembed_a2b1a7b85cc8add49625fedad7772f3e: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22970798006'
+  timeline_notification: '1539014466'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/08/phoebe-urdf-fixing-functional-problems/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I had a decent looking URDF for Phoebe up and running, I added it into the Phoebe launch files and started working on the problems exposed by putting it to work.</p>
+<p>The first problems were the drive wheels. Visually, they were stuck at the origin and didn't move with the rest of the robot. Looking through error messages I realized ROS had expected me to read wheel encoder values and publish them as joint state. Since I hadn't done so, this meant the wheels (attached with "continuous" joint) didn't know their location. Until I get around to processing wheel encoder values, the joint type was changed to "fixed" to attach them to the chassis.</p>
+<p>Looking at the model from multiple angles, I realized I forgot the caster wheel. Since it's not driven, it is represented as a simple sphere and also attached via a fixed joint.</p>
+<p>That's enough to start driving around as a single unit, but the robot movement in RViz was reversed front/back with LIDAR data plot. This was caused by the fact I forgot to tell ROS the LIDAR is pointed backwards on the robot. Once I had done so, the 180 degree yaw is visible on the object axis visualization: The LIDAR's X-axis (red cylinder) is pointing backwards instead of forwards like all the other axis.</p>
+<p><img class="alignnone size-full wp-image-16956" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-rviz-axes-arrows-no-name.png" alt="Phoebe RViz Axes Arrows No Name" width="884" height="665"></p>
+<p>The final set of changes might be more cosmetic than functional. When reading about differential drive robots in ROS, it was brought up several times that the robot's X/Y origin <code>base_link</code> need to be lined up with the pivoting axis of the robot. However, it wasn't clear where the Z axis is supposed to be. Perhaps this is different for each ROS mapping module? The algorithm <code>hector_slam</code> <a href="http://wiki.ros.org/hector_slam/Tutorials/SettingUpForYourRobot">defined several frames</a> but they don't appear to be supported by <code>gmapping</code>.</p>
+<p>I first defined Phoebe origin as the center point between its two drive wheel axles. When rendered in RViz, this means the Z plane intersects the middle of the robot. It seems to work well, but the visualization looks a bit odd. Intuitively I want the Z plane to represent the ground, so I decided to drop the robot origin to ground level. In the object visualization, this is visible as the purple arrow heads all pointing at a center point below the robot. If I learn this was a bad move later, I'll have to change it back.</p>
+<p>All <a href="https://github.com/Roger-random/phoebe/commit/e7d45ddbb5d3ce82a57a109cece01138ae4ca5fe">these changes combined</a> gave me a Phoebe URDF with minimal representation in RViz visualization of Phoebe behavior.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154254-fixing-functional-problems-in-urdf">Hackaday.io</a>)</p>
+<p></body></html></p>

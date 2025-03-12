@@ -1,0 +1,72 @@
+---
+layout: post
+title: Single Cell Lithium-Ion Battery Management Module (4056) Schematic
+date: 2023-10-11 12:30:00.000000000 +00:00
+type: post
+post_id: '39539'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39547'
+  footnotes: ''
+  _publicize_job_id: '88419847264'
+  timeline_notification: '1697052657'
+  wordads_ufa: s:wpcom-ufa-v4:1698602665
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/11/single-cell-lithium-ion-battery-management-module-4056-schematic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After drawing up <a href="https://newscrewdriver.com/2023/10/10/conair-hair-clipper-hc318r-schematic/">schematics of circuit boards salvaged from hair clippers</a> for KiCad schematic practice, I decided to increase the difficulty with a single cell lithium-ion battery management system (BMS) module <a href="https://newscrewdriver.com/2023/08/24/single-cell-lithium-ion-battery-management-system-module-4056/" target="_blank" rel="noreferrer noopener">built around a 4056 chip</a>. Since this is a popular module made by many vendors, I know publicly available schematics already exist. I don't see my KiCad exercise as duplicate effort. I see those existing schematics as an answer key for me to check against!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":39545,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/lipo-bms-4056-front.jpg?w=800" alt="" class="wp-image-39545"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":39546,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/lipo-bms-4056-back.jpg?w=800" alt="" class="wp-image-39546"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my earlier look, I found many chips from different vendors under the 4056 designation, all of which seem to be mostly compatible with each other. Since then, I've come across several pointers to NanJing Top Power's TP4056. Either they were the first or they have been the most successful vendor of this solution. The modules I have on hand are not genuine TP4056, but one of the competitors marked 4056H. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was also unable to read any markings on component marked U2 before. Thanks to my new <a href="https://newscrewdriver.com/2023/10/04/polarizing-filter-photography-is-magic/" target="_blank" rel="noreferrer noopener">polarized light macro photography solution</a>, I could now make out its faint markings as DW01A. This is a battery protection chip that guards against over-charging (cut off at 4.3V), over-discharge (cut off at 2.5V) and over-current (150mV? That doesn't make sense.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Armed with this information, I drew up my own schematic symbols for the 4056 chip and the DW01A. They're probably available in a KiCad part library somewhere, but I wanted the practice with KiCad symbol editor. It took me a while to figure out how to label inverted pins. Eventually I found <a href="https://forum.kicad.info/t/solved-cannot-invert-a-pin-name-with-in-kicad-6/35952/3" target="_blank" rel="noreferrer noopener">this KiCad forum thread</a> telling me to put the name inside curly brackets and prefixed by tilde. So for the inverted STDBY pin I had to type in ~{STDBY}.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I ran into an ambiguity with surface-mount resistors on this board. There were several labeled with 102 (meaning 1K Ohm) or if I should read them upside-down as 201 (meaning 200 Ohm). In this case I was able to measure them at 1K Ohm but I won't always have that luxury. How to I figure out which way is up?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":39547,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/10/lipo-bms-4056-schematic.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/lipo-bms-4056-schematic.png?w=1024" alt="" class="wp-image-39547"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I drew my schematic with dotted lines marking the two major feature areas: to the left is the battery-charging circuit driven by the 4056 chip, to the right is the battery-protection circuit under control of the DW01A chip. I traced through most of the 4056 side earlier, because I was looking to adjust charging rate and found I could do so by <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/08/25/reduce-battery-charging-rate-of-4056-bms/" target="_blank">replacing R3 with resistor of a different value</a>. This time I was more curious about the over-current protection side of the module. Looking at my schematic, I thought R6 would be a promising lead for current control, but at 1000 Ohms its resistance was far too high to be a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Current_sensing#Shunt_resistors" target="_blank">current-sensing shunt resistor</a>. Plus, it wasn't in line with the load path. I didn't understand how it could work or how it related to the 150mV current-sensing value listed in the DW01A data sheet. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thinking I probably made a mistake in my schematic, I went online to check against others and it seems to match. One of those schematics was attached to <a href="https://electronics.stackexchange.com/questions/446526/how-does-the-dw01a-prevent-overcharging-and-discharging" target="_blank" rel="noreferrer noopener">this Electronics StackExchange thread</a>, which also explained how over current protection works in this design. The details are a bit over my head, but supposedly works through the dual N-channel MOSFETs already present to handle over-charging and over-discharging. Sounds like the engineers behind DW01A were clever enough to get over-current protection without using a current-sensing shunt resistor, and that's why I couldn't find one. This is very interesting and I wished I was familiar enough with these components to fully understand how it works. Maybe I can come return to this topic later after I've learned more electronics.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What is clear to me, though, is that I wouldn't be able to change the over-current limit by changing a resistor. I would have to find a dual N-channel MOSFET with different characteristics to trigger protection at a different limit. And if I want to do it on this board, I would have to find one with a footprint compatible with the 8205A chip used here. That would be a project well beyond the scope of today's KiCad exercise so I set the idea aside <a href="https://newscrewdriver.com/2023/10/12/voltage-step-down-buck-converter-module-schematic-mp1584/">and moved on</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This KiCad learning project <a href="https://github.com/Roger-random/kicad_tests/tree/main/lipo-bms-4056" target="_blank" rel="noreferrer noopener">is publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

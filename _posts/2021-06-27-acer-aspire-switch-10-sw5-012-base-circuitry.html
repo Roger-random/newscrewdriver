@@ -1,0 +1,78 @@
+---
+layout: post
+title: Acer Aspire Switch 10 (SW5-012) Base Circuitry
+date: 2021-06-27 12:30:00.000000000 +00:00
+type: post
+post_id: '27319'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Acer
+- SW5-012
+meta:
+  _thumbnail_id: '27284'
+  _last_editor_used_jetpack: block-editor
+  timeline_notification: '1624900252'
+  _publicize_job_id: '60125237460'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/27/acer-aspire-switch-10-sw5-012-base-circuitry/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I looked at the reinforcement rib network on <a href="https://newscrewdriver.com/2021/06/26/acer-aspire-switch-10-sw5-012-bottom-plate/">the bottom plate I just pulled off</a>, I saw it was not symmetric. The reason became clear when I looked at the internal circuitry of this keyboard base, those asymmetric gaps in reinforcement ribs were to make room for a circuit board and the data cables connecting it to the keyboard array.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27285,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-10-base-interface-board.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-10-base-interface-board.jpg?w=1024" alt="" class="wp-image-27285"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two large connectors dominate the center of this board, one with four conductors and another with five. These nine conductors directly connect to the nine pogo pins connecting to the main unit of this computer. If there were only four conductors I would have been tempted to see if it was direct USB, but there are nine conductors and I don't have a good idea what might be going on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought the USB hypothesis had merit when I found one of the ICs on board is a USB hub controller. It would have been a valid way to implement this keyboard base: turn the keyboard, the touchpad, and the USB port into individual USB devices connected to a common hub. But USB isn't a protocol I've worked with, it works at far higher speed than any diagnostics tools I have on hand, and I'm not particularly motivated to get this running because if I did, what would I get? A keyboard and a mouse pointer device. I already have enough of those.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I continued to merrily tear things apart looking for interesting sights as I went. The other circuit board in the base is entirely dedicated to the touchpad. The controller IC on this board is from Synaptics, a very popular supplier for touch hardware. The metal frame came apart in two separate pieces.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27286,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-11-touchpad-removed.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-11-touchpad-removed.jpg?w=1024" alt="" class="wp-image-27286"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It works as a hinge to act against a physical button handling taps on this touchpad. I'm amused that there's only a single button, they must correlate this button with finger positions in order to infer left or right click.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27287,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-12-touchpad-click-button.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-12-touchpad-click-button.jpg?w=1024" alt="" class="wp-image-27287"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping it over, I see the cosmetically perfect top surface of the touchpad.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27288,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-13-touchpad-top.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-13-touchpad-top.jpg?w=1024" alt="" class="wp-image-27288"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>As is typical of touchpads, that top surface is merely a façade covering a network of electrical wires that is used by the Synaptics IC to sense finger position. This is analog voodoo I don't understand in the least, and neither do most other people, which is why companies like Acer pay Synaptics to figure out. The façade is a sticker that I could peel off to expose the circuit pattern below.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27289,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-14-touchpad-pcb.jpg?w=1024" alt="" class="wp-image-27289"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Yep, it's an array of repeated patterns. Yep, the individual elements will help determine position of our fingers. Beyond those generalities, I have no clue. I've taken apart many laptop touchpad like this, and no two has used the same pattern on their circuit boards. Voodoo, I say! Thankfully, with its array of on/off switches, <a href="https://newscrewdriver.com/2021/06/28/acer-aspire-switch-10-sw5-012-keyboard/">a keyboard is more straightforward</a> than the analog magic of a touchpad.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

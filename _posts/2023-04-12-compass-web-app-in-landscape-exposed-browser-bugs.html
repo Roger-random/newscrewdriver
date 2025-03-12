@@ -1,0 +1,86 @@
+---
+layout: post
+title: Compass Web App in Landscape Exposed Browser Bugs
+date: 2023-04-12 12:30:00.000000000 +00:00
+type: post
+post_id: '36181'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36196'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681416424
+  _publicize_job_id: '83143140964'
+  timeline_notification: '1681327824'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/12/compass-web-app-in-landscape-exposed-browser-bugs/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got my Compass web app deployed to GitHub Pages and addressed <a href="https://newscrewdriver.com/2023/04/11/compass-web-app-browser-variations/">some variations in browser rendering</a>. Once it was working consistently enough across browsers, I tackled the next challenge: creating CSS layout for landscape as well as portrait orientations. Built solely around <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/orientation">media query for orientation</a>, it was a great exercise for me to build experience with CSS layouts. Most of my challenges can be chalked up to beginner's awkwardness, but there were two factors that seemed to be beyond my control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Sideways Text</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>While in landscape orientation, I wanted my headline banner to be rotated in order to occupy less screen real estate. This is a common enough desire that CSS has provision for this via <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/writing-mode">writing-mode</a>. My problem is that my desired direction (top of word pointing to screen left) doesn't seem to work, I could only get vertical text in the opposite direction (top of word pointing to screen right, 180 degrees from desired.) The MDN page for writing-mode had an example indicating it's not my mistake. It has a table of examples in markup followed by two renderings. A bitmap showing expected behavior (here with my desired output circled in red):</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36192,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/css-writing-mode-sideways-lr-desired.jpg?w=660" alt="" class="wp-image-36192"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And then the markup as rendered by Chrome 112 (with different behavior circled in red.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36193,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/css-writing-mode-sideways-lr-actual.jpg?w=615" alt="" class="wp-image-36193"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for a workaround, I investigated <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate">CSS rotate transform</a>. The good news is that I could get text rotated in the direction I want with <code>rotate(-90deg)</code>. The bad news is that only happens <em>after </em>size layout. Meaning my header bar is the sized as if the header text was not rotated, which is very wide and thus defeating the objective of occupying less screen real estate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I guess I can't get the layout I want until some bugs are fixed or until I find a different workaround. Right now the least-bad alternative is to use writing-mode vertical-lr, which rotates text the wrong way from what I wanted but at least it is vertical and compact.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Magnetometer Reference Frame</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Landscape mode uncovered another browser issue. When initializing the magnetometer object, we could <a href="https://developer.chrome.com/articles/generic-sensor/#synchronization-with-screen-coordinates">specify the coordinate reference frame</a>. Two values are supported: "device" is fixed regardless of device orientation, and "screen" will automatically transform coordinate space to match screen orientation. The good news is that "screen" does perform a coordinate transform while in landscape mode, the bad news is the transform is backwards: each landscape orientation gives information appropriate to the other landscape orientation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36197,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/magnetometer-reference-frame-screen-portrait.jpg?w=1024" alt="" class="wp-image-36197"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For reference, here's my app in portrait mode and the compass needle pointing roughly north. For a phone, this is the natural orientation where "device" and "screen" would give the same information.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36196,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/magnetometer-reference-frame-screen-landscape.jpg?w=1024" alt="" class="wp-image-36196"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After rotating the phone, Chrome browser rotates my app to landscape orientation as expected. Magnetometer coordinates were also transformed, but it is pointing the wrong way!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Still Lots to Learn</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>These two issues are annoying because they are out of my control, but they were only a minority of the problems I encountered trying to make my little app work in landscape mode. Vast majority of the mistakes were of my own making, as I learned how to use CSS for my own layout purposes. Hands-on time makes concepts concrete, and such experience helps me when I <a href="https://newscrewdriver.com/2023/04/13/notes-on-web-dev-learn-css/">go back to review documentation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

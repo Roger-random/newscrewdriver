@@ -1,0 +1,67 @@
+---
+layout: post
+title: Notes on TT Gear Motor
+date: 2021-01-23 12:30:00.000000000 +00:00
+type: post
+post_id: '24670'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- TT Gearmotor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24702'
+  _publicize_job_id: '53818520387'
+  timeline_notification: '1611433811'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/23/notes-on-tt-gear-motor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm now looking at <a href="https://newscrewdriver.com/2021/01/22/dc-gearmotors-for-little-sawppy-rover/">DC motor with gearbox</a> for rover locomotion. I started my little rover project with the intention of using micro servos all around. For six wheel drive, they would be <a href="https://newscrewdriver.com/2021/01/04/converting-mg90s-metal-gear-micro-servo-to-continuous-rotation/" target="_blank" rel="noreferrer noopener">modified for continuous rotation</a>. This is a tradeoff: we gain a servo's existing <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/H-bridge" target="_blank">H-bridge circuit</a> with <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Proportional_control" target="_blank">proportional control</a>, but we take the risk of putting a physical load <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/03/micro-sawppy-beta-1-wheels/" target="_blank">it is not designed for</a>. Unfortunately I found a problem with my Beta 2 chassis: some of these inexpensive micro servos lack useful proportional control. If I can't depend on a servo's existing circuitry, I might as well switch to a different gear motor: the TT gear motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Similar to micro servos, the TT gear motor has become a commodity item. Made by lots of manufacturers and <a rel="noreferrer noopener" href="https://amzn.to/38cEhPQ" target="_blank">sold by lots of vendors</a>. (*) Where did this design start, why is it called "TT", and why are they all yellow? Sadly I found no satisfying answers to these historical questions. Searching on the internet was made difficult by their name, which tends to return results relating to a real car, the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Audi_TT" target="_blank">Audi TT</a>. Did this gearmotor start life in a toy car modeled after the Audi TT? So many questions, so few answers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only bit of information I found hinting at a source was a mention on the product page for <a rel="noreferrer noopener" href="https://solarbotics.com/product/gm3/" target="_blank">Solarbotics Gear Motor 3</a> which superficially resembles the TT gearbox. However, it is not called TT there, and it is not yellow, so clearly this is not the entire history.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote">
+<p>Based on the original design by Mark Tilden for use in the B.I.O.Bugs &amp; RoboSapien, these motors are the next generation with a variety of improvements such as dual output shafts and a lower current motor.</p>
+<p><cite>Product Description for <a href="https://solarbotics.com/product/gm3/" target="_blank" rel="noreferrer noopener">Solarbotics Gear Motor 3</a></cite>
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found no corroborating information beyond that snippet of text.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, back to the device itself: we can see it uses a much larger motor than the one inside a micro-servo, which may be (but not necessarily) more powerful. A larger gearbox also implies larger and more durable gears. But the most important part is that these are used to drive the wheels in a robot kit. For example, <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/12/08/window-shopping-servocity-bogie-runt-rover/" target="_blank">Servo City's Runt Rover series</a> use this type of motor for their wheels, albeit in black instead of yellow. The fact they are designed for wheels makes me more comfortable I'm using mechanical parts for their designed task. Which was a worry for (mis)using continuous rotation micro servos for <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/03/micro-sawppy-beta-1-wheels/" target="_blank">micro Sawppy beta 1 and 2 rover wheels</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And thanks to the popularity of this form factor, we have an ecosystem of variants in the same size and fit the same axle. The standard gear ratio is 1:48, but other gear ratios are offered for those who want to make different tradeoffs between speed and torque. High torque gearboxes need to more durable, but not to worry, this form factor with higher gear ratios are also available with all metal gears in products like <a href="https://www.adafruit.com/product/3802">Adafruit #3802</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A particular wheel design is most commonly associated with this gearbox, but there are alternate wheel choices to fit onto that axle. The axle is large and simple enough that we can probably FDM 3D print our own wheels as well. That output shaft is symmetric so some robot kits put two wheels, one on either side. But I usually see the other end either left unused or used for <a rel="noreferrer noopener" href="https://amzn.to/2LoNtHM" target="_blank">an encoder wheel for low resolution wheel odometry</a>. (*) If we want higher resolution encoders, we can buy variants with <a rel="noreferrer noopener" href="https://www.sparkfun.com/products/16413" target="_blank">an encoder on the motor</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This all looks very promising so I bought some TT gearmotors for experimentation. First order of business: <a href="https://newscrewdriver.com/2021/01/24/tt-gear-motor-teardown/">take one apart to see what I'm working with</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

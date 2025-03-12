@@ -1,0 +1,47 @@
+---
+layout: post
+title: Battery Options for Solar Monitor
+date: 2022-03-11 12:30:00.000000000 +00:00
+type: post
+post_id: '28920'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '18061'
+  _publicize_job_id: '70053472826'
+  timeline_notification: '1647030611'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/11/battery-options-for-solar-monitor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I finally got my solar power generation monitoring system up and running and I'm having a great time <a href="https://newscrewdriver.com/2022/03/10/plotting-solar-panel-voltage-and-power/">graphing data for visualization</a>. But <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/08/start-simple-with-alkaline-aa-batteries/" target="_blank">using weakened alkaline AA batteries I had available</a> was only an interim solution, the next step is to make this into a longer running system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This project is mildly annoying because I already have a large capacity battery system for capturing power from this solar panel. But I can't run the panel monitor from the same battery because of different voltage planes: When charging, I measured a little over a volt of difference between input ground and output ground. As expected, there's also a voltage difference between input positive and output positive. I don't know the internal implementation of my battery charger, but it appears to be neither "common positive" nor "common ground" so I decided against adding any wires bridging those two sides.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instead, I aim for an independent system that I can charge from solar panel while the sun is out and run my ESP8266+INA219 for the rest of the day. When the panel is not generating anything to monitor, I can put the ESP8266 into deep sleep. Successfully running this system on extremely weak alkaline AA batteries proved I don't need a lot of energy storage capacity for this purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":15613,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2017/12/cells-removed1.jpg?w=1024" alt="" class="wp-image-15613"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the old school nickel chemistry side of the battery world, I have nickel-cadmium (NiCad) battery cells I pulled from an old Dustbuster that could no longer run a handheld vacuum. I also have nickel-metal-hydride (NiMH) battery cells that could no longer run a Neato robot vacuum. While neither could run a big electric motor, they might still have enough remaining capacity to run a little solar monitor. I don't have the means to <a rel="noreferrer noopener" href="https://batteryuniversity.com/article/bu-408-charging-nickel-metal-hydride" target="_blank">charge them properly</a> but that's not really required anyway. Nickel chemistry batteries are fairly robust and many devices don't bother with proper charging circuits as a cost saving measure, which was true for both the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/12/12/investigating-dustbuster-battery-degradation/" target="_blank">aforementioned Dustbuster</a> and the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/03/24/trying-to-charge-neato-xv-21-without-a-charging-dock/" target="_blank">Neato robot vacuum</a>! So these batteries have already lived a hard life.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Alternatively, I could use a lithium chemistry battery. A proper charging circuit is <em><strong>very much</strong></em> mandatory for lithium chemistry batteries. While lightly overcharged nickel chemistry batteries would get warm as they dissipated excess energy as heat, overcharged lithium chemistry batteries aren't as graceful and could burst into flames. (Which I guess is also technically "get warm to dissipate excess energy.") Fortunately, since lithium chemistry batteries have become commodity consumer items, so have proper battery management circuits to accompany them. I can repurpose <a href="https://newscrewdriver.com/2022/03/12/usb-power-bank-teardown-duracell-du7169/">an old USB power bank</a> for this job.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

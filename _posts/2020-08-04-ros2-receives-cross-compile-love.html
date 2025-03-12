@@ -1,0 +1,39 @@
+---
+layout: post
+title: ROS2 Receives Cross Compile Love
+date: 2020-08-04 12:30:31.000000000 +00:00
+type: post
+post_id: '19863'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- ROS2
+meta:
+  _oembed_e550e808c365685655b2de5b0d62bacc: "{{unknown}}"
+  _oembed_a9672db180501ae5cfe433626f7ce82e: "{{unknown}}"
+  _thumbnail_id: '22004'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1596569460'
+  _publicize_job_id: '47347391362'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/04/ros2-receives-cross-compile-love/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>While I'm on the topic of <a href="https://newscrewdriver.com/2020/08/03/update-on-arm64-ros2-on-pi/">information on Raspberry Pi running ROS2</a>, another one that I found interesting was that there is now an actual <a href="https://discourse.ros.org/t/ros-2-tooling-working-group-announcement/10970">working group focused on tooling.</a> And their pathfinder project is to make <a href="https://index.ros.org/doc/ros2/Tutorials/Cross-compilation/">ROS2 cross compilation</a> less painful than it was in ROS.</p>
+<p>Cross compilation has always been an option for ROS developers, but it was never as easy as it could be and there were many places where it, to put things politely, <em>fell short of expectations</em>. The reason cross-compilation was interesting was, again, the inexpensive Raspberry Pi allowing us to put a full Linux computer on board our ROS robots.</p>
+<p>A Raspberry Pi could run ROS but there were performance limitations, and these limitations had even more severe impact when trying to compile ROS code on board the Raspberry Pi itself. The quad cores sounded nice on paper, but before the Pi 4, there was only 1GB of RAM to go around and compilation quickly ate it all up. Every developer is tempted to run four compilers in parallel to optimize for the four cores, and most ROS developers (including this one) have tried it at least once. We quickly learn this was folly. As soon as the RAM was exhausted, the Pi went to virtual memory which was a microSD card, and performance drops off a cliff because they are not designed for random reads and writes. I frequently get better overall performance by limiting compilation to a single core and staying well within available RAM.</p>
+<p>Thus the temptation to use cross compilation: use our powerful 64-bit desktop machines to compile ARM32 binaries. Or more specifically, ARMHF, the instruction set for 32-bit ARM processors with <strong>(H)</strong>ardware <strong>(F)</strong>loating-point like those on the Raspberry Pi. But the pains of doing so has never proven to be worth the effort.</p>
+<p>While Raspberry Pi 4 is now available with up to 8GB of RAM along with a corresponding 64-bit operating system, that's still a lot less than the memory available on a typical developer workstation. And a modern PC's solid state drive is still far faster than a Pi's microSD storage. So best wishes to the ROS2 tooling working group, I hope you can make cross compilation effective for the community.</p>
+<p></body></html></p>

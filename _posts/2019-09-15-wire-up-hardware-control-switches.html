@@ -1,0 +1,47 @@
+---
+layout: post
+title: Wire Up Hardware Control Switches
+date: 2019-09-15 12:30:58.000000000 +00:00
+type: post
+post_id: '19555'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19542'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1568575955'
+  _publicize_job_id: '35317822816'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/15/wire-up-hardware-control-switches/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>After wiring up for <a href="https://newscrewdriver.com/2019/09/14/z-axis-servo-and-battery-box/">Z-axis servo control</a>, I turned my attention to the remaining empty quadrant of the prototype board.</p>
+<p>At the moment I have a small laptop running a G-code sender acting as the CNC control console, from which I can access all functionality of Grbl. The ESP32 port of Grbl also offers a built-in web interface, which is a great choice for compact machines that don't want the overhead of a full computer. Both of these control options have a communication delay, so some things are better handled by hardware switches for immediate feedback.</p>
+<p>By default Grbl ESP32 supports four physical switches, in the order of their pin assignment they are:</p>
+<ol>
+<li>
+<strong>Feed Hold</strong>: On many CNC, this completes execution of the current G-code command but holds off running the next one. Some machines can pause mid-command but this is not guaranteed. Axis motion stops, but spindle does not. This is a good way to have a machine pause, useful for example when the operator wants to visually check to make sure position and upcoming commands look reasonable.</li>
+<li>
+<strong>Cycle Start</strong>: Begins executing the loaded G-code program. Also used to resume execution after Feed Hold.</li>
+<li>
+<strong>Reset</strong>: This commands an immediate stop, of <em>everything</em>. Unlike Feed Hold, it will not wait for the current command to complete. It will also turn off spindle in addition to axis motion. Since it is an immediate cutoff of execution, the controller ends up in an unpredictable state. There's no resuming after a reset. The machine has to be re-homed and all coordinate offsets recalculated.</li>
+<li>
+<strong>Door</strong>: Designed to be wired up to a door open detection switch so the machine can take actions to ensure operator safety. On some machines this is effectively a Feed Hold, others treat it as an emergency Reset, most machines treat it as somewhere in between. I don't know yet how Grbl reacts.</li>
+</ol>
+<p>All four are designed for normally-open switches that activate upon closing the circuit to ground. For reasons I don't understand, these switches don't use the ESP32 internal pull-ups and require external pull-up resistors. Normally-open switches don't necessarily make sense for a situation. For example, reset is usually wired up with a series of normally closed switches and, if any of them should open, the machine halts. But this is easy to address in the physical circuit.</p>
+<p>Another concern for these switches is that they tend to have long runs of wire. (Such as  the aforementioned reset switch.) Long wires have a nasty tendency to act as an antenna picking up stray signals. So a real board would require opto-isolation to avoid triggering from line noise. But again, this is a prototype board missing the full set of protective features.</p>
+<p>After I wired up jumpers for playing with these four switches, I made a small piece of label to remind me which pin is which. Then it's time to bring the results of this prototype soldering session to the shop and <a href="https://newscrewdriver.com/2019/09/17/this-test-run-made-possible-by-tape/">run a few tests</a>.</body></html></p>

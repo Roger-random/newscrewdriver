@@ -1,0 +1,39 @@
+---
+layout: post
+title: Establish Motor Directions For Phoebe TurtleBot
+date: 2018-09-12 09:00:09.000000000 +00:00
+type: post
+post_id: '16773'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1536768242'
+  _publicize_job_id: '22070475204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/12/establish-motor-directions-for-phoebe-turtlebot/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The first revision of Phoebe's body frame has mounting points for the two drive wheels and the caster wheel. There are two larger holes to accommodate drive motor wiring bundle, and four smaller holes to mount a battery tray beneath the frame. Since this is the first rough draft, I didn't bother spending too much time over thinking further details. We'll wing it and take notes along the way for the next revision.</p>
+<p><img class=" size-full wp-image-16782 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-frame-first-draft.png" alt="Phoebe Frame First Draft.PNG" width="1029" height="714"></p>
+<p>After the wheels were installed, there was much happiness because the top surface of the frame sat level with the ground, indicating the height compensation (for height difference between motorized wheels and caster in the back) was correct or at least close enough.</p>
+<p>Next, two holes were drilled to mechanically mount the <a href="http://www.basicmicro.com/Roboclaw-2x7A-Motor-Controller_p_13.html">Roboclaw motor control module</a>. Once secured, a small battery was connected plus both motor drive power wires. Encoder data wires were not connected, just taped out of the way, as they were not yet needed for the first test: direction of motor rotation.</p>
+<p><img class="alignnone size-full wp-image-16774" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-turtlebot-stage-1-pwm.jpg" alt="Phoebe TurtleBot Stage 1 PWM" width="1024" height="979"></p>
+<p>The <a href="https://github.com/sonyccd/roboclaw_ros">Roboclaw ROS node</a> expects the robot's right side motor to be connected as Motor #1, and the left as Motor #2. It also expects positive direction on both motors to correspond to forward motion.</p>
+<p>I verified robot wiring using Ion Studio, the Windows-based utility published by the makers of Roboclaw. I used Ion Studio to command the motors via USB cable to verify the right motor rotates clockwise for positive motion, and the left motor counter-clockwise for positive motion. I got it right on the first try purely by accident, but it wouldn't have been a big deal if one or both motors spun the wrong way. All I would have had to do is to swap the motor drive power wires to reverse their polarity.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/152785-establish-motor-directions">Hackaday.io</a>)</p>
+<p></body></html></p>

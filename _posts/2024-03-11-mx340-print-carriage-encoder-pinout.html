@@ -1,0 +1,82 @@
+---
+layout: post
+title: MX340 Print Carriage Encoder Pinout
+date: 2024-03-11 12:30:00.000000000 +00:00
+type: post
+post_id: '42369'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '42354'
+  timeline_notification: '1710185415'
+  wordads_ufa: s:wpcom-ufa-v4:1710309462
+  firehose_sent: '1710185414'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _publicize_job_id: '92647854687'
+  _elasticsearch_data_sharing_indexed_on: '2024-03-13 05:59:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/03/11/mx340-print-carriage-encoder-pinout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It took some digging, but I finally <a href="https://newscrewdriver.com/2024/03/10/mx340-print-carriage-internals/">reached the circuit board inside the print carriage</a> of my old Canon Pixma MX340 multi-function inkjet. Most of it is dedicated to print cartridge connectivity (or more specifically, their integrated print heads) but I don't care about that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42360,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-back-cover-removed-encoder-visible.jpg?w=800" alt="" class="wp-image-42360"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to know which (of many) wires connect to the optical quadrature encoder buried in its center.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41027,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-front.jpg?w=1024" alt="" class="wp-image-41027"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It is not identical to the optical quadrature encoder used on the paper feed roller, but they look closely related. Potentially upright (reads encoder disc perpendicular to the circuit board) vs. flat (reads encoder strip parallel to the circuit board) versions of the same device.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41031,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-back.jpg?w=1024" alt="" class="wp-image-41031"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>More relevant is the fact they seem to share the same circuit board footprint with their arrangement of six pins. Trying the easy thing first, I pulled out my multimeter and used the paper feed encoder as a guide to probe the pins on the print carriage encoder. I quickly confirmed they have the exact same pinout.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42374,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-quadrature-encoder-sensor-pinout.jpg?w=800" alt="" class="wp-image-42374"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One pin is connected to incoming power supply, and onward through some resistance to another pin. I measured the resistance at a little over 80 Ohms which is not a typical resistor value. I suspect it's actually a higher common value (maybe 100 Ohm) but some components in parallel brought down the effective value. The A/B phase signal wires are out at the ends, and the remaining two pins are grounded.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42377,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-quadrature-encoder-sensor-pinout-to-connector.jpg?w=800" alt="" class="wp-image-42377"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I traced the two signal wires and the power supply wire to the rightmost three pins of the ribbon connector. I didn't put a number on ground because multiple pins (like pin 15) are connected to ground. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42379,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-fpc-connectors-on-main-board.jpg?w=800" alt="" class="wp-image-42379"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The pin numbers were taken from the system main board, which labeled pin 1 with a number and an arrow (the end closer to camera) and for this cable the other end gets a "22" label (far end, circled in red.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had hoped finding these pins would tell me how to tap into its communication on the mainboard side, but they turned out to be the wires most buried and difficult to access. Ah well, I'll <a href="https://newscrewdriver.com/2024/03/12/mx340-print-carriage-encoder-delivers-600-counts-per-inch/">solder my probe wires to the print carriage circuit board instead</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

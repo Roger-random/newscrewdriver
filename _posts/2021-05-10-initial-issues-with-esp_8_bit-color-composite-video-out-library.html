@@ -1,0 +1,64 @@
+---
+layout: post
+title: Initial Issues With ESP_8_BIT Color Composite Video Out Library
+date: 2021-05-10 12:30:00.000000000 +00:00
+type: post
+post_id: '26495'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26465'
+  _publicize_job_id: '58205208429'
+  timeline_notification: '1620675007'
+  _oembed_66285521ef37dba78420fb59c9f854cd: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    interactive RGB332 8-bit color picker can now be toggled between HSV cylinder
+    and RGB cube modes. Half of the cubes (green-yellow) aren&#39;t doing what I want
+    because I clearly don&#39;t understand quaternions. Still a nifty animation, though.
+    <a href="https://t.co/jtRMMVNboP">pic.twitter.com/jtRMMVNboP</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1388265529228480512?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_66285521ef37dba78420fb59c9f854cd: '1620725327'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/10/initial-issues-with-esp_8_bit-color-composite-video-out-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I honestly didn't expect my little project to be accepted into the Arduino Library Manager index on my first try, <a href="https://newscrewdriver.com/2021/05/09/esp_8_bit-color-composite-video-out-on-arduino-library-manager/">but it was</a>. Now that it is part of the ecosystem, I feel obligated to record my mental to-do list in a format that others can reference. This lets people know that I'm aware of these shortcomings and see the direction I've planned to take. And if I'm lucky, maybe someone will tackle them before I do and give me a pull request. But I can't realistically expect that, so putting them down on record would at least give me something to point to. "Yes, it's on the to-do list." So I wrote down the known problems in <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues" target="_blank">the issues section of the project</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First and foremost problem is that I don't know if PAL code still works. I intended to preserve all the PAL functionality when I extracted the ESP_8_BIT code, but I don't know if I successfully preserved it all. I only have a NTSC TV so I couldn't check. And even if someone tells me PAL is broken, I wouldn't be able to do anything about it. I'm not dedicated enough to go out and buy a PAL TV just for testing. [bootrino] helpfully tells me there are TV that understand both standards, which I didn't know. I'm not dedicated enough to go out and get one of those TV for the task, but at least I know to keep an eye open for such things. This one really is waiting for someone to test and, if there are problems, submit a pull request.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other problems I know I can handle. In fact, I had a draft of the next item: give the option to use caller-allocated frame buffer instead of always allocating our own. I had this in the code at one point, but it was poorly tested and I didn't use it in any of the example sketches. The Arduino API Style Guide suggests trimming such extraneous options in the interest of keeping the API surface area simple, so I did that for version 1.0.0. I can revisit it if demand comes back in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I left behind in ESP_8_BIT and want to revive is a performance metric of some sort. For smooth display the developer must perform all drawing work between frames. The <code>waitForFrame()</code> API exists so drawing can start as soon as one frame ends, but right now there's no way to know how much room was left before next frame begins. This will be useful as people start to probe the limits.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After performance metrics are online, that data can be used to inform the next phase: performance optimizations. The only performance override I've done over the default Adafruit GFX library was <code>fillScreen()</code> since all the examples call that immediately after <code>waitForFrame()</code> to clear the buffer. There are many more candidates to override, but we won't know how much benefit they give unless we have performance metrics online.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final item on this initial list of issues is support for double- or triple-buffering. I don't know if I'll ever get to it, but I wrote it down because it's such a common thing to want in a graphics stack. This is a rather advanced usage and it consumes a lot of memory. At 61KB per buffer, the ESP32 can't really afford many of them. At the very least this needs to come after the implementation of user-allocated buffers, because it's going to be a game of Tetris to find enough memory in between developer code to create all these buffers and they know best how they want to structure their application.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought I had covered all the bases and was feeling pretty good about things... but I had <a href="https://newscrewdriver.com/2021/05/11/my-rgb332-color-code-oversight/">a blind spot that Emily Velasco spotted immediately</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

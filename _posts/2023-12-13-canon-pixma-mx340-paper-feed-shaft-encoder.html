@@ -1,0 +1,89 @@
+---
+layout: post
+title: Canon Pixma MX340 Paper Feed Shaft Encoder
+date: 2023-12-13 12:30:00.000000000 +00:00
+type: post
+post_id: '41023'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41024'
+  wordads_ufa: s:wpcom-ufa-v4:1703391533
+  _publicize_job_id: '90256080830'
+  firehose_sent: '1702499461'
+  timeline_notification: '1702499461'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/13/canon-pixma-mx340-paper-feed-shaft-encoder/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm poking around inside a Canon Pixma MX340 multi-function inkjet and was surprised when my oscilloscope showed <a href="https://newscrewdriver.com/2023/12/12/canon-pixma-mx340-motors-for-print-carriage-and-paper-feed/">it rapidly cycled between forward and backward power to its two DC motors</a>. I'm sure it is related to the fact they're part of a closed-loop control system: the printer has high-resolution encoders telling the mainboard how much each axis has moved, so the control system can adjust the forward/back power ratio.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40549,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-three-separate-cables-for-print-carriage.jpg?w=1024" alt="" class="wp-image-40549"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can see the encoder strip used for the print carriage, but the encoder itself is not easily accessible. The data wires would be among print cartridge control wires somewhere in the trio of cables between print carriage and main board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41027,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-front.jpg?w=1024" alt="" class="wp-image-41027"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In contrast, the paper feed encoder is a standalone unit with only four wires already conveniently labeled 1 through 4 from left to right in this picture.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41029,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-wheel-wear.jpg?w=1024" alt="" class="wp-image-41029"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It looks like the encoder has some sort of physical pad to keep the encoder disc properly aligned in the channel. It has worn a groove into the plastic encoder disc and will eventually wear through and destroy the disc. But it lasted long enough for me to retire the printer first, so "It's not just good, it's good <em>enough</em>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41031,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-back.jpg?w=1024" alt="" class="wp-image-41031"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since physical position and alignment is clearly important here, I didn't want to remove the module while I still want to probe the system in a functioning state. It looks like a pretty simple one-layer circuit board. Aside from the cable with four wires (1 through 4 from right to left, now that we're looking on the back side) and the encoder sensor itself, there are two surface mount components. One looks like a capacitor, and other looks like a small resistor marked with either 820 (82 Ohms) or 82D (<a href="https://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-smd-resistor-code">629K as per Digi-Key tool</a>).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41024,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-wired-for-oscilloscope.jpg?w=1024" alt="" class="wp-image-41024"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was a tight fit to get my soldering iron into that space, but at least the four wires were generously spaced apart so I could solder wires for attachment to oscilloscope probes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41036,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-encoder-backwards-fast.png?w=826" alt="" class="wp-image-41036"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is again from the power-up sequence, when this motor is running backwards. This matches the wave form I expected to see from an <a href="https://en.wikipedia.org/wiki/Incremental_encoder" target="_blank" rel="noreferrer noopener">incremental encoder</a>. Unlike the <a href="https://newscrewdriver.com/2023/11/30/canon-pixma-mx340-adf-sensors/">photo interrupter sensors</a> that ran at 5.5V DC, this encoder runs at 3.3V DC. The shape of the curve, tapering off as rose up to 3.3V DC and a sharp drop with no taper when it goes to ground, tells me there's a pull-up resistor on each line and the sensor itself pulls to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41037,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-encoder-forward-slow.png?w=826" alt="" class="wp-image-41037"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For comparison, here's the plot from later in the power-up sequence, when the motor is running forward but at a slower speed. The red/blue ordering is reversed, and the pulses are wider apart. I'm curious about the slight voltage drop I see in one color when the other signal is pulled to ground. Is this caused by interaction between the two pull-up resistors or something else?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The pinout for this sensor can be determined from these oscilloscope plots. As per numbers printed on the board: pin 1 is 3.3V DC, pin 4 is ground, and A/B phase signals live between them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was a nice simple circuit board to decipher, <a href="https://newscrewdriver.com/2023/12/14/canon-pixma-mx340-control-panel-round-2/">the next project is a little more complex</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

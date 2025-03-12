@@ -1,0 +1,54 @@
+---
+layout: post
+title: Initial Solar Power Strategy for Samsung 500T
+date: 2020-09-29 12:30:00.000000000 +00:00
+type: post
+post_id: '22595'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Samsung 500T
+meta:
+  _thumbnail_id: '21391'
+  _publicize_job_id: '49374806675'
+  timeline_notification: '1601407813'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/29/initial-solar-power-strategy-for-samsung-500t/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I foresee a lot of refinement ahead for <a href="https://newscrewdriver.com/2020/09/28/approaches-to-optimizing-samsung-500t-for-solar-power/">optimizing how to run my Samsung 500T</a> (displaying ESA ISS tracker) on solar power as much as possible using its internal battery. But I have to start somewhere, thus this first plan as starting point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To improve battery cycle life, I want to keep its state of charge (SoC) between 20% and 80% which should be fairly straightforward to put into a program. That's just the easy part, the harder part is optimizing for solar power by trying to keep the charging periods as much as possible during times when panels are delivering energy. And it wouldn't be possible do use internal battery capacity around the clock because that "middle 60%" of the battery is not enough to take the tablet all the way through the night. So it will need to draw upon the lead-acid array sometime overnight but that should be kept as low as possible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Accomplishing this goal will require optimizing for both ends of the period when solar power is available. In the late afternoon, power should be connected to get up to 80% SoC just as the sun goes down, which requires knowing when sunset will be. During the late-night feeding, the tablet should be given <em>just</em> enough power to leave it at 20% SoC when the sun is back up, which requires knowing when sunrise will be. Add to this seasonal variability other random factors like rainy days, and we have a pretty complex power management challenge on our hands.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Right now 60% of power can keep the tablet running for approximately 9 hours, a number that I expect to shrink as the battery degrades in the future. That inevitable degradation is, in fact, part of the experiment! But right now that means we need a little less than three discharge-charge cycles per day. According to <a rel="noreferrer noopener" href="https://batteryuniversity.com/learn/article/how_to_prolong_lithium_based_batteries" target="_blank">cycle life chart at Battery University</a>, 80% SoC is near the optimal trade off point between cycle life and capacity. But if don't need three full cycles, we can prolong battery cycle life even further by charging to some level less than 80%, just enough to make it to the next event.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With those considerations, here's the initial daily charging plan:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>The most important cycle is the one just before sunset bringing the battery up to 80%. This maximizes the solar energy captured for running when there's no direct solar energy.</li>
+<li>The following charging cycle will occur sometime overnight. It does not need to get all the way up to 80%, the goal is to give the tablet just enough to leave it with 20% by the time solar panels are delivering power again. When should this charging cycle start and where it should end is yet to be determined.</li>
+<li>After the sun starts shining, we'll need another charging cycle to bring the battery back up via solar power. Ideally we charge up to 80% SoC and stay there until sunset, but we don't have the means to control that. So we'll charge just enough to leave us with 20% by the time of the sunset charge (#1 above).</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Depending on the amount of sun available, charge cycles #2 and #3 should halt before reaching 80%, which should help prolong battery life. This plan was my starting point to run a multi-week experiment using different strategies, as well as <a href="https://newscrewdriver.com/2020/10/15/samsung-500t-unexpected-power-consumption-caused-by-patch-tuesday/">finding unexpected perturbations</a> I'll have to account for.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

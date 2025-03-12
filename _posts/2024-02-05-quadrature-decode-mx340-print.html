@@ -1,0 +1,63 @@
+---
+layout: post
+title: Quadrature Decode MX340 Print
+date: 2024-02-05 12:30:00.000000000 +00:00
+type: post
+post_id: '41860'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  wordads_ufa: s:wpcom-ufa-v4:1710825141
+  _publicize_job_id: '91712603972'
+  firehose_sent: '1707165008'
+  timeline_notification: '1707165008'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-03-19 05:03:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/05/quadrature-decode-mx340-print/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm fascinated by the print engine inside a Canon Pixma MX340 multi-function inkjet, there's a lot I don't understand but at least it felt like some level of understanding is attainable. Processing a lot of periodic encoder value reports, I saw <a href="https://newscrewdriver.com/2024/02/04/quadrature-decode-mx340-standby/">its standby sequence</a> was longer but not terribly more complex than the power-up sequence. But that's not the main business of an inkjet print engine. Its business is printing!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41862,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-print.png?w=1024" alt="" class="wp-image-41862"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's a trace from printing a page, a process that took just under two minutes. (~110 seconds.) And wow, I see a lot of activity. The long shallow slope in the latter half of this graph is where actual printing was in progress, though the shallow slope line visible here is misleading.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41863,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-print-line-by-line.png?w=1024" alt="" class="wp-image-41863"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming in to that section, the actual motion is visible as a periodic advancement of a bit less than 1000 encoder counts, then held steady as the print carriage moved across to lay down ink. Then it advances another &lt;1000 counts, and so on. This section appeared to be a single long shallow slope only because I had packed too many data points into a single graph and important detail has been lost. I zoomed into the graph at various locations and didn't discover other artifacts, but I am still wary of drawing too many conclusions from visual inspection of this graph.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite that caveat, it's pretty clear that preparatory work took more time than the actual printing process with ink on paper. This chart also tells me the photo interrupter sensor sampling wires are functioning correctly. Since paper is actually fed, this chart showed activity on the paper presence sensor (blue line) and the gearbox sensor of yet-unknown purpose (orange).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think I've reached limits of the "dump periodic data to Excel, look at graph" analysis method. It was an interesting and easy way to make my first pass on analyzing this data, and it informs my goals for <a href="https://newscrewdriver.com/2024/02/06/canon-pixma-mx340-decoder-round-2-goals/">the next pass</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

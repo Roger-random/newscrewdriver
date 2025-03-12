@@ -1,0 +1,46 @@
+---
+layout: post
+title: A Quick Look At NI Measurement Studio
+date: 2020-03-29 12:30:22.000000000 +00:00
+type: post
+post_id: '21000'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- Window Shopping
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '21009'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42377921084'
+  timeline_notification: '1585510282'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/29/a-quick-look-at-ni-measurement-studio/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>While digging through National Instruments online documentation to learn about <a href="https://newscrewdriver.com/2020/03/24/window-shopping-labview-2019/">LabVIEW</a> and <a href="https://newscrewdriver.com/2020/03/28/digging-further-into-labwindows-cvi/">LabWindows/CVI</a>, I also came across something called <a href="https://www.ni.com/en-us/shop/select/measurement-studio">Measurement Studio</a>. This trio of products make up their category of <em><a href="https://www.ni.com/en-us/shop/select/programming-environments-for-electronic-test-and-instrumentation-category">Programming Environments for Electronic Test and Instrumentation</a></em>. Since I've looked at two out of three, might as well look at the whole set and jot down some notes.</p>
+<p>Immediately we see a difference in the product description. Measurement Studio is not a standalone application, but an extension to Microsoft Visual Studio. By doing so, National Instruments takes a step back and allows Microsoft Visual Studio to handle most of the common overhead of writing an application, stepping in only when necessary to deliver functionality valuable to their target market. What are these functions? The product page lists three bullet points:</p>
+<ul>
+<li>
+<strong><em>Connect to Any Hardware</em></strong> - Electronics equipment industry standard communication protocols GPIB, VISA, etc.</li>
+<li>
+<em><strong>Engineering UI Controls</strong></em> - on-screen representation of tasks an electronics engineer would want to perform.</li>
+<li>
+<em><strong>Advanced Analysis Libraries</strong></em> - data processing capabilities valuable to electronics engineers.</li>
+</ul>
+<p>Basically, all the parts of LabVIEW and LabWindows/CVI that I did <strong><em>not</em></strong> care about for my own projects! Thus if I build a computer control application in Microsoft Visual Studio, I'm likely to just use Visual Studio by itself without the Measurement Studio extension. I am not quite the target market for LabVIEW or LabWindows, and I am completely the wrong market for Measurement Studio.</p>
+<p>Even if I needed Measurement Studio for some reason, the price of admission is steep. Because Measurement Studio <a href="https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z0000019RD9SAM">is not compatible</a> with the free Community Edition of Visual Studio, developing with Measurement Studio requires buying license for a paid tier of Microsoft Visual Studio in addition to the license for Measurement Studio.</p>
+<p>And finally, it has been noted that the National Instruments products <a href="https://www.ni.com/en-us/support/documentation/compatibility/15/national-instruments-product-compatibility-for-microsoft-windows.html">require low level Win32 API access</a> that prevents them from being a part of the new generation of Windows app that can be distributed via Microsoft Store. These newer apps promise to have better installation and removal experience, automatic updates, and better isolated from each other to avoid incompatibilities like "DLL Hell". None of those benefits are available if an application pulls in National Instruments software components, which is a pity.</p>
+<p>Earlier I said "<em>if I build a computer control application in Microsoft Visual Studio, I'll just use Visual Studio by itself without the Measurement Studio extension</em>" which got me thinking: that's a good point! What if I went ahead and wrote a <a href="https://newscrewdriver.com/2020/03/30/window-shopping-universal-windows-platform-fluent-design/">standard Windows application with Visual Studio</a>?</body></html></p>

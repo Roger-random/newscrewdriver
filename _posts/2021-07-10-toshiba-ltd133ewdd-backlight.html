@@ -1,0 +1,91 @@
+---
+layout: post
+title: Toshiba LTD133EWDD Backlight
+date: 2021-07-10 12:30:00.000000000 +00:00
+type: post
+post_id: '27550'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Backlight
+- LTD133EWDD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27551'
+  _publicize_job_id: '60582932342'
+  timeline_notification: '1625945420'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/07/10/toshiba-ltd133ewdd-backlight/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Examining the integrated control board on <a href="https://newscrewdriver.com/2021/07/09/dell-xps-m1330-led-backlight/">a Toshiba LTD133EWDD panel I had pulled out of a Dell XPS M1330 laptop</a>, I found no information on communicating with its integrated LED driver chip so I'm going ahead with the backup plan of seeing if I could drive the LEDs directly. [NOTE: This was written before Randy commented with <a rel="noreferrer noopener" href="http://pdf5.datasheet.su/toko-inc-tk61224bq5_6f2153da90.pdf" target="_blank">a link to the datasheet</a>.] First order of business was to remove the LCD pixel array in front of the backlight. A marvel of miniaturization in its day, now I am no longer interested in its 1280x800 pixel resolution.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27556,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-edge-tape.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-edge-tape.jpg?w=1024" alt="" class="wp-image-27556"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A thin strip of black tape around all four edges held the glass sheets in the frame. I admire how it precisely mated up against the edge of the polarizer film. It was either applied by a machine or hands of great skill.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27558,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-pixel-data-connector.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-pixel-data-connector.jpg?w=1024" alt="" class="wp-image-27558"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the tape was removed, the glass LCD array was held only by the high density data connectors. Before I peeled them off, I noticed one item of interest: I see alignment marks that I don't recall seeing on previous LCD arrays I had peeled off in this way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27560,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-lcd-glass-cracked.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-lcd-glass-cracked.jpg?w=1024" alt="" class="wp-image-27560"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>While peeling off the high density pixel data connectors, I was reminded that glass is fragile and easily crack when abused.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27547,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-led-backlight-controller-toko-61224-a33x.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-led-backlight-controller-toko-61224-a33x.jpg?w=1024" alt="" class="wp-image-27547"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the LCD pixel array was removed, I returned to examining the LED backlight connection. I see an eight-conductor connector, but only seven wires in the flexible cable. One of which is thicker than the rest. Based on the experience so far, my first guess are six LED strings in parallel sharing a common current supply but with six individual current sinks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27563,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-backlight-string-test-points.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-backlight-string-test-points.jpg?w=1024" alt="" class="wp-image-27563"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping the circuit board over, I found several sets of six pads on the board. The circular pads look like they were designed for pogo pins on a test rig. The rectangular pads look like they are provisions for decoupling capacitors that were never installed. We could see the top row of six are all connected, consistent with a common supply. The bottom six each correspond to the six current sinks on the connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One interesting novelty was that while the leftmost four connectors are strictly in order, the fifth and six conductors were swapped. So if we count the small vias connecting to the connector on the other side in left-to-right order as 1,2,3,4,5,6. The rectangular pads are in the order of 1,2,3,4,6,5. Perhaps this was merely done to make PCB routing easier, but I'm curious if there's a more profound reason.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another interesting item of note is the surface mounted switch immediately to the right and below these pads. This switch would not have been user-accessible in the laptop. Even a servicing technician would have to peel off a plastic protective layer before this switch could be flipped. What does it do, and why is it important enough to take the hit of manufacturing parts cost and complexity? I can smell a story here but not enough interest to chase it down.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my past LED backlight salvage operations, my next step would be to solder some wires to these points and determine the electrical properties of this string. But now I am armed with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/" target="_blank">a dedicated LED backlight tester</a>, and I could put it to work and probe these points directly. There are indeed six parallel strings of 10 LEDs per string. They each drop approximately 32V at 20mA. This is information I could have determined without the dedicated tester, but having the right tool made the job quick and easy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27551,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-backlight-string-illuminated-by-kt4h.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-backlight-string-illuminated-by-kt4h.jpg?w=1024" alt="" class="wp-image-27551"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I had these backlight details identified, I could store it away for future project. But it also had some auxiliary items I should take care of first, like <a href="https://newscrewdriver.com/2021/07/11/laptop-lid-becomes-lighting-frame/">a nice metal frame</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

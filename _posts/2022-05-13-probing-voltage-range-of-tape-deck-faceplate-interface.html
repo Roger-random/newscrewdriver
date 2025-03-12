@@ -1,0 +1,159 @@
+---
+layout: post
+title: Probing Voltage Range of Tape Deck Faceplate Interface
+date: 2022-05-13 12:30:00.000000000 +00:00
+type: post
+post_id: '30255'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30256'
+  timeline_notification: '1652470220'
+  _publicize_job_id: '72485142184'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/13/probing-voltage-range-of-tape-deck-faceplate-interface/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have on hand electronic circuit boards of the factory stock tape deck unit 86120-08010 from a 1998 Toyota Camry LE. There is a connector between the main board and the faceplate, and I've <a href="https://newscrewdriver.com/2022/05/12/wires-to-probe-toyota-audio-head-unit-86120-08010/">soldered a row of wires</a> so I can take a peek into its inner workings. I thought it might be fun to reuse the faceplate for my own project, creating something that could stand in for the main board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30077,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-connector-labels.jpg?w=1024" alt="" class="wp-image-30077"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thankfully, the faceplate side connector was mostly labeled, including the ground pin which gave me a reference point for measuring all the other wires with a voltmeter. Here's what I found:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: This was my first draft, see <a href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/" target="_blank" rel="noreferrer noopener">the wrap-up post</a> for final draft.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"className":"is-style-stripes"} --></p>
+<figure class="wp-block-table is-style-stripes">
+<table>
+<thead>
+<tr>
+<th>Perfboard</th>
+<th>Connector</th>
+<th>Voltage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>ACC5V</td>
+<td>Steady 5V</td>
+</tr>
+<tr>
+<td>B</td>
+<td>LCD-DO</td>
+<td>Steady 5V</td>
+</tr>
+<tr>
+<td>C</td>
+<td>LCD-DI</td>
+<td>Fluctuates</td>
+</tr>
+<tr>
+<td>D</td>
+<td>LCD-CLK</td>
+<td>Fluctuates</td>
+</tr>
+<tr>
+<td>E</td>
+<td>LCD-CE</td>
+<td>Fluctuates</td>
+</tr>
+<tr>
+<td>F</td>
+<td>(CD-EJE?)</td>
+<td>5V</td>
+</tr>
+<tr>
+<td>G</td>
+<td>ILL</td>
+<td>0V when mainboard ILL is 0V (lights off)<br>12V when mainboard ILL is 12V (lights on)</td>
+</tr>
+<tr>
+<td>H</td>
+<td>(CD-BL?)</td>
+<td>7V when radio is on<br>8V when radio off.</td>
+</tr>
+<tr>
+<td>I</td>
+<td>VOL.CON</td>
+<td>Volume knob potentiometer<br>0V counterclockwise limit<br>5V clockwise limit</td>
+</tr>
+<tr>
+<td>J</td>
+<td>PULS-A</td>
+<td>Quadrature encoder for settings knob.<br>5.1V - 0.1V - 5.1V as knob is turned.</td>
+</tr>
+<tr>
+<td>K</td>
+<td>PULS-B</td>
+<td>Quadrature encoder for settings knob.<br>0.1V - 5.1V - 0.1V as knob is turned.</td>
+</tr>
+<tr>
+<td>L</td>
+<td>GND</td>
+<td>0V reference</td>
+</tr>
+<tr>
+<td>M</td>
+<td>ILL-</td>
+<td>0V when lights off<br>0.7V when lights on</td>
+</tr>
+<tr>
+<td>N</td>
+<td>BL-</td>
+<td>0.7V when radio on<br>7.5V when radio off</td>
+</tr>
+<tr>
+<td>O</td>
+<td>RESET</td>
+<td>0V</td>
+</tr>
+<tr>
+<td>P</td>
+<td>?</td>
+<td>0V</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Notes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>One connector, which I wired to breadboard column P, has no label. It doesn't seem to do much, either. Possibly unused?</li>
+<li>The bottom ~1/3 of two labels were cropped off this silkscreen design. The one I wired to perfboard F might be "CD-EJE", and H might be "CD-BL". But it may as well be "CD-BI" or similar letters with the same top 2/3.</li>
+<li>I was surprised that LCD-DO appears to hold steady at 5V, I expected it to fluctuate during data transfers. [UPDATE: This is expected for Sanyo CCB protocol in absence of event notification.]</li>
+<li>LCD-DI, LCD-CLK, and LCD-CE fluctuates as expected.</li>
+<li>There are two knobs on this control panel. They can be both turned and pressed. Turning the volume knob affects VOL.CON, but the press (radio power on/off) seems absent from this connector. </li>
+<li>Similar story with the settings knob. Turning it affects PULS-A and PULS-B but pressing (select) is absent from the connector.</li>
+<li>I know there is an LCD controller chip on this faceplate circuit board with additional feature to scan for button presses. Perhaps in addition to faceplate buttons it is responsible for reading presses on volume and settings knob? [UPDATE: Hypothesis confirmed.]</li>
+<li>If the LCD controller chip lacks ADC (analog-to-digital conversion) and quadrature decoding, that would explain why the connector has VOL.CON, PULS-A, and PULS-B so something on the mainboard can interpret knob motion.</li>
+<li>Several LEDs scattered throughout the faceplate turn on when ILL is high. Varying ILL between 9V and 12V controls brightness of these LEDs.</li>
+<li>ILL does not control LCD backlight LEDs, whose brightness remains constant. Might the LCD control chip responsible for the backlight as well?</li>
+<li>ILL- is a voltage plane that can be 0.7V higher than the GND plane. Have to keep this in mind when wiring up components, in case a 0.7V difference is problematic. Or ILL and ILL- could be wired separately from digital logic aspect of the circuit.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next step: <a href="https://newscrewdriver.com/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/">find more information</a> on the traffic moving on LCD-DI/DO/CLK/CE pins.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,36 @@
+---
+layout: post
+title: Hackaday Badge Main Menu
+date: 2018-10-18 09:00:13.000000000 +00:00
+type: post
+post_id: '17010'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539878492'
+  _publicize_job_id: '23331183055'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/18/hackaday-badge-main-menu/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When exploring a new codebase, it's a great luxury to also reference it in running form, a luxury I have with the <a href="https://github.com/Hack-a-Day/basic-badge">Hackaday badge code project</a> and a <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">physical badge</a> on hand to see it run. What's the first point of interaction with running code? The main menu! So that's where I decided to start looking at details of the code.</p>
+<p><img class="alignnone size-full wp-image-17012" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-main-menu-straight.jpg" alt="Hackaday Badge Main Menu Straight" width="1024" height="683"></p>
+<p>From the <code>main()</code> function, the main menu is handled by function <code>badge_menu()</code> in file <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/badge.c"><code>badge.c</code></a>. The first thing it calls is <code>showmenu()</code> in the same file which draws everything visible onscreen for the main menu. Including title bar, screen border, menu entries, and the user input prompt. This is a great reference for writing code to output text on screen.</p>
+<p>Most of the code in <code>badge_menu()</code> reads user key presses and builds up the typed command in <code>menu_buff</code>. Upon pressing <code>ENTER</code>, the command is checked against the list of known commands. This is a chunk of code that can easily be recycled for processing user text input.</p>
+<p>When a user enters a command that's none of the recognized list items, the badge selects one of a set of error messages at random. This pseudo-random number is seeded with the standard <code>srand()</code> call using a PIC chip's timer counter value at the time of user's first key press. Seeding with a time value is common practice, but usually done with a real-time clock on the assumption that the current time is unpredictable. Here, the unpredictability comes from the amount of time a human user would take before pushing their first key after powerup, every person has a slightly different reaction time.</p>
+<p>When an user command is recognized, <code>badge_menu()</code> calls into corresponding code to make things happen. The menu entries are straightforward, but there are a series of "easter egg" behavior. Rather than a direct string comparison, which spoils the surprise by embedding the secret code in source code, the responses are actually keyed against a hash of the string.</p>
+<p></body></html></p>

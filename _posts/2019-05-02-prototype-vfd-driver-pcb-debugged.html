@@ -1,0 +1,48 @@
+---
+layout: post
+title: Prototype VFD Driver PCB Debugged
+date: 2019-05-02 12:30:35.000000000 +00:00
+type: post
+post_id: '18428'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+- Projects
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30395930845'
+  timeline_notification: '1556825444'
+  _oembed_d391022424f3ccc2762ec6e9591e1718: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Made
+    some little eyes on the vfd that <a href="https://twitter.com/hashtag/regorlas?src=hash&amp;ref_src=twsrc%5Etfw">#regorlas</a>
+    and I are working on. They&#39;re blinky! <a href="https://twitter.com/hashtag/notaclock?src=hash&amp;ref_src=twsrc%5Etfw">#notaclock</a>
+    <a href="https://t.co/xGeNXS9GKf">pic.twitter.com/xGeNXS9GKf</a></p>&mdash; Emily
+    Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1124169724969963520?ref_src=twsrc%5Etfw">May
+    3, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_d391022424f3ccc2762ec6e9591e1718: '1556913335'
+  _thumbnail_id: '18326'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/02/prototype-vfd-driver-pcb-debugged/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>We now <a href="https://newscrewdriver.com/2019/04/23/salvaged-vfd-power-supply-and-debugging/">pick up where we left off</a> narrowing down a problem with our prototype vacuum fluorescent display (VFD) driver board. We had determined that segment H was the key. When segment H was illuminated, everything else works as expected. But when segment H was dark, segments A-G all became dark as well.</p>
+<p><img class="alignright size-medium wp-image-18429" src="https://newscrewdriver.com/wp-content/uploads/2019/05/uln2003.png?w=460" alt="ULN2003" width="230" height="300">Since segments A-G were all controlled by a single ULN2003 chip, we started looking closely at every solder joint on that chip. We were looking for an undesirable solder bridge or other electrical connection to any wire relating to segment H, which was managed by another ULN2003 chip.</p>
+<p>The two ULN2003 chips were immediately adjacent to each other, meaning A-G were pins 1-7 on one chip, and segment H was pin 1 on the next chip. The <a href="https://newscrewdriver.com/2019/04/16/chip-packing-experiment-on-prototype-vfd-driver-pcb/">densely packed nature</a> of these chips meant pin 1 of segment H was immediately adjacent to the emitter (E) and common (COM) pins of the ULN2003 controlling A-G.</p>
+<p>When describing the symptoms, [David] correctly diagnosed the problem must be an electrical connection between segment H pin 1 of one ULN2003, and pin COM of the adjacent ULN2003. Using a probe we verified this was indeed the case - those two pins should have no connection but they are electrically connected. However, we could not find where this connection was taking place. No solder bridges were found and no accidentally soldered wires were found.</p>
+<p>Eventually [Emily] devised a hack: because a VFD is not an inductive load, we didn't really need the COM pin at all. It was only soldered to the board for physical mounting, that solder joint has proven to be more trouble than it was worth. To bypass the undesired connection, wherever it might be, it is easiest to clip off the COM pin from that ULN2003. Maneuvering a cutter within the packed space, [Emily] snipped off the leg.</p>
+<p>After that, every aspect of our prototype VFD driver was fully functional as planned. [Emily]'s hack was totally unconventional, but very effective!</p>
+<p></body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: Researching Simulation Speed in Gazebo vs. Unity
+date: 2019-05-31 12:30:13.000000000 +00:00
+type: post
+post_id: '18562'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Unity
+tags: []
+meta:
+  _thumbnail_id: '18560'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31377432803'
+  timeline_notification: '1559331079'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/31/researching-simulation-speed-in-gazebo-vs-unity/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>In order to train reinforcement learning agents quickly, we want our training environment to provide high throughput. There are many variables involved, but I started looking at two of them: how fast it would be to run a single simulation, and how easy it would be to run multiple simulation in parallel.</p>
+<p>The Gazebo simulator commonly associated with ROS research projects has never been known for its speed. Gazebo environment for the NASA Space Robotic Challenge was infamous for slowing far below real time speed. Taking over 6 hours to simulate a 30 minute event. There are ways to speed up Gazebo simulation, but <a href="https://answers.ros.org/question/277860/accelerating-ros-simulation-to-faster-than-real-time/">this forum thread</a> implies it's unrealistic to expect more than 2-3 times as fast as real time speed.</p>
+<p>In contrast, Unity simulation can be cranked all the way up to 100 times real time speed. It's not clear where the maximum limit of 100 comes from, but it is documented under <a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Limitations.md"><code>limitations.md</code></a>. Furthermore, it doesn't seem to be a theoretical limit no one can realistically reach - <a href="https://github.com/Unity-Technologies/ml-agents/issues/626">at least one discussion</a> on Unity ML Agents indicate people do indeed crank up time multiplier to 100 for training agents.</p>
+<p>On the topic of running simulations in parallel, with Gazebo such a resource hog it is difficult to get multiple instances running. This <a href="https://answers.ros.org/question/193062/how-to-run-multiple-independent-gazebo-instances-on-the-same-machine/">forum thread</a> explains it is possible and how it could be done, but at best it still feels like shoving a square peg in a round hole and it'll be a tough act to get multiple Gazebo running. And we haven't even considered the effort to coordinate learning activity across these multiple instances.</p>
+<p>Things weren't much better in Unity until recently. <a href="https://blogs.unity3d.com/2019/04/15/unity-ml-agents-toolkit-v0-8-faster-training-on-real-games/">This announcement blog post</a> describes how Unity has just picked up the ability to run multiple simulations on a single machine and, just as importantly, coordinate learning knowledge across all instances.</p>
+<p>These bits of information further cements Unity as something I should strongly consider as my test environment for playing with reinforcement learning. Faster than real time simulation speed and option for multiple parallel instances are quite compelling reasons.</p>
+<p> </p>
+<p></body></html></p>

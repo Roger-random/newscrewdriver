@@ -1,0 +1,116 @@
+---
+layout: post
+title: Compiling “Getting Started with Angular Signals” Code Lab Locally
+date: 2023-05-29 12:30:00.000000000 +00:00
+type: post
+post_id: '36934'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36912'
+  timeline_notification: '1685388604'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685477935
+  _publicize_job_id: '84467639059'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/29/compiling-getting-started-with-angular-signals-code-lab-locally/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was easy to follow "Getting Started with Angular Signals" tasks with the online StackBlitz development environment, but as a practice exercise I wanted to get it up and running on my own computer. This turned out to be more challenging than expected, with <a href="https://newscrewdriver.com/2023/05/28/installing-getting-started-with-angular-signals-code-lab-locally/">several problems I had to fix</a> before I could install dependencies on my computer with "<code>npm install</code>".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Successful installation of project dependencies moved me to the next part of the challenge: Angular project issues. Running "<code>ng serve</code>" resulted in the following error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Error: Schema validation failed with the following errors:
+  Data path "" must have required property 'tsConfig'.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, there was no filename associated with this error message, so it took a lot of wrong turns before I found the answer. I compared files between my Compass project and this demo project and eventually figured out this was referring to the <code>"build"/"options"</code> section in <code>angular.json</code>. In my Compass project, I had a "<code>tsConfig</code>" entry pointing to a file <code>tsconfig.app.json</code>. This code lab exercise project's <code>angular.json</code> is missing that entry and missing the file <code>tsconfig.app.json</code>. I copied both from my Compass project to reach the next set of errors:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Error: src/cipher/cipher.ts:1:21 - error TS2305: Module '"@angular/core"' has no exported member 'effect'.
+
+1 import { Component, effect, OnInit } from '@angular/core';</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is just the first of several errors, all complaining that the newfangled Angular signal mechanisms <code>signal</code>, <code>computed</code>, and <code>effect</code> were missing from <code>@angular/core</code>. Well, of course they wouldn't be. The <code>packages.json</code> file specified Angular 15, and signals were one of the new touted features of Angular 16. Running "<code>ng update</code>" I was informed of the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Using package manager: npm
+Collecting installed dependencies...
+Found 25 dependencies.
+    We analyzed your package.json, there are some packages to update:
+    
+      Name                               Version                  Command to update
+     --------------------------------------------------------------------------------
+      @angular/cdk                       15.2.9 -&gt; 16.0.1         ng update @angular/cdk
+      @angular/cli                       15.2.8 -&gt; 16.0.2         ng update @angular/cli
+      @angular/core                      15.2.9 -&gt; 16.0.3         ng update @angular/core
+      @angular/material                  15.2.9 -&gt; 16.0.1         ng update @angular/material</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I ran "<code>ng update @angular/cdk @angular/cli @angular/core @angular/material</code>". It was mostly successful but there was one error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Migration failed: Tsconfig cannot not be read: /src/tsconfig.spec.json
+  See "/tmp/ng-QdC8Cc/angular-errors.log" for further details.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Judging by the "<code>spec.json</code>" suffix this has something to do with Angular testing and I will choose to ignore that error. Now when I run "ng serve" I no longer get complaints about missing Angular signal mechanisms. I get syntax errors instead:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>./src/cipher/guess/letter-guess.ts-2.css?ngResource!=!./node_modules/@ngtools/webpack/src/loaders/inline-resource.js!./src/cipher/guess/letter-guess.ts - Error: Module build failed (from ./node_modules/postcss-loader/dist/cjs.js):
+SyntaxError
+
+(17:5) /workspaces/codelabs/src/cipher/guess/letter-guess.ts Unclosed block
+
+  15 |     }
+  16 | 
+&gt; 17 |     p {
+     |     ^
+  18 |       font-size: clamp(16px, 3vw, 20px);
+  19 |       margin: 0;
+
+
+./src/secret-message/secret-message.ts-5.css?ngResource!=!./node_modules/@ngtools/webpack/src/loaders/inline-resource.js!./src/secret-message/secret-message.ts - Error: Module build failed (from ./node_modules/postcss-loader/dist/cjs.js):
+SyntaxError
+
+(87:10) /workspaces/codelabs/src/secret-message/secret-message.ts Unknown word
+
+  85 |       font-size: clamp(10px, 3vw, 20px);
+  86 | 
+&gt; 87 |       // color: #c0e0c7;
+     |          ^
+  88 |       text-shadow: -1px -1px 1.2px rgb(255 255 255 / 50%), 1px 1px 1px rgb(1 1 1 / 7%);
+  89 |       background: transparent;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This sample project has component CSS as string literals inside the TypeScript source code files. This is a valid approach, but these bits of CSS were broken. For the first one, the paragraph style didn't have a closing brace, exactly as the error message complained. Adding a closing brace resolved that error. The second stylesheet error used double-slash comment style which isn't how CSS comments work. Changing that over to <code>/* comment */</code> style resolved that error. After all of those changes, the little cipher app is up and running onscreen with some visual errors relative to what I saw for the same project StackBlitz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>How did StackBlitz run despite these problems? I'm going to guess that it has its own default <code>tsconfig</code> and did not require one to be specified. In the repository <code>package.json</code> I see that <code>@angular/core</code> was specified as "<code>next</code>". Apparently StackBlitz interpreted that to be something new that included signals, whereas my local machine decided "<code>next</code>" is the same "<code>15.2.9</code>" as everything else which did not. As for the CSS syntax errors... I have no guesses and that remains a mystery to me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But at least now I have something running locally, and I got a useful exercise understanding and fixing Angular build errors. Now onward to <a href="https://newscrewdriver.com/2023/05/30/running-getting-started-with-angular-signals-code-lab-locally/">fixing runtime errors</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">My code changes are made in <a href="https://github.com/Roger-random/codelabs/tree/signals-get-started">my fork of the code lab repository in branch <code>signals-get-started</code></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

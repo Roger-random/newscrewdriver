@@ -1,0 +1,112 @@
+---
+layout: post
+title: Notes on "Understanding Angular"
+date: 2023-03-03 12:30:00.000000000 +00:00
+type: post
+post_id: '34166'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22766'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677992646
+  _publicize_job_id: '82001140927'
+  timeline_notification: '1677875405'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/03/notes-on-understanding-angular/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph {"placeholder":"What's your favorite cartoon?"} --><html><body></p>
+<p>My first time through Angular framework's documentation section had focused on "Getting started" and "Tutorial" sections, just to get a toehold on things. Due to a firehose of information about this large framework, I didn't retain very much. Now I'm taking a second pass through documentation, <a href="https://newscrewdriver.com/2023/03/02/notes-on-codecademy-learn-intermediate-typescript-and-npm/">armed with more knowledge </a>and experience to understand more of it. I <a href="https://newscrewdriver.com/2022/12/01/learning-plan-for-angular-round-2/">drew up a tentative plan</a> earlier, but I've already decided to deviate from that plan. After I read through the StackBlitz tutorial, but before I started hands-on with "Tour of Heroes" tutorial again, I decided to read the documentation section "<a rel="noreferrer noopener" href="https://angular.io/guide/understanding-angular-overview" target="_blank">Understanding Angular</a>" whose overview page started with this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p>To understand the capabilities of the Angular framework, you need to learn about the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Components</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Templates</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Directives</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Dependency injection<br>The topics in this section explain these features and concepts, and how you can use them.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list -->
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>I admire this goal, but the reality was I lacked prerequisite knowledge to understand all of it. This is fine! Every time I understand a little more. At a rough guess, I would say I understood and retained about 5% of this information after my first effort, and this second effort had roughly 30% retention.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Live Code Everywhere</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The length and quality of documents in this section vary greatly, probably reflecting different authors contributing from their own perspectives. But at the end of the day, developers want to see code and we have them. Most (all?) of the topics included links to sample code in both live-running form (running on StackBlitz) as well as downloadable source code example. Some go much further, for example "<a rel="noreferrer noopener" href="https://angular.io/guide/component-interaction" target="_blank">component interaction</a>" goes as far as including test code. And in several cases, sample code covered concepts that were not covered on written pages, so it's always worth checking out that link.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Nonlinear Organization</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sometimes my confusion is not from missing prerequisite knowledge, but counterintuitive organization of information. For example: Under the <a rel="noreferrer noopener" href="https://angular.io/guide/binding-overview" target="_blank">binding section</a>, Property binding is the next-to-last item on the list yet it is listed as prerequisite by the second (attribute binding) and third (class and style binding) documents. To make sense of everything I have to jump around this page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Attributes vs. Properties</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Several documents in the binding section emphasized that we bind to properties and not attributes. But they didn't explain what that difference meant! Looking outside this site, I found <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/6003819/what-is-the-difference-between-properties-and-attributes-in-html" target="_blank">this StackOverflow thread</a> which included a gem of an explanation: "<em>When writing HTML source code, you can define </em><strong>attributes </strong><em>on your HTML elements. Then, once the browser parses your code, a corresponding DOM node will be created. This node is an object, and therefore it has </em><strong>properties</strong><em>.</em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Angular Directive Long Form</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>As an Angular beginner I can see Angular directives as a very powerful mechanism, but the syntax can be tough for me to decipher. Eventually I learned this was because we frequently see shorthands for using directives, and the structure is easier to comprehend when we see the "long form". This snippet was shown as a *ngFor "long form", and it was quite illuminating!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&lt;div *ngFor="let product of products"&gt;
+  &lt;h3&gt;
+    &lt;a [title]="product.name + ' details'"&gt;
+      {{ product.name }}
+    &lt;/a&gt;
+  &lt;/h3&gt;
+&lt;/div&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was not as concise as the shorthand, but much easier for me to decipher what's going on. Compare the above to <a rel="noreferrer noopener" href="https://angular.io/guide/template-reference-variables#template-input-variable" target="_blank">another example of ngFor directive</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&lt;ul&gt;
+  &lt;ng-template ngFor let-hero [ngForOf]="heroes"&gt;
+    &lt;li&gt;{{hero.name}}
+  &lt;/ng-template&gt;
+&lt;/ul&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>(Note that these are two different examples of ngFor and they do different things, because I copy/pasted them from different sections of Angular documentation. I'm only using them to compare syntax.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Ready for Round 2</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After reading through "Understanding Angular" I can't say I totally understand Angular yet, but I have a much better understand of how it goes about its business. I expect some of this information to be reinforced as I <a href="https://newscrewdriver.com/2023/03/04/angular-tour-of-heroes-tutorial-round-2/">go through their "Tour of Heroes" tutorial again</a>, because I think I'll recognize them the next time around and have a better idea of their usage context.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

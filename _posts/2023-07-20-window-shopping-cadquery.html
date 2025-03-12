@@ -1,0 +1,49 @@
+---
+layout: post
+title: Window Shopping CadQuery
+date: 2023-07-20 13:10:18.000000000 +00:00
+type: post
+post_id: '37992'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- occt
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37996'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689969665
+  timeline_notification: '1689883821'
+  _publicize_job_id: '85921153226'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/20/window-shopping-cadquery/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I started learning about FreeCAD, I also <a href="https://newscrewdriver.com/2023/07/19/learning-about-opencascade-technology/">learned about its 3D modeling core OpenCascade Technology (OCCT)</a>. OCCT is not exclusive to FreeCAD and it forms the core of several other open-source CAD solutions, each implementing a different design intent. In the time I've been keeping my eyes open, I've come across several projects that might be interesting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First up on this survey is <a href="https://cadquery.readthedocs.io/">CadQuery</a>, a Python API on top of OCCT. (<a href="https://hackaday.com/2022/02/04/cadquery-comes-of-age/">Hackaday post</a>) Which is very interesting considering FreeCAD already has a Python API. From a brief look, those two APIs have different intentions on how to expose OCCT capability to code-based construction. <a href="https://wiki.freecad.org/FreeCAD_Scripting_Basics">FreeCAD's Python API</a> primarily enable macros, scripts, and extensions to supplement projects created in FreeCAD UI. CadQuery removes the need for graphical UI entirely.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But this is not the whole picture. It's also possible to <a href="https://wiki.freecad.org/Headless_FreeCAD">run FreeCAD without an UI</a>, so I will have to dig deeper to really understand the tradeoffs between their two approaches. CadQuery actually started out as something built within FreeCAD. CadQuery became its own independent project when the team started feeling constrained by FreeCAD limitations around selection. That tells me CadQuery is working to get away from the well-known <a href="https://wiki.freecad.org/Topological_naming_problem">FreeCAD problem of topological naming</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Being code-centric means a CadQuery design is a Python program and can take advantage of all the software development tools available. Which satisfied my <a href="https://newscrewdriver.com/2022/12/17/sawppy-dreams-of-collaborative-cad/">CAD wishlist item</a> for Git-like ability to fork, pull request, etc. The problem is "diff", which will show the Python code changes but not a visual representation of those changes. This can probably be solved by using CadQuery to process the before/after views and render the difference between them. (Such a tool may already exist.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since CadQuery is not dependent on any graphical user interface, there are multiple ways to play with it. CQ-editor is a native desktop application letting people use CadQuery in a similar manner to OpenSCAD. Another way is to work with CadQuery Python code in a Jupyter notebook, giving it a browser-based interface. And the one that really caught my eye: cq-directive, which runs as part of the Sphinx documentation generator. In theory this allows diagrams in documentation to stay in sync with the CadQuery design files. Keeping CAD in sync with documentation would resolve one of my recurring headaches with Sawppy documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CadQuery looks like a very promising venue for investigation, but trying to go hands-on was stymied by Python versioning support. As of this writing, the latest public version of Python is 3.11 and it's been around long enough most infrastructure like Jupyter Lab has updated. However, CadQuery is still tied to 3.10 and not expected to move up to 3.11 until later this year. Version conflict is nothing new in the Python world and can be solved with a bit of time, but I chose to put CadQuery on hold and read up on other options <a href="https://newscrewdriver.com/2023/07/21/window-shopping-cascade-studio/">starting with Cascade Studio</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

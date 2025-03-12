@@ -1,0 +1,40 @@
+---
+layout: post
+title: Z-Axis Servo and Battery Box
+date: 2019-09-14 12:30:30.000000000 +00:00
+type: post
+post_id: '19552'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19543'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '35287325434'
+  timeline_notification: '1568489434'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/14/z-axis-servo-and-battery-box/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I plan to <a href="https://newscrewdriver.com/2019/09/13/wiring-for-both-options-of-z-axis-motion/">take advantage of a feature in Grbl ESP32</a>, where a RC hobby servo can take the place of a stepper motor for any supported axis. It won't be nearly as precise, or have the same range of motion, but it's a good option for specific situations including tests.</p>
+<p>The first part of this task was, obviously, to <a href="https://github.com/bdring/Grbl_Esp32/blob/master/Grbl_Esp32/servo_axis.h">find it in the code repository</a> and know how to compile with this option active. The second is to wire up my ESP32 dev board to emit the 1-2 ms RC control signal at its 3.3V output and convert that to a 5V signal courtesy of the USB port. Then it's time to connect a servo.</p>
+<p>But not directly, because USB doesn't supply very much current and would not be a good source for servo motor power. Tasks with high stress or moving quickly will draw more than what USB can supply and cause voltage level to sag. Possibly causing the ESP32 to brown out and restart which would ruin everything.</p>
+<p>What I needed for a servo test was a separate power supply. I started digging through my collection of salvaged AC to DC power transformer bricks looking for one in an appropriate voltage range before I decided I was overthinking things. This isn't going to be the long term solution, it's just for a short test. I don't need a long term power source.</p>
+<p>RC hobby servos are originally designed to run off 4.8-6V of a four-cell pack of batteries, tracing its lineage back to the age of NiCad radio receiver packs. This is roughly the same voltage as a commodity AA battery cell, so I pulled from my <a href="https://amzn.to/2nNkTnA" target="_blank" rel="noopener">stock of 4xAA battery holders</a> (*) for this test. They even have an integrated on/off switch for convenience.</p>
+<p>The ground wire was connected to the servo ground wire as well as ESP32 ground. Servo power wire is supplied by this 4xAA tray, and servo control signal from the 3-pin servo header of the prototype controller board. And finally, the servo gets a 3D printed bracket to clip on to the gantry structure's 40mm extrusion beams.</p>
+<p>The Z-axis test arrangement is now complete. But before I wrap up this session of perf board soldering, I wired up provisions for <a href="https://newscrewdriver.com/2019/09/15/wire-up-hardware-control-switches/">hardware control switches</a>.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

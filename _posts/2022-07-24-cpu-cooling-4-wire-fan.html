@@ -1,0 +1,61 @@
+---
+layout: post
+title: CPU Cooling 4-Wire Fan
+date: 2022-07-24 12:30:00.000000000 +00:00
+type: post
+post_id: '21139'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- PC
+tags:
+- Cooling Fan
+meta:
+  _oembed_b94328a334c7a547b759549116b5a466: "{{unknown}}"
+  _last_editor_used_jetpack: block-editor
+  _oembed_2c28dda52b691ed4a93cf8251fd2c30f: "{{unknown}}"
+  _thumbnail_id: '31621'
+  timeline_notification: '1658691053'
+  _publicize_job_id: '75069455024'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/24/cpu-cooling-4-wire-fan/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Building a PC from parts includes keeping cooling in mind. It started out very simple: every cooling fan had two wires, one red and one black. Put +12V on the red wire, connect black go ground, done. Then things got more complex. Earlier I poked around with a fan that had a third wire, which proved to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/08/computer-cooling-fan-tachometer-wire/" target="_blank">be a tachometer wire</a> for reading current fan speed. The obvious follow-up is to examine cooling fans with four wires. I first saw this with CPU cooling fans and, as a PC builder, all I had to know was how to plug it in the correct orientation. But now as an electronics tinkerer I want to know more details about what those wires do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A little research found the four-wire fan system was something Intel devised. Several sources cited URLs on http://FormFactors.org which redirects to Intel's documentation site. Annoyingly, Intel does not make the files publicly available, blocking it with a registered login screen. I registered for a free account, and it still denied me access. (The checkmark next to the user icon means I've registered and signed in.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31799,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/intel-motherboard-documentation-inaccessible.png?w=1024" alt="" class="wp-image-31799"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Quite unsatisfying. But even if I can't get the document from official source, there are unofficial copies floating around on the web. I found one such copy, which I am not going to link to because the site liberally slathered the PDF with advertisements and that annoys me. Here is the information on the title page which will help you find your own copy. Perhaps even a more updated revision!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>4-Wire Pulse Width Modulation
+(PWM) Controlled Fans
+Specification
+September 2005
+Revision 1.3</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading through the specification, I learned that the four-wire standard is backwards compatible with three-wire fans as those three wires are the same: GND, +12V supply, and tachometer output. The new wire is for a PWM control signal input. Superficially, this seems very similar to controlling fan speed by PWM modulating the +12V supply, except now the power supply stays fixed at +12V and the PWM MOSFET is built into the fan. How is this better? What real-world problems are solved by using an internal PWM MOSFET? The spec did not explain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>According to spec, the PWM control signal should be running at 25kHz. Fan manufacturers can specify a minimum duty cycle. Fan speed for duty cycle less than the minimum is open for interpretation by different implementations. Some choose to ignore lower duty cycles and stay running at minimum, some interpret it as a shutoff signal. The spec forbids pull-up or pull-down resistor on the PWM signal line external to the fan, but internal to the fan there is a pull-up resistor. I interpret this to mean that if the PWM line is left floating, it will be pulled up to emulate 100% duty cycle PWM.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading the specification gave me the theory of operation for this system, now it's time to play with some of these fans to <a href="https://newscrewdriver.com/2022/07/25/esp8266-controlling-4-wire-cpu-cooling-fan/">see how they behave in practice</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

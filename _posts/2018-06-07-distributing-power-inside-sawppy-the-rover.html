@@ -1,0 +1,42 @@
+---
+layout: post
+title: Distributing Power Inside Sawppy the Rover
+date: 2018-06-07 09:00:40.000000000 +00:00
+type: post
+post_id: '16271'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- MP1584
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '18712882659'
+  timeline_notification: '1528387827'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/06/07/distributing-power-inside-sawppy-the-rover/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that <a href="http://sawppy.com">Sawppy</a> has a big battery pack sticking out the back, the next task is to think about how to distribute that power to internal components. This is not yet a big problem in Sawppy's current configuration because we only have two things right now: the Raspberry Pi and the serial bus servo controller. But since Sawppy has ambition to grow in sophistication, it's worth thinking about the problem while it's still easy.</p>
+<p>With two components, Sawppy already has two different voltage level requirements. The Raspberry Pi 3 requires <a href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/power/README.md">regulated 5 volts up to 2.5 amps</a> though fortunately that's a problem with <a href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/">a known solution</a>. The serial bus servos may draw up to 1 amp each. With ten of them on board, the potential maximum draw would exceed the capability of the voltage regulator used for the Pi. Fortunately the servos are OK with direct 2-cell lithium cell power so there's no need to find a beefy voltage regulator.</p>
+<p>One solution for rover power is to create a master power supply module that can regulate and deliver power required by each component. But at this point in Sawppy's evolution, it's too early to know what components never mind what power they want. It's better to go with a distributed system where raw battery power is sent out and each endpoint is responsible for its own power regulation. This will mean lots of duplication, but it also offers freedom to swap things in and out for experimentation.</p>
+<p>For the moment, that means the existing solution for Raspberry Pi will be used. That solves the electrical problem but physical robustness leaves something to be desired. We can't leave wires dangling by their solder joints!</p>
+<p><img class=" size-full wp-image-16272 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/05/flappy-pi-power.jpg" alt="Flappy Pi Power" width="1024" height="883"></p>
+<p>A 3D-printed enclosure was designed to hold both the step-down voltage converter and the micro-USB plug used to interface with the Raspberry Pi. They are now connected by a short segment of rigid wire, eliminating movement and a potential point of failure. Power input wires for the voltage converter now have a little bit of help against physical forces from the enclosure. It's not full and proper strain relief but it's a start.</p>
+<p><img class=" size-full wp-image-16273 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/05/converter-enclosure-open.jpg" alt="Converter Enclosure - open" width="1024" height="312"></p>
+<p>The two halves of the enclosure are held with zip-ties. Again, not a full and proper solution but much better than dangling wires and bare circuit boards. It'll be good enough while Sawppy evolves.</p>
+<p><img class=" size-full wp-image-16274 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/05/converter-enclosure-closed.jpg" alt="Converter Enclosure - closed" width="1024" height="513"></p>
+<p></body></html></p>

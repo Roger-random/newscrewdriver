@@ -1,0 +1,65 @@
+---
+layout: post
+title: Brief Look at a LinuxCNC Pendant
+date: 2022-12-24 12:30:00.000000000 +00:00
+type: post
+post_id: '20766'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- Projects
+tags:
+- XY Stage
+meta:
+  _oembed_64607d0a532ca44c62a47b92b8d79c2c: "{{unknown}}"
+  _oembed_2095980af6ca655488124b04935d4bf9: "{{unknown}}"
+  _oembed_cda75c2af5544888175125624dc7e776: "{{unknown}}"
+  _thumbnail_id: '20799'
+  _last_editor_used_jetpack: block-editor
+  _oembed_b0e9733c181c92fca2da21ad1c3bbfde: "{{unknown}}"
+  _oembed_1455e5834db132d084d880b2bf31f3b6: "{{unknown}}"
+  _oembed_e123fbe1b239c01778deb1ad4acb4470: "{{unknown}}"
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672039530
+  _publicize_job_id: '79937433291'
+  timeline_notification: '1671913822'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/24/brief-look-at-a-linuxcnc-pendant/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Trying to build a little CNC is definitely a learn-as-I-go project. <a href="https://newscrewdriver.com/2022/12/23/moving-cnc-spindle-control-to-equipment-panel/">Moving the motor control box</a> was a simple (though necessary) mechanical change, but not the only idea prompted by initial test runs. I also thought it would be nice to have a handheld pendant to help with machine setup, instead of going to the laptop all the time. I got a chance to look over a CNC pendant to see how I might integrate one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This particular unit was purchased from <a rel="noreferrer noopener" href="https://www.ebay.com/itm/XHC-CNC-Mach3-USB-MPG-pendant-Handwheel-4-Axis-LHB04B-Controller-Ship-from-USA/174154809978" target="_blank">this eBay vendor listing</a>, but there are many other similar listings across different online marketplaces. Judging by this listing's title, the popular keyword salad included: CNC Mach3 USB MPG Pendant Handwheel. I knew what CNC, USB, pendant and handwheel referred to. MPG in this context means "Manual Pulse Generator" referring to the handwheel that generates pulses to signal the CNC controller to move individual steps. And finally, <a rel="noreferrer noopener" href="https://www.machsupport.com/software/mach3/" target="_blank">Mach3 is a Windows software package</a> that turns a PC into CNC machine controller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/08/29/perforated-board-iteration-of-grbl-esp32-control/" target="_blank">first draft CNC controller</a> was built on an ESP32 without USB host capability, so there's little hope of integrating this USB pendant. The most likely path would involve <a rel="noreferrer noopener" href="https://www.linuxcnc.org/" target="_blank">LinuxCNC</a>, a freeware alternative to Mach3. Poking around documentation for control pendants, the <a rel="noreferrer noopener" href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Hooking_Up_A_MPG_Pendant" target="_blank">first hit was this link</a> which seems to be talking about units that connected via parallel port. Follow-up searches kept <a rel="noreferrer noopener" href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Using_A_XHC-HB04_Wireless_MPG_Pendant" target="_blank">coming across this link</a> for wireless pendants which I didn't think was relevant. After coming across it for the fifth or sixth time, I decided to skim the page and saw that it also included information about a wired USB pendant. It's not a direct match, though. Here's information from Ubuntu's <code>dmesg</code> tool after I plugged in this pendant.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>[ 218.491640] usb 1-1: new full-speed USB device number 2 using xhci_hcd<br>[ 218.524920] usb 1-1: New USB device found, idVendor=10ce, idProduct=eb93<br>[ 218.524926] usb 1-1: New USB device strings: Mfr=1, Product=0, SerialNumber=0<br>[ 218.524931] usb 1-1: Manufacturer: KTURT.LTD<br>[ 218.538131] generic-usb 0003:10CE:EB93.0004: hiddev0,hidraw3: USB HID v1.10 Device [KTURT.LTD] on usb-0000:00:10.0-1/input0</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The key here are USB identifiers idVendor and idProduct, 0x10CE and 0xEB93. I could change those values in the associated udev rule:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>ATTRS{idVendor}=="10ce", ATTRS{idProduct}=="eb93", MODE="666", OWNER="root", GROUP="users"</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that was not enough. I dug deeper to <a href="https://github.com/LinuxCNC/linuxcnc/blob/2.8/src/hal/user_comps/xhc-hb04.cc">find relevant source code</a> and it is explicitly looking for idVendor:idProduct of 0x10CE:0xEB70.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>dev_handle = <span class="pl-c1">libusb_open_device_with_vid_pid</span>(ctx, <span class="pl-c1">0x10CE</span>, <span class="pl-c1">0xEB70</span>);</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oh well, getting this to run would go beyond just configuration files, there will need to be code changes and recompiles. Looks like some people are already looking at it, a search for eb93 <a rel="noreferrer noopener" href="https://forum.linuxcnc.org/10-advanced-configuration/32516-whb04b-6-manual-pulse-coder" target="_blank">found this thread</a>. I don't know enough LinuxCNC to contribute or even understand what they are talking about. I returned this USB pendant to its owner and set this idea aside. There are plenty of CNC pendant offerings out there I can revisit later, some of which are even bundled with <a href="https://newscrewdriver.com/2022/12/25/window-shopping-rattmmotor-cnc-controller-with-digital-dream/">an entire CNC control package</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

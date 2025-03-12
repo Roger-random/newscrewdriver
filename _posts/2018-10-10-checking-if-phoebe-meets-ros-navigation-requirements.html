@@ -1,0 +1,42 @@
+---
+layout: post
+title: Checking If Phoebe Meets ROS Navigation Requirements
+date: 2018-10-10 09:00:38.000000000 +00:00
+type: post
+post_id: '16976'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23045267307'
+  timeline_notification: '1539187278'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/10/checking-if-phoebe-meets-ros-navigation-requirements/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Now that basic coordinate transform frames have been configured with help of URDF and robot state publisher, I moved on to the next document: <a href="http://wiki.ros.org/navigation/Tutorials/RobotSetup">robot setup page</a>. This one is actually listed slightly out of order list item on <a href="http://wiki.ros.org/navigation">ROS navigation page</a>, third behind the <a href="http://wiki.ros.org/navigation/Tutorials/Navigation%20Tuning%20Guide">Basic Navigation Tuning Guide</a>. I had started reading the "Tuning Guide" and saw that, in that introduction, the tuning guide assumes people have read the <a href="http://wiki.ros.org/navigation/Tutorials/RobotSetup">robot setup page</a>. It's not clear why they are out of order, but clearly robot setup needs to come first.</p>
+<p>Right up front in Section 1 "Robot Setup" was a very helpful diagram labelled "Navigation Stack Setup" showing major building blocks for an autonomously navigating ROS robot. Even better, these blocks are color-coded as to their source. White blocks are part of the ROS navigation stack, gray parts are optional components outside of that stack, and blue indicates robot-specific code to interface with navigation stack.</p>
+<p>[caption id="attachment_16977" align="alignnone" width="1413"]<img class="alignnone size-full wp-image-16977" src="https://newscrewdriver.com/wp-content/uploads/2018/10/overview_tf.png" alt="overview_tf" width="1413" height="578"> Navigation Stack Setup diagram from ROS documentation[/caption]</p>
+<p>This gives me a convenient checklist to make sure Phoebe has everything necessary for ROS navigation. Clockwise from the right, they are:</p>
+<ul>
+<li>Sensor source - check! Phoebe has a Neato LIDAR publishing laser scan sensor messages.</li>
+<li>Base controller - check! Phoebe has a Roboclaw ROS node executing movement commands.</li>
+<li>Odometry source - check! This is also provided by the Roboclaw ROS node reading from encoders.</li>
+<li>Sensor transforms - check! This is what we just updated, from a hard-coded published transform to one published by robot state publisher based on information in Phoebe's URDF.</li>
+</ul>
+<p>That was the easy part. Section 2 was more opaque to this ROS beginner. It gave an overview of the configuration necessary for a robot to run navigation, but the overview assumes a level of ROS knowledge that's at the limit of what I actually have in my head right now. It'll probably take a few rounds of trial and error before I get everything up and running.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154337-ros-navigation-requirements">Hackaday.io</a>)</body></html></p>

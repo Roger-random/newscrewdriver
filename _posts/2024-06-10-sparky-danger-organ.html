@@ -1,0 +1,53 @@
+---
+layout: post
+title: Sparky Danger Organ
+date: 2024-06-10 01:47:38.000000000 +00:00
+type: post
+post_id: '43738'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ignition coil
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43731'
+  _publicize_job_id: '95316665925'
+  firehose_sent: '1718009312'
+  timeline_notification: '1718009312'
+  wordads_ufa: u:wpcom-ufa-v4:1718746252
+  _elasticsearch_data_sharing_indexed_on: '2024-06-18 21:30:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/10/sparky-danger-organ/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm playing around with a retired Denso ignition coil-on-plug pack. After gaining a <a href="https://newscrewdriver.com/2024/06/09/denso-ignition-coil-on-plug-module-on-workbench/">marginally better understanding of its limitations</a>, I will convert my test circuit to a proof of concept discussed with my friend Emily Velasco (who gave me this thing to play with): make it into a silly music instrument I've named Sparky Danger Organ.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This ignition coil came out of a Toyota Sienna's V6 engine which probably redlines somewhere around 7000 RPM. At 7200 RPM this coil would be firing sixty times a second, but 60Hz is on the low side for music-making. So my workbench experiments were to find out how much faster I can drive this thing and I think it's somewhere between 1 kHz and 1.5 kHz. (There isn't an exact number because sparks fade out rather than abruptly cut off.) But judging from <a href="https://en.wikipedia.org/wiki/Piano_key_frequencies">Wikipedia's list of piano notes and their frequencies</a>, even a limit of 1kHz should be enough to represent an interesting range of music notes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then started looking for music I can map to frequencies. I found a Blogspot page <em><a href="http://nickleusmusic.blogspot.com/2013/08/image-of-88-piano-keys-on-sheet-music.html">Image of 88 piano keys on sheet music with note names, octaves and midi numbers</a></em>, and downloaded the <a href="https://archive.org/download/MusicTheoryComposition/88-piano-keys-midi-with-flats.pdf">PDF version</a> of the chart. Then I looked for a relatively simple and well-known piece of music and settled on "Ode to Joy" from Beethoven's Symphony No. 9. I quickly found a simple arrangement by Benedict Westenra <a href="https://musophone.com/beethoven-ode-to-joy-beginner-piano-arrangement/">intended for piano beginners</a>. Perfect!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting all that together gave Sparky Danger Organ <a href="https://hachyderm.io/@regorlas/112590270038905289">its first performance</a>, and it's definitely along the lines of a bear riding a bicycle: the novelty is not that Sparky Danger Organ is a great music instrument, but that it can make an attempt at all. There's only a very limited range of frequencies where it sounds like an acceptable tone, and even within that range the music does not sound great. I may have made mistakes translating piano sheet music into Arduino code. Or maybe the frequency I generated is not what I had intended to generate, throwing the instrument out of tune. The top suspect along these lines is the possibility Arduino framework is doing work behind the scenes and adding delays throwing off the output frequency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite those potential problems, it was a successful proof of concept. Emily has some ideas on how to troubleshoot this device. [UPDATE: the solution was to <a href="https://newscrewdriver.com/2024/06/12/arduino-tone-can-play-sparky-danger-organ/">throw away all of my crappy code and use Arduino <code>tone()</code></a>.] And if we ever get our hands on one or more engine's worth of ignition coils, there may be a Sparky Danger Orchestra.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Public GitHub repository for this project: <a href="https://github.com/Roger-random/ignition_coil">https://github.com/Roger-random/ignition_coil</a> </p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

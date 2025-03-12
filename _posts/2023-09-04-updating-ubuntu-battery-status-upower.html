@@ -1,0 +1,158 @@
+---
+layout: post
+title: Updating Ubuntu Battery Status (upower)
+date: 2023-09-04 12:30:00.000000000 +00:00
+type: post
+post_id: '36806'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- TIL
+tags:
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38802'
+  footnotes: ''
+  wordads_ufa: u:wpcom-ufa-v4:1693855990
+  _publicize_job_id: '87271911652'
+  timeline_notification: '1693855807'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/04/updating-ubuntu-battery-status-upower/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A laptop computer running Ubuntu has a battery icon in the upper-right corner depicting its battery's status. Whether it is charging and if not, the state of charge. Fine for majority of normal use, but what if I want that information programmatically? Since it's Linux, I knew not only was it possible, but there would also be multiple ways to do it. A web search brought me to UPower. Its <a href="https://upower.freedesktop.org/">official website</a> is quite sparse, and the <a href="https://upower.freedesktop.org/docs/">official documentation</a> written for people who are already knowledgeable about Linux hardware management. For a more beginner-friendly introduction I needed <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/UPower" target="_blank">the Wikipedia overview</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is a command-line utility for querying upower information, and we can get started with <code>upower --help</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Usage:
+  upower [OPTION…] UPower tool
+
+Help Options:
+  -h, --help           Show help options
+
+Application Options:
+  -e, --enumerate      Enumerate objects paths for devices
+  -d, --dump           Dump all parameters for all objects
+  -w, --wakeups        Get the wakeup data
+  -m, --monitor        Monitor activity from the power daemon
+  --monitor-detail     Monitor with detail
+  -i, --show-info      Show information about object path
+  -v, --version        Print version of client and daemon</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Seeing "Enumerate" as the top of the non-alphabetized list told me that should be where I start. Running <code>upower --enumerate</code> returned the following on my laptop. (Your hardware will differ.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>/org/freedesktop/UPower/devices/line_power_AC
+/org/freedesktop/UPower/devices/battery_BAT0
+/org/freedesktop/UPower/devices/DisplayDevice</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of these three items has "battery" in its name, so that's where I could query for information with <code>upower -i /org/freedesktop/UPower/devices/battery_BAT0</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  native-path:          BAT0
+  vendor:               DP-SDI56
+  model:                DELL YJNKK18
+  serial:               1
+  power supply:         yes
+  updated:              Mon 04 Sep 2023 11:28:38 AM PDT (119 seconds ago)
+  has history:          yes
+  has statistics:       yes
+  battery
+    present:             yes
+    rechargeable:        yes
+    state:               pending-charge
+    warning-level:       none
+    energy:              50.949 Wh
+    energy-empty:        0 Wh
+    energy-full:         53.9238 Wh
+    energy-full-design:  57.72 Wh
+    energy-rate:         0.0111 W
+    voltage:             9.871 V
+    charge-cycles:       N/A
+    percentage:          94%
+    capacity:            93.4231%
+    technology:          lithium-ion
+    icon-name:          'battery-full-charging-symbolic'</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That should be all the information I need to inform many different project ideas, but there are two problems:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>I still want the information from my code rather than running the command line. Yes, I can probably write code to run the command line and parse its output, but there is a more elegant method.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The information is updated once every few minutes. This should be frequent enough most of the time, but sometimes we need more up-to-date information. For example, if I want to write a piece of code to watch for the rapid and precipitous voltage drop that happens when a battery is nearly empty. We may only have a few seconds to react before the machine shuts down, so I would want to dynamically increase the polling frequency when the time is near.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't see a <code>upower</code> command line option to refresh information, so I went searching further and found the answer to both problems in this thread "<em><a rel="noreferrer noopener" href="https://askubuntu.com/questions/878556/get-battery-status-to-update-more-often-or-on-ac-power-wake" target="_blank">Get battery status to update more often or on AC power/wake</a></em>" on AskUbuntu. I learned there is a way to request status refresh via a Linux system mechanism called <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/D-Bus" target="_blank">D-Bus</a>. Communicating via D-Bus is much more elegant (and potentially less of a security risk) than executing command-line tools. The forum thread answer is in the form of "run this code" but I wanted to follow along step-by-step in Python interactive prompt.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt;&gt;&gt; import dbus
+&gt;&gt;&gt; bus = dbus.SystemBus()
+&gt;&gt;&gt; enum_proxy = bus.get_object('org.freedesktop.UPower','/org/freedesktop/UPower')
+&gt;&gt;&gt; enum_method = enum_proxy.get_dbus_method('EnumerateDevices','org.freedesktop.UPower')
+&gt;&gt;&gt; enum_method()
+dbus.Array([dbus.ObjectPath('/org/freedesktop/UPower/devices/line_power_AC'), dbus.ObjectPath('/org/freedesktop/UPower/devices/battery_BAT0')], signature=dbus.Signature('o'))
+&gt;&gt;&gt; devices = enum_method()
+&gt;&gt;&gt; devices[0]
+dbus.ObjectPath('/org/freedesktop/UPower/devices/line_power_AC')
+&gt;&gt;&gt; str(devices[0])
+'/org/freedesktop/UPower/devices/line_power_AC'
+&gt;&gt;&gt; str(devices[1])
+'/org/freedesktop/UPower/devices/battery_BAT0'
+&gt;&gt;&gt; batt_path = str(devices[1])
+&gt;&gt;&gt; batt_proxy = bus.get_object('org.freedesktop.UPower',batt_path)
+&gt;&gt;&gt; batt_method = batt_proxy.get_dbus_method('Refresh','org.freedesktop.UPower.Device')
+&gt;&gt;&gt; batt_method()</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I understood those lines to perform the following tasks:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Gain access to D-Bus from my Python code</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Get the object representing UPower globally.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Enumerate devices under UPower control. EnumerateDevices is one of the methods listed on the <a rel="noreferrer noopener" href="https://upower.freedesktop.org/docs/UPower.html" target="_blank">corresponding <code>UPower</code> documentation page</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>One of the enumerated devices had a "battery" in its name.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Convert that name to a string. I don't understand why this was necessary, I would have expected the UPower D-Bus API should understand the objects it sent out itself.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Get an UPower object again, but this time with the battery path so we're retrieving an UPower object representing the battery specifically.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>From that object, get a handle to the "Refresh" method. Refresh is one of the methods listed on the <a href="https://upower.freedesktop.org/docs/Device.html" target="_blank" rel="noreferrer noopener">corresponding <code>UPower.Device</code> documentation page</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Calling that handle will trigger a refresh. The call itself wouldn't return any data, but the next query for battery statistics (either via <code>upower</code> command line tool or via the <a href="https://upower.freedesktop.org/docs/Device.html" target="_blank" rel="noreferrer noopener"><code>GetStatistics</code> D-Bus method</a>) will return updated data.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --><br />
+</body></html></p>

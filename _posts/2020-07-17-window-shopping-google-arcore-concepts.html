@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'Window Shopping Google ARCore: Concepts'
+date: 2020-07-17 19:57:07.000000000 +00:00
+type: post
+post_id: '21871'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+- SfM
+meta:
+  _thumbnail_id: '21832'
+  timeline_notification: '1595041031'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46698334608'
+  _oembed_03a05464007964c01b7088bacc9cca01: <div class="embed-kickstarter"><iframe
+    title="OpenCV AI Kit" src="https://www.kickstarter.com/projects/opencv/opencv-ai-kit/widget/video.html"
+    height="281.25" width="500" frameborder="0" scrolling="no"></iframe></div>
+  _oembed_time_03a05464007964c01b7088bacc9cca01: '1595060034'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/17/window-shopping-google-arcore-concepts/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I thought Google's ARCore SDK offered interesting capabilities for robots. So even though the SDK team is explicitly <a href="https://newscrewdriver.com/2020/07/16/robotic-applications-for-structure-from-motion-and-arcore/">not considering robotics applications</a>, I wanted to take a look.</p>
+<p>The obvious starting point is ARCore's "<a href="https://developers.google.com/ar/discover/concepts">Fundamental Concepts</a>" document. Here we can confirm the theory operation is consistent with an application of <a href="https://newscrewdriver.com/2020/07/15/augmented-reality-built-on-structure-from-motion/">Structure from Motion algorithms</a>. Out of all the possible type of information that can be extracted via SfM, a subset is exposed to applications using the ARCore SDK.</p>
+<p>Under "Environmental Understanding" we see the foundation supporting AR applications: an understanding of the phone's position in the world, and of surfaces that AR objects can interact with. ARCore picks out horizontal surfaces (tables, floor) upon which an AR object can be placed, or vertical surfaces (walls) upon which AR images can be hung like a picture. All other features build on top of this basic foundation, which also feel useful for robotics: most robots only navigate on horizontal surfaces, and try to avoid vertical walls. Knowing where they are relative to current position in the world would help collision detection.</p>
+<p>The depth map is a new feature that <a href="https://newscrewdriver.com/2020/07/14/first-glance-at-google-arcore-depth-map/">caught my attention in the first place</a>, used for object occlusion. There is also light estimation, helping to shade objects to fit in with their surroundings. Both of these allow a more realistic rendering of a virtual object in real space. While the depth map has obvious application for collision detection and avoidance more useful than merely detecting vertical wall surfaces. Light estimation isn't obviously useful for a robot, but maybe interesting ideas will pop up later.</p>
+<p>In order for users to interact with AR objects, the SDK includes the ability to map the user's touch coordinate in 2D space into the corresponding location in 3D space. I have a vague feeling it might be useful for a robot to know where a particular point in view is in 3D space, but again no immediate application comes to mind.</p>
+<p>ARCore also offers "Augmented Images" that can overlay 3D objects on top of 2D markers. One example offered: "<em>for instance, they could point their phone's camera at a movie poster and have a character pop out and enact a scene.</em>" I don't see this as a useful capability in a robotics application.</p>
+<p>But as interesting as these capabilities are, they are focused on a static snapshot of a single point in time. Things get even more interesting <a href="https://newscrewdriver.com/2020/07/18/window-shopping-google-arcore-tracking/">once we are on the move and correlate data across multiple points in space</a> or even more exciting, multiple devices.</p>
+<p></body></html></p>

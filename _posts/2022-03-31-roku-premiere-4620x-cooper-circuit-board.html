@@ -1,0 +1,110 @@
+---
+layout: post
+title: Roku Premiere (4620X "Cooper") Circuit Board
+date: 2022-03-31 12:30:00.000000000 +00:00
+type: post
+post_id: '29295'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Roku
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29226'
+  _publicize_job_id: '70851763340'
+  timeline_notification: '1648755037'
+  _elasticsearch_data_sharing_indexed_on: '2024-04-04 21:21:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/31/roku-premiere-4620x-cooper-circuit-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/03/30/roku-premiere-4620x-cooper-enclosure/">examining the enclosure</a> of a Roku Premiere model 4620X ("Cooper") that I took apart, attention turns to the solitary circuit board inside the device. A piece of cast aluminum under its top lid has all the appearance of a heat sink, so the first thing I did was to pop off the thin metal shield to confirm - yep, there's a microprocessor under there. With a bit of black thermal compound to bridge the small gap between it and the metal shield.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29226,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-pcb-top-rf-shield.jpg?w=1024" alt="" class="wp-image-29226"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other metal shield is directly soldered to the board and I couldn't remove it (nicely) to see what's inside. So I flipped the board over instead. I see a shield whose shape mirrored the top shield and covers nearly (if not exactly) the same area.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29224,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-pcb-bottom-rf-shield.jpg?w=1024" alt="" class="wp-image-29224"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In comparison to its topside counterpart, it has an extra twist in the form of extra metal bridging the center in a "T" pattern. Or maybe a circle with three legs? This must be intentional, but I couldn't figure out why.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And just for fun, here is the board side-by-side with a Raspberry Pi 4, which has broadly similar specifications of an ARM-powered 4K UHD capable networked device.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29227,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-pcb-top-with-raspberry-pi-4b.jpg?w=1024" alt="" class="wp-image-29227"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using a cotton swab and some isopropyl alcohol, I cleaned off the thermal compound to read markings on the CPU.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29305,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-cpu.jpg?w=1024" alt="" class="wp-image-29305"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see two logos: a stylized "M" (MediaTek?) with <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Arm_Ltd." target="_blank">ARM</a>, and below them the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>MS09380AMZ-R62-NA1
+ATKR524B
+1637B</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Several connectors are visible around the board, not all of which are used. Starting from the upper left, we have the power connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29310,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-power-connector.jpg?w=930" alt="" class="wp-image-29310"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are five soldered points, but all four along the sides are electrically connected to ground. Only the bottom center point is different, picking up 12V from the AC adapter. Below it is a large round contact point (with a bit of solder) is one of two grounding points for the aluminum heat sink.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29309,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-mystery.jpg?w=729" alt="" class="wp-image-29309"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To the right is an unpopulated connector also with four surrounding ground points but with three unused electrical contacts. I'm not sure what this would be. My first thought was maybe an alternate video connector, but there aren't enough pins to be any type of DisplayPort. Composite video or S-Video are too old-school for this 4K-capable video streaming box, so I ruled those out. It is too small to be a pair of RCA jacks for analog audio, so my best guess is a provision for <a href="https://en.wikipedia.org/wiki/TOSLINK">TOSLINK audio</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29307,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-hdmi.jpg?w=709" alt="" class="wp-image-29307"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next is the HDMI connector, with several meticulously routed differential signal pairs visible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29306,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-ethernet.jpg?w=875" alt="" class="wp-image-29306"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final connector on this edge is probably an <a href="https://en.wikipedia.org/wiki/Modular_connector#8P8C">8P8C connector</a> for wired Ethernet, with an adjacent unpopulated chip footprint that's likely to relate to wired networking. Their absence means this particular Roku is WiFi-only.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29311,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-switch.jpg?w=640" alt="" class="wp-image-29311"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the left edge of the board is definitely a switch, electronic schematic symbol for switch and everything. Since there's already a reset switch on board, this is probably used for a development/test/debug purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29312,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-usb.jpg?w=704" alt="" class="wp-image-29312"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the right edge looks like provision for a USB type-A socket. It may be for similar dev/test/debug purposes, but Roku may have also contemplated the option of a USB port so it can play a slide show of pictures on a USB flash drive. This is a feature I see on many other media boxes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29308,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-ir-receiver.jpg?w=615" alt="" class="wp-image-29308"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The bottom of the edge has two antennae, and my RF skills aren't enough to know what to do with them. A status LED is on the right edge, but I have plenty of LEDs and saw nothing particular special about this one. In between the antennae, though, is a receiver for the infrared remote. I've come across similar receivers before, and I always thought "that might be fun to play with" but never did... <a href="https://newscrewdriver.com/2022/04/01/roku-premiere-4620x-cooper-infrared-receiver/">until now</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

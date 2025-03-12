@@ -1,0 +1,52 @@
+---
+layout: post
+title: Shiny New ESP32 WebSocket Support
+date: 2021-04-16 12:30:00.000000000 +00:00
+type: post
+post_id: '26135'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26023'
+  _publicize_job_id: '57244397605'
+  timeline_notification: '1618601424'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/16/shiny-new-esp32-websocket-support/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My ESP32 development board is now configured to act as <a href="https://newscrewdriver.com/2021/04/15/esp32-http-was-easy-but-sending-files-need-spiffs/">HTTP server sending static files stored in SPIFFS</a>. But my browser scripts <a href="https://newscrewdriver.com/2021/04/13/sawppy-html-canvas-and-websocket/" target="_blank" rel="noreferrer noopener">trying to talk to the server via websocket</a> would fail, so it's time to implement that feature. When I did my <a href="https://newscrewdriver.com/2021/04/12/html-features-for-esp32-sawppy-rover/" target="_blank" rel="noreferrer noopener">initial research</a> for technologies I could use in this project, there was a brief panic because I found a section in Espressif documentation for for <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/protocols/esp_websocket_client.html" target="_blank">websocket client</a>, but there wasn't a counterpart for websocket server! How can this be? A little more digging found that websocket server was <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/protocols/esp_http_server.html#websocket-server">part of the HTTP Server component</a> and I felt confident enough to proceed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That confident might have been a little misplaced. I wouldn't have felt as confident if I had known websocket support was added very recently. According to GitHub it was introduced to ESP-IDF main branch <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/commit/dcb09bac6ac30438ca430a309905e2d847ac141c#diff-11a4ba315a1974718783bc7ae46adf40e3424526f0348d3b3e9120d57036f558" target="_blank">on November 12, 2020</a>. As a new feature, it was not enabled by default. I had to turn it on in my project with the <code>CONFIG_HTTPD_WS_SUPPORT</code> parameter, which was something I could update using the <code>menuconfig </code>tool.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>Side note: since <code>menuconfig</code> was designed to run in a command prompt, using it from inside Visual Studio Code PlatformIO extension is a little different due to input handling of arrow keys. The workaround is that <a href="https://github.com/platformio/platform-espressif32/issues/423">J and K can be used</a> in place of up/down arrow keys.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>Attempting to duplicate what I had running in my Node.js placeholder counterpart, I found one limitation with ESP32 websocket support: Using Node.js I could bind HTTP and WS protocols both to root URI, but this ESP32 stack requires a different URI for different protocols. This shouldn't be a big deal to accommodate in my project but it does mean the ESP32 can't be expected to emulate arbitrary websocket server configurations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also stumbled across a problem in example code, which calls <code>httpd_ws_recv_frame</code> with zero to get length, then allocating the appropriate sized buffer before calling it again to actually fetch data. Unfortunately it doesn't work for me, the call fails with <code>ESP_ERR_INVALID_SIZE</code> instead of returning filled structure with length. My workaround is to reuse the same large buffer I allocated to serve HTML. I think I've tracked this down to a version mismatch. The "call with zero to get length" feature <a href="https://github.com/espressif/esp-idf/issues/6433">was only added recently</a>. Apparently my version of ESP-IDF isn't recent enough to have that feature in order to run the example code. Ah, the joys of running close to the leading edge. Still, teething problems of young APIs aside, it was enough to <a href="https://newscrewdriver.com/2021/04/17/micro-sawppy-beta-3-running-with-html-control/">get my rover up and running</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center"> [Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/lib/wifi">publicly available on GitHub</a>.] </p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

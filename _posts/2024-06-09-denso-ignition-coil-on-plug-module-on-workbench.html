@@ -1,0 +1,78 @@
+---
+layout: post
+title: Denso Ignition Coil-On-Plug Module On Workbench
+date: 2024-06-09 12:30:00.000000000 +00:00
+type: post
+post_id: '43715'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- ignition coil
+meta:
+  wordads_ufa: u:wpcom-ufa-v4:1718746113
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43731'
+  firehose_sent: '1717961461'
+  _publicize_job_id: '95302941111'
+  timeline_notification: '1717961464'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-18 21:30:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/09/denso-ignition-coil-on-plug-module-on-workbench/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Experiment to control a Denso ignition coil-on-plug module was <a href="https://newscrewdriver.com/2024/06/08/toyota-sienna-denso-coil-on-plug-module/">far more successful than I had expected</a>. It was a lot of fun! Because high voltages are involved (the very core purpose of an ignition coil...) the first round was done on my garage floor, away from most of my electronics components and equipment. Now that I have gained some confidence it won't send sparks shooting everywhere, the test rig was moved to my workbench to get some measurements.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These numbers won't be very good, though. It would be better if I can get an idea of what parameters are important to an ignition coil and what values to expect from a data sheet, but I had no luck finding such official engineering information. Searching for "Denso 90080-19016" found many auto parts suppliers offering to sell me more of those units and/or non-Denso substitutes, but no details beyond which cars the part would fit. Furthermore, this ignition coil was retired from a Toyota Sienna due to error codes relating to the ignition system, so it is probably not functioning to spec anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Its power supply requirement is my biggest unknown. I had tried connecting it to <a href="https://newscrewdriver.com/2020/10/04/first-impressions-paxcess-rockman-200/">a lithium-ion battery power pack</a> delivering approximately 12 volts, but its power protection circuit believed there was a short circuit and cut power. My bench power supply has a red LED indicating "amperage limit reached". When using it to power my experiment circuit, that red LED blinks every time the coil fired a spark. So clearly this coil has a brief but very high current draw. As a digital logic person, my understanding of solving such problems only went as far as "add capacitors". I had some salvaged electrolytic capacitors available and connected them. I installed so much that the inrush current upon plugin would trigger power protection even before the coil started firing. If I disconnect power while running the coil, I can hear those capacitors supply enough to spark three or four times (each less energetic than the last) before fading out. And even with these capacitors, the brief current draw is still high enough to trigger errors. I'm either not using the right types of capacitors, or of the wrong values, to smooth this out. Such is my ignorance of proper electric power system design.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had thought if the power requirements were simple enough, I could power the whole thing with a USB power bank. With a boost converter to kick USB 5V up to supply the coil at 12V. But given these high draw symptoms, I am skeptical an Amazon lowest-bidder DC boost converter will survive this coil's demands. I will continue using a lead-acid battery that has (so far) tolerated such abuse.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next set of experiments concern IGT signal duration. My experiments started with 2ms as a value I eyeballed from a blurry oscilloscope screen capture. If I want to drive this coil faster, I need to know how short of an IGT pulse I can get away with. I modified my Arduino sketch to use the knob to adjust signal duration, and output the current duration to one of my less-precious computers. The results were:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>2ms: initial guess that worked.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>~1ms: start to hear a difference in the sound of the spark.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>~0.8ms: sound of spark is weaker, and I no longer see IGF LED blink. So the coil thinks the spark is no good beyond this point to run an engine. Thankfully I'm not running one.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>~0.4ms: even weaker spark sound, and spark generation becomes intermittent.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>~0.2ms: no spark at all, just worrisome whining noises from the coil.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Those are the duration of IGT signal pulses with the caveat that I measured these with a constant 17ms ("redline") between pulses. As the time between pulses shrink as well, it affects behavior in response to IGT signal pulse. The two variables are related, but I don't understand exactly how. And without a good way to quantify results it's not very feasible for me to map out a 2D graph charting how those two variables interact.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lacking such metrics for better understanding, I settled on a maximum of IGT pulses 0.5ms in duration, and 0.5ms between pulses. In other words, an 50% duty cycle square wave at a frequency of 1kHz. Referencing <a href="https://en.wikipedia.org/wiki/Piano_key_frequencies">Wikipedia's chart of piano note frequencies</a>, an upper limit of 1 kHz should still be enough for <a href="https://newscrewdriver.com/2024/06/10/sparky-danger-organ/">a bit of silly fun</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Public GitHub repository for this project: <a href="https://github.com/Roger-random/ignition_coil">https://github.com/Roger-random/ignition_coil</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

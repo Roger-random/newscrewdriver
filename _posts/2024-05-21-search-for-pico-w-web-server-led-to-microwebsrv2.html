@@ -1,0 +1,46 @@
+---
+layout: post
+title: Search For Pico W Web Server Led To MicroWebSrv2
+date: 2024-05-21 12:30:00.000000000 +00:00
+type: post
+post_id: '43448'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  firehose_sent: '1716319802'
+  _publicize_job_id: '94772398668'
+  timeline_notification: '1716319809'
+  wordads_ufa: u:wpcom-ufa-v4:1716319991
+  _elasticsearch_data_sharing_indexed_on: '2024-05-21 19:30:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/21/search-for-pico-w-web-server-led-to-microwebsrv2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One of the bare minimalist examples <a href="https://newscrewdriver.com/2024/05/20/notes-on-connecting-to-the-internet-with-raspberry-pi-pico-w-ebook/">I saw while reading</a> "<em>Connecting to the Internet with Raspberry Pi Pico W</em>" was a simple HTTP web server. It only serves a single page which is represented by a string embedded in the source code. This is obviously not going to work for anything serious.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, the popularity of ESP8266 and ESP32 pioneered an ecosystem of web servers suitable for running on microcontrollers. Many of which have already been adapted to run on the Pico W, as the new hotness on the block. They all meet the primary requirement: Serving static files on board microcontroller flash storage, rather than strings embedded in source code. This is important because I want to update them without having to touch my web server files, and second because I don't want to hassle with string escape and other inconveniences of embedding HTML/CSS/JS syntax inside valid C or Python syntax.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of these web server options were written in Arduino or another C-based framework like ESP-IDF, but a few of them were written in MicroPython so I thought I would look at those first. Beyond serving static files, many of them have routing and associated mechanisms for dynamic server-side responses. Several such frameworks said they're modeled after <a href="https://flask.palletsprojects.com">Flask</a>, which I've played with before, and makes sense in a Python context.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But the one feature I would like is web socket support. I want to try porting my micro Sawppy interface to such a system and that uses web sockets to communicate between the cell phone browser acting as remote control and the microcontroller driving my mini rover. This surprisingly eliminated almost all of the candidates. I found only <a href="https://github.com/jczic/MicroWebSrv2">MicroWebSrv2</a> for MicroPython compatible web server framework with web socket support.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I am intrigued after a cursory glance over MicroWebSrv 2 README. Especially the claim that MicroWebSrv2 can run on desktop computer Python as well as microcontroller MicroPython. In my earlier development efforts for micro Sawppy interface, I wrote the server-side code twice. Once in NodeJS (JavaScript) as a stub to help me develop on the desktop, and again in ESP-IDF to run on an ESP32. It would be great if I can have a single chunk of Python code that handles both cases. I have to review my code to see what other support infrastructure I would need. The first one off the top of my head is a JSON parsing library, which is <a href="https://docs.micropython.org/en/latest/library/json.html">included in MicroPython</a>, a good start.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

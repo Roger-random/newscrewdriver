@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Mystery At Supercon: Supplyframe Cube'
+date: 2018-11-18 09:00:19.000000000 +00:00
+type: post
+post_id: '17232'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- Supercon
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1542560600'
+  _publicize_job_id: '24395203238'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/18/mystery-at-supercon-supplyframe-cube/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>What's big, orange, and a mystery? The Supplyframe cube given to Supercon attendees. It is a pretty neat physical manifestation of the Supplyframe logo. It is made of injection-molded plastic that's been given some sort of surface finish treatment. The result is a vaguely satin feel more upscale than commodity plastic. It also comes in a nice cardboard box whose description of its contents were not sufficiently technical for the hardware hackers looking it over. Likely intentionally to give it an air of mystery.</p>
+<p><img class="alignnone size-full wp-image-17239" src="https://newscrewdriver.com/wp-content/uploads/2018/11/supplyframe-cube-with-box.jpg" alt="Supplyframe Cube with Box" width="1024" height="702"></p>
+<p>We see a micro USB port on the side, and a clear plastic rectangle mounted on the bottom. Also visible on the bottom are four screws, and removing them to see the insides revealed an expected circuit board behind the micro USB port. What was less expected was the wire soldered to the board, and a sheet of copper foil at the other end of the wire. What is this thing?</p>
+<p><img class="alignnone size-full wp-image-17240" src="https://newscrewdriver.com/wp-content/uploads/2018/11/supplyframe-cube-interior.jpg" alt="Supplyframe Cube interior" width="1024" height="465"></p>
+<p>This being Supercon, people quickly figured out there's a FTDI USB to serial chip behind the port, so computers see the cube as a serial port. When plugged in, the plastic rectangle at the bottom reveals its function to diffuse light from the twelve LEDs shining downwards. It's all very pretty, but what does it do?</p>
+<p>People were making headway figuring it out, and they got to check their answers during Voja's scheduled talk about the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">2018 Hackaday Supercon badge</a>. Voja did say a few words about the badge, but he was clearly more interested in talking about the cube which he also designed. He switched gears to the cube around the 6:40 mark of <a href="https://www.youtube.com/watch?v=4WxPGLsdbB8">the recorded talk</a>.</p>
+<p>The default firmware implements a random number generator that could store up to 2 megabytes of random bytes. The copper foil works as one half of a capacitor for transmitting data between two cubes sitting next to each other, so one cube can get an identical copy of the random bytes in another cube. Once copied, each cube could be used as one-time ciphers to encrypt up to two megabytes of data that only a person with the other cube can decrypt.</p>
+<p>But of course, that's just the default firmware. Voja went over what's on the board and what else it can do. The LEDs are random (except when they all light up to signal a cube is waiting for transmit or receive) and there's currently an accelerometer sitting unused. After the conference Voja created a <a href="https://hackaday.io/project/162237">Hackaday.io project for the cube</a> and now we wait to see if people do fun things with it.</p>
+<p></body></html></p>

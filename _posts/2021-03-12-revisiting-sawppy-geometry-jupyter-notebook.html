@@ -1,0 +1,43 @@
+---
+layout: post
+title: Revisiting Sawppy Geometry Jupyter Notebook
+date: 2021-03-12 12:30:00.000000000 +00:00
+type: post
+post_id: '25582'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _publicize_job_id: '55865534597'
+  timeline_notification: '1615581011'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/12/revisiting-sawppy-geometry-jupyter-notebook/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My decision to follow ROS conventions for my Micro Sawppy rover control software also meant taking on some of the challenges of <a href="https://newscrewdriver.com/2021/03/11/manual-control-square-peg-in-a-ros-round-hole/">adapting manual control conventions to an automation-centric world</a>. I remain optimistic that this short term pain will prove worthwhile long term, but it'll be some time before I know for sure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/21/micro-rover-esp32-brain-is-feasible/" target="_blank">chose an ESP32 as my rover brain</a>, thanks to its feature set being a good match for my ambition to design a low-cost entry-level rover. The cost-cutting decision to move hardware from Raspberry Pi to ESP32 has a big impact on the software environment. From Python running on a general purpose Linux-based operating system to C running on a bare-bones FreeRTOS environment optimized for embedded systems. While I've written a C version for <a href="https://newscrewdriver.com/2019/05/16/prototype-arduino-wired-controller-for-sawppy/" target="_blank" rel="noreferrer noopener">Sawppy's alternate Arduino control scheme</a>, I couldn't port my old code straight across due to my new ROS-centric focus.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is far from the first attempt at a ROS-friendly Sawppy rover code base. I tried to do it once myself before <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/01/original-goals-for-sawppy-ros-melodic-project/" target="_blank">aborting that effort</a> due to unneeded duplication. I looked at <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/" target="_blank">Rhys Mainwaring's rover software stack for ROS Melodic</a> to see if I could adapt it to Micro Sawppy's ESP32. Logic-wise, it follows all the ROS conventions I wanted to follow, but it also used all the ROS software frameworks I won't have on an ESP32. I also wanted more abstraction between rover chassis math and actuator code. In ROS this is the job of <a rel="noreferrer noopener" href="http://wiki.ros.org/ros_control" target="_blank"><code>ros_control</code></a> which Rhys plans to adopt, but that is part of the ROS infrastructure I won't have on bare ESP32 FreeRTOS.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I went back to something I created as part of my aborted effort: <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/03/reworking-sawppy-ackermann-math-in-a-jupyter-notebook/" target="_blank">a Jupyter notebook</a> for working through my rover math. Jupyter <a rel="noreferrer noopener" href="https://jupyterlab.readthedocs.io/en/stable/getting_started/overview.html" target="_blank">has since evolved into JupyterLab</a> but it didn't seem to have any problem opening up my old notebook. Thanks to all the markdown documentation I had written alongside my Python code in the Jupyter notebook, I could quickly get back up to speed on my thinking on the project. Reviewing my code months later, I even <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/commit/417545e33bcd54699361b2735c38f32466202ab9" target="_blank">found and fixed a bug</a> that slipped through earlier! I'm not sure this is the most elegant fix, my Python code is not very "<a rel="noreferrer noopener" href="https://duckduckgo.com/?q=pythonic" target="_blank">Pythonic</a>" because I still think like a C programmer. It is technically a bug, but today it is a feature because I'm porting it to C that will compile for ESP32. My plan was to build a FreeRTOS task that takes a desired rover chassis movement command similar to a ROS <code>cmd_vel</code> message, and outputs data similar to a <code>ros_control</code> message... <a href="https://newscrewdriver.com/2021/03/13/abandoning-ros_control-analogy-for-micro-sawppy/">but then my plan changed</a>. </p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

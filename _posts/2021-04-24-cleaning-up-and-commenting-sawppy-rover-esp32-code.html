@@ -1,0 +1,62 @@
+---
+layout: post
+title: Cleaning Up And Commenting Sawppy Rover ESP32 Code
+date: 2021-04-24 12:30:00.000000000 +00:00
+type: post
+post_id: '26221'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26024'
+  _oembed_14fff323938ea9507888d3a3e5cf2a8a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Hack
+    and slashed <a href="https://twitter.com/adafruit?ref_src=twsrc%5Etfw">@adafruit</a>
+    &quot;Uncanny Eyes&quot; sketch (Hallowing, Monster M4sk) to run on this rendering
+    stack, now my tube TV stares back.<br><br>I&#39;ve also forgotten how hard it
+    is to get a tube TV on video. Had to lock exposure all the way low to avoid bloomed
+    out phosphors. <a href="https://t.co/qq5oc7l5zd">pic.twitter.com/qq5oc7l5zd</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1384551877635809282?ref_src=twsrc%5Etfw">April
+    20, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1619292627'
+  _publicize_job_id: '57559105371'
+  _oembed_time_14fff323938ea9507888d3a3e5cf2a8a: '1619340512'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/24/cleaning-up-and-commenting-sawppy-rover-esp32-code/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The rover is now <a href="https://newscrewdriver.com/2021/04/23/sawppy-rover-independence-with-esp32-access-point/">up and running on its own</a>, independent of my home network. I felt this was a good time to pause feature development of Sawppy ESP32 control software. From an user experience viewpoint, this software is already in better shape than my SGVHAK rover software. Several of the biggest problems I've discovered since our local rovers started running have been solved. I feel pretty good about taking this rover out to play. More confident, in fact, than rovers running my earlier software.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I turn my attention elsewhere, though, I need to pay off some technical debt in the areas of code organization and code commenting. I know if I don't do it now, it'll never happen. Especially the comments! I'm very likely to forget if I don't write them down now while they're fresh in my mind. The code organization needed to be tamed because there were a lot of haphazard edits as I experimented and learned how to do things in two new environment simultaneously: ESP32 and JavaScript. The haphazard nature was not necessarily out of negligence but out of ignorance as I had no idea what I was doing. Another factor was that I copied and pasted a lot of Espressif sample code (especially in the WiFi area) and I had instances of direct copied text "EXAMPLE" that needed to be removed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also spent time improving code robustness with error handling code paths. And if errors are not handled, they should at least be reported. I have many unhappy memories trying to debug some problem that made no sense, and eventually traced it to a failed API call upstream whose error code was never reported. Here I found Espressif's own <code>ESP_LOG</code> AND <code>ESP_ERROR_CHECK</code> macros to be quite handy. Some were carried over directly from sample code. I've already started using <code>ESP_ERROR_CHECK</code> during experimentation, because again I didn't have robust error handling in place at the time but I wanted to know immediately if something fails.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since this was my first nontrivial ESP32 project, I don't think it's a good idea for anyone to use and copy my amateurish code. But if they want to, they should be allowed to. Thus another bulk edit added the MIT license prefix to all of my source files. Some of them had pieces copied from Espressif example, but those were released to public domain so I understand there would be no licensing conflict.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While adding error handling code, though, I <a href="https://newscrewdriver.com/2021/04/25/windows-phone-debug-tools-rode-into-sunset/">wasted an hour to a minor code edit because I didn't have debug tools</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

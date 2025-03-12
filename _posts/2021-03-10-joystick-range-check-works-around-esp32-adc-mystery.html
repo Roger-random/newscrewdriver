@@ -1,0 +1,60 @@
+---
+layout: post
+title: Joystick Range Check Works Around ESP32 ADC Mystery
+date: 2021-03-10 12:30:00.000000000 +00:00
+type: post
+post_id: '25539'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25541'
+  _publicize_job_id: '55784411728'
+  timeline_notification: '1615408242'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/10/joystick-range-check-works-around-esp32-adc-mystery/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One of the things I knew I wanted to do for my <a href="https://newscrewdriver.com/2021/03/09/goals-and-challenges-for-sawppy-esp32-software/">Micro Sawppy rover's ESP32 brain</a> was an option for wired analog joystick input. This <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/05/20/sawppy-roving-with-wired-handheld-controller/" target="_blank">proved useful for Sawppy V1</a> and I wanted it for Micro Sawppy as well. Not just as a backup control method, but as the first test in my hypothesis that I will benefit from following ROS precedents for generic messages. In addition to the evergreen ambition to give Sawppy autonomy, I want to support the following manual input control mechanisms:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Wired analog joystick for noisy wireless signal environments.</li>
+<li>Web-based control similar to what I created for SGVHAK rover and adapted to Sawppy.</li>
+<li>Bluetooth based control to connect with devices like the BBC micro:bit.</li>
+<li>ROS2 joystick control message via micro-ROS.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I have a generic message type resembling ROS joystick message, each of these input methods can theoretically be isolated in their own FreeRTOS tasks. They all post the same message type to the same message queue, so the rest of Micro Sawppy doesn't have to care about where their input came from. Swapping input was something very difficult to do on SGVHAK rover software and I want to do improve this time around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So as a starting point I wanted to take my quick hack of ADC joystick support in my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/28/esp32-freertos-practice-project-controls-l298/" target="_blank">FreeRTOS play project</a> and rewrite it to be something suitably robust for Micro Sawppy. Since it was a quick hack, there were a few weird things that happened but I chose not to worry about it at the time. Thinking I'll sit down and figure it out later. It is later and... I failed to figure it out. But I did devise a workaround so I can continue with the project. I'll come back and update this paragraph if I figure it out later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The issue center around <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html" target="_blank">ESP32's ADC (analog-to-digital converter) peripheral</a>. I had been familiar with ADC peripheral on a Arduino's ATmega328, which can read values in a range from 0V to +5V via <code><a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/" target="_blank">analogRead()</a></code>. The ADC on a PIC16F18345 works in a similar manner. The ESP32 is a 3.3V chip so I had expected its ADC to read the range from 0V to +3.3V but I was wrong. By default it only reads from 0V to 0.8V. We can configure a signal attenuator to increase range of ADC sensitivity, but even at maximum attenuation it only claims to read from 0V to 2.6V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This presents an issue with analog joystick inputs, which are electrically potentiometers that feed a voltage value somewhere between its input max voltage and ground. Wiring such a device up to the ESP32's 3.3V supply means we'll lose the ability to read the high end of the joystick corresponding to the range between ADC maximum of 2.6V and 3.3V. It also means the joystick's center position will return about 1.65V which is higher than midway between 0V and 2.6V. So I had expected ADC readings to be higher than what I would expect.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reality was just the opposite, they were lower instead. I configured the ADC for 9-bits resolution, so the values are anywhere from 0 to 511. Midway would be 256, but joystick center actually correlated to ~220. And even though I expect to hit maximum value partway through the high range of joystick motion, I never got there. Maximum value never exceeded ~460. I used a voltmeter to measure the input and confirmed +3.3V, but the reading wasn't close to the actual maximum value of 511. Several rounds of fiddling with configuration flags did not change this result.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So as a workaround, my new joystick code does a range check upon powerup. It assumes the joystick is centered at powerup (hopefully reasonable assumption when they are spring loaded) and waits for me to move each axis through its minimum and maximum values and press the button. Before that first button press, my code tracks the highest and lowest values seen, which are used to normalize joystick message output to the range from -1 to +1 that is used in ROS joystick message. I'm using some very inexpensive joysticks whose potentiometers drift significantly, so maybe a range check is a good idea anyway. Either way it's good enough for me to move on.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

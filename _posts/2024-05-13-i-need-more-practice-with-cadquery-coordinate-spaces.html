@@ -1,0 +1,71 @@
+---
+layout: post
+title: I Need More Practice with CadQuery Coordinate Spaces
+date: 2024-05-13 22:45:00.000000000 +00:00
+type: post
+post_id: '43399'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1715668508'
+  wordads_ufa: u:wpcom-ufa-v4:1715675068
+  _thumbnail_id: '43400'
+  _publicize_job_id: '94543577396'
+  timeline_notification: '1715668511'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-14 08:25:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/13/i-need-more-practice-with-cadquery-coordinate-spaces/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I thought I might design and 3D-print something to repurpose components salvaged from <a href="https://newscrewdriver.com/2024/05/10/harbor-freight-mini-led-flashlight-teardown/">a disassembled Harbor Freight mini LED flashlight</a>. I still might do that, but another thought occurred to me: for the purpose of CadQuery practice, I don't need to invent something new, I can try to model the salvaged components themselves.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43368,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/05/harbor-freight-mini-led-flashlight-front-end-disassembled.jpg?w=800" alt="" class="wp-image-43368"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I pulled out my calipers and started taking down dimensions for the front window, shiny reflector module, and the circuit board hosting the array of nine LEDs. The front window is trivial, a single flat cylinder, but it got more complex from there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that, despite <a href="https://newscrewdriver.com/2024/05/01/exploring-cadquery-errors-via-examples/">some worrisome early signs</a>, CadQuery has proven to give me better feedback on my mistakes than FreeCAD has. Especially from code centric aspect of Python syntax errors because that gives me a line number of the problem. CQ-Editor also gives a very code centric capability to step through my CadQuery design line by line, which makes debugging much easier than trying to understand where I went wrong in a FreeCAD design.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The bad news is that I have yet to build a mental understanding of how CadQuery coordinate spaces work. I'm frequently confused by parts popping up at positions or orientations different than where I had expected. For some of these mistakes I could see my misunderstanding after the fact, for other mistakes I still don't understand where I went wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>    p = cq.Workplane("XZ")
+    p = p.polygon(8,led_ring_diameter, forConstruction=True)
+    p = p.vertices()
+    p = p.eachpoint(
+        lambda pos: (
+            ring.add(
+                make_led(),
+                loc = pos,
+                color = color_clear_plastic
+                )
+            )
+        )</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>In this code snippet, I am working on the XZ plane and I drew a construction octagon on this plane. I then placed an LED at each vertex of that octagon, but they were position on the XY plane instead of the XZ plane.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43406,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/05/mini-led-flashlight-array-in-cadquery-cq-editor-axis-confusion.jpg?w=971" alt="" class="wp-image-43406"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why did this happen? I have yet to figure out the root cause. So far I only have a workaround: insert extraneous intermediate CadQuery assemblies for the sake of rotating parts to where I had expected them. I know it isn't the right tool for the job, but I appreciate CadQuery giving me such tools to bludgeon my way to an imperfect but acceptable state. This is much preferred over FreeCAD's unhelpful "recompute failed!" leaving me staring at the screen with no recourse.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

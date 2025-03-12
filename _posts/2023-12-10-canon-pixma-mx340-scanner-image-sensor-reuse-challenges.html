@@ -1,0 +1,56 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner Image Sensor Reuse Challenges
+date: 2023-12-10 12:30:00.000000000 +00:00
+type: post
+post_id: '40959'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40831'
+  firehose_sent: '1702240221'
+  wordads_ufa: s:wpcom-ufa-v4:1703391355
+  _publicize_job_id: '90168100433'
+  timeline_notification: '1702240223'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/10/canon-pixma-mx340-scanner-image-sensor-reuse-challenges/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've examined the scanner image sensor from a Canon Pixma MX340 multi-function inkjet while it was still attached and running. I think I now understand <a href="https://newscrewdriver.com/2023/12/09/canon-pixma-mx340-scanner-image-sensor-pinout/">how it communicates with the printer main board</a>. However, that's a ways from being able to reuse the sensor in my own electronics projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first obstacle is that I only know voltage levels on the wires, I don't know which component (the sensor or the main board) was responsible for putting them on the wires. Some are easy guess: the LED illumination power must come from the main board, and the image data must come from the sensor. But others are ambiguous: I see a clock signal, but who's generating it? In order to reuse this sensor, I need to know what I need to re-implement in my own circuit in order to impersonate the printer main board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second obstacle is speed. My oscilloscope measured that clock signal at 2.375MHz. If my project is responsible for clock, toggling a pin in software won't be fast enough and my current hardware skills can't build an appropriate oscillator circuit. On the upside, if my project would be responsible for generating the clock signal, perhaps I can emit a slower clock and make everything easier. Of course, that's out the door if clock was sensor-generated and I have to keep up. A dedicated hardware peripheral may be needed. 2.375MHz is a challenging speed for microcontroller code to keep up, demanding at least an interrupt-driven system if not other performance techniques.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another speed-related challenge is reading and processing the analog pixel brightness value. Analog-to-digital (ADC) conversion is a common peripheral feature in many affordable microcontrollers, but they can't sample data as fast as 2.375MHz. The basic Arduino boards built on the ATmega328P chip <a href="https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/" target="_blank" rel="noreferrer noopener">has a limit of 10k samples per second</a>, two orders of magnitude too slow. That seems to be the typical ballpark for hobbyist-level hardware. Looking over Adafruit selection of ADC modules, it looks like <a href="https://www.adafruit.com/product/5836" target="_blank" rel="noreferrer noopener">item #5836</a> is the fastest unit which traded precision for speed, but that's still only 70k samples per second.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>High-speed ADC modules certainly exist, available with capabilities up to billions of samples per second. I found many listings from companies like <a href="https://www.ti.com/data-converters/adc-circuit/high-speed/overview.html" target="_blank" rel="noreferrer noopener">Texas Instruments</a> and <a href="https://www.analog.com/en/product-category/analog-to-digital-converters.html" target="_blank" rel="noreferrer noopener">Analog Devices</a>. (Very appropriately named in this context.) But they're not the kind of chips Amazon/AliExpress vendors put on breadboard-friendly breakout boards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given these challenges, reusing this sensor to its full potential is currently out of reach for my own projects. However, the data signal is an analog signal, and the beauty of analog systems is that we have the option of a <a href="https://newscrewdriver.com/2023/12/11/canon-pixma-mx340-scanner-image-sensor-partial-reuse-ideas/">partial (a.k.a. half-assed) implementation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

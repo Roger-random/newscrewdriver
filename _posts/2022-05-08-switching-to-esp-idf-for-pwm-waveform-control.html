@@ -1,0 +1,61 @@
+---
+layout: post
+title: Switching to ESP-IDF For PWM Waveform Control
+date: 2022-05-08 12:30:00.000000000 +00:00
+type: post
+post_id: '30176'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- PAC-215
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30177'
+  _publicize_job_id: '72296426866'
+  timeline_notification: '1652038207'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/08/switching-to-esp-idf-for-pwm-waveform-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I used ESPHome and Home Assistant to <a href="https://newscrewdriver.com/2022/05/07/quick-esp32-pwm-experiment-via-esphome/">quickly experiment with parameters for ESP32 chip's LEDC peripheral</a> for generating PWM (pulse-width modulated) signals, seeing how they looked under a cheap oscilloscope. But for actually driving a segmented LCD, I will need even better control over signal behavior. It is an issue of timing: I need to toggle between high and low states for each common segment pin to generate an alternating signal, and I have two common segments to cycle through. In order to avoid flickering the LCD, this cycle needs to occur at least several tens of times a second.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The tightest control over timing I could get with ESPHome appears to be the <a rel="noreferrer noopener" href="https://esphome.io/components/esphome.html#on-loop" target="_blank"><code>on_loop</code> automation</a>, which is generally triggered roughly every 16 milliseconds. This translates to roughly 62Hz which, if I could complete the entire cycle, would be sufficient. But performing all of those toggles within a single <code>on_loop</code> would be too fast for our eyes to see, so we can only take one step in the cycle per <code>on_loop</code>. In order to toggle both high and low on consecutive <code>on_loop</code>, that cuts me down to 31Hz. Then there are two common segments, which cuts it further to 15Hz. I need something faster.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Until I have other tools in my toolbox, the "something faster" I have on hand require going to Espressif's ESP-IDF SDK. <a href="https://docs.platformio.org/en/latest/frameworks/espidf.html">PlatformIO makes ESP-IDF easier to work with</a>, and I've had experience with this arena. My starting point (chosen because I've done similar things before) is to write a FreeRTOS task dedicated to toggling voltage levels by changing PWM parameters. In between steps of the cycle, I use a FreeRTOS wait (<code>vTaskDelay</code>) to send this task into the background until the next step. This mechanism allows finer control over timing than the ~16ms of <code>on_loop</code>, though it is only slightly better at <a rel="noreferrer noopener" href="https://esp32.com/viewtopic.php?t=12780" target="_blank">10ms by default</a>. Repeating the math above, that works out to 25Hz which would at least be as good as 24fps film. But that is not the limit. Once I'm working within ESP-IDF, I have the option to get even finer timing control. I can get a little bit faster by reconfiguring FreeRTOS tick rate via ESP-IDF's <code>menuconfig</code> tool. And for ultimate timing control I can start working with hardware timers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I whipped up a test program to generate a staircase pattern. From 0% duty cycle, to 50% duty cycle, to 100%, then 50%, and repeat with 0%. Running at 20ms per step in the cycle, the timing looks solid. I can easily move this to 10ms and still have a solid square wave.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"media","sizeSlug":"full","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":30179,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-stairstep-waveform-test.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-stairstep-waveform-test.jpg" alt="" class="wp-image-30179"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":30180,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-stairstep-waveform-test-with-330pf-capacitor.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-stairstep-waveform-test-with-330pf-capacitor.jpg" alt="" class="wp-image-30180"></a></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>The 50% PWM value looked almost good enough without a capacitor. (Left) I have a huge pile of 300pF capacitors on hand, so I tried one and the waveform looked much better. (Right.) This is good enough for me to move forward with <a href="https://newscrewdriver.com/2022/05/09/esp32-as-driver-for-simple-segmented-lcd/">wiring this signal into a segmented LCD</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this experiment is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/bare_lcd_2digit" target="_blank">available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

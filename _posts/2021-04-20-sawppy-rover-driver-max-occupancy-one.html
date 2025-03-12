@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'Sawppy Rover Driver Max Occupancy: One'
+date: 2021-04-20 12:30:00.000000000 +00:00
+type: post
+post_id: '26188'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26018'
+  _publicize_job_id: '57397634212'
+  timeline_notification: '1618947020'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/20/sawppy-rover-driver-max-occupancy-one/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Steering control precision was something I found lacking in my SGVHAK rover software project. This is my second effort at browser-based rover control and I added code to <a href="https://newscrewdriver.com/2021/04/18/variable-steering-on-sawppy-esp32-html-control/">vary steering rate as a function of speed</a>. Over the next few weeks (or more) I will see if it's an overall improvement and see if it's worth keeping. The next problem I wanted to solve with browser-based rover driving is that HTTP was designed to be completely stateless, and a mechanism to serve many clients. This doesn't work so well for driving a vehicle, where we want to have only one driver at the wheel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't know how to solve this problem with SGVHAK rover. Once I had an HTTP web server up and running, it would happily serve rover control UI to any number of clients. And it would happily accept and process HTTP POST submissions from any and all of those clients. In practice this means we can have multiple touchscreen phones all trying to drive the rover, and the rover ends up being very confused with conflicting messages coming in interleaved with each other. Steering servos would rapidly flick between multiple positions, and driving motors would rapidly change speeds. This causes hardware damage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Switching from stateless HTTP POST to web sockets gave me a tool to solve this problem. Now the server side code can keep a reference to a specific web socket, and any additional attempts to set up a rover driving web socket can be rejected. This allows me to keep the number of rover drivers to at most one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my Node.js server, I didn't even need to keep a global reference. The web socket server class maintains a list of clients, and I can check the number of clients. The trickier part for me was figuring out how to reject additional sockets. I looked fruitlessly in the web socket server for a while, because the answer is actually a little bit upstream: The HTTP server has an "upgrade" event that I can subscribe to, and it is called whenever a web socket client request upgrading from HTTP GET to websocket. This is the location where I can reject the connection if there was already an existing client. With the Node.js server configured to test the scenario on my development desktop, I found a few bugs in my client-side browser code. Once it worked I could continue to my ESP32 code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my ESP32 server, it means tracking two things: an identifier for the HTTP server (<code>httpd_handle_t</code>) and a socket descriptor. Together those two values uniquely identify a websocket. The URI handler I registered to handle websocket upgrade requests is given an instance of <code>httpd_req_t</code>. Using that, I can <a rel="noreferrer noopener" href="https://www.esp32.com/viewtopic.php?f=13&amp;t=16501&amp;start=10#p63142" target="_blank">obtain both parts of an unique identifier</a> and compare them against future calls into the URI handler. I process requests if the server handle and socket descriptor matches, and reject them if they don't. With this code in place, only a single driver is commanding a rover at any given time. But this code also immediately exposed another problem: <a href="https://newscrewdriver.com/2021/04/21/detect-and-disconnect-inactive-web-sockets/">how to detect if that single driver is gone</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: Monitoring Samsung 500T Discharge-Charge Cycle
+date: 2020-09-26 12:30:00.000000000 +00:00
+type: post
+post_id: '22517'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Node-RED
+- Samsung 500T
+meta:
+  _thumbnail_id: '22518'
+  _publicize_job_id: '49264673153'
+  timeline_notification: '1601148604'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/26/monitoring-samsung-500t-discharge-charge-cycle/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Getting through <a href="https://newscrewdriver.com/2020/09/25/installing-node-red-on-samsung-500t/">Node-RED installation on my Samsung 500T</a> tablet was the hard part. Once done, it was trivial to set up a flow to extract the tablet's battery voltage and charge percentage. I didn't want to add any more overhead than I already have, so the flow sends that data off to a MQTT broker. Allowing me to analyze that data on a different computer without impacting the battery consumption on the 500T.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was instructive to watch those two graphs after I unplugged the 500T, charting its battery discharge down to under 10% followed by a charge back up to 100%. During this time, the 500T kept its screen on <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/05/02/esa-iss-tracker-on-samsung-500t/" target="_blank">displaying ESA's ISS Tracker</a>, plus the normal Windows background tasks. And now it also has Node.JS running Node-RED to query the battery voltage and charge percentage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first observation is that the battery discharge percentage graph is impressively linear. As a user I never felt this way intuitively, as my most memorable episodes are battery meters whose value seem to drop faster and faster as I raced to finish a task before my battery gave out. A linear graph is impressive because a lithium ion battery's discharge voltage is not linear, something we can see on the voltage graph. It drops sharply off 8.4V before stabilizing on a gentle slope that's more like a curve as it gradually slowed approaching 7.4V. (That is the commonly listed nominal voltage level for two lithium ion battery cells in series.) Once it dips below 7.4V, voltage curve starts dropping rapidly and trending towards a steep dive when I plugged the 500T back in to a power source. We can also see that the voltage level is a bit noisy, fluctuating as it discharges. In contrast, except for a little dip off 100%, the percentage graph is steadily and reliably decreasing under a constant workload. Just as we'd expect, with no surprises. I <a href="https://newscrewdriver.com/2020/05/03/samsung-500t-disappointments/" target="_blank" rel="noreferrer noopener">have a lot of complaints about this machine</a>, but its power management is rock solid.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the charge cycle, again the percentage value is not based solely on battery voltage as we see those two are wildly divergent during charging. When I plugged in to recharge, there was a big jump upwards as the machine switched to charging cycle. Towards the end of that cycle as charge state approached 100%, there was some kind of a top-off procedure. I was surprised to see that charge controller allowing the battery voltage to exceed 8.4V, something I've been taught to never do when charging bare 2S LiPo battery packs. But according to this voltage graph, exceeding that voltage was part of the process of filling the battery before letting it settle down to around 8.35V. All through this top-off procedure, the battery percentage reported 100%.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I enjoyed this opportunity to geek out over battery management minutiae, but it isn't just for curiosity's sake. There was <a href="https://newscrewdriver.com/2020/09/27/constraints-on-optimizing-samsung-500t-for-solar-power/">a project idea behind all this</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

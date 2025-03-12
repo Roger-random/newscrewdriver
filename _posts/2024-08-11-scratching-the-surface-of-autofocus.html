@@ -1,0 +1,43 @@
+---
+layout: post
+title: Scratching The Surface Of Autofocus
+date: 2024-08-11 12:30:00.000000000 +00:00
+type: post
+post_id: '44323'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44204'
+  timeline_notification: '1723404634'
+  firehose_sent: '1723404633'
+  _publicize_job_id: '96954491671'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-11 03:11:53'
+  wordads_ufa: u:wpcom-ufa-v4:1723404876
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/11/scratching-the-surface-of-autofocus/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A camera's auto-focus algorithm is a bit of black box magic where I have a passing interest. I was disappointed to learn while Adafruit's Memento camera module exposes programmable control over its focus mechanism, <a href="https://newscrewdriver.com/2024/07/05/adafruit-memento-a-k-a-pycamera-photography-parameters/">the auto-focus algorithm remains opaque</a> hiding inside its own black box. A <a href="https://newscrewdriver.com/2024/07/17/window-shopping-unofficial-firmware-for-canon-cameras/">brief survey of custom Canon camera firmware</a> found that they're not likely to have any details, either, as they call into existing Canon code to handle that kind of thing. A bit of web search found that I could dig up research papers on the topic, but I don't foresee how this interest could grow beyond idle curiosity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With commercial offerings at a dead end, I started looking at the venerable OpenCV library and how it might enable research and experimentation in auto-focus algorithms. It turns out Adafruit Memento is not the only camera to expose control over focus mechanism or triggering an auto-focus black box. Some cameras expose similar things in their OpenCV capture driver in the form of capture capabilities. I suppose it would be possible to connect an Adafruit Memento in the same way and use it with OpenCV. I will file that away as a potential future project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond OpenCV drivers, I did find some research papers about auto-focus. This is great, because research papers usually include an overview section that describes prior work in the field. This helps anyone who wants to get up to speed. If they can find a few papers in the field, they can look over the citations list. Any common citations are likely to point to foundational work and a good place to start. I skimmed through my first two hits: <em><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3231510/">Robust Automatic Focus Algorithm for Low Contrast Images Using a New Contrast Measure</a></em> (2011) and a more recent paper <a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Herrmann_Learning_to_Autofocus_CVPR_2020_paper.pdf"><em>Learning to Autofocus</em></a> (2020) applying some machine learning to the problem. My comprehension was pretty low, I can tell I have <em>a lot</em> to learn before I can really follow these papers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So there's a lot of work... what about the reward side of the equation? Right now my Adafruit Memento is the only camera where I could even try to do anything hands-on. Running autofocus in my own software is going to be far slower than the existing hardware component. And what might I be able to do with such a thing that's interesting and different from existing autofocus? Right now I don't have any ideas, which means not much motivation, resulting in a poor work-to-reward ratio. Until a suitable idea arises to motivate me to dive in to the field, autofocus will remain a passing curiosity sitting at a low priority in my project to-do list.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

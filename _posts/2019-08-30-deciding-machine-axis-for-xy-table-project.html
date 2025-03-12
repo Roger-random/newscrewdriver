@@ -1,0 +1,47 @@
+---
+layout: post
+title: Deciding Machine Axis For XY Table Project
+date: 2019-08-30 12:30:39.000000000 +00:00
+type: post
+post_id: '19361'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19360'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_0cdde3c749128b6b3d97b5432b00595e: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    salvaged XY table can now perform homing sequence under command of Grbl ESP32.
+    With this success, we now have ambition to build a CNC machine. <a href="https://t.co/IcT8ls9Jkg">pic.twitter.com/IcT8ls9Jkg</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1166216061949112320?ref_src=twsrc%5Etfw">August
+    27, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '34756242250'
+  timeline_notification: '1567193482'
+  _oembed_time_0cdde3c749128b6b3d97b5432b00595e: '1567233316'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/30/deciding-machine-axis-for-xy-table-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>With a <a href="https://newscrewdriver.com/2019/08/29/perforated-board-iteration-of-grbl-esp32-control/">new control board built</a>, there remained a few firmware configuration settings to pin down. Several of these parameters will dictate movement direction of the machine. We should decide on the direction our two machine axis will point, in a way that would make the most sense for the machine operator.</p>
+<p>When exploring and working with a machine to bring it up and running, the most obviously convenient place to work is a place where it is easy to access various components of the machine. For me, this meant I had been spending most of my time staring at the side of XY stage where I could most easily access the motors and lead screws.</p>
+<p>But aligning operational axis with this perspective would be a mistake. Assuming we get this machine up and running, the priorities will change. We would want machine components to be out of the way when actually using the machine. This translates to a desire to have the front of the machine be the least cluttered side of the machine, away from components. The cleanest side of this XY table mechanism is the far side from where its motors are.</p>
+<p>If we designate that side as "front", the motors would be out of the way of normal operation and so will one of the lead screws. The other lead screw will still reach close to the front, but at least it would be the simpler side away from where the motor (and associated cables) would have to be routed.</p>
+<p>Based on this designated front side, it was then easy to decide on the location of machine zero, and the direction of X and Y axis, Once Grbl ESP32 was configured accordingly, we could test if the machine responds as expected.</p>
+<p> </p>
+<p></body></html></p>

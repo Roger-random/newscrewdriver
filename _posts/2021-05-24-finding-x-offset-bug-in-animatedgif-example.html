@@ -1,0 +1,68 @@
+---
+layout: post
+title: Finding X-Offset Bug in AnimatedGIF Example
+date: 2021-05-24 12:30:00.000000000 +00:00
+type: post
+post_id: '26720'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26712'
+  _oembed_3139e7ee5a5ce9c9f635d7af47420f22: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">In
+    gratitude, the squid rescued the cat from its life of eating scraps in alleys
+    and, they&#39;ve been traveling the universe ever since, discovering new things,
+    helping others, and generally enjoying each other&#39;s company.</p>&mdash; Emily
+    Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1393063312405909504?ref_src=twsrc%5Etfw">May
+    14, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '58771970944'
+  timeline_notification: '1621884608'
+  _oembed_fee466c5548dc690fd65cb3f2bbe3502: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">A
+    wider view <a href="https://t.co/6BHmLRbNW1">pic.twitter.com/6BHmLRbNW1</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1388127308431515661?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_3139e7ee5a5ce9c9f635d7af47420f22: '1621888868'
+  _oembed_time_fee466c5548dc690fd65cb3f2bbe3502: '1621888868'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/24/finding-x-offset-bug-in-animatedgif-example/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Thanks to a little debugging, I figured out my ESP_8_BIT_composite color video out Arduino library required a new optional feature to make my <a href="https://newscrewdriver.com/2021/05/23/animated-gif-decoder-library-exposed-problem-with-double-buffering/">double-buffering implementation compatible with libraries that rely on a consistent buffer</a> such as AnimatedGIF. I was happy that my project, modified from one of the AnimatedGIF examples, was up and running. Then I swapped out its test image for other images, and it was immediately clear the job is not yet done. These test images were created by Emily Velasco and released under Creative Commons Attribution-ShareAlike 4.0 license (<a rel="noreferrer noopener" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26713,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/increment_number_test.gif?w=256" alt="" class="wp-image-26713"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This image resulted in the flawed rendering visible as the title image of this post. Instead of numbers continously counting upwards in the center of the screen, various numbers are rendered at wrong places and not erased properly in the following screens. Here is another test image to get more data</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26714,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/increment_square_test.gif?w=256" alt="" class="wp-image-26714"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Between the two test images and observing where they were on screen, I narrowed the problem. Animated GIF files might only update part of the frame and when that happens, the frame subset is to be rendered at a X/Y offset relative to the origin. The Y offset was accounted for correctly, but the X offset went unused meaning delta frames were rendering against the left edge rather than the correct offset. This problem was not in my library, but inherited from the AnimatedGIF example. Where it went unnoticed because the trademark-violating animated GIF used by that example didn't have an X-axis offset. Once I understood the problem, I went digging into AnimatedGIF code. Where I found the unused X-offset, and <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/commit/5ea187369dfe3ef9c23b167628ac310f1bb88664" target="_blank">added it into the example</a> where it belonged. These test images now display correctly, but they're not terribly interesting to look at. What we need is <a href="https://newscrewdriver.com/2021/05/25/cat-and-galactic-squid/">a cat with galactic squid friend</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: 'Fan Blade Counter Success: Infrared LED Photovoltaic Effect'
+date: 2022-08-28 12:30:00.000000000 +00:00
+type: post
+post_id: '32259'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32260'
+  _publicize_job_id: '76190518861'
+  timeline_notification: '1661715016'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/28/fan-blade-counter-success-infrared-led-photovoltaic-effect/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted to rig up a fan blade counter as an oscilloscope exercise: set up an emitter and hook the receiver up to the oscilloscope and count the spinning blades via interruption between emitter and receiver. I had a box of consumer infrared remote-control emitter and receivers, but <a href="https://newscrewdriver.com/2022/08/27/fan-blade-counter-fail-ir-receiver-is-not-simple-phototransistor/">those receivers were too smart and sophisticated for my project</a>. I needed something simpler.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32264,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/ir-emitter-pointed-at-another-at-close-range.jpg?w=1024" alt="" class="wp-image-32264"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at what I (literally) have on hand, I wondered if the oscilloscope is sensitive enough to pick up a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Photovoltaic_effect" target="_blank">photovoltaic effect</a> on these IR emitters. I remembered that every piece of silicon responds to light to some degree. This fact caused problems like the first run of <a rel="noreferrer noopener" href="https://hackaday.com/2015/02/08/photonic-reset-of-the-raspberry-pi-2/" target="_blank">Raspberry Pi 2 that resets when exposed to bright light</a>, which is why they're usually shrouded in black plastic to block light. I already had an IR emitter set up to pulse at 38kHz, so I placed another emitter pointed face-to-face wired directly to an oscilloscope probe: the probe connected to LED anode and corresponding ground pin connected to LED cathode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32265,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/ir-emitter-pointed-at-38khz-emitter-1.jpg?w=1024" alt="" class="wp-image-32265"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The answer is: yes, the oscilloscope can pick up electrical activity on the IR emitter diode as it was stimulated by an identical IR emitter. It's not a very clean square wave, with a sharp climb and a slower decay, but it's clearly transmitting the 38kHz signal. I don't know how to build a circuit that triggers behavior based on such small voltages, but right now I don't have to. The exercise is measuring fan blades and see how it correlates to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/08/computer-cooling-fan-tachometer-wire/" target="_blank">fan tachometer signal</a> on a multichannel oscilloscope, and I have an effect strong enough to be picked up by said oscilloscope.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32267,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/ir-emitter-pointed-at-another-through-fan-blades-side-view.jpg?w=1024" alt="" class="wp-image-32267"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The emitter LED was removed from the 38kHz circuit. Now it lives on the breadboard power rail, so it is always on. The other emitter LED (acting as receiver) was placed on the other side of the fan. A separate set of oscilloscope probes were connected to the fan tachometer wire. I gave the fan power, and saw the graph I had hoped to get:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32269,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/fan-tachometer-yellow-vs-optical-interruption-of-seven-bladed-fan-purple.jpg?w=1024" alt="" class="wp-image-32269"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The yellow square wave is the fan tachometer signal, and the rougher purple wave is the receiving LED. There are seven blades on this particular fan, so seven purple cycles would correspond to one revolution of the fan. I count seven purple cycles for every two yellow cycles, finally confirming that the cooling fan tachometer signal goes through two full cycles on every fan revolution.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

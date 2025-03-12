@@ -1,0 +1,44 @@
+---
+layout: post
+title: Sawppy HTML Canvas and Websocket
+date: 2021-04-13 12:30:00.000000000 +00:00
+type: post
+post_id: '26099'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26022'
+  timeline_notification: '1618342211'
+  _publicize_job_id: '57125128669'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/13/sawppy-html-canvas-and-websocket/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a little bit of research to <a href="https://newscrewdriver.com/2021/04/12/html-features-for-esp32-sawppy-rover/">figure out what parts of HTML I should be able to use</a> in my Sawppy rover control project, I got to work. Some minor parts of the 2D joystick touchpad <code>&lt;canvas&gt;</code> code was copied from the SGVHAK rover project, but the majority did not. One change was that I no longer sent updates upon every user input event, as I've learned that generated far too much data for this purpose. The internal calculations will still be made in the input event handlers, but those updated coordinates are not sent to the server except by a polling loop set up to run at regular intervals.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of the input event handlers, I switched to using standard generalized <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank">pointer event API</a> instead of those specific to mouse input or touch input, and a quick test showed it functioned as expected on all the platforms I tried. (Chrome on Windows 10, Chrome on Android, Safari on iOS, and IE on Windows Phone 8.) If there's a good reason why I didn't use that earlier for SGVHAK rover, I have yet to encounter it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Those changes were relatively minor in comparison to the next part: switching to using websocket for communicating steering and speed values to the server. For this I had to modify my Node.js placeholder server, as it was no longer a static file server. I expected to find a Node.js websocket library and was not surprised to find there were actually several to choose from. Based on a quick glance at the getting started examples, <code><a rel="noreferrer noopener" href="https://github.com/websockets/ws" target="_blank">ws</a></code> looks like one I could get up and running fastest for my purposes, and it did not disappoint. It took far less work than I had expected to get websocket communication up and running, albeit only one-way from client browser to server. But this is fine, the Node.js placeholder has done its job, now I have a very rough but minimally functional set of client-side code for Sawppy HTML control. Enough for me to <a href="https://newscrewdriver.com/2021/04/14/notes-on-getting-esp32-on-wifi/">start looking at ESP32 server-side code</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/browser_ui/static" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

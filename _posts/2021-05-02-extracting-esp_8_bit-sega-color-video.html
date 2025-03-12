@@ -1,0 +1,64 @@
+---
+layout: post
+title: Extracting ESP_8_BIT Sega Color Video
+date: 2021-05-02 12:30:00.000000000 +00:00
+type: post
+post_id: '26357'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26322'
+  _oembed_14fff323938ea9507888d3a3e5cf2a8a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Hack
+    and slashed <a href="https://twitter.com/adafruit?ref_src=twsrc%5Etfw">@adafruit</a>
+    &quot;Uncanny Eyes&quot; sketch (Hallowing, Monster M4sk) to run on this rendering
+    stack, now my tube TV stares back.<br><br>I&#39;ve also forgotten how hard it
+    is to get a tube TV on video. Had to lock exposure all the way low to avoid bloomed
+    out phosphors. <a href="https://t.co/qq5oc7l5zd">pic.twitter.com/qq5oc7l5zd</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1384551877635809282?ref_src=twsrc%5Etfw">April
+    20, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '57885934484'
+  timeline_notification: '1619983815'
+  _oembed_time_14fff323938ea9507888d3a3e5cf2a8a: '1620013790'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/02/extracting-esp_8_bit-sega-color-video/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>ESP_8_BIT implemented a system that could run one of three classic video game console emulators on an ESP32, but my interest is not in those games. My objective is to extract its capability to generate and output a NTSC composite video signal, and significantly, doing it in color <em>without </em>hardware modification. I chose the Sega emulator video generation code path for my project, since <a href="https://newscrewdriver.com/2021/05/01/observations-on-esp_8_bit-nintendo-and-sega-colors/">it had better color than the Nintendo emulator code path</a>. The Atari emulator code path was not a candidate as it had stopped working on my ESP32 for memory allocation failures, caused by factors I don't understand and might investigate later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The objective of today's project will mean deleting the majority of ESP_8_BIT. Most of the bulk were cut away quickly when I removed all three emulation engines along with their game ROMs. All three emulation engines had an adapter class that derived from a base emulator (<code>Emu</code>) class, and they were removed without issue thanks to the clean architecture separation. All lower level code interact with the emulators via the base class. With so many references to the base class sprinkled throughout the code, it took more finesse to find and cleanly remove them all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond the color video generation code that is my objective, there were various other system level services that I wanted to strip off to get to a minimum functional baseline. My first few projects will go without any of the following functionality: Bluetooth controller interface, infrared (IR) remote interface, and loading ROMs from on-board SPIFFS storage of ESP32. These are all fairly independent subsystems. Once I have built confidence in the base video code, and if I should need any of the other system services, I can add them back in one at a time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That leaves a few items intertwined with video output routines. The easiest to remove were the portions specific to Atari and Nintendo emulators, clearly marked off with <code>#ifdef</code> statements. ESP_8_BIT creator rossumur explained that the color signal hack had an unfortunate side effect of interfering with standard ESP32 audio output peripherals, so as an alternate mechanism audio had to be generated via ESP32's LEDC peripheral originally designed for controlling LED illumination. Since audio didn't seem to work on my setup anyway, I removed that mechanism as well. The final bit of functionality I didn't need was PAL support since I didn't have a PAL TV. I started removing that code but changed my mind. The work to keep PAL looks to be fairly manageable, and it's definitely a part of video signal generation. Plus, I want this project to be accessible to people with PAL screens. However, I have to remember to document the fact that I don't have a PAL TV to test against, so if I inadvertently break PAL support with this work I wouldn't know unless someone else tells me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another reason for choosing the Sega emulator code path is that its color palette is a mapping <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/List_of_monochrome_and_RGB_color_formats#8-bit_RGB_(also_known_as_3-3-2_bit_RGB)" target="_blank">I know as RGB332</a>. It is a way to encode color in eight bits: three bits for red, three for green, and two for blue. This mapping is more common than hardware-specific palettes of either Atari or Nintendo paths. I anticipate using RGB332 will make future projects much easier to manage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a practice run of the code that's left after my surgery, I wrote a test to load a color image. The was a picture <a rel="noreferrer noopener" href="https://twitter.com/MLE_Online/status/1383863864333197312/photo/2" target="_blank">Emily took of her cat</a>, cropped to 4:3 aspect ratio of old school tube TVs and then scaled to the 256x240 resolution of the target frame buffer. This results in a PNG file that <a rel="noreferrer noopener" href="https://github.com/Roger-random/esp_8_bit/blob/master/util/LoungingJubs.png" target="_blank">looks vertically stretched</a> due to the non-square pixels. Then I had to convert the image to RGB332 color. Since this is just a practice run, I <a rel="noreferrer noopener" href="https://github.com/Roger-random/esp_8_bit/blob/master/util/png_rgb332.js" target="_blank">wrote a quick script</a> to extract the most significant bits in each color channel. This is an extremely crude way to downconvert image color lacking nice <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Dither#Digital_photography_and_image_processing" target="_blank">features like dithering</a>. But image quality is not a high concern here, I just wanted to see a recognizable cat on screen. And I did! This successful static image test leads to the next test: <a href="https://newscrewdriver.com/2021/05/03/putting-adafruit-uncanny-eyes-on-a-tube-tv/">put something on screen that moves</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Result of this extraction project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/esp_8_bit" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

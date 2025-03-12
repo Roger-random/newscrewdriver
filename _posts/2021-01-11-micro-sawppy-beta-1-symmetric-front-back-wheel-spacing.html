@@ -1,0 +1,45 @@
+---
+layout: post
+title: Micro Sawppy Beta 1 Symmetric Front-Back Wheel Spacing
+date: 2021-01-11 12:30:00.000000000 +00:00
+type: post
+post_id: '24506'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+meta:
+  _publicize_job_id: '53312093329'
+  timeline_notification: '1610397004'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '18734'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/11/micro-sawppy-beta-1-symmetric-front-back-wheel-spacing/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While <a href="https://newscrewdriver.com/2021/01/10/micro-sawppy-beta-1-wiring/">working on wiring</a> I remembered a design decision I made for Micro Sawppy Beta 1 (MSB1). One of the features that surprised me about Curiosity rover were its wheel spacing. With a casual glance at the rover layout, I saw three wheels on each side and assumed they were evenly spaced, but once I studied them in more detail I learned they were not. The two bogie wheels are slightly closer together than the distance between middle wheel and front wheel. I'm sure this represented the best tradeoff between many factors I'm ignorant of, but I have no idea what they might have been. I don't even know what words to use to search for papers that might have been published to explain it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What I do know is that their different distances meant each corner wheel had different results for <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/03/reworking-sawppy-ackermann-math-in-a-jupyter-notebook/" target="_blank">calculating their Ackermann steering angles</a>. When traveling in an arc, this results in four different steering angles and different wheel rotational velocities for all six wheels. This calculation itself isn't a big deal right now. Since such math is pretty trivial for hardware platform like Sawppy's Raspberry Pi 3, and executing different steering angles and wheel rotations is similarly easy with LX-16A serial bus servos.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24485,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/msb1-side-view-all-wheels-on-ground.jpg?w=1024" alt="" class="wp-image-24485"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>But my goal is to make a rover that is smaller and simpler, and a part of that is willingness to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/01/little-sawppy-rover-intend-to-be-adorable/" target="_blank">deviate from Curiosity's proportions</a>. So I made this rover's wheel spacing front-back symmetric. The middle wheel is now set equidistant from front and rear wheels. Now steering angle and wheel velocity only has to be calculated once for each side. The front and rear corners wheels on the same side would steer to the same angle (just opposite directions) and those two wheels would roll at the same speed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Halving the math has little impact for MSB1, as its Raspberry Pi 3 had so much computing power to spare. And since it used the Adafruit PWM/Servo HAT for control, there were no reduction in complexity for electronics either. But MSB1 proved this approach can function, and is not the <a href="https://newscrewdriver.com/2021/01/12/micro-sawppy-beta-1-kicking-up-its-middle-wheels/">biggest problem with MSB1 suspension geometry</a>. And once proven, it opens up possibilities for future simplifications. Allowing future rovers to use software and electronics that are less capable than what is on board MSB1.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

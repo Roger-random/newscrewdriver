@@ -1,0 +1,53 @@
+---
+layout: post
+title: Building a Tiny "Joule Thief"
+date: 2017-10-30 15:28:29.000000000 +00:00
+type: post
+post_id: '14467'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Projects
+- Electronic Components
+tags:
+- Joule Thief
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10908412899'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/30/building-a-compact-joule-thief/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Yesterday I got a "<a href="https://en.wikipedia.org/wiki/Joule_thief">Joule Thief</a>" (a.k.a. Armstrong self-oscillating voltage booster) circuit up and running on a breadboard. The circuit was more complex than it needed to be, with a tangle of wires, because things got messy while debugging. But now that I know which parts connect to which, it's time to simplify.</p>
+<p>The goal is to make it small and compact enough to package together as a single-battery LED flashlight. That general goal broke down to the following parts:</p>
+<ol>
+<li>Minimize physical size. Since the coil is the largest single piece (other than the AA battery) it makes sense to align the diameter of the coil to the battery and pack everything else as tightly inside as I can.</li>
+<li>Minimize component count. Most Joule Thief examples on the internet (including the top picture on the Wikipedia page) soldered the legs of the individual components together. No circuit board needed.</li>
+<li>Friendly to hand soldering. There are some ready-made Joule Thief circuits for sale on the internet using surface mount components and a circuit board. I wanted something I can build by hand and maybe use as a soldering teaching project to be shared on the internet.</li>
+</ol>
+<p>After a few iterations, I have something I'm happy to share with the world. This is purely about the mechanical assembly - the electronic schematic is identical to the one in the Wikipedia article linked at the top of this post.</p>
+<p>An overview in words:</p>
+<ul>
+<li>The resistor for the NPN transistor base is installed between the collector and emitter. The resistor acts as physical separation in order to avoid a short-circuit.</li>
+<li>The transistor and LED are pointing in opposite directions, allowing their pins to point towards each other and soldered together. The aforementioned resistor keeps the LED anode and cathode separate.</li>
+<li>The transistor is stuffed into the middle of the coil, utilizing the center volume.</li>
+</ul>
+<p>The build sequence in pictures:</p>
+<p>[caption id="attachment_14491" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14491" src="https://newscrewdriver.com/wp-content/uploads/2017/10/1-transistor.jpg" alt="1 - Transistor" width="1024" height="695"> Transistor with the base bent in preparation for resistor installation.[/caption]</p>
+<p>[caption id="attachment_14494" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14494" src="https://newscrewdriver.com/wp-content/uploads/2017/10/2-transistor-resistor.jpg" alt="2 - Transistor Resistor.jpg" width="1024" height="970"> The 1K Ohm resistor is installed on the base, between collector and emitter.[/caption]</p>
+<p>[caption id="attachment_14497" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14497" src="https://newscrewdriver.com/wp-content/uploads/2017/10/3-transistor-resistor-coil.jpg" alt="3 - Transistor Resistor Coil" width="1024" height="889"> The coil has two wires wound together. One end of this dual-coil is facing the camera, the other end facing away. Since we need to wire up the coil in opposite directions, we'll bend one wire of the front pair towards the back, and the opposite back side wire to the front.[/caption]</p>
+<p>[caption id="attachment_14501" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14501" src="https://newscrewdriver.com/wp-content/uploads/2017/10/4-coil-prep.jpg" alt="4 - Coil prep.jpg" width="1024" height="793"> The two wires now facing away from the camera are soldered together to become the positive terminal of the circuit. One of the two wires facing the front will be soldered to the resistor, and the other to the emitter.[/caption]</p>
+<p>[caption id="attachment_14518" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14518" src="https://newscrewdriver.com/wp-content/uploads/2017/10/5-transistor-in-coil.jpg" alt="5 - Transistor in Coil" width="1024" height="848"> Transistor in the center of the coil. Now the coil wires can be soldered.[/caption]</p>
+<p>[caption id="attachment_14533" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14533" src="https://newscrewdriver.com/wp-content/uploads/2017/10/5a-resister-soldered.jpg" alt="5a - Resister soldered" width="1024" height="766"> Resistor soldered to one coil wire, all the others have been trimmed short in preparation for attaching the LED.[/caption]</p>
+<p>[caption id="attachment_14522" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14522" src="https://newscrewdriver.com/wp-content/uploads/2017/10/6-led.jpg" alt="6 - LED" width="1024" height="842"> LED is soldered to the circuit, as is a wire to act as negative (return) wire.[/caption]</p>
+<p>[caption id="attachment_14526" align="alignnone" width="1024"]<img class="alignnone size-full wp-image-14526" src="https://newscrewdriver.com/wp-content/uploads/2017/10/7-aa.jpg" alt="7 - AA" width="1024" height="768"> Install the whole assembly in front of a 3D-printed AA battery tray: Let there be light![/caption]</body></html></p>

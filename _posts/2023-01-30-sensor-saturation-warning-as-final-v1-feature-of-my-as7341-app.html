@@ -1,0 +1,52 @@
+---
+layout: post
+title: Sensor Saturation Warning as Final V1 Feature of My AS7341 App
+date: 2023-01-30 12:30:00.000000000 +00:00
+type: post
+post_id: '34755'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34765'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675198471
+  _publicize_job_id: '81048860959'
+  timeline_notification: '1675110605'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/30/sensor-saturation-warning-as-final-v1-feature-of-my-as7341-app/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It's been fun playing with my AS7341 interactive UI web app, seeing what the sensor sees and <a href="https://newscrewdriver.com/2023/01/29/approximate-color-from-as7341-spectral-data/">what the app guesses my eyes would see</a>. They're similar but rarely agree, as should be expected of a quick hack job. Occasionally I would see something wildly inaccurate, and it would take a few seconds for me to realize the problem: one or more AS7341 channels had hit their saturation (ADC<sub>fullscale</sub>) values. This "peg the scale" value (a.k.a. "off-scale high") is no longer accurate. In photography this causes overexposure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the raw server response JSON is printed at the bottom of my app, I could see sensor values that are at their ADC<sub>fullscale</sub> value. But this means mentally calculating ADC<sub>fullscale</sub> (<a href="https://newscrewdriver.com/2023/01/24/as7341-adc-fullscale-and-led-illumination-control/" target="_blank" rel="noreferrer noopener">which isn't always 65535</a>) and comparing them against those printed numbers. I could do it, but I wouldn't know to do it unless I suspect something is wrong with the output. I want notification of sensor saturation whenever it happens, even (or especially!) when the result looks reasonable but are actually wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The JavaScript code to detect saturation on a sensor channel was straightforward and can be performed in a loop over values for sensors F1-F8. Though it's more likely to happen on Clear or NIR first, so I checked those as well. But then I had to show the result in a way that I would notice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first modification was to change the header text for server response JSON. Normally displaying "Sensor data OK" but switch to "Sensor saturation (overexposure) detected" as notification. This is an improvement, but I found I don't always notice when my eyes are glued to the spectrum chart. To make sure I can't miss it I changed the chart. Every bar was given a white border and, if saturation is detected, that border turns red. This was an improvement, but I might be focused on one channel and miss the fact another channel had saturated. As I understand it, when one channel is saturated, every reading is unreliable. So if this is a global problem, I'll make the indicator global. The third modification changes <em>every </em>border to red if <em>any</em> channel had saturated. Now I can't miss it!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With this sensor saturation notification feature, I think my AS7341 interactive web app is at a good place to wrap up for version 1.0. Before I put my sensor away, though, I wanted to <a href="https://newscrewdriver.com/2023/01/31/compact-assembly-of-as7341-and-esp32-boards/">make the hardware more compact and portable</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui" target="_blank">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

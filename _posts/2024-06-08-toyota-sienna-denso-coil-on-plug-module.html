@@ -1,0 +1,101 @@
+---
+layout: post
+title: Toyota Sienna Denso Coil-On-Plug Module
+date: 2024-06-08 12:30:00.000000000 +00:00
+type: post
+post_id: '43687'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- ignition coil
+meta:
+  wordads_ufa: u:wpcom-ufa-v4:1718746068
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43693'
+  timeline_notification: '1717875025'
+  firehose_sent: '1717875023'
+  _publicize_job_id: '95278598765'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-18 21:29:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/08/toyota-sienna-denso-coil-on-plug-module/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The problem with deciding <a href="https://newscrewdriver.com/2024/06/07/learning-from-python-enhancement-proposals/">I need to sit down and do some reading</a> is that I'm vulnerable to get distracted by something shiny. Or in this case, something sparkly. Some time back I learned how <a href="https://newscrewdriver.com/2021/06/07/ti-tps61187-circuits-boost-converter/">voltage boost converters worked for laptop screen LED backlights</a>. A little after that, it occurred to me ignition coils in modern electronic ignition engines must be boost converters as well. Except instead of driving a bunch of LEDs in series, an ignition coil raises the car's 12V DC up high enough to jump across a spark plug gap. I thought it might be fun to try driving a coil in a non-automotive context and discussed the idea with other local makers. I was too cheap to buy a new coil just for this experiment, because I knew eventually someone would replace their car's ignition coil and I can ask for the old one. That day has come: my friend Emily Velasco let me know she was going to stop by with a Denso ignition coil-on-plug module with associated spark plug, recently retired from her parents' Toyota Sienna.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Research</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first step is information gathering. Thanks to ubiquity of Toyota vehicles, Emily found a pinout diagram for the ignition coil. This module has four pins. Two for power (+12V DC and ground) and two for signal (IGT and IGF). Toyota's official workshop service information would have more details on its operation and troubleshooting, but I don't have access to that. Fortunately there are other web resources like TOYOTAtech's <em><a href="https://automotivetechinfo.com/2021/07/how-to-find-toyota-ignition-system-faults-fast-dotting-the-igfs-and-crossing-the-igts/">How to Find Toyota Ignition System Faults Fast! Dotting the IGFs and Crossing the IGTs</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>According to this page "IGT" (I guess "ignition trigger") is a signal from ECU telling the coil to do its thing, and "IGF" (guessing "ignition feedback") is a signal from coil back to ECU to signal successful operation. Both operate with +5V DC logic. IGT is usually at ground level and briefly raised to +5V by the ECU to call for spark ignition. Looking at the blurry oscilloscope screen capture on TOYOTAtech's page, my best guess is raised for approximately 2 milliseconds. In contrast, IGF is usually up at +5V DC and the coil pulls it low for roughly 1 millisecond to signal successful spark generation. This <a href="https://en.wikipedia.org/wiki/Open_collector#Open_drain">open-drain system</a> allows multiple coils to share a common IGF line back to the ECU.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Circuit Board</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Armed with this knowledge, I built a quick experiment circuit out of components immediately available at my workbench. Emily helped me by <a href="https://social.afront.org/@MLE_online/112571746231721943">making a connector as CAD practice</a>, for which I was thankful. My board's output side needs to interface with that connector. On the input side, I needed two voltage levels: +12V DC for the coil and +5V DC for the signal. I have a 3S Lithium-Ion battery pack for 12-ish volts, but its battery management system (BMS) freaked out at the workload. As a backup, I switched to an old-fashioned lead-acid battery. For 5V I used the most expedient thing: an Arduino Nano with its USB socket and +5V DC output pin. To run the coil it will be connected to a cheap disposable USB power bank instead of a computer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The experiment circuit had two input paths to IGT, switchable by a jumper. The first path is a "manual override" test mechanism with a small push-button switch. Once everything is hooked up, a push on the switch will raise IGT to +5V DC. If there is no spark, we have to backtrack and see what went wrong. If there is a spark, I can move the jumper to the other input path: pulse-generating Arduino Nano.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've already established it needs to raise the line to +5V for approximately 2 milliseconds, but how long should it wait between pulses? A Toyota Sienna should idle somewhere just under 1000 RPM, and redline somewhere around 7000 RPM. This coil is responsible for a single spark plug. As a four-stroke piston engine, it would need to spark once every two revolutions of the crankshaft. The math then works out to: 1000 revolutions/minute * 1 minute/60 seconds * 1 spark/2 revolution = ~8.3 sparks/second. Invert that value to arrive at 120 milliseconds between sparks. Doing the same math for 7000 RPM arrives at 17 milliseconds between sparks. So I would expect this coil to reliably spark once every 120ms to 17ms. For the default program, I programmed the Arduino to raise IGT to +5VDC for 2ms then wait 120ms before repeating.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Coil Arrives</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started building the experiment board immediately after Emily told me she would stop by, hoping to have something ready by the time she arrived. So it was slapped together with speed as the utmost priority and everything else (visual neatness, design elegance, and... ahem... electrical safety) relegated to be dealt with later. We connected the coil's four wires to my test circuit, and it was time for the moment of truth.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tapped the switch, and we saw a spark. Woohoo! We powered down the system and moved the jumper. Once powered back up, the Arduino sent its pulses and we have a steady stream of sparks. Success!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Enhancements</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I honestly expected a lot more debugging before getting to this point, so I didn't have anything else prepared. Emily suggested that we connect a potentiometer to the system for interactivity, so out came the soldering iron and associated tools. Emily has built a lot of projects with potentiometer knob adjustments so she handled that addition. As the code monkey I updated my Arduino code to read knob position so we can adjust from "1000 RPM idle" to "7000 RPM redline".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Emily also fixed a problem with my board: I had connected a LED to IGF but it stayed dark. Reviewing the circuit I realized out of habit I had set it up to shine whenever IGF is high: but the coil never raises IGF to high! It pulls IGF low to report a successful spark. Emily added a 1k pull-up resistor and rewired the LED so it shines when IGF is low.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We connected everything back up and the adjustment knob worked wonders. We can "rev up" our system and it was fun, with <a href="https://social.afront.org/@MLE_online/112572916238123806">Emily capturing a few video clips</a>. Unfortunately the IGF LED stayed dark, but it didn't dampen our enthusiasm. Now that the coil is up and running under conditions approximating its designed purpose, we enter the "screwing around" phase pushing it beyond original operating range.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Adventuring Beyond Spec</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Emily asked for a fluorescent tube, but my house had almost entirely converted to LED lighting. I had but a single remaining tube and it was only still there because I haven't figured out how to open up its enclosure. Emily figured it out in five seconds and pulled out the tube, connecting its ends in place of the spark plug. The ignition coil was able to act as <a href="https://social.afront.org/@MLE_online/112572927825075585">a (poor) fluorescent tube ballast</a> dimly flashing the tube. (The room had to go dark for Emily to shoot that video.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After this fluorescent tube experiment, we reinstalled the spark plug and made a fascinating discovery. With no other (intentional) changes, the IGF LED now blinks in sync with sparks as originally expected. We have no idea why. Perhaps something about the workload of driving a fluorescent tube? This coil and plug was replaced because the Toyota Sienna's engine control unit (ECU) reported codes for ignition issues. It's possible cylinder combustion was working properly but poor IGF reporting triggered the malfunction indicator light (MIL). We agreed if this was the case, it obviously meant Toyota/Denso must add a fluorescent tube to their official list of repair tools.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43729,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/spark-plug-makes-for-a-poor-lighter.jpg?w=800" alt="" class="wp-image-43729"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Emily tried to see if this spark can light a sheet of paper on fire. There was a lot of glowing, charring, and pitting, but it took persistence before she got a real flame. There are far more effective ways to start a fire! But it did make us wonder if it'd be practical to build a crude <a href="https://en.wikipedia.org/wiki/Electrical_discharge_machining">electrical-discharge machining (EDM) system</a> out of an ignition coil. That idea has been added to the ever-growing project to-do list.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most promising experiment was revving this thing far beyond "redline" by shortening time between pulses below 17ms. To go even faster, we reduced the duration of IGT pulse itself. This quickly extinguished the IGF LED, which was the coil's way to complain things are going too fast for a good combustion-initiating spark. But that's OK, because we're not here to ignite air-fuel mixtures, we were trying to turn it into <a href="https://social.afront.org/@MLE_online/112573003605386620">a silly and pointless musical instrument</a>. Still, there was a limit. We started losing the spark (and our musical note) when we went too fast. Exactly how fast is too fast? To make further progress on this front I'll have to <a href="https://newscrewdriver.com/2024/06/09/denso-ignition-coil-on-plug-module-on-workbench/">better characterize parameters of this ignition coil-on-plug module</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Public GitHub repository for this project: <a href="https://github.com/Roger-random/ignition_coil">https://github.com/Roger-random/ignition_coil</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

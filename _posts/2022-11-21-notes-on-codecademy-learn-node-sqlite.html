@@ -1,0 +1,68 @@
+---
+layout: post
+title: Notes on Codecademy "Learn Node-SQLite"
+date: 2022-11-21 12:30:00.000000000 +00:00
+type: post
+post_id: '33683'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+- Node.js
+tags:
+- SQL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33690'
+  timeline_notification: '1669062605'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669162440
+  _publicize_job_id: '78939835046'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/21/notes-on-codecademy-learn-node-sqlite/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/11/20/notes-on-codecademy-learn-sql/">my SQL fresher</a> course, shortly after <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/13/notes-on-codecademy-learn-node-js/" target="_blank">learning Node.js</a>, I thought the natural progression was to put them together with Codecademy's "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-node-sqlite" target="_blank">Learn Node-SQLite</a></em>" course. The name <code>node-sqlite3</code> is not a mathematical subtraction but that of a specific JavaScript library bridging worlds of JavaScript and SQL. This course was a frustrating disappointment. (Details below) In hindsight, I think I would have been better off skipping this course and learn the library outside of Codecademy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>About the library: Our database instructions such as queries must be valid SQL commands stored as strings in JavaScript source code. We have the option of putting some parameters into those strings in JavaScript fashion, but the SQL commands are mostly string literals. Results of queries are returned to the caller using Node's error-first asynchronous callback function convention, and query results are accessible as JavaScript objects. Most of library functionality are concentrated in just a few methods, with details available <a rel="noreferrer noopener" href="https://github.com/TryGhost/node-sqlite3/wiki/API" target="_blank">from API documentation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This Codecademy course is fairly straightforward, covering the basics of usage so we can get started and explore further on our own. I was amused that some of the examples were simple to the point of duplicating SQL functionality. Specifically the example for <code>db.each()</code> shows how we can tally values from a query which meant we ended up writing a lot of code just to duplicate SQL's <code>SUM()</code> function. But it's just an example, so understandable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The course is succinct to the point of occasionally missing critical information. Specifically, the section about <code>db.run()</code> say "<em>Add a function callback with a single argument and leave it empty for now. Make sure that this function is not an arrow.</em>" but didn't say why our callback function must not use arrow syntax. This minor omission became a bigger problem when we roll into the after-class quiz, which asked why it must not use arrow syntax. Well, you didn't tell me! A little independent research found the answer: arrow notation functions have a different behavior around the "<code>this</code>" object than other function notations. And for <code>db.run()</code>, our feedback is stored in properties like <code>this.lastID</code> which would not be accessible in an arrow syntax function. Despite such little problems, the instruction portion of the course were mostly fine. Which brings us to the bad news...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>The Code Challenge section <strong><em>is a disaster</em></strong>.</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>It suffers from the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/16/notes-on-codecademy-learn-express/" target="_blank">same problem I had with Code Challenge section of the <em>Learn Express</em> course</a>: lack of feedback on failures. Our code was executed using some behind-the-scenes mechanism, which meant we couldn't see our <code>console.log()</code> output. And unlike the Learn Express course, I couldn't workaround this limitation by throwing exceptions. No console logs, no exceptions, we don't even get to see syntax errors! The only feedback we receive is always the same "You did it wrong" message no matter the actual cause.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Hall of Shame Runner-Up: No JavaScript feedback. </strong>When I make a JavaScript syntax error, the syntax error message was not shown. Instead, I was told "Did you execute the correct SQL query?" so I wasted time looking at the wrong thing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Hall of Shame Bronze Medal: No SQL feedback. </strong>When I make a SQL command error, I want to see the error message given to our callback function. But <code>console.log(error)</code> output is not shown, so I was stabbing in the dark. For Code Challenge #13, my mistake was querying from "Bridges" table when the sample database table is actually singular "Bridge". If I could log the error, I would have seen "No such table Bridges" which would have been much more helpful than the vague "Is your query correct?" feedback.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Hall of Shame Silver Medal: Incomplete Instructions.</strong> Challenge #14 asked us to build a query where "month is the current month". I used "month=11" and got nothing. The database had months in words, so I actually needed to use "month='November'". I wasted time trying to diagnose this problem because I couldn't run a "SELECT * FROM Table" to see what the data looked like.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Hall of Shame Gold Medal Grand Prize Winner:</strong> Challenge #12 asks us to write a function. My function was not accepted because I did not declare it using the same JavaScript function syntax used in the solution. Instructions said nothing about which function syntax to use. After I clicked "View Solution" and saw what the problem was (image above) I got so angry at the time it wasted, I had to step away for a few hours before I could resume. This was bullshit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>These Hall of Shame (dis)honorees almost turned me off of Codecademy entirely, but after a few days away to calm down, I returned to learn what <a href="https://newscrewdriver.com/2022/11/22/notes-on-codecademy-design-databases-with-postgresql/">Codecademy has to teach about PostgreSQL</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

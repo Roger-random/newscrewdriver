@@ -1,0 +1,41 @@
+---
+layout: post
+title: Bolt Test Print on Monoprice Maker Select (Wanhao Duplicator i3)
+date: 2018-07-09 09:00:22.000000000 +00:00
+type: post
+post_id: '16036'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+- 3D Printing Projects
+tags:
+- Monoprice Maker Select
+meta:
+  _oembed_583fff63cc4e9a37f5b0d73db996afd4: "{{unknown}}"
+  _oembed_e8cdad9c5930557be77d8488434f5b38: "{{unknown}}"
+  _oembed_633cc554ebb3aa71dc116f19b6f47d7c: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1531152026'
+  _publicize_job_id: '19831046557'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/09/bolt-test-print-on-monoprice-maker-select-wanhao-duplicator-i3/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After upgrading the control electronics of my Monoprice Maker Select to an Azteeg X5 Mini (which is a major change) there were a handful of issues to chase down. Some documented recently on this blog, others too minor to be worth writing about. Once the biggest problems were resolved, the printer was in a decently usable state. Not perfect, but acceptable. Or so I thought... time for a test.</p>
+<p>The test print object is a bolt with its corresponding nut. There's no practical reason to 3D print my own fasteners - buying them would be cheaper, faster, and stronger. The purpose of this exercise is to test dimensional accuracy. While we could print a calibration cube and measure its dimensions, it's not as satisfying as fitting one precision part into another. A successful test would allow threading the printed nut onto the printed bolt. Also, we'd end up with a simple little fidget toy.</p>
+<p>A good reference for dimensional accuracy is <a href="http://manual.slic3r.org/troubleshooting/dimension-errors">this page</a> in the Slic3r manual. Most of the information on this page areapplicable to 3D printing in general and not exclusive to Slic3r users.</p>
+<p>The 3D data for test print was pulled off McMaster-Carr's web site which has CAD data for much of its merchandise. <a href="https://www.mcmaster.com/#92620a815">Here is the bolt</a>, and here is the <a href="https://www.mcmaster.com/#95036a039">matching nut</a>. Several iterations were printed to fine-tune settings. In this picture, the bolt on the right was printed at 0.3mm layer height. This proved too coarse to properly recreate the thread and did not work. The bolt on the left is printed at 0.1mm layer height, which was able to recreate the thread profile with enough accuracy. But that by itself was not enough - it also needed an XY compensation parameter of -0.2mm before the nut will smoothly install on the bolt, shown on the left side of this picture.</p>
+<p>Requiring a dimensional adjustment of 0.2mm is not great, as that is half the width of our 0.4mm print nozzle. In theory we should be able to do better, but for now this is good enough to resume printing <a href="http://sawppy.com">Sawppy </a>parts.</p>
+<p><img class="alignnone size-full wp-image-16037" src="https://newscrewdriver.com/wp-content/uploads/2018/04/bolt-test.jpg" alt="Bolt Test" width="2058" height="1674"></p>
+<p></body></html></p>

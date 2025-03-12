@@ -1,0 +1,50 @@
+---
+layout: post
+title: Making Fusion 360 CAM Friendlier To Hobbyist CNC Mills
+date: 2020-01-08 12:30:29.000000000 +00:00
+type: post
+post_id: '20169'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '20160'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1578515432'
+  _publicize_job_id: '39321729824'
+  _oembed_48c75ba46e193a6676f373de26d89594: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Update:
+    Round 2 was successful! All I had to do was suppress my perfectionist tendencies.
+    Thanks(?) to <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>  encouragement:
+    &quot;Roger, don&#39;t worry, you&#39;ve seen the quality of Arduino code other
+    people put out there.&quot; <a href="https://t.co/yeRWG5G6eQ">https://t.co/yeRWG5G6eQ</a>
+    <a href="https://t.co/uqjil8IDdF">pic.twitter.com/uqjil8IDdF</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1156100288941449217?ref_src=twsrc%5Etfw">July
+    30, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_48c75ba46e193a6676f373de26d89594: '1578529858'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/08/changing-fusion-360-cam-defaults-unsuitable-for-hobbyist-cnc-mills/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>In parallel with <a href="https://newscrewdriver.com/2020/01/07/z-axis-rollers-contribute-to-tool-chatter/">investigating points of weakness within the physical structure</a>, we're also learning how to make Autodesk Fusion 360 CAM friendlier to hobbyist grade CNC mills. We know our project machine, built mostly out of salvaged parts, <a href="https://newscrewdriver.com/2020/01/06/problem-of-tool-chatter-dominates-cnc-session/">is not a CNC powerhouse</a>. We now need to tell Fusion 360 how to be kinder to it.</p>
+<p>Looking over parameters for tool path generation, the first item we noticed is the default of "Climb Milling". We're not professional machinists, but we knew enough to know this is not a good way to go for this machine. But what if we didn't even have that much knowledge? Thankfully Fusion 360 included a brief explanation accompanying many settings, including the "Sideways Compensation" parameter relevant here.</p>
+<p><img class=" size-full wp-image-20191 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/01/climb-milling-explanation.png" alt="Climb milling explanation" width="550" height="850"></p>
+<p>Key phrase in that explanation: <em>This generally gives a better finish in most metals, but requires good machine rigidity</em>. Our machine is not rigid at all by CNC mill standards and must be switched over to "Conventional Milling". Most real CNC mills in operation today are rigid enough for climb milling, so this was a reasonable default value for Fusion 360 to use, just not for us.</p>
+<p>We also wanted to take shallower cuts in the material, as by default Fusion 360 generates code to tell the CNC to plunge into full cutting depth of the cutter. Making full use of all cutting surfaces on the tool is a reasonable default, but that involves removing far too much material at once for our mill. To tell Fusion 360 to take shallower passes, we can select the "Multiple Depths" option.</p>
+<p><img class=" size-full wp-image-20192 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/01/stepdown-explanation.png" alt="Stepdown explanation" width="538" height="863"></p>
+<p>Unlike the other explanation text, this doesn't mention the setting as a potential compensation to lack of machine rigidity, but it worked. Our next test cut was <a href="https://newscrewdriver.com/2020/01/09/running-cnc-program-again-shows-encouraging-consistency/">far more successful</a>.</p>
+<p></body></html></p>

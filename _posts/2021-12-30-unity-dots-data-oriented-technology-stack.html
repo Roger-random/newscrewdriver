@@ -1,0 +1,57 @@
+---
+layout: post
+title: Unity DOTS = Data Oriented Technology Stack
+date: 2021-12-30 12:30:00.000000000 +00:00
+type: post
+post_id: '28101'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+- Unity
+tags:
+- ML-Agents
+- Reinforcement Learning
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28105'
+  _publicize_job_id: '67107894976'
+  timeline_notification: '1640896215'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/30/unity-dots-data-oriented-technology-stack/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Looking over resources for Unity ML-Agents toolkit for reinforcement learning AI algorithms, I've come across <a href="https://newscrewdriver.com/2021/12/29/miscellaneous-gems-from-ml-agents-resources/">multiple discussion threads</a> about how it has difficulties scaling up to take advantage of modern multicore computers. This is not just a ML-Agents challenge, this is a Unity-wide challenge. Arguably even a software development industry-wide challenge. When CPUs stopped getting faster clock rates and started gaining more cores, games have had problem taking advantage of them. Historically while a game engine is running, there is one CPU core running at max. The remaining cores may help out with a few auxiliary tasks but mostly sit idle. This is why gamers have been focused on single-core performance in CPU benchmarks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having multiple CPUs running in parallel isn't new, nor are the challenges of leveraging that power in full. From established software toolkits to leading edge theoretical research papers, there are many different approaches out there. Reading these Unity forum posts, I learned that Unity is working on a big revamp under the umbrella of <a href="https://unity.com/dots" target="_blank" rel="noreferrer noopener">DOTS: Data-Oriented Technology Stack</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I came across the DOTS acronym several times without understanding what it was. But after it came up in the context of <a rel="noreferrer noopener" href="https://forum.unity.com/threads/google-brax-physics-engine.1141984/" target="_blank">better physics simulation</a> and a <a href="https://forum.unity.com/threads/dots-support.1120318/">request for ML-Agents to adopt DOTS</a>, I knew I couldn't ignore the acronym anymore.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know a whole lot yet, but I've got the distinct impression that working under DOTS will require a mental shift in programming. There were multiple references to Unity developers saying it took some time for the concepts to "click", so I expect some head-scratching ahead. Here are some resources I plan to use to get oriented:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Unity blog <a rel="noreferrer noopener" href="https://blog.unity.com/topic/dots" target="_blank">has DOTS as a recurring topic</a> to get people familiar with the concept.</li>
+<li>Unity Learn class <a rel="noreferrer noopener" href="https://learn.unity.com/tutorial/what-is-dots-and-why-is-it-important" target="_blank"><em>What is DOTS and Why Is It Important</em></a>?</li>
+<li>Unity Learn class for <a rel="noreferrer noopener" href="https://learn.unity.com/tutorial/entity-component-system" target="_blank">Entity Component System</a>, the backbone of DOTS that Unity developers will have to work with directly.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>DOTS is Unity's implementation of Data-oriented Design, a more generalized set of concepts that helps write code that will run well on modern machines with many cores and multiple levels of memory caches. An <a href="https://www.dataorienteddesign.com/dodbook/" target="_blank" rel="noreferrer noopener">online eBook for Data-oriented Design</a> is available, which might be good to read so I can see if I want to adopt these concepts in my own programming projects outside of Unity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And just to bring this full circle: it looks like the ML-Agents team has already <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents-dots" target="_blank">started DOTS work</a> as well. However <a href="https://newscrewdriver.com/2021/12/31/unity-python-communication-for-ml-agents-good-bad-and-ugly/">it's not clear to me how DOTS will (or will not) help</a> with the current gating performance factor: Unity environment's communication with PyTorch (formerly TensorFlow) running in a Python environment.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

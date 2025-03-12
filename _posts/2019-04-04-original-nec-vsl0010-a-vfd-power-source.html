@@ -1,0 +1,50 @@
+---
+layout: post
+title: Original NEC VSL0010-A VFD Power Source
+date: 2019-04-04 12:30:37.000000000 +00:00
+type: post
+post_id: '18244'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Teardown
+tags:
+- SGVHAK
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29401101082'
+  timeline_notification: '1554406248'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/04/original-nec-vsl0010-a-vfd-power-source/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Now that we have a better understanding of how a NEC VSL0010-A vacuum fluorescent display (VFD) works, <a href="https://newscrewdriver.com/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/">figuring out its control pinout</a> with the <a href="https://newscrewdriver.com/2019/04/03/hp-inkjet-printer-power-supply-for-nec-vsl0010-a-vfd/">help of an inkjet power supply</a>, we returned to the carcass we salvaged that VFD out of. Now that we knew each pins' function, we picked those that supplied 2.5V AC for filament power to track. We expect they are least likely to pass through or be shared by other devices. We traced through multiple circuit boards back to the main power transformer output plug. We think it's the two gray wires on the left side of this picture, but our volt meter probes are too big to reach these visible contact points. And the potential risk of high voltage made us wary of poking bare wires into that connector as we did for the inkjet power supply.</p>
+<p><img class=" size-full wp-image-18237 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-power-supply-probes-too-fat.jpg" alt="NEC VSL0010-A VFD Power Supply - Probes Too Fat" width="1600" height="900"></p>
+<p>Our solution came as a side benefit of decision made earlier for other reasons. Since we were new to VFD technology, our curiosity-fueled exploratory session was undertaken with an inexpensive Harbor Freight meter instead of the nice Fluke in the shop. Originally the motivation was to reduce risk: we won't cry if we fry the Harbor Freight meter, but now we see a secondary benefit: With such an expensive device, we also feel free to modify these probes to our project at hand. Off we go to the bench grinder!</p>
+<p><img class=" size-full wp-image-18235 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-power-supply-probes-meet-grinder.jpg" alt="NEC VSL0010-A VFD Power Supply - Probes Meet Grinder" width="1600" height="900"></p>
+<p>A few taps on the grinding wheel, and we have much slimmer probes that could reach in towards those contacts.</p>
+<p><img class=" size-full wp-image-18236 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-power-supply-probes-now-thin.jpg" alt="NEC VSL0010-A VFD Power Supply - Probes Now Thin" width="1600" height="900"></p>
+<p>Suitably modified, we could get to work.</p>
+<p><img class=" size-full wp-image-18234 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-power-supply-probes-at-work.jpg" alt="NEC VSL0010-A VFD Power Supply - Probes At Work" width="1600" height="900"></p>
+<p>We were able to confirm the leftmost pair of wires, with gray insulation, is our 2.5VAC for VFD filament. The full set of output wires from this transformer, listed by color of their insulation, are:</p>
+<ul>
+<li>Gray pair (leftmost in picture): 2.6V AC</li>
+<li>Brown pair (spanning left and right sides): 41V AC</li>
+<li>Dark blue pair: (center in picture) 17.2V AC</li>
+<li>Black pair (rightmost in picture): 26.6V AC</li>
+</ul>
+<p>There was also a single light-blue wire adjacent to the pair of dark blue wires. Probing with volt meter indicated it was a center tap between the dark blue pair.</p>
+<p><img class=" size-full wp-image-18238 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-power-supply-transformer.jpg" alt="NEC VSL0010-A VFD Power Supply Transformer" width="1600" height="900"></p>
+<p>Once determined, we extracted the transformer as a single usable unit: there was a fuse holder and an extra power plug between it and the device's AC power cord. We're optimistic this assembly will find a role in whatever project that VFD will eventually end up in. 2.6V AC can warm filament, rectified 26.6V AC should work well for VFD grid and segments. And with proper rectification and filtering, a microcontroller can run off one of these rails. It'll be more complex than driving a LED display unit, but it'll be worth it for that distinctive VFD glow.</body></html></p>

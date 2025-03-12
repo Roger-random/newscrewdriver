@@ -1,0 +1,53 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Communication Appears To Be Serial
+date: 2023-12-26 12:30:00.000000000 +00:00
+type: post
+post_id: '41279'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  firehose_sent: '1703622711'
+  wordads_ufa: s:wpcom-ufa-v4:1703709455
+  _thumbnail_id: '41186'
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '90593952142'
+  timeline_notification: '1703622712'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/26/canon-pixma-mx340-control-panel-communication-appears-to-be-serial/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got the control panel of a Canon Pixma MX340 multi-function inkjet on my workbench, hooked up to my oscilloscope. I've located the three wires used for communication between the main board and the control panel circuit board. Monitoring activity of these three wires with my oscilloscope, two of the pins are behaving as communication lines one in each direction and the third has been <a href="https://newscrewdriver.com/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/">tentatively identified as a Chip Enable signal</a> for the NEC K13988 chip on board the control panel circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before oscilloscope observation, I didn't know what those three wires were. I thought the best guess was SPI with clock, MOSI, and MISO. I felt I2C was less likely due to its official design intent of communication on the same circuit board, it's not as robust for running across long ribbon cables. But since I saw no clock signal on any of these three wires, synchronous protocol like SPI and I2C are ruled out. I don't know any asynchronous protocols aside from old school serial, so I hoped that was it. I went back to my <a href="https://learn.sparkfun.com/tutorials/serial-communication/all" target="_blank" rel="noreferrer noopener">first tutorial of asynchronous serial published by Sparkfun</a> for comparison against my set of oscilloscope traces.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41286,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-back-button-bits.png?w=826" alt="" class="wp-image-41286"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here was the transmission from control panel to main board, reporting the press of "Back" button. (Leftmost of four buttons under the LCD screen.) Horizontal scale is 5us per grid here, and each state is held for less than one grid. Five of them seem to fit nicely in four grids, so call it 4us per bit. If I interpret this graph as serial data, I would get: 0 for the start bit, 11001001 for 8 data bits, 0 would represent an even parity bit, and a final 1 bit as stop bit. This is consistent with serial. Repeating the exercise with my remaining button press traces, they all had patterns that made sense as 8E1 serial data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As for the speed, 115200 baud is pretty common for microcontroller projects I've examined. 1/115200 = 8.68us, about double the time for each of these bits, implying this is double that speed in the neighborhood 115200 * 2 = 230400 baud. So I will try interpreting this data as 8E1 serial data at 230400 baud and <a href="https://newscrewdriver.com/2023/12/27/canon-pixma-mx340-control-panel-meet-saleae-logic-8/">see how far I get</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

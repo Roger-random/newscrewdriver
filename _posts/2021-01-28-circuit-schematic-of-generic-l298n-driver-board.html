@@ -1,0 +1,56 @@
+---
+layout: post
+title: Circuit Schematic of Generic L298N Driver Board
+date: 2021-01-28 12:30:00.000000000 +00:00
+type: post
+post_id: '24745'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24755'
+  _publicize_job_id: '54028370337'
+  timeline_notification: '1611865803'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666773473
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/28/circuit-schematic-of-generic-l298n-driver-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As a learning exercise, I decided to generate my own documentation for commodity L298N motor driver modules available wherever hobbyist electronics are sold. The first step was to <a href="https://newscrewdriver.com/2021/01/27/components-of-generic-l298n-motor-driver-module/">catalogue all the components mounted on board</a>, and now I analyze the circuit board layout to see how they are connected together. And as much as I like to do things digitally, for projects like this I really appreciate the flexibility and immediacy of a sheet of paper to scribble on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24746,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/01/l298n-front-and-back.jpg?w=1024" alt="" class="wp-image-24746"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could probably do it with the actual device in hand and a blank sheet of paper, but this time around I decided to create my own visual guide. I took photos that are as directly square-on as I could front and back. I scaled them to the same size, and printed them side by side on a sheet of paper leaving room for me to write notes. Once printed, I folded the paper in half while holding it up to a light source so I could line up the front and the back. Then I started following copper traces and scribbling my notes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately this was a relatively simple circuit that mostly followed data sheet recommendations. I quickly confirmed the eight diodes were present to dump excess power into the +12V and GND planes. The two electrolytic capacitors are there for the +12V and +5V power planes respectively. IN1 through IN4 and OUT1 through OUT4 are straightforward direct routes. I also confirmed the optional current sensing resistors were absent, those pins were tied directly to ground. Furthermore, there was no provision to make adding current sensing resistors easy. People who want to perform current sensing are probably better off using another module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few traces were buried under components so their paths had to be teased out via probing with a continuity meter. The jumpers on ENA and ENB do indeed tie them high to the +5V power plane. The third jumper enable/disable the onboard 78M05 regulator. When the jumper is in place, it connects the +12V power plane to the input pin of 78M05. Which can then supply 500mA of current to +5V plane. Since the L298 itself draws less than 100mA, the remainder capacity can be tapped via the +5V screw terminal to perhaps drive a microcontroller. When the jumper is removed, regulator input is disconnected from the +12V plane and the +5V screw terminal becomes an input port to accept external power. The LED and current-limiting resistor is connected to the +5V plane and will illuminate when +5V power is present.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Aside from the silkscreened text proclaiming +12V, I found nothing to limit motor power supply to +12V. As far as I can tell it can be anywhere from 7 to 35V when using the onboard 78M05 regulator. If the regulator jumper is removed and L298N is running on external logic power, the lower limit is dictated by the L298N which can function with as low as 4V. The upper limit of a L298N is 45V with peaks of 50V, but the capacitors and 78M05 used on this module are listed with 35V maximums. Personally I'm unlikely to use anything higher than <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/08/31/apc-rbc-battery-module-teardown/" target="_blank">two 12V lead-acid batteries in series</a>, which would be 28.8V fully charged and comfortably under that limit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a part of this self-assigned exercise, I also practiced <a rel="noreferrer noopener" href="https://newscrewdriver.com/wp-content/uploads/2021/01/l298n-module-schematic-16x9-1.jpg" target="_blank">drawing a schematic</a> using the electronics design component of Autodesk Fusion 360. I think I've captured all of the information above, though I'm sure this schematic violates a bunch of conventions and make electronic engineer eyes twitch. (I've had to read software code written by electrical engineers so I have some idea what the mirror image is like.) And while I try to put lots of comments into my software source code, I haven't learned how to best document a schematic. Until I learn more about that world, this blog post represents my best effort for this round.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Armed with this knowledge, I felt confident enough to embark on designing a micro rover to use TT gearbox with its DC motor, leading to <a href="https://newscrewdriver.com/2021/01/29/micro-sawppy-beta-3/">Micro Sawppy Beta 3</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

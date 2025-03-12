@@ -1,0 +1,71 @@
+---
+layout: post
+title: Honda CD Spinner Demo
+date: 2022-06-29 12:30:00.000000000 +00:00
+type: post
+post_id: '31046'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- Honda CD
+- LC75883
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31047'
+  _publicize_job_id: '74178875790'
+  timeline_notification: '1656531020'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/29/honda-cd-spinner-demo/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I am at a good stopping point for my <a href="https://newscrewdriver.com/2022/06/28/lcd-driver-pinout-for-honda-cd/">exploration of a retired CD player control panel</a> from a Honda Accord. At this point I can interact with all audio control button and knobs, and control what is displayed on its output LCD controlled by Sanyo LC75883 chip. My Arduino sketch toggles through several different modes when I press the "Mode" button (read via LC75883): Turn all segments on, or a "drawing mode" of turning on individual segments selected via the quadrature encoder knob. Very functional, but I wanted to put together something a little flashier before I move on to the next project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I figured out the Toyota tape deck, I made a simple <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/24/larson-scanner-demo-for-tape-deck-lcd/" target="_blank">Larson scanner</a>. I could do another Larson scanner with this LCD, but I thought I could put together something more interesting. The central attention-getting element of this segmented LCD is a series of 24 segments arranged in a circle. I've never seen this LCD work in normal operation, but since it is a CD player, I assume it showed graphics that resembled a spinning CD. A quick test confirmed that I could show a spinning animation, so I will make that the centerpiece for a demo. The next question is what to do with remaining segments.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31036,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-all-on-with-backlight.jpg?w=1024" alt="" class="wp-image-31036"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are ten 7+ segment displays. Four to the left of the spinner, three above, and four to the right. Some of these have additional segments, likely to display specific subsets of the alphabet. That works for static text, but it rules out scrolling text.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are two additional segments that appear to be 7-segment numeric display but are not. Above the spinner is apparently a clock, as there are two elements that pretend to be "1" of a 7-segment numeric display but is in fact a single segment. And far to the right is a number that appear to be a 7-segment display but is in fact only three segments and thus extremely limited.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also have a few miscellaneous elements for describing CD operation. "DISC", "TRACK" "RPT", etc. Plus six numbered CDs for the six-disc changer. I haven't thought of anything useful to do with those beyond a Larson scanner-like animation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I settled on the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Focus on center spinning CD animation using its 24 segments.</li>
+<li>All the individually controllable 7-segment displays will use their outer 6 segments and also display a spinning animation.</li>
+<li>There will be 12 frames in the animation, which works out evenly for the 24-segment CD and 6-segment outer digit segments.</li>
+<li>Most of the remaining segments will form a near-vertical section of 1 in 12 bands, they will animate left-and-right in a Larson scanner-like manner.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The animation cycle: CD and digits spins clockwise, and the bands will move in one direction. The motion will slow, then reverse and acceleration. Then it will decelerate and reverse again, and the loop repeats. It didn't turn out quite as visually interesting as I had hoped, but I'm not going to invest in the time to make a better animation. It is sufficient to show off the fact I have full control all segments independent of this LCD's original designed purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","sizeSlug":"large"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://raw.githubusercontent.com/Roger-random/Sanyo_LC75883/main/spinnerloop.gif" alt=""></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this demo is part of the <a href="https://github.com/Roger-random/Sanyo_LC75883" target="_blank" rel="noreferrer noopener">investigation project available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

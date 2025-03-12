@@ -1,0 +1,62 @@
+---
+layout: post
+title: My TPS61187 LED Driver Startup Plan
+date: 2021-06-08 12:30:00.000000000 +00:00
+type: post
+post_id: '26986'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26964'
+  _publicize_job_id: '59363464084'
+  timeline_notification: '1623180626'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/08/my-tps61187-led-driver-startup-plan/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted to see if I could <a href="https://newscrewdriver.com/2021/06/07/ti-tps61187-circuits-boost-converter/">power up just the LED backlight portion</a> of a broken LG LCD laptop screen, model LP133WF2(SP)(A1). It was cracked and couldn't display images, but the backlight still worked before I took it apart. Does it still work? I wanted to find out and I still had the screen's integrated driver circuit board and will try that first. The biggest question mark here is how the rest of the circuit board will react if I try to power up the TI TPS61187 LED driver chip in-place on the circuit board. My fallback position is to bypass the chip and power the LED strings directly, but that wouldn't be as energy-efficient and I lose out on cool features. The one most novel to me is the phase-shifted PWM dimming control, where the six LED strings are dimmed round-robin instead of all at once for a smoother display. It's not something I would likely do if I had to power the LEDs directly with my own cricuit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To see if I could get the original circuit running, I plan to do it in steps based on this excerpt from the datasheet<strong>:</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote">
+<p><strong>7.3.4 Enable and Start-up</strong></p>
+<p>The internal regulator which provides VDDIO wakes up as soon as VIN is applied even when EN is low. This allows the device to start when EN is tied to the VDDIO pin. VDDIO does not come to full regulation until EN is high. The TPS61187 checks the status of all current feedback channels and shuts down any unused feedback channels. It is recommended to short the unused channels to ground for faster start-up.</p>
+<p>After the device is enabled, if the PWM pin is left floating, the output voltage of the TPS61187 regulates to the minimum output voltage. Once the device detects a voltage on the PWM pin, the TPS61187 begins to regulate the IFB pin current, as pre-set per the ISETH pin resistor, according to the duty cycle of the signal on the PWM pin.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>This translated to the following plan:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Put minimal voltage across VIN and GND. If it doesn't go up in smoke, probe VDDIO to see if it has some voltage.</li>
+<li>If that works, check the Enable pin. If I am to drive the chip, I will need to control the state of the Enable pin. This is where an interaction with existing components might cause headaches: something else on the board might be trying to keep it high or keep it low, and if I put voltage on that pin the opposite state, I might damage that component unless I cut a trace somewhere to disconnect it.</li>
+<li>I might also have to find and cut a trace for the PWM pin for the same reason.</li>
+<li>Send the Enable signal, and check the voltage level across a LED string for the "minimum output voltage" mentioned by the datasheet.</li>
+<li>If all of the above works, then I'll work on how to generate the PWM dimming signal.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Plans rarely survive intact upon their first contact with reality, but I wanted to have one before I got started. It will guide me as I <a href="https://newscrewdriver.com/2021/06/09/probing-tps61187-led-driver-configuration/">probe the circuit board to understand how it uses a TPS61187</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

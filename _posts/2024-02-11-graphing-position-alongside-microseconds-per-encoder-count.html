@@ -1,0 +1,61 @@
+---
+layout: post
+title: Graphing Position Alongside Microseconds Per Encoder Count
+date: 2024-02-11 12:30:00.000000000 +00:00
+type: post
+post_id: '41917'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  firehose_sent: '1707683431'
+  _publicize_job_id: '91878763894'
+  timeline_notification: '1707683433'
+  wordads_ufa: s:wpcom-ufa-v4:1707797293
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/11/graphing-position-alongside-microseconds-per-encoder-count/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm on a side quest decoding motion reported by the quadrature encoder attached to the paper feed motor of a Canon Pixma MX340 multi-function inkjet. Recording encoder counts was easy and gave me some preliminary insights into the system, but now I want to make my data probe smarter and parse those encoder positions into movements. This has proven more challenging. In an effort to keep the project relatively simple, I'm <a href="https://newscrewdriver.com/2024/02/10/motion-decoder-trying-microseconds-per-count/">trying "microseconds per encoder count"</a> as a metric that should be easy to calculate with integer math. This is the reciprocal of the more straightforward "encoder count per microsecond" velocity measurement and I hope I can get all the same insights.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I expect "microseconds per encoder count" (shortened to us/enc for the rest of this post) would be low when the motor is spinning rapidly, and high when it is spinning slowly. Above a certain threshold, the system is spinning slowly enough to be treated as effectively stopped.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on this expectation, I should be able to divide up recorded positions into a list of movements. The start and end of each movement should be a spike in us/enc that would be high but below "effectively stopped" threshold. These spikes should correspond to acceleration &amp; deceleration on either end of a movement. I revisited the system startup sequence with a rough draft and Excel generated this graph. The blue line is the <a href="https://newscrewdriver.com/2024/02/03/quadrature-decode-mx340-startup/" target="_blank" rel="noreferrer noopener">familiar position graph of encoder counts</a>, and orange line is my new us/enc value.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41920,"sizeSlug":"large","linkDestination":"media","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-us_per_position-over-time.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-us_per_position-over-time.png?w=1024" alt="" class="wp-image-41920"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The best news is that us/enc worked really well for my biggest worry between 15 and 16 seconds, on either side of blue line peak. The motor decelerated then accelerated again in the same direction, something I couldn't pick up before. Now I see nice sharp orange spike marking each of those transitions on either side of the spike corresponding to direction reversal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most worrisome news is that, right after the 13 second mark when the system started its long roll towards the peak, there was barely a spike when its acceleration should have shown up as a more significant signal. I have to figure out what happened there. It may reflect a fatal flaw with this us/enc approach.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Less worrisome but also problematic are the extraneous noisy spikes on the orange us/enc line that had no corresponding movement on the blue position line. Majority of which occurred between 8 and ~10.75 seconds. During this time, the print carriage is moving across its entire range of motion (likely a homing sequence) and that vibration caused a few encoder ticks of motion in the paper feed roller mechanism. I think such small movements <a href="https://newscrewdriver.com/2024/02/12/simple-debounce-improved-motion-decoding/">can be filtered out pretty easily</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

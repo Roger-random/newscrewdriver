@@ -1,0 +1,50 @@
+---
+layout: post
+title: Notes on Vue.js Quick Start
+date: 2023-05-04 12:30:00.000000000 +00:00
+type: post
+post_id: '36523'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36534'
+  _publicize_job_id: '83779862018'
+  timeline_notification: '1683228616'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683356893
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/04/notes-on-vue-js-quick-start/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/05/03/notes-on-codecademy-learn-vue-js/">going through Codecademy's "Learn Vue.js" course</a>, I went to Vue.js site and followed through their quick start "<a href="https://vuejs.org/guide/quick-start.html#creating-a-vue-application"><em>Creating a Vue Application</em></a>" procedure to see what a "Hello World" looks like. It was quite instructive and showed me many facets of Vue not covered by Codecademy's course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first difference is here we're creating an application with Vue.js, which means firing up command line tool <code>npm init vue@latest</code> to create an application scaffolding with select features. Since I'm a fan of TypeScript and of maintaining code formatting, I said yes to "TypeScript", "ESLint" and "Prettier" options and no to the rest.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then installed all the packages for that scaffolding with <code>npm install</code> and then I ran <code>npm run build</code> to look at the results in <code>/dist/</code> subdirectory. They added up to a little over 60 kilobytes, which is roughly one-third built size of Angular's scaffolding. This is even more impressive considering that several kilobytes are placeholders: about a half dozen markup files plus a few SVG files for vector graphics. The drastically smaller file sizes of Vue apps are great, but what have I given up in exchange? That's something I'll be looking for as I learn more about both platforms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Poking around in the scaffolding app, I saw it demonstrated use of Vue componentization via its SFC (Single File Component) file format. A single <code>*.vue</code> file contained a component's HTML, CSS, and TypeScript/JavaScript. Despite the fact they are all text-based formats and designed to coexist, I'm not a fan of mixing three different syntax in a single file. I prefer Angular's approach of keeping each type in their own file. To mitigate confusion, I expect <a href="https://github.com/vuejs/language-tools">Vue's editor tool Volar</a> would help keep the three types distinct.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Some Vue components in the example are tiny like <code>IconTooling.vue</code> which is literally a wrapper around a chunk of SVG to deliver a vector-graphic icon. Others are a little more substantial like <code>WelcomeItem</code> whose template has three slots for information: <code>#icon</code>, <code>#heading</code>, and everything else. This feels quite different from how Angular components get data from their parents. I look forward to learning more about this style of code organization.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While running <code>npm run build</code> I noticed this Vue app boilerplate build pipeline didn't use webpack, it used something called <a href="https://vitejs.dev/">Vite</a> instead. Since <a href="https://newscrewdriver.com/2023/04/02/webpack-first-look-did-not-go-well/">I couldn't make heads or tails of webpack on my first pass</a>, I was encouraged that <a href="https://newscrewdriver.com/2023/05/05/trying-vite-and-its-ie11-legacy-option/">I could understand a lot more of Vite</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

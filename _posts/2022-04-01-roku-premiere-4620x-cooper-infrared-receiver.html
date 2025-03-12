@@ -1,0 +1,182 @@
+---
+layout: post
+title: Roku Premiere (4620X "Cooper") Infrared Receiver
+date: 2022-04-01 12:30:00.000000000 +00:00
+type: post
+post_id: '29320'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Teardown
+tags:
+- ESP32
+- ESPHome
+- Infrared
+- Roku
+meta:
+  _thumbnail_id: '29223'
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '70889455864'
+  timeline_notification: '1648841408'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668590146
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/01/roku-premiere-4620x-cooper-infrared-receiver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Looking over the <a href="https://newscrewdriver.com/2022/03/31/roku-premiere-4620x-cooper-circuit-board/">circuit board of a Roku Premiere 4620X ("Cooper")</a> I saw a lot of things that might be fun to play with but require more skill than I have at the moment. But that's fine, every electronics hobbyist has to start somewhere, so I'm going to start small with the infrared remote control subsystem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Consumer infrared (IR) is <a href="https://en.wikipedia.org/wiki/Consumer_IR">not standardized</a>, and signals may be sent on several different wavelengths. Since I want to play with the Roku RC108 remote control unit, I needed to remove the infrared receiver of its corresponding Premiere 4620X in order to guarantee I have a matching set. This is a small surface-mount device protected by a small metal shield that I could fold out of the way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29329,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-closeup-infrared-receiver-shield.jpg?w=853" alt="" class="wp-image-29329"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the shield was out of the way, I could turn on the Roku and probe its pins with my voltmeter to determine the power supply pin (constant 3.3V) the ground pin, and the signal pin (mostly 3.3V but would drop as I sent signals with the remote.) I then removed this receiver with my soldering iron and connect this tiny part to a set of 0.1" spacing headers so I could play with it on a breadboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29222,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-infrared-remote-receiver-on-headers.jpg?w=1024" alt="" class="wp-image-29222"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In this picture, from top to bottom the pins are:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Ground</li>
+<li>(Not connected)</li>
+<li>Power 3.3V</li>
+<li>(Not connected)</li>
+<li>Active-low signal</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I installed it on a breadboard with an ESP32, flashed with ESPHome which is my current favorite way to explore things. In this case, ESPHome has a <a rel="noreferrer noopener" href="https://esphome.io/components/remote_receiver.html" target="_blank">Remote Receiver component</a> that has decoders for many popular infrared protocols. What if we don't know which decoder to use? That's fine, we can set the <code>dump</code> parameter to <code>all</code> which will try every decoder all at once. For this experiment I chose an ESP32 because the of its <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html" target="_blank">dedicated remote control (RMT) peripheral</a> for accurate timing while decoding signals. After I get something up and running, I might see if it works on an ESP8266 without the RMT peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29221,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-premiere-4620x-cooper-infrared-remote-receiver-on-breadboard-with-esp32.jpg?w=1024" alt="" class="wp-image-29221"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With <code>dump</code> parameter set to <code>all</code> listening to a Roku RC108, I got hits from the JVC, LG, and NEC decoders. And occasionally I would get a RAW message when none of them could understand the signal. If I hold the [up] button, I get one instance of:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[18:55:50][D][remote.jvc:049]: Received JVC: data=0x5743
+[18:55:50][D][remote.lg:054]: Received LG: data=0x57439867, nbits=32
+[18:55:50][D][remote.nec:070]: Received NEC: address=0xC2EA, command=0xE619</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>But just the first one. All following hits look like this, and they repeat for as long as I held down the [up] button.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[18:55:50][D][remote.jvc:049]: Received JVC: data=0x5743
+[18:55:50][D][remote.lg:054]: Received LG: data=0x57439966, nbits=32
+[18:55:50][D][remote.nec:070]: Received NEC: address=0xC2EA, command=0x6699</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then if I press the [down] button on the remote, the first interpreted signal became:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[18:55:52][D][remote.jvc:049]: Received JVC: data=0x5743
+[18:55:52][D][remote.lg:054]: Received LG: data=0x5743CC33, nbits=32
+[18:55:52][D][remote.nec:070]: Received NEC: address=0xC2EA, command=0xCC33</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then it would repeat the following for as long as [down] was held:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[18:55:53][D][remote.jvc:049]: Received JVC: data=0x5743
+[18:55:53][D][remote.lg:054]: Received LG: data=0x5743CD32, nbits=32
+[18:55:53][D][remote.nec:070]: Received NEC: address=0xC2EA, command=0x4CB3</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at this, it looks like JVC is overeager and doesn't actually understand the protocol as it failed to differentiate up from down. That leaves LG and NEC decoders. To find out which is closer to the Roku protocol, I started tightening the <code>tolerance </code>parameter from its default of 25%. When I have it tightened to 10%, only the NEC decoder returned results. Even better, each button returns a repeatable and consistent number that is different from all of the others. Even if Roku isn't actually using a NEC protocol, using the NEC decoder is good enough to understand all its buttons. I used the NEC decoder to generate this lookup table.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<tbody>
+<tr>
+<td><strong>Roku Remote Button</strong></td>
+<td><strong>Decoded Command</strong></td>
+</tr>
+<tr>
+<td>Back</td>
+<td>0x19E6</td>
+</tr>
+<tr>
+<td>Home</td>
+<td>0x7C83</td>
+</tr>
+<tr>
+<td>Up</td>
+<td>0x6699</td>
+</tr>
+<tr>
+<td>Left</td>
+<td>0x619E</td>
+</tr>
+<tr>
+<td>OK</td>
+<td>0x55AA</td>
+</tr>
+<tr>
+<td>Right</td>
+<td>0x52AD</td>
+</tr>
+<tr>
+<td>Down</td>
+<td>0x4CB3</td>
+</tr>
+<tr>
+<td>Instant Replay</td>
+<td>0x07F8</td>
+</tr>
+<tr>
+<td>Options</td>
+<td>0x1EE1</td>
+</tr>
+<tr>
+<td>Rewind</td>
+<td>0x4BB4</td>
+</tr>
+<tr>
+<td>Pause</td>
+<td>0x33CC</td>
+</tr>
+<tr>
+<td>Fast Forward</td>
+<td>0x2AD5</td>
+</tr>
+<tr>
+<td>Netflix</td>
+<td>0x34CB</td>
+</tr>
+<tr>
+<td>Sling</td>
+<td>0x58A7</td>
+</tr>
+<tr>
+<td>Hulu</td>
+<td>0x32CD</td>
+</tr>
+<tr>
+<td>Vudu</td>
+<td>0x7788</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think I got lucky this time with the NEC decoder. I had another infrared remote control in my pile of electronics (JVC RM-RK52) and none of the ESPHome decoders could decipher it, just RAW data all the time. Alternatively, it's possible that remote is on a different infrared wavelength and thus this particular receiver is only picking up fringe gibberish. I'll put the JVC remote back in the pile until I am in the mood to dig deeper, because right now I want to quickly <a href="https://newscrewdriver.com/2022/04/02/esphome-remote-receiver-test-simplistic-shooting-game/">play with this salvaged infrared system</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

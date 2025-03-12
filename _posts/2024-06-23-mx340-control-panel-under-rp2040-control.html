@@ -1,0 +1,65 @@
+---
+layout: post
+title: MX340 Control Panel Under RP2040 Control
+date: 2024-06-23 16:23:21.000000000 +00:00
+type: post
+post_id: '43881'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  timeline_notification: '1719185006'
+  firehose_sent: '1719185003'
+  _thumbnail_id: '43875'
+  _publicize_job_id: '95682435698'
+  wordads_ufa: u:wpcom-ufa-v4:1719266081
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 21:56:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/23/mx340-control-panel-under-rp2040-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I bought some <a href="https://newscrewdriver.com/2024/06/22/fpc-and-breakout-boards-for-mx340-control-panel/">FPC (flexible printed circuit) cables and connector breakout boards</a> from Amazon vendors so I no longer have to solder wires directly to my salvaged Canon Pixma MX340 multi-function inkjet control panel. The first FPC breakout board went on a perforated prototype board to host a Raspberry Pi Pico. Up until this point I had been using Adafruit's KB2040 board. But since they're both based on RP2040 chip and have CircuitPython support, switching my code to run on a Pi Pico is a minor task of changing over a few pin names.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Soldering to the FPC breakout board with its 0.1" (~2.54mm) pitch was far easier than the 1.0mm pitch of soldering directly to the control panel. Which meant I finally got around to connecting five wires that were previously not connected:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>5 volt DC wire to supply WiFi LED</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LED+ for Power LED, in series with an 100 ohm current-limiting resistor already on board.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LED+ for Alarm LED, also with resistor.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Power button that is pulled to ground when pressed.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Stop button that is pulled to ground when pressed.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>My CircuitPython code had provision to set the appropriate bit flags to manipulate the WiFi LED, but I hadn't tested it until this point due to lack of +5V power. I was happy to see it worked, but I doubt I would find a use for it. As it originally shined into a clear plastic light guide and thus pointed in an opposite direction from the rest of the control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And I hadn't dealt with the remaining four wires at all, as I considered the two direct-wired buttons and two direct-wired LEDs fairly standard microcontroller fare. And indeed, there were no surprises after I declared two <a href="https://learn.adafruit.com/circuitpython-essentials/circuitpython-digital-in-out">CircuitPython <code>digitalio</code> pins</a> for those LEDs and <a href="https://learn.adafruit.com/key-pad-matrix-scanning-in-circuitpython">a <code>keypad</code> instance</a> to read (and debounce) those two buttons. All worked as expected on the first try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I updated my test app to toggle power LED upon presses to the power button, and the same for alarm LED and the stop button. The "In Use/Memory" and WiFi LEDs blink their own separate heartbeat patterns. And the LCD displays status of key matrix scan code activity: every time one of the K13988-scanned button is pressed, its name is displayed on the LCD. It makes for a simple demo to prove I have complete control over all electronic functionality of this salvaged control panel. Now this control panel waits for a project that could put it to good use but while it's waiting, I went ahead with <a href="https://newscrewdriver.com/2024/06/24/tiny-cat-galactic-squid-on-mx340-lcd/">a project that puts it to silly fun use</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

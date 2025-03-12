@@ -1,0 +1,38 @@
+---
+layout: post
+title: Resuming Pololu Stepper Driver Adventures with Arduino and A4988
+date: 2019-08-20 12:30:48.000000000 +00:00
+type: post
+post_id: '19263'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19244'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34337666622'
+  timeline_notification: '1566329566'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/20/resuming-pololu-stepper-driver-adventures-with-arduino-and-a4988/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>By the time I got around to <a href="https://newscrewdriver.com/2019/08/19/xy-stage-position-detection-switches/">playing with homing switches</a> on a salvaged industrial XY stage, it was getting late. I only had a few minutes to perform one experiment: connect the normally open homing switch to <code>X_LIMIT_PIN</code> (<code>GPIO02</code> <a href="https://github.com/bdring/Grbl_Esp32/blob/master/Grbl_Esp32/cpu_map.h">as per <code>cpu_map.h</code></a>), set <code>HOMING_CYCLE_0</code> to <code>X_AXIS</code> in <code>config.h</code>, and sent command to home X-axis. The motor moved right past the switch into the hard stops, so I turned off the ESP32 marking an unsatisfying end to the work session.</p>
+<p>I wanted to be able continue learning Grbl while at home, away from the salvaged hardware, so I dug up the A4988 motor control board <a href="https://newscrewdriver.com/2018/07/22/learning-how-to-use-pololu-stepper-driver-modules/">I've played with briefly</a>. It's time to get a little further in depth with this thing. Motivated by my current state in the XY stage project, the first goal is to get a stepper motor to activate a homing switch. If I could get that far, I'll think about other projects. People have done some pretty creative things with little stepper motors controlled by Grbl, I could join that fun.</p>
+<p>Rummaging through my pile of parts, the first stepper motor I retrieved was one pulled from an optical drive. This particular stepper motor had only the drive screw, the carriage has been lost. But with four exposed pins in two groups of two, it is a <a href="https://learn.adafruit.com/all-about-stepper-motors/types-of-steppers">bipolar motor</a> suitable for an A4988 motor control board. I just had to solder some wires to make it usable with a breadboard.</p>
+<p>Since this stepper motor was a lot smaller than the one used in my previous A4988 stepper motor experience, I thought this was a good opportunity to learn how to tune the current limits on these modules by following instructions <a href="https://www.pololu.com/product/1182">published by Pololu</a> and using an Arduino as a test controller running code <a href="https://www.pololu.com/blog/484/video-setting-the-current-limit-on-pololu-stepper-motor-driver-carriers">published on this page</a>. I started with a limit of 100mA, but the motor got quite toasty at that level after running for a minute. I turned it down to 50mA, and it no longer got hot to the touch running that Arduino sketch.</p>
+<p>This is a good start, but a motor with just a drive shaft is not useful for motion control. The next step is to find something that could push on a limit switch. I don't seem to have anything handy, so it's time to start <a href="https://newscrewdriver.com/2019/08/21/panasonic-uj-867-optical-drive-carriage-extraction/">digging into salvaged hardware</a>.</p>
+<p></body></html></p>

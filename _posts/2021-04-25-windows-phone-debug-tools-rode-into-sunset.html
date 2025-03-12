@@ -1,0 +1,75 @@
+---
+layout: post
+title: Windows Phone Debug Tools Rode Into Sunset
+date: 2021-04-25 12:30:00.000000000 +00:00
+type: post
+post_id: '26212'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+- WP8
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26020'
+  _publicize_job_id: '57597051977'
+  timeline_notification: '1619379014'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/25/windows-phone-debug-tools-rode-into-sunset/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Organizing and <a href="https://newscrewdriver.com/2021/04/24/cleaning-up-and-commenting-sawppy-rover-esp32-code/">commenting code for my Sawppy Rover ESP32 control project</a> had two sides: the server-side code running on the ESP32 and the client-side code running in a web browser. The MIT license text and general comments went well, but when I tried to improve error handling, I ran into a serious problem with <a href="https://newscrewdriver.com/2021/04/09/windows-phone-8-as-sawppy-rover-controller/" target="_blank" rel="noreferrer noopener">the old Internet Explorer browser built into Windows Phone 8.1</a>: I have no debugging tools.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My only indication was that the page failed to load and all I saw was a blank screen. There were no error messages displayed onscreen, and unlike desktop browsers I couldn't even look at what's been printed to <code>console.log()</code>. Just a blank nothing. I backtracked through my code changes and eventually traced it down to a bit of error handling code I added to the JavaScript file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>try {
+  // Do potentially problematic thing
+} catch {
+  // Use alternate approach instead
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This worked in desktop browsers, this was also accepted in my modern Android phone's Chrome browser, but it was treated as an error in Internet Explorer. Even though I didn't care about the specific error thrown, IE didn't permit omitting the specifier. The following syntax was required:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>try {
+  // Do potentially problematic thing
+} catch<strong>(err)</strong> {
+  // Use alternate approach instead
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This code change was not, in itself, a big deal. But it took an hour of trial-and-error to find the location of the error (no feedback = no line number!) and figure out what the browser would tolerate. During this time I was operating blind with only a binary "blank screen or not" as my feedback mechanism. I need better tools if I am to tackle more challenging JavaScript programming on Windows Phone IE.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, almost all of the debugging resources for Windows Phone platform have disappeared. Microsoft's own Visual Studio IDE -- formerly the home of Windows Phone app development -- don't even mention the platform at all in its "<a href="https://visualstudio.microsoft.com/vs/features/mobile-app-development/" target="_blank" rel="noreferrer noopener">Mobile Development</a>" feature page. A promising resource titled <em><a href="https://devblogs.microsoft.com/devops/diagnosing-mobile-website-issues-on-windows-phone-8-1-with-visual-studio/" target="_blank" rel="noreferrer noopener">Diagnosing Mobile Website Issues on Windows Phone 8.1 with Visual Studio</a></em> (published in 2014) said to best tool to use is the Windows Phone emulator because it was easier. Avoiding all the hoops one must jump through to put a physical Windows Phone device in developer mode for debugging. Today it's not just a matter of "easier" since the latter is outright impossible: the Windows Phone developer portal has been shut down and I can no longer put any of my devices into developer mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But perhaps they're both equally impossible, as the Windows Phone emulator is no longer an option for installation in Visual Studio 2019. A search for related pages led me to <em><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/aspnet/mobile/overview" target="_blank">Mobile Apps &amp; Sites with ASP.NET</a></em> (published in 2011) whose section had a promising link "<a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/aspnet/mobile/device-simulators" target="_blank">Simulate Popular Mobile Devices for Testing</a>". But that link is no longer valid, clicking it merely redirects back to the  <em>Mobile Apps &amp; Sites with ASP.NET</em> page. Many search boxes later, I eventually found what claims to be the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=44574" target="_blank" rel="noreferrer noopener">Windows Phone emulator as a standalone download</a>. I did not try to download or install it because at that point I was no longer interested.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I aborted my intention to organize my browser JavaScript code. Right now everything sits as peers at top-level and globally accessible. I had intended to reorganize the code into three classes: One handles drawing, one handles user input (pointer events), and the third handles server communications (websocket). However It looks like Internet Explorer never supported the <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank">official JavaScript <code>class</code> mechanism</a>. I can probably hack up something similar, JavaScript is flexible like that. People have been hacking up <code>class</code>-like constructs in JS long before the official keyword was adopted. But to do that I need debugging tools for when I run into inevitable problems. Doing it without even the ability to see syntax errors or <code>console.log()</code> is masochistic self-punishment and I am not interested in inflicting that upon myself. No debug tool, no reorganization. I will add comments but the code structure will stay as-is.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This frustrating debugging session sapped my enthusiasm for working on Sawppy rover ESP32 control code. But before I go work on something else for a change of pace, I wanted to <a href="https://newscrewdriver.com/2021/04/26/sawppy-rover-battery-voltage-monitor/">get a basic voltage monitoring system up and running</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/browser_ui/static" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

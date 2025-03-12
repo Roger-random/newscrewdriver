@@ -1,0 +1,42 @@
+---
+layout: post
+title: HP Stream 7 Reboot Loop Linked to Intel Chipset Windows Driver
+date: 2022-01-15 12:30:00.000000000 +00:00
+type: post
+post_id: '28181'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- HP Stream 7
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28187'
+  _publicize_job_id: '67726678087'
+  timeline_notification: '1642278613'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/15/hp-stream-7-reboot-loop-linked-to-intel-chipset-windows-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I disconnected the battery on my HP Stream 7 tablet and <a href="https://newscrewdriver.com/2022/01/14/direct-dc-power-on-hp-stream-7-renders-windows-unbootable/">soldered wires to put power on its voltage supply lines</a>. The good news is that the tablet would start up, the bad news is that Windows couldn't complete its boot sequence and gets stuck in a reboot loop. After a few loops, Windows notices something is wrong and attempted to perform startup repair. It couldn't fix the problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first thought was that I had damaged a component with my soldering. A small tablet has tiny components and I could have easily overheated something. But portions of the computer is apparently still running, because I could still access the Windows recovery console and boot into safe mode. But I didn't have any idea on what to do to fix it while in safe mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since there were no data of consequence on this tablet, I decided to perform a clean installation of Windows. If it succeeds, I have a baseline from which to work from. If it fails, perhaps the failure symptoms will give me more data points to diagnose. A few hours later (this is not a fast machine) I was up and running on Windows 10 21H2. Basic functionality seemed fine, which was encouraging, but it also meant the machine was running in unoptimized mode. The most unfortunate consequence is that the tablet runs hot. The power supply indicates the tablet is constantly drawing nearly 10 Watts, no matter if the CPU is busy or idle. A basic Windows installation doesn't know how to put machine into a more power efficient mode, putting me on a search for drivers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the tablet is quite old by now (Wikipedia says <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/HP_Stream_7" target="_blank">it launched in 2014</a>) I was not optimistic, but I was pleasantly surprised to find that HP still maintains a <a rel="noreferrer noopener" href="https://support.hp.com/us-en/drivers/selfservice/hp-stream-tablets/7439994/model/7482041" target="_blank">driver download page</a> for this device. Running down the list looking for an Intel chipset driver, I found a bundled deal in the "<a rel="noreferrer noopener" href="https://support.hp.com/us-en/drivers/selfservice/swdetails/hp-stream-tablets/7439994/model/7482041/swItemId/ob-151644-2" target="_blank">Intel Chipset, Graphics, Camera and Audio Driver Pack</a>". It sounded promising... but during installation of this driver pack, the tablet screen went black. When I turned it back on, the dreaded reboot loop returned. Something in this large package of Windows drivers is the culprit. Maybe I could <a href="https://newscrewdriver.com/2022/01/16/hp-stream-7-running-debian-with-raspberry-pi-desktop/">try a different operating system instead</a>?</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

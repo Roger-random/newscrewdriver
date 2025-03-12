@@ -1,0 +1,56 @@
+---
+layout: post
+title: Notes on PEP 342 "Coroutines via Enhanced Generators"
+date: 2024-06-11 12:30:00.000000000 +00:00
+type: post
+post_id: '43748'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  firehose_sent: '1718134224'
+  _publicize_job_id: '95357833668'
+  timeline_notification: '1718134226'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-14 00:54:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/11/notes-on-pep-342-coroutines-via-enhanced-generators/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I think I've worked <a href="https://newscrewdriver.com/2024/06/10/sparky-danger-organ/">my sparkly distraction</a> out of my system, time to return to <a href="https://newscrewdriver.com/2024/06/07/learning-from-python-enhancement-proposals/">my Python study</a>. This was motivated my CircuitPython experiments running on RP2040 microcontrollers. CircuitPython may be a reduced subset of Python, but it nevertheless incorporated many concepts that I have yet to grasp. Thus the study session, which dug through multiple PEP (Python Enhancement Proposal) design documents. Here are my notes after reading <a href="https://peps.python.org/pep-0342/">PEP 342 <em>Coroutines via Enhanced Generators</em></a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was not familiar with coroutines, but I found a helpful explanation within <a href="https://docs.python.org/3/glossary.html#term-coroutine">Python glossary</a>: "<em>Coroutines are a more generalized form of subroutines. Subroutines are entered at one point and exited at another point. Coroutines can be entered, exited, and resumed at many different points.</em>" I was familiar with functions, which has a single entry point and multiple exit points. (Each <code>return</code> is an exit.) When I read about "resume" in context, my first thought was of a function calling another. The parent caller function pauses execution waiting for the child callee function to run. Which is true, but Python coroutines have more points of interaction with each other. The caller can <code>send</code> additional data to the callee, which receives that data via <code>yield</code>. And they each maintain their internal state while this went on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why do we even want this? At surface I thought the same could be accomplished by standard nested loops, but example #2 in the PEP (JPEG contact sheet creator) helped me understand. Yes, maybe the pattern of execution could be replicated by nested loops, but that meant a single function has to track all variables involved in every nested loop. A coroutine, in contrast, can be written to encapsulate information for just one layer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's my pseudocode to replicate example #2 with nested loops:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>for each page of contact sheet
+  for each thumbnail on contact sheet
+    for each JPEG
+      generate thumbnail
+    add thumbnail to contact sheet
+  write page of contact sheet</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want to process a bunch of JPEG differently, resulting in a different summary output JPEG, I would write a new function that has the different second loop but has the same innermost and outermost loops. With coroutines, I can get the same result by swapping out the <code>thumbnail_pager</code> coroutine and continue using the rest without making any changes to them or duplicate code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think I see the advantage here for independent code modules, but it'll take a while for my brain to adapt and add this tool to my toolbox. During this transition period I'm likely to continue writing my code as nested loops. But at least this understanding helped me understand Python context managers. But before that, <a href="https://newscrewdriver.com/2024/06/13/not-a-fan-of-python-succinct-syntax/">a complaint from grumpy Python student</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

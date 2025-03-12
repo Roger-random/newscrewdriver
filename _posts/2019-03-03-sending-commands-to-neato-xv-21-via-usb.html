@@ -1,0 +1,114 @@
+---
+layout: post
+title: Sending Commands to Neato XV-21 Via USB
+date: 2019-03-03 13:30:34.000000000 +00:00
+type: post
+post_id: '17969'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1551648646'
+  _oembed_022f8ffac83246964e1001e387b6fb02: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">But
+    those little batteries weren&#39;t powerful enough to run the vacuum so I mounted
+    big <a href="https://twitter.com/hashtag/sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#sawppy</a>
+    batteries up top. Like <a href="https://twitter.com/TooManyScooters?ref_src=twsrc%5Etfw">@TooManyScooters</a>
+    does for Roomba, but above Neato lidar line of sight. It all works! And now that
+    I know it works, I will buy proper Neato replacement batteries. <a href="https://t.co/MAucz9OPvG">pic.twitter.com/MAucz9OPvG</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1101593775095201792?ref_src=twsrc%5Etfw">March
+    1, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '28237726200'
+  _oembed_time_022f8ffac83246964e1001e387b6fb02: '1551691530'
+  _thumbnail_id: '17970'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/03/sending-commands-to-neato-xv-21-via-usb/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I've managed to establish a serial connection to my Neato XV-21 robot vacuum's USB port, putting it into test mode and <a href="https://newscrewdriver.com/2019/03/01/query-neato-xv-21-system-status-via-usb/">querying sensor status</a>. The next step is to start issuing commands to see if individual components respond. We left off on querying control panel user interface buttons, so the next test is to see if I can draw my own user interface on that control panel screen. Typing in <code>help setlcd</code> retrieved the following information:</p>
+<blockquote><p>
+<code>SetLCD - Sets the LCD to the specified display. (TestMode Only)</code><br />
+<code>BGWhite - Fill LCD background with White</code><br />
+<code>BGBlack - Fill LCD background with Black</code><br />
+<code>HLine - Draw a horizontal line (in foreground color) at the following row.</code><br />
+<code>VLine - Draw a vertical line (in foreground color) at the following column.</code><br />
+<code>HBars - Draw alternating horizontal lines (FG,BG,FG,BG,...),</code><br />
+<code>across the whole screen.</code><br />
+<code>VBars - Draw alternating vertical lines (FG,BG,FG,BG,...),</code><br />
+<code>across the whole screen.</code><br />
+<code>FGWhite - Use White as Foreground (line) color</code><br />
+<code>FGBlack - Use Black as Foreground (line) color</code><br />
+<code>Contrast - Set the following value as the LCD Contrast value into NAND. 0..63</code>
+</p></blockquote>
+<p>This is enough to draw simple test patterns, but it isn't enough for me to put up legible text prompts for users. This was not a surprise as I understand this mode to be a diagnostics console and not intended to facilitate a completely new UI like what I wish to do. Still, I can probably convey some simple if cryptic information by drawing horizontal and vertical lines. The valid range is 0-127 inclusive. And while vertical lines across that entire range are all visible, horizontal lines beyond 124 seem to go under bottom lip of display bezel and not visible.</p>
+<blockquote><p>
+<code>setlcd bgwhite</code><br />
+<code>setlcd hline 20</code><br />
+<code>setlcd vline 50</code><br />
+<code>setlcd vline 100</code>
+</p></blockquote>
+<p> </p>
+<p>I've already played with turning the laser distance scanner on and off. The next most important thing to get running on this chassis are the drive wheels. If I can't make the robot move using this interface, nothing much else matters. Here are the commands listed under <code>help setmotor</code>:</p>
+<blockquote><p>
+<code>SetMotor - Sets the specified motor to run in a direction at a requested speed. (TestMode Only)</code><br />
+<code>LWheelDist - Distance in millimeters to drive Left wheel. (Pos = forward, neg = backward)</code><br />
+<code>RWheelDist - Distance in millimeters to drive Right wheel. (Pos = forward, neg = backward)</code><br />
+<code>Speed - Speed in millimeters/second. (Required only for wheel movements)</code><br />
+<code>Accel - Acceleration in millimeters/second. </code><br />
+<code>(Used only for wheel movements. Defaults to 'Speed'.)</code><br />
+<code>RPM - Next argument is the RPM of the motor.</code><br />
+<code>Not used for wheels, but applied to all other motors specified in the command line.</code><br />
+<code>Brush - Brush motor forward (Mutually exclusive with wheels and vacuum.)</code><br />
+<code>VacuumOn - Vacuum motor on (Mutually exclusive with VacuumOff)</code><br />
+<code>VacuumOff - Vacuum motor off (Mutually exclusive with VacuumOn)</code><br />
+<code>VacuumSpeed - Vacuum speed in percent (1-100).</code><br />
+<code>RWheelDisable - Disable Right Wheel motor</code><br />
+<code>LWheelDisable - Disable Left Wheel motor</code><br />
+<code>BrushDisable - Disable Brush motor</code><br />
+<code>RWheelEnable - Enable Right Wheel motor</code><br />
+<code>LWheelEnable - Enable Left Wheel motor</code><br />
+<code>BrushEnable - Enable Brush motor</code><br />
+<code>SideBrushEnable - Enable Side Brush Motor motor</code><br />
+<code>SideBrushDisable - Enable Side Brush Motor motor</code><br />
+<code>SideBrushOn - Enable the Side Brush</code><br />
+<code>SideBrushOff - Disable the Side Brush</code><br />
+<code>SideBrushPower - Side Brush maximum power in milliwatts</code>
+</p></blockquote>
+<p>The first few attempts - using just individual commands - were met with either errors or no movement.</p>
+<blockquote><p>
+<code>setmotor lwheeldist 100</code><br />
+<code>No recognizable parameters</code>
+</p></blockquote>
+<p>The first successful command that triggered movement was one where I specified three parameters on a single line: left wheel distance, right wheel distance, and speed.</p>
+<blockquote><p><code>setmotor lwheeldist 200 rwheeldist 200 speed 100</code></p></blockquote>
+<p>The robot moves! This is great news, but we still have two more motors to play with. First up is the brush roller: I had expected the motor to be a digital on/off affair, or maybe something I can command with a particular motor power level. I was quite pleasantly surprised it can be commanded to a particular RPM because it implied a more sophisticated closed-loop feedback control system.</p>
+<blockquote><p>
+<code>setmotor brush rpm 750</code><br />
+<code>Run Brush Motor @ 750 RPM</code>
+</p></blockquote>
+<p>The final motor control for vacuum suction fan was a little frustrating. I had no issue turning it on with <code>setmotor vacuumon</code> and then back off with <code>setmotor vacuumoff</code>. But I haven't yet figured out the right syntax to command it to spin at a partial power level.</p>
+<blockquote><p>
+<code>setmotor vacuumspeed</code><br />
+<code>Value required for option VacuumSpeed</code><br />
+<code>setmotor vacuumspeed 50</code><br />
+<code>No recognizable parameters</code><br />
+<code>setmotor vacuumspeed 50%</code></p>
+<p><code>Invalid Command: 'setmotor vacuumspeed 50%'</code>
+</p></blockquote>
+<p>I'll update this post if I ever figure it out, but for now it is enough that it spins.</p>
+<p>With this set of tests, I have determined that all individual components are functional, but only in a limited context. The limitation is because I could power just one device at a time with the small batteries I have installed. What I want next is a full system test. And for that, I will need to <a href="https://newscrewdriver.com/2019/03/04/mounting-external-batteries-on-thrift-store-neato-xv-21/">install more powerful batteries</a>.</body></html></p>

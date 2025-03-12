@@ -1,0 +1,55 @@
+---
+layout: post
+title: 'FreeCAD Notes: Part Design First Impressions'
+date: 2023-07-28 12:30:00.000000000 +00:00
+type: post
+post_id: '38104'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- freecad
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37976'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1690572906
+  _publicize_job_id: '86150193470'
+  timeline_notification: '1690572649'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/28/freecad-notes-part-design-first-impressions/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Watching MangoJelly's FreeCAD tutorials on YouTube, I <a href="https://newscrewdriver.com/2023/07/27/freecad-notes-workbenches/">learned the power of FreeCAD workbenches</a> and how FreeCAD supports different workflows via different combinations of workbenches. While I can follow along with what's on screen, that's different from my own personal workflow that I've been using with Fusion 360 and Onshape. And it's not yet clear if FreeCAD can do the same or if I have to change my personal workflow to fit FreeCAD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The tutorial's first example uses the Part Design workbench. It is focused on creating a single part and only a single part: any operations that result in multiple pieces (like cutting a shape in half with boolean operation) will be flagged as an error. It is also focused on keeping individual operations simple and process them sequentially. We create a simple shape then modify that shape with additional operations until we reach the shape we want.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I understand this behavior resembles Tinkercad and is intended to be a more beginner-friendly way to reason about object modeling. But I saw two problems pretty immediately in my brief playtime: first, by building up a long chain of operations, modifying any single step will have repercussions on every step that follows. This workflow aimed a loaded gun at the beginner's feet, just waiting for <a href="https://wiki.freecad.org/Topological_naming_problem">the dreaded TNP</a> to pull the trigger. Second, by encouraging individually simple steps, it also encourages scattering part feature dimensions across all of those steps. The size of the overall part might be in the first step, but to find the size of a hole cut in that part we have to dig into the chain of operations to find the cutting operation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These two observations meant Part Design workbench didn't make a great first impression on me. I prefer to create few sketches up front with almost all of the information. (Ideally just three: top view, side view, front view.) And then build my parts from dimensions in those few sketches. If I change those dimensions afterwards, I expect to have the parts recalculated automatically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't see anything that resembled my preferred workflow until part 12, when MangoJelly goes into "Master Sketch". The tutorial shows how to use master sketch with Part Design workbench, which should mitigate my concerns with the default workflow.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting it into practice, though, is going to take more practice. Trying to use my master sketch in Part Design is continually frustrated by some kind of misunderstanding I have with how references work in FreeCAD. At one point I got frustrated enough to ask: "I wonder if this is easy in Part workbench" and tried to extrude my sketch there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38105,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/freecad-first-part-fail.jpg?w=1024" alt="" class="wp-image-38105"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My fumbles in Part workbench created multiple surfaces instead of a solid shape with four holes, reminding me of another beginner-friendly feature of Part Design: it hides all the surface-related features, keeping things focused on solid 3D shapes. This is good, but I have a lot to learn before I can make Part Design workbench do my bidding.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

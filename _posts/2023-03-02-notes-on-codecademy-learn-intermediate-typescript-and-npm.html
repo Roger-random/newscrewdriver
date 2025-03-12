@@ -1,0 +1,52 @@
+---
+layout: post
+title: Notes on Codecademy "Learn Intermediate TypeScript" (And npm "--")
+date: 2023-03-02 12:30:00.000000000 +00:00
+type: post
+post_id: '34628'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34948'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677916973
+  _publicize_job_id: '81971351398'
+  timeline_notification: '1677789009'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/02/notes-on-codecademy-learn-intermediate-typescript-and-npm/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A TypeScript project incurs some overhead versus a plain JavaScript project. This is an unavoidable fact of <a href="https://newscrewdriver.com/2022/11/30/notes-on-typescript-handbook/">TypeScript's nature compiling to JavaScript</a>. Investing in this overhead can pay off for larger projects, but how large is large enough to benefit? I expect I won't have a good grasp of that payoff point until I get more experience, but I think I have a better idea after going through Codecademy's "<a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-intermediate-type-script" target="_blank">Learn Intermediate TypeScript</a>" course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Codecademy is very proud of their browser-based integrated learning environment where students can learn and put what they've learned into practice immediately. But this particular course is focused on how we can put TypeScript to use in our own projects outside of Codecademy's environment. The hands-on portion of course consists of downloading ZIP files of partially complete TypeScript projects to our own computers, then following instructions to see what happens.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Under this system, we get experience running the TypeScript compiler <code>tsc </code>at the command line directly, and inside the context of a project managed via <code>npm</code> and its associated <code>package.json</code> file. This is also where we can keep our TypeScript configuration in a <code>tsconfig.json</code> file. This feels like a good way to use TypeScript. If we're already incurring the overhead of setting up such a project, it doesn't take that much additional effort to fold TypeScript into the works.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Amusingly, the most important lesson I learned from this course had nothing to do with TypeScript but was about setting up JavaScript projects with npm. Early on, we were instructed to run "<code>npm run tsc -- --watch</code>" and "<code>npm start -- --watch</code>" but without explaination what those two commands meant. I took a detour to try to figure out exactly what went on with those two lines.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first part is easy: we're running something via npm command line tool. That something is listed inside the "scripts" section of <code>package.json</code>. It can be a direct mapping: "<code>tsc</code>" mapped to the TypeScript compiler executable. Or it can be something more complex, as "<code>start</code>" mapped to "<code>nodemon build/index.js</code>" I'm still uncertain about the "run", as it seems to be optional and/or the default action. Inferred from the fact it was present in one but not the other.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next item was challenging: "--" What does the double-dash mean? Unfortunately, I found it impossible to perform a web search on "--" and get relevant results. A combination of the fact "--" isn't a word we can search for and that it is used in many different contexts (C programmers know it as a value decrement) but I didn't wasn't sure what context to search within. It wasn't until another page later on in this course that I learned "--" tells npm to stop interpreting command-line parameters and pass along everything afterwards to the script. So for example, "npm tsc -- --init" means: Use "npm" to launch command "tsc" described in package.json. Then "--" meant there are no more parameters for npm, and "--init" should be given to "tsc". Result: use the current Node.js environment to run command "tsc --init"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This all made sense once I figured it out, but I certainly couldn't have guessed it from just looking at "--". There will be more unknowns as <a href="https://newscrewdriver.com/2023/03/03/notes-on-understanding-angular/">I dive back into Angular framework documentation with "Understanding Angular"</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

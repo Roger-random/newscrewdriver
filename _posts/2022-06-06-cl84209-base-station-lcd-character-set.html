@@ -1,0 +1,54 @@
+---
+layout: post
+title: CL84209 Base Station LCD Character Set
+date: 2022-06-06 12:30:00.000000000 +00:00
+type: post
+post_id: '30699'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Arduino
+- CL84209
+- ESP8266
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30700'
+  _publicize_job_id: '73366810800'
+  timeline_notification: '1654543824'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/06/cl84209-base-station-lcd-character-set/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a look at the <a href="https://newscrewdriver.com/2022/06/05/handset-lcd-versus-base-station-lcd-cl84209/">similarities and differences between two LCDs</a> salvaged from an AT&amp;T CL84209 cordless phone set, I was ready to start controlling one myself to get more data. Earlier probing indicated that <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/30/cordless-handset-lcd-power-up-in-saleae-analog-mode/" target="_blank">I<sup>2</sup>C communication on the handset was 3.3V</a>, so I'm going to use an ESP8266 because it is also a 3.3V part. The Arduino platform should be a good (enough) starting point, using <a href="https://www.arduino.cc/reference/en/language/functions/communication/wire/">its Wire library</a> to recreate the I<sup>2</sup>C control messages I saw sent to the handset LCD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After a quick test program to verify things worked as expected, I wanted to dump out the character set built inside this LCD controller. Since the character data is sent one byte per character, there are potentially 256 different characters in the font. Dealing with these powers-of-two numbers, I like to keep such information lined up with their hexadecimal values. The LCD can only print up to 15 characters per line, so I couldn't print these in 16 characters batches. As a next best thing, I dropped down to 8 characters per line along with their starting hexadecimal value. A <code>for()</code> loop cycled through 16 such screens once per second, so I could see the entire character set cycle through.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30700,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-base-dump-0x70-full.jpg?w=1024" alt="" class="wp-image-30700"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is one of the sixteen steps in the cycle. The first line shows characters from 0x70 to 0x77, and the second line from 0x78 to 0x7F. Using workbench lighting, I had trouble trying to photograph the screen without glare. So, I switched to backlighting the LCD using one of my salvaged LED backlights. I took a picture for each of the 16 sections with the intent to edit them together, but the slightly undersized backlight made it difficult. The center section of the screen is noticeably brighter than the edges, which makes it difficult to set a threshold to generate a nice monochrome reference chart. I had to consult Emily Velasco for some photo-editing tips. (I have now added "burn" &amp; "dodge" to my photo editing toolbox.) After some very informative experimentation in GNU Image Manipulation Program I have a reference sheet suitable for printing. Using this chart, I could see that 0x7F is a solid block that activates all pixels of a 5x7 dot matrix, which I will use to as part of an "turn everything on" program to help <a href="https://newscrewdriver.com/2022/06/07/cl84209-base-station-lcd-segment-map/">map out its adjacent segmented region</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30709,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-base-character-set-bw.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-base-character-set-bw.png?w=772" alt="" class="wp-image-30709"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this investigation is <a href="https://github.com/Roger-random/lcd_cl84209">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

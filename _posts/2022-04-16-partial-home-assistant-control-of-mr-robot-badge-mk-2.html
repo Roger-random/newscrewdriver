@@ -1,0 +1,179 @@
+---
+layout: post
+title: Partial Home Assistant Control of Mr. Robot Badge Mk. 2
+date: 2022-04-16 12:30:00.000000000 +00:00
+type: post
+post_id: '29701'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- ESPHome
+- Home Assistant
+- Mr Robot Badge
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29691'
+  _publicize_job_id: '71456314429'
+  timeline_notification: '1650137434'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/16/partial-home-assistant-control-of-mr-robot-badge-mk-2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I had Mr Robot Badge Mk. 2 <a href="https://newscrewdriver.com/2022/04/15/programming-mr-robot-badge-mk-2-with-arduino/">up and running on Arduino</a>, I thought: what about Home Assistant? After all, ESPHome is built on compiling ESP8266 Arduino Core code using PlatformIO command-line tools. The challenging part of ESPHome is always that initial firmware flash, which I'm already set up to do, and after that I could do updates wirelessly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started easy: getting badge buttons to be recognized as binary sensors in Home Assistant.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>binary_sensor:
+  - platform: gpio
+    pin:
+      number: 0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Left"
+    filters:
+      - delayed_on_off: 20ms
+  - platform: gpio
+    pin:
+      number: 16
+      mode:
+        input: true
+      inverted: true
+    name: "Down"
+    filters:
+      - delayed_on_off: 20ms
+  - platform: gpio
+    pin:
+      number: 15
+      mode:
+        input: true
+        pullup: true
+    name: "Right"
+    filters:
+      - delayed_on_off: 20ms
+  - platform: gpio
+    pin:
+      number: 13
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "Up"
+    filters:
+      - delayed_on_off: 20ms
+  - platform: gpio
+    pin:
+      number: 12
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "A"
+    filters:
+      - delayed_on_off: 20ms
+  - platform: gpio
+    pin:
+      number: 14
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "B"
+    filters:
+      - delayed_on_off: 20ms
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Piece of cake! Now on to the more interesting (and more challenging) part: using the LEDs. I followed ESPHome examples to create a custom component. This exposed <a href="https://esphome.io/components/output/custom.html" target="_blank" rel="noreferrer noopener">a single custom output</a> that treated the entire array as a single color (<a href="https://esphome.io/components/light/monochromatic.html" target="_blank" rel="noreferrer noopener">monochromatic</a>) dimmable light.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>C header file with custom class declaration:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>#include "esphome.h"
+#include "Adafruit_IS31FL3741.h"
+using namespace esphome;
+
+class MrRobotBadgeFloatOutput : public Component, public FloatOutput
+{
+    Adafruit_IS31FL3741 ledArray;
+
+    public:
+        void setup() override
+        {
+            ledArray.begin();
+            ledArray.setLEDscaling(0x3F); // 25% of max
+            ledArray.setGlobalCurrent(0x3F); // 25% of max
+            ledArray.enable(true);  // bring out of shutdown
+        }
+
+        void write_state(float state) override
+        {
+            int8_t value = state * 128; // 50% of max
+            ledArray.fill(value);
+        }
+};
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>YAML:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>output:
+  - platform: custom
+    type: float
+    lambda: |-
+      auto badge_float = new MrRobotBadgeFloatOutput();
+      App.register_component(badge_float);
+      return {badge_float};
+    outputs:
+      id: badge_float
+
+light:
+  - platform: monochromatic
+    name: "Badge Lights"
+    output: badge_float
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Tada! I'm back at the same test I had using Arduino, lighting up all the pixels to highlight problematic LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29691,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/mr-robot-badge-with-blue-and-missing-led.jpg?w=1024" alt="" class="wp-image-29691"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next step in this progression is to expose the entire 18x18 array as individually addressable pixels. Doing so would allow using ESPHome's <a rel="noreferrer noopener" href="https://esphome.io/components/display/index.html" target="_blank">display rendering engine</a> to draw text and graphics, much as Adafruit GFX does. I found the <a rel="noreferrer noopener" href="https://esphome.io/components/display/addressable_light.html" target="_blank">Addressable Light base class</a> but I got stuck trying to make it happen. I've had no luck finding examples on how to implement a custom addressable light, and didn't get much of anywhere bumping my head in the dark. Digging through existing Addressable Light implementations on GitHub, I've found many object classes that may or may not be required to implement my own addressable light.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>
+<a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/addressable_light/addressable_light_display.h" target="_blank">AddressableLightDisplay</a> (inherits from <a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/display/display_buffer.h" target="_blank">DisplayBuffer</a>)</li>
+<li>
+<a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/light/addressable_light.h" target="_blank">AddressableLight</a> (inherits from <a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/light/light_output.h" target="_blank">LightOutput</a>)</li>
+<li>
+<a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/light/addressable_light_effect.h" target="_blank">AddressableLightEffect</a> (inherits from <a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/light/light_effect.h" target="_blank">LightEffect</a>)</li>
+<li>
+<a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/light/addressable_light_wrapper.h" target="_blank">AddressableLightWrapper</a> (inherits from AddressableLight)</li>
+<li>AddressableLightTransformer</li>
+<li>AddressableLightState</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I imagine there's an architecture diagram somewhere that describes how these components interact, but my search has come up empty so far and there's not much in the way of code comments. Most of the online discussions about addressable LED pixels in Home Assistant are centered around WLED, which as of this writing <a rel="noreferrer noopener" href="https://kno.wled.ge/basics/compatible-hardware/" target="_blank">does not support the IS31LF3741 control chip</a>. I'm going to put further exploration on hold until I have more experience with ESPHome custom components to understand their object hierarchy.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,87 @@
+---
+layout: post
+title: Intel SSD 320 Series Teardown
+date: 2023-03-01 12:30:00.000000000 +00:00
+type: post
+post_id: '35453'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35458'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677702718
+  _publicize_job_id: '81940573981'
+  timeline_notification: '1677702605'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/01/intel-ssd-320-series-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After taking apart <a href="https://newscrewdriver.com/2023/02/28/western-digital-sff-8784-hybrid-hdd-ssd-teardown-wd5000m21k/">a hard drive that went to great lengths to be just 5mm thick</a>, I moved on to an SSD whose circuit board of surface-mounted chips were even thinner without even trying. This Intel 320 Series SSD should still be usable today, but it isn't because of an overzealous security feature.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35456,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-dell-bios-data-wipe.jpg?w=1024" alt="" class="wp-image-35456"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/03/in-a-distorted-computer-component-market-buying-is-better-than-building/" target="_blank">Dell Inspiron 15 7577</a> came with a secure data wipe feature in BIOS and I decided to use it to securely wipe data from this SSD. What was critically missing from its description was that, as part of securing my data, this feature would lock the drive with a password that is never displayed. ("Lock it up and throw away the key.") This fulfilled the task of securing any data on the SSD, but it made it impossible to reuse the SSD elsewhere. This 300GB capacity SSD cost over $500 in 2012, so I was <em><strong>NOT HAPPY</strong></em> it was rendered unusable. At the time Dell claimed the security feature was Working By Design. Later on, it admitted the behavior was a bug after all and <a href="https://www.dell.com/support/kbdoc/en-us/000131187/bios-data-wipe-causes-hard-drive-locked-in-dell-latitude-7414-rugged">offered BIOS updates to some other computers (not mine)</a> to remove this behavior. Doesn't matter, I've learned my lesson and never used the feature again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35461,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-intact.jpg?w=1024" alt="" class="wp-image-35461"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hung on to this unusable SSD for years, hoping to find a utility that could somehow reset the device and unlock the capacity that Dell overzealously locked away. But now, with new 500GB SSDs available for less than $50, I finally conceded there's no point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35470,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/intel-320-ssd-thickness-vs-wd5000m21k.jpg?w=1024" alt="" class="wp-image-35470"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The thick black plastic shim brought it to 9mm height typical of laptop HDDs but can be removed to fit in spaces designed for thinner 7mm HDDs. It looks bulky next to the 5mm thick WD5000M21K hybrid drive, but that was merely a metal enclosure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35457,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-disassembled.jpg?w=1024" alt="" class="wp-image-35457"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once removed from its enclosure, we can see an internal circuit board who is barely 3mm thick not counting the SATA connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35473,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/intel-320-ssd-pc29as21ba0-controller.jpg?w=1024" alt="" class="wp-image-35473"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The brain in charge of this operation is Intel's own PC29AS21BA0 controller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35455,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-29f16b08ccmei-flash.jpg?w=1024" alt="" class="wp-image-35455"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Data is stored across 20 Intel 29F16B08CCMEI flash memory chips, 10 on the front side and 10 on the back. I hypothesize they are each good for 16GB of raw storage. 20 of them together would give 320GB of raw storage, 300 of which is accessible to user and 20 reserved for SSD housekeeping.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35460,"width":800,"height":450,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-hynix-h55s516sefa.jpg?w=800" alt="" class="wp-image-35460" width="800" height="450"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hynix H55S5162EFA is probably a bit of dynamic memory used by the controller chip to do its job. <a rel="noreferrer noopener" href="https://www.intel.com/content/www/us/en/newsroom/news/intel-sells-ssd-business-dalian-facility-sk-hynix.html" target="_blank">Intel sold its flash memory division to Hynix</a>, so technically speaking this entire device is now Hynix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35459,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-flash-removal.jpg?w=1024" alt="" class="wp-image-35459"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The whole point of secure data wipe (and lock) is to render all data safely inaccessible, so I should be good to stop. But why pass up a chance to play? Just like <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/17/patriot-warp-v-2-32gb-ssd-pe32gs25ssd/" target="_blank">my previous decommissioned SSD</a>, I'm going to remove those flash chips with my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/12/05/cheap-seats-at-the-hot-air-gun-show/" target="_blank">paint-stripping hot air gun</a>. This blunt tool is unsuitable for electronics work if we want delicate devices to work again. But in this case, if the heat should damage a chip beyond repair, that would be a feature and not a bug.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35458,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/intel-320-ssd-flash-chips-removed.jpg?w=1024" alt="" class="wp-image-35458"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few minutes later, I had a loose jumble of flash memory and other chips. Even if the heat gun hasn't destroyed the chips completely, anyone who wants to steal my data will need to figure out which chip went in which location. (I recommend they find a different hobby.)</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

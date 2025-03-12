@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Notes on Exploring Curio ROS: Arduino Mega'
+date: 2020-05-11 12:30:03.000000000 +00:00
+type: post
+post_id: '21491'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Curio
+- ROS
+meta:
+  _thumbnail_id: '20391'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44116121892'
+  timeline_notification: '1589225465'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/11/notes-on-exploring-curio-ros-arduino-mega/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I was very excited when I learned <a href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/">Rhys Mainwaring created ROS software for Curio rover</a>, a sibling of my Sawppy rover. An <a href="https://newscrewdriver.com/2020/05/10/ubuntu-and-ros-on-raspberry-pi/">autonomous Sawppy on ROS has always been the long-term goal</a> but I have yet to invest the time necessary to climb the learning curve. Rhys has far more ROS experience, and I appreciated the opportunity to learn from looking over the <a href="https://github.com/srmainwaring/curio">Curio Github repository</a>. Here are some of my notes. written with the imperfect accuracy and completeness of a ROS beginner learning as I go.</p>
+<p>The most novel part of Curio is obtaining odometry data from LX-16A's position sensor with the use of a filter that recognizes when we're in the dead zone of that position sensor and rejects bad data. I believe Rhys has ambition to extrapolate position data while within the dead zone but I didn't find the code to make it happen. Either I missed it or that is still yet to come.</p>
+<p>I love the goal of odometry calculation without requiring additional hardware, but Rhys ran into problems with bandwidth and a little extra hardware was brought in to help as (hopefully?) a short term workaround. While Sawppy didn't need to communicate with the servos very frequently, Curio needed to also poll servo positions far more frequently for the odometry filter. Rhys found that the LewanSoul BusLinker board's serial to USB bridge could not sustain the data rate necessary for the filter to obtain good data.</p>
+<p>As a workaround, Curio makes use of an Arduino Mega 2560 to communicate with BusLinker via its 5V UART TX/RX pins, and then translating that to USB serial for the Raspberry Pi. The Arduino Mega is necessary for this role because <a href="https://www.arduino.cc/reference/en/language/functions/communication/serial/">it has multiple hardware UART</a> necessary to communicate with both BusLinker and Raspberry Pi at high speed. I only have Arduino Nano on hand, with a single UART, and thus unsuitable for the purpose.</p>
+<p>Curio's Arduino Mega also has a second job: that of interpreting PWM commands from a remote control receiver, relaying user commands from a remote control transmitter. This is an alternative to my HTML-based control scheme over WiFi.</p>
+<p>Curio's Arduino communicates with its Pi over USB serial, using the <a href="http://wiki.ros.org/rosserial_arduino">rosserial_arduino</a> library. Rhys has set up <a href="https://github.com/srmainwaring/curio_firmware">Curio's Arduino firmware code</a> such that its two jobs can easily be separated. If a rover builder only wants one or the other function, it should be as easy as changing the values of <code><span class="pl-en">ENABLE_ARDUINO_LX16A_DRIVER</span></code>  or <code>ENABLE_RADIO_CONTROL_DECODER</code> to trigger the right <code>#ifdef</code> to make it happen.</p>
+<p></body></html></p>

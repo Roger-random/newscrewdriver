@@ -1,0 +1,40 @@
+---
+layout: post
+title: MPLAB Xpress Code Configurator Requires Java. Good Feeling's Gone.
+date: 2017-09-08 09:00:35.000000000 +00:00
+type: post
+post_id: '10958'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9086735075'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/08/mplab-xpress-code-configurator-requires-java-good-feelings-gone/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Getting started with the <a href="https://mplabxpress.microchip.com">MPLAB Xpress</a> development system, I've been impressed by what I saw. Microchip's PIC platform has <a href="https://en.wikipedia.org/wiki/PIC_microcontroller">a lineage that goes all the way back to 1976</a> but the new web-based tools show they are making serious effort to move the development experience into 2017. A HTML-based code editor, cloud-based compilation, download to local computer, and USB storage device based hardware interface making it accessible to every modern computer with an internet connection.</p>
+<p>I had compiled a few pre-built examples to try out the process and feeling pretty good about the whole thing. Until the time came for me to create a new project from scratch. The boilerplate code for a new project sets up all the parameters tailored to the features and peripherals of a specific PIC chip, and the tool to take care of all these details is the "MPLAB Xpress Code Configurator" (MCC).</p>
+<p>So far so good, I clicked on the blue "MCC" icon, and got this.</p>
+<p><img class=" size-full wp-image-10965 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/08/mcc-requires-java.png" alt="MCC Requires Java" width="872" height="556"></p>
+<p>...Java?</p>
+<p>The sound in my head is of screeching tires punctuated by the crunching metal of a car crash. Maybe they have ambition to move PIC development into 2017, but today starting a new MPLAB Xpress project requires a trip back to 1995 when Java was king.</p>
+<p>If MCC was a web-browser based Java applet, we would be completely out of luck as <a href="https://www.java.com/en/download/help/firefox_java.xml">Firefox</a> and <a href="https://www.java.com/en/download/faq/chrome.xml">Chrome</a> both dropped support due to all the security nightmares the past few years, and those were the only two browsers I have installed on my Ubuntu development system.</p>
+<p>Fortunately MCC is a client-side application launched with a <a href="https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html">JNLP</a> file so there is still some hope. I tried the open-source Java implementation first, but <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=859630">icedtea-netx does not work</a> at the moment. So off to Oracle I go to download the official closed-source binaries which got me past this blocker.</p>
+<p>In hindsight I should have created a virtual machine (probably with <a href="https://www.virtualbox.org">VirtualBox</a>) and installed Java only in that VM to contain any possible damage from future Java security vulnerabilities. I'll do that on my next clean install of Ubuntu.</p>
+<p>Back to MCC: it feels like a chunk of legacy code carried over to today's MPLAB Xpress. Having to install Java is very much counter to their "nothing to setup or install" pitch so I expect they will migrate MCC functionality to be HTML-based as well.</p>
+<p>Hopefully it'll just be a matter of time.</p>
+<p></body></html></p>

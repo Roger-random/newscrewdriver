@@ -1,0 +1,36 @@
+---
+layout: post
+title: Inviting My FreeNAS Box To The Folding Party
+date: 2020-04-10 12:30:44.000000000 +00:00
+type: post
+post_id: '21078'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- Folding@Home
+meta:
+  _thumbnail_id: '21079'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42872695565'
+  timeline_notification: '1586547047'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/10/inviting-my-freenas-box-to-the-folding-party/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once my Luggable PC Mark I <a href="https://newscrewdriver.com/2020/04/09/old-amd-gpu-for-foldinghome-ubuntu-struggles-windows-win/">was up and running</a>, I have one more functional desktop-class CPU in my household that has not yet been drafted into my Folding@Home efforts: it was <a href="https://newscrewdriver.com/2020/03/11/freenas-box-decommissioned-after-three-years/">recently put in charge</a> of running FreeNAS. As a network attached storage device, FreeNAS is focused on its main job of maintaining files and serving them on demand. There are FreeNAS plug-ins to add certain features, such as a home Plex server, but there's no provision for running arbitrary programs on the FreeBSD-based task-specific appliance.</p>
+<p>What FreeNAS does have is the ability to act as a host for separate virtual environments that run independently of core FreeNAS capability. This extension capability is a part of why I upgraded my FreeNAS box to more capable hardware. The <a href="https://www.ixsystems.com/documentation/freenas/11.3-U1/jails.html">lighter-weight mechanism is a "jail"</a>, similar in concept to the Linux container (from which Docker was built) but for applications that can run under the FreeBSD operating system. However, Folding@Home has <a href="https://foldingathome.org/alternative-downloads/">no native FreeBSD clients</a>, so we can't run it in a jail and have to fall back to plan B: <a href="https://www.ixsystems.com/documentation/freenas/11.3-U1/virtualmachines.html">full virtual machine under bhyve</a>. This incurs more overhead as a virtual machine will need its own operating system instead of sharing the underlying FreeBSD infrastructure, consuming hard disk storage and locking away a portion of RAM unusable by FreeNAS.</p>
+<p>But the overhead wasn't too bad in this particular application. I installed the lightweight Ubuntu 18 server edition in my VM, and Folding@Home protein folding simulation is not a memory-intensive task. The VM consumed less than 10GB of hard drive space, and only 512MB of memory. In the interest of always reserving some processing power for FreeNAS, I only allocated 2 virtual CPUs to the folding VM. The <a href="https://ark.intel.com/content/www/us/en/ark/products/77486/intel-core-i3-4150-processor-3m-cache-3-50-ghz.html">Intel Core i3-4150</a> processor has four logical CPUs which are actually 2 physical cores with hyperthreading. Giving the folding simulation VM 2 virtual CPUs should allow it to run at full speed on the two physical CPUs and still leave some margin to keep FreeNAS responsive.</p>
+<p>Once the VM was up and running, FreeNAS CPU usage report does show occasional workload pushing it above 50% (2 out of 4 logical CPU) load. CPU temperature also jumped up well above ambient temperature, to 60 degrees C. Since this Core i3 is far less powerful than the Core i5 in Luggable PC Mark I and II, it doesn't generate as much heat to dissipate. I can hear the fan increased speed to keep temperature at 60 degrees, but the difference is minor relative to the other two.</p>
+<p></body></html></p>

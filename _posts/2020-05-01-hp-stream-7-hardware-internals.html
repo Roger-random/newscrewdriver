@@ -1,0 +1,45 @@
+---
+layout: post
+title: HP Stream 7 Hardware Internals
+date: 2020-05-01 12:30:18.000000000 +00:00
+type: post
+post_id: '21256'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- HP Stream 7
+meta:
+  _thumbnail_id: '21226'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '43758937511'
+  timeline_notification: '1588361542'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/01/hp-stream-7-hardware-internals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I opened up my HP Stream 7 because I wanted to <a href="https://newscrewdriver.com/2020/04/30/hp-stream-7-battery-disconnect-test/">see if I could run it without the battery</a>. The answer is no, but since I had it open anyway it is an opportunity to look over the mechanical design of this little tablet. The general electrical architecture is not surprising, similar to most tablets majority of interior volume was allocated to the battery and a PCB smaller than the battery held most of the electronics.</p>
+<p>The mechanical engineering, however, showed evidence of more attention than I would have expected in an entry level design that must have been designed for cost. The rearmost removable plate to access microSD slot was nothing special, but as soon as I started looking at the next layer I was impressed by how rigid it was with only a few clips and screws. This attention to mechanical design carried across a few other elements.</p>
+<p><img class=" size-full wp-image-21228 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/04/hp-stream-7-05-reinforcement-plate.jpg" alt="HP Stream 7 05 reinforcement plate" width="1920" height="1080"></p>
+<p>This metal plate had two of the enclosure screws dedicated to holding it in place. This plate is immediately adjacent to the micro USB power port and the headphone jack. It reinforces the part of the PCB most likely to see mechanical stress, reducing the chances that a clumsy user would tear out these plugs by accident. Unfortunately while the mechanical engineers did great work, somebody dropped the ball on the electrical front. The headphone jack is so noisy as to be unusable, a trait <a href="https://www.anandtech.com/show/8760/hp-stream-7-review/7">highlighted in reviews</a> so I know it's not just this unit.<img class=" size-full wp-image-21229 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/04/hp-stream-7-06-side-switches.jpg" alt="HP Stream 7 06 side switches" width="1920" height="1080"></p>
+<p>For the side buttons, I had expected to see sideways switches on the main PCB. I've seen those small surface mount buttons before and they are at risk of breaking if the mechanical design doesn't redirect stress elsewhere. But they are cheap, so we keep seeing them, and they keep breaking off in poorly designed devices. But there's no such cost-cutting shortcut for this stout tablet. Its buttons are on a separate PCB mounted such that it can take the force face-on instead of letting the force shear off a sideways switch. This adds parts count, and adds steps to assembly, which adds cost, in order to give us more durable buttons. I appreciate it.</p>
+<p><img class="alignnone size-full wp-image-21230" src="https://newscrewdriver.com/wp-content/uploads/2020/04/hp-stream-7-07-solder-and-pads-why.jpg" alt="HP Stream 7 07 solder and pads why" width="1921" height="1081"></p>
+<p>Behind the switch is this puzzling field of copper pads and solder. Pads and solder like this are usually for surface mount electronics components, but this large field is completely devoid of hardware. I have no idea why this is here or what it does. My best guess is that this serves as some sort of thermal heat sink, but I don't feel it is a very good guess.</p>
+<p><img class=" size-full wp-image-21231 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/04/hp-stream-7-08-flash-sound-touch-display-cable.jpg" alt="HP Stream 7 08 flash sound touch display cable" width="1920" height="1080"></p>
+<p>Lower down we see a SK hynix chip with "NAND" label, presumably the onboard flash memory storage. Adjacent to that chip is the microSD slot where the user can add more storage. Adjacent to those chips I see the crab I associate with RealTek audio chips. Two flexible PCBs round out the bottom. One of these is probably for touch and the other for display.</p>
+<p><img class="alignnone size-full wp-image-21232" src="https://newscrewdriver.com/wp-content/uploads/2020/04/hp-stream-7-09-speaker.jpg" alt="HP Stream 7 09 speaker" width="1920" height="1080"></p>
+<p>At the very bottom, a small speaker that is actually quite sizable for such a tiny tablet, but there are fundamental handicaps to sound quality at such sizes. I'm thankful for the speaker, but I would have much rather have had a better headphone jack.</p>
+<p>Overall I feel the mechanical design on this tiny tablet is pretty good. Too bad its electrical and computational performance isn't up to the mechanical design. And after this little detour through the world of hardware design, I return to trying the ESA ISS Tracker on other machines. Next on the list: <a href="https://newscrewdriver.com/2020/05/02/esa-iss-tracker-on-samsung-500t/">Samsung 500T</a>.</p>
+<p></body></html></p>

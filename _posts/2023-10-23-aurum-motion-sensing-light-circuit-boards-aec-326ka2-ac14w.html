@@ -1,0 +1,85 @@
+---
+layout: post
+title: Aurum Motion Sensing Light Circuit Boards (AEC-326KA2-AC14W)
+date: 2023-10-23 12:30:00.000000000 +00:00
+type: post
+post_id: '39792'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39797'
+  wordads_ufa: s:wpcom-ufa-v4:1698187159
+  _publicize_job_id: '88742978864'
+  timeline_notification: '1698089412'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/23/aurum-motion-sensing-light-circuit-boards-aec-326ka2-ac14w/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took apart a retired motion sensing light and <a href="https://newscrewdriver.com/2023/10/22/aurum-motion-sensing-light-sensor-pod-aec-326ka2-ac14w/">found far more electronics components than I had expected to see inside the sensor pod</a>. The complexity places it beyond my ability to trace through and draw up a KiCad schematic, but I still want to take a look to see what I can decipher.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39797,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensing-light-circuit-boards-and-wires.jpg?w=1024" alt="" class="wp-image-39797"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a high level, it looks like one board handles the 120V AC power with a relay and the other board handles sensing and sensor logic. Four wires connect between them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39799,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensing-light-power-board-front-relay.jpg?w=800" alt="" class="wp-image-39799"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the front of the power board, the black wire is incoming 120V AC line, red wire goes out to light pods. The two white wires, one incoming and one outgoing, are 120V AC neutral. This confirms the sensor pod only switches AC power. Converting AC power to DC voltage to drive LEDs are handled elsewhere inside the light pods. There are only a few components on this side, dominated by an AFE BRD-SS-124LM relay. Surrounding the relay are what appears to be a resistor, two capacitors, and a 4-position connector to the logic board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39798,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensing-light-power-board-back-diodes.jpg?w=800" alt="" class="wp-image-39798"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the back of the power board, I can see both neutral wires are wired together. Looking at <a href="https://afe-relay.com/products.html" target="_blank" rel="noreferrer noopener">AFE Relay's product information for BRD series footprint</a>, I can see the relay will connect/disconnect between the black and red wire for 120V AC line power. This is the business end of the sensor pod and determines whether the light pods receive 120V AC power or not </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond that, I'm lost. I had expected to see a transformer to turn 120V AC into a lower voltage, followed by a rectifier to turn AC into DC suitable for a digital logic board. I definitely don't see a transformer here, and I don't see a rectifier module. These small red things labeled with D are probably diodes, do they implement a <a href="https://en.wikipedia.org/wiki/Diode_bridge" target="_blank" rel="noreferrer noopener">diode bridge</a>? If there's no voltage reduction, does it mean 120V go all the way to the sensor logic board? Maybe looking there would help me understand what's going on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39800,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensing-light-sensor-board-front-sensor-led-and-potentiometers.jpg?w=800" alt="" class="wp-image-39800"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the sensor logic board with the actual sensor itself front and center. U2 is a status LED. Potentiometer LUX SR1 adjusts level of light sensitivity, TIME SR2 adjusts how long the light should stay on after motion detection threshold has been triggered. The brown tint on the potentiometers are rust, result of rainwater intrusion. They would have been the closest components immediately below the broken sensor view window. Such exposure wouldn't have done their electrical behavior any good.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39802,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensor-oblique-side-view.jpg?w=1024" alt="" class="wp-image-39802"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In front of the sensor is a shiny bracket, dividing its field of view into thirds: left, front, and center. Here's an oblique side view of the arrangement. I had hoped to read markings on this sensor so I could go look for a datasheet, but I saw nothing. Maybe it's hidden by the shiny bracket? It might be plastic with a shiny coating, which I can cut away. If it is metal I doubt I could remove it without destroying the sensor module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39801,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensing-light-sensor-board-rear-st-324-g217334.jpg?w=800" alt="" class="wp-image-39801"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And now, the star attraction: the unexpectedly complex sensor logic board. It's a single layer board, so I noticed multiple zero ohm resistors used as an overpass over other traces. Lots of other nonzero resistors, capacitors, and diodes. I see three components labeled BR 34 and two labeled FR 33, short enough of an alphanumeric designation a search returned a lot of hits but none I recognized as relevant. The silkscreen designation for those components start with Q. Wikipedia page <a href="https://en.wikipedia.org/wiki/Reference_designator" target="_blank" rel="noreferrer noopener">Reference Designator</a> says Q are transistors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39886,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aurum-motion-sensing-light-sensor-board-backlit.jpg?w=800" alt="" class="wp-image-39886"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since it's a single layer board with few components on the opposite side, there's no need for <a href="https://newscrewdriver.com/2023/10/16/side-lit-circuit-board-highlights-copper-traces/" target="_blank" rel="noreferrer noopener">side light trickery</a>. Shining a light from behind is enough to highlight majority of copper traces on this board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One way I try to orient myself on the nature of a circuit board is to look for the big brain in charge of the operation. If I can find a datasheet for the microcontroller, there's usually a section about the intended market for the device, the peripherals it has to support that market, and have sample application schematics. The biggest chip on this board has a ST Microelectronics logo and markings <code>324 GZ17334</code>. A search led me to <a href="https://www.st.com/en/amplifiers-and-comparators/lm324.html" target="_blank" rel="noreferrer noopener">LM324 series of quad op-amps</a>. Not a microcontroller, and I see no other obvious candidates for one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The lack of a microcontroller combined with the largest chip containing a set of op-amps imply this circuit board runs on analog logic. A field I know even less about, and marks the end of the road of what I can decipher about this circuit board today. I set it aside to focus on <a href="https://newscrewdriver.com/2023/10/24/aurum-motion-sensing-light-led-pod-aec-326ka2-ac14w/">the LED lighting pods</a> this circuit board formerly controlled.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

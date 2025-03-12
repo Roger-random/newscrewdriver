@@ -1,0 +1,37 @@
+---
+layout: post
+title: Evaluate Retired Melzi Board for XY Stage
+date: 2019-08-15 12:30:12.000000000 +00:00
+type: post
+post_id: '19183'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19184'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34128943902'
+  timeline_notification: '1565897492'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/15/evaluate-retired-melzi-board-for-xy-stage/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>In an effort to put a <a href="https://newscrewdriver.com/2019/08/12/new-project-xy-stage/">salvaged industrial XY table</a> back to work, the <a href="https://newscrewdriver.com/2019/08/13/old-industrial-xy-stage-moves-again-on-arduino-accelstepper/">Arduino AccelStepper was used</a> as a quick test to see if the motors and controllers still respond to input signals. Things moved, which is a good sign, but the high precision of the Parker ZETA4 controller demanded step pulses at a <a href="https://newscrewdriver.com/2019/08/14/arduino-accelstepper-under-the-scope/">far higher frequency than what AccelStepper could deliver</a>.</p>
+<p>The search then moved on to something that could generate the pulses required. I'm confident the hardware is capable of more, as AccelStepper topped out at less than 5 kHz signal on a 8 MHz chip. Pulsing a pin isn't a task that requires over 1,000 instruction cycles. Given familiarity with the 3D printer world, I started looking at <a href="https://github.com/MarlinFirmware/Marlin">Marlin</a> which runs on Arduino hardware.</p>
+<p>The problem with running Marlin on my Arduino Nano is that I would have none of the associated accessories. No control panel, no SD reader, etc. However, I do have a <a href="https://newscrewdriver.com/2018/07/02/smell-of-smoke-prompts-monoprice-maker-select-wanhao-duplicator-i3-upgrade-to-panucatt-azteeg-x5-mini/">full control board</a> retired from one of my 3D printers. This board called itself a Melzi Ardentissimo and a search led to the <a href="https://reprap.org/wiki/Melzi">Melzi page</a> of RepRap wiki. Thanks to the open nature of this design, I could trace through its PCB layout. Much to my disappointment, the step and direction signals connected straight from the tiny pin on the main processor to the motor driver without surfacing in an easily tapped fashion. The intent of this board is integration and it'll be quite some work to defeat that intent in order to decouple the processor from its integrated stepper driver.</p>
+<p>Fortunately, I'm not limited to the world of AVR ATmega chips, nor Marlin software. There's another very capable processor on hand waiting for such project... an <a href="https://newscrewdriver.com/2019/08/16/evaluate-grbl-for-xy-stage/">ESP32 running Grbl</a> software.</p>
+<p></body></html></p>

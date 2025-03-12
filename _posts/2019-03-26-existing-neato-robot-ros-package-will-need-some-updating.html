@@ -1,0 +1,37 @@
+---
+layout: post
+title: Existing Neato Robot ROS Package Will Need Some Updating
+date: 2019-03-26 22:58:41.000000000 +00:00
+type: post
+post_id: '17961'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- ROS
+tags:
+- Neato
+meta:
+  _oembed_e2aab55ee8fbcef610ac5562089fe55a: "{{unknown}}"
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1553666325'
+  _publicize_job_id: '29085616768'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/26/existing-neato-robot-ros-package-will-need-some-updating/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17966 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-mini-usb-cable-connection-to-laptop.jpg" alt="Neato mini USB cable connection to laptop" width="1600" height="813">Now that we've got a pretty good handle on getting old Neato robot vacuums up and running, including <a href="https://newscrewdriver.com/2019/03/03/sending-commands-to-neato-xv-21-via-usb/">talking to their brains via USB</a>, it's time to dig into the software side and explore its potential. I could adapt my SGVHAK rover code to control a Neato, but I think it's more interesting to get my Neato up and running on <a href="http://www.ros.org/">ROS</a>.</p>
+<p>Unsurprisingly, there already exists <a href="http://wiki.ros.org/neato_robot">a <code>neato_robot</code> ROS package for Neato</a>. Equally unsurprisingly, it was maintained up to <a href="http://wiki.ros.org/hydro">ROS Hydro</a> and since abandoned. ROS releases are named alphabetically, meaning this code is three releases behind my installation of <a href="http://wiki.ros.org/kinetic">ROS Kinetic</a> and a whopping five releases behind the current state of the art <a href="http://wiki.ros.org/melodic">ROS Melodic</a>.</p>
+<p>But hey, it's all open source, if I want to get it to function all I need to do is roll up my sleeves and get to work. Since it's out of date, I think it'd be a bad idea to grab the pre built package. Instead I followed links to its <a href="https://github.com/mikeferguson/neato_robot">source code repository</a> (last updated October 2014) and cloned it into my local catkin workspace.</p>
+<p>And continuing on the trend of not being surprised, this code did not work immediately. Publishing events to <code>/cmd_vel</code> topic did not elicit robot chassis movement, and subscribing to <code>/odom</code> or <code>/base_scan</code> received no data. Fortunately this node was written in Python, which I hope would be easier to debug than a ROS node written in C++. But either way, it's time to dig in and figure out what it is doing and how that differs from what it is supposed to be doing.</body></html></p>

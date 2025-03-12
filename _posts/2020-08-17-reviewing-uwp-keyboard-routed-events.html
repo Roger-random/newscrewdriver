@@ -1,0 +1,47 @@
+---
+layout: post
+title: Reviewing UWP Keyboard Routed Events
+date: 2020-08-17 12:30:00.000000000 +00:00
+type: post
+post_id: '22142'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- UWP
+meta:
+  _thumbnail_id: '22069'
+  timeline_notification: '1597692612'
+  _publicize_job_id: '47822590322'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/17/reviewing-uwp-keyboard-routed-events/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted to have keyboard control of the 3D printer carriage, moving <a href="https://newscrewdriver.com/2020/08/16/webcam-test-with-uwp/">the webcam view</a> by pressing arrow keys. I knew enough about the application framework to know I needed to implement handlers for the <code>KeyDown </code>and <code>KeyUp</code> events, but in my first implementation those handlers are never called.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If at first I don't succeed, it's time to go to the manual.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first stop is the <a href="https://docs.microsoft.com/en-us/windows/uwp/xaml-platform/events-and-routed-events-overview" target="_blank" rel="noreferrer noopener">overview for UWP Events and Routed Events</a>, the umbrella of event processing architecture including keyboard events. It was an useful review and I was glad I hadn't forgotten anything fundamental or have missed anything significantly new.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next stop was the <a href="https://docs.microsoft.com/en-us/windows/uwp/design/input/keyboard-interactions" target="_blank" rel="noreferrer noopener">UI design document for keyboard interactions</a>. Again this was technically a review, but I've forgotten much of this information. Keyboard handling is complicated! It's not just an array of buttons, there are a lot of interactions between keys and conventions build up over decades as to what computer literate users have come to expect.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I think of key interactions, my first reaction is to think about the shift key and control key. These modifier keys change the meaning of another button: the difference between lowercase 'c', uppercase 'C' and Control+C which might be anything from "interrupt command line program" to "Copy to clipboard."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that's not important to my current project. My desire to move the camera carriage using arrow keys opened up an entirely different can of worms: <a href="https://newscrewdriver.com/2020/08/18/learning-uwp-keyboard-navigation/">keyboard navigation</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

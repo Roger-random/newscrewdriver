@@ -1,0 +1,95 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner Homing Marker
+date: 2023-12-03 12:30:00.000000000 +00:00
+type: post
+post_id: '40814'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40789'
+  wordads_ufa: s:wpcom-ufa-v4:1703391692
+  _publicize_job_id: '89954065506'
+  timeline_notification: '1701635414'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/03/canon-pixma-mx340-scanner-homing-marker/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm playing with a partially disassembled scanner module from a Canon Pixma MX340 multi-function inkjet. I've figured out <a href="https://newscrewdriver.com/2023/12/02/canon-pixma-mx340-scanner-homing-sequence/">how the scan head finds its way to its home position</a>, and now I want to experiment with the marker used by the process. Back when <a href="https://newscrewdriver.com/2023/11/21/canon-pixma-mx340-scanner-rail/" target="_blank" rel="noreferrer noopener">I disassembled the scanner module</a>, I had expected a mechanical homing switch but didn't find one. I suspect the homing sequence uses a distinct pattern I found on the bottom of the bar separating the two windows.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40521,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-bed-position-marker-candidate.jpg?w=1024" alt="" class="wp-image-40521"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Is this the homing marker? I will now confirm my suspicion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40800,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-enclosure-with-offset-top.jpg?w=1024" alt="" class="wp-image-40800"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first experiment was to deliberately assemble the scanner module incorrectly. Instead of putting the lid (with glass windows) in its correct position, I placed it roughly 15cm offset in the positive direction. This was wider than the ADF window so the first test was a failure: the scan head didn't move far enough before reversing direction. On the second test, I manually moved the scan head a bit further up, so the bar was in range of the initial positive scan. This time, the scan head homed to its new position. It also homed to the new position if I manually placed the scan head further in the positive direction: it would scan for a while, reverse direction, and find the relocated marker. Homing marker confirmed!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40802,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-homing-marker-dimensions.jpg?w=1024" alt="" class="wp-image-40802"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then tried to see if I can spoof that marker. I measured the special pattern to start about 62mm from the document left edge. It is made of three black rectangles 20mm long and 3mm wide, separated by 20mm of white between them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40804,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-homing-marker-real-and-fake.jpg?w=1024" alt="" class="wp-image-40804"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I drew up that pattern and printed it on paper. It took several attempts to actually match the measured dimensions because apparently "print at 100%" is a lie. I didn't want to waste paper so my multiple attempts were printed on different ends and sides of the same sheet of paper.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40789,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanning-fake-homing-marker.jpg?w=1024" alt="" class="wp-image-40789"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Again I moved the scan head out of its homing position, and placed my fake homing marker paper down on the flatbed scan area. I turned on the printer and, when the scan head saw my fake marker, it acted as if it saw the real marker.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After this success, I realized that I had accidentally used one of the slightly smaller size fake markers. Retrying a few times with my different printing attempts, I found my 18mm and 19mm long markers worked just as well as the 20mm long markers. So the homing program has some tolerance for marker size.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40808,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-homing-marker-on-a-ruler-did-not-work.jpg?w=1024" alt="" class="wp-image-40808"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If it is tolerant of less-than-perfect homing markers, perhaps I can spoof it with the pattern taped on a ruler? This worked when I put it on the flatbed glass like earlier experiments, but it failed if I skipped the flatbed glass and held the ruler on top of the sensor in midair. I can think of a few possible explanations:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Holding the ruler above the sensor by hand had improper alignment. (It's crooked.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Holding the ruler above the sensor by hand could not maintain the correct distance for proper image focus.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The scanner sensor bar requires a sheet of glass between it and the scan subject for proper optical behavior.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>And naturally, the explanation might be none of the above. I don't feel the need to dig deeper right now because I've already had my fun and ready to move on to look at the <a href="https://newscrewdriver.com/2023/12/04/canon-pixma-mx340-scanner-motor/">motor moving this scann head</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

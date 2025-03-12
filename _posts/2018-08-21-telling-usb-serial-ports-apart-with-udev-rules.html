@@ -1,0 +1,41 @@
+---
+layout: post
+title: Telling USB Serial Ports Apart with udev Rules
+date: 2018-08-21 09:00:27.000000000 +00:00
+type: post
+post_id: '16660'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1534867502'
+  _publicize_job_id: '21316174108'
+  _thumbnail_id: '16661'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/21/telling-usb-serial-ports-apart-with-udev-rules/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Old school serial bus is great for robot hacking. It's easy and widespread in the world of simple microcontrollers, and it's easy for a computer to join in the fun with a USB to serial adapter. In my robot adventures so far, it's been used to talk to <a href="https://newscrewdriver.com/2018/04/05/encoder-fixed-manual-pid-tuning-begins/">Roboclaw motor controllers</a>, to <a href="https://hackaday.com/2018/07/05/wrangling-rc-servos-becoming-a-hassle-try-serial-bus-servos/">serial bus servos</a>, and now to <a href="https://newscrewdriver.com/2018/08/18/neato-vacuum-laser-scanner-works-in-rviz/">laser distance scanners</a>. But so far I've only dealt with one of them at any given time. If I want to build a sophisticated robot with more than one of these devices attached, how do I tell them apart?</p>
+<p>When dealing with one device at a time, there is no ambiguity. We just point our code to  <code>/dev/ttyUSB0</code> and get on with our experiments. But when we have multiple devices, we'll start picking up <code>/dev/ttyUSB1</code>, <code>/dev/ttyUSB2</code>, etc. And even worse, there is no guarantee on their relative order. We might have the laser scanner on <code>/dev/ttyUSB2</code>, and upon computer reboot, the serial port associated with laser scanner may become <code>/dev/ttyUSB0</code>.</p>
+<p>I had vague idea that a Linux mechanism called '<a href="https://wiki.debian.org/udev">udev rules</a>' can help with this problem, but most of the documentation I found were written for USB device manufacturers. They can create their own rules corresponding to their particular vendor and product identification, and create nice-sounding device names. But I'm not a device manufacturer - I'm just a user of USB to serial adapters, most of which use chips from a company called FTDI and will all have the same vendor and product ID.</p>
+<p>The key insight came in as a footnote of the <a href="http://wiki.ros.org/xv_11_laser_driver/Tutorials/Running%20the%20XV-11%20Node">XV-11 ROS node instructions page</a>: it is possible to create udev rules that create a new name incorporating a FTDI chip's unique serial number.</p>
+<blockquote><p><code>echo 'SUBSYSTEMS=="usb", KERNEL=="ttyUSB[0-9]*", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="sensors/ftdi_%s{serial}"' &gt; /etc/udev/rules.d/52-ftdi.rules</code></p></blockquote>
+<p>Such a rule results in a symbolic link that differentiates individual serial devices not by an arbitrary and changing order, but a distinct and unchanging serial number.</p>
+<p><span style="color:var(--color-text);">In the screenshot, my serial port is visible as </span><code>/dev/ttyUSB0</code><span style="color:var(--color-text);">... but it is also accessible as </span><code>/dev/sensors/ftdi_AO002W1A</code><span style="color:var(--color-text);">. By targeting my code to the latter, I can be sure they'll be talking on the correct port. No matter which USB port it was plugged into, or what order the operating system enumerated those devices. I just need to put in the one-time upfront work to write down which serial number corresponds to which devices, code that into my robot configuration, and all should be well from there.</span></p>
+<p>This mechanism solves the problem if I use exclusively USB-to-serial adapters built from FTDI chips with unique serial numbers. Unfortunately, sometimes I have to use something else... like the <a href="https://amzn.to/2pau2r3" target="_blank" rel="noopener">LewanSoul serial bus servo interface board</a> (*). It uses the CH341 chip for communication, and this chip does not have a unique serial number.</p>
+<p>This isn't a problem in the immediate future. One LewanSoul serial servo control board on can talk to all LewanSoul serial servos on the network. So as long as we don't need anything else using the same CH341 chip (basically use FTDI adapters for everything else) we should be fine... or at least not worry about it until we have to cross that bridge.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

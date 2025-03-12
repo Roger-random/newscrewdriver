@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'Hackaday Badge LCD Screen 3: Establish Maximums'
+date: 2018-10-29 09:00:46.000000000 +00:00
+type: post
+post_id: '17072'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23708224710'
+  timeline_notification: '1540828854'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/29/hackaday-badge-lcd-screen-3-establish-maximums/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Examination of the LCD screen on the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> (predecessor to upcoming <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>) continues! Previous post highlighted some important tidbits from <strong>R</strong>eading <strong>T</strong>he (<strong>F</strong>ine) <strong>M</strong>anual on components, now it's time to get hands-on and get some experimental data. The default "user program" on the badge showcased a small bitmap operation that works one single pixel at a time. This is very inefficient and takes almost 2 seconds to fill the screen. I'm confident the badge can go faster, so let's test how fast.</p>
+<h2>Maximum frame rate: ~80fps</h2>
+<p>Our tool for these tests is <code>tft_fill_area()</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/disp.c">disp.c</a>. This function is used to fill a screen area with a single color, such as when clearing the screen. Looking at the code, we see it is sending 320 * 240 pixels of color data using a single fixed value. The fixed value means this is as fast as we'll ever be able to fill the screen via existing interface configuration. Anything more complex will require computation that takes more time - and slower - than using a single fixed value.</p>
+<p>A test program to cycle filling through all the RGB values shows that it takes about 3 seconds to traverse the 256 values of a single byte. 256 / 3 ~= 80 frames per second. Of course, frame rate for real tasks will be slower, but this isn't bad at all and gives confidence it'll be fine to stick with existing interface configuration. I've also confirmed visual artifacts from updating the screen so quickly without VSYNC. On a screen that's supposed to be filled with a single color, we see diagonal rendering artifacts.</p>
+<p><img class="alignnone size-full wp-image-17082" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-lcd-refresh-artifacts.jpg" alt="Hackaday Badge LCD Refresh Artifacts" width="1024" height="568"></p>
+<h2>Render-by-line frame rate: ~30fps</h2>
+<p>Since we don't have enough memory for a full screen 32-bit buffer (and we don't have VSYNC to make good use of it anyway) it's time to scale down ambitions. Single pixel operations like the default demo program are too slow. So let's go with a convenient middle ground between per-pixel and per-screen: operate at per-line level. A 32-bit buffer, for a single line of 320 pixels, would take only 1280 bytes (1.25 kilobyte). Well within our memory budget.</p>
+<p>The test program will be doing a little bit of work, filling the line buffer with a pattern before sending the line to screen. It'll also invoke the transmit overhead 240 times (once per line on screen) more than the single-screen operation, so I expected it to be slower. How much slower? It now takes about 8 seconds to run through 256 values of a single byte. 256 / 8 ~= 30 frames per second. This frame rate is more realistic, and still a decent speed for modest projects.</p>
+<p>But some people will always push for faster. Has anyone applied that spirit of performance to the badge? Let's look around the web...</p>
+<p> </p>
+<p> </body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: Geeetech A10 Control Panel Removed
+date: 2020-07-28 12:30:58.000000000 +00:00
+type: post
+post_id: '21685'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Geeetech A10
+meta:
+  _thumbnail_id: '21673'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1595964682'
+  _publicize_job_id: '47093605054'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/28/geeetech-a10-control-panel-removed/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I had the retired Geeetech A10 3D printer <a href="https://newscrewdriver.com/2020/07/27/power-input-replacement-for-geeetech-a10/">powered up</a>, I could start poking around to see what is working and what is not. Obviously the control panel was my entry point to jog each axis. I was very happy to see the individual motors move on command, but I couldn't command a homing cycle just yet due to the missing Z-axis switch.</p>
+<p>However, the control panel itself was annoying to use. The screen contrast was poor, and user responsiveness is lacking. I frequently find that encoder steps were ignored, as were some of my wheel presses to select menu options. I <a href="https://newscrewdriver.com/2018/06/27/using-octopi-to-avoid-monoprice-maker-select-wanhao-duplicator-i3-usability-issues/">experienced the same frustration with the Monoprice Maker Select</a>, and I had thought those issues were specific to that printer. Now I'm starting to wonder if this is common with 3D printers running Marlin on a ATmega328 control board.</p>
+<p>The good news is that I don't plan to interact with the control panel for much more than this initial test. Once I established the board was functional, I no longer feared the USB port damaging my computer so I found an appropriate USB cable and plugged it in. The expected USB serial device showed up. With the popular settings 250000 8N1, I could command the printer via <a href="https://marlinfw.org/meta/gcode/">Marlin G-code</a>. This is how I intend to control this machine as a three-axis motion control platform.</p>
+<p>I didn't intend to use the control panel anymore, and I could have just left it alone. But it also sticks out to the side of the printer and awkwardly taking up space. After a particularly painful meeting between a body part and an outer corner of the panel, I took a closer look at how it was connected to the control board. It seems to be a single ribbon cable plugged into a single connector that had two dabs of hot glue to help keep it in place.</p>
+<p><img class="alignnone size-full wp-image-21672" src="https://newscrewdriver.com/wp-content/uploads/2020/05/geeetech-a10-control-panel-ribbon-cable-connector.jpg" alt="Geeetech A10 control panel ribbon cable connector" width="1920" height="1080"></p>
+<p>I removed the hot glue and the cable to see if this printer would continue functioning as a USB serial peripheral, in the absence of the control panel. Good news: it does! I could move all three axis (X, Y, and Z) via <code><a href="https://marlinfw.org/docs/gcode/G000-G001.html">G0</a></code><a href="https://marlinfw.org/docs/gcode/G000-G001.html"> commands</a>. So after removing two M5 bolts, the control panel go live in a box. Cleaning up the printer outline and hopefully reducing painful episodes in the future.</p>
+<p>Now I need to <a href="https://newscrewdriver.com/2020/07/29/crude-z-axis-end-stop-for-geeetech-a10/">install a replacement Z-axis homing switch</a> in order to try homing cycle.</p>
+<p></body></html></p>

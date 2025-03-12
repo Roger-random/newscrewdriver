@@ -1,0 +1,48 @@
+---
+layout: post
+title: 'Pixelblaze LED Helix Pattern: Glow Flow'
+date: 2019-07-12 12:30:04.000000000 +00:00
+type: post
+post_id: '18860'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18857'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_c2c640bfc905d21778f47ea3aeb9b052: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Yes,
+    it is a <a href="https://twitter.com/hashtag/Pixelblaze?src=hash&amp;ref_src=twsrc%5Etfw">#Pixelblaze</a>
+    test pattern to verify direction of each axis, but that doesn&#39;t mean it can&#39;t
+    look good doing its thing! <a href="https://t.co/dvsyUBiHan">https://t.co/dvsyUBiHan</a>
+    <a href="https://t.co/NaVKIjj5M7">pic.twitter.com/NaVKIjj5M7</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1147628515719671808?ref_src=twsrc%5Etfw">July
+    6, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '32779367909'
+  timeline_notification: '1562959824'
+  _oembed_time_c2c640bfc905d21778f47ea3aeb9b052: '1562961786'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/12/pixelblaze-led-helix-pattern-glow-flow/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>As someone rusty at 3D geometry math, it took some time for me to rub off the rust and get my <a href="https://newscrewdriver.com/2019/07/11/pixelblaze-led-helix-glow-flow-math/">spherical coordinate and 3D transform math up and running</a>. But once that was debugged, the project has reached its first "ready to demo" milestone. It is now a colorful glowing LED helix that flows in reaction to gravity, so I've named it <em><strong>Glow Flow.</strong></em> Built using a 5-meter long strip of SK9822 LEDs under command of <a href="https://www.tindie.com/products/electromage/electromage-pixelblaze-v2-wifi-led-controller/">Pixelblaze LED controller</a> and associated <a href="https://www.tindie.com/products/electromage/electromage-pixelblaze-sensor-expansion-board">sensor expansion</a> board by <a href="https://electromage.com/">Electromage</a>.</p>
+<p>A recap of algorithm implementation details: The Pixelblaze 3D Pixel Mapper gave each LED on the strip a (X,Y,Z) coordinate in real world physical space. The accelerometer reported direction of gravity plus motion along each of three axis, which are translated to spherical coordinate space. Those two angles were then used to transform each LED from their physical (X,Y,Z) coordinate into (X,Y,Z) relative to acceleration vector.</p>
+<p>Once transformed, Glow Flow chooses LED color based on the new Z coordinate. Emulating a half-full container of brightly glowing liquid, the plane where Z equals zero is the surface of the liquid. The positive acceleration Z axis is where the half-full container of bright fluid sits. Color hue is mapped to Z coordinate, so we cycle through one axis of <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV color space</a> as we go deeper in this liquid, giving us a rainbow effect. On the negative Z axis, we have the air above the liquid where red-orange gradually cools to black.</p>
+<p>This milestone marks the first functional draft of my interactive LED sculpture, with enough of 3D printed pieces, electronic hardware, and Pixelblaze pattern software, to see this pattern is visually interesting and fun for people to play with. The concept has been proven to work and now the <a href="https://newscrewdriver.com/2019/07/13/glow-flow-pixelblaze-performance/">process of refinement begins</a>.</p>
+<p>Pixelblaze pattern for this project is <a href="https://github.com/Roger-random/glowflow/blob/master/Glow%20Flow">available on Github</a>.</p>
+<p></body></html></p>

@@ -1,0 +1,62 @@
+---
+layout: post
+title: Finding TPS61187 LED Driver Interfaces
+date: 2021-06-10 12:30:00.000000000 +00:00
+type: post
+post_id: '27010'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27011'
+  _publicize_job_id: '59444720364'
+  timeline_notification: '1623353436'
+  _oembed_5f29b8f778f5d06f3d4b80fc3d6e0dbc: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/10/finding-tps61187-led-driver-interfaces/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to reuse the TPS61187 LED Driver IC already on board the display circuit board of a LG LP133WF2(SP)(A1) laptop LCD panel. Driving the backlight that used to shine from behind the now-cracked LCD screen. After studying the datasheet and <a href="https://newscrewdriver.com/2021/06/09/probing-tps61187-led-driver-configuration/">probed around the circuit board</a> to understand how the chip is configured, I am now probing to see where I can solder wires to interface with the chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are two major concerns here. The first is that I'm learning to work with modern consumer electronics, with circuit boards populated by very small surface mount components. Most of the resistors and capacitors I probed earlier are barely larger than the tip of my soldering iron's finest tip. The "normal" tip is comically large next to these things. If I continue with experiments like this I will need to buy my own <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/29/hot-air-station-amateur-hour/" target="_blank">hot air station</a> and learn to use it well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second concern are the other components on this control board. If I supply voltage and ground to the TPS61187, the rest of the circuit will probably come alive in some way I don't understand. I'm not worried about them draining a bit of battery, that's the best case scenario. I'm more worried about them interfering with the backlight control signals for enable (EN) and brightness (PWM).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First target is to find a place to inject power. The datasheet told me where the power pins are on this chip, but it's far too small for me to hand solder myself. I'm not saying it's impossible to hand solder to them, I'm just saying it's very difficult and unlikely to succeed with my current skill level. So I went poking around nearby components looking for a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Decoupling_capacitor" target="_blank">decoupling capacitor</a>. Because this driver IC uses a boost converter circuit to raise the voltage to drive the backlight LEDs, I expect to find a sizable decoupling capacitor nearby to isolate the rest of this board from the electrical noise of boost conversion. I found one adjacent to the inductor. For a surface-mounted component, it is large and thankfully big enough for me to feel confident I could solder to its two ends for VIN and GND.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found a resistor and capacitor nearby connected to the enable pin. But even though they are larger than the corresponding TPS61187 pin I couldn't solder to them. I was able to connect to one side of the small capacitor, but an intended-to-be-gentle test tug ripped off the wire taking a corner chunk of the capacitor with it. Oops, not so gentle after all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had even less luck finding a PWM signal connection near the TPS61187. I could see its pin connection on the circuit board, but it instantly sank out of sight to one of the other layers of the board and I found no place nearby where it surfaced.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After some thought, I decided to look for these signals near the largest chip sitting on the other end of the board, labelled "LG Display ANX2804". I reasoned that EN and PWM are probably controlled from this chip and perhaps I could find something. There was nothing obvious near the chip itself, but I struck gold on the backside of the board. Sitting effectively under the ANX2804 are several labelled and accessible test points, and I was happy to see "LED_EN" next to one pad and "PWM" next to another. (There's also VLED visible further left I didn't notice until later, which should be better than soldering to the VIN end of a surface mount decoupling capacitor.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27018,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-24-pwm-and-led_en-marked-bw.jpg?w=1024" alt="" class="wp-image-27018"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Continuity test confirmed these do connect all the way across this thin strip of circuit board to the TPS61187, I think we are in business! Time to <a href="https://newscrewdriver.com/2021/06/11/soldering-wires-to-tps61187-led-driver/">do some soldering</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

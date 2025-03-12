@@ -1,0 +1,49 @@
+---
+layout: post
+title: Notes on Codecademy "Learn SQL"
+date: 2022-11-20 12:30:00.000000000 +00:00
+type: post
+post_id: '33668'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- SQL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33671'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669079263
+  _publicize_job_id: '78908252491'
+  timeline_notification: '1668976205'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/20/notes-on-codecademy-learn-sql/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm a little sad that hobbyist web app projects have <a href="https://newscrewdriver.com/2022/11/19/heroku-free-rides-are-over/">lost the option of free hosting on Heroku</a>, but that's no reason to stop learning. Heroku is not irreplaceable, I'm sure I can figure out something if a project proceeds far enough to be worth the effort. So, back to learning: where should I go next? Looking at project ideas that involve Node.js and potentially Express, I decided the next area of focus is a backing datastore. It's time for some database refresher work starting with Codecademy's "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-sql" target="_blank">Learn SQL</a></em>".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've taken several database courses in the past, to varying levels of rigor and depth. I expected the introductory material of this course to be review so I'm better able to learn new concepts later in the course. As it turned out, this course was entirely review for me but to be fair, some concepts were fresher in my mind than others. I especially appreciated the cool animations illustrating various table joins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This specific course could be more accurately titled "<em>Learn SQLite</em>" because that's the database engine used in the course. Which is fine, it covers all the basics. The one thing I hadn't known (or had forgotten) about SQLite is its... flexibility... in data types. It is standard operating procedure for SQL tables to be declared with a data schema. "Names are strings, IDs are numbers", etc. While SQL was designed for the database engine to enforce this schema, SQLite does not. When the Codecademy course mentioned this, I said "What!?" but the assertion checks out, <a href="https://www.sqlite.org/faq.html#q3">confirmed by SQLite's own FAQ</a> which declares type flexibility as a feature and not a bug. I come from a world of strictly typed programming languages like C, so flexible typing like JavaScript feels more like a problem waiting to happen than a feature. I feel the same with SQLite's lack of schema enforcement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another reason to take a SQL refresher course now is to review all concepts from a new perspective. Now that I am thinking of using a database as backend storage for a web application. From this perspective, some of SQL features make less sense than in other contexts. For example, I'm not sure ORDER BY makes sense to do within the database engine, as a web app almost certainly needs to have sorting logic anyway. Think of the shopping sites that lets the user reorder by availability, by lowest price, etc. For small datasets I'd want to do that on the client end instead of round-tripping each new sort as a new query all the way to the database. But the story changes for large datasets. It'll make sense to sort data on the database if we want things ordered and then LIMIT to the top X items. That reduces bandwidth consumption between server and client and would be a good tool to have.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In contrast, other features like CASE (to categorize values), AS (to rename columns), and ROUND (rounding numbers) are definitely tasks better performed on the client end. I can't think of a scenario (yet) where it makes sense to do that work on the server-side database.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This course touches on the concepts of primary keys and foreign keys, but other than uniqueness we didn't get any further details of relational database design. This course didn't cover concerns of properly designing a database to suit the task, such as <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Database_normalization" target="_blank">database normalization</a>. As a result, this course is good for setting someone up to use an existing database, but not enough to help them set up a new database. Or at least, not an efficient or effective one. Maybe that'll be part of <a href="https://newscrewdriver.com/2022/11/21/notes-on-codecademy-learn-node-sqlite/">another course</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

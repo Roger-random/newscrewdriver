@@ -1,0 +1,100 @@
+---
+layout: post
+title: Philips Sonicare (HX6530) Circuit Board and Charging Coil
+date: 2023-09-17 12:30:00.000000000 +00:00
+type: post
+post_id: '39066'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39020'
+  wordads_ufa: s:wpcom-ufa-v4:1695090328
+  _publicize_job_id: '87665442146'
+  timeline_notification: '1694979025'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/17/philips-sonicare-hx6530-circuit-board-and-charging-coil/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After disassembling my retired Philips Sonicare (HX6530) enough to access its internal circuitry, I paused to <a href="https://newscrewdriver.com/2023/09/16/philips-sonicare-hx6530-under-oscilloscope/">take a look at it under my oscilloscope. </a>After completing that detour, the oscilloscope probes were put away, and the mechanical tools came back out to resume disassembly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39083,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-pcb-front.jpg?w=1024" alt="" class="wp-image-39083"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"align":"center","id":39082,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-pcb-back.jpg?w=1024" alt="" class="wp-image-39082"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First to be freed was the circuit board. In addition to a few plastic clips (and one melted plastic rivet) it was held with six soldered connections: Two wires for the actuator coil, two for the battery, and two for the charging coil.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From left to the right, here are the components I recognized on the board:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>A single green surface-mount LED, the only user visual feedback on this device</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A single button, the only user input.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Six large pads. There's solder on Rx and Tx because I wanted to see if it was transmitting serial data. (It did not.) Two of the pads are labeled Gnd and they both electrically connected to ground. The remaining two pads are labeled Vdd and Vpp, and I don't understand how they differ. They both seem to show the current battery voltage.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Two resistors R1 and R3, then the two Alpha &amp; Omega field effect transistors Q1 and Q2.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Two more resistors R5 and R4, than the two pads leading to actuator coil.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A through-hole for the battery positive terminal, leading to F1 and an unoccupied pair of pads. The component sitting at F1 has a small "P" printed on it and it doesn't look like a resistor. Thinking of electronic things that start with "F" and would make sense at the battery terminal, I think this is a safety fuse. The unoccupied pair of pads has a thin trace connecting them. I guess this is a provision to put something in line with battery power: we can cut that trace then solder something on those pads.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>U1 is the Microchip PIC16F726 microcontroller.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I got lost after this point. There are many unpopulated pads, I presume features for higher end models. SW2 would be for another switch, but what might sit at BZ1? Some of these components would deal with power coming in from the charging coil (connected at the holes on either side of the CR6 lettering) and maybe for battery management. The positive battery terminal connection point was mentioned earlier, the negative terminal connects to the upper-right hole adjacent to lettering JP1.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":39073,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-battery-ur14500y-680mah.jpg?w=1024" alt="" class="wp-image-39073"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of the battery, unsoldering its connection to the circuit board freed it from the chassis. Now we can read the lettering on its side telling us it is a 14500 form factor (14mm diameter, 50.0mm length) cylindrical cell with a capacity of 680mAh (milli-Amp hours).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39084,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-probing-charging-coil-without-pcb.jpg?w=1024" alt="" class="wp-image-39084"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The charging coil stayed on the black rigid plastic chassis, but now that it is freed from the circuit board I hooked it up to the oscilloscope again for another look.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":39027,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-charging-coil-one-end-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39027"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":39070,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-charging-coil-ends-no-circuit-board.jpg?w=1024" alt="" class="wp-image-39070"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Left plot was taken while the charging coil was connected to the circuit board, right plot is the coil by itself. Note the vertical scale has changed between these two plots: 1V/div on the left and 5V/div on the right. The most obvious difference is the shape: it is now a sine wave instead of a square wave. The amplitude is much larger at about 30V peak-to-peak or 15V above and below the center point. This is roughly triple the rectified 5V I saw earlier. I don't know enough about analog electronics to know what would accomplish this on the now-removed circuit board, maybe in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the electronics disassembled, my attention returned to the <a href="https://newscrewdriver.com/2023/09/18/philips-sonicare-hx6530-actuator/">electromechanical actuator assembly</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

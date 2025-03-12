@@ -1,0 +1,45 @@
+---
+layout: post
+title: Lite-On LTC-4627JR + I²C = Using All 20-Pin On PIC16F18345
+date: 2017-09-25 09:00:24.000000000 +00:00
+type: post
+post_id: '12467'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9652268931'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/25/lite-on-ltc-4627jr-i%c2%b2c-using-all-20-pin-on-pic16f18345/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>My shipment of my own PICkit 3 and tube of PIC16F18345 has arrived, so it's time to pick up where I left off with I²C control of the Lite-On LED module.</p>
+<p>This LTC-4627JR module has a few extra enhancements over the standard 4-digit 7-segment display. The first is the addition of a period with each digit, so we can display decimal points in our numbers. The period is an additional segment to make it an 8-segment display.</p>
+<p>In addition to the periods on each digit, there are three additional LEDs. Two are in the middle of the display making it possible to use this in a clock, as they're positioned to show the colon in the ubiquitous blinking "12:00". The third and final additional LED is towards the upper-right of the display. It's not immediately clear what that would be good for, but since its siblings are clock-friendly, perhaps it can indicate AM/PM with the help of bezel markings. Electrically, these three LEDs are wired in parallel with 3 of the 8 segments of the other digits and enabled with a common anode in parallel with the 4 digits. Together the three additional LEDs are effectively a partial fifth digit on the display.</p>
+<p>Effectively, I'm now trying to control a 5-digit, 8-segment display. A few days ago I tried to control it with a PIC16F1847, but that is an 18-pin chip so I didn't have enough pins to drive the eighth segment  or the fifth digit. Now that I have my 20-pin chip, I can wire up  my breadboard with:</p>
+<ul>
+<li>2 pins for power, +5V and Ground.</li>
+<li>8 pins for the cathodes of the 8 segments, via 120 Ohm resistor to keep the current below 25 mA.</li>
+<li>5 pins for the common anodes of the 5 digits, via 2N2222 transistor to control the (up to) 200mA current.</li>
+<li>2 pins for I²C communication, one data and one clock.</li>
+<li>3 pins for the PICkit 3 to program the chip, Vpp, ICSPCLK and ICSPDAT.</li>
+</ul>
+<p>Using all 20 pins with nothing wasted.</p>
+<p>I know that the Vpp, ICSPCLK and ICSPDAT pins can serve double-duty under restricted circumstances, but I don't yet have a good grasp on when it's OK to do that. For now I'm  going to leave them alone for exclusive use of the programmer until I have a better grasp.</p>
+<p>On a final note: even though I'm driving one more transistor and one more digit than before, the board still ended up cleaner and less tangled with wires. Practice makes perfect I guess.</p>
+<p>To establish a baseline of functionality, I hooked it up to a Raspberry Pi to confirm I could talk to the Microchip boilerplate generated I²C code. And I wrote a small program to confirm I could light up all the LEDs. It looks good, we can proceed.</p>
+<p><img class=" size-full wp-image-12471 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/img_5255.jpg" alt="IMG_5255" width="1024" height="548"><br />
+</body></html></p>

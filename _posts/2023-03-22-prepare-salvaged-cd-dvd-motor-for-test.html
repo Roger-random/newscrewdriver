@@ -1,0 +1,82 @@
+---
+layout: post
+title: Prepare Salvaged CD/DVD Motor for Test
+date: 2023-03-22 12:30:00.000000000 +00:00
+type: post
+post_id: '35824'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35831'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679606002
+  _publicize_job_id: '82543529150'
+  timeline_notification: '1679513431'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/22/prepare-salvaged-cd-dvd-motor-for-test/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Using a brushed DC motors is easy: apply voltage, watch motor shaft turn. I'm exploring brushless DC motors and even the cheapest controller from Amazon <a href="https://newscrewdriver.com/2023/03/21/blheli_s-brushless-motor-control-firmware-and-dshot-protocol/">had features that I hadn't even known existed</a>. It is far more sophisticated than <a href="https://newscrewdriver.com/2021/03/04/window-shopping-drv8833-dc-motor-control-ic/">a DC motor driver (DRV8833) I explored earlier</a>. To make it actually turn a motor, I'll start simple with the smallest brushless motor I found in my pile of salvaged hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35835,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-as-salvaged.jpg?w=1024" alt="" class="wp-image-35835"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a small brushless motor in the spindle of a CD or DVD drive. Based on the fact it is only a few millimeters thick, it was probably salvaged from a laptop optical drive. Lots of wires visible in the pale-yellow ribbon cable. I will need to probe them <a href="https://newscrewdriver.com/2023/02/23/hard-drive-wd800-motor-control-on-oscilloscope/">looking for a set of three or four wires</a>, with a tiny bit of resistance between them, that would indicate coils for the brushless motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35837,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-edge-four-pads.jpg?w=1024" alt="" class="wp-image-35837"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I probed the set of four contacts closest to the motor, but found no electrical connection between them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35839,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-fpc-four-wires.jpg?w=1024" alt="" class="wp-image-35839"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This set of four wires looked promising. They ended abruptly, as if I had cut them off from a larger piece of pale yellow <a href="https://docs.oshpark.com/services/flex/">flexible printed circuit</a>. (FPC) I guess the rest of that circuit didn't look interesting to keep and what they were have been lost to history. I used sandpaper to uncover the copper traces within this cut-off segment. This work was for naught: no electrical connections here either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35842,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-fpc-motor-wires-found.jpg?w=1024" alt="" class="wp-image-35842"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This left the large connector of many wires. I noticed the five conductors in the middle are wider than the rest. Each of those led to two contact points on the connector. I started with those and found likely candidates in three of the five wide wires. I'm not sure what the other two were... perhaps power and ground for some other circuit? Whatever they were, I hope they aren't relevant to my current experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35831,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-wires-soldered.jpg?w=1024" alt="" class="wp-image-35831"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I soldered thin (<a href="https://amzn.to/4062akm">30 gauge</a> *) wires to each of those points. Using an old AA battery as ~1V source, energizing any two of these wires would result in the motor holding a position. Motor coils confirmed!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35845,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-wires-soldered-heat-shrink-isolated.jpg?w=1024" alt="" class="wp-image-35845"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A bit of careful cutting and heat-shrink tubing isolated these wires from each other.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35846,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/cd-motor-with-headers.jpg?w=1024" alt="" class="wp-image-35846"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Resulting in a motor that I can <a href="https://newscrewdriver.com/2023/03/23/cd-dvd-motor-on-blheli_s-controller-under-oscilloscope/">connect to my brushless motor controller running BLHeli_S firmware</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

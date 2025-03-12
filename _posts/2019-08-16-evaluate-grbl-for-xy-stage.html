@@ -1,0 +1,41 @@
+---
+layout: post
+title: Evaluate Grbl For XY Stage
+date: 2019-08-16 12:30:48.000000000 +00:00
+type: post
+post_id: '19202'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ESP32
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19200'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1565983914'
+  _publicize_job_id: '34171613169'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/16/evaluate-grbl-for-xy-stage/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I considered driving an old industrial XY table from a 3D printer controller board. I have <a href="https://newscrewdriver.com/2019/08/15/evaluate-retired-melzi-board-for-xy-stage/">a Melzi board on hand to use</a> but its onboard stepper drivers were too well integrated to be easily adapted to this project. I considered running Marlin on an Arduino directly, but if I'm going to start building my own control board instead of one already tailored for Marlin, it makes sense to look at other options. Given the popularity of the Arduino platform, there's more than one motion control project out there for me to consider.</p>
+<p>Enter <a href="https://github.com/gnea/grbl">Grbl</a>.</p>
+<p>Unlike Marlin, which is primarily focused on 3D printing, Grbl offers a more generalized motion control platform. Provisions already in the code include pen plotting, laser cutting, and 3-axis CNC milling. All of which could be done with Marlin as well, but with different amount of code modifications necessary.</p>
+<p>But an even bigger advantage in favor of Grbl is the <a href="https://github.com/bdring/Grbl_Esp32">existence of an ESP32 port</a>. Marlin's development team is working on a <a href="https://github.com/MarlinFirmware/Marlin/tree/bugfix-2.0.x">32-bit hardware abstraction layer (HAL)</a> to take it beyond ATmega chips. It looks like they're up and running ARM Cortex boards and have ambition to bring it to ESP32. But a Grbl ESP32 port is available today and stable enough for people to use in their projects.</p>
+<p>The headline feature is, of course, speed. While AccelStepper topped out around 4 kHz pulses, Grbl on ATmega is good for approximately 30 kHz. Grbl on ESP32 claims "at least 4x the step rates" which is likely a very conservative claim. After all, we're comparing an 8 MHz 8-bit chip to a 240 MHz 32-bit chip. Though running on the ESP32 does incur more overhead than bare-metal code running on an ATmega, which is important in time-sensitive applications like motion control.</p>
+<p>There are upsides for this real time operating system (<a href="https://docs.espressif.com/projects/esp-idf/en/latest/api-reference/system/freertos.html">FreeRTOS</a>) overhead, as it allows the ESP32 to handle things beyond motion control. The best part employs its WiFi module to present a web-based control interface. A control interface would have required additional hardware in a Grbl machine built around an ATmega, but with Grbl on ESP32 I just need a web browser to start testing.</p>
+<p>And since I already have an <a href="https://amzn.to/2lD9ohQ" target="_blank" rel="noopener">ESP32 development board</a> (*) on hand, this looks like a great venue to explore. Let's <a href="https://newscrewdriver.com/2019/08/17/esp32-grbl-controller-breadboard-prototype/">try running this XY stage with an ESP32 running Grbl</a>.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

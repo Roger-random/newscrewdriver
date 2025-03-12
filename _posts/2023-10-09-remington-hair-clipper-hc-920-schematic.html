@@ -1,0 +1,73 @@
+---
+layout: post
+title: Remington Hair Clipper (HC-920) Schematic
+date: 2023-10-09 12:30:00.000000000 +00:00
+type: post
+post_id: '39508'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39509'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1698602650
+  _publicize_job_id: '88359104145'
+  timeline_notification: '1696879829'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/09/remington-hair-clipper-hc-920-schematic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After completing an upgrade for <a href="https://newscrewdriver.com/2023/10/08/laptop-backlight-external-power-and-optional-polarizer/">my workbench lighting solution</a>, I went back to my most recently learned skill: drawing electronic schematics in KiCad. I've learned that skill once and lost it. I don't want it to atrophy again after this second round. I want to practice with a few simple things and the top of my electronics waste pile is the circuit board from <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/09/11/remington-hair-clipper-hc-920/" target="_blank">my Remington hair clipper (HC-920) teardown</a>. Great, I'll start with that!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38915,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/remington-hc-920-pcb-front.jpg?w=800" alt="" class="wp-image-38915"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"align":"center","id":38916,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/remington-hc-920-pcb-rear.jpg?w=1024" alt="" class="wp-image-38916"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I looked over this board briefly, the absence of resistor R1 drew my attention. Instead of an actual resistor, this part of the circuit has a solder bridge on the back turning R1 into a zero Ohm resistor. How did this circuit work, and what role would a non-zero R1 have played?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39509,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/10/remington-hc920-pcb-schematic.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/remington-hc920-pcb-schematic.jpg?w=1024" alt="" class="wp-image-39509"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After tracing through how the components are interconnected and drawing them out in a schematic, I'm no closer to an answer. (The dual-pole dual-throw switch is drawn in the "motor running" position.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The easiest part to understand concern the red LED that indicates charging is underway. When the switch is in the non-running position, the LED receives power from the charging power adapter. R2 is a 390 Ohm current limiting resistor for the LED, which I expected. R3 is a 10K Ohm resistor parallel with the LED, which was a surprise. Why is R3 here? Drawing a bit of power away from the LED would have made it a bit dimmer, but if that's the objective, it seems easier to increase resistance of R2 instead of adding another component to the board. I assume this design has been optimized to squeeze every penny out of production cost, so if R3 survived that process it must have some importance I don't understand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Terminals J+/J- provide 3V DC from the charging adapter. In parallel with the red LED, it passes through diode D1 to the battery. The diode makes sense to ensure battery power doesn't feed back out to to the charging port or wasted on the red LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When the switch is in the running position, as shown in the schematic, the motor positive and negative terminals have continuity with battery positive and negative. It also has continuity with terminals J+/J-. Interesting, as this implies I could run the motor directly off the charging adapter if it was plugged in, turning this cordless hair clipper into a wired hair clipper. This would have been an option to run the clipper if the batteries had died. I don't think I was aware of this capability and it didn't even occur to me to try!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":38908,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/remington-hc-920-disassembled.jpg?w=1024" alt="" class="wp-image-38908"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That leaves the mystery resistor R1, which runs between the batter negative terminal and J- terminal when the switch is in the non-running position. This implies R1 is involved in limiting charging voltage or current on the battery charging circuit. However, there was a black wire directly connecting battery negative to J-, which would have bypassed this resistor on the circuit board. And if we cut that wire the motor would have no way to receive battery power. Maybe I've made a mistake in my schematic, though I couldn't find it if so. But if not, R1 makes no sense in this wiring arrangement. It must have been designed to support a different physical wiring arrangement. So given what we have here, it makes sense R1 is missing and bridged with a blob of solder.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had fun with this, so naturally I wanted to do a compare-and-contrast with the <a href="https://newscrewdriver.com/2023/10/10/conair-hair-clipper-hc318r-schematic/">circuit board from a Conair hair clipper</a> I had also taken apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This KiCad learning project is <a href="https://github.com/Roger-random/kicad_tests/tree/main/remington-hc-920" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

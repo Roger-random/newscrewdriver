@@ -1,0 +1,98 @@
+---
+layout: post
+title: AS7341 Sees Sunlight Very Differently From LED
+date: 2023-01-27 12:30:00.000000000 +00:00
+type: post
+post_id: '34731'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34764'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675021097
+  _publicize_job_id: '80958327087'
+  timeline_notification: '1674851497'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/27/as7341-sees-sunlight-very-differently-from-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Thanks to Chart.js documentation, I was <a href="https://newscrewdriver.com/2023/01/26/chart-js-for-visualizing-as7341-data/">quickly up and running with a simple bar chart</a> to visualize AS7341 data. My first draft was done late at night, so this chart corresponded to the spectral distribution of <a rel="noreferrer noopener" href="https://www.homedepot.com/p/Commercial-Electric-11-in-120-Watt-Equivalent-Brushed-Nickel-2700K-CCT-LED-Ceiling-Light-Flush-Mount-with-Frosted-White-Glass-Shade-HB1022A-35/205127894" target="_blank">my room's ceiling light</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34747,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-web-ui-first-draft-chart.jpg?w=1024" alt="" class="wp-image-34747"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With an advertised color temperature of 2700K, its "warm white" showed a strong response in the yellow and orange areas of the spectrum. The next morning, I had a ray of sunshine coming in a window and I set my AS7341 sensor within it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first lesson was that sunlight -- even just a tiny beam at an oblique angle -- is <em>significantly </em>stronger than my ceiling light. Direct exposure will always reach <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/24/as7341-adc-fullscale-and-led-illumination-control/" target="_blank">sensor saturation (ADC<sub>fullscale</sub> value)</a> no matter what I do. I ended up placing a sheet of printer paper at my sunlight spot and aiming the sensor at that reflected light.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34762,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-web-ui-natural-sunlight.jpg?w=1024" alt="" class="wp-image-34762"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This spectrum has whatever distortion added by a sheet of paper, but it is still very interestingly different from my ceiling light. There is a huge response on NIR sensor, and there isn't as strong of a peak on orange. My brain sees both of these light sources as white, but the sensor sees very different spectrum between them. Raw sensor data (with clear channel hitting saturation) are as follows:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>{
+  "415nm": 5749,
+  "445nm": 6342,
+  "480nm": 9533,
+  "515nm": 10746,
+  "555nm": 11245,
+  "590nm": 12577,
+  "630nm": 12633,
+  "680nm": 15217,
+  "clear": 65535,
+  "nir": 34114,
+  "settings": {
+    "atime": 30,
+    "astep": 3596,
+    "gain": 64,
+    "led_ma": 0,
+    "read_time": 674
+  }
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>According to AMS AS7341 calibration application note, knowing NIR level is important for properly compensating values of spectral sensors F1-F8. They are sensitive to whatever NIR leaked past their filters, so knowing NIR level is important for precise color accuracy. The clear channel and flicker channels likewise have their own impact on color accuracy. But since I'm just goofing around and not concerned with utmost accuracy, I'm choosing to ignore them and dropping NIR from my visualization.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will, however, make use of this sunlight spectrum to compensate for the differing sensitivities across spectral sensors F1-F8. Using sunlight as my reference for a light source emitting all wavelengths of light, we confirm AMS AS7341 datasheet information that 415nm is the least sensitive and 680nm is the most sensitive. I can selectively boost sensor values so that F1-F8 would all return the same value under direct sunlight. This is crudely analogous to a camera's color balance (or "white balance") features, and I implemented the following normalization options in my app:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Default normalization curve based on these sunlight values.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A direct data option skipping the selective boost.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>An option to use the next sensor reading as reference. I can point the sensor at something and activate this option to tell my app: "treat this color as white".</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each of these options had a corresponding button onscreen. Functional, but the jumble of controls on screen is starting to cause usability problems. I built this app and if I get disoriented, how bad would it be for everyone else? It's time to put some effort into <a href="https://newscrewdriver.com/2023/01/28/rudimentary-stylesheet-for-as7341-web-app/">layout with CSS</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui" target="_blank">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

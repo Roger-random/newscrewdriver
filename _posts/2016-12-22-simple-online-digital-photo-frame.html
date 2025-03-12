@@ -1,0 +1,45 @@
+---
+layout: post
+title: Simple Online Digital Photo Frame
+date: 2016-12-22 00:35:25.000000000 +00:00
+type: post
+post_id: '3165'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- CSS
+- HTML
+- JavaScript
+- jQuery
+- Rails
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30256021257'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/12/22/simple-online-digital-photo-frame/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The <a href="https://github.com/Roger-random/cw_play">CarrierWave Playground project</a> was created for experimentation with image upload. As intended, it helped me learn things about CarrierWave such as <a href="https://github.com/Roger-random/cw_play/commit/6de6f10a6f5bb3da57cca73a6775163fba5b49e4">creating versions of the image scaled to different resolutions</a> and <a href="https://github.com/Roger-random/cw_play/commit/eac21211bbacc66b7d40fde672c8ada70ca707d5">extracting EXIF image metadata</a>.</p>
+<p>Obviously the image has to be displayed to prove that the upload was successful. I hadn't intended to spend much time on the display side of things, but I started playing with the HTML and kept going. Logic was added for the browser to report its window size so the optimal image could be sent and scaled to fit. I had a button to reload the page, and it was fairly simple to change it from "reload the current page" to "navigate to another page". Adding a JavaScript timer to execute this navigation... and voila! I had myself a rudimentary digital photo frame web app that loads and displays image in a sequence.</p>
+<p>It's fun but fairly crude. Brainstorming the possibilities, I imagine the following stages of sophistication:</p>
+<p><strong>Stage 1 -</strong> <strong>Basic:</strong> Where I am now, simple JavaScript that performs page navigation on a timer.</p>
+<p>Problem: page blinks and abruptly shifts as new page is loaded. To avoid the abrupt shift, we have to eliminate the page switch.</p>
+<p><strong>Stage 2</strong> - <strong>Add AJAX:</strong> Instead of a page navigation, perform a <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequest </a>to the server asking for information on the next image. Load the image in the background, and once complete, perform a smooth transition (fade out/fade in/etc.) from one image to the next.</p>
+<p>Problem: Visual experience is at the mercy of the web browser, which probably has an address bar and other UI on screen. Also, the user's screen will quickly go dark due to power saving features. To reliably solve both, I will need app-level access.</p>
+<p><strong>Stage 3 - Vendor-specific wrapper</strong>: Every OS platform has a way to allow web site authors an express lane into the app world. Microsoft offers the <a href="https://appstudio.windows.com/en-us">Windows App Studio</a>. Apple has <a href="https://developer.apple.com/library/content/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html">iOS web applications</a>. Google has <a href="https://developer.android.com/guide/webapps/index.html">Android Web Apps</a>.</p>
+<p>Unknown: The JavaScript timer is a polling model, do we gain anything by moving to a server-push model? If so, that means...</p>
+<p><strong>Stage 4</strong> - <strong>WebSocket</strong>: Photo updates are triggered by the server. Since I'm on Rails, the most obvious answer is to do this via <a href="https://en.wikipedia.org/wiki/WebSocket">WebSocket</a>s using <a href="http://edgeguides.rubyonrails.org/action_cable_overview.html">Action Cable</a>.</p>
+<p>Looking at the list, I think I can tackle Stage 2 pretty soon if not immediately.</p>
+<p>Stages 3 and 4 are more advanced and I'll hold off for later.</p>
+<p></body></html></p>

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Window Shopping AWS DeepRacer
+date: 2019-02-12 16:05:00.000000000 +00:00
+type: post
+post_id: '17707'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- TIL
+- Window Shopping
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '27571850797'
+  timeline_notification: '1550016303'
+  _thumbnail_id: '17709'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/02/12/window-shopping-aws-deepracer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>At <a href="https://reinvent.awsevents.com/">AWS re:Invent 2018</a> a few weeks ago, Amazon announced their DeepRacer project. At first glance it appears to be a more formalized version of <a href="http://www.donkeycar.com/">DonkeyCar</a>, complete with an Amazon-sponsored <a href="https://aws.amazon.com/deepracer/league/">racing league</a> to take place both online digitally and physically at future Amazon events. Since the time I wrote up a <a href="https://hackaday.com/2018/11/30/buy-or-build-an-autonomous-race-car-to-take-the-checkered-flag/">quick snapshot for Hackaday</a>, I went through and tried to learn more about the project.</p>
+<p>While it would have been nice to get hands-on time, it is still in pre-release and my application to join the program received a an acknowledgement that boils down to "don't call us, we'll call you." There's been no updates since, but I can still learn a lot by reading their pre-release documentation.</p>
+<p>Based on the (still subject to change) <a href="https://docs.aws.amazon.com/deepracer/latest/developerguide">Developer Guide</a>, I've found interesting differences between DeepRacer and DonkeyCar. While they are both built on a 1/18th scale toy truck chassis, there are differences almost everywhere above that. Starting with the on board computer: a standard DonkeyCar uses a Raspberry Pi, but the DeepRacer has a more capable onboard computer built around an Intel Atom processor.</p>
+<p>The software behind DonkeyCar is focused just on driving a DonkeyCar. In contrast DeepRacer's software infrastructure is built on ROS which is a more generalized system that just happens to have preset resources to help people get up and running on a DeepRacer. The theme continues to the simulator: DonkeyCar has a task specific simulator, DeepRacer uses Gazebo that can simulate an environment for anything from a DeepRacer to a <a href="https://spectrum.ieee.org/automaton/robotics/robotics-software/coordinated-robotics-winner-nasa-space-robotics-challenge">humanoid robot on Mars</a>. Amazon provides a preset Gazebo environment to make it easy to start DeepRacer simulations.</p>
+<p>And of course, for training the neural networks, DonkeyCar uses your desktop machine while DeepRacer wants you to train on AWS hardware. And again there are presets available for DeepRacer. It's no surprise that Amazon wants people to build skills that are easily transferable to robots other than DeepRacer while staying in their ecosystem, but it's interesting to see them build a gentle on-ramp with DeepRacer.</p>
+<p>Both cars boil down to a line-following robot controlled by a neural network. In the case of DonkeyCar, the user trains the network to <a href="http://docs.donkeycar.com/guide/train_autopilot/">drive like a human driver</a>. In DeepRacer, the network is trained via reinforcement learning. This is a subset of deep learning where the developer provides a way to score robot behavior, the higher the better, in the form of an <em>reward function</em>. Reinforcement learning trains a neural network to explore different behaviors and remember the ones that help it get a higher score on the developer-provided evaluation function. AWS developer guide starts people off with a "<a href="https://docs.aws.amazon.com/deepracer/latest/developerguide/deepracer-train-models-define-reward-function.html">stay on the track</a>" function which won't work very well, but it is a simple starting point for further enhancements.</p>
+<p>Based on reading through documentation, but before any hands-on time, the differences between DonkeyCar and DeepRacer serve different audiences with different priorities.</p>
+<ul>
+<li>Using AWS machine learning requires minimal up-front investment but can add up over time. Training a DonkeyCar requires higher up-front investment in computer hardware for machine learning with TensorFlow.</li>
+<li>DonkeyCar is trained to emulate behavior of a human, which is less likely to make silly mistakes but will never be better than the trainer. DeepRacer is trained to optimize reward scoring, which will start by making lots of mistakes but has the potential to drive in a way no human would think of... both for better and worse!</li>
+<li>DonkeyCar has simpler software which looks easier to get started. DeepRacer uses generalized robot software like ROS and Gazebo that, while presets are available to simplify use, still adds more complexity than strictly necessary. On the flipside, what's learned by using ROS and Gazebo can be transferred to other robot projects.</li>
+<li>The physical AWS DeepRacer car is a single pre-built and tested unit. DonkeyCar is a DIY project. Which is better depends on whether a person views building their own car as a fun project or a chore.</li>
+</ul>
+<p>I'm sure there are other differences that will surface with some hands-on time, I plan to return and look at AWS DeepRacer in more detail after they open it up to the public.</body></html></p>

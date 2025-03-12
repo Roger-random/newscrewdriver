@@ -1,0 +1,41 @@
+---
+layout: post
+title: Google ARCore Depth Map Caught My Attention
+date: 2020-07-14 12:30:12.000000000 +00:00
+type: post
+post_id: '21840'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+meta:
+  _thumbnail_id: '21832'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46571754272'
+  timeline_notification: '1594755059'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/14/first-glance-at-google-arcore-depth-map/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I decided to <a href="https://newscrewdriver.com/2020/07/13/might-a-robot-utilize-google-arcore/">look over an augmented reality SDK with an intent for robotics applications</a>, I went to look at Google's ARCore instead of Apple's ARKit for a few reasons. The first is hardware: I have been using Android phones so I have several pieces of <a href="https://developers.google.com/ar/discover/supported-devices">ARCore compatible hardware</a> on hand. I also have access to computers that I might be able to draft into Android development duty. In contrast, Apple ARKit development requires MacOS desktop machines and iOS hardware, which is more expensive and rare in my circles.</p>
+<p>The second reason was their announcement that <a href="https://developers.googleblog.com/2020/06/a-new-wave-of-ar-realism-with-arcore-depth-api.html">ARCore now has a Depth API</a>. Their announcement included two animated GIFs that caught my immediate attention. The first shows that they can generate a depth map, with color corresponding to distance from camera.</p>
+<p>[caption id="attachment_21845" align="aligncenter" width="300"]<img class=" size-full wp-image-21845 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/07/arcore-depth-map.gif" alt="ARCore depth map" width="300" height="653"> Image source: Google[/caption]</p>
+<p>This is the kind of data I had previously <a href="https://newscrewdriver.com/2019/01/24/xbox-360-kinect-depth-sensor-data-via-openkinect-freenect/">seen from a Xbox 360 Kinect</a> sensor bar, except the Kinect used an infrared beam projector and infrared camera to construct that depth information on top of its RGB camera. In comparison, Google's demo implies that they can derive similar information from just a RGB camera. And given such a depth map, it should be theoretically possible to <a href="https://newscrewdriver.com/2019/01/26/xbox-360-kinect-and-rtab-map-handheld-3d-environment-scanning/">use it in a similar fashion</a> to a Kinect. Except now the sensor would be far smaller, battery powered, and works in bright sunlight unlike the Kinect.</p>
+<p>[caption id="attachment_21844" align="aligncenter" width="235"]<img class=" size-full wp-image-21844 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/07/arcore-occlusion.gif" alt="ARCore occlusion" width="235" height="512"> Image source: Google[/caption]</p>
+<p><span style="color:var(--color-text);font-size:1rem;">Here is that data used in ARCore context: letting augmented reality objects be properly occluded by obstacles in the real world. I found this clip comforting because its slight imperfections assured me this is live data of a new technology, and not a Photoshop rendering of what they hope to accomplish.</span></p>
+<p>It's always the first question we need to ask of anything we see on the internet: is it real? The depth map animation isn't detailed enough for me to see if it's too perfect to be true. But the occlusion demo is definitely not too perfect: there are flaws in the object occlusion as the concrete wall moved in and out of the line of sight between us and the animated robot. This is most apparent in the second half of the clip, as the concrete wall retreated we could see bits of stair that should have been covered up by the robot but is still visible because the depth map hadn't caught on yet.</p>
+<p><img class=" size-full wp-image-21848 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/07/incomplete-occlusion.jpg" alt="Incomplete occlusion" width="339" height="364"></p>
+<p>So this looks nifty, but what was <a href="https://newscrewdriver.com/2020/07/15/augmented-reality-built-on-structure-from-motion/">the math magic that made it possible</a>?</p>
+<p></body></html></p>

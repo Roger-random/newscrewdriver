@@ -1,0 +1,47 @@
+---
+layout: post
+title: 'Wish List: Modular Sawppy Motor Controllers'
+date: 2020-02-06 12:30:11.000000000 +00:00
+type: post
+post_id: '20428'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40398132745'
+  timeline_notification: '1581021025'
+  _oembed_ea38360ed750c42593b03b237f4b8ca3: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    project CNC is up and running as an engraver. Useful for materials we can&#39;t
+    engrave on the laser cutter, like this test piece of Lexan. (Lissajukebox logo
+    by <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>)
+    <a href="https://t.co/eTkklHGFGD">pic.twitter.com/eTkklHGFGD</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1224587141130272769?ref_src=twsrc%5Etfw">February
+    4, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_ea38360ed750c42593b03b237f4b8ca3: '1581075417'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/06/wish-list-modular-sawppy-motor-controllers/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the goals for my <a href="https://newscrewdriver.com/2020/02/01/original-goals-for-sawppy-ros-melodic-project/">now-abandoned ROS Melodic Sawppy software project</a> is something I still believe to be interesting. In contrast with the non-rover specific goals I outlined over the past few days, this one is still a rover item: I would like Sawppy motor control to be encapsulated in modules that can be easily swapped so Sawppy siblings are not required to use LX-16A servos.</p>
+<p>My SGVHAK rover software had an infantile version of this option, and it was written in extreme time pressure to <a href="https://newscrewdriver.com/2018/04/17/sgvhak-rover-steering-restored-with-servo-hack/">support our hack of using a RC servo controller to steer the right-front corner</a> during SGVHAK rover's SCaLE debut. In SGVHAK rover software, all supported motor controller code are all loaded, an unnecessary amount of complexity and overhead. It would be nice for a particular rover to bring in just the code it needed.</p>
+<p>The HBRC crew up in the SF Bay Area (Marco, Steve, and friends) have swapped out the six drive wheels for something faster while keeping the servos for steering, so a starting point is to have options for different controls for steering and driving. But keeping in mind the original scenario was using a RC servo to hack a single steering corner, we want to make it possible to use heterogeneous motor controllers for each of ten axis of motion.</p>
+<p>I need to better understand Rhys code to know if this is something I can contribute back to the Curio ROS Melodic software project. Rhys has stated an intent to bring in <code><a href="http://wiki.ros.org/ros_control">ros_control</a></code> for Curio software stack. Primarily for the reasons of <a href="http://gazebosim.org/tutorials/?tut=ros_control">better Gazebo simulation</a>, but it would also abstract Sawppy motor control logic: generic velocity controllers for driving wheels and position controllers for steering. And from there, we can have individual implementations responding to those controllers. Is that how it will work? I need to ramp up on Gazebo and <code>ros_control</code> before I can speak knowledgeably about it.</p>
+<p></body></html></p>

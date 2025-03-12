@@ -1,0 +1,44 @@
+---
+layout: post
+title: Handset LCD versus Base Station LCD (CL84209)
+date: 2022-06-05 12:30:00.000000000 +00:00
+type: post
+post_id: '30687'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30688'
+  timeline_notification: '1654457406'
+  _publicize_job_id: '73329199243'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667205312
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/05/handset-lcd-versus-base-station-lcd-cl84209/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have two LCD units salvaged from an AT&amp;T CL84209 cordless phone system. One from the base station, and one still attached to a handset circuit board. The handset could still be powered up and ran, which helped me figure out how to interact with the base station LCD's digital logic and <a href="https://newscrewdriver.com/2022/06/04/lcd-behavior-between-5v-power-supply-candidates/">analog voltage supply pins</a>. Connecting them in parallel was <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/" target="_blank">a bad idea in many ways</a>, but the risky experiment paid off telling me they both responded to the same I<sup>2</sup>C address and displayed similar but not identical things. Now that I have them side by side again, with some confidence I'm not damaging them while doing so, I have time to take a closer look at the similarities and differences.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both of these LCDs have two lines of dot-matrix display on top, and a custom segmented LCD area below that. Each of the two lines consist of 15 characters, each character a dot matrix 5 pixels wide and 7 pixels tall. Its I<sup>2</sup>C control data indicates pixel-level control is not possible, since we only send a byte of data for each character. This is apparently tailored for alphanumeric information and not a full graphics display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Curiously, given that both LCDs have two lines of 15 characters each, they seem to be one space off from each other when given identical control messages as they are here. For the base station LCD, we see two spaces in front of "CONNECTING..." and no space behind. In contrast, the handset LCD has that text centered on screen with one space in front and behind. If one of these screens had 15 characters and the other had 16, I could understand rendering one space off. But they both have 15 characters, so why would they do this?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The segmented area appears to be completely different between these two LCDs. Looking at the I<sup>2</sup>C traffic, 16 bytes were sent for 16*8 bits = up to 128 potential segments for control. Some of those bits go unused, as neither of these LCDs have 128 segments. For the handset LCD, I count 10 segments used for "--:--   --/--" and an 11th for the battery icon. The same control bits just result in a nonsensical jumble of segments on the base station LCD, but I count 11 active segments in that jumble. It's obvious they don't have the same segments, but perhaps they use a similar subset that would be easiest to wire up in a LCD. I expect to get a better understanding once I start <a href="https://newscrewdriver.com/2022/06/06/cl84209-base-station-lcd-character-set/">controlling this LCD with my own code</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: Adventures Installing GPU Accelerated TensorFlow On Ubuntu 18.04
+date: 2019-06-06 12:30:55.000000000 +00:00
+type: post
+post_id: '18579'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags: []
+meta:
+  _thumbnail_id: '18602'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31568473749'
+  timeline_notification: '1559849626'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/06/installing-nvidia-gpu-accelerated-tensorflow-on-ubuntu-18-04-now-relatively-easier/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once the decision was made to move to ROS 2, the next step is to upgrade my Ubuntu installation to Ubuntu <em>Bionic Beaver</em> 18.04 LTS. I could upgrade in place, but given that I'm basically rebuilding my system for new infrastructure I decided to take this opportunity to upgrade to a larger SSD and restart from scratch.</p>
+<p>As soon as my Ubuntu installation was up and running, I immediately went to revisit the most problematic portion of my previous installation: <a href="https://newscrewdriver.com/2018/07/27/installing-tensorflow-adventures-in-version-matching/">the version-matching adventure to install GPU-accelerated Tensorflow</a>. If anything goes horribly wrong, this is the best time to flatten the disk and try until I get it right. As it turned out, that was a good call.</p>
+<p>Taking to heart the feedback given by people like myself, Google has streamlined TensorFlow installation and even includes an option to run within a Docker container. This packages all of the various software libraries (from Nvidia's CUDA Toolkit to Google's TensorFlow itself) into a single integrated package. This is in fact <a href="https://www.tensorflow.org/install/gpu">their recommended procedure</a> today for GPU support, with the words:</p>
+<p><em>This setup only requires the NVIDIA GPU drivers.</em></p>
+<p>When it comes to Linux and specialty device drivers, "only" rarely actually turns out to be so. I went online for further resources and <a href="https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux">found this page offering three options</a> for installing Nvidia drivers on Ubuntu 18.04. Since I like living on the bleeding edge and have little to lose on a freshly installed disk, I tried the manual installation of Nvidia driver files first.</p>
+<p>It was not user friendly, the script raised errors that pointed me to log file... but the log file did not contain any information I found relevant for diagnosis. On a lark (again, very little to lose) I selected "continue anyway" options for the process to complete. This probably meant the installation has gone off the rails, but I wanted to see what I end with. After reboot I can tell my video driver has been changed, because it only ran on a single monitor and had flickering visual artifacts.</p>
+<p>Well, that didn't work.</p>
+<p>I then tried to install drivers from <code>ppa:graphics-drivers/ppa</code> but that process encountered problems it didn't know how to solve. Not being familiar with Ubuntu mechanics, I only had approximate understanding of the error messages. What it really told me was "you should probably reformat and restart now" which I did.</p>
+<p>Once Ubuntu 18.04 was reinstalled, I tried the <code>ppa:graphics-drivers/ppa</code> option again and this time it successfully installed the latest driver with zero errors and zero drama. I even maintained the use of both monitors without any flickering visual artifacts.</p>
+<p>With that success, I installed <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">Docker Community Edition for Ubuntu</a> followed by <a href="https://github.com/NVIDIA/nvidia-docker">Nvidia container runtime for Docker</a>, both of which installed smoothly.</p>
+<p><img class=" size-full wp-image-18603 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/06/nvidia-docker.png" alt="Nvidia docker" width="1050" height="469"></p>
+<p>Once the infrastructure was in place, I was able to run a GPU-enabled TensorFlow docker containers on my machine, executing a simple program.</p>
+<p><img class=" size-full wp-image-18604 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/06/tensorflow-test.png" alt="TensorFlow test" width="1438" height="1156"></p>
+<p>This process is still not great, but at least it is getting smoother. Maybe I'll revisit this procedure again in another year to find an easier process. In the meantime, I'm back up and running with latest TensorFlow on my Ubuntu 18.04.</p>
+<p></body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Skimming "Build OpenCV Mini-Projects" by PyImageSearch: Contours'
+date: 2020-05-31 13:30:55.000000000 +00:00
+type: post
+post_id: '21632'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- OpenCV
+- Python
+meta:
+  _thumbnail_id: '21590'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44921788850'
+  timeline_notification: '1590957129'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/31/skimming-build-opencv-mini-projects-by-pyimagesearch-contours/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Getting <a href="https://newscrewdriver.com/2020/05/30/skimming-build-opencv-mini-projects-by-pyimagesearch-colors/">a taste of OpenCV color operations</a> were interesting, but I didn't really understand what made OpenCV more powerful than other image processing libraries until we got to contours, which covers most of the second half of <a href="https://www.pyimagesearch.com/start-here/">PyImageSearch's Start Here guide</a> <em>Step 4: Build OpenCV Mini-Projects</em>.</p>
+<p>This section started with an example for <a href="https://www.pyimagesearch.com/2016/02/01/opencv-center-of-contour/">finding the center of a contour</a>, which in this case is examining a picture of a collection of non-overlapping paper cut-out shapes. The most valuable concept here is that of <em>image moments</em>, which I think of as a "summary" for a particular shape found by OpenCV. We also got names for operations we've seen earlier. <em>Binarization</em> operations turn an image into binary yes/no highlight of potentially interesting features. Edge detection and thresholding are the two we've seen.</p>
+<p>Things get exciting when we start putting contours to work. The tutorial starts out easy by <a href="https://www.pyimagesearch.com/2016/04/11/finding-extreme-points-in-contours-with-opencv/">finding the extreme points</a> in contours, which breaks down roughly what goes on inside OpenCV's <code>boundingRect</code> function. Such code is then used in tutorials for <a href="https://www.pyimagesearch.com/2016/03/28/measuring-size-of-objects-in-an-image-with-opencv/">calculating size of objects in view</a> which is close to a project idea on my to-do list.</p>
+<p>A prerequisite for that project is code to <a href="https://www.pyimagesearch.com/2016/03/21/ordering-coordinates-clockwise-with-python-and-opencv">order coordinates clockwise</a>, which reading the code I was surprised to learn was done in cartesian space. If the objective is clockwise ordering, I thought it would have been a natural candidate for processing in polar coordinate space. This algorithm was apparently originally published with a boundary condition bug that, as far as I can tell, would not have happened if the coordinate sorting was done in polar coordinates.</p>
+<p>These components are brought together beautifully in an <a href="https://www.pyimagesearch.com/2014/09/01/build-kick-ass-mobile-document-scanner-just-5-minutes/">example document scanner application</a> that detects the trapezoidal shape of a receipt in the image and performs perspective correction to deliver a straight rectangular image of the receipt. This is my favorite feature of <a href="https://www.microsoft.com/en-us/p/office-lens/9wzdncrfj3t8">Office Lens</a> and if I ever decide to write my own I shall return to this example.</p>
+<p>By the end of this section, I was suitably impressed by what I've seen of OpenCV, but I also have the feeling a few of my computer vision projects would not be addressed by the parts of OpenCV covered in the <a href="https://newscrewdriver.com/2020/06/01/skimming-remainder-of-pyimagesearch-getting-started-guide/">rest of PyImageSearch's Start Here guide</a>.</p>
+<p></body></html></p>

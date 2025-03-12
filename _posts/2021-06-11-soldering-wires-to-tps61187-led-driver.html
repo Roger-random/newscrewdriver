@@ -1,0 +1,51 @@
+---
+layout: post
+title: Soldering Wires to TPS61187 LED Driver
+date: 2021-06-11 12:30:00.000000000 +00:00
+type: post
+post_id: '27025'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27024'
+  _publicize_job_id: '59484106288'
+  timeline_notification: '1623439804'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/11/soldering-wires-to-tps61187-led-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After passively studying its documentation, and passively studying <a href="https://newscrewdriver.com/2021/06/10/finding-tps61187-led-driver-interfaces/">how it is installed on an existing circuit board</a>, it is now time for me to go active and start working on it. Whether I can get this backlight up and running is almost secondary at this point, it has already been a great electronics learning opportunity and I want to see how far I can get. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This next step tests my skill working with components far smaller than what I'm used to. The picture of these added wires spoke volumes: I used the finest spools of wire I had on hand, but 26 gauge wire looks absolutely gargantuan when soldered to this board. Due to their small size I assumed these surface mount components would not have the strength to handle external stresses. As a temporary measure I used a piece of tape to hold the wires in place, hopefully diverting all the little twists and tugs yet to come as I connect and disconnect these wires to power and signal sources.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the wires were in place, I had to make a very important decision: what voltage do I feed into the V<sub>in</sub> wire? Earlier probing failed to find the values of resistors used in the boost converter feedback regulation circuit. If I had those resistance values I could hoped to calculate the expected input voltage range using the formula in the datasheet. The only other guideline I had was the requirement that input voltage must be lower than the voltage drop across individual LED strings so the boost converter (critical part of this circuit) can function.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for hints elsewhere, I reviewed my earlier notes <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/03/04/toshiba-chromebook-2-cb35-b3340-hardware-internals/" target="_blank">looking inside this machine</a>. Its battery is labeled as a lithium-ion pack with a nominal voltage of 10.8V, implying three cells in series. This is within the valid input range for a TPS61187 chip and I thought it is possible they would wire the battery voltage straight through. This would avoid any conversion losses from a boost or a buck converter along the way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following my startup plan, I used my bench power supply to put 10.8V on V<sub>in</sub> and was encouraged I didn't see any sparks or smell any smoke. My probe saw 5V on VDDIO which I took to be a good sign and satisfies step 1. Moving on to step 2, I checked enable (EN) pin to find it is low, so nothing else on the board is raising it. I used a one kilo-Ohm (1 kΩ) resistor to pull EN high and it did, so either nothing else on the board is pulling it low or 1 kΩ is enough to overrule their signal. If something is fruitlessly trying to pull it low, the few milliamps involved here should not damage it. Or if I do damage it, hopefully it wouldn't be anything I care about.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I understand the datasheet correctly, once enabled the TPS61187 will put minimum voltage across the LED strings. I probed the voltage between LED common anode and ground, and found it was 6.7V, which is lower than the input voltage of 10.8V, exactly what the datasheet said not to do. <strong>Oh no!</strong> I quickly turned the input voltage down to 6V so it would be below the LED voltage, wondering if it was already too late. There were no obvious signs of damage so... whether I've just killed it or not, my next step is to <a href="https://newscrewdriver.com/2021/06/12/arduino-nano-pwm-signal-for-tps61187-led-driver/">put a PWM signal</a> on the brightness control line.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

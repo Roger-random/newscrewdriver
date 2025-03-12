@@ -1,0 +1,80 @@
+---
+layout: post
+title: Notes on Angular Developer Guide to Testing
+date: 2023-03-10 12:30:00.000000000 +00:00
+type: post
+post_id: '35603'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22766'
+  timeline_notification: '1678480208'
+  _publicize_job_id: '82200031830'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1678568505
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/10/notes-on-angular-developer-guide-to-testing/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once my <a href="https://newscrewdriver.com/2023/03/09/running-angular-unit-tests-ng-test-in-vscode-dev-container/">Angular development container could run tests in Chrome using headless mode</a>, I could see actual test failures. Since "Tour of Heroes" tutorial did not touch test files at all, these failing tests were untouched boilerplate tests. For the most part they just test to see if a component instance could be created within the test harness, there were no further updates to test "Tour of Heroes" functionality. Components that couldn't be created in a test harness obviously led to abysmal code coverage numbers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>=============================== Coverage summary ===============================
+Statements   : 18.75% ( 15/80 )
+Branches     : 0% ( 0/8 )
+Functions    : 6.38% ( 3/47 )
+Lines        : 16.21% ( 12/74 )
+================================================================================</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I am just getting started, there were a lot of (1) copy error message (2) search on that message (3) read hits on StackOverflow (4) repeat. Component creation failure mainly revolved around fixing up "imports" or declarations" sections to calling <code>TestBed.configureTestingModule()</code>. After I got component startup sorted out, code coverage numbers looked a lot better.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>=============================== Coverage summary ===============================
+Statements   : 61.25% ( 49/80 )
+Branches     : 0% ( 0/8 )
+Functions    : 53.19% ( 25/47 )
+Lines        : 62.16% ( 46/74 )
+================================================================================</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that was a lot of copy/pasting from StackOverflow with little understanding of what happened. And even though tests registered as passing, there were still error messages shown on console output. I need to learn more, so I started reading the <a href="https://angular.io/guide/testing">"Testing" section of Angular Developer guides</a>. It seems to assume I know <a href="https://jasmine.github.io/">Jasmine</a> and <a href="http://karma-runner.github.io/latest/index.html">Karma</a>, which I don't. I plan to skim the first pass for a partial understanding, then maybe dedicate some time to learning Jasmine/Karma, then come back again. Here are some notes from my first pass:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Valuable Live Examples</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just like the "Understanding Angular" section, pages in "Developer Guides" very frequently have a link to a project that we can load up and examine either by downloading code for our own machine or fire it up within our browser connected to a StackBlitz virtual machine. Having functional code is always great and mitigates many documentation issues. One code snippet in "<a href="https://angular.io/guide/testing-services">Testing Services</a>" documentation called a function I couldn't find any information about, looking at the live code I figured out it was something strictly within the demo project. (<code>async-observable-helpers.ts</code>)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Scattered Older Content</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see occasional signs of outdated content. Some examples: (1) API <a href="https://angular.io/api/core/testing/TestBed#get">TestBed.get() was deprecated from Angular 9</a> but still pops up here and there. (2) Occasional mentions of "Tour of Heroes" that doesn't match the tutorial I just completed a second time. Either they were snippets from an older version of the tutorial, or the example was modified for illustration purposes. (3) Standard boilerplate code listed in "<a href="https://angular.io/guide/testing-components-basics">Basics of Testing Components</a>" do not match what today's tools generate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having illustrative code examples fall out of date reminded us to keep in mind that some of their associated information might be out of date as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Component Testing Scenarios</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The longest page (by far) in this section is "<a href="https://angular.io/guide/testing-components-scenarios">Component Testing Scenarios</a>." I think it is the goldmine. A list of how we might want to test our Angular components and tools to go about them. It puts a lot of Angular testing tools (which <a href="https://angular.io/guide/testing-utility-apis">have their own section</a>) in context of problems they were created to solve. As a beginner I don't quite understand why I might want to do these things, but here's the reference if I want to do them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Almost a quarter of this very long page is dedicated to "Component with async service". (Which makes this one section longer than most other pages in "Angular Developer Guides - Testing") <a href="https://rxjs.dev/">RxJS</a> is used by Angular a lot in the realm of asynchronous behavior, so I need to learn more about that. Not just to test, but to build Angular in general. I expect things will make sense after getting a better grasp of RxJS terminology like "<a href="https://rxjs.dev/guide/testing/marble-testing">marble testing</a>". I thought the best place to start would be <a href="https://newscrewdriver.com/2023/03/11/tiny-step-on-rxjs-learning-curve/">RxJS official documentation</a>. (I was wrong.)</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

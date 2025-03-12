@@ -1,0 +1,42 @@
+---
+layout: post
+title: First Few Issues of ROS on Ubuntu on Crouton on Chrome OS
+date: 2020-04-15 12:30:46.000000000 +00:00
+type: post
+post_id: '21184'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- ROS
+tags:
+- CB35-B3340
+- NUCC
+meta:
+  _thumbnail_id: '20851'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '43069420113'
+  timeline_notification: '1586979081'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/15/first-few-issues-of-ros-on-ubuntu-on-crouton-on-chrome-os/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Some minor wrong turns aside, I think I've successfully <a href="https://newscrewdriver.com/2020/04/14/ubuntu-18-and-ros-on-toshiba-chromebook-2-cb35-b3340/">installed ROS Melodic on Ubuntu 18 running within a Crouton <code>chroot</code> inside a Toshiba Chromebook 2 (CB35-B3340)</a>. The first test is to launch <code>roscore</code>, verify it is up and running without errors, then run <code>rostopic /list</code> to verify the default set of topics are listed.</p>
+<p>With that done, then next challenge is to see if ROS works across machines. First I tried running <code>roscore</code> on another machine, and set <code>ROS_MASTER_URI</code> to point to that remote machine. With this configuration, <code>rostopic /list</code> shows the expected list of topics.</p>
+<p>Then I tried the reverse: I started <code>roscore</code> on the Chromebook and pointed another machine's <code>ROS_MASTER_URI</code> to the IP address my WiFi router assigned to the Chromebook. In this case <code>rostopic/list</code> failed to communicate with master. There's probably some sort of networking translation or tunneling between Chrome OS and an installation of Ubuntu running inside Crouton <code>chroot</code>, and that's something I'll need to dig into and figure out. Or it might be a firewall issue similar to what I encountered when <a href="https://newscrewdriver.com/2018/09/02/windows-10-wsl-can-run-ros-with-firewall-caveat/">running ROS under Windows Subsystem for Linux</a>.</p>
+<p>In addition to the networking issue, if I want to embed this Chromebook into a robot as its brain, I'll also need to figure out power-up procedure.</p>
+<p>First: upon power-up, a Chromebook in developer mode puts up a dialog box notifying the user as such, letting normal users know a Chromebook in developer mode is not trustworthy for their personal data. This screen is held for about 30 seconds with an audible beep, unless the user presses a key combination prescribed onscreen. How might this work when embedded in a robot?</p>
+<p>Second: when Chrome OS boots up, how do I also launch Ubuntu 18 inside Crouton <code>chroot</code>? The good news is that <a href="https://github.com/dnschneid/crouton/wiki/Autostart-crouton-chroot-at-ChromeOS-startup">this procedure is covered in Crouton wiki</a>, the bad news is that it is pretty complex and involves removing a few more Chromebook security provisions.</p>
+<p>Third: Once Ubuntu 18 is up and running inside Crouton <code>chroot</code>, how do I launch ROS automatically? My current favorite "run on bootup" procedure for Linux is to create a service, but <code>systemctl</code> does not run inside <code>chroot</code> so I'll need something else.</p>
+<p>And that's only what I can foresee right now, I'm sure there are others I haven't even thought about yet. There'll be several more challenges to overcome before a Chrome OS machine can be a robot brain. Perhaps instead of wrestling with Chrome OS, I should consider <a href="https://newscrewdriver.com/2020/04/16/chrome-os-alternatives-on-toshiba-chromebook-2-cb35-b3340/">bypassing Chrome OS entirely</a>?</p>
+<p></body></html></p>

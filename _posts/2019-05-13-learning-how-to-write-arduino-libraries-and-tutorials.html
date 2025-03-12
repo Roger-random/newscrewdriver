@@ -1,0 +1,62 @@
+---
+layout: post
+title: Learning How To Write Arduino Libraries and Tutorials
+date: 2019-05-13 12:30:02.000000000 +00:00
+type: post
+post_id: '18396'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags: []
+meta:
+  _oembed_9171a675e0ea6eefb7bce303272cc698: "{{unknown}}"
+  _oembed_9550183c0c1146124a22f35a95034800: "{{unknown}}"
+  _oembed_b52ac518d23cf01b85e3f521a76bf884: "{{unknown}}"
+  _oembed_d663ec5dd2b3cce2bdeef2a93db96507: "{{unknown}}"
+  _thumbnail_id: '18460'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_5b6747915ef58750215b844bb4c5b6bf: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Now
+    everything runs off a single power plug! I learned so much on this project, thanks
+    to <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    <a href="https://twitter.com/RueNahcMohr?ref_src=twsrc%5Etfw">@RueNahcMohr</a>
+    <a href="https://twitter.com/wackyvorlon?ref_src=twsrc%5Etfw">@wackyvorlon</a>
+    and the fried microchips who gave their lives so this contraption could live.
+    <a href="https://t.co/wZHVKHxTDN">https://t.co/wZHVKHxTDN</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1125632461281550336?ref_src=twsrc%5Etfw">May
+    7, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '30773113435'
+  timeline_notification: '1557775825'
+  _oembed_time_5b6747915ef58750215b844bb4c5b6bf: '1557813882'
+  _oembed_d391022424f3ccc2762ec6e9591e1718: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Made
+    some little eyes on the vfd that <a href="https://twitter.com/hashtag/regorlas?src=hash&amp;ref_src=twsrc%5Etfw">#regorlas</a>
+    and I are working on. They&#39;re blinky! <a href="https://twitter.com/hashtag/notaclock?src=hash&amp;ref_src=twsrc%5Etfw">#notaclock</a>
+    <a href="https://t.co/xGeNXS9GKf">pic.twitter.com/xGeNXS9GKf</a></p>&mdash; Emily
+    Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1124169724969963520?ref_src=twsrc%5Etfw">May
+    3, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_d391022424f3ccc2762ec6e9591e1718: '1557814025'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/13/learning-how-to-write-arduino-libraries-and-tutorials/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>For small software projects like a typical beginner Arduino sketch, we can get away with putting everything in a single *.ino file. This was the way LewanSoul <a href="https://newscrewdriver.com/2019/05/07/examining-lewansoul-arduino-library/">served up their Arduino sample code for controlling LX-16A serial bus servos</a>. But as a software project grows in size, proper organization of software modules become more important.</p>
+<p>While I don't intend to tackle the task of writing a big Arduino sketch, I did want to get an idea of how to write my Arduino code in a way that can be reused in their own installable Arduino library. That's a powerful part of Arduino's software ecosystem, but I don't want to just consume other libraries... I want to get a little practice in so I have the option to write my own libraries later.</p>
+<p>I started by reading about <a href="https://www.arduino.cc/en/Hacking/LibraryTutorial">the mechanics of creating an Arduino library</a>. As expected of the world of low power microcontrollers, programming is done in C and a library has, at a minimum, a <code>*.h</code> header file and a <code>*.cpp</code> implementation file. This was all in order, an Arduino-specific twist is the IDE integration with <code>keywords.txt</code>. That I didn't expect. Everything is packed in a ZIP file.</p>
+<p>Next I moved on to Arduino's <a href="https://www.arduino.cc/en/Reference/APIStyleGuide">API design style guide</a>. This is less about the mechanical details, and more about how to structure an Arduino API. This passage caught my attention:</p>
+<blockquote><p><em>Some of these run counter to professional programming practice. We’re aware of that, but it’s what’s made it possible for so many beginners to get started with Arduino easily.</em></p></blockquote>
+<p>This might be what caused some of my irritation with Arduino code - design decisions that ran counter to my professional practice, but now I understand there's a well-meaning reason for it.</p>
+<p>From there reading moved to the <a href="https://www.arduino.cc/en/Reference/StyleGuide">Arduino style guide</a> for how to structure tutorials that accompany code, then I went back to see the <a href="https://www.arduino.cc/en/Tutorial/JoyStick">analog joystick tutorial</a> I had referenced earlier, this time as an example of Arduino tutorial style.</body></html></p>

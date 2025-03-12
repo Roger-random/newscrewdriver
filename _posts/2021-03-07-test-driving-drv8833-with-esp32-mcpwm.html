@@ -1,0 +1,54 @@
+---
+layout: post
+title: Test Driving DRV8833 With ESP32 MCPWM
+date: 2021-03-07 12:30:00.000000000 +00:00
+type: post
+post_id: '25466'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25463'
+  timeline_notification: '1615149088'
+  _publicize_job_id: '55665960372'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666859859
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/07/test-driving-drv8833-with-esp32-mcpwm/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was time well spent to <a href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/">study my batch of commodity breakout boards for the DRV8833 DC motor driver IC</a>. It reinforced that I should not take random instructions downloaded online at face value, even though in this case the errors wouldn't have been relevant to my planned usage. Armed with confidence I understand how to use the board I have on hand, I proceed to the next step: verify I could write code to control one with an ESP32 and its MCPWM peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My self-education FreeRTOS project was created with this future in mind when I started by controlling a L298 DC motor driver IC. The first exercise used the control scheme utilizing three pins per motor (two digital for state, one PWM pin for magnitude) which is compatible with the TB6612 but not DRV8833. The beauty of FreeRTOS was that I was able to isolate code specific to this control scheme in its own FreeRTOS task. In theory, all I would need to do is to write another task with DRV8833's control scheme (a pair of PWM pins per motor) and swap out the motor driver control task. The remainder of my test program, from the joystick ADC to the heartbeat status LED, would remain untouched and blissfully unaware I've switched my motor control task.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm happy to report theory matched practice this time! The problem I encountered was unrelated to FreeRTOS. It was <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/commit/f4fac82c4224df0da8e0c2b083936a1a263066ec#diff-0b7b572d2e4ce6783f00d5de59d4333383ae5ace04bb15de0434f85340425be4" target="_blank">really easy to get one motor up and running</a> but I was tripped up by my misinterpretation of Espressif documentation when trying to run two motors simultaneously at different speeds. Each MCPWM unit on a ESP32 can control three motors, and each MCPWM unit had three timers. The quote <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/mcpwm.html" target="_blank" rel="noreferrer noopener">from Espressif documentation</a> that I misunderstood was:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>Each A/B pair may be clocked by any one of the three timers Timer 0, 1 and 2. <strong>The same timer may be used to clock more than one pair of PWM outputs.</strong></p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried to run two pairs of PWM outputs (one pair per motor) with the same timer, which is explicitly allowed by the documentation and generated no compiler or runtime errors. However, the fact that it is <em>possible</em> and <em>allowed</em> doesn't mean it <em>actually does what I want</em>. By using the same timer, I had also locked those motors to the same speed. Different speeds require separate timers. Which is why MCPWM offers up to three timers so we can run each motor at a different speed. Once I realized my mistake and understood what was going on, <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/commit/4dea2aafa04f983b8d4818b09d49e5d53878b2e6#diff-0b7b572d2e4ce6783f00d5de59d4333383ae5ace04bb15de0434f85340425be4" target="_blank">it was an easy fix</a> to get both motors up and running each with their own timer. With both motors running on <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/01/jumper-wire-headaches-try-cardboard/" target="_blank">my existing cardboard testbed</a>, I thought it was time to upgrade to <a href="https://newscrewdriver.com/2021/03/08/micro-sawppy-rover-cardboard-box-testbed/">a fancier (but still cardboard) testbed</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This coding practice project is <a href="https://github.com/Roger-random/ESP32Tests/tree/main/FreeRTOS_Play" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,123 @@
+---
+layout: post
+title: FormLabs Form 1+ Stepper Motor Control
+date: 2022-10-05 12:30:00.000000000 +00:00
+type: post
+post_id: '32910'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32911'
+  _publicize_job_id: '77416547938'
+  timeline_notification: '1664998205'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/05/formlabs-form-1-stepper-motor-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a broken FormLabs Form 1+ laser resin 3D printer and I've been figuring out how to operate subcomponents for potential repurposing in the future. I just got <a href="https://newscrewdriver.com/2022/10/04/formlabs-form-1-laser-control-circuit-partial/">a basic (if imprecise and incomplete) understanding</a> of how to operate its 64mW 405nm laser, which I considered the most challenging component. Now that's done, I'll wrap up my Form 1+ exploration by looking at what I considered the least challenging component: its two stepper motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The larger of these motors operate the Z-axis, the smaller one operates the resin tilt tray. Both of those have four-wire connector to the printer mainboard, with pins labeled A+/A-/B+/B-. This identifies them as <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Stepper_motor#Bipolar_motors" target="_blank">bipolar stepper motors</a> popular in the field of FDM 3D printers and thus quite familiar to me. In order to repurpose these motors elsewhere, I just need to know two parameters: their operating voltage and current limits.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To determine these values, I started by finding the existing stepper motor driver chip which was placed close to the two stepper motor connectors. It is a <a rel="noreferrer noopener" href="https://www.ti.com/product/DRV8821" target="_blank">Texas Instruments DRV8821</a> dual stepper motor driver chip. The chip itself is capable of handling up to 32V and 1.5A but configured for lower values for use in this printer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Voltage was easier to determine, as I looked up position of motor voltage (VM) pins on the chip and probe them while the printer is active. They measured 24V DC. Finding the current limit took a bit more work. DRV8821 datasheet section <em>7.3.2 Current Regulation</em> gave the formula: (Current Limit) = (Reference Voltage) / (5 * Current Sensing Resistor). There are four current sensing resistors wired on the circuit board, so I had to figure out which motor is wired to which pins on the driver. Probing for continuity, I found the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th>Motor</th>
+<th>Mainboard label</th>
+<th>DRV8821 label</th>
+<th>DRV8821 pin#</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Z</td>
+<td>A+</td>
+<td>AOUT1</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>A-</td>
+<td>AOUT2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>B+</td>
+<td>BOUT1</td>
+<td>48</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>B-</td>
+<td>BOUT2</td>
+<td>46</td>
+</tr>
+<tr>
+<td>Tilt</td>
+<td>A+</td>
+<td>COUT1</td>
+<td>27</td>
+</tr>
+<tr>
+<td>Tilt</td>
+<td>A-</td>
+<td>COUT2</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Tilt</td>
+<td>B+</td>
+<td>DOUT1</td>
+<td>22</td>
+</tr>
+<tr>
+<td>Tilt</td>
+<td>B-</td>
+<td>DOUT2</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>This tells me the current sensing resistors AISEN (DRV8821 pin 4) and BISEN (47) are associated with the Z-axis motor. Both are labeled R100 which I decoded to mean 0.1 Ohm. CISEN (26) and DISEN (21) are then for tilt motor which are labeled R200, for 0.2 Ohm. Probing the circuit while powered-up, I found the voltage dividing resistors supplying reference voltages and measured it at 0.5V for both ABVREF (17) and CDVREF (18).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using DRV8821 datasheet formula, I calculate the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Z-axis stepper motor can be driven with 24V DC at a maximum of 0.5/(5*0.1) = 1A.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Tilt stepper motor can be driven with 24V DC at a maximum of 0.5/(5*0.2) = 0.5A.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --><br />
+</body></html></p>

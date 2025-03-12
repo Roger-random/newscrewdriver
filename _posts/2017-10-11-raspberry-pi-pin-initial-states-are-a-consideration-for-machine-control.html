@@ -1,0 +1,39 @@
+---
+layout: post
+title: Raspberry Pi Pin Initial States are a Consideration For Machine Control
+date: 2017-10-11 09:00:42.000000000 +00:00
+type: post
+post_id: '13566'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+- Thermoforming Machine Rebuild
+tags: []
+meta:
+  _oembed_b08643a7e4eadb9e95ec3bf9de6044b3: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10213684633'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/11/raspberry-pi-pin-initial-states-are-a-consideration-for-machine-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>As an intermediate step towards controlling the thermoforming machine with the Raspberry Pi, we populated a breadboard with some components we planned to use. A Raspberry Pi could only source a total of 50mA of power across all the IO pins, so we had it switch circuits on/off via opto-isolators that required far less current to activate. We started by using these opto-isolators to control power to LEDs. Just to see how it works and make sure nothing unexpected occurs before we start hooking up bigger things.</p>
+<p>This proved to be wise, as it exposed some Raspberry Pi behavior we did not expect. When the Pi was powered-up, some of the LEDs glowed dimly. They're not full bright, but they're definitely not dark, either. Once the control program starts up and all pins are initialized to off, they go dark as expected. But there's something going on between initial power-on and when the control program starts running.</p>
+<p>This was important to chase down because we don't want the machine relay to close when we're not expecting them to close. Even worse if it occurs while the system is powering up and components are not yet in known good states. Making this an important consideration in designing our system.</p>
+<p>A bit of web searching confirmed this startup behavior was noticed and <a href="https://raspberrypi.stackexchange.com/questions/1032/what-is-the-power-on-state-of-the-gpios">investigated by a lot of people</a> looking at various parts of the system. The answer was most succinctly answered by a post on the <a href="https://raspberrypi.stackexchange.com/questions/51479/gpio-pin-states-on-powerup">Raspberry Pi subsection of StackExchange</a>: In the peripherals manual for the BCM2835 chip at the core of the Raspberry Pi, the power-on initial states are explicitly stated: All IO pins are configured to be input and not output. Furthermore, pins 0-8 are set with pull-up to 3.3V and pins 9-27 are pulled-down to 0V.</p>
+<p>Looking back on the breadboard, we could confirm the explanation matches the observed behavior. The dimly lit LEDs were controlled by opto-isolators that were, in turn, connected to Raspberry Pi pins 5 and 6. None of the other isolators were controlled by pins in the 0-8 range. Since opto-isolators required so little current to operate, the weak pull-up on a pin set to input was sufficient to partially activate the circuit.</p>
+<p>Once the cause was determined the solution was simple: move all output control out of the 0-8 range of pins. These pins would be fine for input, so the task of reading the position of a limit switch was moved to pin 5.</p>
+<p>The resulting breadboard is visible in the attached image, and the <a href="https://github.com/Roger-random/tux_lab_thermoformer/commit/a8de762075f827be307129039b709d2e58ff89cc">code was changed to match the new pin assignments in this commit</a>. After these changes, we observed no partially lit LEDs which also hopefully means no unexpected relay activity when we hook it up to the machine.</p>
+<p><img class="alignnone size-full wp-image-13576" src="https://newscrewdriver.com/wp-content/uploads/2017/10/img_5266.jpg" alt="IMG_5266" width="1024" height="768"></p>
+<p></body></html></p>

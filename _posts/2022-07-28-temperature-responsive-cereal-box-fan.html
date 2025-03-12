@@ -1,0 +1,104 @@
+---
+layout: post
+title: Temperature Responsive Cereal Box Fan
+date: 2022-07-28 12:30:00.000000000 +00:00
+type: post
+post_id: '31832'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Cardboard
+- Cooling Fan
+- ESP8266
+- ESPHome
+- Home Assistant
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31834'
+  _publicize_job_id: '75212081167'
+  timeline_notification: '1659036608'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/28/temperature-responsive-cereal-box-fan/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>This quick and easy project produces a quiet breeze for hot summer nights. I wanted something gentler than the fans already in the house, and I wanted it to automatically turn itself off in the middle of the night once things cooled down enough. It also let me apply lessons I've recently learned. Even though I've found that <a href="https://newscrewdriver.com/2022/07/27/tmp36-temperature-sensor-esp8266-not-a-great-team/">the TMP36 sensor isn't a great fit for a ESP8266</a>, it's something already on hand for an ESP8266 to tell if it's cool enough to turn the fan off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The 3-wire fan is a PC cooling fan with a 200mm diameter, relatively large within that category. I bought it some years ago for <a rel="noreferrer noopener" href="https://hackaday.io/project/19583-luggable-pc" target="_blank">my first Luggable PC project</a>, it was <em>just</em> a bit too large for that purpose and sat idle until now. I thought about designing and 3D-printing a stand for this fan, but in the spirit of keeping things simple and quick, I mounted it in an empty cereal box instead. Cutting holes in the box to accommodate the fan took a tiny fraction of the time it would have taken to 3D-print something.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31838,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/cereal-box-200mm-fan-top.jpg?w=1024" alt="" class="wp-image-31838"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Primary air intake was the top of the box, left open.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31840,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/cereal-box-200mm-fan-back.jpg?w=1024" alt="" class="wp-image-31840"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I cut a smaller secondary air intake towards the bottom of the box, which also makes it easy to toss my control board in there and feed it power from a salvaged DC power supply. A TMP36 sensor was soldered in the farthest corner in this picture, visible sticking up vertically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2>Results</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running ESPHome (YAML excerpt below) this project successfully <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/26/high-side-fan-esp8266-pwm-using-optocoupler/" target="_blank">controls fan speed via ESP8266 PWM</a>. It was also able to read temperature via TMP36 sensor, but values were affected by ESP8266. Located 1/2 of the circuit board away plus the entire height of its legs was not enough distance from the ESP8266 heat island: temperature reading dropped noticeably whenever the fan is turning. Still, it's enough for me to create a Home Assistant automation to turn off this fan whenever the temperature dropped below a certain threshold. Due to the heating from ESP8266, the temperature value rises a few degrees immediately after the fan was turned off. Thankfully there was no risk of system feedback oscillation, because I did not create an automation to turn the fan on -- I do that manually when I'm ready for a light breeze.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This worked well sitting on my bedstand, creating a light cool breeze when I'm ready to fall asleep and turning itself off while I was asleep. But its physical footprint was a problem: it took up space that is ideally used for a bedstand light. The obvious solution was to pull some LEDs into the next version, which is an opportunity to tackle another item on my to-learn list: PC accessories with embedded RGB LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESPHome YAML to read TMP36 temperature and fan speed every 5 minutes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sensor:
+  - platform: adc
+    pin: A0
+    name: "Fan Temperature"
+    unit_of_measurement: "°C"
+    update_interval: 1s
+    accuracy_decimals: 2
+    filters:
+      - multiply: 100
+      - offset: -50
+      - sliding_window_moving_average:
+          window_size: 450
+          send_every: 300
+          send_first_at: 15
+  - platform: pulse_counter
+    pin: 12
+    id: fan_rpm_counter
+    name: "Fan RPM"
+    unit_of_measurement: "RPM"
+    accuracy_decimals: 0
+    update_interval: 300s
+    filters:
+      - multiply: 0.5 # 2 pulses per revolution
+
+output:
+  - platform: esp8266_pwm
+    pin: 14
+    id: fan_pwm_output
+    frequency: 1000 Hz
+
+fan:
+  - platform: speed
+    output: fan_pwm_output
+    id: fan_speed
+    name: "Fan Speed Control"</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

@@ -1,0 +1,55 @@
+---
+layout: post
+title: Notes On Getting ESP32 On WiFi
+date: 2021-04-14 12:30:00.000000000 +00:00
+type: post
+post_id: '26001'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ESP32
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26018'
+  _publicize_job_id: '57164280620'
+  timeline_notification: '1618428619'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667814467
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/14/notes-on-getting-esp32-on-wifi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm working towards a minimal first draft of my Sawppy rover's HTML-based control scheme. I <a href="https://newscrewdriver.com/2021/04/13/sawppy-html-canvas-and-websocket/">tackled client side first</a> because that side had more similarity to my earlier SGVHAK rover control project. I got a first draft by using a Node.js server on my desktop as a placeholder for the ESP32, now it's time to start working on the real server code. The first step is to learn how to activate an ESP32's WiFi capabilities in software.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are many options on how to set up networking between an ESP32 and a browser running on a phone. I decided to start with connecting it as a node to my home network, which Espressif documentation calls "<a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html" target="_blank">station mode</a>". I expect this to be easier to develop and debug, but obviously it won't work for a rover roaming away from home. For that the ESP32 will have to be switched to "AP mode" acting as a WiFi access point. In order to accommodate this, I aim to structure my code so setting up a WiFi connection is its own separate FreeRTOS task, so that I can switch between <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_netif.html?highlight=esp_netif_create_default_wifi_sta#_CPPv433esp_netif_create_default_wifi_stav" target="_blank">station</a> and AP (or maybe even more?) variants as needed at compile-time. If I ever need the option to switch between modes at runtime, I can integrate one of the available ESP32 WiFi managers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To learn about setting up an ESP32 in station mode, Espressif's <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html" target="_blank">written documentation</a> is pretty thin. I had to do most of my learning from <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/tree/master/examples/wifi/getting_started/station" target="_blank">their station example</a>, and thankfully it was indeed enough to get my ESP32 on my network. Converting the sample code to a FreeRTOS task I can incorporate into my rover project required more than 2 kilobyte of stack, which is what I had been using as a default. A bit of quick experimentation established 3 kilobytes are enough for the new WiFi task. Right now I'm not too worried about RAM footprint, so I won't spend time pinning down exactly where between 2 and 3 it needs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One item that I saw and copied without understanding, was a code block initializing an ESP32's <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html" target="_blank">non-volatile storage</a> (NVS) used to store information in key-value pairs. I can infer that ESP32 WiFi stack required some of those values, but I couldn't find documentation on exactly what was needed. The more obvious WiFi-related pieces of information (like the SSID for my home network and associated password) are in my code, so it must be something less obvious but I don't yet know what they are.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Events were an aspect of the sample code that confused me for a while. Eventually I figured out my confusion stemmed from the fact I got two items mixed up. One of them is an "<a rel="noreferrer noopener" href="https://www.freertos.org/FreeRTOS-Event-Groups.html" target="_blank">Event Group</a>", which is a FreeRTOS mechanism used here so a piece of code could wait until WiFi initialization completes before they start doing network things. The other mechanism is an "<a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_event.html" target="_blank">Event Loop</a>" which is an Espressif creation for ESP-IDF. They both had "event" in their name but were completely independent, which was why I got lost trying to understand how the two mechanisms interacted behind the scenes: the answer is that they don't! So when reading the code it's important to figure out which "event" we are talking about. The <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/wifi.html#esp32-wi-fi-event-description" target="_blank">Espressif reference for WiFi initialization events</a>, for example, refers to the event loop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm happy I was successful in connecting an ESP32 to my home WiFi by following example code. Now that it is on the network, I need to <a href="https://newscrewdriver.com/2021/04/15/esp32-http-was-easy-but-sending-files-need-spiffs/">make it do something useful</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/lib/wifi">publicly available on GitHub</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

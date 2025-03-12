@@ -1,0 +1,139 @@
+---
+layout: post
+title: Quick ESP32 PWM Experiment via ESPHome
+date: 2022-05-07 12:30:00.000000000 +00:00
+type: post
+post_id: '30150'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- Home Assistant
+- PAC-215
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30175'
+  _publicize_job_id: '72261586356'
+  timeline_notification: '1651951812'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/07/quick-esp32-pwm-experiment-via-esphome/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2022/05/06/electric-blanket-lcd/">mapped out the segments</a> of a small LCD salvaged from an electric blanket controller. I activated these segments with an ESP8266 that alternated between 0V and 3.3V on two GPIO pins. Good for individual segments, but not good enough to drive the whole display. There are eight segment pins and two common pins for 8*2=16 total possible combinations (14 of which are used for the two 7-segment digits) controlled from ten total pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Technically speaking, an ESP8266 has enough GPIO pins, but we'd start intruding into the realm of sharing pins between multiple tasks which is more complexity than I wanted to tackle for a quick test. When driving a LCD, we also want to control voltage levels on these pins and <a href="https://esphome.io/components/output/esp8266_pwm.html" target="_blank" rel="noreferrer noopener">ESP8266 lacks hardware PWM peripheral</a>. For these reasons I will use an ESP32. It has more than enough pins, and hardware PWM peripherals to support generating a voltage on all those pins. ESP32 LEDC PWM peripheral is very flexible, and I need to determine how I want to configure that peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I used ESPHome because it is a great platform for quick experiments like this. I don't strictly need WiFi here, but easy integration to Home Assistant and ability to update code over the network are great conveniences. Before I found ESPHome, I would wire up a few potentiometers to the circuit board and write code to use ADC to read their positions. A bit of code will then allow me to interactively play with parameters and see their results. But now, with ESPHome in my toolbox, I don't need to solder potentiometers or write code for ADC. I can get such interactivity from the Home Assistant dashboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By default, ESPHome configures <a rel="noreferrer noopener" href="https://esphome.io/components/output/ledc.html" target="_blank">LEDC PWM peripheral</a> to run at a frequency of 1kHz. According to <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/ledc.html" target="_blank" rel="noreferrer noopener">Espressif documentation</a>, it can be configured to run as high as 40MHz, though at that point it really isn't a "PWM" signal anymore with only a fixed 50% duty cycle. Slowing down the frequency increases the number of bits available for duty cycle specification, and I wanted to find a tradeoff that I think will work well for this project. Here is an excerpt of ESPHome configuration YAML I used for this test.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>output:
+  - platform: ledc
+    pin: GPIO23
+    id: pwm_23
+  - platform: template
+    id: pwm_freq
+    type: float
+    write_action:
+      lambda: |-
+        int newFreq = (int)(10000000.0*state)+1000;
+        id(pwm_23).update_frequency(newFreq);
+    
+light:
+  - platform: monochromatic
+    gamma_correct: 1.0
+    output: pwm_23
+    name: "PWM23"
+  - platform: monochromatic
+    gamma_correct: 1.0
+    output: pwm_freq
+    name: "PWM Freq"</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This allows me to adjust two variables, each exposed to Home Assistant as a monochromatic dimmable light. Which I can change via a slider on a web page instead of a potentiometer soldered to the board. (The gamma correction value was set to 1.0 because we're not actually controlling a visible light that requires gamma correction.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>
+<code>pwm_23</code> controls the PWM duty cycle.</li>
+<li>
+<code>pwm_freq</code> controls the PWM frequency via <a rel="noreferrer noopener" href="https://esphome.io/guides/automations.html#templates-lambdas" target="_blank">ESPHome Template Lambda</a>. Theoretically from 1kHz to 10MHz, though in practice we won't reach either end as the state never gets all the way down to 0.0 nor all the way up to 1.0.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>As I adjusted the frequency, ESPHome automatically calculates the duty cycle bit depth.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>[15:32:00][D][ledc.output:041]: Calculating resolution bit-depth for frequency 2491148.000000
+[15:32:00][D][ledc.output:046]: Resolution calculated as 5
+[15:32:00][D][ledc.output:041]: Calculating resolution bit-depth for frequency 2494322.000000
+[15:32:00][D][ledc.output:046]: Resolution calculated as 5
+[15:32:00][D][ledc.output:041]: Calculating resolution bit-depth for frequency 2497869.000000
+[15:32:00][D][ledc.output:046]: Resolution calculated as 5
+[15:32:00][D][ledc.output:041]: Calculating resolution bit-depth for frequency 2501411.000000
+[15:32:00][D][ledc.output:046]: Resolution calculated as 4
+[15:32:00][D][ledc.output:041]: Calculating resolution bit-depth for frequency 2503623.000000
+[15:32:00][D][ledc.output:046]: Resolution calculated as 4
+[15:32:00][D][ledc.output:041]: Calculating resolution bit-depth for frequency 2505428.000000
+[15:32:00][D][ledc.output:046]: Resolution calculated as 4</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>From this snippet, we can see that 2.5MHz is the limit for 5 bits of resolution. 2<sup>5</sup> = 32 levels, which gives me control of resulting voltage in (3.3V / 32) ~= 0.1V increments. I think that'll be good enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are some plots in oscilloscope form: First the starting point of 50% duty cycle at default 1kHz frequency, before and after adding a 100nF capacitor into the mix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"imageCrop":false,"linkTarget":"_blank","linkTo":"media","sizeSlug":"full","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default"><!-- wp:image {"id":30161,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-1khz.jpg" target="_blank"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-1khz.jpg" alt="" class="wp-image-30161"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":30162,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-1khz-with-100nf-capacitor.jpg" target="_blank"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-1khz-with-100nf-capacitor.jpg" alt="" class="wp-image-30162"></a></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Not nearly good enough to output 1.65V. To make this better, I can increase the capacitance or increase frequency. Increasing capacitance will dull system response (and I need pretty quick response to rapidly cycle between LCD common pins) so I start cranking up the frequency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"imageCrop":false,"linkTo":"media","sizeSlug":"full","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default"><!-- wp:image {"id":30166,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-100khz.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-100khz.jpg" alt="" class="wp-image-30166"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":30165,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-100khz-with-capacitor.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-100khz-with-capacitor.jpg" alt="" class="wp-image-30165"></a></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>At hundreds of kilohertz without capacitor, the resulting wave is more than what this little oscilloscope can capture at this timescale. When the 100nF capacitor is added in, we see a pretty respectable 1.65V signal, might even be good enough. But there's plenty of room left to go faster.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"imageCrop":false,"linkTo":"media","sizeSlug":"full","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default"><!-- wp:image {"id":30169,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-2500khz.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-2500khz.jpg" alt="" class="wp-image-30169"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":30170,"sizeSlug":"full","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-full"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-2500khz-with-330pf-capacitor.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/esp32-ledc-pwm-2500khz-with-330pf-capacitor.jpg" alt="" class="wp-image-30170"></a></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Getting into the megahertz range, there's enough natural capacitance in the system (wires, breadboard, etc.) that we see a pretty good waveform even without a real capacitor in line with the output. But with just a 330pF capacitor (much smaller than the 100nF I started with) the resulting voltage looks pretty good. At least, at this time scale. Now I need to <a href="https://newscrewdriver.com/2022/05/08/switching-to-esp-idf-for-pwm-waveform-control/">move beyond ESPHome</a> for better control of 2.5MHz PWM signals.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

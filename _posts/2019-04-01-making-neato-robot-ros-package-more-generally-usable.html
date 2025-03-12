@@ -1,0 +1,51 @@
+---
+layout: post
+title: Making Neato Robot ROS Package More Generally Usable
+date: 2019-04-01 12:30:09.000000000 +00:00
+type: post
+post_id: '18156'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- ROS
+tags:
+- Neato
+meta:
+  _oembed_e643d3c20ac9e2f0e29f5fb612901460: "{{unknown}}"
+  _oembed_0b3412e4769fd9b4f89747ac6d1ba2d4: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29286039826'
+  timeline_notification: '1554147083'
+  _oembed_deb398f7c094a1f5accde7e869cd706f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_deb398f7c094a1f5accde7e869cd706f: '1554236685'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/01/making-neato-robot-ros-package-more-generally-usable/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignnone size-full wp-image-17966" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-mini-usb-cable-connection-to-laptop.jpg" alt="Neato mini USB cable connection to laptop" width="1600" height="813">Now that I have some idea of what happens inside <a href="http://wiki.ros.org/neato_robot">ROS package <code>neato_robot</code></a>, and <a href="https://newscrewdriver.com/2019/03/29/neato-robot-ros-package-expects-specific-response-but-responses-actually-differ-between-neato-units/">modified it</a> to (mostly) run on my Neato vacuum, I thought I'd look in its Github repository's list of issues to see if I understand what people have said about it. I didn't have to look very far: top of its open issues list is "<a href="https://github.com/mikeferguson/neato_robot/issues/8">Robot compatibility</a>."</p>
+<p>The author agrees this is a good idea but it has to be done by someone with access to other Neato units, pull requests are welcome. <a href="https://github.com/mikeferguson/neato_robot/issues/8#issuecomment-76116227">This comment</a> was dated four years ago but my experience indicates no pull requests to improve compatibility were ever merged into this code.</p>
+<p>But even though modifications were never merged back into this branch, they are still available. I just had to be pointed to know where to look. That comment thread referenced <a href="https://github.com/jlohse/neato_robot/commit/51ca2a5aab8ee8689a72b57f0593879c8cc85054">this particular commit</a> which eliminates those problematic fixed arrays of expected response strings. Now it will read a Neato's responses without trying to match it up against a preset list. Of course, if a specific response is still required (like <code>LeftWheel_PositionInMM</code> and <code>RightWheel_PositionInMM</code>) all it could do is ensure code will not hang, it is not capable of inferring requested data from other robot responses.</p>
+<p>But possibly more interesting than code changes is this comment block:</p>
+<blockquote><p>
+<code>This driver reads responses until it receives a control-z. Neato Robotics has</code><br />
+<code>documented that all responses have a control-Z (^Z) at the end of the</code><br />
+<code>response string: http://www.neatorobotics.com.au/programmer-s-manual</code><br />
+<code>CTRL_Z = chr(26)</code>
+</p></blockquote>
+<p>That URL implies it was a link to some type of a programmer's reference manual, but unfortunately that link is now dead. Still, this claim of control-Z termination (if true) gives me ideas on how I would approach talking to a Neato with my own code.</body></html></p>

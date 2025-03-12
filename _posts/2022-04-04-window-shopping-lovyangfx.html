@@ -1,0 +1,45 @@
+---
+layout: post
+title: Window Shopping LovyanGFX
+date: 2022-04-04 12:30:00.000000000 +00:00
+type: post
+post_id: '29400'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Window Shopping
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29578'
+  _publicize_job_id: '70997567766'
+  timeline_notification: '1649100613'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/04/window-shopping-lovyangfx/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One part of having an open-source project is that anyone can offer their contribution for others to use in the future. Most of them were help that I was grateful to accept, such as people filling gaps in my Sawppy documentation. But occasionally, a proposed contribution unexpectedly pops out of left field and I needed to do some homework before I could even understand what's going on. This was the case for <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/pull/30" target="_blank">pull request #30</a> on my <code>ESP_8_BIT_composite</code> Arduino library for generating color composite video signals from an ESP32. The author "riraosan" says it merged LovyanGFX and my library, to which I thought "Uh... what's that?"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search found https://github.com/lovyan03/LovyanGFX which is a graphics library for embedded controllers, including ESP32. But also many others that <code>ESP_8_BIT_composite </code>does not support. While the API mimics AdafruitGFX, this library adds features like sprite support and palette manipulation. It looks like a pretty nifty library! Based on the README of that repository, the author's primary language is Japanese and they are a big fan of M5Stack modules. So in addition to the software technical merits, LovyanGFX has extra appeal to native Japanese speakers who are playing with M5Stack modules. Roughly two dozen display modules were listed, but I don't think I have any of them on hand to play with LovyanGFX myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given this information and <a rel="noreferrer noopener" href="https://www.instagram.com/p/CbXvBUovzNE/" target="_blank">riraosan's Instagram post</a>, I guess the goal was to add <code>ESP_8_BIT composite</code> video signal generation as another supported output display for LovyanGFX. So I started digging into how the library was architected to enable support for different displays. I found that each supported display unit has corresponding files in the <a rel="noreferrer noopener" href="https://github.com/lovyan03/LovyanGFX/tree/master/src/lgfx/v1/panel" target="_blank"><code>src/lgfx/v1/panel</code> subdirectory</a>. Each of which has a class that derives from the <a rel="noreferrer noopener" href="https://github.com/lovyan03/LovyanGFX/blob/master/src/lgfx/v1/panel/Panel_Device.hpp" target="_blank"><code>Panel_Device</code> base class</a>, which implements the <a rel="noreferrer noopener" href="https://github.com/lovyan03/LovyanGFX/blob/master/src/lgfx/v1/Panel.hpp" target="_blank"><code>IPanel</code> interface</a>. So if we want to add a composite video output capability to this library, that's the code I expected to see. With this newfound knowledge, I returned to my pull request to see how it was handled. I saw nothing of what I expected. No <code>IPanel</code> implementation, no <code>Panel_Device</code> derived class. That work is in the <a rel="noreferrer noopener" href="https://github.com/riraosan/LovyanGFX/blob/5f2801459d0959ebb0b6507746ec92381b7f21d3/src/lgfx/v1/panel/Panel_CVBS.hpp" target="_blank">contributor's fork of LovyanGFX</a>. The pull request for me has merely the minimal changes needed to <code>ESP_8_BIT_composite</code> to be used in that fork.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since those changes are for a specialized usage independent of the main intention of my library, I'm not inclined to incorporate such changes. I suggested to riraosan that they fork the code and create a new LovyanGFX-focused library (removing AdafruitGFX support components) and it appears that will be the direction going forward. Whatever else happens, I now know about LovyanGFX and that knowledge would not have happened without a helpful contributor. I am thankful for that!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

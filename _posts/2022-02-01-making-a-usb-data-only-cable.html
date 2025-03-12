@@ -1,0 +1,52 @@
+---
+layout: post
+title: Making a USB Data-Only Cable
+date: 2022-02-01 12:30:00.000000000 +00:00
+type: post
+post_id: '28400'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- USB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24075'
+  _publicize_job_id: '68447257515'
+  timeline_notification: '1643747406'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1665822823
+  _elasticsearch_data_sharing_indexed_on: '2024-07-18 22:45:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/01/making-a-usb-data-only-cable/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My current microcontroller project uses a development board that has built-in hardware to take both power and programming/debugging data over USB. But I want to connect it to another power source, which means I need to disconnect USB power in order to avoid potential problems from dueling voltage regulators on the same voltage plane. My first attempt <a href="https://newscrewdriver.com/2022/01/31/power-source-selection-jumper/">used a small jumper</a> on the circuit board, but it looks pretty accident-prone, so I went with the backup plan: a USB data-only cable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hate having to resort to this solution, as I hate having USB cables that don't do what I thought they did. This hatred was bred by USB power-only cables. They are frequently bundled with small electronics that charge their batteries via USB power and have no need for USB data communication. The problem is that these cables look identical to normal USB cables and it's too easy to use them elsewhere not realizing they are power-only. I have spent far too much time debugging device communication issues only to realize my problem was a USB power-only cable in the mix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A data-only cable is the same kind of cursed, but in reverse. Unfortunately, it is what I need now if I wish to debug a development board that already has its own power source. USB data communication is a differential signal protocol, so we really need only the two data lines. They are usually labeled D+ and D- on a diagram. When we cut open a wire, the convention is to have D+ on the green wire and D- on the white wire.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Black is ground by convention, and red wire for +5V USB power. I took one of my micro-USB cables and cut it open to expose these wires, then I cut the red wire. The nature of differential signals means their voltage difference relative to ground isn't as critical, but I need to leave ground wire intact to make sure the ground planes on either end don't drift too far apart. With the +5V line cut, there shouldn't be much electrical current flowing through the ground line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This serves my purpose but it isn't great. For one thing, it confuses my computer. Apparently having three out of four wires alive triggers USB device insertion alert. When the cable is connected to the development board with its own power, everything works as expected. But when it's just the cable without the board, Windows throws up an "Windows doesn't recognize the last USB device you plugged in" alert. This tells me it is doing other weirdness behind the scenes. I hope it doesn't damage the computer, and I'll try to make sure I don't plug the cable in by itself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, the damaged insulation makes it pretty obvious I've hacked on this USB cable. I doubt I would ever unknowingly use this cable so I should never expect USB power from this data-only cable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hated having to do this, but this hacked-up cable will serve until I have a better idea. In the meantime, <a href="https://newscrewdriver.com/2022/02/02/setting-up-esp8266-arduino-sketch-for-influxdb/">work can continue</a> on my ESP8266 solar panel voltage monitor project.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

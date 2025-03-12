@@ -1,0 +1,70 @@
+---
+layout: post
+title: Brushless Motor Controller for Multirotor Aircraft
+date: 2023-03-20 12:30:00.000000000 +00:00
+type: post
+post_id: '35794'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35803'
+  timeline_notification: '1679340605'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679429695
+  _publicize_job_id: '82483287896'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/20/brushless-motor-controller-for-multirotor-aircraft/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to <a href="https://newscrewdriver.com/2023/03/19/potential-brushless-dc-motor-bldc-starting-points/">learn how to control brushless motors</a> and how to best <a href="https://newscrewdriver.com/2020/01/11/projects-using-brushless-motors-must-account-for-controller-start-up-behavior/">tailor their control algorithms to different tasks</a>. Most brushless motors I encounter are very tightly coupled to their associated controller. Occasionally I could examine <a href="https://newscrewdriver.com/2023/02/23/hard-drive-wd800-motor-control-on-oscilloscope/">how a particular pairing worked together</a>, but I don't know enough to mix and match salvaged motors/controllers to see how different combinations work together. I think I should start with a motor controller that has been designed to accommodate a range of different brushless motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news: recent popularity of multirotor aircraft ("drones", "quadcoptors", etc.) has spawned a product ecosystem of brushless motors and controllers marketed to drone owners. Whether they want to repair, upgrade, or build their own from scratch, many companies compete for their money. I just wanted something cheap as a starting point, so I went with Amazon's <a href="https://amzn.to/3ZlOkJQ">lowest bidder of the day</a>(*) for a four-pack of compact and lightweight brushless motor controllers. Obviously intended to match four motors in a quadcoptor, a pack of four works for me in the interest of redundancy. I may damage a few in my experiments.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35803,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/quadcoptor-brushless-motor-controller-intact.jpg?w=1024" alt="" class="wp-image-35803"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's one of the four, just removed from its packaging. I was impressed by its tiny size, the circuit board itself is only about 13mm x 23mm. Thicker red and black wires are for delivering battery power. The thinner wires led to 0.1" pitch connectors for control signal and signal ground. There are no wires provided for the motor, just three solderable tabs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35805,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/quadcoptor-brushless-motor-controller-front.jpg?w=1024" alt="" class="wp-image-35805"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I cut away its protective heat-shrink tubing to see inside. On the upper-left I see "S" for white control signal and "-" for signal ground. Probing with my meter indicates signal ground is connected to power ground. This isn't usually a problem because drones tend to run everything off a single battery but would exclude this controller from circuits isolating logic ground from power ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the center we see two microchips. Larger chip on the right has a logo I don't recognize, and text SA6288 210. A web search found <a href="http://www.coomake.com/productinfo/1154076.html">this SA6288</a>, a gate driver chip designed to drive MOSFET/IGBT transistors to control power for three-phase motors. That fits. It's probably taking orders from the other chip, then. A microcontroller makes sense given its proximity to the control input signal and four circular pads across the bottom that may be a way to reprogram the chip. I read its markings to be "dB21 F16C C01Q5K 2217". Search engines clung on to "F16C" and wanted to <a href="https://en.wikipedia.org/wiki/General_Dynamics_F-16_Fighting_Falcon_variants#F-16C/D">tell me about the fighter jet</a>, which wasn't helpful. Maybe I've misread one or more characters.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":35808,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/03/quadcoptor-brushless-motor-controller-back.jpg?w=1024" alt="" class="wp-image-35808"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Backside of the chip are all of the power control components, starting with red wire (VBAT) and black wire (GND) for battery power. Relatively large capacitors are visible, and I'm impressed it didn't need larger electrolytic capacitors. Half of this side are taken up by an array of six modules. From <a href="https://newscrewdriver.com/2022/07/20/failed-lewansoul-lx-16a-servos/">my LX-16A teardown</a> I recognize the logo for <a href="https://aosmd.com/">Alpha &amp; Omega Semiconductors</a>, but their website didn't have any information on a 7544 chip. Arrow Electronics says there's should be <a href="https://www.arrow.com/en/products/aon7544/alpha-and-omega-semiconductor">an AON7544</a> N-Channel "AlphaMOS" MOSFET. Two of them per channel would fit with my current understanding of brushless motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the remaining two chips should be a voltage converter to translate battery power to a lower voltage for the unidentified microcontroller and gate driver chip. But on the lower left, next to the ground wire, is an unexpected entity. It looks like a WS2812 or similar RGB LED module which is much fancier than the single LED I would have expected for an indicator light.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's a mysterious name "BLHeli_S" on the Amazon listing and also printed on the front label of this motor controller. A web search found this to be the name of <a href="https://newscrewdriver.com/2023/03/21/blheli_s-brushless-motor-control-firmware-and-dshot-protocol/">motor control firmware</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

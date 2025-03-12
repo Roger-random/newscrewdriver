@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'Window Shopping ARCore: API Documentation'
+date: 2020-07-20 12:30:16.000000000 +00:00
+type: post
+post_id: '21721'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+meta:
+  _thumbnail_id: '21832'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46794282661'
+  timeline_notification: '1595273481'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/20/window-shopping-arcore-api-documentation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Investigating Google ARCore for potential robotics usage, it was useful to review their Fundamental Concepts and <a href="https://newscrewdriver.com/2020/07/19/window-shopping-arcore-design-guidelines/">Design Guidelines</a> because it tells us the motivation behind various details and the priorities of the project. That gives us context around what we see in the nuts and bolts of the actual APIs.</p>
+<p>But the APIs are where "the rubber meets the road" and where we leave all the ambitions and desires behind: the actual APIs implemented in shipping phones define the limitations of reality.</p>
+<p>We get a dose of reality pretty immediately: <a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Pose">estimation of phone pose in the world comes with basically no guarantees on global consistency</a>.</p>
+<blockquote><p>
+<em>World Coordinate Space</em><br />
+<em>As ARCore's understanding of the environment changes, it adjusts its model of the world to keep things consistent. When this happens, the numerical location (coordinates) of the camera and Anchors can change significantly to maintain appropriate relative positions of the physical locations they represent.</em></p>
+<p><em>These changes mean that every frame should be considered to be in a completely unique world coordinate space. The numerical coordinates of anchors and the camera should never be used outside the rendering frame during which they were retrieved. If a position needs to be considered beyond the scope of a single rendering frame, either an anchor should be created or a position relative to a nearby existing anchor should be used.</em>
+</p></blockquote>
+<p>Since it is on a per-frame basis, we could get <a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Frame">Pose and PointCloud from a Frame</a>. And based on that text, these would then need to be translated through anchors somehow? The first line of <a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Anchor">Anchor page</a> makes it sound that way:</p>
+<blockquote><p><em>Describes a fixed location and orientation in the real world. To stay at a fixed location in physical space, the numerical description of this position will update as ARCore's understanding of the space improves.</em></p></blockquote>
+<p>However, I saw no way to retrieve any kind of identifying context for these points. Ideally I would want "Put an anchor on that distinctive corner of the table" or some such. But still, "<a href="https://developers.google.com/ar/develop/developer-guides/anchors">Working with anchors</a>" has basic information on how it is useful. But as covered in many points throughout ARCore documentation, use of anchors must be kept at a minimum due to computational expense. Each Anchor is placed relative to a <code><a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Trackable">Trackable</a></code>, and there are many ways to get one. The biggest hammer seems to be <code>getAllTrackables</code> from <a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Session"><code>Sesson</code></a>, which has a shortcut of <code>createAnchor</code>. There are more narrowly scoped ways to query for <code>Trackable</code> points depending on scenario.</p>
+<p>Given what I see of ARCore APIs right now, I'm still a huge fan of future potential. Unfortunately its current state is not a slam dunk for robotics application, and that is not likely to change in the near future due to <a href="https://github.com/google-ar/arcore-android-sdk/issues/28">explicit priorities set by the product team</a>.</p>
+<p>But while I had my head buried in studying ARCore documentation, another approach popped up on the radar: the <a href="https://newscrewdriver.com/2020/07/21/opencv-ai-kit/">OpenCV AI Kit</a>.</body></html></p>

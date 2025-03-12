@@ -1,0 +1,103 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner Image Sensor Pinout
+date: 2023-12-09 12:30:00.000000000 +00:00
+type: post
+post_id: '40943'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40925'
+  reader_suggested_tags: '["Books","Whisky","Instacandid","Nagoya","Digital Darkroom","Sapporo","Street
+    Photography"]'
+  wordads_ufa: s:wpcom-ufa-v4:1703391528
+  firehose_sent: '1702153814'
+  _publicize_job_id: '90142139584'
+  timeline_notification: '1702153815'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/09/canon-pixma-mx340-scanner-image-sensor-pinout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Taking apart a Canon Pixma MX340 multi-function inkjet, I wanted to see what I could learn from its scanner's CIS (contact image sensor) bar. Expectations weren't high at the start but after spending some time <a href="https://newscrewdriver.com/2023/12/08/canon-pixma-mx340-contact-image-sensor-signal/">looking at its behavior under an oscilloscope</a> I think I understand enough to explain every pin on its cable connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40946,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-connector-labels-2-tentative.jpg?w=800" alt="" class="wp-image-40946"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm arbitrarily numbering these pins from left-to-right in this picture. I don't have Canon's electronic schematic or engineering data, so this might be reversed from Canon's actual pin ordering. I feel confident about the accuracy of red labels, I'm more tentative about the pins labeled in blue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first five pins support illumination. There are separate pins for red/blue/green LEDs and they all shine onto a common light guide that disperses across the sensor bar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>5.5V DC power source as common LED anode.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Red LED cathode.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Green LED cathode.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Blue LED cathode.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Chassis ground.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The remaining seven pins support image sensor data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true,"start":6} --></p>
+<ol start="6">
+<!-- wp:list-item --></p>
+<li>Data clock (tentative) at 2.37538MHz with amplitude of 3.3V. Clock signals are normally square waves. This one is very nearly a smooth sine wave but I guess it still counts?</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Line sync+ (tentative) at 425.543Hz. Raised up to ~3.3V for one data clock cycle to signal new scan line, read on falling edge of clock signal. Low voltage level fluctuates relative to chassis ground, but is in sync with line sync- and should be compared against that.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Line sync-. Reference base for pin 7 line sync+.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>3.3V DC power source for image sensor logic.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Power ground for image sensor logic.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Analog pixel data+ (tentative). Raised up to ~3.3V above chassis ground (or roughly 2V above reference base pin analog pixel data-) to indicate brightly lit pixel. Drops to less than 0.1V above reference base for both dark pixels <em><strong>and</strong> overblown pixels</em>. Drops under reference base in the non-data periods at the beginning and end of each scan line.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Analog pixel data- (tentative). Reference base for pin 11 analog pixel data+. Voltage level is roughly 1.0V above chassis ground but fluctuates in sync with analog pixel+ approximately +/- 0.1V.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of this information were inferred from using either a multimeter or an oscilloscope to observe voltage levels on each pin, while the printer is either going through its startup sequence or sitting idle. This doesn't tell us which component is responsible for which signal. For example, while pin 11 analog pixel data is certain to come from the sensor bar, this data doesn't tell us if the clock signal on pin 6 comes from the sensor bar or from the printer main board. That's just the first of <a href="https://newscrewdriver.com/2023/12/10/canon-pixma-mx340-scanner-image-sensor-reuse-challenges/">many barriers against repurposing this sensor bar</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

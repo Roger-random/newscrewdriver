@@ -1,0 +1,50 @@
+---
+layout: post
+title: Compass Web App Browser Variations
+date: 2023-04-11 12:30:00.000000000 +00:00
+type: post
+post_id: '36176'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36104'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681332066
+  _publicize_job_id: '83113458999'
+  timeline_notification: '1681241406'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/11/compass-web-app-browser-variations/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once deployed to GitHub Pages (made easier by <a href="https://newscrewdriver.com/2023/04/10/compass-web-app-project-gets-own-repository/">moving the project into its own GitHub repository</a>) I could easily try my web app across more devices and browsers. This compass web app only really works on my Android devices with magnetometers, but the page would come up with placeholder data on every modern browser. And naturally, there are variations between browsers. The differences on iOS Safari weren't surprising, but I was surprised at the differences between Microsoft Edge and Google Chrome as they both purportedly used the same Chromium engine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first and most obvious difference are update rates. All browsers would show compass needle moving in response to either real or placeholder data, but the update rate varies. On Microsoft Edge, the update rate would be on par with Chrome but would drastically slow down after several (~5) seconds without user interactivity. If I touch the needle, response rate picks back up for another few seconds before slowing down. I suspect this is a consequence of aggressive throttling of animation and/or timers in the goal of saving power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another difference are in page updates. One example on my is "<code>{{magX | number:'1.2-2'}}</code>" which is supposed to print the value of <code>magX</code> property to <a href="https://angular.io/api/common/DecimalPipe">two decimal point precision</a>. (Y and Z are handled the same way.) I update magX every time data is received, but that isn't necessarily shown on screen. Chrome shows as expected but Edge never updates. There's something different about how Angular runs its change detection between these two browsers. Until I understand how to work within the system, I can work around the problem by manually calling <code><a href="https://angular.io/api/core/ChangeDetectorRef#detectchanges">ChangeDetectorRef.detectChanges()</a></code> to notify that new numbers need to be picked up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I had portrait mode working more or less as intended, I started looking into landscape mode and found... uh... <a href="https://newscrewdriver.com/2023/04/12/compass-web-app-in-landscape-exposed-browser-bugs/">many more learning opportunities</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

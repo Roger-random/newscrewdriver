@@ -1,0 +1,82 @@
+---
+layout: post
+title: Sleuthing NEC VSL0010-A VFD Control Pinout
+date: 2019-04-02 13:33:25.000000000 +00:00
+type: post
+post_id: '18224'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Teardown
+tags:
+- Pinout
+- SGVHAK
+- VFD
+meta:
+  _oembed_bd6db28999cb182351632f63bfbf9ac6: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_49c3e5bf78651afd0fab8ae539256230: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_49c3e5bf78651afd0fab8ae539256230: '1554237208'
+  timeline_notification: '1554237208'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29326694745'
+  _oembed_853b8fcae57d6a96e0f2550710a6903c: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_853b8fcae57d6a96e0f2550710a6903c: '1554237210'
+  _oembed_time_bd6db28999cb182351632f63bfbf9ac6: '1554237210'
+  _oembed_deb398f7c094a1f5accde7e869cd706f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_deb398f7c094a1f5accde7e869cd706f: '1554237333'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '18233'
+  _oembed_d8784a5fa69d8bb9f07e8b2ca60e30b9: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<a href="https://en.wikipedia.org/wiki/Vacuum_fluorescent_display">Vacuum Fluorescent Display</a> (VFD) technology used to be the dominant form of electronics display. But once LEDs became cheap and bright enough, they've displaced VFDs across much of the electronics industry. Now a VFD is associated with vintage technology, and its distinctive glow has <a href="https://hackaday.com/2019/03/29/a-scratch-built-vfd-clock-with-inner-beauty/">become a novelty in and of itself</a>. Our star attraction today served as display for a timer and tuner unit that plugs into the tape handling unit of a <a href="https://global.canon/en/c-museum/product/colvc306.html">Canon VC-10 camera</a> to turn it into a <a href="https://en.wikipedia.org/wiki/Videocassette_recorder">VCR</a>. A VFD is very age-appropriate for a device that tunes into now-obsolete NTSC video broadcast for recording to now-obsolete VHS magnetic tape.</p>
+<p>Obviously, in this age of on-demand internet streaming video, there's little point in bringing the whole system back to life. But the VFD appears to be in good shape, so in pursuit of that VFD glow, salvage operation began at <a href="https://www.meetup.com/SGVTech/events/xknvdlyzgbcb/">a SGVHAK meetup</a>.</p>
+<p><img class=" size-full wp-image-18231 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-before.jpg" alt="NEC VSL0010-A VFD Before" width="1600" height="900"></p>
+<p>We have the luxury of probing it while running, aided by the fact we can see much of its implementation inside the vacuum chamber through clear glass. The far right and left pins are visibly connected to filament wires, probing those pins saw approximately 2.5V AC. We can also see eight grids, each with a visible connection to its corresponding pin. That leaves ten pins to control elements within a grid. Probing the grid and element pins indicate they are being driven by roughly 30V DC. (It was hard to be sure because we didn't have a constant-on element to probe.... like all VCRs, it was blinking 12:00)</p>
+<p>This was enough of a preliminary scouting report for us to proceed with desoldering.</p>
+<p><img class=" size-full wp-image-18240 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-unsoldering.jpg" alt="NEC VSL0010-A VFD Unsoldering" width="1600" height="900"></p>
+<p>Predating <a href="https://hackaday.com/2019/03/26/ask-hackaday-get-the-lead-out-or-not/">RoHS solder that can be finicky</a>, it was quickly freed.</p>
+<p><img class=" size-full wp-image-18232 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-freed.jpg" alt="NEC VSL0010-A VFD Freed" width="1600" height="900"></p>
+<p>Now we can see its back side and, more importantly, its part number which immediately went into a web search on how to control it.</p>
+<p><img class="alignnone size-full wp-image-18239" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-rear.jpg" alt="NEC VSL0010-A VFD Rear" width="1600" height="780"></p>
+<p>The top hit on this query is <a href="https://electronics.stackexchange.com/questions/211909/how-do-i-use-this-vfd-from-futaba-with-an-arduino">this StackExchange thread</a>, started by someone who has also salvaged one of these displays and wanted to get it up and running with an Arduino. Sadly the answers were unhelpful and not at all supportive, discouraging the effort with "don't bother with it".</p>
+<p>We shrugged, undeterred, and continued working to figure it out by ourselves.</p>
+<p><img class="alignnone size-full wp-image-18233" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-front.jpg" alt="NEC VSL0010-A VFD Front" width="1600" height="652"></p>
+<p>If presented with an unknown VFD in isolation, the biggest unknown would have been what voltage levels to use. But since we have that information from probing earlier, we could proceed with confidence we won't burn up our VFD. We powered up the filament, then powered up one of the pins visibly connected to a grid and touched each of the remaining ten non-grid pins to see what lights up. For this part of the experiment, we got our 32V DC from the <a href="https://wordpress.com/post/newscrewdriver.com/18242">power supply unit of a HP inkjet printer</a>.</p>
+<p>We then repeated the ten element probe for each grid, writing down what we've found along the way.</p>
+<p><img class="alignnone size-full wp-image-18241" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-annotated-1.jpg" alt="NEC VSL0010-A VFD Annotated" width="1600" height="652"></p>
+<p>We hope to make use of this newfound knowledge in a future project, and we hope this blog post will be found by someone in the future and help them return a VFD to its former glowing glory.</p>
+<p>https://twitter.com/MLE_Online/status/1112915301870391297</body></html></p>

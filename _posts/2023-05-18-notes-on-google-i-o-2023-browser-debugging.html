@@ -1,0 +1,63 @@
+---
+layout: post
+title: 'Notes on Google I/O 2023: Browser Debugging'
+date: 2023-05-18 12:30:00.000000000 +00:00
+type: post
+post_id: '36732'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Events
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36696'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684537457
+  _publicize_job_id: '84164236283'
+  timeline_notification: '1684438209'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/18/notes-on-google-i-o-2023-browser-debugging/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was fun to see which <a href="https://newscrewdriver.com/2023/05/17/notes-on-google-i-o-2023-advanced-web-browser-capabilities/">advanced browser capabilities</a> Google wanted to call out in their I/O conference, but advanced capabilities or not, developers need to test and debug code. I checked into a few sessions about Chrome Developer Tools.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/58079bc3-b0bd-44e1-94ff-08589997014a/">Learn how Chrome DevTools features help developers debug effectively</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>That title is a pretty big promise covering a huge area, so naturally a 14-minute video couldn't deliver everything. The title page showed a more modest and accurate title "<em>Reduce debugging friction</em>."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I noticed when I started working with web frameworks like Angular and Vue is that I can't find the code I wrote anywhere. Part of this is expected: TypeScript is not directly executed but translated into JavaScript for the browser. But that translated code is buried within a lot of framework code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To make debugging easier, Chrome team recognizes the reality that what the developer sees in the browser debug window has little resemblance to what they wrote. C developers know well that when things crash into the debugger we'd be looking at optimized assembly code and not our C source code. Debug symbols allow C code to be matched up against their assembly code output, and similarly browsers support "Source Maps" to provide this correlation between "Authored View" (the code developer wrote) and "Deployed View" (the code being executed by browser.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few other browser debug features were covered: the ability to mark code to be ignored, useful for decluttering our screen of library code we don't care about at the moment. Native code debugging concepts like conditional breakpoints are also available in browser debugger. Another breakpoint derivative are "<a href="https://developer.chrome.com/docs/devtools/javascript/breakpoints/#log-loc">logpoints</a>" which has all the usefulness of adding <code>console.log()</code> into our code without having to modify our code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was a brief blurb about a recorder function, whose output can then be used by <a href="https://developer.chrome.com/docs/puppeteer/">Puppeteer</a>. I thought this was a great way to document steps to reproduce bugs, making it much less ambiguous than writing text in a bug ticket. A little bit later, I realized this also meant we could incorporate those recorded steps into an automated regression test. Now <strong><em>that </em></strong>would be awesome. And speaking of browser automation...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/01f69550-8827-4092-94fe-e81de9a04c8a/">WebDriver BiDi: The future of cross-browser automation</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This presentation gave us a quick overview of browser automation past, present, and future. The future being represented by the <a href="https://github.com/w3c/webdriver-bidi/blob/master/roadmap.md">WebDriver BiDi</a> browser automation protocol. Still in development, but on track to be a cross-browser solution of the future. (Not just <a href="http://bit.ly/webdriver-bidi">on Chrome</a>.) I've barely dabbled in Selenium, but I knew enough to understand bidirectional communication between the test host and browser under test will open up a lot of benefits to make tests more consistent and waste less time waiting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/7b4402b2-d61d-4d97-9e31-c79e4f75c394/">Build better forms</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's another session with a title far more grandiose than the actual topic. I have an alternate title: "How to make your site work with Chrome Autofill." There's more than Google's self-interest at hand, though. A form crafted so a Chrome autofill recognizes its semantics also means the browser accessibility tools would understand it as well. Two birds, one stone. Most of this session boils down to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete">following standardized form autocomplete hints</a>, and <a href="http://goo.gle/devtools-autofill">Chrome developer tools</a> to help you get there. I've barely done any web development and I've already learned a dislike for how complex and annoying forms can be. Every framework tries to make forms less annoying and I'm sure Angular has something to offer there but first I want to see <a href="https://newscrewdriver.com/2023/05/19/notes-on-google-i-o-2023-angular-signals/">what's new and shiny in Angular</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

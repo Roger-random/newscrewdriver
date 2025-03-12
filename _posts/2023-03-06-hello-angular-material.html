@@ -1,0 +1,67 @@
+---
+layout: post
+title: Hello Angular Material
+date: 2023-03-06 12:30:00.000000000 +00:00
+type: post
+post_id: '35516'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35536'
+  _publicize_job_id: '82082178983'
+  timeline_notification: '1678134633'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1678224798
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/06/hello-angular-material/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I made some <a href="https://newscrewdriver.com/2023/03/05/first-css-exercise-with-angular-tour-of-heroes-tutorial/">small layout and styling changes to Angular Framework's "Tour of Heroes" tutorial app</a>. It looked a little better to me, but those changes didn't stick around for long. They were merely a HTML/CSS warmup exercise and quickly replaced by the next activity: converting the app to use <a href="https://material.angular.io/">Angular Material component library</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I don't necessarily agree with everything in Google's Material Design, for better or worse Google's reach meant most users would already be familiar with them. The option to utilize Angular Material component library was, in fact, the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/10/09/siren-call-of-angular-material/" target="_blank">main motivation for me to learn Angular</a>. Now that I'm finally at this point, I eagerly opened up their <a rel="noreferrer noopener" href="https://material.angular.io/guide/getting-started" target="_blank">Getting Started</a> page and got to work. The instructions were fine and putting the library to use was about as easy as I can reasonably ask for. There were two items of note:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Import</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was taught right up front on "Displaying a component" section of Getting Started page, but I didn't grasp its significance at first. Each Angular Material component is packaged in a module that we have to import before use, making every component (and associated overhead) an opt-in decision. This is not illustrated by their live examples on <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/10/11/stackblitz-a-web-app-for-building-web-apps/" target="_blank">Stackblitz</a>, because those examples imported <em>everything. </em>I wasted time trying to sort out exactly what was important until I figured out that they tell you in the "API" section of each component's documentation. Example: the first line of <a rel="noreferrer noopener" href="https://material.angular.io/components/button/api" target="_blank">Material Button API page</a> is:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>import {MatButtonModule} from '@angular/material/button';</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">And Reload</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After importing the module as per API documentation, I could use that component, but it didn't look right. Most of the behaviors were there, but appearance-wise it didn't look quite right. Style bits were missing here and there, the most visible aspect was that I didn't see any theme colors. We're supposed to be able to select from "Primary", "Accent" or "Warn" colors but the control looked plain despite setting color to one of those options.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hunting on answers from Stack Overflow found a lot of information about defining and using custom themes, which I don't care about (yet). But buried among custom theming information was my answer: after importing a component, the development server launched by the "<code>ng serve</code>" command would only pick up partial functionality. There was nothing wrong with my code. To pick up everything, including theme colors, I had to stop the running instance of "<code>ng serve</code>" and launch it again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Looks Great! But...</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Getting this far meant I could fold several Angular Material controls into my "Tour of Heroes" app. Using Angular Material controls meant I could delete a lot of CSS associated with custom styling of the tutorial. Utilizing this component library in my own projects should mean less fussing with CSS for styling. This is a great benefit as I don't consider myself any good at user interface design. But this ease has a tradeoff in <a href="https://newscrewdriver.com/2023/03/07/angular-material-impact-on-download-size/">larger download size</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/angular-tour-of-heroes" target="_blank">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

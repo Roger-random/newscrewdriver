@@ -1,0 +1,86 @@
+---
+layout: post
+title: Landline Answering System Handset LCD (CL84209)
+date: 2022-04-30 12:30:00.000000000 +00:00
+type: post
+post_id: '29990'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29994'
+  _publicize_job_id: '72006965310'
+  timeline_notification: '1651347033'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/30/landline-answering-system-handset-lcd-cl84209/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>For years I've been salvaging LCD from electronics I took apart for fun, and I'm finally getting around to playing with them. The first example was <a href="https://newscrewdriver.com/2022/04/29/mystery-desk-phone-lcd/">too much of a mystery for this beginner to tackle</a>, so I set it aside and dug up another unit from my salvage pile.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29996,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-pcb-front.jpg?w=1024" alt="" class="wp-image-29996"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This LCD is still attached to its circuit board, which gives me more information to work with. Most everything else are gone, but I can see clear indications of a keypad underneath the screen. Two large metal contacts at the bottom hint at a rechargeable device.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29998,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-pcb-back.jpg?w=1024" alt="" class="wp-image-29998"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A sticker on the back side gave me definitive information of "Model#: CL84209". That quickly led to a long-discontinued product: a landline phone system that has an answering machine built-in the base station and supports multiple remote wireless handsets we can place elsewhere in the house.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30000,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-product-packaging.jpg?w=1024" alt="" class="wp-image-30000"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Amusingly, the best picture I found was from <a rel="noreferrer noopener" href="https://www.ebay.com/p/81996138" target="_blank">an eBay listing</a> of its product box. The circuit board on hand is consistent with wireless handsets visible in that picture. Since I was on eBay, the "related items" list included some replacement batteries for this handset. It appears to be two NiMH AAA-sized battery cells in series, which preemptively answered what would have been my next question for powering it up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29994,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-lcd-alive-and-show-connecting.jpg?w=1024" alt="" class="wp-image-29994"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I connected two rechargeable NiMH AA cells in series and wired that to the handset's battery terminals. After a few seconds for system startup, I'm rewarded with an active and running LCD displaying "CONNECTING..." as this handset makes its futile attempt to connect to its base station. This is a pretty good starting point. Leaving the phone running, I probed the nine pins exposed above the display. Lacking official documentation, I arbitrarily numbered them left to right:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30003,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/att-cl84209-lcd-pin-numbering.jpg?w=960" alt="" class="wp-image-30003"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Their voltage readings relative to battery negative were:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>3.33V rock solid.</li>
+<li>3.1 - 3.3 V, jumps around at semi regular intervals.</li>
+<li>2.9 - 3.3 V, also jumping around.</li>
+<li>0V</li>
+<li>3.2 - 3.3 V</li>
+<li>6.55 V</li>
+<li>4.92 - 4.94 V</li>
+<li>1.66 V</li>
+<li>5.59 V</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>From this information I inferred that there are boost converters on this circuit board to deliver these voltages from the 2.4V nominal power of a pair of NiMH batteries. Pin 4 is the only candidate for GND pin. The steady 3.33V of pin 1 makes it the best candidate for Vcc, with the runner-up candidate of pin 5 which is also 3.33V but not as steady. Pins 6 and 9 were unexpected, I hadn't considered the possibility a LCD might need to be fed multiple voltage planes, but it sure looks that way right now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then switched to my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/01/22/dso-138-oscilloscope-kit-by-jye-tech/" target="_blank">cheapo single-channel oscilloscope</a>, which is no longer reliable in voltage ranges but still useful for visualizing waveforms. Pins 2 and 3 receive bursts of square waves that indicate data pins, explaining their voltage variation. Pins 7 and 8 have regular square waves that are consistent with clock pins, but since I have just a single channel oscilloscope, I don't know how the two signals relate to each other. It is weird to me that they show up as two very different voltage ranges on the voltmeter. The rest of the pins didn't look very interesting under an oscilloscope in the ~millisecond range, though it's possible they are changing either much slower or faster than that time range or need other conditions to change.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I guess the next thing to do is to connect at least pins 2 and 3 to a logic analyzer to dump the raw data, but I have no confidence I can make heads or tails of the raw bit stream. I see no identifying markers on this particular LCD, either. It's possible some information is blocked by the circuit board, but I'm not yet ready to risk destruction of this LCD pulling it off this circuit board. Bouncing ideas off Emily Velasco, she called attention to the fact that both this LCD (on a circuit board) and the earlier LCD (without a circuit board) both had nine interface pins. Maybe there is a popular common LCD controller with nine interface pins? Time for <a href="https://newscrewdriver.com/2022/05/01/hobbyist-friendly-lcd-controllers/">a bit of research</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

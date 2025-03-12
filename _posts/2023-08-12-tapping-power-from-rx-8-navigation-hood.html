@@ -1,0 +1,76 @@
+---
+layout: post
+title: Tapping Power from RX-8 Navigation Hood
+date: 2023-08-12 12:30:00.000000000 +00:00
+type: post
+post_id: '38334'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- rx8nav
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38342'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1691958392
+  _publicize_job_id: '86586956037'
+  timeline_notification: '1691868622'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/08/12/tapping-power-from-rx-8-navigation-hood/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I figured out the navigation hood actuator position <a href="https://newscrewdriver.com/2023/08/11/navigation-hood-actuator-electrical-test/">needs to stay within an expected range</a>, I got things back up and running enough to perform a reset and erase all of my personal information from the ancient factory navigation computer of my 2004 Mazda RX-8. Now I can focus on the wireless CarPlay/Android Auto receiver I intend to install in its place, and the first order of business is finding a power source.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":38339,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/t86mp5-power-02-power-plug-will-not-fit-through-axle.jpg?w=1024" alt="" class="wp-image-38339"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The receiver came with a cigarette lighter power adapter, it even has a right-angle USB type C connector. But the connector is too large to fit through the hood hinge. Besides, running the power wire all the way from the nearest cigarette lighter socket feels inelegant. The existing navigation hood mechanism has access to power, I should tap into that instead!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38341,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/t86mp5-power-06-lcd-unit-connector.jpg?w=1024" alt="" class="wp-image-38341"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Probing the LCD assembly connectors, I first found all the ground/shield wires. Using that as a reference, I could measure the rest of the wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38346,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/mazda-rx8-j3-03-lcd-unit-connector.jpg?w=1024" alt="" class="wp-image-38346"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I confirmed the two expected power supply pins: 1Q has power as long as the battery has power, and 1O is only powered on when the key is in the ACC or ON positions. I don't know of any reason why the receiver needs power when the car is shut off, so I'll tap into 1O for accessory power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38340,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/t86mp5-power-04-beheaded-usb-c-cable.jpg?w=1024" alt="" class="wp-image-38340"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the receiver side, I cut off the USB-A end of my just-purchased <a href="https://amzn.to/3rWIgMR">right-angle USB-C extension cable</a> (*). This cut-off end could be easily routed through the hole in the middle of the hinge. A quick test showed this receiver is happy with +5V on the red wire and ground on the black wire, no <a href="https://newscrewdriver.com/2022/08/30/resistors-negotiate-5v-power-in-usb-type-c/">voltage dividing resistors</a> necessary to negotiate power delivery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38342,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/t86mp5-power-08-buck-converter-installed-on-side.jpg?w=1024" alt="" class="wp-image-38342"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sitting between those two ends is a <a href="https://amzn.to/3qff3fu">LM2596 buck converter module</a> (*) to convert ACC power (~11V-14.4V) down to 5V. It is protected by a short length of clear <a href="https://amzn.to/3OQdu1b">heat-shrink tubing</a> (*) and mounted to the side of the housing with double-sided tape. The wires are kept in place with some <a href="https://amzn.to/45avfxs">adhesive-mounted zip ties</a> (*) hopefully reducing metal fatigue from a car's normal high-vibration environment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38343,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/t86mp5-power-10-buck-converter-tricky-to-fit.jpg?w=1024" alt="" class="wp-image-38343"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I stuck it to the side because I knew there was enough room there under the dash, but I forgot to account for installation opening which is narrow and would block a straightforward install. But, if I carefully tilt the assembly off to one side, I can make <em>just</em> enough room to slide the buck converter past this ledge. This was <a href="https://newscrewdriver.com/2023/08/13/receiver-mechanical-installation-in-navigation-hood/">good enough for the first pass</a>. If it doesn't work out, I will have to reposition the buck converter and reroute the wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

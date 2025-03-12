@@ -1,0 +1,77 @@
+---
+layout: post
+title: 'ROS Notes: Dynamixel Servos'
+date: 2018-08-01 09:00:13.000000000 +00:00
+type: post
+post_id: '16535'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _oembed_a34b5759e64a98d916e37724cfa10093: "{{unknown}}"
+  _oembed_711cf866a5a9dbdaf1abcbba5099b177: "{{unknown}}"
+  _oembed_e832fd44c55ff6d1b8b3d1348041418b: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_4c450361c0b177b80ee2232f0f9fb692: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">The
+    Open Source Rover Project ⚙️<br>Want to build your own low-cost rover model? Construct
+    a mini robot inspired by <a href="https://twitter.com/MarsCuriosity?ref_src=twsrc%5Etfw">@MarsCuriosity</a>
+    with our plans and off-the-shelf parts: <a href="https://t.co/qraedH6dHa">https://t.co/qraedH6dHa</a>
+    <a href="https://t.co/XGyAVtNs00">pic.twitter.com/XGyAVtNs00</a></p>&mdash; NASA
+    JPL (@NASAJPL) <a href="https://twitter.com/NASAJPL/status/1024370356738437125?ref_src=twsrc%5Etfw">July
+    31, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  timeline_notification: '1533139444'
+  _publicize_job_id: '20627209029'
+  _oembed_time_4c450361c0b177b80ee2232f0f9fb692: '1533226652'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/01/ros-notes-dynamixel-servos/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16539 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/07/serialservo-dynamixel.jpg" alt="serialservo-dynamixel" width="1600" height="500">Reading over the list of links on <a href="http://wiki.ros.org/ROS/Tutorials">ROS wiki tutorials page</a>, one item caught my attention: a link to <a href="http://wiki.ros.org/dynamixel_controllers/Tutorials">Dynamixel Tutorials</a>. The name Dynamixel wouldn't have meant anything to me when I looked at ROS a year ago, but I recognize it now due to my research for components to build <a href="https://newscrewdriver.com/category/projects/sawppy-the-rover/">Sawppy the Rover</a>. Robotis Dynamixel is a <a href="https://hackaday.com/2018/07/05/wrangling-rc-servos-becoming-a-hassle-try-serial-bus-servos/">serial bus servo</a> and as the industry veteran, it has the most software support which I knew included a <a href="https://github.com/ROBOTIS-GIT/DynamixelSDK">factory SDK with support for ROS</a>.</p>
+<p>As I got into the tutorial, though, a few inconsistencies stood out as odd. Eventually I realized these tutorials were written by someone with no relation to Robotis, talking about a ROS control library with no relation to the Robotis Dynamixel SDK. According to the <a href="https://github.com/arebgun/dynamixel_motor">Github repository</a> for the library, it was last updated eighteen months ago. It aligned with ROS 'K' release (Kinetic Kame) and hasn't been updated for the two following releases 'L' (Lunar Loggerhead) or 'M' (Melodic Morenia)</p>
+<p>This is pretty common in the world of open source... something is interesting so multiple parties each present their solution. The fact "anybody can do it" is both an upside and downside, depending on the situation. I should be more used to it by now but it still catches me off guard. This library also shows another downside: when the author loses interest for whatever reason, the code stops getting maintained.</p>
+<p>Here's its package information:</p>
+<pre>Package: ros-kinetic-dynamixel-controllers
+Version: 0.4.1-0xenial-20180516-150315-0800
+Priority: extra
+Section: misc
+Maintainer: Antons Rebguns &lt;arebgun@gmail.com&gt;&lt;/arebgun@gmail.com&gt;
+Installed-Size: 760 kB
+Depends: ros-kinetic-actionlib, ros-kinetic-control-msgs, ros-kinetic-diagnostic-msgs, ros-kinetic-dynamixel-driver, ros-kinetic-dynamixel-msgs, ros-kinetic-rospy, ros-kinetic-std-msgs, ros-kinetic-trajectory-msgs
+Homepage: http://ros.org/wiki/dynamixel_controllers
+Download-Size: 56.0 kB
+APT-Sources: http://packages.ros.org/ros/ubuntu xenial/main amd64 Packages
+Description: This package contains a configurable node, services and a spawner script to start, stop and restart one or more controller plugins.
+Reusable controller types are defined for common Dynamixel motor joints. Both speed and torque can be set for each joint. This python package can be used by more specific robot controllers and all configurable parameters can be loaded via a yaml file.</pre>
+<p>In contrast to this "dynamixel-controllers", we have "dynamixel-sdk" whose maintainer is listed with an @robotis.com e-mail address, so it looks pretty official. According to <a href="https://answers.ros.org/question/261887/which-dynamixel-package-shoud-be-used/">this post on ROS Answers forum</a>, Robotis intends to continue supporting ROS with their factory SDK.</p>
+<pre>Package: ros-kinetic-dynamixel-sdk
+Version: 3.5.4-0xenial-20180308-062313-0800
+Priority: extra
+Section: misc
+Maintainer: Pyo &lt;pyo@robotis.com&gt;
+Installed-Size: 293 kB
+Depends: libc6 (&gt;= 2.17), libgcc1 (&gt;= 1:3.0), libstdc++6 (&gt;= 4.1.1), ros-kinetic-roscpp
+Homepage: http://wiki.ros.org/dynamixel_sdk
+Download-Size: 38.5 kB
+APT-Sources: http://packages.ros.org/ros/ubuntu xenial/main amd64 Packages
+Description: This package is wrapping version of ROBOTIS Dynamxel SDK for ROS.
+The ROBOTIS Dynamixel SDK, or SDK, is a software development library that provides Dynamixel control functions for packet communication. The API is designed for Dynamixel actuators and Dynamixel-based platforms.</pre>
+<p>Though Sawppy ended up not using Dynamixel servos, my research into the devices gave me enough <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/development/SGVHAK_Rover/dynamixel_wrapper.py">familiarity with their control protocol</a> that I think the Dynamixel SDK will be a good precedent to follow when I start looking into creating my own ROS controller nodes.</p>
+<p>While I'm not ready to embark on that project just yet, I thought it might be good to take a quick look. This attempt failed but the failure became its own ROS learning adventure.</p>
+<p>I had installed ROS 'L' distribution (Lunar Loggerhead) and the Robotis SDK supported 'K' and 'M', skipping over 'L'. Why is that? My effort to understand is the story of the next blog.</p>
+<p> </p>
+<p> </p>
+<p> </body></html></p>

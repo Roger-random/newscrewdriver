@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'Sawppy Odometry Candidate: Flow Breakout Board'
+date: 2019-01-30 13:30:18.000000000 +00:00
+type: post
+post_id: '17715'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+- TIL
+- Window Shopping
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1548883830'
+  _publicize_job_id: '27106846612'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/30/sawppy-odometry-candidate-flow-breakout-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>When I <a href="https://newscrewdriver.com/2019/01/12/sawppy-presented-at-january-2019-rssc-meeting/">presented Sawppy the Rover at Robotics Society of Southern California</a>, one of the things I <a href="https://newscrewdriver.com/2019/01/13/sawppy-on-ros-open-problems/">brought up as an open problems</a> is how to determine Sawppy's movement through its environment. Wheel odometry is sufficient for a robot traveling on flat ground like <a href="https://newscrewdriver.com/category/projects/phoebe-turtlebot/">Phoebe</a>, but when Sawppy travels on rough terrain things can get messy in more ways than one.</p>
+<p>In the question-and-answer session some people brought up the idea of calculating odometry by visual means, much in the way a modern optical computer mouse determines its movement on a desk. This is something I could whip up with a downward pointing webcam and open source software, but there are also pieces of hardware designed specifically to perform this task. One example is the PWM3901 chip, which I could experiment using breakout boards like <a href="https://www.tindie.com/products/onehorse/pmw3901-optical-flow-sensor/">this item on Tindie</a>.</p>
+<p>However, that visual calculation is only part of the challenge, because translating what that camera sees into a physical dimension requires one more piece of data: the distance from the camera to the surface it is looking at. Depending on application, this distance might be a known quantity. But for robotic applications where the distance may vary, a distance sensor would be required.</p>
+<p>As a follow-up to my presentation, <a href="https://groups.yahoo.com/neo/groups/RSSC-list">RSSC's online discussion</a> forum brought up the <a href="https://www.bitcraze.io/flow-breakout/">Flow Breakout Board</a>. This is an interesting candidate for helping Sawppy gain awareness of how it is moving through its environment (or failing to do so, as the case may be.) A small lightweight module that puts the aforementioned PWM3901 chip alongside a VL53L0x distance sensor.</p>
+<p><img class=" size-full wp-image-17716 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/flow_breakout_585px-1-e1548640148683.jpg" alt="flow_breakout_585px-1" width="585" height="395"></p>
+<p>The breakout board only handles the electrical connections - an external computer or microcontroller will be necessary to make the whole system sing. That external module will need to communicate with PWM3901 via SPI and, separately, VL53L0x via I2C. Then it will need perform the math to calculate actual X-Y distance traveled. This in itself isn't a problem.</p>
+<p>The problem comes from the fact a PWM3901 was designed to be used on small multirotor aircraft to aid them in holding position. Two design decisions that make sense for its intended purpose turns out to be a problem for Sawppy.</p>
+<ol>
+<li>This chip is designed to help hold position, which is why it was not concerned with knowing the height above surface or physical dimension of that translation: the sensor was only concerned with detecting movement so the aircraft can be brought back to position.</li>
+<li>Multirotor aircraft all have built-in gyroscopes to stabilize itself, so they already detect rotation about their Z axis. Sawppy has no such sensor and would not be able to calculate its position in global space if it doesn't know how much it has turned in place.</li>
+<li>Multirotor aircraft are flying in the air, so the designed working range of 80mm to infinity is perfectly fine. However, Sawppy has only 160mm between the bottom of the equipment bay and nominal floor distance. If traversing over obstacles more than 80mm tall, or rough terrain bringing surface within 80mm of the sensor, this sensor would become disoriented.</li>
+</ol>
+<p>This is a very cool sensor module that has a lot of possibilities, and despite its potential problems it has been added to the list of things to try for Sawppy in the future.</body></html></p>

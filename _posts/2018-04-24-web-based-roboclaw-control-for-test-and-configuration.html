@@ -1,0 +1,39 @@
+---
+layout: post
+title: Web-Based RoboClaw Control For Test and Configuration
+date: 2018-04-24 19:22:23.000000000 +00:00
+type: post
+post_id: '15823'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1524622947'
+  _publicize_job_id: '17157909761'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/24/web-based-roboclaw-control-for-test-and-configuration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The first step in the journey to a HTML-based rover UI is to prove we can write something in Flask to allow a web browser to send command to a RoboClaw motion controller. The next step is to build something useful. Early on in SGVHAK rover project, that meant a technical tool to configure and test motor control parameters.</p>
+<p>The goal of this tool is to simplify tasks done earlier via typing RoboClaw API commands into the interactive Python shell. As part of proving the browser interface concept, we'll also try to make the interface usable from a touchscreen device. More point-and-click, less typing on a keyboard. We're not putting too much effort into making the user experience pretty and polished, though. This is an engineering tuning and testing tool, not an end-user tool.</p>
+<p>The advantages of using a web framework immediately paid off in the ease of building sets of motor controls. It allowed rapidly iterating through ideas to find the feature set that would be useful and discarding features that are not. There's little wasted effort as we're not worried about making things look good and are OK with primitive web 1.0 forms.</p>
+<p>One downside is not the fault of a web framework, it is more a consequence of trying to fit a square peg in a round hole. Web apps are fundamentally focused on supporting large numbers of users, and here we're really only concerned about controlling a single resource: the RoboClaw. Flask is built around some patterns intended to help developers write code that scales to high number of users &amp; sessions. But in the context of this single-user, single-session usage, such patterns sometimes got in the way.</p>
+<p>Another downside is a web-based interface inherits all the problems of the web. Inputs sent by a client is inherently untrustworthy and must be properly validated before processing. The web framework can help handle some of that with automatic protection of cross-site scripting attacks, but the developer is ultimately responsible for sanitizing the input before processing. In the context of an engineering tool with short expected useful life, it's a problem we can set aside for now.</p>
+<p><img class="aligncenter size-full wp-image-15829" src="https://newscrewdriver.com/wp-content/uploads/2018/01/rovertestconfig.png" alt="RoverTestConfig" width="473" height="899"></p>
+<p>The proof of concept code discussed in this blog post is available on GitHub: <a href="https://github.com/Roger-random/RogerPiBot/blob/master/PiBotBrain/testconfig.py">testconfig.py</a> under <a href="https://github.com/Roger-random/RogerPiBot">https://github.com/Roger-random/RogerPiBot</a></p>
+<p></body></html></p>

@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Roboclaw ROS Driver: Encoder Ticks Per Meter Of Travel'
+date: 2018-09-15 09:00:50.000000000 +00:00
+type: post
+post_id: '16794'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- Roboclaw
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22177405501'
+  timeline_notification: '1537027759'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/15/roboclaw-ros-driver-encoder-ticks-per-meter-of-travel/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">Now that Phoebe has taken physical form (imperfect as a first draft tends to be) it's time to put together software necessary to run it. We've already previously established <a href="https://newscrewdriver.com/tag/neato/">how to use the Neato LIDAR in ROS</a>, so now focus turns to propulsion control via Roboclaw motor controllers. On their <a href="http://www.basicmicro.com/Roboclaw-2x7A-Motor-Controller_p_13.html">product information page</a>, Roboclaw manufacturer linked to <a href="https://github.com/sonyccd/roboclaw_ros">this Github repository</a> with the label "Robot Operating System Driver". So obviously that's where I should start.</p>
+<p>I had to look through this code earlier to learn "Motor 1" of the Roboclaw should be the right hand motor and "Motor 2" the left, but up to this point I've only ran this code enough to verify the correct motors turn in the correct direction. Now that I have to configure the driver parameter details to match my physical robot.</p>
+<p>A critical parameter is <code>ticks_per_meter</code>, the number of encoder counts that transpire when the robot travels a meter. This encapsulates multiple pieces of information about a particular mechanical implementation: things like motor gear ratio and wheel diameter. This count is required for accurate velocity control, since velocity is specified in meters per second. It is also obviously important to calculate robot odometry, because Roboclaw tracks distance in encoder counts and ROS expects position information in meters.</p>
+<p>To test this, I send a command "travel forward at 0.1 meters per second" for one second of time. Configuration is successful when this command makes Phoebe travel 10 centimeters, with corresponding confirmation in output odometry calculations. First I ran the test with default parameters, which resulted in a little over 1 centimeter of travel implying my robot's <code>ticks_per_meter</code> is almost ten times that of default.</p>
+<p>I then re-ran the test with a much higher value for <code>ticks_per_meter</code> parameter and the travel distance didn't change. Then I tried even larger values, and smaller values, and no matter what the robot kept going forward the same amount. After I double checked that I was spelling my parameter correctly, I went looking into the code.</p>
+<p>Thankfully the author had included a line to output parameter to ROS debug log system. (<code>rospy.logdebug("ticks_per_meter %f", self.TICKS_PER_METER)</code>) Once I found this debug message in the log, I was able to confirm that the default value was always used no matter what value I passed in.</p>
+<p>Backtracking through the code, I found the cause: The call to retrieve parameter value has a typo, so it is looking for parameter <code>tick_per_meter</code> (singular tick) instead of the intended <code>ticks_per_meter</code> (plural ticks.) Once I added the missing '<code>s</code>', Phoebe started moving the correct distance. Once verified I <a href="https://github.com/sonyccd/roboclaw_ros/pull/15">submitted this fix via a pull request</a>.</body></html></p>

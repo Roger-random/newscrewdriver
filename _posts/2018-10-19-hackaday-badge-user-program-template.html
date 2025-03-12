@@ -1,0 +1,38 @@
+---
+layout: post
+title: Hackaday Badge User Program Template
+date: 2018-10-19 09:00:17.000000000 +00:00
+type: post
+post_id: '17014'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539964832'
+  _publicize_job_id: '23367605156'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/19/hackaday-badge-user-program-template/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>As part of the retro computing theme, the Hackaday Badge offers a <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade/log/146234-hackaday-basic-interpreter">BASIC interpreter</a> and an <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade/log/146226-cpm-on-badge-quick-guide">emulated Z80 computer running CP/M</a>. However, there's also provision for people who want to get closer to the hardware. This took the form of a "User Program" option on the main menu, which points to <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/user_program.c">a sample C program</a> for modification and experimentation. This C program has access to all the badge system infrastructure utilized by the aforementioned BASIC interpreter and Z80 emulation.</p>
+<p>Since I had the luxury of a badge on hand, the easy thing to do first is to launch the sample program and see what it does. I can see some text printed on screen, and a prompt for a key press. Once I pressed a key (no need to hit ENTER) the program switched over to a graphics drawing demonstration.</p>
+<p><img class="alignnone size-full wp-image-17015" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-user-program.jpg" alt="Hackaday Badge User Program" width="1024" height="683"></p>
+<p>The colorful patterns cycled through with a very visible scan rate, taking roughly two seconds to update pixels from the top to bottom of the screen. My first reaction was: "Gosh, I hope 0.5 frames per second is not the fastest it can go."</p>
+<p>Once I saw it in action, it was time to dive into <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/user_program.c">the source code</a>. Here the text I saw was drawn using the same commands to draw the main menu: clear screen, set color, set X/Y position, and output text.</p>
+<p>The first bit of novelty was processing the key press. Unlike the menu, the non-blocking keyboard check is interleaved with text drawing commands that could continue executing while waiting for a key press. This will be useful in things like game loops, where we want the action to keep going even if the user hasn't pressed anything.</p>
+<p>After the key press is the drawing demo. It is using a bitwise operator to update screen contents on every pass. And here we have good news: Not only is there an explicit delay in here (there's a code comment that says "less than 1 ms") the screen update is also taking place one pixel at a time, the least efficient method possible.</p>
+<p>So the graphics demo update rate is definitely NOT the fastest the badge can go. How fast can we push it? That's something to test in the near future.</p>
+<p></body></html></p>

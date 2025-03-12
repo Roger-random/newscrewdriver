@@ -1,0 +1,57 @@
+---
+layout: post
+title: 'Notes Of A Three.js Beginner: Color Picker with Raycaster'
+date: 2021-05-14 12:30:00.000000000 +00:00
+type: post
+post_id: '26479'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+- Programming Languages
+tags:
+- Composite Video
+- ESP_8_BIT
+- HTML
+- NTSC
+- RGB332
+- Three.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26547'
+  timeline_notification: '1621020617'
+  _oembed_9274249dd1190d0ece07e7e340cfef93: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">HSV
+    color cylinder with just 8-bit RGB332 colors. Original goal was to see if this
+    can be flattened into a usable color chart in 2D. &quot;Just 256, how hard can
+    it be?&quot; <a href="https://t.co/lsTQJTO6x8">pic.twitter.com/lsTQJTO6x8</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1387533762225860610?ref_src=twsrc%5Etfw">April
+    28, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '58364469976'
+  _oembed_time_9274249dd1190d0ece07e7e340cfef93: '1621063710'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/14/notes-of-a-three-js-beginner-color-picker-with-raycaster/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was pleasantly surprised at how easy it was to use three.js to draw 256 cubes, each representing a different color from the 8-bit RGB332 palette available for use in my composite video out library. <a href="https://newscrewdriver.com/2021/05/13/hsv-color-wheel-of-256-rgb332-colors/">Arranged in a cylinder representing the HSV color model</a>, it failed to give me special insight on how to flatten it into a two-dimension color chart. But even though I didn't get what I had originally hoped for, I thought it looked quite good. So I decided to get deeper into three.js to make this more useful. Towards the end of three.js getting started guide is <a rel="noreferrer noopener" href="https://threejs.org/docs/index.html#manual/en/introduction/Useful-links" target="_blank">a list of Useful Links</a> pointing to additional resources, and I thought the top link <em><a rel="noreferrer noopener" href="https://threejsfundamentals.org/threejs/lessons/threejs-fundamentals.html" target="_blank">Three.js Fundamentals</a></em> was as good of a place to start as any. It gave me enough knowledge to navigate the rest of three.js reference documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After several hours of working with it, my impression is that three.js is a very powerful but not very beginner-friendly library. I think it's reasonable for such a library to expect that developers already know some fundamentals of 3D graphics and JavaScript. From there it felt fairly straightforward to start using tools in the library. But, and this is a BIG BUT, there is a steep drop if we should go off the expected path. The library is focused on performance, and in exchange there's less priority on fault tolerance, graceful recovery, or even helpful debugging messages for when things go wrong. There's not much to prevent us from shooting ourselves in the foot and we're on our own to figure out what went wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first exercise was to turn my pretty HSV cylinder into a color picker, making it an actually useful tool for choosing colors from the RGB332 color palette. I added pointer down + pointer up listeners and if they both occurred on the same cube, I change the background color to that color and display the two-digit hexadecimal code representing that color. Changing the background allows instant comparison to every other color in the cylinder. This functionality requires the <a href="https://threejs.org/docs/#api/en/core/Raycaster">three.js Raycaster class</a>, and the documentation example translated across to my application without much fuss, giving me confidence to tackle the next project: add the ability to switch between HSV color cylinder and RGB color cube, where I <a href="https://newscrewdriver.com/2021/05/15/notes-of-a-three-js-beginner-euler-angles-vs-quaternions/">promptly fell on my face</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center"> [Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/RGB332_color_wheel_three.js" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,48 @@
+---
+layout: post
+title: Examining Neato XV-12 Charging Dock
+date: 2019-03-20 13:30:26.000000000 +00:00
+type: post
+post_id: '17944'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Teardown
+tags:
+- Neato
+- SGVHAK
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '28860388350'
+  timeline_notification: '1553113828'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/20/examining-neato-xv-12-charging-dock/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>When [<a href="https://twitter.com/MLE_Online">Emily</a>] found her Neato vacuum in a thrift store, it had an advantage over mine in that hers still have the company of its charging dock. This is our first look at a Neato robot vacuum charging dock and a chance to determine how one worked. We wanted to have some idea of what to expect when we put it to work charging <a href="https://newscrewdriver.com/2019/03/12/new-batteries-for-thrift-store-neato-vacuums/">newly installed replacement batteries</a>.</p>
+<p><img class="alignnone size-full wp-image-17945" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-charging-dock-front.jpg" alt="Neato charging dock front" width="1600" height="1116"></p>
+<p>The charging dock is designed to sit against a wall. The two metal strips are obviously for supplying power, as they line up with the two metal wires at the back of a Neato vacuum. When the dock is plugged in, a volt meter reports 24V DC between those two plates, top plate positive and bottom plate ground. Each of the plate is mounted on a piece of spring-loaded plastic that allows approximately 3-5mm of horizontal movement. A Neato vacuum can press its wires against these plates to draw power.</p>
+<p>Above the plates is a black plastic window, we expect something behind that window to communicate with the Neato so a hungry robot vacuum knows where to go to feed itself. How does it work? We hypothesized there are infrared emitters and receivers behind that panel, functioning like a consumer electronics remote control, to talk to a Neato vacuum.</p>
+<p><img class="alignnone size-full wp-image-17946" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-charging-dock-back.jpg" alt="Neato charging dock back.jpg" width="1600" height="1042"></p>
+<p><img class="alignright size-medium wp-image-17947" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-charging-power-adapter.jpg?w=134" alt="Neato charging power adapter" width="134" height="300">The orange tab on top looked very inviting as a way to open the dock. A bit of fiddling later, the dock was open. It was surprisingly simple inside. There was an AC power supply delivering 24V DC. It has a standard power cable on the input side, which can be routed to exit either side of the dock. This way a user can swap as needed to point towards the nearest power outlet, and possibly swap for a longer standard power cable if necessary to reach an outlet. The output wires of the power supply lead to the two metal plates, and that's it.</p>
+<p>Surprisingly, there's nothing visible behind the black plastic window. The IR emitters and receivers we expected were absent, as were any circuit boards with components to communicate with the vacuum. So this charger dock location beacon must work passively. Now we're <em><strong>really</strong> </em>interested in finding out more. How does it work?</p>
+<p>The black plastic window were held in place with a few clips. They stood between us and knowledge and were quickly dispatched. We were afraid the black plastic might be glued in place, but fortunately that was not the case and it popped off for us to see underneath.</p>
+<p><img class="alignnone size-full wp-image-17948" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-charging-dock-mystery-panel-demystified.jpg" alt="Neato charging dock mystery panel demystified" width="1600" height="1299"></p>
+<p>We see a pattern laid out with two types of surfaces. The white segments are highly reflective much like the stripes on high visibility orange safety vests. The black segments are presumed to provide a contrast against the white parts. We <a href="https://newscrewdriver.com/2018/10/09/phoebe-digital-avatar-in-rviz/">found out earlier</a> that a Neato lidar data stream returns both distance and intensity of reflections it saw. The distance is useful for navigation, but using just distance information the charger would be an unremarkable flat surface. This is where intensity comes into the picture: these surfaces behind the black plastic window will create a distinct pattern in reflection intensity, something a Neato robot vacuum can seek to find its charging dock.</p>
+<p>Disassembling this passive system tells us two things:</p>
+<ol>
+<li>The engineers are Neato are quite clever</li>
+<li>We now know enough to try creating our own charging docks. Userful when we have Neato vacuums found at thrift stores without their charger.</li>
+</ol>
+<p>Before we tackle new projects, though, let's see <a href="https://newscrewdriver.com/2019/03/21/neato-robot-vacuum-is-certainly-no-substitute-for-manual-vacuuming/">how a full Neato system works in practice</a>.</body></html></p>

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Detecting Raspberry Pi Thermal Throttling From Console
+date: 2018-09-06 09:00:41.000000000 +00:00
+type: post
+post_id: '16688'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+tags: []
+meta:
+  _oembed_5e5216d8b56982fa15702f70cdbe5e35: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21862991479'
+  timeline_notification: '1536249784'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668069468
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/06/detecting-raspberry-pi-thermal-throttling-from-console/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-thumbnail wp-image-16762 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/09/raspberry-pi-over-temperature-80-85.png?w=150" alt="Raspberry Pi over temperature 80 85" width="150" height="150">While in the process of obtaining proof that a Raspberry Pi 3 is under-powered for certain ROS processing tasks like mapping, I took a little side trip into the world of Raspberry Pi thermal management. Anyone who has pushed the limits of a Raspberry Pi would have seen a thermometer icon in the upper right corner. A quick search finds that it is <a href="https://www.raspberrypi.org/documentation/configuration/warning-icons.md">put on-screen by firmware</a> and not visible to the operating system. So when a Raspberry Pi is mounted on a robot and not attached to a monitor, we can't see this icon. However, it is still possible to detect high temperature condition by using the command line tool <a href="https://elinux.org/RPI_vcgencmd_usage"><code>vcgencmd</code></a>.</p>
+<p><img class=" size-thumbnail wp-image-5172 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/05/raspberry-pi-logo.png?w=127" alt="raspberry-pi-logo" width="127" height="150">This tool appears to be specific to the Raspberry Pi hardware and wraps a collection of tools to query hardware information. Official documentation seems pretty slim, not even an official name. Raspberry Pi forum users hypothesize it stands for "VideoCore General Commands" which is good enough for me.</p>
+<p><img class=" size-thumbnail wp-image-16763 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/09/raspberry-pi-over-temperature-85.png?w=150" alt="Raspberry Pi over temperature 85" width="150" height="150">The first useful tool is to measure temperature. <code>vcgencmd measure_temp</code> will return a temperature in Celsius. This internal number is more useful than attaching an external physical temperature measurement because this internal number is what the firmware will use to decide what to do. When temperature rises above 80°C, a thermometer icon overlay with a half-full bar of red is shown on-screen and the system starts pulling itself back. When it hits the target ceiling of 85°C that icon is replaced by one with full bar of red, and the firmware becomes more aggressive throttling things down to stay below 85°C.</p>
+<p>It's possible to keep an eye on temperature by running the tool continuously at a regular interval, something like <code>watch -n 0.5 vcgencmd measure_temp</code>. But once it gets into the 80-80°C range, we can't tell if the Pi is approaching its limits, or if those limits had been exceeded and the chip slowed itself down to stay in temperature range. For that information, we'll need a different command.</p>
+<p>Running <code>vcgencmd get_throttled</code> will return a hexadecimal number representing a set of binary flags. There is no official documentation of these bits, but a lot of Raspberry Pi user documentation <a href="https://www.raspberrypi.org/forums/viewtopic.php?f=63&amp;t=147781&amp;start=50#p972790">link to this post</a> as reference. If any of the throttling bits are set, the Pi is working at less than maximum potential on account of overheating. (In case that post is inaccessible, here is a copy of the table:)</p>
+<blockquote>
+<p style="padding-left:40px;"><code> 0: under-voltage</code><br />
+<code> 1: arm frequency capped<br />
+2: currently throttled<br />
+16: under-voltage has occurred<br />
+17: arm frequency capped has occurred<br />
+18: throttling has occurred</code></p>
+</blockquote>
+<p>Knowing throttling occurred was enough for my experiment, but if I ever need to go one step further and find out how much throttling has occurred, there are tools for that, too. It's possible to retrieve CPU clock frequency via <code>vcgencmd get_config arm_freq</code> and also by looking at <code>/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq</code>. But that's beyond the scope for today.</p>
+<p> </body></html></p>

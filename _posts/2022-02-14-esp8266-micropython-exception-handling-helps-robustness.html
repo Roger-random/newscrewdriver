@@ -1,0 +1,63 @@
+---
+layout: post
+title: ESP8266 MicroPython Exception Handling Helps Robustness
+date: 2022-02-14 12:30:00.000000000 +00:00
+type: post
+post_id: '28588'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Python
+tags:
+- ESP8266
+- MicroPython
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28562'
+  _publicize_job_id: '68996942624'
+  timeline_notification: '1644870631'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/14/esp8266-micropython-exception-handling-helps-robustness/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had to <a href="https://newscrewdriver.com/2022/02/13/esp8266-micropython-simple-mqtt-client/">solve a few problems</a> encountered publishing data to MQTT using ESP8266 MicroPython, running into MQTTException raised by the library. On the upside, dealing with MQTTException reminded me that I don't usually have the luxury of exception handling on microcontrollers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Exception handling in Python is my favorite part so far of using MicroPython on a microcontroller. I'm no stranger to calling APIs and checking error codes in typical C programming style and I can certainly work in that environment, but I do enjoy using a language like Python with exception handling mechanisms because it allows me to structure code in a way I find much more readable. This is important, especially for small projects where I don't expect to look at the code on a regular basis. By the time I need to come back and modify the code months or years later, I'm looking at it with essentially fresh eyes. Comments are critical, but a good structure is very helpful too!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I don't have any exception handlers, an error would stop execution of my program and break into REPL awaiting diagnosis and repair. This is great while I'm developing the code, but I won't want that later. During runtime I expect errors to be one of three types:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Failing to connect to WiFi. This could happen if my WiFi router is in the middle of a firmware update, and for such harmless scenarios the best thing is to go to sleep and try again later.</li>
+<li>Failing to connect to MQTT broker. This could happen if I took down my Mosquitto docker container, again probably for an update.</li>
+<li>Failure to publish ADC data. This could happen if the WiFi router or Mosquitto went down in between connection and data publishing.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>For all of these cases, the best thing to do is to try again later. Which for this project is actually the exact same thing I want to do even when everything is successful: go to sleep for a minute and repeat everything upon wake.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first implementation caught all exceptions and proceeded to deep sleep for retry in one minute, but this is a problem: if I encounter a problem outside of the expected errors, or if I want to break into REPL for any other reason like updating the program with a new feature, I have only a very narrow window of time to do so. In fact, it was too fast for me to catch it awake!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I actually want to do something different in case of error: keep the ESP8266 awake for 30 seconds or so. Long enough for me to connect a serial terminal and hit Control-C to break into REPL. I could trigger this path by taking down my Mosquitto docker container causing scenario #2 above.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is an improvement over my first implementation, but I couldn't upload my improved code. The ESP8266 wakes up, try to report ADC, and immediately go to deep sleep no matter what happens. After some time tearing my hair out trying to break into this narrow time window, I resorted to reflashing the ESP8266 with fresh MicroPython. Now I could actually get into REPL and upload the new code. It's a good thing I keep these little code projects <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP8266Tests/blob/main/MicroPythonADC/pubadc.py" target="_blank">publicly accessible on GitHub</a> where I could get a copy for my own use if I had to erase it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I really like what I've seen of MicroPython so far, and it'll definitely be a consideration for future projects. But for this project <a href="https://newscrewdriver.com/2022/02/15/changing-project-direction-to-use-ina219-power-monitor/">I'm changing course</a> for no fault of MicroPython.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

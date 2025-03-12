@@ -1,0 +1,81 @@
+---
+layout: post
+title: Notes on Codecademy "Introduction to Javascript"
+date: 2022-10-27 12:30:00.000000000 +00:00
+type: post
+post_id: '33212'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33319'
+  _publicize_job_id: '78151771278'
+  timeline_notification: '1666899035'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/27/notes-on-codecademy-introduction-to-javascript/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/10/26/notes-on-codecademy-learn-html/">reviewing HTML on Codecademy</a>, I proceeded to review JavaScript with their <em><a href="https://www.codecademy.com/learn/introduction-to-javascript" target="_blank" rel="noreferrer noopener">Introduction to Javascript</a></em> course (also titled <em>Learn Javascript</em> in some places, I'm using their URL as the definitive name.) I personally never cared for JavaScript but it is indisputably ubiquitous in the modern world. I must have a certain level of competency in order to execute many project ideas.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/JavaScript#History" target="_blank">history of JavaScript</a> is far messier than other programming languages. It evolved organically, addressing the immediate need of the next new browser version from whoever believes they had some innovation to offer. It was the wild west until all major players agreed to standardize JavaScript in the form of ECMAScript 6. (ES6) While the language has continued to evolve, ES6 is the starting point for this course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A standard is nice, but not as nice as it might look at first glance. In the interest of acceptance, it was not practical for ES6 to break from all the history that proceeded it. This, I felt, was the foundation of all of my dissatisfaction with JavaScript. Because it had to maintain compatibility, it has to accept all the different ways somebody thought to do something. I'm sure they thought they were being clever, but I see it as unnecessary confusion. Several instances came up in this course:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Somebody thought it was a good idea for comparison to perform automatic type conversion before performing the comparison. It probably solved somebody's immediate problem, but the long-term effect is that "==" operator became unpredictable. The situation is so broken that this course teaches beginners to use the "===" operator and never mentions "==".</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The whole concept of "truthy" and "falsy" evaluations makes code hard to understand except for those who have memorized all of the rules involved. I don't object a beginner course covering such material "this is a bad idea but it's out there so you need to know." However, this course makes it sound like a good thing "<em>Truthy and falsy evaluations open a world of short-hand possibilities!</em>" and I strongly object to this approach. Don't teach beginners to write hard-to-understand code!</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>JavaScript didn't start with functions, but the concept was so useful different people each hacked their own ways to declare functions. Which means we now have function declaration (<code>function say(text) {}</code>) function expression (<code>const say = function(text) {}</code>) arrow function (<code>const say = (text) =&gt; {}</code>) and the concise body arrow function (<code>const say = text =&gt; {}</code>). I consider the latter inscrutable, sacrificing readability for the sake of saving a few characters. A curse inflicted upon everyone who had to learn JavaScript since. (An anger made worse when I learned arrow functions implicitly bind to global context. Gah!)</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>These were just the three that I thought worth ranting about. Did I mention I didn't care for JavaScript? But it isn't all bad. JavaScript did give the web a very useful tool in the form of the JavaScript Object Notation (JSON) which became a de facto standard for transmitting structured data in a much less verbose way than XML which originally promised to do exactly that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>JSON has the advantage it was the native way for JavaScript to represent objects, so it was easy to go from working with a JavaScript object to transmitting it over the network and back to working object. In fact, I originally thought JSON was the data transmission serialization format for JavaScript. It took a while for me to understand that no, JSON is not the serialization format, JSON is THE format. JSON looks like a data structure for key-value pairs because JavaScript objects are a structure for key-value pairs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once "every object is a collection of key-value pairs" got through my head, many other JavaScript traits made sense. It was wild to me that I can attach arbitrary properties to a JavaScript function, but once I understood functions to be objects in their own right + objects are key-value pairs = it made sense I could add a property (key) and its value to a function. Weird, but made sense in its own way. Object properties are reduced to a list of key-value pairs, and object methods are special cases where the value is a function object. Deleting an entry from the list of key-value pairs allows deleting properties and methods and accessing them via brackets seem no weirder than accessing a hash table entry. It also made sense why we don't strictly need a class constructor for objects. Any code ("factory function") that returns a chunk of JSON has constructed an object. That's not too weird, but the property value shorthand made me grumpy at JavaScript again. As did <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" target="_blank">destructuring assignment</a>: at first glance I hated it, after reading some examples of how it can be useful, I merely dislike it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In an attempt to end this on a positive note, I'll say I look forward to exploring some of the built-in utilities for JavaScript classes. This Codecademy course introduced us to:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> methods <code>.push() .pop() .shift() .unshift() .slice() .splice()</code> etc. </li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Iterators are not just limited to <code>.forEach()</code>. We have <code>.map() .filter() .reduce() .every()</code> and more.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>And of course <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#Methods" target="_blank">stuff on object</a>. Unlike other languages that need an entire feature area for runtime type information, JavaScript's approach means listing everything on an object is as easy as <code>.keys()</code>.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following this introduction, we can proceed to <a href="https://newscrewdriver.com/2022/10/28/notes-on-codecademy-learn-intermediate-javascript/">Intermediate JavaScript</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

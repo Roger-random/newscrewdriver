@@ -1,0 +1,217 @@
+---
+layout: post
+title: Fan Strobe LED Adjustments via ESPHome
+date: 2022-09-02 12:30:00.000000000 +00:00
+type: post
+post_id: '32354'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Cooling Fan
+- ESP8266
+- ESPHome
+- Fan Strobe LED
+- Home Assistant
+- LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32359'
+  _oembed_e2db7cb10140f5e2dbbcfd0f5a1c63fc: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">If
+    a delay is added between tachometer pulse and LED illumination, the visual shifts
+    to a different location. Varying this delay over time can &quot;rotate&quot; the
+    image at any speed independent of actual fan rotation speed, even backwards! <a
+    href="https://t.co/fqbAvhgFJZ">pic.twitter.com/fqbAvhgFJZ</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1565528182865793024?ref_src=twsrc%5Etfw">September
+    2, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_e2db7cb10140f5e2dbbcfd0f5a1c63fc: '1662102454'
+  _oembed_8b0db55f82dc9fba8d9b8ded2df18934: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">If
+    a delay is added between tachometer pulse and LED illumination, the visual shifts
+    to a different location. Varying this delay over time can &quot;rotate&quot; the
+    image at any speed independent of actual fan rotation speed, even backwards! <a
+    href="https://t.co/fqbAvhgFJZ">pic.twitter.com/fqbAvhgFJZ</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1565528182865793024?ref_src=twsrc%5Etfw">September
+    2, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '76352977829'
+  timeline_notification: '1662147010'
+  _oembed_time_8b0db55f82dc9fba8d9b8ded2df18934: '1662147018'
+  _oembed_e3f1e07ce1142a4ad208d2484fd602c7: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">If
+    a delay is added between tachometer pulse and LED illumination, the visual shifts
+    to a different location. Varying this delay over time can &quot;rotate&quot; the
+    image at any speed independent of actual fan rotation speed, even backwards! <a
+    href="https://t.co/fqbAvhgFJZ">pic.twitter.com/fqbAvhgFJZ</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1565528182865793024?ref_src=twsrc%5Etfw">September
+    2, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_e3f1e07ce1142a4ad208d2484fd602c7: '1708471249'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/02/fan-strobe-led-adjustments-via-esphome/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After proving my fan blade LED strobe idea worked <a href="https://newscrewdriver.com/2022/09/01/led-strobing-to-fan-speed-signal/">with a minimalist Arduino sketch</a>, I ported that code over as an ESPHome custom component. I thought it would be good practice for writing ESPHome custom components and gain Home Assistant benefit of adding adjustments in software. For me it was easier to create an analog control with a few lines of YAML and C, than it would be to wire up a potentiometer. (I recognize it may be the reverse for people more comfortable with hardware than software.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first adjustment "Fan Speed Control" actually did not require custom component at all: making the fan speed adjustable utilized the built-in <a rel="noreferrer noopener" href="https://esphome.io/components/fan/speed.html" target="_blank">fan speed component</a>. In my minimalist sketch the fan is always running at full speed, now I can adjust fan speed and verify that the strobe logic indeed stays in sync with the fan speed. Meaning the strobe keeps these fan blades visually frozen in the same place regardless of their rotational speed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first <a rel="noreferrer noopener" href="https://esphome.io/components/output/custom.html" target="_blank">custom output component</a> adjustment "Strobe Duration" changes the duration of LED strobe pulse, from zero to 1000 microseconds. For this LED array, I found values under 100 to be too dim to be useful. The dimmest usable value is around 100, and things seem to work well up to 300. I start detecting motion blur above 300, and things are pretty smeared out above 600.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next addition is a toggle switch "Strobe Tachometer Toggle". Because the tachometer signal pulses twice per revolution, I ignore every other pulse. But that means a 50% chance the code will choose to trigger on the wrong pulse, resulting in a visually upside-down image. When this happens, this toggle allows us to flip to trigger on the opposing pulse, flipping the frozen visual right-side up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final custom component adjustment "Strobe Delay" adds a delay between triggered by tachometer wire and illumination of LED strobe. This changes the point at which the fan is visually frozen by the strobe light. Dynamically adjusting this value makes it look like the fan blade is slowly rotating position even though it is actually rotating at ~1200RPM. I think it is a fun effect, but to fully take advantage of that effect I will need longer delays, which means finding how I could move that work outside of my interrupt service routine. Inside the ISR I should set up a hardware timer for this delay and turn on LED when timer expires. I can then use the same mechanism to set a timer for LED duration and turn off LED when that timer expires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, there are only two hardware timers on an ESP8266, and they are both spoken for. One runs WiFi, the other runs Arduino core for things like <code>millis()</code>. To explore this idea further, I will need to move up to an ESP32 which has <a rel="noreferrer noopener" href="https://espressif-docs.readthedocs-hosted.com/projects/arduino-esp32/en/latest/api/timer.html" target="_blank">additional hardware timers exposed to its Arduino core</a>. And if I choose to explore that path, I don't even need to redo my circuit board: <a href="https://newscrewdriver.com/2022/09/03/wemos-d1-mini-esp32-derivative/">there exists a (mostly) drop-in ESP32 upgrade</a> for anything that runs a Wemos D1 Mini.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/Regorlas/status/1565528182865793024","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1565528182865793024
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>YAML Excerpt:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>esphome:
+  includes:
+    - led_strobe_component.h
+
+output:
+  - platform: esp8266_pwm
+    pin: 14
+    id: fan_pwm_output
+    frequency: 1000 Hz
+  - platform: custom
+    type: float
+    lambda: |-
+      auto led_strobe = new LEDStrobeComponent();
+      App.register_component(led_strobe);
+      return {led_strobe};
+    outputs:
+      id: strobe_duration_output
+  - platform: custom
+    type: float
+    lambda: |-
+      auto led_strobe_delay = new LEDStrobeDelayComponent();
+      App.register_component(led_strobe_delay);
+      return {led_strobe_delay};
+    outputs:
+      id: strobe_delay_output
+
+fan:
+  - platform: speed
+    output: fan_pwm_output
+    id: fan_speed
+    name: "Fan Speed Control"
+
+light:
+  - platform: monochromatic
+    output: strobe_duration_output
+    id: strobe_duration
+    name: "Strobe Duration"
+    gamma_correct: 1.0
+  - platform: monochromatic
+    output: strobe_delay_output
+    id: strobe_delay
+    name: "Strobe Delay"
+    gamma_correct: 1.0
+
+switch:
+  - platform: custom
+    lambda: |-
+      auto even_odd_flip = new LEDStrobeEvenOddComponent();
+      App.register_component(even_odd_flip);
+      return {even_odd_flip};
+    switches:
+      name: "Strobe Tachometer Toggle"
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESPHome custom component file <code>led_strobe_component.h</code>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>#include "esphome.h"
+
+volatile int evenOdd;
+volatile int strobeDuration;
+volatile int strobeDelay;
+
+IRAM_ATTR void tach_pulse_handler() {
+  if (0 == evenOdd) {
+    evenOdd = 1;
+  } else {
+    delayMicroseconds(strobeDelay);
+    digitalWrite(13, HIGH);
+    delayMicroseconds(strobeDuration);
+    digitalWrite(13, LOW);
+    evenOdd = 0;
+  }
+}
+
+class LEDStrobeComponent : public Component, public FloatOutput {
+  public:
+    void setup() override {
+      // LED power transistor starts OFF, which is LOW
+      pinMode(13, OUTPUT);
+      digitalWrite(13, LOW);
+
+      // Attach interrupt to tachometer wire
+      pinMode(12, INPUT_PULLUP);
+      evenOdd = 0;
+      attachInterrupt(digitalPinToInterrupt(12), tach_pulse_handler, RISING);
+
+      strobeDuration = 200;
+    }
+
+    void loop() override {
+    }
+
+    void write_state(float state) override {
+      // Multiply by 1000 = strobe duration from 0 to 1ms.
+      strobeDuration = 1000 * state;
+    }
+};
+
+class LEDStrobeEvenOddComponent: public Component, public Switch {
+  public:
+    void write_state(bool state) override {
+      evenOdd = !evenOdd;
+      publish_state(state);
+    }
+};
+
+class LEDStrobeDelayComponent: public Component, public FloatOutput {
+  public:
+    void write_state(float state) override {
+      strobeDelay = 1000*state;
+    }
+};</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

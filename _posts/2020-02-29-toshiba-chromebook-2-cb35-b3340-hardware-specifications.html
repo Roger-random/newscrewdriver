@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Toshiba Chromebook 2 (CB35-B3340): Hardware Specifications'
+date: 2020-02-29 12:30:30.000000000 +00:00
+type: post
+post_id: '20688'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- CB35-B3340
+- NUCC
+meta:
+  _thumbnail_id: '20541'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '41262927990'
+  timeline_notification: '1583008404'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/29/toshiba-chromebook-2-cb35-b3340-hardware-specifications/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The old Chromebook retired due to cracked screen has been <a href="https://newscrewdriver.com/2020/02/28/toshiba-chromebook-2-cb35-b3340-reset-and-restart/">updated to latest Chrome OS</a>, so I started searching for its technical specifications. I stumbled right out of the gate, failing to find anything on <a href="https://www.toshiba.com/tai/">toshiba.com</a>. Eventually I learned <a href="https://bigtechquestion.com/2019/04/02/news/toshiba-dynabook-what-is-it/">Toshiba sold a majority share its laptop business</a> to Sharp and the new company (does that make it a joint venture?) is <a href="https://us.dynabook.com/company/about-toshiba">called Dynabook</a>.</p>
+<p>This would explain why every single <a href="https://support.dynabook.com/support/modelHome?freeText=1200009073">product support page for the CB35-B3340</a> I found was under the Dynabook domain. There is not a lot of detail here, as a Chromebook is supposed to be low maintenance and they carried that concept through to reduced number of things a user has to worry about. A Chrome OS user shouldn't ever have to worry about gigahertz or gigabytes.</p>
+<p>But I did get some useful information implying this machine meets requirements for running <a href="https://www.ros.org/">robot operating system (ROS)</a>. The Intel <a href="https://ark.intel.com/content/www/us/en/ark/products/82103/intel-celeron-processor-n2840-1m-cache-up-to-2-58-ghz.html">Celeron N2840</a> processor is 64-bit capable. The maximum clock speed is up to a very respectable 2.58GHz. But it is constrained to run under 7.5 Watts, so it's still an open question whether it has enough processing power in practice. Typical web browsing only need CPU power in short bursts: render a web page, then wait for the user to read the page, before rendering the next page. But robot intelligence puts a consistent high workload and if the machine needs to stay under 7.5 Watts it might have trouble sustaining maximum clock speed.</p>
+<p>Its 4GB of memory and 16GB of flash storage meet bare minimums for even contemplating an Ubuntu installation. I'm not sure if 16GB storage is enough for the full suite of ROS nodes, but it can certainly run the subset necessary to operate a particular robot. And just like how CPU operating pattern differs between Chrome OS and ROS, the storage I/O pattern will be very different between typical Chrome OS and ROS. There's a risk the flash storage will wear prematurely, a concern to keep in mind.</p>
+<p>But first, we have to <a href="https://newscrewdriver.com/2020/03/01/toshiba-chromebook-2-cb35-b3340-developer-mode/">get this system to a point</a> where we can install ROS, because ROS doesn't install on bare Chrome OS.</p>
+<p></body></html></p>

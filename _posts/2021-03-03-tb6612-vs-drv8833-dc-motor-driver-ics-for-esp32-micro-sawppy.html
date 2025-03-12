@@ -1,0 +1,58 @@
+---
+layout: post
+title: TB6612 Vs. DRV8833 DC Motor Driver ICs for ESP32 Micro Sawppy
+date: 2021-03-03 12:30:00.000000000 +00:00
+type: post
+post_id: '21313'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+- Window Shopping
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24699'
+  timeline_notification: '1614803407'
+  _publicize_job_id: '55508031133'
+  _oembed_7522a062bf16b3fe9013aa70b32699fb: "{{unknown}}"
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667121930
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/03/tb6612-vs-drv8833-dc-motor-driver-ics-for-esp32-micro-sawppy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While <a href="https://newscrewdriver.com/2021/03/02/window-shopping-tb6612-dc-motor-driver-ic/">researching TB6612 DC motor driver IC</a> breakout boards on Amazon, my results list actually had more breakout boards built around the DRV8833 (and claiming TB6612 compatibility) than actual TB6612 boards. So I tried performing an <a rel="noreferrer noopener" href="https://amzn.to/2MdB3Dw" target="_blank">Amazon query for DRV8833</a>(*) and saw I had far more options in that category. This may change in the future as worldwide silicon supply &amp; demand varies, but that's the situation as I type this. I didn't explicitly set out to find yet another candidate to replace my L298 motor driver, but since I stumbled across it, I decided to spend a bit of time to take a closer look at <a rel="noreferrer noopener" href="https://www.ti.com/product/DRV8833" target="_blank">the DRV8833 by Texas Instruments</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First things first: the claim of TB6612 control logic compatibility is wrong. Well, technically they are compatible for applications that are only interested in powering their motors only in full forward or full reverse, but that is not realistic. Such applications would not bother with a motor control IC and would directly use some MOSFETs or even relays instead. For real motor control applications, I've seen two different methods to interface with the classic L298 motor control IC. TB6612 is logic compatible with one method, DRV8833 is compatible with the other method, and they are not compatible with each other.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>TB6612 requires three pins: two digital pins to control behavior (forward, backward, brake, or coast) and a PWM pin to control magnitude of that behavior. DRV8833 only accepts two pins to control behavior and modulation is done by rapidly pulsing one of those pins to switch between states. Partial throttle forward, for example, is done by rapidly switching between forward and coast states. DRV8833 does not have a dedicated PWM pin like the TB6612, and the closest counterpart to a L298's ENABLE pin is the nSLEEP pin on a DRV8833 but that pin is unsuitable for modulating velocity. The first problem is that there's only a single nSLEEP pin for both motors, and secondly waking up from sleep requires ~1ms making smooth motion difficult if not impossible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In general, using two pins instead of three is an advantage when we are constrained by the number of pins available, and the ESP32 <a href="https://newscrewdriver.com/2021/02/20/notes-on-esp32-input-output-pins/" target="_blank" rel="noreferrer noopener">certainly has that problem</a>. However, the tradeoff is that DRV8833 requires two pins capable of generating PWM signals per motor, whereas TB6612 only requires one. This would be a concern for microcontrollers with limited PWM peripherals, but the ESP32 literally has <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/19/notes-on-esp32-pwm-peripherals/" target="_blank">more PWM peripheral outputs</a> than it has usable pins.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking specifically at my micro Sawppy rover application, the picture of pin allocation is not quite that straightforward as (2 pins * 6 wheels = 12 pins) versus (3 pins * 6 wheels = 18 pins). In typical operation, all the wheels on one side of the rover will be traveling in the same direction, so it is possible to share the direction control pins across three wheels on the same side of the rover, cutting it down to 10 pins instead of 18. Plus if I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/11/micro-sawppy-beta-1-symmetric-front-back-wheel-spacing/" target="_blank">make the rover front-back symmetric</a> I have an additional option to share the PWM control signal across front and rear wheels, which cuts pin count down to 8. But while DRV8833 can't share pins across wheels on the same side, it can also benefit from front-back symmetry cutting its requirements down to 8 pins as well. A tie!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Clearly there are many tradeoffs I can make with motor driver arrangement and control, depending on how many PWM peripherals are on a particular microcontroller and how many pins it has to spare. For my first iteration I like the idea of having independent control over each wheel, even though right now I'm not sure how it would be useful. Once I get that working (or learn why I can't) I'll look into trading off independent control for reduced pin count. So the current plan of record is to use two PWM pins for each of six wheels, driving <a href="https://newscrewdriver.com/2021/03/04/window-shopping-drv8833-dc-motor-control-ic/">DRV8833 DC motor control ICs</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Considerations Exploring FormLabs Form 1+ While Powered Up
+date: 2022-09-10 12:30:00.000000000 +00:00
+type: post
+post_id: '32505'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32506'
+  _publicize_job_id: '76603932394'
+  timeline_notification: '1662838226'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/10/considerations-exploring-formlabs-form-1-while-powered-up/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Curious about what I could learn from a scorched laser galvanometer control board, I <a href="https://newscrewdriver.com/2022/09/09/form-1-galvanometer-control-board-ic-roll-call/">looked up all component markings I could find</a>. That gave me a few pieces of a puzzle, but I'm missing many more pieces and I don't have a guess as to how those pieces fit together. In the interest of getting more data, I thought I would probe around while this FormLabs Form 1+ printer is powered up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest danger is a laser at the heart of this laser resin printer. This whole printer is classified as a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Laser_safety#Class_1" target="_blank">Class 1 laser device</a>, which means it is safe to use without eye protection. But that guarantee of safety only applies when used as intended. If I'm going to probe its circuitry with panels removed, I lose protection provided by those panels. Bypassing such protection means I have to be careful not to damage my eyes. Anyone who plans to try this as well: please be careful!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Working with lasers is especially dangerous if they operate at a wavelength outside human visible spectrum. We have evolved a blink reflex to protect our vision, but it wouldn't work for wavelengths we can't see. Thankfully, 405nm is within human visible spectrum (it should show up as an intense blue or violet beam), so I still have my blink reflex as a final line of defense. Why 405nm? Apparently, this wavelength <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Blue_laser" target="_blank">became popular because Blu-ray drives</a> drove R&amp;D and economies of scale. I don't know about power levels, though. I would guess resin printing runs 405nm lasers at a higher power level than reading Blu-ray discs (60mW as per Wikipedia) but I have no data to support that guess.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's another interesting data point I want to investigate: the printer was happy to <a href="https://newscrewdriver.com/2022/07/22/formlabs-form-1-printed-a-shapeless-blob/">run through its printing process</a> with a dead galvanometer control board. Such behavior tells me something is running as an open-loop process, operating without feedback that its laser beam wasn't being steered. I knew stepper motors used in cheap FDM 3D printers are open-loop devices, where the printer control board sends motor pulses without knowing if there is actual physical motion. But laser galvanometers are closed-loop actuators, so something else is going on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite my wariness of a laser operating at unknown power levels, my curiosity motivated me to <a href="https://newscrewdriver.com/2022/09/11/formlabs-form-1-laser-galvanometer-control/">power it up and poke around</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

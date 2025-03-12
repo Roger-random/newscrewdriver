@@ -1,0 +1,39 @@
+---
+layout: post
+title: Notes On OpenCV Outside of Python
+date: 2020-07-11 12:30:00.000000000 +00:00
+type: post
+post_id: '21613'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- OpenCV
+meta:
+  _thumbnail_id: '21651'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1594495879'
+  _publicize_job_id: '46458421449'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/11/notes-on-opencv-outside-of-python/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>It was fun taking <a href="https://newscrewdriver.com/2020/07/10/notes-after-skimming-pyimagesearch/">a brief survey of PyImageSearch.com</a> guides for computer vision, and I'm sure I will return to that site, but I'm also aware there are large areas of vision which are regarded as out of scope.</p>
+<p>The Python programming language is obviously the focus of that site as it's right in the name PyImageSearch. However, Python is not the only or even the primary interface for OpenCV. According to <a href="https://docs.opencv.org/4.3.0/d1/dfb/intro.html">official OpenCV introduction</a>, it started as a C library which has since moved to a C++ API. Python is but one of several language bindings on top of that API.</p>
+<p>Using OpenCV via Python binding is advantageous not only because of Python itself, it also opens access to <a href="https://xkcd.com/353/">a large world</a> of Python libraries. The most significant one in this context is <a href="https://numpy.org/">NumPy</a>. Other languages may have similar counterparts, but Python and NumPy together is a powerful combination. There are valid reasons to use OpenCV without Python, but they would have to find their own counterparts to NumPy for their number crunching heavy lifting.</p>
+<p>Just for the sake of exercise, I looked at a few of the other platforms I recently examined.</p>
+<p>OpenCV is accessible from JavaScript, or at least Node.JS, via projects like <code><a href="https://github.com/justadudewhohacks/opencv4nodejs">opencv4nodejs</a></code>.  This also means OpenCV can be embedded in desktop applications <a href="https://newscrewdriver.com/2020/03/31/window-shopping-electronjs/">written in ElectronJS</a>, demonstrated with this example project of <a href="https://github.com/justadudewhohacks/opencv-electron"><code>opencv-electron</code></a>.</p>
+<p>If I wanted to use OpenCV in <a href="https://newscrewdriver.com/2020/03/30/window-shopping-universal-windows-platform-fluent-design/">a Universal Windows Platform app</a>, it appears some people have shared some compiled form of OpenCV up to Microsoft's NuGet repository. As I understand it, <a href="https://www.nuget.org/">NuGet</a> is to .NET as <a href="https://pypi.org/">PyPI</a> is to Python. Maybe there are important differences but it's a good enough analogy for a first cut. Microsoft's UWP documentation describes <a href="https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/process-software-bitmaps-with-opencv">using OpenCV via a OpenCVHelper component</a>. And since UWP can be in C++, and OpenCV is in C++, there's always the option of <a href="https://docs.opencv.org/4.3.0/d3/d52/tutorial_windows_install.html">compiling from source code</a>.</p>
+<p>As promising as all this material is, it is merely the foundation for applying computer vision to the kind of problems I'm most interested in: helping a robot understand its environment for mapping, obstacle avoidance, and manipulation. Unfortunately that field starts to <a href="https://newscrewdriver.com/2020/07/12/i-do-not-yet-meet-the-prerequisites-for-multiple-view-geometry-in-computer-vision/">get pretty complex for a casual hobbyist to pick up</a>.</p>
+<p></body></html></p>

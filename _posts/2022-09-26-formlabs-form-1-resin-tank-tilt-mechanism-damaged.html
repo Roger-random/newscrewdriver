@@ -1,0 +1,80 @@
+---
+layout: post
+title: FormLabs Form 1+ Resin Tank Tilt Mechanism Damaged
+date: 2022-09-26 12:30:00.000000000 +00:00
+type: post
+post_id: '32743'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32751'
+  _publicize_job_id: '77121154765'
+  timeline_notification: '1664220608'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/26/formlabs-form-1-resin-tank-tilt-mechanism-damaged/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been exploring several subsystems of a broken FormLabs Form 1+ laser resin 3D printer. After a rather disappointing session <a href="https://newscrewdriver.com/2022/09/25/formlabs-form-1-serial-console-disappointingly-uninformative/">playing with its serial interface console</a>, I've exhausted the list of electronics to explore and moving on to mechanical systems. First on the list: the resin tank tilting mechanism. I believe this is done to help with the peeling the partial print away from PDMS layer, but maybe more importantly, redistribute resin across the tank between layers. Tilt has stopped working on this printer, and I wanted to look for anything that might explain why.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32747,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-tilt-motor-leadscrew-top.jpg?w=1024" alt="" class="wp-image-32747"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the top part I see a leadscrew mechanism, but it wasn't immediately obvious how it worked. Everything I see here seems to be rigidly fastened to something. I couldn't rotate anything by hand. What was supposed to rotate on this mechanism driven by a stepper motor?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32749,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-tilt-motor-leadscrew-bottom.jpg?w=1024" alt="" class="wp-image-32749"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I could see the lower half of this mechanism, I saw why it failed: this white plastic portion has separated from the rest of the motor, no longer held by stamped sheet metal claws all around its perimeter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32761,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-tilt-tray-misalignment-annotated.jpg?w=1024" alt="" class="wp-image-32761"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Visible from the bottom is another problem: on either side of this motor are small hooks on the resin tray carrier. Each of which has a corresponding slot in the chassis. But there's an alignment problem: the hook on the left side of this picture (front of the printer) looks good, but the right side (rear of the printer) hook is no longer aligned with its slot. This misalignment makes it very difficult to raise the resin tray back into place, and that stress might have contributed to white motor bottom pop out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32756,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-tilt-tray-hinge.jpg?w=1024" alt="" class="wp-image-32756"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saw no obvious explanation for the misalignment. There were no signs of distortion on the printer chassis, nor do I see any obvious problems with the tilt hinge. It was a surprise to see the hinge itself, though. With all the precision parts I've seen inside this laser instrument, it was jarring to see something resembling a cheap piano hinge I could get at the local hardware store.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32751,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-tilt-motor.jpg?w=1024" alt="" class="wp-image-32751"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I removed the motor, I could read its sticker:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>LDO-35BYZ-B01-12    PM STEPPER
+LDO MOTORS            20150320</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>20150320 is probably a date of manufacture, March 2015 is within range of Form 1+ production.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>LDO-35BYZ-B01-12 led me to information page for <a rel="noreferrer noopener" href="http://ldomotors.com/products/show/35mm-linear-pm-stepper-series" target="_blank">LDO Motors company's line of 35mm linear PM stepper motors</a>. Where I learned the only rotating part is inside the motor enclosure, acting upon the leadscrew passing through motor centerline. This is very novel to me, as it means there's nothing to rotate externally and risk tangling wires. This motor is designed so there is only a linear motion in the output shaft. Either the motor can remain still and impart a linear motion to the shaft, or the motor could move along a static shaft. A Form 1+ bolted motor to chassis and its threaded output shaft is attached to the end of the resin tray carrier. Unfortunately, something went wrong with the tray tilt mechanism, exceeding the designed forces of this motor and breaking it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I pushed on the dislocated white portion and, to my mild surprise, it was willing to pop back into place. The motor resumed operating as a linear actuator. Of course, this part has now been weakened so it is no longer as capable as it was when new. If I should try to reuse this linear actuator in another project, I'll have to use it where the physical pushes in the opposite direction and/or supplement its failed metal claws with an external brace.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next step on my hardware tour: <a href="https://newscrewdriver.com/2022/09/27/formlabs-form-1-optical-core/">the optical core</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

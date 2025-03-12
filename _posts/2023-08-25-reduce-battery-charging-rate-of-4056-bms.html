@@ -1,0 +1,75 @@
+---
+layout: post
+title: Reduce Battery Charging Rate of 4056 BMS
+date: 2023-08-25 12:30:00.000000000 +00:00
+type: post
+post_id: '38591'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Solar Power
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38593'
+  footnotes: ''
+  wordads_ufa: u:wpcom-ufa-v4:1693084116
+  _publicize_job_id: '86977273589'
+  timeline_notification: '1692991814'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/08/25/reduce-battery-charging-rate-of-4056-bms/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My solar power monitor uses components I salvaged from a broken USB power bank. After a year and a half of daily charge cycling, the charging circuit has gone out. I replaced it with an inexpensive commodity <a href="https://newscrewdriver.com/2023/08/24/single-cell-lithium-ion-battery-management-system-module-4056/">battery management system (BMS) module based on a 4056 chip</a>. Then I let the module run unmodified for two days to verify everything worked as advertised.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These modules shipped with charging rate configured at one amp. The general rule of thumb is charging rate should stay below 1C, which is 2.6A for these 2.6Ah capacity cells, so the default should be fine. But I wanted to lower the charging rate for several reasons:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>This battery cell is almost a decade old now, and it is natural for older cells to have reduced capacity along with reduced tolerance for charging speed.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Charging at slower gentler rates improves battery longevity, hopefully making this old battery last even longer.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>There's no rush: drawing from the solar panel, this thing can charge over entire span of daylight hours when panels are producing power.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>By reducing the power demand, I can activate this charging circuit even when the solar panels produce little power such as during overcast or rainy days.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>By slowly charging during daylight hours, it reduces stress on the battery because it would only have to run the microcontroller during early morning and early evening when sunlight is scant.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:image {"align":"center","id":38599,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/4056-bms-module-closeup.jpg?w=923" alt="" class="wp-image-38599"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Due to those reasons, I had ambition to slow the charging rate using original USB power bank charging circuit as well, but I didn't know how to work with the unmarked chip. Switching to a commodity BMS chip meant I can get more information. I'm not sure exactly whose 4056 chip I have here. But as they seemed to be interchangeable commodities, I just downloaded one of them and learned charging rate is controlled by a resistor between pin 2 (PROG) and ground. The formula is (Charging current) = 1200/(R<sub>PROG</sub>). Probing this module, I find the charge rate control resistor to be the one labeled R3 and its tiny number says "122". I understand that to mean 12 * 10<sup>2</sup> = 1200Ω = 1.2 kΩ. This matches expectation with the formula 1A = 1200/1200.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The beauty of math is infinite, but real-world circuits have limits. What is a practical minimum for charging rate? The datasheet I consulted gave several examples, the lowest is 0.12A rate via a 10kΩ resistor. Conveniently, the just-retired USB power bank circuit board has a 10kΩ resistor (labeled "103" meaning 10 * 10<sup>3</sup> = 10000Ω) on board. Since it's not doing anything anymore, I can pull it off and swap it for the default resistor at position R3. My lackluster soldering skill with surface mount devices (SMD) wasn't pretty, but it's functional.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38593,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/08/solar-monitor-with-4056-bms.jpg?w=1024" alt="" class="wp-image-38593"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I have a low-demand charging circuit for my solar power monitor, letting me run it across more weather conditions while gently charging the single old lithium-ion battery cell to extend its operating life. It would be nice if I can do more to extend battery longevity: lithium-ion chemistry batteries are stressed when they are fully charged or fully discharged, so they are best kept partially charged. In this particular project, I handle both in software running on my ESP8266. It goes to deep sleep before voltage drops to a critical level. It also disables the solar panel DC buck converter before the battery is fully charged. It'd be nice if I could reduce software complexity by doing everything onboard the BMS module, but I can't. Low cutoff voltage is controlled by the mystery chip at location U2, and max charging voltage is fixed at 4.2V for a 4056 chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Perhaps in the future I'll find a charging module that would let me modify those parameters, but for today this is good enough for my solar monitoring project to return to service so I can resume my LEGO nostalgia tour. I was just getting to the good part: <a href="https://newscrewdriver.com/2023/08/26/lego-technic-crane-truck-8258/">LEGO Technic sets</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

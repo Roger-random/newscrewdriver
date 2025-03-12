@@ -1,0 +1,37 @@
+---
+layout: post
+title: Navigation Stack Setup for Phoebe
+date: 2018-10-11 09:00:39.000000000 +00:00
+type: post
+post_id: '16982'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539273652'
+  _publicize_job_id: '23083302271'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/11/navigation-stack-setup-for-phoebe/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">Section 1 "Robot Setup" of <a href="http://wiki.ros.org/navigation/Tutorials/RobotSetup">this ROS Navigation tutorial page</a> confirmed Phoebe met all the basic requirements for the standard ROS navigation stack. Section 2 "Navigation Stack Setup" is where I need to tell that navigation stack how to run on Phoebe.</p>
+<p>I had already <a href="https://github.com/Roger-random/phoebe">created a ROS package for Phoebe earlier</a> to track all of my necessary support files, so getting navigation up and running is a matter of creating a new launch file in my existing directory for launch files. To date all of my ROS node configuration has been done in the launch file, but ROS navigation requires additional configuration files in YAML format.</p>
+<p>First up in the tutorial were the configuration values <a href="https://github.com/Roger-random/phoebe/blob/master/nav2d/costmap_common_params.yaml">common for both local and global costmap</a>. This is where I saw the robot footprint definition, a little sad it's not pulled from the URDF I just put together. Since Phoebe's footprint is somewhat close to a circle, I went with the <code>robot_radius</code> option instead of declaring a footpring with an array of [x,y] coordinates. The <code>inflation_radius</code> parameter sounds like an interesting one to experiment with later pending Phoebe performance. The <code>observation_sources</code> parameter is interesting - it implies the navigation stack can utilize multiple sources simultaneously. I want to come back later and see if it can use a Kinect sensor for navigation. For now, Phoebe has just a LIDAR so that's how I configured it.</p>
+<p>For global costmap parameters, the tutorial values look equally applicable to Phoebe so I copied them as-is. For the <a href="https://github.com/Roger-random/phoebe/blob/master/nav2d/local_costmap_params.yaml">local costmap</a>, I reduced the width and height of the costmap window, because Phoebe doesn't travel fast enough to need to look at 6 meters of surroundings, and I hoped reducing to 2 meters would reduce computation workload.</p>
+<p>For <a href="https://github.com/Roger-random/phoebe/blob/master/nav2d/base_local_planner_params.yaml">base local planner parameters</a>, I reduced maximum velocity until I have confidence Phoebe isn't going to get into trouble speeding. The key modification here from tutorial values is changing <code>holonomic_robot</code> from <code>true</code> to <code>false</code>. Phoebe is a differential drive robot and can't strafe sideways as a true holonomic robot can.</p>
+<p>The final piece of section 2 is <a href="http://wiki.ros.org/amcl">AMCL</a> configuration. Earlier I've tried running AMCL on Phoebe without specifying any parameters (use defaults for everything) and it seemed to run without error messages, but I don't yet have the experience to tell what good AMCL behavior is versus bad. Reading this tutorial, I see the AMCL package has pre-configured launch files. The tutorial called up <code>amcl_omni.launch</code>. Since Phoebe is a differential drive robot, I should use <code>amcl_diff.launch</code> instead. The RViz plot looks different than when I ran AMCL with all default parameters, but again, I don't yet have the experience to tell if it's an improvement or not. Let’s see how this runs before modifying parameters.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154374-navigation-stack-setup">Hackaday.io</a>.)</body></html></p>

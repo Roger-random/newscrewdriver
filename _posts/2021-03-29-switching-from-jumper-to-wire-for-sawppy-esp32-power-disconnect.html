@@ -1,0 +1,53 @@
+---
+layout: post
+title: Switching From Jumper To Wire For Sawppy ESP32 Power Disconnect
+date: 2021-03-29 12:30:00.000000000 +00:00
+type: post
+post_id: '25821'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25808'
+  _publicize_job_id: '56539125727'
+  timeline_notification: '1617046226'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/29/switching-from-jumper-to-wire-for-sawppy-esp32-power-disconnect/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Micro servo <a href="https://newscrewdriver.com/2021/03/28/micro-servo-angular-position-inconsistency/">angle position inconsistency</a> probably won't damage a rover, but power problems will. When I decided to use an ESP32 dev module as the brain for my Micro Sawppy rovers, I did not anticipate that power would be a recurring headache in multiple contexts. One context is the fact that my rover has its own power source from a battery, and my computer has its own power source. The problem is that a ESP32 dev module's micro USB power would tie those two power planes together, and this is not a recipe for success. So I have to be careful to disconnect those two power sources every time I plug in a micro USB cable to update software. Because a computer's USB port will not have enough power to run a rover, and the rover's battery must not feed its power into a computer's USB port.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my initial breadboard prototype, I took advantage of the solid core wires I used there to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/18/cardboard-box-rover-esp32-power-supply/" target="_blank">build a physical exclusion mechanism</a>. I couldn't quite carry that feature over to my current perforated prototype board with soldered connections. But I did solder in provision for a jumper to connect ESP32 power to rover battery, and I have to remember to remove this jumper before I plug in a micro USB cable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To make this jumper more visible and more easily removed, I bought a pack of <a href="https://amzn.to/3ftvXiN" target="_blank" rel="noreferrer noopener">bright yellow jumper with tall pull tabs</a>. (*) This turned out to be not enough. The tab didn't really stand above the <a href="https://newscrewdriver.com/2021/03/23/power-distribution-complicates-first-soldered-prototype-circuit/" target="_blank" rel="noreferrer noopener">nest of wires</a> on my prototype board, and it is even harder to access when the prototype board is placed inside my rover's body. The solution: two jumper wires. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25804,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/msb3-long-remote-power-jumper.jpg?w=1024" alt="" class="wp-image-25804"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I use two lengths of jumper wire, whose top connector rises far above the fray for me to easily access and, almost as importantly, easily seen. I could pull the wires apart for USB uploads, but this leaves a pin dangling about, carrying voltage that might cause problems if it touched anything. So I replaced the single position socket with a three-position socket, the far empty slot holding a connector crimped to no wire. This non-connected position allows me to store the pin when power is disconnected <a href="https://newscrewdriver.com/2021/03/30/micro-sawppy-beta-3-usb-access-port/">in order to use the micro USB port</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

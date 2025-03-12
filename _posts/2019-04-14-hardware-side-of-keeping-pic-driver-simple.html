@@ -1,0 +1,45 @@
+---
+layout: post
+title: Hardware Side of Keeping PIC Driver Simple
+date: 2019-04-14 12:30:02.000000000 +00:00
+type: post
+post_id: '18338'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29759650947'
+  timeline_notification: '1555270259'
+  _oembed_527958cdf54886ae4d417fe220aad0a5: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Trying
+    to be clever with pin assignment so I could pack chips tightly in my vacuum fluorescent
+    display collaboration with <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>.
+    We&#39;ll find out if this bites me later... <a href="https://t.co/YHt76eV9kg">pic.twitter.com/YHt76eV9kg</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1115667721226571777?ref_src=twsrc%5Etfw">April
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_527958cdf54886ae4d417fe220aad0a5: '1555317805'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/14/hardware-side-of-keeping-pic-driver-simple/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>For the VFD driver project, there were <a href="https://newscrewdriver.com/2019/04/13/why-and-how-of-simpler-pic-display-driver/">software design motivations</a> to keep things simple. But that's not the whole picture, there were also motivation from hardware constraints too. My previous projects to make a PIC drive a multi-segmented LED display had fairly simple wiring that connected most output pins of my PIC to current-limiting resistors. A few of the lines could have seen current flow higher than what a PIC is capable of handling, and those were handled with simple transistors. I knew there existed chips designed specifically to drive LEDs, but I wanted to learn the principles of controlling one myself.</p>
+<p>Building something to drive a VFD requires dealing with voltages different and sometimes far higher than what is required to drive LED display modules. During our <a href="https://newscrewdriver.com/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/">probe of this specific VFD</a> we saw 2.5V AC and 30V DC, atypical of logic circuits. And just as there existed dedicated LED driver chips, there exist chips <a href="https://www.microchip.com/wwwproducts/en/HV5812">specifically designed to drive VFD modules</a>, but again the project goal was to learn by building one ourselves.</p>
+<p>So we turn to our standard electronic hobbyist toolbox item for controlling power and voltage beyond what our standard parts can handle: the <a href="https://en.wikipedia.org/wiki/ULN2003A">ULN2003A line</a> of Darlington arrays. The go-to solution for controlling inductive loads like relays and small motors, it can handle voltages up to 50V which we need for a VFD.</p>
+<p>And again, with multiple different display projects on the horizon, it didn't make sense to create a controller with hardware pinout specifically tailored to a specific unit. To keep things simple and consistent across displays, all of our controller outputs will be either left floating or tied to ground. If a particular device desires a particular pin to be at a higher voltage, we'll have to wire up a pull-up resistor on that device's specific interface board. We will learn if this concession to consistency will cause problems down the line.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/04/vfd-driver-schematic.png"><img class="alignnone size-full wp-image-18339" src="https://newscrewdriver.com/wp-content/uploads/2019/04/vfd-driver-schematic.png" alt="VFD driver schematic" width="1637" height="1253"></a></p>
+<p></body></html></p>

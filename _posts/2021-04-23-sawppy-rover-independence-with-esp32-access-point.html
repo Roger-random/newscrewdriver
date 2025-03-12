@@ -1,0 +1,62 @@
+---
+layout: post
+title: Sawppy Rover Independence with ESP32 Access Point
+date: 2021-04-23 12:30:00.000000000 +00:00
+type: post
+post_id: '26217'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26023'
+  timeline_notification: '1619206215'
+  _publicize_job_id: '57519894982'
+  _oembed_14fff323938ea9507888d3a3e5cf2a8a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Hack
+    and slashed <a href="https://twitter.com/adafruit?ref_src=twsrc%5Etfw">@adafruit</a>
+    &quot;Uncanny Eyes&quot; sketch (Hallowing, Monster M4sk) to run on this rendering
+    stack, now my tube TV stares back.<br><br>I&#39;ve also forgotten how hard it
+    is to get a tube TV on video. Had to lock exposure all the way low to avoid bloomed
+    out phosphors. <a href="https://t.co/qq5oc7l5zd">pic.twitter.com/qq5oc7l5zd</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1384551877635809282?ref_src=twsrc%5Etfw">April
+    20, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_14fff323938ea9507888d3a3e5cf2a8a: '1619219580'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/23/sawppy-rover-independence-with-esp32-access-point/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted to make sure I had <a href="https://newscrewdriver.com/2021/04/22/make-disconnected-client-visually-obvious/">good visual indication of control client disconnect</a> before the next task on my micro Sawppy rover ESP32 brain: create its own little WiFi network. This is something I configured the Raspberry Pi to do on SGVHAK rover and Sawppy V1. (Before <a href="https://newscrewdriver.com/2018/07/15/sawppy-the-rover-receives-wifi-upgrade-increases-range/">upgrading Sawppy to use a commercial router</a> with 5GHz capability and much longer range.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of my development to date have been done with the ESP32 logged on to my home network. This helps with my debugging, but if I take this rover away from home, I obviously won't have my home network. I need to activate this ESP32's ability to act as its own WiFi access point, a task I had expected to be more complex than setting up the ESP32 as a client (station mode) but I was wrong. The <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/blob/master/examples/wifi/getting_started/softAP/main/softap_example_main.c" target="_blank">Espressif example code for software-based access point (softAP) mode</a> was actually shorter than its station mode counterpart!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's shorter because it was missing a lot of the functionality I had expected to see. My previous experience with ESP32 acting as its own access point had been with <a rel="noreferrer noopener" href="https://www.bhencke.com/pixelblaze" target="_blank">products like Pixelblaze</a>, but what I saw was actually a separate WiFi manager module built on top of ESP32's softAP foundation. That's where the sophisticated capabilities like captive portal configuration are implemented.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This isn't a big hinderance at the moment. I might not have automatic forwarding with captive portal, but it's easy enough to remember to type in the default address for the ESP32 on its own network. (http://192.168.4.1) On the server side, I had to subscribe to a different event to start the HTTP server. In station mode, <code><a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/wifi.html#ip-event-sta-got-ip" target="_blank">IP_EVENT_STA_GOT_IP</a></code> signals that we're connected to the access point and it has assigned an IP address. This doesn't apply when the ESP32 is itself the access point. So instead I listen for a control client to connect with <code><a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/wifi.html#wifi-event-ap-staconnected" target="_blank">WIFI_EVENT_AP_STACONNECTED</a></code>, and launch the HTTP server at that point. The two events are not analogous, but are close enough for the purpose micro rover control. Now it can roam without requiring my home WiFi network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sometime in the future I'll investigate integrating one of those WiFi manager modules so Sawppy rover users can have the captive portal and all of those nice features. A quick round of web searching <a rel="noreferrer noopener" href="https://github.com/tonyp7/esp32-wifi-manager" target="_blank">found this one by Tony Pottier</a>, with evidence of several more out in circulation. These might be nice features to add later, but right now I should <a href="https://newscrewdriver.com/2021/04/24/cleaning-up-and-commenting-sawppy-rover-esp32-code/">clean up the mess I have made</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/blob/main/esp32_sawppy/lib/wifi/softap_start.c" target="_blank" rel="noreferrer noopener">publicly accessible on GitHub</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

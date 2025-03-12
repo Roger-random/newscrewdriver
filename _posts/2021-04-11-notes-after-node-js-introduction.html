@@ -1,0 +1,51 @@
+---
+layout: post
+title: Notes After Node.js Introduction
+date: 2021-04-11 12:30:00.000000000 +00:00
+type: post
+post_id: '26061'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Node.js
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26023'
+  timeline_notification: '1618169443'
+  _publicize_job_id: '57045561064'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/11/notes-after-node-js-introduction/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2021/04/10/docker-container-as-placeholder-for-esp32-web-server/">I ran through the Docker Getting Started tutorial</a>, I went back into the docker container (the one we built as we progressed through the tutorial) and poked around some more. The tutorial template was an <a rel="noreferrer noopener" href="http://expressjs.com/" target="_blank">Express</a> application, built on Node.js. Since I had parts of this infrastructure in hand, I thought I will just run with it and use Node.js to build a simple web server. The goal is to create a desktop placeholder for an ESP32 acting as a web server, letting me play and experiment quickly without constantly re-flashing my ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other motivation was that I wanted to get better at JavaScript. Not necessarily because of the language itself (I'm not a huge fan) but because of the huge community that has sprung up around it, sharing reusable components. <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/09/23/node-red-community-contributions/" target="_blank">I was impressed by what I saw of Node-RED</a> (built on Node.js) and even more impressed when I realized that was only a small subset of the overall Node.js community. More than a few times I've researched a topic and found that there was an available JavaScript tool for doing it. (Like <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/03/31/window-shopping-electronjs/" target="_blank">building desktop apps</a>.) I'm tired of looking at this treasure trove from the outside, I want this in my toolbox.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Node.js is <a rel="noreferrer noopener" href="https://nodejs.org/en/download/" target="_blank">available with a Windows installer</a>, but given my recent knowledge, I went instead to their <a rel="noreferrer noopener" href="https://hub.docker.com/_/node/" target="_blank">officially published Docker images</a>. Using that to run through <a rel="noreferrer noopener" href="https://nodejs.dev/learn" target="_blank">Node.js introduction</a> required making a few on-the-fly adaptations to Node.js in a container, but I did not consider that a hinderance. I consider it great container practice! But this only barely scratches the surface of what I can find within the Node.js community. Reading the list of <em><a rel="noreferrer noopener" href="https://nodejs.dev/learn#nodejs-frameworks-and-tools" target="_blank">Node.js Frameworks and Tools</a></em> I realized not only have I not heard about many of these things, I don't even understand the words used to describe them! But there were a lot of great information in that introduction. On the infrastructure side, the live demo code was made possible by <a rel="noreferrer noopener" href="https://glitch.com/" target="_blank">Glitch.com</a>, another online development environment I'll mentally file away alongside <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/12/15/using-cloud-9-to-explore-web-development/" target="_blank">Cloud9</a> and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/10/11/stackblitz-a-web-app-for-building-web-apps/" target="_blank">StackBlitz</a>. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though Google's V8 JavaScript engine is at the heart of both Chrome browser and Node.js server, there are some obviously significant differences between running in a server environment versus running in browser. But sometimes there are concepts from one world that can be useful in the the other, and I was fascinated by people who try to bring these worlds closer together. One example is <a rel="noreferrer noopener" href="http://browserify.org/" target="_blank">Browserify</a> which brings some server-side component management features to browser-side code. And <a rel="noreferrer noopener" href="https://nodejs.dev/learn/the-nodejs-event-emitter" target="_blank">Event Emitter</a> is a project working in the other direction, bringing browser-style events to server-side code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As far as I can tell, the JavaScript language itself was not explicitly designed with a focus on handling asynchronous operations. However, because it evolved in the web world where network latency is an ever-present factor, the ecosystem has developed in that direction out of necessity. The flexibility of the language permitted an evolution into asynchronous callbacks, but "possible" isn't necessarily "elegant" leading to scenarios like <a rel="noreferrer noopener" href="http://callbackhell.com/" target="_blank">callback hell</a>. To make asynchronous callbacks a little more explicit, <a rel="noreferrer noopener" href="https://nodejs.dev/learn/understanding-javascript-promises" target="_blank">JavaScript <code>Promise</code> was introduced</a> to help improve code readability. There's even a tool to <a rel="noreferrer noopener" href="https://nodejs.org/docs/latest-v11.x/api/util.html#util_util_promisify_original" target="_blank">convert old-school callbacks into Promises</a>. But as nice as that was, people saw room for improvement, and they built on top of Promises to create the <a rel="noreferrer noopener" href="https://nodejs.dev/learn/modern-asynchronous-javascript-with-async-and-await" target="_blank">much more easier-to-read <code>async/await</code> pattern</a> for performing asynchronous operations in JavaScript. Anything that makes JavaScript easier to read is a win in my book.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With such an enormous ecosystem, it's clear I can spend a lot more time learning Node.js. There are plenty of resources online like <a href="https://nodeschool.io/">Node School</a> to do so, but I wanted to maintain some resemblance of focus on my little rover project. So I went back to the Docker getting started tutorial and researching how to adapt it to my needs. I started looking at a tool called <a rel="noreferrer noopener" href="https://webpack.js.org/" target="_blank"><code>webpack</code></a> to distill everything into a few static files I can serve from an ESP32, but then I decided I should be able to keep my project simple enough I wouldn't <em>need </em>webpack. And for serving static files, I learned Express would be overkill. There's a Node.js module <a rel="noreferrer noopener" href="https://nodejs.org/en/knowledge/HTTP/servers/how-to-serve-static-files/" target="_blank"><code>node-static</code></a> available for serving static files so I'll start by using that and build up as needed from there. This gives me enough of a starting point on server side so I can <a href="https://newscrewdriver.com/2021/04/12/html-features-for-esp32-sawppy-rover/">start looking at the client side</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

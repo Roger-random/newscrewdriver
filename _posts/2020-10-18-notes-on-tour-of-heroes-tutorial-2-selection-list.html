@@ -1,0 +1,48 @@
+---
+layout: post
+title: 'Notes on "Tour of Heroes" Tutorial 2: Selection List'
+date: 2020-10-18 12:30:00.000000000 +00:00
+type: post
+post_id: '22950'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+- Tour of Heroes
+meta:
+  _thumbnail_id: '22766'
+  _publicize_job_id: '50071165877'
+  timeline_notification: '1603049464'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/18/notes-on-tour-of-heroes-tutorial-2-selection-list/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Editing the name of <a href="https://newscrewdriver.com/2020/10/17/notes-on-tour-of-heroes-tutorial-1-editor/">a single non-copyright-infringing superhero</a> isn't terribly exciting by itself. We demand a world of many superheroes! Thus we move on to <a rel="noreferrer noopener" href="https://angular.io/tutorial/toh-pt2" target="_blank">part 2 of the Angular "Tour of Heroes" tutorial</a>: display a selectable list which builds our experience using Angular directives in the template HTML.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>During this segment, we have many more opportunities to see what happens when we do something before setting up all the necessary support infrastructure. Meaning we got to see more error messages of a broken app before we proceed to fix it. I love this approach as there's very little penalty to a momentarily broken Angular app. The more experience we can pick up with Angular errors during a tutorial, the better it is for us down the line when we see it again due to our own mistakes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also realized they've started showing just short excerpts for the reader to put into their projects. The template (HTML) and class (TypeScript) excerpts were fairly well explained, but following precedent, CSS changes were less well explained. This is not a CSS class, but there was one part I couldn't follow at all: the CSS select binding. I don't see how <code>[class.selected]="hero === selectedHero"</code> ends up being <code>class="selected"</code> in the HTML. I guess I have to look up "class binding" later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to the topic of error messages, at the end of the tutorial I was left with an unresolved error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>    ERROR in src/app/heroes/heroes.component.ts:12:3 - error TS2564: Property 'selectedHero' has no initializer and is not definitely assigned in the constructor.<br>          12   selectedHero : Hero;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought it was odd for a tutorial to leave us with an error, so I started looking around for help and <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/49699067/property-has-no-initializer-and-is-not-definitely-assigned-in-the-construc" target="_blank">found this StackOverflow thread</a>. Now I understand this is because I created my tutorial project with the <code>--strict</code> flag. Since learning to operate under strict mode is an extra credit project I've given myself, and it is not preventing the app from running, I'll ignore it for now and make plans to come back later. Code quality is always interesting to look into, in fact the next section is all about giving us tools to <a href="https://newscrewdriver.com/2020/10/19/notes-on-tour-of-heroes-tutorial-3-feature-component/">organize our Angular code</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

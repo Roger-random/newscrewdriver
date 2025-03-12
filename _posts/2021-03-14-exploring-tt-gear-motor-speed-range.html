@@ -1,0 +1,43 @@
+---
+layout: post
+title: Exploring TT Gear Motor Speed Range
+date: 2021-03-14 12:30:00.000000000 +00:00
+type: post
+post_id: '25595'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+- TT Gearmotor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24699'
+  _publicize_job_id: '55936227989'
+  timeline_notification: '1615750227'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/14/exploring-tt-gear-motor-speed-range/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wrote my ESP32 Sawppy rover chassis Ackermann geometry code to output calculated wheel speeds and steering angles in an implementation-neutral (but <a href="https://newscrewdriver.com/2021/03/13/abandoning-ros_control-analogy-for-micro-sawppy/">not similar to ros_control</a>) way. Wheel speeds were specified in meters per second of desired ground travel speed, so the next step is to translate that into <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/07/test-driving-drv8833-with-esp32-mcpwm/" target="_blank">DRV8833 MCPWM control signals</a> driving TT gear motors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This conversion will be some kind of mapping from desired wheel travel velocity to PWM duty cycle. Without closed-loop control, I knew the mapping would not be accurate, but maybe it'll close enough to be acceptable at this price point. I'm not sure how much of a load will be borne by each rover wheel yet, so the first draft of this mapping will work with the wheels spinning freely in air without load. Since a single DRV8833 can drive two motors, I drove a pair of TT gearmotors with the same electrical PWM parameters. I was not surprised to find that they had slightly different speeds. It's not even a consistent ratio: one motor was faster at full power, while the other was faster at low power. Looks like the error bars on my mapping are getting longer and longer with each discovery!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the sake of getting some numbers as a starting point, I estimated unloaded wheel travel speed at 6V to be approximately 0.6 m/sec. With this, I'm cautiously optimistic that Micro Sawppy rovers running on TT gear motors will be able to keep up with Sawppy V1 with its much larger diameter wheels. However, they won't have the same performance at the low end. Unloaded, these TT gearmotors could turn as low as 15cm/sec, but just barely. Any slower than that and the motor couldn't overcome internal gearbox friction. Such behavior implies these little rovers wouldn't be much good for low speed rock climbing. This initial experiment found that TT gearmotors maximum speed isn't very fast, and their minimum speed isn't very slow. But it's still an open question whether they are "good enough" for the sake of making an affordable micro Sawppy rover. I already know I need to revisit this speed range exploration once the rover is running on its wheels, so I <a href="https://newscrewdriver.com/2021/03/15/interactive-mcpwm-duty-cycle-explorer/">wrote a tool to make that process less painful</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,91 @@
+---
+layout: post
+title: FormLabs Form 1+ OLED Pinout
+date: 2022-09-23 12:30:00.000000000 +00:00
+type: post
+post_id: '32696'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32600'
+  _publicize_job_id: '77029959307'
+  timeline_notification: '1663961421'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668706161
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/23/formlabs-form-1-oled-pinout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a broken FormLabs Form 1+ laser resin 3D printer and I'm learning what I can from taking it apart. On its front panel is a small OLED dot-matrix display that I have been exploring. I have now <a href="https://newscrewdriver.com/2022/09/22/adafruit-ssd1305-arduino-library-on-esp8266/">successfully controlled that OLED module using an ESP8266</a> development board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Confirming the speculation in <a rel="noreferrer noopener" href="https://forum.formlabs.com/t/possible-oled-display-swap-spare/187" target="_blank">this FormLabs forum thread</a>, the OLED module is very similar to the <a rel="noreferrer noopener" href="https://newhavendisplay.com/2-23-inch-blue-graphic-oled-module/" target="_blank">Newhaven Display International NHD-2.23-12832UCB3</a>. Both of their display areas are 2.23" diagonal with 128x32 pixels of resolution. They both use a SSD1305 controller, but while Newhaven's module provided a single row of 20 pins, FormLabs custom built their own circuit board connecting to the rest of the printer with a 10-wire IDC ribbon cable. Only 7 wires are actually used.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This OLED module is also very similar to <a rel="noreferrer noopener" href="https://www.adafruit.com/product/2675" target="_blank">Adafruit product #2675 <em>Monochrome 2.3" 128x32 OLED Graphic Display Module Kit</em></a> but without Adafruit luxuries like 5V logic level shifter and power buffering capacitor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This module only requires a power supply of 3.3V DC, because it has an onboard voltage boost converter to supply other voltages needed by OLED. All logic high signals are also 3.3V DC. Data communication is via SPI protocol with an additional command/data select input wire. When that wire low, the chip will interpret SPI traffic as commands and when high, SPI traffic will be sent to graphics frame buffer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32700,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-ssd1305-oled-pinout.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-ssd1305-oled-pinout.jpg?w=1024" alt="" class="wp-image-32700"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Ground</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>V<sub>cc</sub> to supply 3.3V DC</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Command/Data select</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>SPI Clock</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Reset (Active Low)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>SPI Data In (*)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>SPI Chip Select (Active Low)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Unused</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Unused, but connected to mainboard I2C bus data line</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Unused, but connected to mainboard I2C bus clock line</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>(*) There is no SPI Data Out pin.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now this pinout is documented, I will explore side curiosities like <a href="https://newscrewdriver.com/2022/09/24/formlabs-form-1-oled-burn-in/">potential OLED burn-in</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

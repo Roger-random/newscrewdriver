@@ -1,0 +1,44 @@
+---
+layout: post
+title: Phoebe Digital Avatar in RViz
+date: 2018-10-09 09:00:42.000000000 +00:00
+type: post
+post_id: '16964'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539101247'
+  _publicize_job_id: '23007696979'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/09/phoebe-digital-avatar-in-rviz/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Now that Phoebe URDF has been figured out, it has been added to RViz visualization of Phoebe during GMapping runs. Before this point, Phoebe's position and orientation (called a '<a href="http://docs.ros.org/lunar/api/geometry_msgs/html/msg/Pose.html">pose</a>' in ROS) is represented by a red arrow on the map. It's been sufficient to get us this far, but a generic arrow is not enough for proper navigation because it doesn't represent the space occupied by Phoebe. Now, with the URDF, the volume of space occupied by Phoebe is also visually represented on the map.</p>
+<p>This is important for a human operator to gauge whether Phoebe can fit in certain spaces. While I was driving Phoebe around manually, it was a guessing game whether the red arrow will fit through a gap. Now with Phoebe's digital avatar in the map, it's a lot easier to gauge clearance.</p>
+<p>I'm not sure if the <a href="http://wiki.ros.org/navigation">ROS navigation stack</a> will use Phoebe's URDF in the same way. The primary reason the navigation tutorial pointed me to URDF is to get Phoebe's transforms published properly in the tf tree using the <a href="http://wiki.ros.org/robot_state_publisher">robot state publisher</a> tool. It's pretty clear robot footprint information will be important for robot navigation for the same reason it was useful to human operation, I just don't know if it's the URDF doing that work or if I'll end up defining robot footprint some other way. (UPDATE: I've since learned that, for the purposes of ROS navigation, robot footprint is defined some other way.)</p>
+<p>In the meantime, here's Phoebe by my favorite door to use for distance reference and calibration.</p>
+<p><img class="alignnone size-full wp-image-16967" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-by-door-posing-like-urdf.jpg" alt="Phoebe By Door Posing Like URDF" width="1024" height="611"></p>
+<p>And here's the RViz plot, showing a digital representation of Phoebe by the door, showing the following:</p>
+<ul>
+<li>LIDAR data in the form of a line of rainbow colored dots, drawn at the height of the Neato LIDAR unit. Each dot represents a LIDAR reading, with color representing the intensity of each return signal.</li>
+<li>Black blocks on the occupancy map, representing space occupied by the door. Drawn at Z height of zero representing ground.</li>
+<li>Light gray on the occupancy map representing unoccupied space.</li>
+<li>Dark gray on the occupancy map representing unexplored space.</li>
+</ul>
+<p><img class="alignnone size-full wp-image-16965" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-by-door.png" alt="Phoebe By Door" width="760" height="498"></p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154299-phoebe-digital-avatar-in-rviz">Hackaday.io</a>)</body></html></p>

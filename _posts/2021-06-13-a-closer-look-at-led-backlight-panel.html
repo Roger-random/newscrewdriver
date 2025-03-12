@@ -1,0 +1,79 @@
+---
+layout: post
+title: A Closer Look at LED Backlight Panel
+date: 2021-06-13 12:30:00.000000000 +00:00
+type: post
+post_id: '27047'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27048'
+  _publicize_job_id: '59555710399'
+  timeline_notification: '1623612624'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/13/a-closer-look-at-led-backlight-panel/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've successfully interfaced with the existing TPS61187 driver chip on the circuit board of a LG laptop display panel LP133WF2(SP)(A1), and <a href="https://newscrewdriver.com/2021/06/12/arduino-nano-pwm-signal-for-tps61187-led-driver/">brought the backlight module back to life</a>. Given all the new territory I had to explore to get this far, I was very excited by a successful initial test. After I was able to calm down, I settled down to take a closer look at its physical/optical behavior.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I tested it face-down, the easiest thing to look at first are the backsides of the LED strip. Most of it is hidden by the sheet metal frame from this side, but from earlier examination I knew there was <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/06/05/lg-lcd-panel-backlight/" target="_blank">even less to see</a> from the front. Once illuminated, we can see the structure inside the light strip. The yellow flexible segment that connects to the green circuit board isn't a separate piece like I thought earlier, it is actually all a single sheet of flexible circuit. All the LEDs are mounted on it, and they are located at the very bottom edges of the screen. I knew the lights themselves had to be very thin and well hidden right up against the bottom edge, but I couldn't figure out where the wiring would go. Now we can see all electrical wiring runs above the LEDs, and when we look at it from the front we can see it as a thin strip of light gray along the bottom.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27069,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-31-shadow-from-fpc.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-31-shadow-from-fpc.jpg?w=1024" alt="" class="wp-image-27069"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had been worried that the illumination would be compromised because it is working without some of the friends it had earlier. The backside used to have a laptop lid that would have helped reflect and diffuse light. And the front used to be up against the LCD pixel array, which was backed by a mirror finish that would have also helped reflect light around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26878,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-08-backlight-diffuser-and-display-mirror-back.jpg?w=1024" alt="" class="wp-image-26878"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I need not have worried. It was quite evenly illuminated and, as seen in the wire shadow picture above, there are no distinct spotlights marking location of individual LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27071,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-32-front-view-even-illumination.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-32-front-view-even-illumination.jpg?w=1024" alt="" class="wp-image-27071"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also wondered if the surprisingly complex four-layer diffuser required precise alignment with the LEDs in order to do their light distribution magic. They are no longer pressed by the LCD pixel array into a tight space, but happily they still worked quite well. While they worked visibly best at certain positions, the falloff is graceful. Not like aiming a laser at precision optics. Now I'm even more impressed by this stuff performing magic with light in ways I don't understand. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26881,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-11-multilayer-backlight-diffuser.jpg?w=1024" alt="" class="wp-image-26881"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>But one thing I do understand is that they look thin and quite fragile. Designed to sit behind a LCD panel of multiple glass layers and without that, these layers of magical optical sheets flap around. I looked around and found a piece of 3mm clear acrylic that is nearly the perfect size and taped it to the metal backing chassis. The acrylic is far thicker than the LCD glass sandwich used to be, but it is also more rigid, so that's a good tradeoff.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final comparison I wanted to make before moving on is: how bright is the backlight alone compared to the full backlight plus LCD screen? I placed this backlight, turned brightness all the way up high, and set it side-by-side with the <a href="https://newscrewdriver.com/2020/04/12/secondhand-replacement-screen-for-toshiba-chromebook-2-cb35-b3340/">intact replacement screen still serving display duty</a> in the Chromebook. I then turned on the Chromebook and increased its screen brightness to maximum setting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27074,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-33-backlight-far-brighter-than-intact-display.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-33-backlight-far-brighter-than-intact-display.jpg?w=1024" alt="" class="wp-image-27074"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't have light level measurement instruments to obtain an objective number, but this picture makes it quite clear there is a dramatic difference in brightness. I knew some light would have been lost within the layers of a LCD panel, but it's fun to see firsthand it's far more than I had expected. This really drove home why alternate display technologies with self-illuminating pixels (OLED, micro-LED, etc.) can offer much brighter pictures than a backlit LCD could. My salvaged backlight is plenty bright running on just 5V, but <a href="https://newscrewdriver.com/2021/06/14/arduino-nano-failed-to-power-backlight-via-usb/">running it on USB took more effort than expected</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

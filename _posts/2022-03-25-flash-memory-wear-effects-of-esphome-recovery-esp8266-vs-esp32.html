@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'Flash Memory Wear Effects of ESPHome Recovery: ESP8266 vs. ESP32'
+date: 2022-03-25 12:30:00.000000000 +00:00
+type: post
+post_id: '29159'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESP8266
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29036'
+  _publicize_job_id: '70620296488'
+  timeline_notification: '1648236664'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/25/flash-memory-wear-effects-of-esphome-recovery-esp8266-vs-esp32/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One major difference between controlling charging of a battery and <a href="https://newscrewdriver.com/2022/03/24/power-control-board-for-truenas-replication-raspberry-pi/">controlling power to a Raspberry Pi</a> is the tolerance for interruptions. Briefly interrupting battery charging is nothing to worry about, we can easily pick up where we left off. But a brief interruption of Raspberry Pi power means it will reset. At the minimum we will lose in-progress work, but consequences can get worse including <a href="https://hackaday.com/2022/03/09/raspberry-pi-and-the-story-of-sd-card-corruption/" target="_blank" rel="noreferrer noopener">corruption of the microSD card</a>. If I put an ESPHome node in control of Raspberry Pi power, what happens when that node reboots? I don't want it to trigger a Raspberry Pi reboot as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was on my mind when I read <a rel="noreferrer noopener" href="https://esphome.io/components/switch/gpio.html" target="_blank">ESPHome documentation for GPIO Switch</a>: There is a parameter "<code>restore_mode</code>" that allows us to specify how that switch will behave upon bootup. ALWAYS_ON and ALWAYS_OFF are straightforward: the device is hard-coded to flip the switch on/off upon bootup. Neither of these would be acceptable for this case, so I have to use one of the restore options. I added it to my ESP32 configuration and performed an OTA firmware update to trigger a reboot. I was happy to see there was no interruption to the Pi. Or at least if there was, it was short enough that the capacitors I added to my Raspberry Pi power supply was able to bridge the gap.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is great! But how does the device know the previous state to restore? The most obvious answer is to store information in the onboard flash memory for these devices, but <a rel="noreferrer noopener" href="https://hackaday.com/2021/02/11/tesla-recalls-cars-with-emmc-failures-calls-part-a-wear-item/" target="_blank">flash memory has a wear life</a> that embedded developers must keep in mind. Especially when dealing with inexpensive components like ESP8266 and ESP32 modules. Their low price point invites use of inexpensive flash with a short wear life. I don't know how to probe flash memory to judge their life, but I do know ESPHome is an open-source project and I could dig into source code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESPHome <a rel="noreferrer noopener" href="https://esphome.io/components/switch/gpio.html" target="_blank">GPIO Switch</a> page has a link to <a rel="noreferrer noopener" href="https://esphome.io/components/esphome.html" target="_blank">Core Configuration</a>, where there's a deprecated flag <code>esp8266_restore_from_flash</code> to dictate whether to store persistent data in flash memory. That gave me the keyword needed to find the <a rel="noreferrer noopener" href="https://esphome.io/guides/automations.html?#global-variables" target="_blank">Global Variables section on ESPHome Automations page</a>. Where it said there is only 96 bytes available in a mechanism called "RTC memory" and that it would not survive a power-cycle. That didn't sound very useful but researching further I learned it survives deep sleep and so there's utility there. Searching in ESPHome GitHub repository, I found the file  <a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/esp8266/preferences.cpp" target="_blank"><code>preferences.cpp</code> for ESP8266</a> where I believe the implementation lives. It defaults to <code>false</code> which means the default wouldn't wear out ESP8266 flash memory but at the expense of RTC memory not surviving a power cycle. If we really need that level of recovery and switch <code>esp8266_restore_from_flash</code> to <code>true</code>, we have an additional knob to make trade offs between accuracy and flash memory lifespan <a rel="noreferrer noopener" href="https://esphome.io/components/esphome.html#adjusting-flash-writes" target="_blank">using the <code>flash_write_interval</code> parameter</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So that covers ESPHome running on an ESP8266. What about an ESP32? While I see that ESP32 has <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/memory-types.html#rtc-fast-memory" target="_blank">its own concept of RTC me</a><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/memory-types.html#rtc-fast-memory">mory</a>, looking in ESPHome source code for <a rel="noreferrer noopener" href="https://github.com/esphome/esphome/blob/dev/esphome/components/esp32/preferences.cpp" target="_blank">ESP32 variant of <code>preferences.cpp</code></a> I see that it used a different mechanism called NVS. <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html">Non-Volatile Storage library</a> is tailored for storing small key-value pairs in flash memory, and was <a href="https://www.esp32.com/viewtopic.php?t=3380">written to minimize wear</a>. This is great. Even better, the API also leaves the door open for different storage mechanisms in future hardware revisions, possibly something with better write durability.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From this, I conclude that ESPHome projects that require restoring states through reboots events are better off running on an ESP32 and its dedicated NVS mechanism. I didn't have this particular feature in mind when I made the decision to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/19/vertically-mounted-construction-experiment/" target="_blank">use an ESP32 to build my power-control board</a>, but in hindsight that was the right choice! Armed with confidence in the hardware, I can <a href="https://newscrewdriver.com/2022/03/26/recording-esphome-sensor-values-min-max-and-average/">patch up a few to-do items</a> in my ESPHome-based software.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

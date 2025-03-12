@@ -1,0 +1,60 @@
+---
+layout: post
+title: PCI Express Parallel Port Card for LinuxCNC
+date: 2022-12-27 12:30:00.000000000 +00:00
+type: post
+post_id: '20761'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _oembed_4e807f60f04011c2bf3e0643f0459c59: "{{unknown}}"
+  _oembed_911f054a405b1b1bdb1a10660fca8bdc: "{{unknown}}"
+  _oembed_12b7b5179da8fd1f95f860b699242686: "{{unknown}}"
+  _thumbnail_id: '20798'
+  _last_editor_used_jetpack: block-editor
+  _oembed_3ffab0ee8372db207c47ec25b0d3ac8c: "{{unknown}}"
+  _oembed_89ad9ba630ba10165a93fabe88f7f430: "{{unknown}}"
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672265192
+  _publicize_job_id: '80017398149'
+  timeline_notification: '1672173022'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/27/pci-express-parallel-port-card-for-linuxcnc/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While putting together a PC to investigate LinuxCNC, I installed a wireless networking card that <a href="https://newscrewdriver.com/2022/12/26/linuxcnc-has-limited-hardware-support-wireless-card-example/">turned out to be unsupported</a>. I was able to shrug that off as unimportant, but that would not be true of the next hardware project: adding a parallel port to the machine. Parallel ports have been around for as long as the PC platform has been around and is the closest thing a PC has to GPIO pins. (Actually, mostly just output.) There are many fancier options with add-on cards with programmable FPGA and such, but they all boil down to low-latency output signal pins and parallel port is the pioneer for all that followed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The starting point for this investigation is the <a rel="noreferrer noopener" href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Parallel_Port_Cards" target="_blank">LinuxCNC wiki for parallel port cards</a>. I would not have been surprised if they focused on ISA cards of the original IBM PC, but fortunately they aren't quite that old school which is good. Most of the entries talk about far more modern PCI cards. As I understand it, <a rel="noreferrer noopener" href="https://amzn.to/2T31XgS" target="_blank">something using the MCS9865 chip</a> (*) is the gold standard, preferably a dual port version for double the pins. There are other pages written by people reporting good results, but many (like <a rel="noreferrer noopener" href="http://wiki.linuxcnc.org/cgi-bin/wiki.pl?NetMos" target="_blank">this page about Netmos 9815</a>) are out of date and no longer available.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, the only expansion slot on this MSI AM1I Mini-ITX is a single PCI-Express (PCIe) slot intended for a GPU. Though handled by the same industry consortium, PCI and PCI-Express cards have physically incompatible shapes. I went to Amazon looking for PCI-Express parallel cards that explicitly mention Linux CNC. Thanks to the similar name, Amazon would show PCI (non-express) cards which I can't use. And for reasons I don't understand, <a href="https://amzn.to/2SYRJxM" target="_blank" rel="noreferrer noopener">some USB adapters were shown</a>(*) even though they would not work for this purpose: USB adds an unpredictable latency unacceptable for direct machine control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another tack I tried is to search for LinuxCNC wiki for parallel port chip identifiers. AX99100 came up empty. <a href="https://amzn.to/3PPMPAe" target="_blank" rel="noreferrer noopener">WCH382L boards are available</a> (*) but they have been problematic and no longer recommended. <a rel="noreferrer noopener" href="https://amzn.to/3PTKwMx" target="_blank">OXPCIe952 boards are available</a> (*) and LinuxCNC support for this chip has apparently matured past an early problematic teething period. Out of chips found on PCIe boards, the MCS9900 appears to have the <a rel="noreferrer noopener" href="https://forum.linuxcnc.org/16-stepconf-wizard/27041-problems-with-stepcon" target="_blank">longest track record</a>. So I decided to <a rel="noreferrer noopener" href="https://amzn.to/327cP1b" target="_blank">try this unit</a> (*) as my starting point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":20797} --></p>
+<figure class="wp-block-image aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2020/02/pcie-parallel-port-card-installed.jpg" alt="PCIe parallel port card installed" class="wp-image-20797"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The interface card itself installed easily, just like countless other PC add-on cards I've installed. The real proof requires <a href="https://newscrewdriver.com/2022/12/28/successful-linuxcnc-stepper-motor-test/">connecting it to some mechanical hardware</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

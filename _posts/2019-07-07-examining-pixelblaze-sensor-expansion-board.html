@@ -1,0 +1,42 @@
+---
+layout: post
+title: Examining Pixelblaze Sensor Expansion Board
+date: 2019-07-07 12:30:09.000000000 +00:00
+type: post
+post_id: '18849'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18850'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1562527816'
+  _publicize_job_id: '32590567476'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/07/examining-pixelblaze-sensor-expansion-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>With my <a href="https://newscrewdriver.com/2019/07/06/pixelblaze-pattern-rgb-xyz-3d-sweep/">RGB-XYZ 3D sweep test program</a>, I've verified my LED helix is fully set up with a Pixelblaze controller programmed with its geometry wound around a 3D printed chassis.  I have a blank canvas - what shall I create on it? A Pixelblaze by itself is capable of generating some pretty amazing patterns, but by default it has no sense of the world around it. It can only run a programmed sequence like my sweep test. I could focus on writing patterns for spectacular LED light shows, but I decided to dig deeper for sensor-reactive patterns.</p>
+<p>There are a few provisions on board for analog and digital inputs, so patterns could react to buttons or knobs. Going beyond such simple input is the <a href="https://www.tindie.com/products/electromage/electromage-pixelblaze-sensor-expansion-board/">Sensor Expansion Board</a>. It is an optional Pixelblaze add-on board which provides the following:</p>
+<ul>
+<li>A microphone specifically designed to continue function in loud environments</li>
+<li>An ambient light level sensor</li>
+<li>3-axis accelerometer</li>
+<li>5 additional analog inputs</li>
+</ul>
+<p>A Pixelblaze fresh out of the package includes a few sound-reactive patterns that work with the microphone. They are fun to play with, but that ground has been covered. Seeking fresh under-explored territory and an opportunity to write something useful for future users, I looked at the other sensors available and was drawn to the accelerometer. With it, I could write patterns that react to direction of gravity relative to the sensor board. This should be interesting.</p>
+<p>The sensor board is <a href="https://github.com/simap/pixelblaze_sensor_board">fully documented on Github</a>, which included description of the protocol used to send data to a Pixelblaze. Or actually any other microcontroller capable of decoding 3.3 volt serial data at 115200 baud which should be all of them! In my case I'll be using it with my Pixelblaze, and the first lesson here is that we only really need 3 pins out of its 7-pin expansion header: 3.3V power and ground obviously, and since the protocol is unidirectional, only one of two serial transmit pins is used by the sensor board. The remaining pins are pass-through available for other purposes. I'll explore those possibilities later, for now it's time to <a href="https://newscrewdriver.com/2019/07/08/pixelblaze-accelerometer-axis/">get set up to experiment with the accelerometer</a>.</body></html></p>

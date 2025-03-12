@@ -1,0 +1,101 @@
+---
+layout: post
+title: Symptoms Of A Computer Struggling To Perform ROS Mapping
+date: 2018-09-05 09:00:57.000000000 +00:00
+type: post
+post_id: '16739'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1536163467'
+  _publicize_job_id: '21826257814'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/05/learning-when-a-computer-is-struggling-to-perform-ros-mapping/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once my <a href="https://wordpress.com/post/newscrewdriver.com/16717">Dell Inspiron 11 3000 (3180) laptop</a> had its factory installation of Windows safely saved away in a Windows system image backup, its meager 32GB eMMC storage was wiped clean for an installation of <a href="http://releases.ubuntu.com/16.04/">Ubuntu 16.04</a> and <a href="http://wiki.ros.org/kinetic">ROS Kinetic Kame</a>. Installation was mostly uneventful, except its touchpad stopped working a few minutes after setup began, forcing me to complete setup using keyboard only. This issue seemed to be resolved after updating Ubuntu to latest packages, so it was only a minor annoyance on the way to answering my $130 question: is this meager AMD E2-9000e processor powerful enough to serve as a robot brain? The answer: Yes, but barely.</p>
+<p><img class=" size-full wp-image-16746 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/dell-3180-slam.jpg" alt="Dell 3180 SLAM" width="1024" height="598"></p>
+<p>My test was to run a standard ROS package that <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/#virtual-slam-with-turtlebot3">performs SLAM (simultaneous location and mapping) using Robotis' virtual TurtleBot 3</a> in Gazebo simulation. To reflect the workload of a robot brain running OpenSlam's <a href="http://wiki.ros.org/gmapping">GMapping algorithm</a>, I ran only mapping code on the laptop. My desktop computer handled the complex physics simulation and rendering of Gazebo in order to keep the two workloads separate. To give some context for this little laptop's capabilities, the same mapping workload was run on two other systems for comparison. One faster, and one slower, than this little laptop.</p>
+<p>Representing the high end is my desktop computer with an Intel Core i5-7600. It kept up with incoming sensor data effortlessly and matched them up to existing records. Here's an output log excerpt on the way to generating a high quality map:</p>
+<blockquote><p>
+<code>Average Scan Matching Score=313.501</code><br />
+<code>neff= 93.949</code><br />
+<code>Registering Scans:Done</code><br />
+<code>update frame 243</code><br />
+<code>update ld=0.0096975 ad=0.30291</code><br />
+<code>Laser Pose= -1.44014 1.54989 -0.977552</code><br />
+<code>m_count 177</code><br />
+<code>Average Scan Matching Score=312.594</code><br />
+<code>neff= 93.949</code><br />
+<code>Registering Scans:Done</code><br />
+<code>update frame 244</code><br />
+<code>update ld=0.0278723 ad=0.896994</code><br />
+<code>Laser Pose= -1.46775 1.55373 -1.87455</code><br />
+<code>m_count 178</code><br />
+<code>Average Scan Matching Score=309.104</code><br />
+<code>neff= 92.9918</code><br />
+<code>Registering Scans:Done</code><br />
+<code>update frame 245</code><br />
+<code>update ld=0.116176 ad=0.441108</code><br />
+<code>Laser Pose= -1.40149 1.64916 -2.31565</code><br />
+<code>m_count 179</code><br />
+<code>Average Scan Matching Score=311.613</code><br />
+<code>neff= 92.9897</code><br />
+<code>Registering Scans:Done</code><br />
+<code>update frame 246</code><br />
+<code>update ld=0.23972 ad=2.51909e-05</code><br />
+<code>Laser Pose= -1.23899 1.8254 -2.31568</code><br />
+<code>m_count 180</code>
+</p></blockquote>
+<p>There is one interesting observation, though: according to CPU utilization metrics, the ROS Node executing Gmapping consumed 100% of a single CPU core. I don't know if this means the algorithm has more room for improvement if given a faster core, or if this just means the algorithm takes up as much CPU as it can grab regardless of workload.</p>
+<p>On the other end of the performance spectrum is the low power ARM processor of a Raspberry Pi 3, and this SLAM code was too much for the little chip to handle. CPU utilization metrics also show 100% utilization of a single core, but it looks like sensor data avalanches in too quickly for a Pi to process and match up to existing map data. There were only rare successful matches in the sea of errors, as seen in this excerpt of output:</p>
+<blockquote><p>
+<code>Scan Matching Failed, using odometry. Likelihood=-1430.25</code><br />
+<code>lp:0.367574 2.18056 -1.47424</code><br />
+<code>op:1.16607 1.6985 -3.09185</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-1183.3</code><br />
+<code>lp:0.367574 2.18056 -1.47424</code><br />
+<code>op:1.16607 1.6985 -3.09185</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-0.874547</code><br />
+<code>lp:0.367574 2.18056 -1.47424</code><br />
+<code>op:1.16607 1.6985 -3.09185</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-0.900994</code><br />
+<code>lp:0.367574 2.18056 -1.47424</code><br />
+<code>op:1.16607 1.6985 -3.09185</code><br />
+<code>Average Scan Matching Score=208.949</code><br />
+<code>neff= 55.0344</code><br />
+<code>Registering Scans:Done</code><br />
+<code>update frame 28</code><br />
+<code>update ld=1.28116 ad=2.45138</code><br />
+<code>Laser Pose= 2.08673 0.807569 0.739956</code><br />
+<code>m_count 28</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-1376.72</code><br />
+<code>lp:1.16607 1.6985 -3.09185</code><br />
+<code>op:2.08673 0.807569 0.739956</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-707.376</code><br />
+<code>lp:1.16607 1.6985 -3.09185</code><br />
+<code>op:2.08673 0.807569 0.739956</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-653.378</code><br />
+<code>lp:1.16607 1.6985 -3.09185</code><br />
+<code>op:2.08673 0.807569 0.739956</code><br />
+<code>Scan Matching Failed, using odometry. Likelihood=-116.341</code><br />
+<code>lp:1.16607 1.6985 -3.09185</code><br />
+<code>op:2.08673 0.807569 0.739956</code>
+</p></blockquote>
+<p>So how did the budget laptop perform in comparison, on its AMD E2-9000e processor?</p>
+<p>It was far better than the Raspberry Pi, delivering mostly successful scan matches, but I could see occasional failure messages indicating it was struggling to keep pace with a fire hose of data. Curiously, CPU utilization did not stay pegged to 100%. It sometimes dip as low as 80%, implying there's another bottleneck in the system keeping the CPU from being fully fed with work. But it's the results that matter most. A visual examination of the map it generated looks rougher than one generated by my desktop, but usable. Meaning the resulting map might be of "good enough" quality for a robot to use despite its occasional errors.</p>
+<p>So the little machine didn't ace the test, but it managed to squeak by with a passing grade of C+, maybe a B-. This is very encouraging news for performance delivered by a low-end chip. It means we can start experimenting with this inexpensive laptop for now, and we have lots of upgrade headroom in the future.</body></html></p>

@@ -1,0 +1,55 @@
+---
+layout: post
+title: 'Glow Flow LED Diffusion Test: 3D Printed Sheet'
+date: 2019-07-18 12:30:25.000000000 +00:00
+type: post
+post_id: '18906'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+meta:
+  _thumbnail_id: '18909'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_c18eef7e01d2fd0e1b78d565fdf05240: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Work-in-progress
+    of &quot;Glow Flow&quot;: an illusion of glowing liquid flowing in reaction to
+    motion and gravity, runs on a <a href="https://twitter.com/hashtag/Pixelblaze?src=hash&amp;ref_src=twsrc%5Etfw">#Pixelblaze</a>
+    controller by <a href="https://twitter.com/im889?ref_src=twsrc%5Etfw">@im889</a>.
+    More details: <a href="https://t.co/dja3z5cPIe">https://t.co/dja3z5cPIe</a><br>As
+    presented at last night&#39;s <a href="https://twitter.com/SupplyframeDL?ref_src=twsrc%5Etfw">@SupplyframeDL</a>
+    <a href="https://twitter.com/hackaday?ref_src=twsrc%5Etfw">@hackaday</a> LA meetup.
+    <a href="https://t.co/w98JfuWAqf">pic.twitter.com/w98JfuWAqf</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1149778693864054784?ref_src=twsrc%5Etfw">July
+    12, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '33010146014'
+  timeline_notification: '1563478465'
+  _oembed_time_c18eef7e01d2fd0e1b78d565fdf05240: '1563565840'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/18/glow-flow-led-diffusion-test-3d-printed-sheet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Experimenting with <a href="https://newscrewdriver.com/2019/07/17/glow-flow-led-diffusion-test-paper-towel/">different ways I could implement a light diffuser</a>, there's no reason to overlook 3D printed plastic. One problem is that 3D printed structure typically has infill that is never seen, so their placement aren't calculated with the goal of controlling light transmitted through the structure. There are some fancy tricks we could use to control infill pattern, but the easy way out is to skip infill entirely and use a hollow plastic structure.</p>
+<p>The other potential problem is the Z-axis seam. A fused-deposition modeling 3D printer (most popular affordable hobbyist 3D printers) puts down plastic one layer at a time. When it shifts from one layer to the next, there is a brief pause that also manifests as a little bump in plastic. Good slicers will bury this somewhere invisible, either inside infill or on one of the inner layers, but if we're printing something to transmit light there's no escape.</p>
+<p>The solution to both problems is to use a single-wall print that continuously spirals upwards in Z axis, also referred to as "vase mode". This will give us a no-infill print without Z-movement seam and sounds the most promising way to print a light diffusion layer. This first test piece is 2mm in thickness, printed with 0.4mm nozzle in vase mode it means there's 1.2mm gap in between the inner and outer layers.</p>
+<p><img class="alignnone size-full wp-image-18907" src="https://newscrewdriver.com/wp-content/uploads/2019/07/glow-flow-diffusion-test-vase-print-1mm.jpg" alt="Glow Flow diffusion test vase print 1mm" width="1600" height="900"></p>
+<p>Held right up against the LEDs at a distance of less than 1mm, we have a decent amount of diffusion while leaving individual LEDs clearly visible. This might be a good choice if we want to display graphical patterns that need separation from one dot to another.</p>
+<p><img class="alignnone size-full wp-image-18908" src="https://newscrewdriver.com/wp-content/uploads/2019/07/glow-flow-diffusion-test-vase-print-5mm.jpg" alt="Glow Flow diffusion test vase print 5mm" width="1600" height="900"></p>
+<p>Holding the test piece a little further away at 5mm, we see a much smoother blend. Individual pixels are still visible, so any graphics (or text) will still be somewhat legible.</p>
+<p><img class="alignnone size-full wp-image-18909" src="https://newscrewdriver.com/wp-content/uploads/2019/07/glow-flow-diffusion-test-vase-print-10mm.jpg" alt="Glow Flow diffusion test vase print 10mm" width="1600" height="900"></p>
+<p>Going a bit further, at approximately 10mm, the pixels can no longer be differentiated. While this may be bad for things like marquee text, it is an excellent property for projects with abstract gradual color changes like Glow Flow. This is promising, but this thin walled object was very flexible and felt too fragile to be used as the outermost layer for a project meant to be handled by people. Perhaps it can be <a href="https://newscrewdriver.com/2019/07/19/glow-flow-led-diffusion-test-horizontal-ribs/">made more rigid with a little structure</a>?</p>
+<p></body></html></p>

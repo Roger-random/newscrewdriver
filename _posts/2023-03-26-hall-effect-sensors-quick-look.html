@@ -1,0 +1,61 @@
+---
+layout: post
+title: Hall Effect Sensors Quick Look
+date: 2023-03-26 12:30:00.000000000 +00:00
+type: post
+post_id: '35902'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35947'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679946356
+  _publicize_job_id: '82655347626'
+  timeline_notification: '1679859013'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/26/hall-effect-sensors-quick-look/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Learning about brushless direct current (BLDC) motors, I keep coming across Hall-effect sensors in different contexts. It was one of the things in common <a href="https://newscrewdriver.com/2023/03/25/brushless-motors-with-two-phases/">between a pair of cooling fans</a>: one from a computer and another from a refrigerator.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Many systems with BLDC motors can run "sensorless" without a Hall sensor but I hadn't known how that was possible. I've learned they depend on an electromagnetic effect ("back EMF") that <a href="https://www.digikey.com/en/articles/controlling-sensorless-bldc-motors-via-back-emf">only comes into play once the motor is turning</a>. To start from a stop, sensorless BLDC motors depend on an open-loop control system "running blind". But if the motor behaves differently from what that open-loop control expected, startup sequence fails. This explains <a href="https://newscrewdriver.com/2020/01/11/projects-using-brushless-motors-must-account-for-controller-start-up-behavior/">the problem that got me interested in BLDC control</a>! From that, I conclude a sensor of some sort is required for reliable BLDC motor startup when motor parameters are unknown and/or the motor is under unpredictable physical load.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Time to finally sit down an learn more about Hall effect sensors! As usual I <a href="https://en.wikipedia.org/wiki/Hall_effect_sensor">start with Wikipedia for general background</a>, then moving on to product listings and datasheets. Most of what I've found can be more accurately called Hall effect <em>switches</em>. They report a digital (on/off) response to their designed magnetic parameters. Some of them look for magnetic north, some look for magnetic south, others look for a <em>change </em>in magnetic field rather than a specific value. Some are designed to pick up weak fields of distant magnets, others are designed for close contact with a rare earth magnet's strong field. Sensors designed to detect things like a laptop lid closing don't need to be fast, but sensors designed for machinery (like inside a brushless motor!) need high response rates. All of these potential parameters multiply out to hundreds or thousands of different product listings on an electronic component supplier website <a href="https://www.digikey.com/en/products/filter/magnetic-sensors-linear-compass-ics/554">like Digi-Key</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a bit of general background, I dug up a pair of small <a href="https://amzn.to/40uCZYR">Hall effect sensor breakout boards</a> (*) in my collection of parts. The actual sensor has "44E" printed on it, from there I found datasheets telling me it is a digital switch that grounds the output pin when it sees one pole of a magnet. If it sees the other pole, or if there is no magnet in range at all, the output pin is left floating. Which pole? Um... good question. Either I'm misunderstanding the nomenclature, someone made a mistake in one of these conflicting datasheets, or maybe manufacturers of "44E" Hall switches aren't consistent in which pole triggers pulling down the output pin.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, the answer doesn't matter for me right now. This breakout board was intended for use with microcontrollers like Arduino projects, and it also has an onboard LED to indicate its output status. This is good enough for me to start. I connected the 5V to center pin, ground to pin labeled "-", and left the "S" pin unconnected. The onboard LED illuminated when I held it up against one pole. When held up against the opposite pole, or when there's no magnet nearby, the LED stays dark.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also knew there was a Hall sensor integrated into an ESP32. This one is not just an on/off switch, it can be connected to one of ESP32's ADC channels to return an analog value. Sounds interesting! But ESP32 forums report the sensor is <a href="https://esp32.com/viewtopic.php?t=4963">only marginally useful</a> on the type of ESP32 development board I use. The ESP32 chip itself is packed tightly alongside other chips, under a metal RF shield, resulting in a very noisy magnetic environment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking more into similar standalone sensors, I learned some keywords. To get more data about a nearby magnet, I might want an "analog" sensor that detects a range of values instead of on/off relative to some threshold. Preferably the detected output value changes in "linear" response to magnetic field, and to tell the difference between either pole or no magnet at all I'd want a "bipolar" sensor. Searching on Digi-Key for these parameters and sorted by lowest cost found the <a href="https://www.ti.com/product/DRV5053">TI DRV5053</a>: analog bipolar hall effect sensors with linear output. Available in six different levels of sensitivity and two different packages. And of course, there are other companies offering similar products with their own product lines.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>They might be fun to play with, but they only detect magnet field strength at a single point along a single axis. What if I wanted to detect magnetic fields along more than one axis? That thought <a href="https://newscrewdriver.com/2023/03/27/magnetometer-quick-look/">led me to magnetometers</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

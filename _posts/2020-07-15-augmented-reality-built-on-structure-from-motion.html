@@ -1,0 +1,37 @@
+---
+layout: post
+title: Augmented Reality Built On "Structure From Motion"
+date: 2020-07-15 12:30:28.000000000 +00:00
+type: post
+post_id: '21852'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+- SfM
+meta:
+  _thumbnail_id: '21832'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46610454303'
+  timeline_notification: '1594841462'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/15/augmented-reality-built-on-structure-from-motion/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When learning about <a href="https://newscrewdriver.com/2020/07/14/first-glance-at-google-arcore-depth-map/">a new piece of technology in a domain I don't know much about</a>, I like to do a little background research to understand the fundamentals. This is not just for idle curiosity: understanding theoretical constraints could save a lot of grief down the line if that knowledge spares me from trying to do something that looked reasonable at the time but is actually fundamentally impossible. (Don't laugh, this has happened more than once.)</p>
+<p>For the current generation of augmented reality technology that can run on cell phones and tablets, the fundamental area of research is "<a href="https://en.wikipedia.org/wiki/Structure_from_Motion">Structure from Motion</a>". <em><strong>Motion</strong></em> is right in the name, and that key component explains how a depth map can be calculated from just a 2D camera image. A cell phone does not have a distance sensor like Kinect's infrared projector/camera combination, but it does have motion sensors. Phones and tablets started out with only a <a href="https://newscrewdriver.com/2019/07/30/second-attempt-success-mozzi-mma7660/">crude low resolution accelerometer for detecting orientation</a>, but that's no longer the case thanks to rapid advancements in mobile electronics. Recent devices have high resolution, high speed sensors that integrate accelerometer, gyroscope, and compass across X, Y, and Z axis. These 9-DOF sensors (3 types of data * 3 axis = 9 Degrees of Freedom) allow the phone to accurately detect motion. And given motion data, an algorithm can correlate movement against camera video feed to extract <a href="https://en.wikipedia.org/wiki/Parallax">parallax motion</a>. That then feeds into code which builds a digital representation of the structure of the phone's physical surroundings.</p>
+<p>Their method of operation would also explain how such technology could not replace a Kinect sensor, which is designed to sit on the fireplace mantle and watch game players jump around in the living room. Because the Kinect sensor bar does not move, there is no motion from which to calculate structure making SfM useless for such tasks. This educational side quest has thus accomplished the "understand what's fundamentally impossible" item I mentioned earlier.</p>
+<p>But mounted on a mobile robot moving around in its environment? That should have no fundamental incompatibilities with SfM, and <a href="https://newscrewdriver.com/2020/07/16/robotic-applications-for-structure-from-motion-and-arcore/">might be applicable</a>.</p>
+<p></body></html></p>

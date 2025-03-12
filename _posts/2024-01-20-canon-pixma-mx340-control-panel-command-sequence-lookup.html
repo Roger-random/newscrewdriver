@@ -1,0 +1,58 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Command Sequence Lookup
+date: 2024-01-20 14:38:43.000000000 +00:00
+type: post
+post_id: '41663'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41609'
+  firehose_sent: '1705790325'
+  _publicize_job_id: '91266535207'
+  timeline_notification: '1705790326'
+  wordads_ufa: s:wpcom-ufa-v4:1705956963
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/20/canon-pixma-mx340-control-panel-command-sequence-lookup/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm teasing apart the stream of data sent by the main board of a Canon Pixma MX340 multi-function inkjet to its control panel. I've <a href="https://newscrewdriver.com/2024/01/19/canon-pixma-mx340-main-board-command-versus-bulk-transfer/">separated out its 196-byte bulk data transfers from 2-byte command sequences</a>. The bulk data transfers are LCD screen bitmap, so I could ignore that for now and focus on functional commands.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The main problem here is that I never managed to find a data sheet or useful reference material for the main chip on the control panel, marked as NEC K13988. So these command sequences are opaque bytes picked out by my Saleae logic analyzer. A few of these immediately changed machine behavior so <a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/" target="_blank" rel="noreferrer noopener">I could make guesses</a> on what they mean, but the rest are just a mystery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought I had a huge challenge on my hands, trying to build a state machine to parse a language without knowing the vocabulary or syntax. After drawing a few diagrams on scratch paper, I noticed they all ended up as a straightforward pattern matching exercise. Well, it would be much easier to treat the problem that way, and I should always try that easy thing first.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Logically this would be <a href="https://en.wikipedia.org/wiki/Switch_statement" target="_blank" rel="noreferrer noopener">a <code>switch</code> statement</a>, but since I'm working in Python, I thought I would try to be a bit more clever using existing data structure infrastructure instead of writing my own. I thought a Python <code><a href="https://docs.python.org/3/tutorial/datastructures.html#dictionaries">dictionary</a></code> could do the job. I feed it a command sequence and ask if it's one that I've already seen. The minor twist is that I build up my command sequence in a <code><a href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists">list</a></code> as bytes arrive on the serial port, but a <code>list</code> is not valid data type to use for <code>dictionary</code> key because they need to be immutable data types.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first workaround, then, is to convert a <code>list</code> into an immutable counterpart called a <code><a href="https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple" target="_blank" rel="noreferrer noopener">tuple</a></code> in Python. This mostly worked, but the tuple-to-list conversion has a subtle special case for converting lists of tuples (each two-byte command sequence is a tuple) to a tuple of tuples when the original list has only a single entry. It looks like somewhere along the line, a tuple with a single entry of another tuple is collapsed into just a tuple. I don't fully understand what's going on but I was able to rig up a second workaround to make the <code>dictionary</code> lookup happen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that was up and running, I could successfully look up the LCD screen update sequence and collapse that sequence of commands, including its 5 bulk data transfers, into a single line on my console output. This is a great start! Now I can proceed to <a href="https://newscrewdriver.com/2024/01/21/canon-pixma-mx340-control-panel-filter-app/">fill in the rest</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this quick-and-dirty data parsing project is <a href="https://github.com/Roger-random/canon_mx340/tree/main/control_panel_io_filter_python" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

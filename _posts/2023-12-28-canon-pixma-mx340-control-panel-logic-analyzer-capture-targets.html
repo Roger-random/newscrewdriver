@@ -1,0 +1,77 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Logic Analyzer Capture Targets
+date: 2023-12-28 12:30:00.000000000 +00:00
+type: post
+post_id: '41311'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  firehose_sent: '1703795427'
+  timeline_notification: '1703795427'
+  _publicize_job_id: '90645043187'
+  wordads_ufa: s:wpcom-ufa-v4:1703885981
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/28/canon-pixma-mx340-control-panel-logic-analyzer-capture-targets/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My Saleae Logic 8 logic analyzer <a href="https://newscrewdriver.com/2023/12/27/canon-pixma-mx340-control-panel-meet-saleae-logic-8/">has tapped into the communication lines</a> between main board and control panel of a Canon Pixma MX340 multi-function inkjet. The asynchronous serial data decoder is now configured to 250000 baud 8E1 to match. (Or if it's not 250000 baud, it's at least close enough.) It's time to get some data to analyze!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First I started with power cycle scenarios:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Plug in the power cable, watching the power-up sequence transitioning to standby state. From earlier oscilloscope traces I know the NEC K13988 chip on the control panel is briefly enabled by the mainboard. This should be a relatively short sequence to analyze, and hopefully enough to understand the minimum required sequence to start the K13988. There is no visible activity on the LCD screen during this sequence so that's not expected to be part of this picture.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Push the power button, watch transition from standby to on. This enables the K13988 and displays several different things on the LCD screen in rapid succession. I expect to see the K13988 initialization again, plus a lot more to initialize the rest of the control panel. There should be a LCD initialization sequence here, and several screen frame buffer updates. This is expected to be the longest and most complex sequence to analyze.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Push the power button again, watch transition from on to standby. This should be a slightly shorter sequence. There's one LCD screen update to show "Ending..." as the printer goes to standby, then the screen and K13988 drops off to sleep.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I added the following scenarios:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>While in on state and at the home menu, I pushed four buttons in sequence: "OK", which gave me an error beep and no screen update. "Right", which did trigger a screen update, incrementing the number of copies. "Left", which was another update decrementing the number. Finally "Back", which is again an error beep and no screen update. This gives me activity for four different button presses, two of which triggered screen updates but two did not.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>While in on state and at the home menu, I left the machine alone until it put the LCD screen to sleep. Then I pushed a button to wake the screen back up. This capture should have the commands to deactivate the LCD while still keep K13988 active, followed by commands to wake up the LCD. I will be curious to see if a full LCD screen update frame buffer is sent as well.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>While in standby state, I lifted the scanner imaging head off of its track then pushed the power button. This will cause a failure of its <a href="https://newscrewdriver.com/2023/12/02/canon-pixma-mx340-scanner-homing-sequence/" target="_blank" rel="noreferrer noopener">homing sequence</a> and trigger an error display screen, toggling LCD text between "Printer error has occurred" and "5011". Capturing this sequence will show LCD screen update without any noise from user input.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>If anyone else is curious, these logic analyzer capture files <a href="https://github.com/Roger-random/canon_mx340/tree/main/control_panel_mainboard_communication" target="_blank" rel="noreferrer noopener">are up on my GitHub</a>. As a first pass, I don't expect the these captures to answer all the questions I have. Heck, I'm not even confident they'll make sense. But I can always come back to capture different activity. For now, they're good enough to <a href="https://newscrewdriver.com/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/">serve as a starting point and establish a baseline</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

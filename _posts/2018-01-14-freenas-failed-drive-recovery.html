@@ -1,0 +1,42 @@
+---
+layout: post
+title: FreeNAS Successfully Recovered From Failed Drive
+date: 2018-01-14 17:26:51.000000000 +00:00
+type: post
+post_id: '15747'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  timeline_notification: '1515979614'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '13603258246'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/01/14/freenas-failed-drive-recovery/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the major reasons to set up a FreeNAS machine with ZFS volume is to ensure that network storage data is always available in a redundant manner to ensure everything will still be OK after a hard drive inevitably fails. But before theory can be put into practice, we had to wait for a drive to actually fail. In that sense, today is our lucky day.</p>
+<p><img class=" size-full wp-image-15749 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/freenas-critical-alert-box.jpg" alt="FreeNAS Critical Alert Box" width="617" height="131"></p>
+<p>A drive failed to respond to some commands and returned errors in the wee hours of the morning. Although it appears to have since recovered and is functioning, we shouldn't be comforted by the momentary blip - it is almost certainly a sign of things to come if we continue to use this drive. So we'll replace it instead of waiting for a catastrophic failure.</p>
+<p>The instructions to replace a failing drive is <a href="http://doc.freenas.org/11/storage.html#replacing-a-failed-drive">covered in the FreeNAS manual</a>. Following the procedures, the drive was taken offline in the Storage/Volume Status screen.</p>
+<p><img class=" size-full wp-image-15754 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/freenas-volume-status1.jpg" alt="FreeNAS Volume Status" width="1018" height="473"></p>
+<p>Then we go to Storage/View Disks screen to retrieve the identifying serial number. This ensures that we remove the correct physical drive from the computer by comparing this serial number against the number on the physical label on the drive.</p>
+<p><img class=" size-full wp-image-15755 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/freenas-storage-view-disks1.jpg" alt="FreeNAS Storage View Disks" width="645" height="288"></p>
+<p>Since this FreeNAS machine does not have hot swap capability, it then had to be shut down for the actual drive replacement. Once the machine restarts, we go back into Storage/Volume Status and select "Replace". (The button next to "Offline" we clicked earlier.) If there's any existing data on the replacement drive, FreeNAS will double-check to make sure it's OK for the replacement drive to be overwritten.</p>
+<p><img class=" size-full wp-image-15750 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/freenas-force-replace.jpg" alt="FreeNAS Force Replace" width="472" height="215"></p>
+<p>And after that... we wait for the data from the remaining good drive to be replicated to the newly installed replacement drive.</p>
+<p><img class=" size-full wp-image-15751 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/freenas-resilver-in-progress.jpg" alt="FreeNAS Resilver In Progress" width="615" height="130"></p>
+<p>This procedure will take several hours and this time is technically a window of vulnerability - if the remaining good drive fails during this time we'll lose data. To guard against this, ZFS allows even deeper redundancy by using more than two hard drives. In the case of this server, the data is not critical enough to warrant such protection and we'll just cross our fingers the remaining drive does not fail during the recovery process.</p>
+<p></body></html></p>

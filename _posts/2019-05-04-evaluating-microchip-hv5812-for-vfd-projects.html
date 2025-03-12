@@ -1,0 +1,38 @@
+---
+layout: post
+title: Evaluating Microchip HV5812 For VFD Projects
+date: 2019-05-04 12:30:31.000000000 +00:00
+type: post
+post_id: '18436'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30461483703'
+  timeline_notification: '1556998286'
+  _thumbnail_id: '18437'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/04/evaluating-microchip-hv5812-for-vfd-projects/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>[<a href="https://twitter.com/mle_online">Emily</a>] and I <a href="https://newscrewdriver.com/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/">started our vacuum fluorescent display (VFD) project</a> because there was an interesting unit available, with a look distinctly different from modern LED. We just had to salvage it out of an obsolete piece of electronics and figure out how to make it work. We now have a prototype VFD driver circuit up and running, and we can command it to light up arbitrary combinations of segments at arbitrary times from a Python program running on an attached Raspberry Pi. This is a satisfying milestone marking completion of our first generation hardware allowing us to transition to focusing on what to actually put on that display.</p>
+<p>The first few experiments with VFD patterns confirmed that we really like how a VFD looks! As people who love to take things apart to see how they work, we enjoy all the <a href="https://newscrewdriver.com/2019/04/24/a-close-up-look-at-vfd-internals/">components of a VFD visible through its glass case</a>. Their intricate internals qualify them as desktop sculpture just sitting there, making them light up is just icing on the cake.</p>
+<p>With this early success and desire for more, chances are good that we'll embark on additional VFD projects in the future. For our first VFD project we <a href="https://newscrewdriver.com/2019/04/14/hardware-side-of-keeping-pic-driver-simple/">chose to stick with generic chips</a> for the sake of learning the basic principles, but if we're going to start building more we should look at using chips designed for the purpose.</p>
+<p>According to Digi-Key's online catalog, there are dedicated vacuum fluorescent drivers available from <a href="https://www.digikey.com/catalog/en/partgroup/vacuum-fluorescent-vf/14881">Maxim</a> and <a href="https://www.digikey.com/catalog/en/partgroup/vacuum-fluorescent-vf/48628">Microchip</a>. None of Maxim's chips are available in hobbyist-friendly through-hole designs, but two of Microchip's three lines are. HV5812P-G is the 20-channel model in 28-pin DIP format, and HV518P-G is the 32-channel counterpart in 40-pin DIP format. Curiously, for ~50% more pins, the HV518P-G costs over double the price. So it made sense to <a href="https://www.microchip.com/wwwproducts/en/HV5812">start with the HV5812</a>.</p>
+<p>With data and clock pins for straightforward serial data input, it was designed to be easy to drive from pretty much any microcontroller. The only thing that caught my attention is that logic input lines are expected to be 5V input with a minimum of 3.5V required to be interpreted as logic high. This meant we couldn't drive it directly from 3.3V hosts like a Raspberry Pi or an ESP32. We'd need level shifters or a 5V capable part like a PIC to act an intermediary.</p>
+<p>It looks promising enough -- and priced cheaply enough -- to be a consideration for potential follow-on VFD projects. So we'll add that to the Digi-Key shopping cart and see where things go from there.</p>
+<p></body></html></p>

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Looking Under The Hood Of Adafruit Spooky Eyes
+date: 2019-02-05 18:01:53.000000000 +00:00
+type: post
+post_id: '17797'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Spooky Eyes
+meta:
+  _oembed_c2fdfff812d52cebd4fcf680d5aa099a: "{{unknown}}"
+  _oembed_3a928304b1fc4ce77d30f67238d73085: "{{unknown}}"
+  _oembed_97b0aa8ddc16f87febb2a14e26f73032: "{{unknown}}"
+  _oembed_c621d490031c2ed7cabf3afb367a4a5d: "{{unknown}}"
+  _oembed_d48a1e4df06c0095e3c5c420136a359f: "{{unknown}}"
+  _oembed_031d4e0f825353d9615919408dbfe0aa: "{{unknown}}"
+  _oembed_70483f15e3ae7ed936284570e66325ee: "{{unknown}}"
+  _oembed_e320fe402a6180bb26b3526f0e26750c: "{{unknown}}"
+  _oembed_6ac01c6faed5cb4095e7dcd2dfe21b21: "{{unknown}}"
+  timeline_notification: '1549418526'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '27325777967'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/02/05/looking-under-the-hood-of-adafruit-spooky-eyes/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignnone size-full wp-image-17800" src="https://newscrewdriver.com/wp-content/uploads/2019/02/sclera-array-and-bitmap.png" alt="Sclera array and bitmap" width="1286" height="680"></p>
+<p><a href="https://www.adafruit.com/product/3900">Adafruit's Hallowing</a> was easily the <a href="https://newscrewdriver.com/2018/11/19/eyes-at-supercon-adafruit-hallowing/">most memorable part of the 2018 Superconference attendee gift bag</a>. Having a little moving blinking eye looking around is far more interesting than a blinking LED. It is so cool, in fact, that <a href="https://twitter.com/mle_online">Emily</a> has ambition to put the same visual effect on other devices.</p>
+<p>Since the Hallowing was one of the headline platforms that supported CircuitPython, the original hope was that it would be very easy to translate to a Raspberry Pi. Sadly, it turns out "<a href="https://learn.adafruit.com/adafruit-hallowing/spooky-eyes">Spooky Eyes</a>" is actually a sketch created using Arduino IDE <a href="https://learn.adafruit.com/animated-electronic-eyes-using-teensy-3-1">for a Teensy board</a> that also ran on the Hallowing.</p>
+<p>As I found out in my own <a href="https://newscrewdriver.com/tag/nyan-cat/">Nyan cat project</a> for Superconference 2018 badge, modern image compression algorithms are a tough fit for small micro controllers. And just as <a href="https://newscrewdriver.com/2018/11/01/hackaday-badge-nyan-cat-gif-or-not/">I translated an animated GIF into raw byte data</a> for my project, Spooky Eyes represented their image data in the form of <a href="https://github.com/adafruit/Adafruit_Learning_System_Guides/blob/master/All_Seeing_Skull/graphics/defaultEye.h">raw bytes in a header file</a>.</p>
+<p>Adafruit always has excellent documentation, so of course there's a page describing what these bytes represent and where they came from for the purposes of letting people <a href="https://learn.adafruit.com/animated-electronic-eyes-using-teensy-3-1/customizing">create their own eye bitmaps</a>. Apparently this project came from <a href="http://forums.stanwinstonschool.com/discussion/1470/animatronic-pupil-for-eye">this forum thread</a>. I was a little grumpy the Adafruit page said "from the Github repository" without providing a link, but the forum thread <a href="https://github.com/PaintYourDragon/Teensy-Iris/blob/master/Python/tablegen.py">pointed here</a> for the Python script <code>tablegen.py</code>.</p>
+<p>There was a chance the source bitmaps would be on Github as well, but I had no luck finding them. They certainly weren't in the same repository as tablegen.py or the Arduino sketches I examined. Still, the data is there, we just need to figure out what format would be most useful for putting the eye on another project.</p>
+<p>As a first step, I'll try to extract and translate them into a more familiar lossless bitmap format. Something that can be directly usable by more powerful devices like a Raspberry Pi. A successful translation would confirm I understand the eyeball data format correctly, which would be good to know for any future projects that might want to encode that data into different formats as needed for other devices.</body></html></p>

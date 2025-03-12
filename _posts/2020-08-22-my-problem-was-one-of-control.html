@@ -1,0 +1,65 @@
+---
+layout: post
+title: My Problem Was One Of Control
+date: 2020-08-22 12:30:00.000000000 +00:00
+type: post
+post_id: '22171'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- UWP
+meta:
+  _thumbnail_id: '22069'
+  _publicize_job_id: '48007793428'
+  timeline_notification: '1598124785'
+  _oembed_19771eef84fbb7f821c40098f840f3c0: "{{unknown}}"
+  _oembed_e73ea46815ebf861cda6787bee201cc8: "{{unknown}}"
+  _oembed_489e043a9c776788d9daeeb30e7178c5: "{{unknown}}"
+  _oembed_5f0f049941b91e2b958b5d4caeebe806: "{{unknown}}"
+  _oembed_3bf49749254815c885f62f5928ad47a2: "{{unknown}}"
+  _oembed_3cfe242cb69d45cede399ef5b8de33c1: "{{unknown}}"
+  _oembed_eddaa814de5087b289f24edcce0f2c0a: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">I
+    bought a Mitutoyo electronic indicator on faith that they&#39;re popular enough,
+    I can find information online to interface with its data port. Turns out there&#39;s
+    no need to hunt: the inbox pamphlet tells me how. I did not expect that! A very
+    pleasant surprise. <a href="https://t.co/nvOCcgCb4h">pic.twitter.com/nvOCcgCb4h</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1287870898398064640?ref_src=twsrc%5Etfw">July
+    27, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_eddaa814de5087b289f24edcce0f2c0a: '1598134041'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/22/my-problem-was-one-of-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>For my computer-controlled camera project, I thought it would be good to let the user control position via arrow keys on the keyboard. My quick-and-dirty first attempt failed, so I dived into UWP documentation. After spending a lot of time <a href="https://newscrewdriver.com/2020/08/21/tab-and-arrow-keys-getting-in-each-others-way/">reading about nuts and bolts of keyboard navigation</a>, I finally found my problem and it's one of the cases when the answer has been in my face the whole time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When my key press event handlers failed to trigger, the first page I went to is the <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/input/keyboard-events" target="_blank">Keyboard Events</a> page. This page has a lot of information up front and center about eligibility requirements to receive keyboard events, here's an excerpt from the page:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p><em>For a control to receive input focus, it must be enabled, visible, and have IsTabStop and HitTestVisible property values of true. This is the default state for most controls.</em></p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>My blindness was reading the word "control" in the general sense of a visual element on the page for user interaction. Which is why I kept overlooking the lesson it was trying to tell me: if I want keyboard events, I have to use something that is derived from the UWP <code><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.control" target="_blank">Control</a></code> object. In other words, not "control" in the generic language case but "Control" as a specific proper name in the object hierarchy. I would have been better informed about the distinction if they had capitalized Control, or linked to the page for the formal Control object, or any of a number other things to differentiate it as a specific term and not a generic word. But for whatever reason they chose not to, and I failed to comprehend the significance of the word again and again. It wasn't until I was on the <a href="https://docs.microsoft.com/en-us/windows/uwp/design/accessibility/keyboard-accessibility">Keyboard Accessibility</a> page did I see this requirement clearly and very specifically spelled out:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p><em>Only classes that derive from <a href="https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Xaml.Controls.Control"><strong>Control</strong></a> support focus and tab navigation.</em></p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.captureelement">CaptureElement</a></code> control (generic name) <a href="https://newscrewdriver.com/2020/08/16/webcam-test-with-uwp/">used in the UWP webcam example</a> is not derived from <code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.control">Control</a></code> (proper name) and that's why I have not been receiving the keyboard events. Once I finally understood my mistake, <a href="https://newscrewdriver.com/2020/08/23/user-interface-taking-control/">it was easy to fix</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

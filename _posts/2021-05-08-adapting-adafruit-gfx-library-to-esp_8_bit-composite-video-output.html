@@ -1,0 +1,51 @@
+---
+layout: post
+title: Adapting Adafruit GFX Library to ESP_8_BIT Composite Video Output
+date: 2021-05-08 12:30:00.000000000 +00:00
+type: post
+post_id: '26447'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26465'
+  timeline_notification: '1620502225'
+  _publicize_job_id: '58128151497'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/08/adapting-adafruit-gfx-library-to-esp_8_bit-composite-video-output/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I looked at a few candidate graphics libraries to make working with ESP_8_BIT video output frame buffer easier. <a href="https://newscrewdriver.com/2021/05/07/window-shopping-lvgl/">LVGL offered a huge feature set for building user interfaces</a>, but I don't that is a good match for my goal. I could always go back to that later if I felt it would be worthwhile. FabGL was excluded because I couldn't find documentation on how to adapt it to the code I have on hand, but it might be worth another look if I wanted to use its VGA output ability.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining those options made me more confident in my initial choice of Adafruit GFX Library. I think it is the best fit for what I want right now: Something easy to use by Arduino developers, with a gentle on-ramp thanks to the always-excellent documentation Adafruit posts for their stuff <a rel="noreferrer noopener" href="https://learn.adafruit.com/adafruit-gfx-graphics-library" target="_blank">including the GFX Library</a>. It also means there are a lot of existing code floating around out there for people to use and play with the ESP_8_BIT video generation code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started modifying my ESP_8_BIT wrapper class directly, removing the frame buffer interface, but then I changed my mind. I decided to leave the frame buffer option in place for people who are not afraid of byte manipulation. Instead, I created another class <code>ESP_8_BIT_GFX</code> that derives from <code>Adafruit_GFX</code>. This new class will be the developer-friendly class wrapper, and it will internally hold an instance of my frame buffer wrapper class.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I started looking at what it would take to adapt Adafruit_GFX, I was surprised to see the list is super short. The most fundamental requirement is that I must implement a single pure virtual method: <code>drawPixel()</code>. I was up and running after calling the base constructor with width (256) and height (240) and implementing a single method. The rest of Adafruit_GFX base class has fallback implementations of every API that eventually boils down to a series of calls into <code>drawPixel()</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Everything beyond <code>drawPixel()</code> are icing on the cake, giving us plenty of options for performance improvements. I started small by overriding just the <code>fillScreen()</code> class, because I intend to use that to erase the screen between every frame and I wanted that to be fast. Due to how ESP_8_BIT organized the frame buffer into an array of pointers into horizontal lines, I can see <code>drawFastHLine()</code> as the next most promising thing to override. But I'll resist that temptation for now, I need to <a href="https://newscrewdriver.com/2021/05/09/esp_8_bit-color-composite-video-out-on-arduino-library-manager/">make sure I can walk before I run</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

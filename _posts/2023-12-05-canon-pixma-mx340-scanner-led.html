@@ -1,0 +1,114 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner LED
+date: 2023-12-05 12:30:00.000000000 +00:00
+type: post
+post_id: '40851'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40853'
+  wordads_ufa: s:wpcom-ufa-v4:1703391592
+  _publicize_job_id: '90019025165'
+  timeline_notification: '1701808219'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/05/canon-pixma-mx340-scanner-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm looking over the scanner module of a Canon Pixma MX340 multi-function inkjet. Its <a href="https://newscrewdriver.com/2023/12/04/canon-pixma-mx340-scanner-motor/">stepper motor got the oscilloscope treatment</a> first, now onward to the image sensor bar.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40511,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-control-wiring.jpg?w=1024" alt="" class="wp-image-40511"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I <a href="https://newscrewdriver.com/2023/11/21/canon-pixma-mx340-scanner-rail/" target="_blank" rel="noreferrer noopener">took apart the scanner module</a>, I noticed there were a few through-hole pins at the end of the image sensor bar and wondered what components they might be attached to. As I explored the scanner further to determine <a href="https://newscrewdriver.com/2023/12/02/canon-pixma-mx340-scanner-homing-sequence/" target="_blank" rel="noreferrer noopener">its startup behavior</a>, I stared at the bar and saw the answer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40862,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-led-at-end-of-light-bar.jpg?w=1024" alt="" class="wp-image-40862"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This end of the image sensor bar housed illumination light sources. This close-up shot showed the red, green, and blue LEDs working together to light the bar white.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40864,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-led-pins.jpg?w=1024" alt="" class="wp-image-40864"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>From that I would expect three pins, one for each color, and a fourth pin as either a common anode or a common cathode. In actuality, I see five pins in this row. What did I miss? Starting with the basics, I probed the pins for continuity with chassis ground and found one, topmost in this picture.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40853,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-led-wired-for-oscilloscope.jpg?w=1024" alt="" class="wp-image-40853"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I soldered wires to the four unknowns so I can see what they look like during printer startup, when the light bar is illuminated white <a href="https://newscrewdriver.com/2023/12/03/canon-pixma-mx340-scanner-homing-marker/">looking for the homing marker</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40867,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-led-under-oscilloscope.png?w=800" alt="" class="wp-image-40867"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like the green wire is supplying 5.5V DC, possibly the same voltage plane powering the <a href="https://newscrewdriver.com/2023/11/30/canon-pixma-mx340-adf-sensors/" target="_blank" rel="noreferrer noopener">ADF paper sensors</a>. The remaining three wires show a pattern that switches between two voltage levels and repeats less than 2.5 milliseconds. That works out to be less than 400Hz, too slow to be some sort of LED PWM scheme. Something else is going on. But first, I want to figure out if these wires are the positive anode (LED illuminates at higher voltage) or negative anode (LED illuminates at lower voltage).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40870,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-red-led-illuminated-by-led-tester.jpg?w=1024" alt="" class="wp-image-40870"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I pulled out my LED tester and determined it is the latter: the LED illuminates from the 5.5V rail to the lower voltage shown on oscilloscope. I guess the ground pin is present merely for chassis ground and not actively used in this circuit. I also determined which wire corresponded to which colors, which is unfortunately now very confusing because I soldered these wires without knowing beforehand. Here is the mapping table:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th>Oscilloscope Wire Color</th>
+<th>LED Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yellow</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>Red</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>Blue</td>
+<td>Blue</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>At least I got blue right.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using this chart and looking back at the oscilloscope plot, I see each of the three colors are pulled low in non-overlapping time windows. The blue line (for blue LED) has the shortest time. Then the yellow line (red LED) with a slightly longer duration, and finally the red line (for green LED) for almost as long as the other two combined.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why would the scanner light up one LED at a time and cycle through them? My hypothesis is this allows a monochrome image sensor to scan in color. Light up blue, scan. Light up red, scan again. Light up green, scan a third time. Assemble them together for full RGB color information. If so, the difference in LED illumination duration may be proportional to the image sensor's sensitivity to those colors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I am very happy with this discovery. It is already much further into understanding the scanner sensor bar than <a href="https://newscrewdriver.com/2023/11/28/canon-pixma-mx340-electronics-plan/" target="_blank" rel="noreferrer noopener">I had originally expected to get</a>. Encouraged by this success, I want to see how much I can decipher of the rest of this image sensor. Which meant a quick side quest for <a href="https://newscrewdriver.com/2023/12/06/canon-contact-image-sensor/">contact image sensor research</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

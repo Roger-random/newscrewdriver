@@ -1,0 +1,100 @@
+---
+layout: post
+title: Failed LewanSoul LX-16A Servos
+date: 2022-07-20 12:30:00.000000000 +00:00
+type: post
+post_id: '31520'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31531'
+  timeline_notification: '1658345407'
+  _publicize_job_id: '74928362501'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667814718
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/20/failed-lewansoul-lx-16a-servos/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I love the concept of serial bus servos, <a rel="noreferrer noopener" href="https://hackaday.com/2018/07/05/wrangling-rc-servos-becoming-a-hassle-try-serial-bus-servos/" target="_blank">writing them up for the Hackaday audience</a> and designing my <a rel="noreferrer noopener" href="http://sawppy.com/" target="_blank">Sawppy rover</a> around the low-cost LewanSoul LX-16A serial bus servo. After a few years of actual use, it's fair to say the honeymoon period is over. LX-16A availability were unreliable even before the global supply chain crunch, and now it's even worse. Furthermore, the hardware has some really bad failure modes. Two people <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/discussions/21" target="_blank">have experienced failure</a> where battery voltage (~7.4V) get sent out to the USB 5V bus, killing whatever Raspberry Pi was connected via USB. I have firsthand experience where a failed LX-16A shorted battery power to ground, blowing the fuse and required <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/06/09/sawppy-emergency-field-repair-at-maker-faire-bay-area-2019-steering-servo/" target="_blank">field repair in the middle of Maker Faire</a>. Due to these problems, I intend to <a href="https://newscrewdriver.com/2020/11/30/sawppy-issue-serial-bus-servo/" target="_blank" rel="noreferrer noopener">move away from LX-16A</a> for future projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31529,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-failed-short.jpg?w=1024" alt="" class="wp-image-31529"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I'm going to open up "FAILED SHORT" servo to look inside. Maybe there's something visible relating to its failure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31531,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-gear-train.jpg?w=1024" alt="" class="wp-image-31531"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, the mechanical bits look great. The gearbox used well-lubricated metal gears throughout, and there's a decent looking ball bearing supporting the output shaft.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31533,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-circuit-board-cpu-side.jpg?w=1024" alt="" class="wp-image-31533"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Nothing has obviously failed on this side of the control circuit board. The square chip appears to be the main processor. There are four lines of markings on this chip:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>HL004
+642GB
+2634B071
+ARM</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search found <a rel="noreferrer noopener" href="https://www.eevblog.com/forum/projects/reverse-engineering-cheap-serial-bus-servo/" target="_blank">this forum thread</a> that identified the chip as a <a href="https://www.nuvoton.com/products/microcontrollers/arm-cortex-m0-mcus/mini51-base-series/mini54zde/?__locale=en" target="_blank" rel="noreferrer noopener">Nuvoton MINI54ZDE</a>, a little Cortex-M0 processor at 24MHz. If I get into playing with ARM microcontroller programming, I might be tempted to connect to the row of five pins and see if I can get a debug connection to that chip. Obviously, if I were to do this, I would use a different LX-16A that doesn't short power to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next two largest chips appear to be identical, both labeled with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>4606
+GA7N3C</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>A search found these to be <a rel="noreferrer noopener" href="http://aosmd.com/pdfs/datasheet/AO4606.pdf" target="_blank">AO4606 MOSFET</a> by Alpha &amp; Omega Semiconductor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31536,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-circuit-board-potentiometer-side.jpg?w=1024" alt="" class="wp-image-31536"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see no obvious signs of failure on the other side of the circuit board, either. I see an <a rel="noreferrer noopener" href="https://www.alpsalpine.com/e/" target="_blank">ALPS</a> potentiometer for position sensing, and a <a href="http://www.advanced-monolithic.com/pdf/ds1117.pdf" target="_blank" rel="noreferrer noopener">1117-3.3 LDO voltage regulator</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the upside, the lack of visible failure meant the fuse did its job well, blowing before anything really bad happened to this board. The downside is I have no visual indication of what went wrong. I'm mildly tempted to power up this servo without a fuse just to see what component blows up.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31538,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-does-not-move.jpg?w=1024" alt="" class="wp-image-31538"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have another failed LX-16A, this one "merely" stopped moving. It was still communicating with the rest of Sawppy controller system, with all diagnostics information showing OK. Except it doesn't move. Powering the DC motor directly got me some motion, so at least the mechanical side is fine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31540,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-does-not-move-cpu-side.jpg?w=1024" alt="" class="wp-image-31540"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the lack of motor movement, I thought perhaps one or both of the MOSFETs have fried. But they look fine on this unit. Nothing's obviously gone wrong with the CPU, either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31541,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/lx-16a-does-not-move-potentiometer-side.jpg?w=1024" alt="" class="wp-image-31541"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Potentiometer looks fine, and the <a href="https://newscrewdriver.com/2022/02/07/switching-to-esp32-for-next-exercise/" target="_blank" rel="noreferrer noopener">1117 LDO appears intact</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These two teardowns failed to provide any illuminating insight. I saw nothing at all that would explain faulty behavior of these units. Looking on the bright side, I'm glad neither of these devices went up in smoke and their mechanicals are still sound. I could still control the mechanicals by replacing these failed control boards with a DC motor H-Bridge controller like the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/26/trying-generic-l298n-driver-board/" target="_blank">classic L298N</a> or the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/" target="_blank">newer DRV8833</a>. Turning them into a pair of gearmotors with metal gears and a ball bearing on the output shaft.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

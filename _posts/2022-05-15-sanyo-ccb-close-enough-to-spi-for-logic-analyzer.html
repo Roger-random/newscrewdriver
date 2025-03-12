@@ -1,0 +1,214 @@
+---
+layout: post
+title: Sanyo CCB Close Enough to SPI For Logic Analyzer
+date: 2022-05-15 12:30:00.000000000 +00:00
+type: post
+post_id: '30293'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- Tools
+tags:
+- 86120-08010
+- LC75853N
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30338'
+  _publicize_job_id: '72553421506'
+  timeline_notification: '1652643010'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/15/sanyo-ccb-close-enough-to-spi-for-logic-analyzer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm examining the <a href="https://newscrewdriver.com/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/">control signals for a Sanyo LC75853N LCD driver</a> chip, which uses a Sanyo proprietary protocol they call CCB. (Computer Control Bus.) It's popular enough that I could find CCB reference material online, but it's not popular enough to be <a rel="noreferrer noopener" href="https://support.saleae.com/protocol-analyzers/supported-protocols" target="_blank">natively understood</a> by Saleae's Logic Analyzer software. Beyond Saleae's set is a list of <a rel="noreferrer noopener" href="https://support.saleae.com/community/community-shared-protocols" target="_blank">Community Shared Analyzers</a> but Sanyo CCB didn't make the cut there, either. Those additional analyzers were written using Saleae's <a rel="noreferrer noopener" href="https://support.saleae.com/saleae-api-and-sdk/protocol-analyzer-sdk" target="_blank">Protocol Analyzer SDK</a> so there is the option to write one for CCB. For the purpose of initial experimentation, though, their <a rel="noreferrer noopener" href="https://support.saleae.com/protocol-analyzers/analyzer-user-guides/using-spi" target="_blank">default SPI analyzer</a> is close enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30294,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/saleae-logic-2-sanyo-ccb-address-01000010.jpg?w=1024" alt="" class="wp-image-30294"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before we even try using the SPI analyzer, we can look at the raw data. CCB transmits the peripheral address before raising CE. Here I can see 0x42 hexadecimal, or 0b01000010 binary. (The white binary numbers were not part of Saleae software, I drew it in afterwards.) In an unfortunate bit of coincidence, this binary value is symmetric so it alone couldn't tell us if CCB transfer least-significant bit first or most-significant-bit first. According to spec, it is least-significant-bit first. Seeing this gave me the confidence I've wired up everything correctly for further probing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The clock pulses measured out to be in the ballpark of 400kHz, which I can probably work with. But more importantly, I was relieved to see that the clock pulse widths varied somewhat between transmitted bits. This is encouraging because it meant the protocol is graceful under irregular clock pulses, making it more likely I can successfully communicate using CCB in software. Which is great because I don't have dedicated CCB communication peripheral hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next step was to activate SPI analyzer with the following parameters. The biggest difference between CCB and SPI is the behavior of CE line, and thankfully <a rel="noreferrer noopener" href="https://support.saleae.com/protocol-analyzers/analyzer-user-guides/using-spi" target="_blank">Saleae's SPI analyzer</a> can be configured to ignore CE. ("Enable" set to "None".) I set the SPI analyzer options to the following values to decode all the values regardless of CE status:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>SPI Analyzer Option</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MOSI</td>
+<td>LCD-DI</td>
+</tr>
+<tr>
+<td>MISO</td>
+<td>LCD-DO</td>
+</tr>
+<tr>
+<td>Clock</td>
+<td>LCD-CLK</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Significant Bit</td>
+<td>Least Significant Bit First</td>
+</tr>
+<tr>
+<td>Bits per Transfer</td>
+<td>8 Bits per Transfer</td>
+</tr>
+<tr>
+<td>Clock State</td>
+<td>Clock is High when inactive</td>
+</tr>
+<tr>
+<td>Clock Phase</td>
+<td>Data is Valid on Clock Trailing Edge</td>
+</tr>
+<tr>
+<td>Enable Line</td>
+<td>(Doesn't matter when "Enable" is "None")</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now the software can decode data for us. This time, the decoded values 0x42, etc. in this image was drawn by the software.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30300,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/saleae-logic-2-sanyo-ccb-address-0x42-decoded.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/saleae-logic-2-sanyo-ccb-address-0x42-decoded.jpg?w=1024" alt="" class="wp-image-30300"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was the start of the very first data transmission after I applied power to the tape deck. Which is why CLK started as low even though it is normally high when inactivity. When Enable is set to None, I see all the data regardless of CE status.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First question to answer: the B in CCB is "Bus". How many devices are on this bus? Taking advantage of the difference between CCB and SPI, I can tell the SPI analyzer to decode just the CCB address by saying CE is Active Low:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>SPI Analyzer Option</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enable</td>
+<td>LCD-CE</td>
+</tr>
+<tr>
+<td>Enable Line</td>
+<td>Enable is Active Low</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>The decoded values on LCD-DI were all 0x42, which tells me the LCD control chip is the only peripheral on this bus, which makes things simpler. I won't have to worry about reading data intended for the wrong device. And once I decided I didn't have to worry about different addresses anymore, I can switch the SPI Analyzer over to Active High CE. This will cause the analyzer to ignore addresses (since I expect them to all be 0x42) transmitted while CE is low and decode just the data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>SPI Analyzer Option</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enable</td>
+<td>LCD-CE</td>
+</tr>
+<tr>
+<td>Enable Line</td>
+<td>Enable is Active High</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Within the ~3/4 second of the faceplate getting power, something is transmitted repeatedly approximately once every 5 milliseconds. Zooming in, I see they are three consecutive CCB transmissions to address 0x42:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0xC0</td>
+<td>0x10</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x80</td>
+</tr>
+<tr>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x40</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next: compare this captured data to the LC75853N datasheet to <a href="https://newscrewdriver.com/2022/05/16/logic-analyzer-on-sanyo-lc75853n-lcd-control/">see if they make sense</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

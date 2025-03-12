@@ -1,0 +1,45 @@
+---
+layout: post
+title: PostgreSQL Docker Container Has Tools I Need
+date: 2024-08-30 12:30:00.000000000 +00:00
+type: post
+post_id: '44972'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- postgresql
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44963'
+  firehose_sent: '1725046217'
+  timeline_notification: '1725046220'
+  _publicize_job_id: '97436736395'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-30 02:03:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/30/postgresql-docker-container-has-tools-i-need/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm learning to build data apps with Budibase, and I have <a href="https://newscrewdriver.com/2024/08/29/choosing-postgresql-as-budibase-external-database/">decided to use PostgreSQL</a> as my database. It should let me do things I can't do with the default database built-in to Budibase. I am not a complete PostgreSQL beginner <a href="https://newscrewdriver.com/2022/11/22/notes-on-codecademy-design-databases-with-postgresql/">thanks to a Codecademy course</a> some time ago, but I found that course a bit <em>too </em>beginner-friendly as it didn't go into as much depth as I liked. This time as a refresher I tried <a href="https://www.w3schools.com/postgresql/index.php">the W3Schools course</a> and didn't finish it, finding it to be too shallow as well. In the quest for something with more meat, I went to the source: <a href="https://www.postgresql.org/docs/current/index.html">PostgreSQL official documentation</a>. The <a href="https://www.postgresql.org/docs/current/tutorial.html">tutorial section itself</a> is just about perfect for what I want today, and the remainder of the reference is there when I'm ready for more detail.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm running Ubuntu Server in my Budibase VM, and PostgreSQL is available as a part of Ubuntu's application distribution package. For security partitioning purposes, PostgreSQL uses the "<code>postgres</code>" user account instead of the logged-in user and I had trouble logging in with the correct credentials. After a bit of unsuccessful fiddling, I tried an alternative approach of running <a href="https://hub.docker.com/_/postgres/">PostgreSQL as a Docker container</a>. Now I can log in by specifying <code>-u postgres</code> at the <a href="https://docs.docker.com/reference/cli/docker/container/exec/"><code>docker exec</code></a> command line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once logged in, I verified the Docker image included two tools that would greatly help with my experiments. I had thought I would need to write similar tools myself via PostgreSQL API but reading PostgreSQL tutorial I learned they already existed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first is <a href="https://www.postgresql.org/docs/current/app-psql.html"><code>psql</code></a>, a text command-line interface to PostgreSQL. It allows me to experiment and iterate through my queries at a low level before I try to make them fancy and easy to use with Budibase. The second tool is <a href="https://www.postgresql.org/docs/current/app-pgdump.html"><code>pg_dump</code></a>, which backs up my database data in plain text format. The text file is a list of <code>psql</code> commands to recreate my database. I always have the fear that I would accidentally make a hugely destructive change to my database and <em>not even realize it</em> until much later. Now I can periodically take snapshot backups with <code>pg_dump</code> so I can recover from such mistakes. And more than that, I can check the <a href="https://en.wikipedia.org/wiki/Diff">text file diff</a> between these snapshots. I can't always mentally parse every line of difference but I can rest assured scope of my changes were not more drastic than I had intended as <a href="https://newscrewdriver.com/2024/08/31/budibase-with-postgresql/">I work with my data</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

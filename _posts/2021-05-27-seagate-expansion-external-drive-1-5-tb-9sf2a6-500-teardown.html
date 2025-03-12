@@ -1,0 +1,72 @@
+---
+layout: post
+title: Seagate Expansion External Drive 1.5 TB (9SF2A6-500) Teardown
+date: 2021-05-27 12:30:00.000000000 +00:00
+type: post
+post_id: '23846'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Shucking
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26798'
+  _publicize_job_id: '58902801736'
+  timeline_notification: '1622143818'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/27/seagate-expansion-external-drive-1-5-tb-9sf2a6-500-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The <a href="https://newscrewdriver.com/2021/05/26/seagate-backup-plus-slim-portable-drive-1tb-srd00f1-teardown/">terabyte drive shucking series</a> continues! Second in this work session is an older Seagate external drive with a slower USB 2.0 interface. They dropped out of favor after USB 3.0 came on the scene, but that's only a limitation imposed by the external enclosure. I'm confident the hard drive within will be just as fast as the others once I've pulled it out and can connect it via SATA to my TrueNAS ZFS storage array. This particular drive served as my MacOS Time Machine backup drive and exhibited some strange problems that resulted in my MacBook showing the <a rel="noreferrer noopener" href="https://twitter.com/MakeAnything3D/status/1293671358824513536" target="_blank">spinning beach ball of <s>death</s> patience</a> while the drive makes audible mechanical clicking noises trying to recover. I no longer trust the drive as a reliable single-point backup, but I'm fine with trying it in a fault tolerant RAIDZ2 array.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Again I had no luck finding fasteners on the external enclosure, so I proceeded to pry on the visible seam. I was rewarded by the sound of snapping plastic clips and lid released.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26797,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/seagate-9sf2a6-500-20-lid-removed.jpg?w=1024" alt="" class="wp-image-26797"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite the visible ventilation holes, it seems like the hard drive is actually fully enclosed in a metal shell. I guess those vents didn't do very much. The activity light in this particular drive was not as clever as the previous drive, it is a straightforward LED at the end of a wire harness.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26796,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/seagate-9sf2a6-500-30-metal-core-removed.jpg?w=1024" alt="" class="wp-image-26796"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike the previous drive, which had an external shock-absorbing shell, this drive's vibration-isolating mechanism is inside in the form of these black squares of soft rubber.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26795,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/seagate-9sf2a6-500-40-vibration-damper-closeup.jpg?w=1024" alt="" class="wp-image-26795"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The screws have standard #6-32 thread but have an extra shoulder to fit into these rubber squares. I feel these would be easily reusable so I'm going to save them for when I need a bit of shock absorption.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":26794,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/seagate-9sf2a6-500-50-vibration-damper-removed.jpg?w=1024" alt="" class="wp-image-26794"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once those four screws were removed, the bare drive slid out of the case easily. I didn't need to bend the top of the sheet metal box to remove the drive, I did it so we can see the circuit board in this picture.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26793,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/seagate-9sf2a6-500-60-bare-drive-removed.jpg?w=1024" alt="" class="wp-image-26793"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I added this bare drive to my ZFS array, I had half expected the process to fail. If the clicking-noise problem persists, I expect TrueNAS to fail the drive and tell me to install another. I was pleasantly surprised to see the entire process completely smoothly. There were no audible clicking, and TrueNAS accepted it as a productive member of the drive array. I wonder if the problem I encountered with this drive was MacOS specific? It doesn't matter anymore, now it helps back up data for all of my computers and not just the MacBook Air. It'll <a href="https://newscrewdriver.com/2021/05/28/western-digital-my-book-1tb-wdbacw0010hbk-01-teardown/">share this new job with one of its counterparts</a>, who formerly kept my Windows backups.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

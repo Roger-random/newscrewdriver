@@ -1,0 +1,35 @@
+---
+layout: post
+title: Death Clock User Input Integration
+date: 2019-06-24 12:30:13.000000000 +00:00
+type: post
+post_id: '18723'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Death Clock
+meta:
+  _thumbnail_id: '18724'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32153683067'
+  timeline_notification: '1561404640'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/24/death-clock-user-input-integration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After our brief orientation on <a href="https://newscrewdriver.com/2019/06/23/examining-adafruit-at42qt1070-capacitive-touch-sensor-breakout/">a capacitive touch input sensor</a>, Emily and I started looking into how we would integrate it into our Death Clock project. During the course of this research we also learned that <a href="https://www.microchip.com/design-centers/capacitive-touch-sensing/1d-touch">according to Microchip our PIC microcontroller is supposedly capable of touch input</a> as well, without needing a separate sensor peripheral. We're going to file that information away for another day since already got this touch board in hand and we've learned enough to try using it.</p>
+<p>Since our Death Clock state machine will be running on our Raspberry Pi, it made the most sense to interface this touch board to our Pi via one of its available GPIO pins. I had previously soldered an extra pair of pins and at the time it was merely for the purpose of mechanical support. Looking on a Raspberry Pi GPIO reference chart, though, we see these two pins (#39 and 40 on the pinout chart) are GPIO21 and GND and coincidentally perfect for our use. Our touch sensor board signals detection by pulling its output signal line to ground, so once we've configured GPIO21 for digital input with internal pull-up, we can easily test (without sensor board) by grounding GPIO21 to its adjacent GND pin with a piece of conductive metal like a paperclip or a coin.</p>
+<p>Raspberry Pi GPIO pins can tolerate a maximum of 3.3 volts, so for the actual sensor board we'll have to tap power from 3.3V pin on Pi header instead of the 5V we're using for our PIC. Ground and GPIO21 already have headers, and those three points are all we need to wire up our touch sensor to our Pi. After that the sensor board requires just one more wire - the touch sense input wire - but that will lead elsewhere in the Death Clock enclosure and not to the Raspberry Pi.</p>
+<p></body></html></p>

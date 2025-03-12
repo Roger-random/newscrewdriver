@@ -1,0 +1,48 @@
+---
+layout: post
+title: Successful Single Axis Homing On XY Stage
+date: 2019-08-28 12:30:05.000000000 +00:00
+type: post
+post_id: '19347'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19348'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '34682929597'
+  timeline_notification: '1567020680'
+  _oembed_0cdde3c749128b6b3d97b5432b00595e: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>:
+    salvaged XY table can now perform homing sequence under command of Grbl ESP32.
+    With this success, we now have ambition to build a CNC machine. <a href="https://t.co/IcT8ls9Jkg">pic.twitter.com/IcT8ls9Jkg</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1166216061949112320?ref_src=twsrc%5Etfw">August
+    27, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_0cdde3c749128b6b3d97b5432b00595e: '1567031246'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/28/successful-single-axis-homing-on-xy-stage/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once the <a href="https://newscrewdriver.com/2019/08/27/xy-stage-switch-test-board-helped-find-loose-wire-inside-connector/">intermittent wiring problem had been tracked down and fixed</a>, we could resume where we left off on the previous work session with this salvaged Parker XY stage: trying to command an axis to find its homing position. The previous attempt failed because the stage sailed right past the homing switch due to the homing switch.</p>
+<p>We did get the homing operation to work, but we had to adjust a few settings from Grbl defaults before everything started moving as planned. Those defaults made sense for a relatively lightweight motion control table using physical micro switches for home and limit switches. This salvaged industrial stage is quite sturdy with significant momentum once it starts moving, and it uses magnetic reed switches for its home and limit switches.</p>
+<ul>
+<li>To compensate for greater momentum, homing seek speed (Grbl parameter <code>$25</code>) was halved from 2000 mm/min to 1000 mm/min.</li>
+<li>Reed switches have greater hysteresis than micro switches, so the homing pull-off distance (Grbl parameter <code>$27</code>) was increased from 1 mm to 6 mm.</li>
+</ul>
+<p>We haven't yet decided which direction will actually be positive or negative nor which motor will move which axis. This will affect direction port invert mask (Grbl parameter $3) once the decision is made. For now, it only matters that we wire up the correct reed switch to function as a homing switch.</p>
+<p>Seeing the large Parker Motion Control linear actuator move and find home position was quite satisfying, and with this much confidence in functionality, I can transfer the control circuit from a temporary breadboard with jumpers to a <a href="https://newscrewdriver.com/2019/08/29/perforated-board-iteration-of-grbl-esp32-control/">perforated prototype board with more reliable soldered wires</a>.</body></html></p>

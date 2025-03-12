@@ -1,0 +1,124 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Button Press Report Values (Scan Codes)
+date: 2024-01-14 12:30:00.000000000 +00:00
+type: post
+post_id: '41552'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41554'
+  wordads_ufa: s:wpcom-ufa-v4:1706006489
+  firehose_sent: '1705264288'
+  _publicize_job_id: '91087211228'
+  timeline_notification: '1705264290'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm creating <a href="https://newscrewdriver.com/2024/01/13/serial-data-filter-project-hardware-and-software/">a bare-bones data filter</a> to help me make sense of the bytes constantly streaming between control panel and main board of a Canon Pixma MX340 multi-function inkjet. I'll start with just one of the two wires, control panel to main board. There are two advantages to starting this way. The first is that, from a few snippets <a href="https://newscrewdriver.com/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/">examined with a logic analyzer</a>, the data is just a single byte. (Well, there are two byte sequences upon startup, but steady state has only single bytes.) Either a byte reporting the state of the button matrix, or a byte 0x20 acknowledging something sent by the main board. The second is that, in the steady state, the the button matrix state is reported once every 9.2ms. Which means I always have some data to work with as I get the basics in place, no need to fuss with the MX340.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Data constantly coming in every 9.2ms creates a flood of data impractical to peruse in my logic analyzer timeline view, so a simple data filter does wonders. I start by ignoring the 0x20 acknowledgement bytes and focus on the button matrix state. Comparing each incoming byte with the previous byte, the program only reports if there is a change in value. Such logic gave me a program that reports the updated value as I press buttons on the control panel. With this tool up and running, it only took a few minutes to obtain the values (sometimes called <a href="https://en.wikipedia.org/wiki/Scancode" target="_blank" rel="noreferrer noopener">scancode</a>) for every button on the matrix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41554,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/01/canon-pixma-mx340-control-panel-button-press-report-values-hexadecimal.jpg?w=1024" alt="" class="wp-image-41554"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>(The "Power" and "Stop" buttons are <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/">wired directly to the main board</a> and not part of the matrix.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Earlier I looked at four of these buttons and hypothesized the value is related to their circuit board wiring. Indeed if I sort them by scan code value in a 4x8 table, their pattern line up with <a href="https://newscrewdriver.com/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/" target="_blank" rel="noreferrer noopener">pins of the K13988 chip</a> scanning this button array. Expressed as hexadecimal (0x prefix) the scan code pattern didn't jump out at me. I wrote them out in binary (0b prefix) and there's definitely something, and the pattern finally became clear when I wrote the scan code out in octal (0o prefix).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true} --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">NEC<br>K13988<br>Pin</th>
+<th class="has-text-align-center" data-align="center">20</th>
+<th class="has-text-align-center" data-align="center">23</th>
+<th class="has-text-align-center" data-align="center">24</th>
+<th class="has-text-align-center" data-align="center">22</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>3</strong></td>
+<td class="has-text-align-center" data-align="center">0x89<br>0b10001001<br>0o211<br><br>SW201<br>7</td>
+<td class="has-text-align-center" data-align="center">0x8A<br>0b10001010<br>0o212<br><br>SW208<br>1</td>
+<td class="has-text-align-center" data-align="center">0x8B<br>0b10001011<br>0o213<br><br>SW214<br>*</td>
+<td class="has-text-align-center" data-align="center">0x8C<br>0b10001100<br>0o214<br><br>SW221<br>4</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>4</strong></td>
+<td class="has-text-align-center" data-align="center">0x91<br>0b10010001<br>0o221<br><br>SW206<br>Fax Quality</td>
+<td class="has-text-align-center" data-align="center">0x92<br>0b10010010<br>0o222<br><br>SW212<br>Settings</td>
+<td class="has-text-align-center" data-align="center">0x93<br>0b10010011<br>0o223<br><br>SW219<br>Back</td>
+<td class="has-text-align-center" data-align="center">0x94<br>0b10010100<br>0o224<br><br>SW226<br>Menu</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>5</strong></td>
+<td class="has-text-align-center" data-align="center">0x99<br>0b10011001<br>0o231<br><br>SW202<br>8</td>
+<td class="has-text-align-center" data-align="center">0x9A<br>0b10011010<br>0o232<br><br>SW209<br>2</td>
+<td class="has-text-align-center" data-align="center">0x9B<br>0b10011011<br>0o233<br><br>SW215<br>0</td>
+<td class="has-text-align-center" data-align="center">0x9C<br>0b10011100<br>0o234<br><br>SW222<br>5</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>6</strong></td>
+<td class="has-text-align-center" data-align="center">0xA1<br>0b10100001<br>0o241<br><br>SW203<br>9</td>
+<td class="has-text-align-center" data-align="center">0xA2<br>0b10100010<br>0o242<br><br>SW210<br>3</td>
+<td class="has-text-align-center" data-align="center">0xA3<br>0b10100011<br>0o243<br><br>SW216<br>#</td>
+<td class="has-text-align-center" data-align="center">0xA4<br>0b10100100<br>0o244<br><br>SW223<br>6</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>7</strong></td>
+<td class="has-text-align-center" data-align="center">0xA9<br>0b10101001<br>0o251<br><br>SW204<br>Copy</td>
+<td class="has-text-align-center" data-align="center">0xAA<br>0b10101010<br>0o252<br><br>(No Switch)<br>(Unused)</td>
+<td class="has-text-align-center" data-align="center">0xAB<br>0b10101011<br>0o253<br><br>SW217<br>Fax</td>
+<td class="has-text-align-center" data-align="center">0xAC<br>0b10101100<br>0o254<br><br>SW224<br>Scan</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>8</strong></td>
+<td class="has-text-align-center" data-align="center">0xB1<br>0b10110001<br>0o261<br><br>SW205<br>Black &amp; White</td>
+<td class="has-text-align-center" data-align="center">0xB2<br>0b10110010<br>0o262<br><br>SW211<br>Redial/Pause</td>
+<td class="has-text-align-center" data-align="center">0xB3<br>0b10110011<br>0o263<br><br>SW218<br>Color</td>
+<td class="has-text-align-center" data-align="center">0xB4<br>0b10110100<br>0o264<br><br>SW225<br>Coded Dial</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>1</strong></td>
+<td class="has-text-align-center" data-align="center">0xC9<br>0b11001001<br>0o311<br><br>SW207<br>OK</td>
+<td class="has-text-align-center" data-align="center">0xCA<br>0b11001010<br>0o312<br><br>SW213<br>Right/+</td>
+<td class="has-text-align-center" data-align="center">0xCB<br>0b11001011<br>0o313<br><br>SW220<br>Left/-</td>
+<td class="has-text-align-center" data-align="center">0xCC<br>0b11001100<br>0o314<br><br>SW227<br>Hook</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>A pattern is also visible in the silkscreen label for each of these switches. Though it doesn't seem to line up in either pin order or report value order. There's also a gap in the matrix as pin 7 + 23 scan code 0xAA is unused. Switch numbering didn't skip that entry but continues uninterrupted. Given those facts, I don't think there's much value in sorting by silkscreen switch label number, so I'll keep this table sorted by button press reporting scan code values.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While smashing buttons to get scan codes to assemble this table, I also rediscovered how to toggle the two LEDs also controlled by the K13988 chip allowing me to <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/">capture and decode related commands</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

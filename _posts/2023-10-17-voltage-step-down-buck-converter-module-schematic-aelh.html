@@ -1,0 +1,73 @@
+---
+layout: post
+title: Voltage Step-Down (Buck) Converter Module Schematic (AELH)
+date: 2023-10-17 12:30:00.000000000 +00:00
+type: post
+post_id: '39661'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39662'
+  wordads_ufa: s:wpcom-ufa-v4:1698602580
+  _publicize_job_id: '88579681843'
+  timeline_notification: '1697571118'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/17/voltage-step-down-buck-converter-module-schematic-aelh/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As a KiCad practice exercise and for a better understanding of modules I use in my projects, I wanted to trace through circuitry of this voltage step-down converter (a.k.a. buck converter) module. Unfortunately, it packed its components too tightly for me to easily see copper traces on this circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39586,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-buck-converter-pcb-front.jpg?w=800" alt="" class="wp-image-39586"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then <a href="https://newscrewdriver.com/2023/10/16/side-lit-circuit-board-highlights-copper-traces/">I figured out I could light up the circuit board substrate from the side</a>, making all opaque copper traces clearly visible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39656,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-pcb-front-centerlit.jpg?w=1024" alt="" class="wp-image-39656"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I could trace through all the paths, taking notes as I went.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39664,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-pcb-note-taking.jpg?w=1024" alt="" class="wp-image-39664"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I learned a new lesson about markings on surface-mount resistors. When the third character is a letter, it is an EIA-96 code and I need a decoder like <a rel="noreferrer noopener" href="https://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-smd-resistor-code" target="_blank">this one on DigiKey</a> to decipher their nominal resistance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39665,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-pcb-front-component-labels.jpg?w=800" alt="" class="wp-image-39665"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's no room for component labels on this tightly-packed module, so I assigned my own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39662,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-buck-converter-module-schematic.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/aelh-buck-converter-module-schematic.png?w=1024" alt="" class="wp-image-39662"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And here's the KiCad schematic I generated from my tracing notes. Aside from the row of voltage pre-select resistors, it is superficially similar to <a href="https://newscrewdriver.com/2023/10/12/voltage-step-down-buck-converter-module-schematic-mp1584/">the MP1584 module</a> which is no surprise given they serve the same purpose. The most curious difference for me is the lack of a diode in this module. I had thought that was a required part of voltage conversion. Either I misunderstand or an equivalent is built in to this unidentified AELH chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another surprise was the potentiometer only go up to 40k Ohms. Judging by the row of pre-select resistors, this implied the potentiometer is only be good for up to a little over 5V. If we want to go any higher, we'd need to use the pre-populated resistors for 9V or 12V, or figure out something on our own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This KiCad learning project <a href="https://github.com/Roger-random/kicad_tests/tree/main/buck-converter-aelh" target="_blank" rel="noreferrer noopener">is publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

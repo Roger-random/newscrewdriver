@@ -1,0 +1,64 @@
+---
+layout: post
+title: Tiny Step on RxJS Learning Curve
+date: 2023-03-11 12:30:00.000000000 +00:00
+type: post
+post_id: '35627'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35643'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1678651457
+  _publicize_job_id: '82225947047'
+  timeline_notification: '1678566607'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/11/tiny-step-on-rxjs-learning-curve/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I learned a lot from reading <a href="https://newscrewdriver.com/2023/03/10/notes-on-angular-developer-guide-to-testing/">Angular's Developer Guide to Testing</a>, one of which is that I have a significant weak spot in my Angular understanding: how and when to use RxJS for asynchronous operations. Not just for testing, but also for writing Angular application code. On my first run through "Tour of Heroes" tutorial, <a href="https://newscrewdriver.com/2020/10/20/notes-on-tour-of-heroes-tutorial-4-adding-services/">RxJS was a black box I didn't understand</a> at all. On my second run, I understood the tutorial enough to understand specific uses of RxJS from context, but my understanding did not extend to the rest of that library. I certainly don't know how to employ RxJS for my own tasks. It's time to buckle down and <a href="https://rxjs.dev/guide/overview">read official RxJS documentation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was quite a chore. It appears RxJS official documentation was written by its development team for an audience that already knows what it does and why they would want it. It started with "<em>RxJS is a library for composing asynchronous and event-based programs by using observable sequences</em>" and jargon gets thicker from there. (Interspersed with words like "just" and "simply" which this beginner found ridiculous.) There was no "Getting Started" section. The next-best candidate section "Installation" is full of material telling existing users how to migrate breaking changes, not an introduction to new users.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that, as of this writing, RxJS is still <a href="https://github.com/ReactiveX/rxjs">under active development</a>. Today's stable release 7.8.0 has a timestamp only a few weeks old. (December 15th, 2022.) I was concerned about that, because RxJS was a solution for JavaScript asynchronous programming before JavaScript evolved to have its own asynchronous constructs like async/await. It doesn't map cleanly to Promises and <a href="https://rxjs.dev/deprecations/to-promise">conversion is a bit of a mess</a>. But RxJS still <a href="https://rxjs.dev/guide/observable#pull-versus-push">does things that standard JavaScript doesn't do</a>, so there are still scenarios where RxJS would be the right tool for the job. It'll take more learning before I recognize those scenarios.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Observable</strong>: RxJS foundation class. One thing that demystified a lot was rewriting an analogy using plain JavaScript. Seeing something familiar and understandable (with my very recent JavaScript education) gave me a starting point to try understanding the rest of the page. Unhelpfully this was <a href="https://rxjs.dev/guide/observable#disposing-observable-executions">at the bottom of the page</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Observer</strong>: It took a while for me to understand observer where <em>my </em>code fits into the system and I can use as little or as much of it as I need for a scenario. It can be a single callback for receiving data ("next") but I can also register optional callbacks to be notified of problems ("error") or when there's no more data ("complete").</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Operator</strong>: Documentation said this is the powerful part of RxJS, but didn't really explain why or how we would leverage that power. This is also where <a href="https://rxjs.dev/guide/operators#marble-diagrams">marble diagrams were explained</a>, something that bewildered me when Angular testing discussed marble testing. The overview of available operators is a disappointing list of just names. Each name is a link to their reference page without any additional context. I'd have to click the link and read each one. I would love a reference where each link has an 1-2 sentence summary, but no luck here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Subject</strong>: These are Observable that multicasts to more than one Observer. Up until this point I hadn't known a basic Observable only broadcast to a single Observer! This critical information should have been covered earlier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Scheduler</strong>: No usage examples or scenarios were given so I have no idea when I should care about choosing a different RxJS scheduler. I see the "How to do X", but not "Why you want to do X."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm sure everything in official RxJS documentation is technically correct but the information lacks context. Or more precisely, I don't think they were even trying to provide context for readers who are unaware. Perhaps there are resources to help RxJS beginners <a href="https://newscrewdriver.com/2023/03/12/notes-on-learn-rxjs/">elsewhere on the internet</a>?</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

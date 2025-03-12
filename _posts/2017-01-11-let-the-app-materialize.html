@@ -1,0 +1,39 @@
+---
+layout: post
+title: Let the App... Materialize!
+date: 2017-01-11 13:57:29.000000000 +00:00
+type: post
+post_id: '3704'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Adventure Book
+- Bootstrap
+- CSS
+- Google
+- Rails
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '654788782'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/01/11/let-the-app-materialize/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-3763 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/01/materializecsslogo.jpg" alt="materializecsslogo" width="222" height="114">After I got the Google sign-in working well enough for <a href="https://rr-adventurebook.herokuapp.com/">my Rails practice web app</a>, the first order of business was to build the basic skeleton. This was a great practice exercise to take the pieces I learned in the <a href="https://www.railstutorial.org/">Ruby on Rails Tutorial</a> sample app and build something of my own design.</p>
+<p>The initial pass implemented basic functionality but it didn't look very appealing. I had focused on the Rails server-side code and left the client-side code simple plain HTML that would have been state-of-the-art in... maybe 1992?</p>
+<p>Let's make it look like something that belongs in 2017.</p>
+<p>The Rails tutorial sample app used <a href="http://getbootstrap.com/">Bootstrap</a> to improve the appearance and functionality of the client-side interface. I decided to take this opportunity to learn something new instead of doing the same thing. Since I'm using <a href="https://developers.google.com/identity/sign-in/web/">Google Sign-In</a> in this app, I decided to adopt Google's <a href="https://material.io/">design concepts</a> to my client-side appearance as well.</p>
+<p>Web being the web, I knew I wouldn't have to start from scratch. I knew about Google's own <a href="https://getmdl.io/started/">Material Lite</a> and thought that would be a good candidate before I learned it had been retired in favor of its successor, <a href="https://github.com/material-components/material-components-web">Material Components for the web</a>. One of the touted advantages was improved integration with different web platforms. Sadly Rails was not among the platforms with <a href="https://github.com/material-components/material-components-web/tree/master/framework-examples">examples ready-to-go</a>.</p>
+<p>I looked around for an existing project to help Rails projects adapt Google's design language, and that's when I found <a href="http://materializecss.com/">Materialize:</a> A library that shares many usage patterns with Bootstrap. The style sheets are even written using SASS, native to default Rails apps, making for easy integration. Somebody has done that work and published it as Ruby gem <a href="https://rubygems.org/gems/materialize-sass">materialize-sass</a>, so all I had to do was <a href="https://github.com/Roger-random/rr-adventurebook/commit/0f140524f343af595923c2a7817b1df7f0a4f3e8">add a single line</a> to use Materialize in my app.</p>
+<p>Of course I still had to put in the effort to revise all the view files in my web app to pick up Materialize styling and features. That took a few days, and the reward for this effort is a practice web app which no longer look so amateurish.</body></html></p>

@@ -1,0 +1,87 @@
+---
+layout: post
+title: 'Window Shopping: LabVIEW 2019'
+date: 2020-03-24 12:30:23.000000000 +00:00
+type: post
+post_id: '20963'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- Window Shopping
+tags:
+- Equipment Automation
+- LabView
+meta:
+  _thumbnail_id: '20964'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42176700336'
+  timeline_notification: '1585078354'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/24/window-shopping-labview-2019/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>After taking a <a href="https://newscrewdriver.com/2020/03/23/window-shopping-keysight-vee-custom-data-display/">quick look over Keysight VEE</a>, I switched focus to <a href="https://www.ni.com/en-us/shop/labview.html">LabVIEW by National Instruments</a>. I don't know how directly these two products compete in the broader market, but I do know they have some overlap relating to instrument control. I had some exposure to LabVIEW many years ago thanks to LEGO Mindstorms, which had used a version of LabVIEW for programming the NXT brick. Back then the Mindstorm-specific version was very closely guarded and, when I lost track of my CD-ROM, I was out of luck because neither NI nor LEGO made it available for download. Thankfully that has since changed and the Mindstorm flavor of LabVIEW is <a href="https://www.ni.com/en-us/support/downloads/software-products/download.labview-for-lego-mindstorms.html">available for download</a>.</p>
+<p>But I'm not focused on LEGO right now, today's aim is to see how I might fulfill my general computer control goals with this tool. For that information I was thankful National Instruments made help files for LabVIEW available for download so I can investigate without a <a href="https://www.ni.com/en-us/support/downloads/software-products/download.labview.html">full download and installation of the full tool suite</a>. It took a bit of hunting around to find them, though, and <a href="https://zone.ni.com/reference/en-XX/help/371361R-01/">the download page was titled LabVIEW 2018</a> but it has a download link for the 2019 help files.</p>
+<p>I found a help page "Serial Port Communication" under the section:</p>
+<ul>
+<li>Controlling Instruments
+<ul>
+<li>Types of Instruments</li>
+</ul>
+</li>
+</ul>
+<p>And it assumes the user would only be controlling devices that can <a href="https://en.wikipedia.org/wiki/Virtual_instrument_software_architecture">communicate to VISA protocol</a>, not general serial communication. There were more serial communication information in the section:</p>
+<ul>
+<li>VISA Resource
+<ul>
+<li>I/O Session
+<ul>
+<li>Serial Instr</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>There's also an <a href="http://www.ni.com/tutorial/3511/en/">online tutorial for instrument communication</a>. This page has a flowchart that implied there's a "Direct I/O" that we can fallback to if all else fails, but I found no mention for performing this direct I/O in the help files.</p>
+<p>The graphics rendering side was more straightforward. There's no mention of ActiveX control here, but under:</p>
+<ul>
+<li>Fundamentals
+<ul>
+<li>Graphs and Charts
+<ul>
+<li>Graphics and Sound VIs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>There are multiple pages of information for a "2D Picture Control" with drawing primitives like points, lines, arcs, etc. Details on this drawing API are found under:</p>
+<ul>
+<li>VI and Function Reference
+<ul>
+<li>Programming VIs and Functions
+<ul>
+<li>Graphics &amp; Sound VIs
+<ul>
+<li>Picture Plot VIs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>However, it's not clear this functionality scales to complex drawings with thousands (or more) of primitives. It certainly wouldn't be the first time I <a href="https://newscrewdriver.com/2018/01/08/accelerate-fusion-360-api-object-creation-with-directdesigntype/">used an API that stumbled as the data size grew</a>.</p>
+<p>So the drawing side looks workable pending a question mark on how well it scales, but the serial communication side is blocked. Until I find a way to perform that mystical direct I/O, I'm going to set LabVIEW aside and <a href="https://newscrewdriver.com/2020/03/25/window-shopping-labwindows-cvi/">look at its sibling LabWindows/CVI</a>.</p>
+<p>[UPDATE: I've since found <a href="https://newscrewdriver.com/2020/05/24/windows-shopping-linx-connecting-labview-to-maker-hardware/">LabVIEW MakerHub and LINX</a>, which allows LabVIEW to communicate with maker level hardware over serial.]</body></html></p>

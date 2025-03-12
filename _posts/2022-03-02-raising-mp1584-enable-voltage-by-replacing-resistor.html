@@ -1,0 +1,48 @@
+---
+layout: post
+title: Raising MP1584 Enable Voltage by Replacing Resistor
+date: 2022-03-02 12:30:00.000000000 +00:00
+type: post
+post_id: '28816'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28713'
+  _publicize_job_id: '69676680363'
+  timeline_notification: '1646253096'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/02/raising-mp1584-enable-voltage-by-replacing-resistor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2022/03/01/probing-mp1584-enable-pin/">examined my MP1584 module</a> and learned it was activating at far too low of a voltage. I want this buck converter to deliver 3.3V, and generally buck converters need input voltage a few volts (~2V) above the specified output. By that rule of thumb, my project shouldn't activate until somewhere north of 5V, but it was activating at 3V and making a sound I could hear as it tried to perform an impossible task. This can't be good.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought I would try modifying the board with different resistor values to raise its input enable voltage level. I will leave the low side resistor as-is at 100kΩ between EN and GND, and replace the high-side resistor. Looking through my commodity resistor pack, I thought a 220kΩ in series with 470kΩ should do the trick. Having 690kΩ between Vin and EN, and 100kΩ between EN and GND, should result in a voltage divider that activates EN (1.5V) when input voltage rises to approximately 11.85V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28714,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584en-resistor-matches-fat-soldering-iron-tip.jpg?w=1024" alt="" class="wp-image-28714"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>At first, I thought I would have to switch to my small soldering iron tip to remove the existing high side resistor. But before I switched, I noticed my normal soldering tip is almost the same width as the resistor, allowing me to heat up both sides at the same time for removal. It left a big glop of solder doing so, but that wasn't too hard to clean up. I then soldered the two resistors, in series, between the EN pad and Vin pad. Since these are through-hole resistors and not surface mount, it was not elegant. But it seems to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28713,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/mp1584en-board-close-with-new-voltage-divider-resistors-220k-470k.jpg?w=1024" alt="" class="wp-image-28713"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Slowly increasing input voltage with my bench power supply, I didn't hear unhappy sounds at 3-5V. Nothing happened until I was close to 12V, at which point the MP1584 came alive and started delivering 3.3V. Success! Or so I had thought... and <a href="https://newscrewdriver.com/2022/03/03/mp1584-modification-did-not-go-as-planned/">proven wrong by a puff of smoke</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

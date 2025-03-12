@@ -1,0 +1,43 @@
+---
+layout: post
+title: Brief Look At National Weather Service Web API
+date: 2020-09-11 12:30:00.000000000 +00:00
+type: post
+post_id: '22392'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _thumbnail_id: '22394'
+  timeline_notification: '1599852619'
+  _publicize_job_id: '48717473116'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/11/brief-look-at-national-weather-service-web-api/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2020/09/10/new-exploration-node-red/">started exploring Node-RED</a> and I like what I see. It's a different approach to solving some problems and it's always nice to have tools in the toolbox that would serve specific needs better than anything I had available before. The second tutorial introduced interacting with REST APIs on the web by querying for earthquake data, which was fun.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But while interesting and informative, there's nothing I do differently after seeing earthquake data. Weather data, on the other hand, is a different story. As of this writing we're living through a heat wave, and knowing the forecast daily highs and lows does affect my decisions. For example, whether to use my home air conditioning to pre-cool the house in the morning, which supposedly helps reduce load on the electric grid in the peak afternoon hours.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I went looking for weather information and found a lot of taxpayer funded resources at the National Weather Service (NWS). Much of which is available as <a rel="noreferrer noopener" href="https://www.weather.gov/documentation/services-web-api" target="_blank">web service APIs</a>. But in order to get data applicable to myself, I first need to figure out how to identify my location in the form of their grid system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After a few false starts, I found my starting point (literally) in <a rel="noreferrer noopener" href="https://www.weather.gov/documentation/services-web-api#/default/get_points__point_" target="_blank">the <code>points </code>endpoint</a>, which returns a set of metadata relevant to the given longitude and latitude. The metadata includes the applicable grid type as well as the X and Y coordinates corresponding to the given latitude and longitude. There are a lot of ways to get usable lat/long values, I went to the Wikipedia page for my city.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once armed with the gridId, gridX, and gridY values, I could use them to query the remaining endpoints, such as asking for weather forecast for my grid. There's a wealth of information here that can be a lot of fun for a future project, possibly for a smart home concept of some sort, but right now I should set aside this distraction and <a href="https://newscrewdriver.com/2020/09/12/node-red-function-nodes-are-a-comforting-fallback/">return to learning Node-RED</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

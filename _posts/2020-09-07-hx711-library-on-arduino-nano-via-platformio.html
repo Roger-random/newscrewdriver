@@ -1,0 +1,49 @@
+---
+layout: post
+title: HX711 Library on Arduino Nano via PlatformIO
+date: 2020-09-07 12:30:00.000000000 +00:00
+type: post
+post_id: '22357'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _thumbnail_id: '22307'
+  _publicize_job_id: '48569079335'
+  timeline_notification: '1599507011'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/07/hx711-library-on-arduino-nano-via-platformio/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm building a strain gauge load cell kit that used a HX711 chip, and found publicly available code to interface with a HX711 in the form of a PlatformIO project. This motivated me to <a href="https://newscrewdriver.com/2020/09/06/hx711-interface-library-as-introduction-to-platformio/">investigate PlatformIO</a>. Installation was straightforward from with Visual Studio Code. I brought up the extensions marketplace, searched for PlatformIO, clicked install, and a few minutes later I was ready to go. This was a very promising start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But while I've found PlatformIO to largely live up to its advertised ease of use, there were a few bumps climbing the learning curve. I typed in the simple Arduino introductory tutorial to blink the on board LED and hit Build All. That took almost half an hour as PlatformIO downloaded a whole bunch of tools and then executed them, even though they seemed completely irrelevant to my project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the excessively long procedure completed, I scrolled back to investigate what happened. I eventually figured out building everything meant building my Arduino sketch for every piece of hardware PlatformIO supported for use with Arduino framework. So it didn't just build for the ATmega328P chip on my Arduino Nano, it also downloaded tools and built for SAMD-based Arduinos. Then downloaded and built for ESP32 Arduino. Then NXP, etc. So on and so forth.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And to add insult to injury, it didn't even build for the specific Arduino I wanted to use. A little web sleuthing found <a href="https://community.platformio.org/t/blink-on-arduino-nano/9188">this forum thread</a>, where I learned I needed to add platform descriptor for an Arduino Nano with the "new" bootloader. But once I figured it out, I could build just for my board (taking only a few seconds this time) and upload for a blinking LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that procedure figured out, I moved on to the HX711 project. Adding an entry for Arduino Nano with "new" bootloader, I was able to get it up and running to read values from my load cell.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are a lot of other PlatformIO features I want to come back and explore later in more depth. The most exciting of which is debugger support, something sorely lacking in Arduino IDE. It also has support for ESP32, a dev board I want to spend more time exploring. Not just compile and upload, either, but infrastructure like <a href="https://docs.platformio.org/en/latest/tutorials/espressif32/espidf_debugging_unit_testing_analysis.html">unit test and debugging</a>, the latter as long as I have a JTAG adapter and I don't <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/jtag-debugging/tips-and-quirks.html#do-not-use-jtag-pins-for-something-else">use the associated pins for something else</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that is in the future. For now, this is enough of a detour into PlatformIO. With the HX711 talking to the Arduino, attention returns to the machine work surface project because I want to better understand <a href="https://newscrewdriver.com/2020/09/08/surprising-precision-and-consistency-from-load-cell/">all this data now flowing from the HX711</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

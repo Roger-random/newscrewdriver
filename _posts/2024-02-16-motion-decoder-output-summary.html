@@ -1,0 +1,162 @@
+---
+layout: post
+title: Motion Decoder Output Summary
+date: 2024-02-16 12:30:00.000000000 +00:00
+type: post
+post_id: '41981'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  timeline_notification: '1708115502'
+  firehose_sent: '1708115500'
+  _publicize_job_id: '92023062607'
+  wordads_ufa: s:wpcom-ufa-v4:1710825363
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-03-19 05:10:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/16/motion-decoder-output-summary/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've created a small Arduino sketch that rapidly polls the quadrature rotation encoder of a Canon Pixma MX340 multi-function inkjet and <a href="https://newscrewdriver.com/2024/02/15/initial-motion-decoder-outputs-look-good/">parse that long stream of data into a concise list of movements</a>. I hoped it would help me break down what the print engine is doing. At the moment I won't be able to translate this data into actual printing functionality, that would come after I correlate these motions to what I'll discover upon further mechanical teardown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>timestamp,count,min_us_enc<br>16,1799,28<br>3785088,2701,36<br>4262908,-1800,-29<br>4407660,-1799,-28<br>7253384,28019,36<br>11663472,2699,36<br>11917992,-2699,-38<br>12176620,-15000,-68<br>13994420,1800,28<br>16146804,-1799,-28<br>16290108,1799,28<br>16441336,-1799,-28</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My tool recognized 12 movements in the system power-up sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>7 of them are movements of 1800 encoder positions, at a fast speed of ~28 us/enc. 3 in the positive direction, 4 in the negative direction. (In this system, negative is the direction of paper feed during actual printing.) Some of them are closely paired: negative immediately following positive, but some are interspersed with other motions.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>3 of them are movements of 2700 encoder positions, at a slower speed of ~36 us/enc. 2 in the positive and 1 in the negative direction. The second positive 2700 move is immediately followed by the -2700 move.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>1 long movement of 28020, at a speed of ~36 us/enc similar to the 2700 movements.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>1 long movement of -15000 at a slower speed of ~68 us/sec.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the system stand-by sequence, I see much of the same components in the list of 15 movements. (It's not pasted here but available on the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>9 x 1800 @ 28, 5 positive and 4 negative.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>2 x 2700 @ 36, 1 positive and 1 negative.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>1 x 28020 @ 36</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>1 x -15000 @ 68</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>But there were two unique to the stand-by sequence:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>1 x 251200 @ 28, a very long roll.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>1 x -25120 @ 28 that immediately followed.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had expected the standby sequence to have unique movements related to putting away the ink cartridges, so these two are good candidates. Other than that, I was surprised to see it repeated much of the same movements as the power-up sequence. I had expected to see something unique during power-up related to getting the ink cartridges ready, but apparently not. Perhaps "get ink cartridge ready" doesn't occur until the actual printing sequence, which is much more complicated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>-49720 @ 24</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-1310 @ 160</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Rocking back and forth with 4 x 1800 @ 28.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-22421 @ 19. Both the gear and paper sensors changed state during this movement. Did the 4x1800 engage a mechanical clutch or something? I have to look for that.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>3000 @ 20</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-12300 @ 20. (The gear sensor changed state again somewhere in here.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>6200 @ 36</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-1200 @ 28</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then a long list of 82 x -961 @ 38 movements, each corresponding to the print head putting down a line of ink. Around the 72th iteration, the paper sensor changed state as the bottom edge of the sheet fed beyond the paper tray where the sensor lived. After the 82nd single-line movement, there was another sequence to eject the printed sheet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>-3475 @ 20</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-12905 @ 14</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-3282 @ 38</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Very interesting there were three separate movements in the paper feed direction, at three different speeds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>2700 @ 36, our old friend returns.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>-1600 @ 29</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's a lot of movements unique to printing a page. I'm not sure I could link them all to specific mechanical functionality, but at least I'll have this data on hand as reference when taking this gearbox apart. Better to have it and not know what it means, than to not have it and wishing I did later when the gearbox is in pieces. But right now, I want to <a href="https://newscrewdriver.com/2024/02/17/mx340-line-feed-encoder-likely-delivers-8640-counts-per-revolution/">map these encoder counts to physical movement</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

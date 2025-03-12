@@ -1,0 +1,49 @@
+---
+layout: post
+title: FormLabs Form 1+ Laser Power During Print
+date: 2022-10-03 12:30:00.000000000 +00:00
+type: post
+post_id: '32883'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32877'
+  _publicize_job_id: '77348069759'
+  timeline_notification: '1664825414'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/03/formlabs-form-1-laser-power-during-print/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I haven't quite figured out how to control the laser module of a broken FormLabs Form 1+ resin laser 3D printer. I had thought getting programmatic control over the FormLabs OpenFL API would be key, but <a href="https://newscrewdriver.com/2022/10/02/formlabs-form-1-laser-power-via-openfl/">it wasn't quite as illuminating as I had hoped</a>. Though it's still a step forward, giving me a table of wire voltages supplementing the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/09/14/more-formlabs-form-1-mainboard-io/" target="_blank">on/off data points</a> I obtained earlier. How can I obtain more data about operation of this laser? I have the electronics guts laid out on my workbench and voltage probes still in place so... I'll run a print job!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32888,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-laser-voltages-100ms.jpg?w=1024" alt="" class="wp-image-32888"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using the oscilloscope to watch voltages as the laser went about its business, it's pretty clear that the red wire (channel 1 yellow line) is the power supply as it held constant. I see activity on the black wire (channel 4 green line) and blue wire (channel 3 blue line) that varies in intensity as the laser scanned across the shape. While they are at different voltage levels, they seem to flip between their individual set of two states in lockstep. It almost looks like a digital communication signal, but the voltage levels are too high for digital logic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32890,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-laser-voltages-100us.jpg?w=1024" alt="" class="wp-image-32890"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming into these signals (100 milliseconds per grid down to 100 microseconds per grid) confirm that they are always moving in lockstep. Based on voltage levels, this represents the laser pulsing on and off rapidly, consistent with a laser tracing through multiple curves in a printed shape. The higher voltage levels here match the voltage levels I measured earlier for laser off. The lower voltage levels here are consistent with values in the range of tens of milliwatts of power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another thing I noticed in the zoomed-in view is the absence of PWM modulation artifacts. My own PWM circuits under an oscilloscope always show a noisy wave, expected for quick and dirty circuits built by electronics beginner like myself. Here we see the smooth analog voltage control of a circuit designed by people who knew what they were doing. I should take a closer look at the circuit board to <a href="https://newscrewdriver.com/2022/10/04/formlabs-form-1-laser-control-circuit-partial/">see what I can learn</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

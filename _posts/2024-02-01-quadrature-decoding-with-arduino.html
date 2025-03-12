@@ -1,0 +1,52 @@
+---
+layout: post
+title: Quadrature Decoding with Arduino
+date: 2024-02-01 12:30:00.000000000 +00:00
+type: post
+post_id: '41811'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31032'
+  timeline_notification: '1706819465'
+  firehose_sent: '1706819463'
+  wordads_ufa: s:wpcom-ufa-v4:1706912994
+  _publicize_job_id: '91601586871'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/01/quadrature-decoding-with-arduino/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to understand the internal workings of a Canon Pixma MX340 multi-function inkjet. Right now my focus is on its paper feed motor assembly, and I want to record data reported by a quadrature rotation encoder inside that assembly. I want to track behavior over several seconds, possibly a minute of two, which gets a little unwieldy with a logic analyzer timeline interface. So I thought I should create a tool tailored to my project and I found a promising lead using an <a href="https://newscrewdriver.com/2024/01/31/window-shopping-esp32-pulse-counter-pcnt/">ESP32's pulse counter (PCNT) peripheral</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As as I started preparing for the project, thinking through and writing down what I'd need to do, a lot of details felt very familiar in a "wait... I've done this before" way. I had forgotten I've played with quadrature encoders before! A search for "quadrature" on my project notebook (this blog site) found entries on <a href="https://newscrewdriver.com/2022/05/20/reading-faceplate-audio-mode-knob/" target="_blank" rel="noreferrer noopener">reading the knob on a Toyota audio head unit</a>, an <a href="https://newscrewdriver.com/2022/06/08/quadrature-encoder-rotary-knob-with-detent/" target="_blank" rel="noreferrer noopener">inexpensive knob from Amazon</a>, and <a href="https://newscrewdriver.com/2022/06/27/honda-cd-control-detours/" target="_blank" rel="noreferrer noopener">investigative detour during Honda audio head unit</a> adventures.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following my earlier footsteps would be an easier way to go, because the Arduino IDE and <a href="https://www.pjrc.com/teensy/td_libs_Encoder.html" target="_blank" rel="noreferrer noopener">Paul Stoffregen's quadrature decoder library</a> are already installed on my machine. But this will be the first time I apply it to something turned by a motor instead of by a human hand. Is it fast enough to keep up? Decoder library documentation says 100-127kHz sampling rate is possible on a Teensy 3, which was the library's original target hardware. Running on an ATmega328 would be slower.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Aside: I found <a href="http://gammon.com.au/interrupts" target="_blank" rel="noreferrer noopener">this Gammon forum thread listing technical detail on ATmega328 interrupt service routines</a>, which laid out work just for ISR overhead that would take 5.125us before any ISR code actually runs. This puts a hard upper bound of ~200 kHz on response rate of an ISR that does nothing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the spirit of "try the easy thing first" <a href="https://newscrewdriver.com/2024/02/02/quadrature-decoding-with-periodic-output/">I'll start with ATmega328 Arduino</a>. If it proves too slow, I have a Teensy LC somewhere, and I definitely have ESP8266 boards. In the unlikely case they all fail to meet my need, I can resume my examination of ESP32's pulse counter (PCNT) peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

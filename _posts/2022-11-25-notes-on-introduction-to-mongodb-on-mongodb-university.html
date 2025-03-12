@@ -1,0 +1,77 @@
+---
+layout: post
+title: Notes on "Introduction to MongoDB" on MongoDB University
+date: 2022-11-25 12:30:00.000000000 +00:00
+type: post
+post_id: '33722'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- MongoDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33723'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669495151
+  _publicize_job_id: '79067079710'
+  timeline_notification: '1669408221'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/25/notes-on-introduction-to-mongodb-on-mongodb-university/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I started learning about MongoDB on Codecademy, but there were technical difficulties blocking my progress. So I switched to MongoDB University, the free online learning platform hosted by MongoDB themselves. There was a bit of a learning curve on <a href="https://newscrewdriver.com/2022/11/24/notes-on-mongodb-university-learning-platform/">idiosyncrasies of MongoDB's learning platform</a>, but I got the hang of it soon enough and could focus on the information covered by "<em><a rel="noreferrer noopener" href="https://learn.mongodb.com/learn/learning-path/introduction-to-mongodb" target="_blank">Introduction to MongoDB</a></em>" course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each section of the course starts with a Wistia-hosted video. I prefer to learn by reading at my own pace over watching a video, so this wasn't my favorite. The video sometimes has captions allowing us to read along with the spoken narrative, but the presence of captions was inconsistent. Sometimes the video is followed by a page of text covering the same information and I thought I could read that text and skip the video, only to find that sometimes the text is missing information covered by the video and vice versa. I end up having to do both video and repetitive text, which feels like a tremendously inefficient way to do things.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another inefficiency are the hands-on labs powered by Instruqt. It takes several clicks and a few tens of seconds for the lab environment to spin up, which isn't bad by itself except most of our exercises involve typing out a single mongosh (MongoDB Shell) command and exiting to proceed to the next lab. This implementation means we spend a lot of time twiddling our thumbs waiting for spin-up and tear-down overhead, I would have preferred that we do more in each Instruqt session, so we don't spend so much time waiting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As for the course material, it's not technically just about the MongoDB database itself, the course is also a sales pitch for associated MongoDB products. Mainly MongoDB Atlas, the cloud-hosted (your choice of AWS, Azure or GCP) MongoDB service that cost money for us and generates revenue for the company. I don't mind a company making sure we know how to give them money, but I don't care for the fact that MongoDB Atlas features are intermingled with MongoDB core functionality in this course. When we run our own MongoDB instance (which I plan to do for my own projects) we won't have Atlas functionality, but this course doesn't always make clear what is core MongoDB versus functionality added by Atlas. I expect the company would say "Don't need to bother, just use Atlas for your projects, we have a free tier!" and I appreciate that the offer exists. But I'm rather skeptical that their "Free Forever" tier will actually stay free given the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/19/heroku-free-rides-are-over/" target="_blank">discouraging historical record of free tiers</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instructions in MongoDB mostly concentrate on what we can type into mongosh, which exposes a JavaScript style interface for interacting with a database. That is very different from storing SQL commands in strings as we did in <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/11/21/notes-on-codecademy-learn-node-sqlite/" target="_blank">node-sqlite</a>. Compared to SQL syntax, I found it easier to remember and parse mongosh syntax because of its similarity to JavaScript. That said, I still come across things that feel inconsistent to me that catch me off guard. Some commands want us to specify an action first then where to store the results. <code>{$count: "total_items"}</code> Other commands want us to specify the location of results followed by the action to generate it. <code>{"total_items": {$count {}}}</code> Maybe there's a system and I just haven't learned them yet, certainly the course never tried to explain them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At least I could still follow the logic for most of those inconsistencies. The one that completely confused me was an example using geographical location data in the form of <code>{ type: 'Point', coordinates: [ 40, -74 ] }</code> I think this is <a rel="noreferrer noopener" href="https://www.mongodb.com/docs/manual/reference/geojson" target="_blank">their GeoJSON format</a> but the course didn't go into detail. The example then sorted by '<code>latitude</code>', and I don't see how I could have looked at '<code>type</code>' and '<code>coordinates</code>' and decide '<code>latitude</code>' is available for sorting. To my eye '<code>latitude</code>' was not defined at all! If I figure this out later, I'll add a URL here to the appropriate reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is my super-abbreviated variation of course syllabus:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Querying for data with db.[collection].findOne() and find(). Followed by insert with insertOne() and insertMany(). We start with a few basic query operators using comparison operators $gt, $gte, $lt, and $lte. Then logical operators like $and and $or. We can use $elemMatch if we want to peer into values in the form of an array.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Modifying data with replaceOne for direct replacement. updateOne() and updateMany() take operators like $set and $push. findAndModify() combines a common pattern of finding a single document, modifying it, and returning the results. Finally deleteOne() to remove documents.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Tailor query results with cursor.sort() and limit(). Projection parameter to find() lets us skip information we're not interested in. And collection.countDocuments() is useful for data exploration.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Aggregation is roughly analogous to SQL table joins. We are introduced to operators $match, $group, $sort, $limit, $project, $count, $set, and $out.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Index helps us optimize lookup for specific query patterns. Recommend we list the fields in usage order of Equality, Sort, then Range. (But couse didn't explain why.) Like SQL, there's always some tradeoff involved for having a database index. The explain() command helps us see if an index is actually as helpful as expected.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>There's a whole arena of information on MongoDB anti-patterns. Like how we should be aware of BSON size limit of 16MB which means avoiding things like creating arrays that would grow unbounded.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This course gave me a solid start to using MongoDB in my projects. As I do not intend to rely on MongoDB Atlas staying free, I'm more likely to run the <a rel="noreferrer noopener" href="https://hub.docker.com/_/mongo" target="_blank">MongoDB Docker container</a> on a test machine at home. Interactions with such a database would likely happen via mongosh and <a href="https://newscrewdriver.com/2022/11/26/many-paths-to-mongodb-shell-mongosh/">there are many ways to get it</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

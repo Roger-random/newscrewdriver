@@ -1,0 +1,44 @@
+---
+layout: post
+title: Potential WebUSB Study Syllabus
+date: 2024-08-16 12:30:00.000000000 +00:00
+type: post
+post_id: '44777'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- USB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44769'
+  _publicize_job_id: '97083241352'
+  firehose_sent: '1723836614'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-15 23:17:28'
+  timeline_notification: '1723836614'
+  wordads_ufa: u:wpcom-ufa-v4:1724030591
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/16/potential-webusb-study-syllabus/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I followed through the steps of <a href="https://newscrewdriver.com/2024/08/15/adafruit-webusb-arduino-example/">an Adafruit WebUSB example</a> and established connection between Chrome browser on my Android phone to a microcontroller plugged into the USB port on the phone. I think WebUSB would enable many of my project ideas. But before I can turn any of my vague ideas into reality, I have a lot of homework to do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Adafruit example was thin on background information. I think it was written for people who already know how to work with TinyUSB library and just wanted to see Adafruit's adaptation into an Arduino library. This impression is backed up by the fact its GitHub repository README (<a href="https://github.com/adafruit/Adafruit_TinyUSB_Arduino">https://github.com/adafruit/Adafruit_TinyUSB_Arduino</a>) is written using vocabulary I don't understand. Following the link to <a href="https://docs.tinyusb.org/en/latest/index.html">TinyUSB's site</a> gives me similar language, so I have to start climbing my learning curve from somewhere else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching from the browser side, I found a <a href="https://developer.chrome.com/docs/capabilities/usb">Chrome developer documentation page on WebUSB</a>. I was able to comprehend more of this page, but not all of it. Here I learned one constraint on WebUSB: web apps are only allowed to connect to USB devices the operating system doesn't already have a driver for. This is a mitigation against malicious apps bypassing operating system protection for USB devices <a href="https://www.reddit.com/r/sysadmin/comments/y878ym/you_should_probably_disable_webusb_and/">like security keys</a>. It also avoids ambiguity/duplication with existing functionality. For example, there's no real need for a web app to interface with a USB keyboard via WebUSB when the operating system can already deliver key press events. Though there's an interesting wrinkle here around USB serial, a common way to connect to microcontroller projects. By this rule, a web app can't connect to a USB serial device on my desktop via WebUSB because my operating system already knows how to work with a serial device. (So it's <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">over to Web Serial land</a>.) But apparently <a href="https://developer.chrome.com/docs/capabilities/build-for-webusb#android">Android lacks a built-in handler for serial</a>, so maybe it's available via WebUSB? At this point I don't yet know if that's an opportunity or just a source of confusion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately for beginners like myself, author of this Chrome developer documentation page included a link to <a href="https://www.beyondlogic.org/usbnutshell/usb1.shtml"><em>USB in a NutShell</em></a> for those unfamiliar with fundamental USB concepts. Hey, that's me! I will try to start with <em>USB in a NutShell</em> and work my way back to TinyUSB and its various incarnations like Adafruit's Arduino library. But that's just the "USB" part, I have a lot <a href="https://newscrewdriver.com/2024/08/17/browser-based-database-front-end/">I'll have to learn for the "Web" part</a> as well.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

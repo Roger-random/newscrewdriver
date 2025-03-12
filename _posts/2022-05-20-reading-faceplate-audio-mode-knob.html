@@ -1,0 +1,49 @@
+---
+layout: post
+title: Reading Faceplate "Audio Mode" Knob
+date: 2022-05-20 12:30:00.000000000 +00:00
+type: post
+post_id: '30403'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- Arduino
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30404'
+  _publicize_job_id: '72748353362'
+  timeline_notification: '1653075016'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/20/reading-faceplate-audio-mode-knob/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I got a retired faceplate's LCD up and running, I realized I was wrong about its backlight circuitry. Now that <a href="https://newscrewdriver.com/2022/05/19/two-separate-sets-of-faceplate-illumination-toyota-86120-08010/">it's been sorted out</a>, attention returns to the LCD. I want to map out all the segments, which means I need to get some way to interactive select individual segments. <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/07/quick-esp32-pwm-experiment-via-esphome/" target="_blank">Recently I've used</a> ESPHome's network capabilities for interactivity, but this project uses an Arduino Nano for its 5V operating voltage. I can wire up my own physical control, but the faceplate already had some on board. <a href="https://newscrewdriver.com/2022/05/13/probing-voltage-range-of-tape-deck-faceplate-interface/">Earlier probing</a> established Power/Volume knob is a potentiometer, and Audio Mode knob is a quadrature encoder with detent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The encoder is perfect for selecting individual segments. I can write code to activate one segment at a time. When the knob is turned one way, I can move to adjacent segments in one direction. When the knob is turned the other way, segment selection can follow suit. However, this knob does have one twist relative to my prior experience: Each detent on this encoder is actually two steps. When the knob is at rest (at a detent) the A and B pins are always different. (High/low or low/high). Intermediate values where A and B pins are the same (high/high or low/low) occur <em>between </em>detents.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This places timing demands for reading that knob. For encoders where each detent is a single step change and turned by human hands, polling once every hundred millisecond or so would be fast enough. However, since this knob can flash through a step very quickly between detents, I need to make sure those steps do not get lost.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are many quadrature encoder libraries available for the Arduino platform. I selected <a href="https://www.arduino.cc/reference/en/libraries/encoder/">this one</a> by Paul Stoffregen, who I know as the brains behind the <a rel="noreferrer noopener" href="https://www.pjrc.com/store/" target="_blank">Teensy line</a> of products. When working with interrupt-capable pins, this library <a href="https://www.pjrc.com/teensy/td_libs_Encoder.html">will set up hardware monitoring</a> of any changes in encoder state. This makes it very unlikely for encoder steps to get lost. According to <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/" target="_blank">Arduino documentation for <code>attachInterrupt()</code></a>, all ATmega328-based Arduino boards (including the Arduino Nano I'm using) have two interrupt-capable pins: 2 and 3. Using those pins resulted in reliable reading of knob position for <a href="https://newscrewdriver.com/2022/05/21/segmented-lcd-on-tape-deck-faceplate-toyota-86120-08010/">mapping out segments of this LCD</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this investigation is <a href="https://github.com/Roger-random/Sanyo_LC75853N">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,145 @@
+---
+layout: post
+title: Query Neato XV-21 System Status Via USB
+date: 2019-03-01 13:30:12.000000000 +00:00
+type: post
+post_id: '17931'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '28174426718'
+  timeline_notification: '1551475824'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/01/query-neato-xv-21-system-status-via-usb/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>With the experimental batteries in place, the computer boots up and stays up for longer than three seconds. I tried to run a vacuum cycle but that was too much for these batteries to handle, so for now I'll stick with digital exploration starting with the standard UI to dump revision information on components inside this particular Neato XV-21 robot vacuum.</p>
+<p><img class="alignnone size-full wp-image-17930" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-xv-21-info.jpg" alt="Neato XV-21 info" width="1600" height="1472"></p>
+<p>After that, it's time to go exploring through its <a href="https://newscrewdriver.com/2019/02/28/usb-serial-communication-with-thrift-store-neato-xv-21/">USB serial port diagnostics</a>!</p>
+<p>I went straight to the most interesting component: the laser distance scanner module. First I had to put my vacuum into test mode with <code>testmode on</code>. Followed by <code>setldsrotation on</code> to turn on the motor that sweeps the laser. And finally, fetch a set of laser distance data with <code>getldsscan</code>. This gave me a large set of numbers. According to the legend given in the first line of the response, a distance and intensity number per degree of sweep. Partial excerpt below:</p>
+<blockquote><p>
+<code>AngleInDegrees,DistInMM,Intensity,ErrorCodeHEX</code><br />
+<code>0,2378,82,0</code><br />
+<code>1,2397,88,0</code><br />
+<code>2,0,88,8021</code><br />
+<code>3,2494,85,0</code><br />
+<code>4,2505,82,0</code><br />
+<code>5,2509,12,0</code><br />
+[...]<br />
+<code>355,2289,99,0</code><br />
+<code>356,2303,103,0</code><br />
+<code>357,2303,99,0</code><br />
+<code>358,2315,94,0</code><br />
+<code>359,2367,91,0</code><br />
+<code>ROTATION_SPEED,5.10</code>
+</p></blockquote>
+<p>Future experimentation will determine what range of distance values are typical, similarly for intensity values. A quick web search failed to find a reference guide for error hex codes, but hopefully there'll be a small set that I can infer from context. More exploration to come!</p>
+<p>In the meantime, I repeated the <code>getldsscan</code> command to verify the values are getting updated. They were - I received a similar but slightly different set of numbers. Hooray! the most important sensor looks like it is functioning.</p>
+<p>Next item on the exploration list: querying analog sensor values with <code>getanalogsensors</code>.</p>
+<blockquote><p>
+<code>SensorName,Value</code><br />
+<code>WallSensorInMM,63,</code><br />
+<code>BatteryVoltageInmV,16120,</code><br />
+<code>LeftDropInMM,60,</code><br />
+<code>RightDropInMM,60,</code><br />
+<code>LeftMagSensor,-2,</code><br />
+<code>RightMagSensor,-3,</code><br />
+<code>UIButtonInmV,3317,</code><br />
+<code>VacuumCurrentInmA,0,</code><br />
+<code>ChargeVoltInmV,132,</code><br />
+<code>BatteryTemp0InC,34,</code><br />
+<code>BatteryTemp1InC,31,</code><br />
+<code>CurrentInmA,622,</code><br />
+<code>SideBrushCurrentInmA,29,</code><br />
+<code>VoltageReferenceInmV,1225,</code><br />
+<code>AccelXInmG,-8,</code><br />
+<code>AccelYInmG,-12,</code><br />
+<code>AccelZInmG,1092,</code>
+</p></blockquote>
+<p>I see three distance sensors - wall and two drop sensors, one in each front corner. It's not immediately clear what "Mag" in left and right "MagSensor" referred to. Do they detect magnetic fields? Or are they measuring magnitude of something? Bottom three lines indicate the vacuum sensor suite includes a three-axis accelerometer which can measure in units of thousands of G, implied by a Z value nearly 1000 in this vacuum sitting on the floor. Remainder of the values are related to power management.</p>
+<p>The 3-axis accelerometer values above from <code>getanalogsensors</code> partially overlap with results of <code>getaccel</code>. As the name indicates, this one is completely focused on accelerometer readings and includes results of additional calculation in the form of pitch and roll in degrees and a sum of acceleration vector.</p>
+<blockquote><p>
+<code>Label,Value</code><br />
+<code>PitchInDegrees, -0.64</code><br />
+<code>RollInDegrees, -0.53</code><br />
+<code>XInG,-0.012</code><br />
+<code>YInG,-0.010</code><br />
+<code>ZInG, 1.079</code><br />
+<code>SumInG, 1.079</code>
+</p></blockquote>
+<p>The list of digital sensor values from <code>getdigitalsensors</code>is shorter, and for whatever reason, labelled in all capital letters.</p>
+<blockquote><p>
+<code>Digital Sensor Name, Value</code><br />
+<code>SNSR_DC_JACK_CONNECT,0</code><br />
+<code>SNSR_DUSTBIN_IS_IN,1</code><br />
+<code>SNSR_LEFT_WHEEL_EXTENDED,0</code><br />
+<code>SNSR_RIGHT_WHEEL_EXTENDED,0</code><br />
+<code>LSIDEBIT,0</code><br />
+<code>LFRONTBIT,0</code><br />
+<code>RSIDEBIT,0</code><br />
+<code>RFRONTBIT,0</code>
+</p></blockquote>
+<p>Here we can see whether the dustbin is installed, whether either or both wheels are at full extension, and it looks like there are four switches associated with the front bumper. The top line shows if a charging plug is connected, but that's only one of many parameters around power management. Most of the rest are in <code>getcharger</code>.</p>
+<blockquote><p>
+<code>Label,Value</code><br />
+<code>FuelPercent,88</code><br />
+<code>BatteryOverTemp,0</code><br />
+<code>ChargingActive,0</code><br />
+<code>ChargingEnabled,0</code><br />
+<code>ConfidentOnFuel,0</code><br />
+<code>OnReservedFuel,0</code><br />
+<code>EmptyFuel,0</code><br />
+<code>BatteryFailure,0</code><br />
+<code>ExtPwrPresent,0</code><br />
+<code>ThermistorPresent[0],1</code><br />
+<code>ThermistorPresent[1],1</code><br />
+<code>BattTempCAvg[0],33</code><br />
+<code>BattTempCAvg[1],31</code><br />
+<code>VBattV,16.03</code><br />
+<code>VExtV,0.16</code><br />
+<code>Charger_mAH,0</code>
+</p></blockquote>
+<p>If I were to create my own control logic for driving my Neato around, the most important parameter here is <code>FuelPercent</code>. I'll have to be responsible about not draining the battery too far, beyond that I can leave the rest in the capable hands of Neato's existing battery management system. Speaking of power consumption, the biggest drains are the motors, and I can monitor them all with <code>getmotors</code>.</p>
+<blockquote><p>
+<code>Parameter,Value</code><br />
+<code>Brush_RPM,0</code><br />
+<code>Brush_mA,0</code><br />
+<code>Vacuum_RPM,0</code><br />
+<code>Vacuum_mA,0</code><br />
+<code>LeftWheel_RPM,0</code><br />
+<code>LeftWheel_Load%,0</code><br />
+<code>LeftWheel_PositionInMM,-1</code><br />
+<code>LeftWheel_Speed,0</code><br />
+<code>RightWheel_RPM,0</code><br />
+<code>RightWheel_Load%,0</code><br />
+<code>RightWheel_PositionInMM,-1</code><br />
+<code>RightWheel_Speed,0</code><br />
+<code>Charger_mAH, 0</code><br />
+<code>SideBrush_mA,28</code>
+</p></blockquote>
+<p>Not very exciting at the moment, because all motors are at a stop. I imagine these numbers will get more interesting once the robot gets underway.</p>
+<p>One final discovery in inputs: when in test mode, the user interface buttons on the top of the robot no longer trigger their usual functions. I could check for status of all five buttons via <code>getbuttons</code> which implies I could use these buttons in my own projects without worrying that I'll trigger the default vacuum behavior. Cool!</p>
+<blockquote><p>
+<code>Button Name,Pressed</code><br />
+<code>BTN_SOFT_KEY,0</code><br />
+<code>BTN_SCROLL_UP,0</code><br />
+<code>BTN_START,0</code><br />
+<code>BTN_BACK,0</code><br />
+<code>BTN_SCROLL_DOWN,0</code>
+</p></blockquote>
+<p>But if I want to actually have my own user interface using those buttons, I would need to also display my own information on the LCD. Which brings us to phase 2 of playing over USB: <a href="https://newscrewdriver.com/2019/03/03/sending-commands-to-neato-xv-21-via-usb/">start sending commands</a> to see if components follow orders.</body></html></p>

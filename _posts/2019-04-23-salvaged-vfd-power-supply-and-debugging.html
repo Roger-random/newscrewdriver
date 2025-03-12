@@ -1,0 +1,46 @@
+---
+layout: post
+title: Salvaged VFD Power Supply And Debugging
+date: 2019-04-23 12:30:24.000000000 +00:00
+type: post
+post_id: '18397'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- MP1584
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1556047851'
+  _publicize_job_id: '30078506881'
+  _edit_last: '98499281'
+  _thumbnail_id: '18398'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/23/salvaged-vfd-power-supply-and-debugging/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Our first <a href="https://newscrewdriver.com/2019/04/19/integration-of-salvaged-vfd-and-prototype-driver-pcb/">system integration test</a> of a salvaged vacuum fluorescent display (VFD) and our prototype driver PCB was a success. At least going by our initial target of having our VFD segments illuminated and cycling through a test pattern to verify things are not stuck always on or off.</p>
+<p>Once we had that basic level of functionality, [Emily] started working on the power supply side of the system. We have <a href="https://newscrewdriver.com/2019/04/04/original-nec-vsl0010-a-vfd-power-source/">an original transformer salvaged from the same device</a> which outputs multiple AC voltages. The first is a 2.5V AC line we could use directly on VFD filament. After that, Emily salvaged a few more components to deliver the ~30V DC we need for control grid and segments, and the ~24V DC we fed into a <a href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/">MP1584 buck converter</a> to get 5V DC for filament bias and micro controller logic power.</p>
+<p><img class=" size-full wp-image-18398 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/vfd-on-transformer.jpg" alt="VFD on transformer" width="1600" height="1274"></p>
+<p>We're very close to a complete power solution for a VFD project, but not quite there yet. When we added a Raspberry Pi 3 to the mix, its power demand was too high for this system to handle. Power sagged to 4.2V and the Pi entered a power brown-out reset loop. We're not sure what's wrong with this setup yet, but in the meantime we connected an alternate 5V DC power source to look at how the rest of the system behaves.</p>
+<p>This allowed us to see a problem in our prototype driver board. I had a new test pattern generated with the help of my tool <a href="https://newscrewdriver.com/2019/04/20/create-vfd-bit-pattern-with-help-of-google-sheets/">created in Google Sheets</a>, but the test program did not display as I expected. After some time sending various diagnostic patterns to the VFD, we figured out the key to the situation is segment H.</p>
+<p><img class=" size-full wp-image-18241 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-annotated-1.jpg" alt="NEC VSL0010-A VFD Annotated" width="1600" height="652"></p>
+<p>Whenever segment H is illuminated, everything else functioned as expected. But if segment H is dark, segments A-G are all dark regardless of commanded pattern. Segment I and J are unaffected.</p>
+<p>Once this was determined, we ran a test pattern where H is commanded to be dark and everything else should illuminate. The test pattern is the same for every segment, so the circuit would be at a steady state for us to probe with a meter as the PIC cycled through segments.</p>
+<p>Using segment A as an example, we probed to verify its output pin from PIC (RC0) is low as expected. We then traced that signal to the ULN2003, whose corresponding input pin is low as expected. With input low, the corresponding ULN2003 output pin should not be tied to ground. Which means we expect VFD pin for segment A to be sitting at near 30V DC due to a pull-up resistor.</p>
+<p>This is where we went off script, for VFD pin A has been pulled low. Unplugging the wire between ULN2003 and VFD allowed the segment to illuminate. This narrows down the scope of our problem: it has something to do with that ULN2003 chip, but we ran out of time for <a href="https://www.meetup.com/SGVTech/events/xknvdlyzgbdc/">tonight's SGVHAK session</a> before we could narrow it down any further.</p>
+<p>To be continued!</p>
+<p></body></html></p>

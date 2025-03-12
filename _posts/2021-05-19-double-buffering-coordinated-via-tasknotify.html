@@ -1,0 +1,64 @@
+---
+layout: post
+title: Double Buffering Coordinated via TaskNotify
+date: 2021-05-19 12:30:00.000000000 +00:00
+type: post
+post_id: '26628'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26660'
+  _oembed_fee466c5548dc690fd65cb3f2bbe3502: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">A
+    wider view <a href="https://t.co/6BHmLRbNW1">pic.twitter.com/6BHmLRbNW1</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1388127308431515661?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '58567007128'
+  timeline_notification: '1621452653'
+  _oembed_time_fee466c5548dc690fd65cb3f2bbe3502: '1621475615'
+  _oembed_3139e7ee5a5ce9c9f635d7af47420f22: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">In
+    gratitude, the squid rescued the cat from its life of eating scraps in alleys
+    and, they&#39;ve been traveling the universe ever since, discovering new things,
+    helping others, and generally enjoying each other&#39;s company.</p>&mdash; Emily
+    Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1393063312405909504?ref_src=twsrc%5Etfw">May
+    14, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_3139e7ee5a5ce9c9f635d7af47420f22: '1621475705'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/19/double-buffering-coordinated-via-tasknotify/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Eliminating work done for <a href="https://newscrewdriver.com/2021/05/18/the-fastest-pixels-are-those-we-never-draw/">pixels that will never been seen</a> is always a good change for efficiency. Next item on the to-do list is to work on pixels that will be seen... but we don't want to see them until they're ready. Version 1.0.0 of ESP_8_BIT_composite color video out library used only a single buffer, where code is drawing to the buffer at the same time the video signal generation code is reading from the buffer. When those two separate pieces of code overlap, we get visual artifacts on screen ranging from incomplete shapes to annoying flickers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The classic solution to this is <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Multiple_buffering#Double_buffering_in_computer_graphics" target="_blank">double-buffering</a>, which the precedent ESP_8_BIT did not do. I hypothesize there were two reasons for this: #1 emulator memory requirements did not leave enough for a second buffer and #2 emulators sent its display data in horizontal line order, managing to 'race ahead" of the video scan line and avoid artifacts. But now both of those are gone. #1 no longer applies because emulators had been cut out, freeing memory. And we lost #2 because <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/17/overriding-adafruit-gfx-hline-vline-defaults-for-performance/" target="_blank">Adafruit GFX is concentrated around vertical lines</a> so it is orthogonal to scan line and no longer able to "race ahead" of it resulting in visual artifacts. Thus we need two buffers. A back buffer for the Adafruit GFX code to draw on, and a front buffer for the video signal generation code to read from. At the end of each NTSC frame, I have an opportunity to swap the buffers. Doing it at that point ensures we'll never try to show a partially drawn frame.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/10/initial-issues-with-esp_8_bit-color-composite-video-out-library/" target="_blank">originally planned</a> to make double-buffering an optional configurable feature. But once I saw how much of an improvement this was, I decided everyone will get it all of the time. In the spirit of Arduino library style guide recommendations, I'm keeping the recommended code path easy to use. For simple Arduino apps the memory pressure would not be a problem on an ESP32. If someone wants to return to single buffer for memory needs, or maybe even as a deliberate artistic decision to have flickers, they can take my code and create their own variant.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Knowing when to swap the buffer was easy, <code>video_isr()</code> had a conveniently commented section <code>// frame is done</code>. At that point I can swap the front and back buffers if the back buffer is flagged as ready to go. My problem was that I didn't know how to signal the drawing code they have a new back buffer and they can start drawing the next frame. The existing <code>video_sync()</code> (which I use for my <code>waitForFrame()</code> API) forecasts the amount of time to render a frame and uses <code>vTaskDelay()</code> which I am somewhat suspicious of. <a rel="noreferrer noopener" href="https://www.freertos.org/a00127.html" target="_blank">FreeRTOS documentation has the disclaimer</a> that <code>vTaskDelay()</code> has no guarantee that it will resume at the specified time. The synchronization was thus inferred rather than explicit, and I wanted something that ties the two pieces of code more concretely together. My research eventually led to <code><a rel="noreferrer noopener" href="https://www.freertos.org/vTaskNotifyGiveFromISR.html" target="_blank">vTaskNotifyGiveFromISR()</a></code> I can use in <code>video_isr()</code> to signal its counterpart <code><a rel="noreferrer noopener" href="https://www.freertos.org/ulTaskNotifyTake.html" target="_blank">ulTaskNotifyTake()</a></code> which I will use for a replacement implementation of <code>video_sync()</code>. I anticipate this will prove to be a more reliable way for the application code to know they can start working on the next frame. But how much time do they have to spare between frames? That's the next project: <a href="https://newscrewdriver.com/2021/05/20/lightweight-performance-metrics-have-caveats/">some performance metrics</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

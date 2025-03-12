@@ -1,0 +1,101 @@
+---
+layout: post
+title: 'Adafruit Memento + AMG8833 Overlay: Alpha Blending'
+date: 2024-07-09 12:30:00.000000000 +00:00
+type: post
+post_id: '44143'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44123'
+  wordads_ufa: u:wpcom-ufa-v4:1720642785
+  firehose_sent: '1720553423'
+  _publicize_job_id: '96105298496'
+  timeline_notification: '1720553424'
+  _oembed_db7f9de9927a90de7d9c241e7c272e82: "{{unknown}}"
+  _oembed_dbdc99e0639b0a967dfc3b5d44f170ca: "{{unknown}}"
+  _oembed_7d78c6056c7db72e6535e0b8423a2716: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-07-10 20:21:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/09/adafruit-memento-amg8833-overlay-alpha-blending/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The AMG8833 thermal sensor I taped to an Adafruit Memento camera is <a href="https://newscrewdriver.com/2024/07/08/adafruit-memento-amg8833-initial-bootstrap/">successfully communicating with the ESP32-S3</a> microcontroller running Memento, and I can start working on integrating data from both thermal and visual cameras.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Goal</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Low resolution thermal data can be difficult to decipher, but overlaying low-resolution thermal data on top of high-resolution visual data helps provide context for interpretation. This is a technique used in commercial thermal imaging products. The most accessible devices are designed to plug into my cell phone and utilize the phone for power and display. For my Android phone, it'll be <a href="https://amzn.to/3VThb8r">something like this FLIR One unit</a>.(*) I've thought about buying one but never did. Now I will try to build a lower-cost (though <em>far</em> less capable) DIY counterpart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Precedence</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For code functionality, there's a useful precedence in <a href="https://learn.adafruit.com/adafruit-memento-camera-board/fancy-camera">Adafruit's "Fancy Camera" sample application</a>: it has a <a href="https://learn.adafruit.com/adafruit-memento-camera-board/stop-motion">stop-motion animation mode</a> which shows the previously captured frame on top of the current viewfinder frame. This allows aspiring stop-motion animators to see movement frame-to-frame before committing to a shot, but I want to try using its overlay mechanism for my purposes. On the source code side, this means following usage of the data objects <code>last_frame</code> and <code>onionskin</code>. They led me to <code><a href="https://docs.circuitpython.org/en/9.0.x/shared-bindings/bitmaptools/index.html#bitmaptools.alphablend">bitmaptools.alphablend()</a></code>. Performing alpha blending on a microcontroller is not fast, but it was a good enough starting point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Drawing Thermal Overlay</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I've found a helper to blend the viewfinder image with my thermal data, I have to draw that thermal data. The small LCD on board Memento has a resolution of 240x240 pixels, and that divides neatly into 8x8 sensor resolution. Each sensor data point corresponds to a 30x30 pixel block of screen. Drawing solid squares was really, really slow. I opted to draw every third pixel vertically and horizontally, which means drawing a dot for every 3x3=9 pixels. This lent a screen door effect to the results that was, again, good enough as a starting point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Thermal Color Spectrum</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Commercial thermal cameras have established a convention for color spectrum representing thermal data. Black represents cold, blue is a bit warmer, then purple, red, orange, yellow, all the way to white representing the hottest portion of the picture. I started mapping out a series of RGB values before I noticed that spectrum is conveniently half of a <a href="https://newscrewdriver.com/2021/05/13/hsv-color-wheel-of-256-rgb332-colors/">HSV hue wheel</a>. I went looking for a CircuitPython library for HSV color space and <a href="https://learn.adafruit.com/fancyled-library-for-circuitpython/colors#hsv-colors-2981215">found <code>FancyLED</code></a>. Calling <code>pack()</code> gave me a representation in RGB888 format instead of the RGB565_SWAPPED format used by Memento LCD. I didn't find an existing conversion utility, but I'm a C programmer and I'm comfortable writing my own bit manipulation routine. It's not the fastest way to do this, but I only have to build my palette once upon startup so it's not a concern for the performance-critical inner display loop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>    # Obtain hue from HSV spectrum, then convert to RGB with pack()
+    rgb = fancy.CHSV(hue, saturation, value).pack()
+
+    # Extract each color channel and drop lower bits
+    red =   (rgb &amp; 0xFF0000) &gt;&gt; 19
+    green_h3 = (rgb &amp; 0x00FF00) &gt;&gt; 13
+    green_l3 = (rgb &amp; 0x003800) &gt;&gt; 11
+    blue =  (rgb &amp; 0x0000FF) &gt;&gt; 3
+    # Pack bits into RGB565_SWAPPED format
+    rgb565_swapped = (red &lt;&lt; 3) + (green_h3) + (green_l3 &lt;&lt; 13) + (blue &lt;&lt; 8)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Orientation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was happy when when I saw my thermal color overlay on top of the viewfinder image, but the two sets of data didn't match. I turned on my soldering iron for a point source of heat, and used that bright thermal dot to determine my thermal sensor orientation didn't match visual camera orientation. That was easily fixed with a few adjustments to x/y coordinate mapping.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Field of View</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the orientation lined up, I had expected to adjust the scale of thermal overlay so its field of view would match up with the visual camera's field of view. To my surprise, they seem to match pretty well right off the bat. Of course, this was helped by AGM8833's low resolution giving a lot of elbow room but I'm not going to complain about having to do less work!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Too Slow</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point I had a first draft that did what I had set out to do: a thermal overlap on top of visual data. It was fun taking the camera around the house pointing at various things to see their thermal behavior. But I'm not done yet because it is very sluggish. I have plenty of room for improvement with performance optimization and <a href="https://newscrewdriver.com/2024/07/10/adafruit-memento-amg8833-overlay-tilegrid/">I think <code>TileGrid</code> will help me</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">https://github.com/Roger-random/circuitpython_tests/commit/30e24717cad579a0cc05f4b381d5f637259fe4bb</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

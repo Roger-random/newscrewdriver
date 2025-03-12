@@ -1,0 +1,178 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Screen Update First Look
+date: 2023-12-30 12:30:00.000000000 +00:00
+type: post
+post_id: '41364'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  wordads_ufa: s:wpcom-ufa-v4:1704503669
+  _publicize_job_id: '90694359575'
+  firehose_sent: '1703968229'
+  timeline_notification: '1703968230'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Listening in to serial communication between circuit boards of a Canon Pixma MX340 multi-function inkjet, I think I have a handle on <a href="https://newscrewdriver.com/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/">how the control panel reports button presses to the main board</a>. Some of these button presses trigger updates to information shown on the control panel LCD screen, which gave me a first look at what that involved.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pressing right/+ button at the home screen incremented a number on screen representing number of copies to be made. Pressing left/- afterwards triggered another update as the number was decremented. For each of the two screen updates, I observed similar behavior. It starts with four two-byte sequences from the mainboard, each followed by a single byte 0x20 from the control panel which is probably an "OK" acknowledgement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that, a large number of bytes were sent from the mainboard. I didn't find a way to ask Saleae Logic to count the number of bytes for me. (I hope I don't end up counting manually) But at least it was easy to measure the time interval for this transmission: 14ms. At 250000 baud 8E1, that can't be more than (0.014 seconds * 250000 symbols per second / 11 symbols per byte) = 318 bytes. Plus I saw a few pauses in between this data transmission, so it wasn't transmitting at full speed. Looking at powers of two numbers, I think 256 bytes is a good candidate. At the end of this burst of bytes, there was another 0x20 acknowledgement from the control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: I've figured out <a href="https://newscrewdriver.com/2024/01/05/canon-pixma-mx340-control-panel-lcd-data-back-to-basics-with-excel-and-calc/" target="_blank" rel="noreferrer noopener">the burst is 196 bytes long</a>, shorter than the 256 I guessed. 196 decimal is 0xC4 hexadecimal, which explains the fourth two-byte transmission. 0x06 0xC4 must mean "I am about to send you 196 bytes"]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This pattern (four two-byte sequences, followed by a large number of bytes) was repeated five times.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Transmission from main board</th>
+<th class="has-text-align-center" data-align="center">Acknowledgement by control panel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 <mark style="background-color:#fcb900" class="has-inline-color">0x4D</mark>
+</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xC8</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x30</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x06 0xC4</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">[... 196 bytes ...]</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 <mark style="background-color:#fcb900" class="has-inline-color">0xCD</mark>
+</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xC8</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x30</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x06 0xC4</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">[... 196 bytes ...]</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 <mark style="background-color:#fcb900" class="has-inline-color">0x2D</mark>
+</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xC8</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x30</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x06 0xC4</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">[... 196 bytes ...]</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 <mark style="background-color:#fcb900" class="has-inline-color">0xAD</mark>
+</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xC8</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x30</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x06 0xC4</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">[... 196 bytes ...]</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 <mark style="background-color:#fcb900" class="has-inline-color">0x6D</mark>
+</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0xC8</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x04 0x30</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x06 0xC4</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">[... 196 bytes ...]</td>
+<td class="has-text-align-center" data-align="center">0x20</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the four two-byte sequences, they differed only in the second byte of the first pair. I've highlighted this byte in the table above. Perhaps this is an address of some sort, and if so I find it interesting the values are not consecutive from one iteration to the next.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I haven't figured out how I'll analyze the burst of data. A few hundred bytes is too unwieldy to examine in a linear capture timeline, I'll have to think about what other tools I could bring in. [UPDATE: <a href="https://newscrewdriver.com/2024/01/05/canon-pixma-mx340-control-panel-lcd-data-back-to-basics-with-excel-and-calc/" target="_blank" rel="noreferrer noopener">Microsoft Excel to the rescue</a>.] Despite that open question, this established a baseline pattern for <a href="https://newscrewdriver.com/2023/12/31/canon-pixma-mx340-control-panel-data-communication-plug-in/">comparison against other machine states</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

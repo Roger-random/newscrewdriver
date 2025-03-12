@@ -1,0 +1,347 @@
+---
+layout: post
+title: Honda Accord HVAC Knobs -- Electrical
+date: 2022-06-22 12:30:00.000000000 +00:00
+type: post
+post_id: '30952'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30930'
+  _publicize_job_id: '73936155605'
+  timeline_notification: '1655926205'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/22/honda-accord-hvac-knobs-electrical/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The audio and HVAC (Heating/Ventilation/Air Conditioning) on a 2007 Honda Accord are controlled by a trio of knobs. They each have different range of motion: fan speed sweeps through 120 degrees, temperature sweeps through 270 degrees, and the audio knob is free to spin continuously through 360 degrees without endpoints. However, they all have the same tactile feel through "clicky" detent steps: 13 for the fan speed, 15 for temperature, and 30 per complete revolution of audio. Despite their differences, they <a href="https://newscrewdriver.com/2022/06/21/honda-accord-hvac-knobs-mechanical/">appear to use identical Alps ring encoders</a>. How was this done?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first hint was noticing that each encoder can have six electrical contacts, but the audio knob only used three of them. The other three pins were cut off, never connected to the circuit board. Limited to three pins, the audio knob could express 4 states with the remaining two pins as a quadrature encoder does. Thus these knobs <em>could </em>be configured to act this way, but only as a special case with pins cut off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To probe the other knobs, I started by arbitrarily number pins. Looking at the encoder's top side oriented with pins towards me, the left side top to bottom are: 1, 2, and 3. Then the right side top to bottom are 4, 5, and 6. Viewed from the encoder's bottom side, the pins numbers are like this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30934,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-accord-fan-speed-knob-pins.jpg?w=1024" alt="" class="wp-image-30934"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I probed the fan speed knob for electrical continuity. In use we would ground one pin and all the marked pins will also be grounded when the knob is at a particular position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Fan Speed</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Off</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>1</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>2</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>3</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>4</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>5</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>6</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>7</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>8</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>9</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>10</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>11</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>12</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at this chart, it appears either pin 1 or 6 could be the ground reference. Pins 2 through 5 vary depending on knob position. Using 4 pins they could represent up to 16 positions, though only 13 are used. The digital encoding isn't a straightforward mapping to binary numbers, even if I move the columns around. I don't recognize it, but I do see a pattern. One attribute of this pattern is that, when moving from one position to the next, only one pin changes state. This may be useful in some way I don't understand. I don't see a way to calculate position number directly from the pattern, so if I were to reuse this knob, I would have to use a lookup table. 13 valid positions out of 16 possible positions shouldn't be a big deal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then probed the temperature knob to see how it compares.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Temperature</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-7 (Coldest)</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-6</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-5</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-4</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>-3</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>-2</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>-1</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>1</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>2</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>3</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>4</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>5</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>6</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>7 (Warmest)</td>
+<td>X</td>
+<td></td>
+<td></td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>From here we can tell pin 1 is clearly designed to be the ground reference pin, and we can determine absolute position by reading state of the other five pins. This pattern looks more like a binary number, with pin 4 being the least significant bit and pin 2 as the next least significant bit. But then things fall apart and pin 3 doesn't fit the pattern for binary number progression. It doesn't fully follow the "number of transition bits" pattern observed in the fan speed control. Moving from either of the end positions would change one bit. Moving between non-end positions would change two bits. If I were to reuse this knob, I would again use a lookup table, with 15 valid positions out of 32 possible combinations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These knobs will be interesting to reuse in another project. They take four or five digital input pins instead of the single analog input pin of a potentiometer, but I like their tactile detents which could be useful in specific scenarios. I'll set them aside and <a href="https://newscrewdriver.com/2022/06/23/honda-cd-connector-lost-connector-found/">return my focus to digital communication</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

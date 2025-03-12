@@ -1,0 +1,53 @@
+---
+layout: post
+title: Monoprice Maker Ultimate (Wanhao Duplicator 6) Dead Again But This Time It
+  Was Not The Relay
+date: 2019-12-20 12:30:52.000000000 +00:00
+type: post
+post_id: '19969'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Monoprice Maker Ultimate
+meta:
+  _thumbnail_id: '19972'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_5b6c00ff00220992712d5a4ec9acb8c7: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Lessons
+    learned tonight: <br><br>- An analog video camera makes the platonic ideal of
+    a <br>   composite video signal <br><br>- ESP32 makes a very respectable composite
+    signal<br> <br>- Arduino makes a terrible composite signal, but it totally <br>   works
+    anyway because analog video is like that</p>&mdash; Emily Velasco (@MLE_Online)
+    <a href="https://twitter.com/MLE_Online/status/1194135855721369600?ref_src=twsrc%5Etfw">November
+    12, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '38689406421'
+  timeline_notification: '1576873894'
+  _oembed_time_5b6c00ff00220992712d5a4ec9acb8c7: '1576874221'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/12/20/monoprice-maker-ultimate-wanhao-duplicator-6-dead-again-but-this-time-it-was-not-the-relay/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>My Monoprice Maker Ultimate (branded variant of Wanhao Duplicator 6) <a href="https://newscrewdriver.com/category/3d-printing/3d-printing-hardware/">is dead again</a>. This has happened before, but this time is different. Previously, the <a href="https://newscrewdriver.com/2017/10/24/investigating-the-infamous-relay-of-monoprice-maker-ultimate-wanhao-duplicator-6/">main 24V relay would die of overwork</a>, and when that happens all stepper motor and cooling fan activity stopped while the display UI thinks it's business as usual. This time around, the fans turn on but the display was dark.</p>
+<p>Since the primary user interface was dark, the first order of business was to see if it's just a dead display or if the problem went deeper. As a data point I tried an alternate control scheme: I put OctoPrint on my laptop and attempted to communicate with the printer via USB serial. This was only intermittently successful, and even when communication was established, it would quickly disconnect. So it's not just the display that was dead, but the printer isn't entirely dead, either.</p>
+<p>Suspecting a bad power supply, all voltage output lines were measured and power levels would dip occasionally. Eventually we figured out something was causing the main system board to reset on a regular basis, and upon every reset, there would be a brief spike in power draw.</p>
+<p>Diagnostics moved on to unplugging components one at a time from the control board to see which component is overloading the system. The printer powered on and stayed on once I unplugged the wires for the front control panel and display.</p>
+<p><img class=" size-full wp-image-19970 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/12/maker-ultimate-front-panel-disconnected.jpg" alt="Maker Ultimate front panel disconnected" width="1920" height="1080"></p>
+<p>Removing the display and control panel, we took a closer look at the circuit board and found our culprit: component U3 has suffered some calamity that caused the chip inside to burn a hole in its casing.</p>
+<p><img class=" size-full wp-image-19971 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/12/maker-ultimate-fried-u3.jpg" alt="Maker Ultimate fried U3" width="1920" height="1080"></p>
+<p>Judging by surrounding traces, U3 had some sort of power management role. It has either failed short, or it has failed open causing some other component to trigger a system reset.</p>
+<p>With the display and user control panel disconnected, I could control the printer via USB using OctoPrint. However, this did not eliminate the random system resets, it just made it much less frequent. Apparently there was more damage elsewhere on the system. Unless the source could be found and repaired, it will be time for an upgrade of this printer's main control board.</p>
+<p></body></html></p>

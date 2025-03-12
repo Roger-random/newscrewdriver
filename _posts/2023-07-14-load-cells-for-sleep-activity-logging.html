@@ -1,0 +1,58 @@
+---
+layout: post
+title: Load Cells for Sleep Activity Logging
+date: 2023-07-14 12:30:00.000000000 +00:00
+type: post
+post_id: '37915'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37916'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689453950
+  _publicize_job_id: '85747799360'
+  timeline_notification: '1689363051'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/14/load-cells-for-sleep-activity-logging/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I didn't expect a lot when I paid less than $10 for a set of load cells from Amazon, and indeed it has <a href="https://newscrewdriver.com/2023/07/13/observations-on-24-hours-of-hx711-data/">some pretty significant limitations</a>. But that's fine, every instrument has limitations and it's a matter of making sure an application fit within them. Looking at the limitations of this sensor, I thought I had the perfect project fit: use them to gain some insight on my sleep quality.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Quality of sleep is important and there's a lot of research behind it. For the home scientist, one of the easiest metrics to measure is the fraction of time we stay still in <a href="https://en.wikipedia.org/wiki/Rapid_eye_movement_sleep">rapid-eye movement (REM) sleep</a>. Problems disrupting sleep will cut into the amount of time we spend in REM sleep, depriving our brains of an important part of resting. Measuring actual eye movement is difficult, but (healthy) REM sleep also <a href="https://en.wikipedia.org/wiki/Rapid_eye_movement_sleep#Muscle">temporarily inhibits our muscles</a> keeping our body still. This is an imperfect correlation: it is possible for muscle movements to happen while in REM sleep (should be small, though) and it is possible to stay still without being in REM sleep. Despite the imperfection, sleep movement is a good proxy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are many options to track sleep movement in the consumer medical technology field. Health wearables with accelerometers can do it, but it requires wearing the device while sleeping. Alternatives to wearing something include motion-detection cameras, but I'm not putting a camera in my bedroom. Using a set of cheap load cells seems like a good option, and logging data to my Home Assistant server at home is much better for personal privacy than a cloud-based solution.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've already written my ESPHome YAML lambda tracking maximum/minimum values within a one-minute window. It was originally intended to quantify noise inherent in the system, but it works just as well to pick up changes on sensor readings. So, there will be no additional software work required.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37916,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/load-cell-on-bed-frame-slat.jpg?w=1024" alt="" class="wp-image-37916"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the hardware side, I have an IKEA bed frame with a series of slats holding up the mattress. I can put my sensors where the slat rests on the frame.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37924,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/07/load-cell-between-bed-frame-and-slat.jpg?w=1024" alt="" class="wp-image-37924"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Load on all other slat-frame interface is not measured, which meant the absolute measured values will change depending on where my body is on the bed. Fortunately, the absolute value doesn't matter because I'm only interested in changes minute-to-minute. Those changes over time are my sleep movement data. This also means I can ignore other problems with this instrument's absolute values, like system warmup and daily temperature cycle sensitivity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The bad news is the problem of spurious data will still impact this application. Such erroneous data will indicate movement when no actual movement has occurred. It means these measurements will understate the quality of my sleep by some unknown amount. (I slept better than the data indicated, but by how much?) However, given that the correlation between REM sleep and lack of motion is an imperfect one to begin with, perhaps this error is acceptable. The <a href="https://newscrewdriver.com/2023/07/15/initial-sleep-activity-data/">recorded data is pretty noisy but some patterns are visible</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

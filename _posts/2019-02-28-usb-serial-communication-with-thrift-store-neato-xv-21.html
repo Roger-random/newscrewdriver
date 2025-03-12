@@ -1,0 +1,87 @@
+---
+layout: post
+title: USB Serial Communication with Thrift Store Neato XV-21
+date: 2019-02-28 13:30:13.000000000 +00:00
+type: post
+post_id: '17904'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_8d897b9134ab56a383e149da20745eaa: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">These
+    were the two largest identical packs that I had on hand which would fit inside
+    existing battery compartment. <a href="https://t.co/YJx4rEImWd">pic.twitter.com/YJx4rEImWd</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1099837703418331136?ref_src=twsrc%5Etfw">February
+    25, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '28138063490'
+  timeline_notification: '1551389482'
+  _oembed_time_8d897b9134ab56a383e149da20745eaa: '1551433708'
+  _thumbnail_id: '17966'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/02/28/usb-serial-communication-with-thrift-store-neato-xv-21/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p style="text-align:left;">My Neato XV-21 robot vacuum now boots up and stays running <a href="https://newscrewdriver.com/2019/02/27/replacement-battery-test-for-thrift-store-neato-xv-21/">on a pair of old remote control helicopter batteries</a>. This is a vast improvement over its comatose state when I found it in a thrift store. I pressed the start button to see if it'll actually vacuum, but spinning up the motors drew too much current and aborted. Looks like these batteries are only good for probing electronics, which is still more than what I had before. And a good incremental step forward.</p>
+<p style="text-align:left;">A few web searches on Neato technical details all pointed to posts on <a href="http://www.robotreviews.com/chat/viewforum.php?f=20">"Neato Robotics" forum on robotreviews.com</a>. I guess this is where all the Neato robot tinkerers hang out. From this forum I learned of a tool for Neato maintenance that can help communicate with the vacuum as well as uploading firmware updates. Unfortunately, this forum also shared an update that <a href="http://www.robotreviews.com/chat/viewtopic.php?t=18925">Neato has taken these tools off their website</a>. Without them, plugging the vacuum into my laptop running Windows would only result in a device without a driver.</p>
+<p style="text-align:left;">
+<p style="text-align:left;">On a lark, I rebooted my laptop into Ubuntu Linux and plugged in the vacuum. There were never any Neato drivers for this operating system, and I was curious what I could see via Linux tool <code><a href="http://manpages.ubuntu.com/manpages/precise/man1/dmesg.1.html">dmesg</a></code>.</p>
+<blockquote>
+<p style="text-align:left;"><code>[10547.714901] usb 1-1: new full-speed USB device number 25 using xhci_hcd</code><br />
+<code>[10547.866228] usb 1-1: not running at top speed; connect to a high speed hub</code><br />
+<code>[10547.876232] usb 1-1: New USB device found, idVendor=2108, idProduct=780b</code><br />
+<code>[10547.876235] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0</code><br />
+<code>[10547.876237] usb 1-1: Product: Neato Robotics USB v2</code><br />
+<code>[10547.876239] usb 1-1: Manufacturer: Linux 2.6.33.7 with fsl-usb2-udc</code><br />
+<code>[10547.881256] cdc_acm 1-1:2.0: ttyACM1: USB ACM device</code></p>
+</blockquote>
+<p style="text-align:left;">Well, that was more straightforward than I had expected. The <code>ACM</code> in <code>ttyACM1</code> here stands for <a href="https://rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/">abstract control model</a>. The operating system sees a communication device where all control is handled by the device, and all I had to do is treat it like a serial port. It's not a true serial port, but close enough the technical differences aren't important right now. What matters is the fact that I can run <code>minicom --device /dev/ttyACM1</code> and issue a simple call for <code>help</code>. We are in business! The channel has been opened to <a href="https://newscrewdriver.com/2019/03/01/query-neato-xv-21-system-status-via-usb/">talk to a Neato vacuum brain and see what it says in return</a>.</p>
+<blockquote>
+<p style="text-align:left;"><code>help</code><br />
+<code>Help Strlen = 1792</code><br />
+<code>Help - Without any argument, this prints a list of all possible cmds.</code><br />
+<code>With a command name, it prints the help for that particular command</code><br />
+<code>Clean - Starts a cleaning by simulating press of start button.</code><br />
+<code>DiagTest - Executes different test modes. Once set, press Start button to engage. (Test modes are mutually exclusive.)</code><br />
+<code>GetAccel - Get the Accelerometer readings.</code><br />
+<code>GetAnalogSensors - Get the A2D readings for the analog sensors.</code><br />
+<code>GetButtons - Get the state of the UI Buttons.</code><br />
+<code>GetCalInfo - Prints out the cal info from the System Control Block.</code><br />
+<code>GetCharger - Get the diagnostic data for the charging system.</code><br />
+<code>GetDigitalSensors - Get the state of the digital sensors.</code><br />
+<code>GetErr - Get Error Message.</code><br />
+<code>GetLDSScan - Get scan packet from LDS.</code><br />
+<code>GetMotors - Get the diagnostic data for the motors.</code><br />
+<code>GetSchedule - Get the Cleaning Schedule. (24 hour clock format)</code><br />
+<code>GetTime - Get Current Scheduler Time.</code><br />
+<code>GetVersion - Get the version information for the system software and hardware.</code><br />
+<code>GetWarranty - Get the warranty validation codes.</code><br />
+<code>PlaySound - Play the specified sound in the robot.</code><br />
+<code>RestoreDefaults - Restore user settings to default.</code><br />
+<code>SetFuelGauge - Set Fuel Gauge Level.</code><br />
+<code>SetMotor - Sets the specified motor to run in a direction at a requested speed. (TestMode Only)</code><br />
+<code>SetTime - Sets the current day, hour, and minute for the scheduler clock.</code><br />
+<code>SetLED - Sets the specified LED to on,off,blink, or dim. (TestMode Only)</code><br />
+<code>SetLCD - Sets the LCD to the specified display. (TestMode Only)</code><br />
+<code>SetLDSRotation - Sets LDS rotation on or off. Can only be run in TestMode.</code><br />
+<code>SetSchedule - Modify Cleaning Schedule.</code><br />
+<code>SetSystemMode - Set the operation mode of the robot. (TestMode Only)</code><br />
+<code>TestMode - Sets TestMode on or off. Some commands can only be run in TestMode.</code><br />
+<code>Upload - Uploads new program to the robot.</code></p>
+</blockquote>
+<p></body></html></p>

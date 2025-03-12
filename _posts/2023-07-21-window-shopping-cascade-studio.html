@@ -1,0 +1,55 @@
+---
+layout: post
+title: Window Shopping Cascade Studio
+date: 2023-07-21 12:30:00.000000000 +00:00
+type: post
+post_id: '38001'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- occt
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38006'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1690066612
+  _publicize_job_id: '85949440982'
+  timeline_notification: '1689967813'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/21/window-shopping-cascade-studio/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Describing 3D objects with Python code <a href="https://newscrewdriver.com/2023/07/20/window-shopping-cadquery/">is CadQuery's goal</a>, something I find interesting for later exploration. Browser access is possible by running CadQuery in Jupyter Lab, making it accessible to low-end Chromebooks, but that still requires another computer serving Jupyter Lab. What if everything can run entirely standalone within the web browser? That is the laudable goal for <a href="https://github.com/zalo/CascadeStudio">Cascade Studio</a>. (<a href="https://news.ycombinator.com/item?id=25858685">Hacker News post</a>) (<a href="https://hackaday.com/2020/09/30/hyper-links-and-hyperfunctional-text-cad/">Hackaday post</a>)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Projects like Cascade Studio were made possible by the <a href="https://github.com/donalffons/opencascade.js">OpenCascade.js project</a>, which compiles the open-source OCCT kernel code into <a href="https://developer.mozilla.org/en-US/docs/WebAssembly">WebAssembly (WASM)</a>. No more hassling with separate build chains for a Windows/MacOS/Linux desktop apps like FreeCAD, now a 3D model system can run entirely within the browser no matter the underlying operating system. There must be some performance cost tradeoffs for such flexibility, but I haven't dug deeply enough to know what they are.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking over how Cascade Studio was built, I see it leverages a lot of other open modules beyond OpenCascade.js. Like using Three.js for rendering the 3D model, and Monaco for the code editor. Oh right -- code editor. Cascade Studio also describes 3D objects with code, except here it's a JavaScript-based interface on top of OCCT concepts. It also leverages a lot of web technologies, like conforming to Progressive Web Apps (PWA) requirements so it can be installed locally to run entirely offline.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A valuable source of information is <a href="https://github.com/raydeleu/CascadeStudioManual">an unofficial Cascade Studio manual</a>, written by a fan and not the author. (If the author wrote instructions, I have yet to find them.) It tries to cover everything a person would need to use Cascade Studio, with some basic 3D model concepts and basic JavaScript concepts. But what I really appreciated was the condensed digest of this fan's experience with Cascade Studio, documenting many minor quirks and -- even more valuable -- their workarounds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was really enchanted by Cascade Studio possibilities until I got to <a href="https://github.com/raydeleu/CascadeStudioManual#filletedges">the fillet edge section</a>. Our code code needs to provide a reference to the object (obviously) and a list of edges (expected) by number (record scratch noise.) Wait, where would those numbers come from? We have to use the GUI to click on individual edges we want, the GUI will in turn display a number for each, which we can then write down to give as parameters. I inferred these numbers were generated out of the OCCT kernel and are subject to change in response to changes in the underlying geometry. If so, this would mean <a href="https://wiki.freecad.org/Topological_naming_problem">FreeCAD's topological naming problem</a> is present here, except as a topological numbering problem. Is there anything about Cascade Studio's code-based model that would mitigate this? I don't have an answer for that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Constraints were a notable absence from this manual. I want a mechanism to specify things should be parallel or perpendicular, lines that should be tangent to arcs, helping to capture intent of the underlying geometry. It appears <a href="https://dev.opencascade.org/doc/overview/html/occt_user_guides__modeling_algos.html">some constraint solving capability is part of OCCT</a>, but it might be missing from Cascade Studio or at least missing from the unofficial manual.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Also absent were information on working with assemblies of parts. Onshape had the concept of "mates" to describe physical relationship between different parts. Sawppy's suspension articulation were captured as rotate mates, with a single degree of freedom rotating about an axis. There are other types of mates, "slide" is a single degree of freedom translating along an axis, "fasten" with zero degrees of freedom, etc. I saw nothing similar here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One item I thought was very interesting was the <a href="https://github.com/raydeleu/CascadeStudioManual#slider">Slider control</a>, which allows me to declare a user-adjustable parameter on screen. For Sawppy, the most value application of such a feature is letting a rover builder adjust the diameter of holes for heat-set inserts. This has caused grief for multiple Sawppy builds, because the outer diameter of M3 inserts is not standardized and every 3D printer prints to a slightly different tolerance. It can even be argued that most rover builders don't care about modifying the design significantly, most would only need a few sliders to dial in a design to suit their tools and parts. If that is indeed the primary scenario, <a href="https://newscrewdriver.com/2023/07/22/window-shopping-replicad/">perhaps replicad would be a better tool</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

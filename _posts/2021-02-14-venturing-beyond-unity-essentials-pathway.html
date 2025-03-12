@@ -1,0 +1,69 @@
+---
+layout: post
+title: Venturing Beyond Unity Essentials Pathway
+date: 2021-02-14 12:30:00.000000000 +00:00
+type: post
+post_id: '25181'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Events
+- Unity
+tags:
+- ART.HAPPENS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25184'
+  timeline_notification: '1613334619'
+  _publicize_job_id: '54774043881'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/14/venturing-beyond-unity-essentials-pathway/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>To help beginners learn how to create something simple from scratch, Unity Learn set up the Essentials pathway <a href="https://newscrewdriver.com/2021/02/13/notes-on-unity-essentials-pathway/">which I followed</a>. Building from an empty scene taught me a lot of basic tasks that were already done for us in the LEGO microgame tutorial template. Enough that I felt confident enough to start building my own project for ART.HAPPENS. It was a learning exercise, running into one barrier after another, but I felt confident I knew the vocabulary to search for answers on my own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Exercises in the Essentials pathway got me started on the Unity 3D physics engine, with information about setting up colliders and physics materials. Building off the rolling ball exercise, I created a big plane for balls to bounce around in and increased the bounciness for both ball and plane. The first draft was a disaster, because unlike real life it is trivial to build a perfectly flat plane in a digital world, so the balls keep bouncing in the same place forever. I had to introduce a tilt to make the bounces more interesting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But while bouncing balls look fun (title image) they weren't quite good enough. I thought adding a light source might help but that still wasn't interesting enough. Switching from ball to cube gave me a clearly illuminated surface with falloff in brightness, which I thought looked more interesting than a highlight point on a ball. However, cubes don't roll and would stop on the plane. For a while I was torn: cubes look better but spheres move better. Which way should I go? Then a stroke of realization: this is a digital world and I can change the rules if I want. So I used a cube model for visuals, but attached a sphere model for physics collisions. Now I have objects that look like cubes but bounce like balls. Something nearly impossible in the real world but trivial in the digital world.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To make these lights show up better, I wanted a dark environment. This was a multi-step procedure. First I did the obvious: delete the default light source that came with the 3D project template. Then I had to look up environment settings to turn off the "Skybox". That still wasn't dark, until I edited camera settings to change default color to black. Once everything went black I noticed the cubes weren't immediately discernable as cubes anymore so I turned the lights back up... but decided it was more fun to start dark and turned the lights back off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to add user interactivity but realized the LEGO microgame used an entirely different input system than standard Unity and nothing on the Essentials path taught me about user input. Searching around on Unity Learn I got very confused with contradictory information until I eventually figured out there are two Unity user input systems. There's the "<a rel="noreferrer noopener" href="https://docs.unity3d.com/Manual/xr_input.html#XRInputLegacySystem" target="_blank">Input Manager</a>" which is the legacy system and its candidate replacement "<a rel="noreferrer noopener" href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/QuickStartGuide.html" target="_blank">Input System Package</a>" which is intended to <a rel="noreferrer noopener" href="https://blogs.unity3d.com/2019/10/14/introducing-the-new-input-system/" target="_blank">solve problems with the old system</a>. Since I had no investment in the old system, I decided to try the new one. Unfortunately even tthough there's <a rel="noreferrer noopener" href="https://learn.unity.com/tutorial/setting-up-the-input-system?uv=2019.4" target="_blank">a Unity Learn session</a>, I still found it frustrating <a rel="noreferrer noopener" href="https://forum.unity.com/threads/the-new-input-system.897740" target="_blank">as did others</a>. I got far enough to add interactivity to <em>Bouncy Bouncy Lights</em> but it wasn't fun. I'm not even sure I should be using it yet, seeing how none of the microgames did. Now that I know enough to know what to look for, I could see that the LEGO microgame used the old input system. Either way, there's more climbing of the learning curve ahead. [UPDATE: After I wrote this post, but before I published it, Unity <a rel="noreferrer noopener" href="https://www.youtube.com/watch?v=5tOOstXaIKE" target="_blank">released another tutorial for the new Input Manager</a>. Judging by this demo, <em>Bouncy Bouncy Lights</em> is using input manager incorrectly.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next to-do item was to add the title and interactivity instructions. After frustration with exploring a new input system, I went back to LEGO microgame and looked up exactly how they presented their text. I learned it was a system called TextMesh Pro and thankfully <a rel="noreferrer noopener" href="https://learn.unity.com/tutorial/working-with-textmesh-pro" target="_blank">it had a Unity Learn section</a> and a PDF manual was installed as part of the asset download. Following those instructions it was straightforward to put up some text using the default font. After my input system frustration, I didn't want to get much more adventurous than that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had debated <em>when</em> to present the interactivity instructions. Ideally I would present them just as the audience got oriented and recognizes the default setup. Possibly start getting bored and ready to move on, so I can give them interactivity to keep their attention. But I have no idea when that would be. When I read the requirement that the title of the piece should be in the presentation, I added that as a title card before showing the bouncing lights. And once I added a title card, it was easy to add another card with the instructions to be shown before the bouncing lights. The final twist was the realization I shouldn't present them as static cards that fade out: since I already had all these physical interactions in place, they are presented as falling bouncing objects in their own right.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The art submission instructions said to put in my name and a way for people to reach me, so I put my name and <a href="https://newscrewdriver.com/" target="_blank" rel="noreferrer noopener">newscrewdriver.com</a> at the bottom of the screen using TextMesh Pro. Then it occurred to me the URL should be a clickable link, which led me down the path of finding out how an Unity WebGL title can interact with the web browser. There seemed to be several different deprecated ways to do it, but they all point to the <a rel="noreferrer noopener" href="https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html" target="_blank">current recommended approach</a> and now my URL is clickable! For fun, I added a little spotlight effect when the mouse cursor is over the URL.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final touch is to modify the presentation HTML to suit the Gather virtual space used by ART.HAPPENS. By default Unity WebGL build generates an <code>index.html</code> file that puts the project inside a fixed-size box. Outside that box is the title and a button to go full screen. I didn't want the full screen option for presenting this work in Gather, but I wanted to fill my <code>&lt;iframe&gt;</code> instead of a little box within it. My CSS layout skills are still pretty weak and I couldn't figure it out on my own, but I found <a rel="noreferrer noopener" href="https://answers.unity.com/questions/1336800/scale-unity-webgl-canvas-to-fit-browser-window.html" target="_blank">this forum thread</a> which taught me to replace the <code>&lt;body&gt;</code> tag with the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  &lt;body&gt;
+      &lt;div class="webgl-content" style="width:100%; height:100%"&gt;
+        &lt;div id="unityContainer" style="width:100%; height:100%"&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+  &lt;/body&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't understand why we need to put 100% styles on <strong><em>two </em></strong>elements before it works, but hopefully I will understand whenever I get around to my long-overdue study session on CSS layout. The final results of my project can be viewed at <a rel="noreferrer noopener" href="https://roger-random.github.io/ART.HAPPENS/bouncinglights/index.html" target="_blank">my GitHub Pages hosting location</a>. Which is a satisfying result but <a href="https://newscrewdriver.com/2021/02/15/remaining-to-do-for-my-next-unity-3d-adventure/">there are a lot more to Unity to learn</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

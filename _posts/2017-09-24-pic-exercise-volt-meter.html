@@ -1,0 +1,46 @@
+---
+layout: post
+title: 'PIC Exercise: Volt Meter'
+date: 2017-09-24 09:00:02.000000000 +00:00
+type: post
+post_id: '12311'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9617844367'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/24/pic-exercise-volt-meter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>One aspect of PIC micro controllers that I found to be a novelty is their ability to work across a wide range of supply voltages. For my <a href="http://www.microchip.com/wwwproducts/en/PIC16F18345">PIC16F18345</a>, the <a href="http://ww1.microchip.com/downloads/en/DeviceDoc/40001795E.pdf">data sheet</a> said it can run anywhere from 2.3V to 5.5V and can (briefly) tolerate up to 6.5V. I looked for configuration information to set it to "3.3V mode" or "5V mode" or something along those lines, but there was no configuration to worry about. The PIC does not care: give it anything in that range and it will go.</p>
+<p>In contrast, the Raspberry Pi requires a steady 5V supply voltage. So does an Arduino though most Arduino boards also incorporate a voltage regulator to take a 7-12V power supply and regulate it down to 5V.</p>
+<p>I wanted to play with PIC's power flexibility and I had the hardware ready to go: my PIC16F18345 evaluation board. I damaged the MSSP peripheral in my I²C experiments and retired it from my I²C project, but the rest of the chip seems OK. It is still perfectly capable of displaying numbers, just not with I²C data.</p>
+<p>So here's today's exercise: the PIC will measure and display its own varying supply voltage. This project is made possible by a few <a href="http://www.microchip.com/cip">core-independent peripherals</a> (CIP) built-in to the chip. The input voltage will be compared against a reference voltage created by the <a href="http://microchipdeveloper.com/8bit:fvr">fixed voltage reference</a> (FVR) peripheral, and the <a href="http://microchipdeveloper.com/8bit:adc">analog-to-digital converter</a> (ADC) peripheral will be configured to report how FVR voltage relates to the input voltage.</p>
+<p>[UPDATE: The source files are <a href="https://github.com/Roger-random/HelloLTC5723HR">now available on Github</a>.]</p>
+<p>For my project, FVR is configured to 2.048 volts and ADC is configured to determine the FVR position in the range between ground and the input voltage level. The result is expressed as a 10-bit number in the range of 0 to 1023. A few examples:</p>
+<ul>
+<li>For 5V input, ADC will report 2.048V is 41% of input, represented by roughly 419.</li>
+<li>For 4.096 V input, ADC will report 2.048 is halfway, represented by 512.</li>
+<li>For 3.3 V input, ADC will report 62% or about 635.</li>
+<li>For 2.048 V input, ADC would in theory report maximum of 1023. In practice it would not happen because the minimum voltage is 2.3V and we would trigger a <a href="http://microchipdeveloper.com/8bit:bor">brown-out reset</a> before dropping to 2.048V.</li>
+</ul>
+<p>Inside the ADC peripheral, the conversion process takes a little time. Plus the calculation to convert the ADC output to the voltage, then converting that into which LEDs need illumination to convey the voltage to the user, takes a little more time. The process is very fast by human standards, but it paused the LED refresh loop for long enough to cause a visible blink.</p>
+<p>Solving this undesirable blink was the extra credit part of the exercise: move the LED refresh code into a timer-driven interrupt service routine, so it can run at guarantee regular intervals. Even if it means briefly interrupting the analog-to-digital conversion process.</p>
+<p>Completing the exercise resulted in a PIC that measure and displays its own input voltage on the 7-segment LED. Unlike my earlier project with the 18-pin PIC16F1847, this 20-pin PIC16F18345 has one pin available to illuminate the decimal point. Here it is, running off a fully charged Lithium-Ion battery cell and indicating 4.005V. My multi-meter says 4.041V, so the PIC agrees to within 1-2%. Good enough.</p>
+<p><img class=" size-full wp-image-12384 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2017/09/img_5238.jpg" alt="IMG_5238" width="1024" height="768"></p>
+<p>Note: When using the MPLab Xpress PIC16F18345 Evaluation Board (Microchip part number DM164141) shown in this picture, the FVR+ADC calculation is unreliable when connected &amp; powered via the computer's USB port. This project didn't work correctly until unplugged from the computer.</p>
+<p>Symptom of the failure: ADC result is always the maximum value of 1023, which indicates the input voltage is 2.048 when it is not. This behavior wasted a lot of debugging time which made me less happy with the product.</body></html></p>

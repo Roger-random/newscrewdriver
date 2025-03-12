@@ -1,0 +1,80 @@
+---
+layout: post
+title: ESP32 WebServer Made AS7341 Accessible via HTTP GET
+date: 2023-01-16 12:30:00.000000000 +00:00
+type: post
+post_id: '34607'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+- ESP32
+- HTML
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34583'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673998279
+  _publicize_job_id: '80609497036'
+  timeline_notification: '1673901024'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/16/esp32-webserver-made-as7341-accessible-via-http-get/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've decided to <a href="https://newscrewdriver.com/2023/01/15/new-project-as7341-interactive-web-ui/">build an interactive AS7341 explorer application</a> using web-based technologies, shifting most of the interactive input and visual output to a web browser. But web-based technologies are not able to communicate directly to an AS7341 via I2C, so I still need something to bridge the hardware to the browser. The answer is a small ESP32 Arduino Core sketch using Adafruit's AS7341 library on one side and a web server library on the other.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the interest of starting simple, I used <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer" target="_blank">the WebServer library</a> included as part of ESP32 Arduino Core. This is a simple implementation of HTTP server that can only handle a single connection at a time, but its limited features also meant simple code. I started with <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/blob/master/libraries/WebServer/examples/HelloServer/HelloServer.ino" target="_blank">the HelloServer example</a> which does everything I need: parse arguments and send a response. The most informative section is the handler for "HTTP 404 Not Found", as this is where it prints out all the arguments parsed out of the URI and serves as a handy reference to do the same in my implementation. I wanted to be able to pass in AS7341 parameters "atime" and "astep" to control sensor exposure time, "gain" for sensitivity, and "led_ma" to control brightness of illumination LED. These parameters are passed directly into Adafruit AS7341 API.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first iteration would turn on LED just for the duration of sensor integration then turn it off. But when I read the sensor continuously in a loop, this would result in an annoying flash between reads. To address this problem, I added a "led_stay_on" parameter to control whether the illumination LED would stay on between reads.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once sensor integration is complete, I packaged readings for sensors F1-F8, Clear, and NIR into a JSON formatted string and returned it to caller as mime type <code>application/json</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>{
+  "415nm" : 7,
+  "445nm" : 22,
+  "480nm" : 31,
+  "515nm" : 65,
+  "555nm" : 113,
+  "590nm" : 175,
+  "630nm" : 243,
+  "680nm" : 125,
+  "clear" : 408,
+  "nir" : 28,
+  "settings" : {
+    "atime" : 10,
+    "astep" : 599,
+    "gain" : 64,
+    "led_ma" : 0
+  }
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>In hindsight, using an ESP32 was overkill: an ESP8266 would have been perfectly capable of serving as a HTTP to I2C bridge. But I already had this ESP32 ready to go, so I stayed with it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want capabilities beyond what that simple WebServer library could do, in the future I could swap it out for something more powerful like <a rel="noreferrer noopener" href="https://github.com/me-no-dev/ESPAsyncWebServer" target="_blank">the ESPAsyncWebServer library</a>. It includes a templating feature so I wouldn't have to do as much direct string manipulation. It also includes the ArduinoJson library for simpler and more robust JSON formatting instead of the string operations I used. And finally, it includes WebSocket capability which would be very useful if I want to migrate the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/16/shiny-new-esp32-websocket-support/" target="_blank">messy ESP-IDF code I wrote for my ESP32 Sawppy controller</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But for today, simple WebServer should be enough to let <a href="https://newscrewdriver.com/2023/01/17/basic-browser-ui-for-as7341/">get me started on browser side code</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui" target="_blank">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

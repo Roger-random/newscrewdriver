@@ -1,0 +1,49 @@
+---
+layout: post
+title: CircuitPython busio.uart Up and Running, Mostly
+date: 2024-05-31 12:30:00.000000000 +00:00
+type: post
+post_id: '43581'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43586'
+  wordads_ufa: u:wpcom-ufa-v4:1717184079
+  _publicize_job_id: '95066917830'
+  firehose_sent: '1717183812'
+  timeline_notification: '1717183814'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-02 04:20:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/31/circuitpython-busio-uart-up-and-running-mostly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After a quick warm-up exercise of <a href="https://newscrewdriver.com/2024/05/30/circuitpython-countio-for-detecting-activity-limited-on-rp2040/">verifying activity over expected serial transmission lines</a>, I updated my code to use CircuitPython's <code>busio.uart</code> to interpret that activity as asynchronous serial data. Based on <a href="https://newscrewdriver.com/2023/12/31/canon-pixma-mx340-control-panel-data-communication-plug-in/">earlier analysis</a>, I expect to receive data at least once every 9.2ms, so I set up an asynchronous task to constantly process incoming data. The good news is that I saw a constant stream of 0x80 0x40, which was as expected. I had established 0x80 was the value reported for "no buttons are pressed" so I had expected that value to change if I pressed a button. It did not! Apparently key matrix scan code reporting doesn't start by default.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to parrot <a href="https://newscrewdriver.com/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/">the initialization sequence</a> decoded by my logic analyzer, I need to write another asynchronous task. This one transmits given data and then wait for the receiver task to see an 0x20 acknowledgement byte before returning. Once up and running and initialization sequence sent, the receiver task started reporting <a href="https://newscrewdriver.com/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/">key matrix scan code values</a>. Success!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Up until this point I still had the Neopixel sample code running as a system heartbeat indicator. With serial communication up and running, I thought I'd switch over to using one of the LEDs on the control panel. I created another asynchronous task, this one loops to turn the "In Use/Memory" LED on and off at one second intervals while leaving the "WiFi" LED off. I have already decoded <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/">the bit flags necessary to toggle LEDs</a> and I got a LED that blinked for a few seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then it got stuck.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Debugging indicated that my code got stuck because the data transmission to update LED state never received that 0x20 acknowledgement, which meant the transmit task never returned to caller. I quickly whipped up a timeout mechanism by checking timestamp in a loop. It worked, but then I realized there was already a mechanism built into CircuitPython. So I deleted my timestamp checking loop and replaced it with a single call to <code><a href="https://docs.circuitpython.org/projects/asyncio/en/latest/api.html#asyncio.funcs.wait_for">asyncio.wait_for()</a></code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I needed to write this timeout code and retry transmission for robust error recovery no matter the reason, but I want to know the reason <em>why</em> I never got 0x20 acknowledgement. Maybe there are times when the chip is not listening to my commands? Or maybe there's a problem in my data transmission? I think it's very likely the chip isn't always receptive, but that's not as important as the discovery <a href="https://newscrewdriver.com/2024/06/01/i-needed-two-stop-bits-to-talk-to-nec-k13988/">there was indeed a problem</a> with my data transmission.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

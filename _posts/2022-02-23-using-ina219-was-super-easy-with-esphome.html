@@ -1,0 +1,85 @@
+---
+layout: post
+title: Using INA219 Was Super Easy with ESPHome
+date: 2022-02-23 12:30:00.000000000 +00:00
+type: post
+post_id: '28691'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- ESPHome
+- INA219
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28708'
+  _publicize_job_id: '69385705755'
+  timeline_notification: '1645648205'
+  _edit_last: '98499281'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667982997
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/23/using-ina219-was-super-easy-with-esphome/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I had <a href="https://newscrewdriver.com/2022/02/22/notes-on-running-esphome-dashboard/">ESPHome set up and running</a>, the software side of creating a small wireless voltage and current sensor node with was super easy. I needed to copy sample code for <a rel="noreferrer noopener" href="https://esphome.io/components/i2c.html" target="_blank">I<sup>2</sup>C bus component</a>, then sample code for <a rel="noreferrer noopener" href="https://esphome.io/components/sensor/ina219.html" target="_blank">INA219 component</a>, and... that's it. I started getting voltage, current, and power reports into my Home Assistant dashboard. I am impressed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was certainly far less work than the hardware side, which took a bit of soldering. I started with the three modules. From left to right: the INA219 DC sensor board, the MP1584EN DC voltage buck converter, and the ESP8266 in a Wemos D1 Mini form factor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28617,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/ina219-esp8266-mp1584en.jpg?w=1024" alt="" class="wp-image-28617"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First the D1 Mini received a small jumper wire connecting D0 to RST, this gives me to option to play with deep sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28715,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/wemos-d1-mini-d0-wired-to-rst-for-deep-sleep.jpg?w=1024" alt="" class="wp-image-28715"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The MP1584EN was adjusted to output 3.3 volts, then its output was wired directly to the D1 Mini's 3V3 pin. A small piece of plastic cut from an expired credit card separated them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28705,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/esp8266-wemos-d1-mini-directly-wired-to-mp1584en-plus-ina219.jpg?w=1024" alt="" class="wp-image-28705"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The INA219 board was then wired in a similar manner on the other side of D1 mini, with another piece of plastic separating them. For I<sup>2</sup>C wires I used a white wire for SDA and green wire for SCL lines <a rel="noreferrer noopener" href="https://forums.adafruit.com/viewtopic.php?p=903960" target="_blank">following Adafruit precedence</a>. Vcc connected to the 3.3V output of MP1584EN in parallel with D1 mini, and ground wires across all three boards. The voltage input for MP1584EN was tapped from Vin- pin of the INA219 board. This means the power consumed by ESP8266 would be included in INA219's measurements.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28706,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/ina219-added-to-stack-with-mp1584en-and-esp8266-wemos-d1-mini.jpg?w=1024" alt="" class="wp-image-28706"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A small segment of transparent heat shrink tube packed them all together into a very compact package.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28708,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/ina219-mp1584en-esp8266-wemos-d1-mini-compact-heat-shrink-wrapped-stack.jpg?w=1024" alt="" class="wp-image-28708"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like the concept of packing everything tightly but I'm squeamish about my particular execution. Some of the wires were a tiny bit longer than they needed to be, and the shrink tube compressed and contorted them to fit. If I do this again, I should plan out wire my lengths for a proper fit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like I said earlier, the hardware took far more time than the software, which thanks to ESPHome became a trivial bit of work. I was soon staring at a flood of data, but thankfully ESPHome offers <a href="https://newscrewdriver.com/2022/02/24/esphome-sensor-filters-help-manage-flood-of-data/">sensor filters to deal with that</a>, too.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

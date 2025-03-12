@@ -1,0 +1,36 @@
+---
+layout: post
+title: Hackaday Badge Music
+date: 2018-10-21 09:00:09.000000000 +00:00
+type: post
+post_id: '17024'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23430203725'
+  timeline_notification: '1540137828'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/21/hackaday-badge-audio/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17025 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-audio.png" alt="Hackaday Badge Audio" width="296" height="225">After looking at the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a>'s onboard RGB LED, I moved on to looking over the audio subsystem to see how it accomplished its three-voice audio functionality. My first guess was that music playback was handled by a peripheral of some sort. On<a href="https://hackaday.io/project/80627/gallery#516d5bd730684b8318e2fa9119565b8f"> the board schematic</a> I saw that the speaker was connected to a chip labelled LM4890 so it seemed like an obvious candidate for audio peripheral. However, after downloading and reading the datasheet for LM4890, I learned the chip only functions as an amplifier to take a low-powered audio waveform (via pins labeled <code>+IN</code> and <code>-IN</code>) as input and push that same waveform out at a speaker-appropriate level of power. So yes, it is a dedicated audio peripheral, but not a tone or music generator.</p>
+<p>So where's the music coming from? I see on the schematic capacitors and resistors but nothing else that would generate sound waves, except maybe what's connected to the PIC32's pins <code>D0</code> through <code>D3</code>. Perhaps the PIC32 has a built-in music peripheral?</p>
+<p>Looking in the code, I started tracing from the BASIC side with the <code>tune</code> statement, handled by <code>tune_statement</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/basic/ubasic.c">ubasic.c</a>. It calls <code>sound_play_notes</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.c">hw.c</a>. A few more straightforward C call tracing ended at <code>sound_set_generator</code> which flips some hardware control bits and puts the desired frequency in a hardware register. What are the results of these actions?</p>
+<p>Searching on the specific keywords in <code>set_sound_generator</code> didn't get me anywhere immediately. Reading the code more carefully led to a key insight: for sound generator 0, it deals with the number 2. For generator 1, number 3, and for generator 2, number 4. After running around in circles for a bit, I figured out these are PIC32 hardware timer peripherals. These bits control PIC hardware timers 2, 3, and 4 whose actions are handled by <code>Timer2Handler</code>, <code>Timer3Handler</code>, and <code>Timer4Handler</code> in hw.c. Every time the timer interrupt fires, the handler inverts a pin named <code>GEN_0_PIN</code> / <code>GEN_1_PIN</code> / <code>GEN_2_PIN</code> defined to be <code>LATDbits.LATD1</code> / <code>LATDbits.LATD2</code> / <code>LATDbits.LATD1</code> which matches up with the PIC32 pins on the schematic.</p>
+<p>So it's not a <em>music</em> peripheral like I originally guessed. They are three of the PIC32's generic timer peripherals, each used to toggle a pin on and off at a set frequency. These three timers are responsible for the three voices, whose waveforms are merged and sent into a LM4890 chip (lower center of picture below) to drive the speaker (center of picture).</p>
+<p><img class=" size-full wp-image-17026 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-audio.jpg" alt="Hackaday Badge Audio" width="1024" height="995"><br />
+</body></html></p>

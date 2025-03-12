@@ -1,0 +1,46 @@
+---
+layout: post
+title: Observations After My First Budibase App
+date: 2024-09-04 12:30:00.000000000 +00:00
+type: post
+post_id: '45062'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- postgresql
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  firehose_sent: '1725478269'
+  _publicize_job_id: '97563291991'
+  _elasticsearch_data_sharing_indexed_on: '2024-09-03 21:41:56'
+  timeline_notification: '1725478270'
+  reader_suggested_tags: '["PostgreSQL","Database","SQL","Postgres","Docker"]'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/09/04/observations-after-my-first-budibase-app/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've converted my personal finance tracking information from a spreadsheet to a database. And while I can input new data with a PostgreSQL command line tool (<code>psql</code>) I'm learning how to build a friendlier interface with Budibase. I've <a href="https://newscrewdriver.com/2024/09/03/budibase-relationship-problems-create/">run into a few problems</a> but since I'm such a beginner it's too early to say if they are Budibase problems or if they're just beginner problems. One thing I can say for sure: Budibase made it extremely easy to get up and running with a table-based interface. So my "minimum viable product" is basically what I had before (table in a spreadsheet) and it's all upside from here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing I've noticed about myself is that I have an easier time taking my idea and figure out the PostgreSQL operations needed to make it happen. I have a much harder time figuring out which Budibase tools exist to solve the same data manipulation problems. As a result I have a nice long list of custom SQL queries registered in my Budibase app, trusting Budibase to display the results in a sensible table which it has always been able to do. I think a big part of this is because I have a better idea what keywords to search for when looking to do something with SQL, reinforced by the fact there's significantly more information on the web about SQL than about Budibase. A smaller part is that I'm still having a hard time understanding certain details in Budibase documentation. For one example: <a href="https://docs.budibase.com/docs/array-helpers">Budibase data binding helpers for array data</a> has two very similar methods: <a href="https://docs.budibase.com/docs/array-helpers#equals-length"><code>equalsLength</code></a> and <a href="https://docs.budibase.com/docs/array-helpers#length-equals"><code>lengthEqual</code></a>. Budibase documentation explains two of them using very similar language and I can't figure out how they are different. Why do they both exist? When should I use one versus the other? Budibase documentation does not say, leaving me frustrated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also went poking around for entry point/hooks for external code. I guess custom SQL queries technically count as "external code" but I was looking for a general programming language. Earlier I found that Budibase data binding supported snippets of JavaScript for data operations. I found a fairly similar mechanism available <a href="https://docs.budibase.com/docs/js-scripting">for creating Budibase automation</a>. Both cases are intended for fairly small snippets of code, restricted only to standard JavaScript operators. The only input are Budibase binding syntax and the only output is a <code>return</code> statement. In contrast to this limited API, the deep end is <a href="https://docs.budibase.com/reference/appcreate">a REST API</a>. I didn't find anything in between these two extremes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I appreciate how easy it was to in Budibase to build a table-based interface on top of database tables. It is perfectly suited to help people use a real database if they would have otherwise abused a spreadsheet as a database. If they don't know (or care about) relational database concepts, or SQL query syntax, or writing code, it's a great tool. But I know all of those things and I'm already itching to do more with them outside of Budibase constraints. Such a project would have to wait, though, because <a href="https://newscrewdriver.com/2024/12/16/mechwarrior-5-mercenaries/">I got distracted by a video game called <em>MechWarrior 5: Mercenaries</em></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

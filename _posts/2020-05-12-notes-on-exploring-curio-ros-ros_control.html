@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'Notes on Exploring Curio ROS: ros_control'
+date: 2020-05-12 12:30:25.000000000 +00:00
+type: post
+post_id: '21495'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Curio
+- ROS
+meta:
+  _thumbnail_id: '20391'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1589311848'
+  _publicize_job_id: '44158159583'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/12/notes-on-exploring-curio-ros-ros_control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When learning something new, I always find it useful to find a part that I could use as a foundation. Something I can use to build my new information on top of. I had trouble finding such a foundation for ROS as it was such a big system. So it was a great gift to have the chance to look at <a href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/">Rhys Mainwaring's ROS stack for Curio rover</a>, a sibling of my Sawppy rover. This meant the rover I designed and built was my foundation for learning Curio's ROS software stack.</p>
+<p>Such a foundation was less critical when I had explored <a href="https://newscrewdriver.com/2020/05/11/notes-on-exploring-curio-ros-arduino-mega/">Curio's interaction between Arduino Mega and Raspberry Pi</a>. But it was very useful when I explored how command messages were sent around inside the system. This was built using <a href="http://wiki.ros.org/ros_control"><code>ros_control</code></a>, a set of ROS packages that help abstract the concepts of robot motor control from the actual details of motor controller commands.</p>
+<p>The promise here is allowing a robot builder to swap around different motor controllers without changing the logic about how a robot would use those motors. Conveniently, Sawppy has both of the basic categories: "Joints" specify a position, and that fits Sawppy's four corner steering servos. Whereas "Transmission' specify rotational motion like Sawppy's six wheel motors.</p>
+<p>The idea of abstracting motor control from implementation is common, I even had a primitive form of it <a href="https://github.com/roger-random/sgvhak_rover">inside SGVHAK_Rover software</a> allowing us to <a href="https://newscrewdriver.com/2018/04/17/sgvhak-rover-steering-restored-with-servo-hack/">hack a servo into a RoboClaw placeholder</a>, and later <a href="https://github.com/Roger-random/Sawppy_Rover/blob/master/docs/SGVHAK%20Rover%20Software.md">adapted to Sawppy's LX-16A serial bus servos</a>. The power of such abstraction comes when it becomes open and flexible enough for software modules implementing either side of the abstraction to be reusable beyond its original author's use. That certainly was not going to happen with a homebrew pack of servo software, but a convention in ROS is a different story.</p>
+<p>Which is why I was puzzled to learn <code>ros_control</code> does not appear to be in the works for ROS 2. It is <a href="https://index.ros.org/p/ros_control/#dashing">absent from the index</a>, and I found only a <a href="https://discourse.ros.org/t/ros-control-in-ros2-wishlist/7803/34">discussion thread with no commitment</a> and <a href="http://pal-robotics.com/collaborative-projects/ros-control-ros2/">this page with a dead link</a>. I thought <code>ros_control</code> would be a fundamental part of the platform, but it is not. Its absence tells me there's an important gap between my expectation and ROS community's actual priorities, but I don't know what it is just yet. I'll need to find its successor in the ROS2 ecosystem before I understand why <code>ros_control</code> is being left behind.</p>
+<p></body></html></p>

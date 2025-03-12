@@ -1,0 +1,116 @@
+---
+layout: post
+title: Philips Norelco Multigroom Revived (MG7790)
+date: 2023-09-14 12:30:00.000000000 +00:00
+type: post
+post_id: '38987'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Appliance
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38970'
+  footnotes: ''
+  _publicize_job_id: '87578351282'
+  timeline_notification: '1694719804'
+  wordads_ufa: s:wpcom-ufa-v4:1694720001
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/14/philips-norelco-multigroom-revived-mg7790/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I retired my Philips MG7790 hair trimmer because it would stop in the middle of a haircut. Its red LED flashing an error, which usually means the battery has run out of juice. But it would do this within a few minutes after fully charged, very disappointing when it was advertised with up to six hours of runtime on a full battery. I decided the battery has degraded and maybe replacing its battery would get it back up and running. <a href="https://newscrewdriver.com/2023/09/13/philips-norelco-multigroom-internals-mg7790/">I disassembled its internals to get to the battery</a>, a single lithium-ion cell in the commodity 18650 cylindrical form factor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Measuring the battery's voltage, I expected to see a low value somewhere below 3.5V. But it actually read 4.1V which is effectively full for a healthy single lithium-ion cell. Maybe its voltage would drop under a bit of load? I started the motor running, and the voltage barely budged. It stayed close to 4.1V as the motor spun freely for twenty minutes, longer than it's done recently.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If the battery is fine, I have misdiagnosed the issue. I started thinking about possibilities:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>I originally thought it was premature death of a dodgy battery. But the cell was made by LG and generally speaking they know what they are doing in the field of battery manufacture. Especially a well-known commodity form factor like 18650 cylindrical cells.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A battery would suffer accelerated wear if it was undersized for the task. But with up to six hours of runtime on a full charge, this battery is massively overprovisioned and shouldn't have been stressed.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Perhaps the stress came from premature death of a motor component. As a quick test, I spun the motor shaft by hand while the thing was turned off. It turned smoothly and without any squeaking noises, so it's probably not due to premature bearing death. Besides, it was a genuine Mabuchi, they know motors.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Perhaps this was a result of poor overall system design? But this isn't a cheap no-name budget priced item. Philips/Norelco has been in this business for a long time, and they should know what they are doing.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>What have I missed? This is a mechanically simple device and there aren't too many other things for me to look at. I started thinking about my twenty-minute runtime test, which had the motor spinning without driving anything.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38970,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/philips-mg7790-red-led.jpg?w=1024" alt="" class="wp-image-38970"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The red LED pulsed during this test. Since the voltage was high and the motor was still running, that red LED must be complaining about some problem other than low battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38967,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/philips-mg7790-internals-disassembled.jpg?w=1024" alt="" class="wp-image-38967"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>During the teardown I unsoldered the battery from the circuit board, the first time they've been separated since factory assembly and the first time this circuit board has been completely without power. Maybe the pulsing red LED is complaining about some sort of cold startup condition? I plugged in the AC adapter to let it charge up to full. After that, the red LED stayed dark if I started the motor. I guess it needed to do some sort of battery calibration/reference on external power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But now there's no error, what should I look at next? During these tests, the motor spun freely because everything was still disassembled, and it was not possible to attach a cutting element. Process of elimination says I should take a closer look at that cutting element.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":38910,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/remington-hc-920-intact.jpg?w=1024" alt="" class="wp-image-38910"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":38883,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/conair-hc318r-intact.jpg?w=1024" alt="" class="wp-image-38883"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>For comparison, both Conair and Remington hair clippers had two prominent fasteners holding the static blade in place.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38879,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/conair-hc318r-blade-front-removed.jpg?w=1024" alt="" class="wp-image-38879"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the static blade was removed, we could clean all around the reciprocating blade. As seen here on the Conair unit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38913,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/remington-hc-920-metal-crank.jpg?w=1024" alt="" class="wp-image-38913"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When we could remove to access the motor driven crank volume and clean hair out of there, too. As seen here on the Remington unit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38942,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/philips-mg7790-hair-chamber.jpg?w=1024" alt="" class="wp-image-38942"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to this Philips, whose cutting element incorporated both static and reciprocating blades. It's easy to pop them off as a single unit to access this hair chamber as per cleaning instructions. The manual doesn't say anything about taking the cutting element apart, but I'm going to do it because I am running out of places to look.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38965,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/philips-mg7790-cutting-element-packed-with-hair.jpg?w=1024" alt="" class="wp-image-38965"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The static blade is held by a pair of tiny little Torx screws, more annoying than those easy large fasteners of Conair and Remington hair clippers. Once the static blade was freed I could see the volume between static and reciprocating blades is <em>fully packed</em> with fragments pressed together into a nearly solid brick of hair. The cleaning instruction never mentioned cleaning this area. The tiny little self-tapping plastic screws won't last many fasten/unfasten cycles implying this wasn't intended to be a user-serviceable cleaning area.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Being packed with hair fragments meant the reciprocating blade would have required more motor effort to move, which in turn would have increased strain on the circuit and battery. Maybe this was why the battery drained quickly, or perhaps the red LED didn't signify low battery at all. Perhaps the motor stalled, or perhaps the motor control circuit overheated. I have no idea what that red LED was trying to tell me, but I certainly didn't get "you need to disassemble and clean the cutting element" from a dull red LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once all of the packed-in hair was removed and the cutting element reassembled, the reciprocating blade was much easier to move by hand. I tested this repair by reassembling everything and trimmed my hair with it. This time, the motor didn't stop partway through the process. Yay, success! Since I already had a newer unit in service, I will keep this older unit around as backup. It's no longer waterproof, but it runs again. As a bonus, this episode also taught me valuable lessons on how to clean the newer unit to keep it healthy.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

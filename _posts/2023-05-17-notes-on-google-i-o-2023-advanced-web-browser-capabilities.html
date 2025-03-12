@@ -1,0 +1,72 @@
+---
+layout: post
+title: 'Notes on Google I/O 2023: Advanced Web Browser Capabilities'
+date: 2023-05-17 12:30:00.000000000 +00:00
+type: post
+post_id: '36728'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Events
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36696'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684463340
+  _publicize_job_id: '84135177441'
+  timeline_notification: '1684351846'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/17/notes-on-google-i-o-2023-advanced-web-browser-capabilities/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After going through several Google I/O sessions on <a href="https://newscrewdriver.com/2023/05/16/notes-on-google-i-o-2023-css-viewport-and-animations/">advancements in browser UI and animation</a>, I headed over to a different section of web browser evolution: advanced hardware capabilities for performance and/or connectivity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/0da196f5-5169-43ff-91db-8762e2c424a2/">Introducing WebGPU</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>WebGPU recently became publicly available in a mainstream browser in the form of Chrome 113, and varying levels of support are underway for other browsers. This is a topic that has interest and support from many different parties and I'm cautiously optimistic it will become widespread in the future. WebGPU is an evolution from WebGL following the precedence of desktop APIs Vulkan/D3D 12/Metals as evolutions from OpenGL.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One major aspect of this evolution was growing beyond just drawing operations, opening up hardware capabilities to non-drawing applications. Today this interest is focused on running machine learning algorithms, but it is more general-purpose than that. (Side question: how does that relate to WebML? Something to look into later.) Today people have shoehorned ML workloads into WebGL by rephrasing computation as drawing operations, with associated limitations and conversion overhead. WebGPU eliminates such pretense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another major aspect is elimination of global state. Global state was fine when the focus of OpenGL was to support a single CAD rendering window, but very problematic in today's world of large code modules running in parallel on different tasks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One distinction between WebGPU and its counterpart desktop APIs is that absolute raw performance does not override everything else. Some performance were left on the table in favor of gaining consensus across partners in standardization, in order to reach better cross-platform compatibility. I found this very interesting and promising for the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This presentation had an associated Codelab "<a href="https://codelabs.developers.google.com/your-first-webgpu-app"><em>Your first WebGPU App</em></a>" to build a parallelized Conway's Game of Life, no prior GPU experience required. I don't know what I might use WebGPU for, but I'll add this Codelab to my to-do list just to see what WebGPU is like firsthand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/1d176349-7cf8-4b51-b816-a90fc9d7d479/">WebAssembly: a new development paradigm for the web</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>In contrast to the hot-from-the-oven WebGPU, WebAssembly has been around for a while. Letting browsers run code beyond JavaScript. The initial scenarios were to allow legacy C code to be compiled into WebAssembly for high performance browser execution, and that approach has found success. I knew about Google's TensorFlow AI runtime running on WebAssembly, but I hadn't know there were also ports of codebases like OpenCV and FFmpeg. That might be worth looking into later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With success of C and similar code that manage their own memory, recent attention had turned to supporting managed-memory code efficiently. Beyond JavaScript, that is, since JavaScript is already a language where the runtime manages the memory on behalf of the developer. And when another such runtime is in the WebAssembly box, that meant two different memory managers. At best they are duplicating effort and wasting memory, at worst having two separate reference counting garbage collection systems risk them falling out of sync to cause memory errors. This presentation gave a few examples of the kind of messes we can get into, now resolved with latest WebAssembly evolution putting all memory management under a single system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing thrown out as an aside was a comment "Node.js or other webasm server environments" but no further elaboration in the presentation. WebAssembly on the server? Sure, why not. I don't know all the reasons why people might be interested but I also didn't expect Node.js (JavaScript on the server) to be interesting and I was very wrong. If server-side WebAssembly takes off, I'll cross paths with it soon enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/e282fcf3-5eaf-44ae-99d0-11175ec2ccfc/">Advanced web APIs in real world apps</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I watched this presentation because I was curious about latest progress in Project Fugu, Google's effort to bridge the capability gap between web apps and native apps. The magnetometer web API, which I recently played with, was done under this umbrella. As did many other electronics hobbyist friendly technologies like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">Web Serial</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebUSB_API">Web USB</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This session didn't cover any capabilities that were personally relevant to me. They were selections from the <a href="https://developer.chrome.com/fugu-showcase/">Project Fugu Showcase</a>, demonstrating capabilities like local file system access, use fonts installed on the system, etc. No hardware related fun this time, oh well. I moved on to a different topic: tools to <a href="https://newscrewdriver.com/2023/05/18/notes-on-google-i-o-2023-browser-debugging/">help debug web apps</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

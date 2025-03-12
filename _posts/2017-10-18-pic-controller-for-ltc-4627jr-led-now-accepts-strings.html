@@ -1,0 +1,46 @@
+---
+layout: post
+title: PIC Controller for LTC-4627JR LED Now Accepts Strings
+date: 2017-10-18 09:00:04.000000000 +00:00
+type: post
+post_id: '13887'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10465604308'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/18/pic-controller-for-ltc-4627jr-led-now-accepts-strings/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Now that our circuit board from OSH Park is populated and running, it's time to evolve the PIC code beyond displaying a test pattern. The objective of the exercise all along was to display data sent to the unit over I²C, but the exact details of <em>what</em> to send hasn't been finalized.</p>
+<p><em><strong>Stage 1: Raw Bits</strong></em></p>
+<p>This was the easiest and so was the first thing we implemented. It is the lowest-level way to communicate between the host and the display. The host sends data in the form of raw bytes. Each bit in a byte correspond to the 8 segments in a single digit. The host sending 4 bytes will fill 4 digits. We send that byte directly out to PORT C on the PIC micro controller, which are connected to 8 segments of a LED digit.</p>
+<p>This method is powerful in the sense it allows the host to display arbitrary patterns. But it is terribly unfriendly to use. The program running on the host has to tailored to the implementation details of our display: the host has to know which bit corresponds to which segment, and whether a bit value of 0 or 1 corresponds to light or dark. Which means if the user wants to swap out to a different display, they would have to rewrite the host code.</p>
+<p>This system served its purpose to prove we could light the LED, but it is not a good way forward.</p>
+<p><em><strong>Stage 2: Hexadecimal Decode</strong></em></p>
+<p>In this system, the bytes sent by the host is decoded into their <a href="https://en.wikipedia.org/wiki/Hexadecimal">hexadecimal</a> representation and displayed on screen. Since a hexadecimal digit represents 4 bits, the host sending 2 bytes (16 bits) will fill the 4 digits. This is actually a pretty useful mode in certain debugging operations where we do want to see those values. However, it is very difficult to represent human-friendly information this way. We're also unable to make full use of the LTC-4627JR this way: there's no way to represent the decimal point or the colon in the middle.</p>
+<p>Since it is useful for machine-level (not human-readable) data debugging, we might want to retain this capability in the form of a special mode later. In the meantime, let's move on.</p>
+<p><em><strong>Stage 3: Binary-Coded (Hexa)Decimal</strong></em></p>
+<p>The next evolution resembled <a href="https://en.wikipedia.org/wiki/Binary-coded_decimal">binary-coded decimal system</a>, which separated out each digit to its own byte. This makes the host program easier to write because each character can be treated individually instead of having to pack 2 characters into the upper/lower 4-bits of a byte. Unfortunately it also shares the limitation that we couldn't represent the decimal point or the colon.</p>
+<hr>
+<p>Which brings us to the latest approach:</p>
+<p><em><strong>Stage 4: String</strong></em></p>
+<p>Since most computer operations that result in human-readable information end up with the string data format, we're going to try using that as our I²C protocol. It is established, well-understood, and a piece of cake to use from high-level programming languages like Python. The downside is that it is much more verbose. The character sequence to light up all the LED is <code>8.8.:8.'8.</code> which requires 10 bytes to represent. This is a five-fold increase in bandwidth relative to the 2 byte hexadecimal decode. Will this added bandwidth cause problems? I don't know yet, we'll find out.</p>
+<p>But for now, we have a very user-friendly interface. Sending the string "79.2F" resulted in the picture attached to this post. The easy interface also enabled a very short <a href="https://github.com/Roger-random/I2C_LTC-4627JR/blob/master/Examples/displaytemp.py">example program</a>.</p>
+<p>(The project discussed in this blog post is <a href="https://github.com/Roger-random/I2C_LTC-4627JR">publicly available on Github</a>)</p>
+<p><img class=" size-full wp-image-13953 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/img_5272.jpg" alt="IMG_5272" width="1024" height="768"></p>
+<p> </body></html></p>

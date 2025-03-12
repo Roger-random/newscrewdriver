@@ -1,0 +1,63 @@
+---
+layout: post
+title: HTML Location Matters for CORS and Mixed Content
+date: 2023-01-18 12:30:00.000000000 +00:00
+type: post
+post_id: '34624'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+- ESP32
+- HTML
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34639'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674161562
+  _publicize_job_id: '80674583990'
+  timeline_notification: '1674073823'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/18/html-location-matters-for-cors-and-mixed-content/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have written a <a href="https://newscrewdriver.com/2023/01/17/basic-browser-ui-for-as7341/">basic browser-based UI</a> to interact with an AS7341 spectral color sensor. I wanted an educational learning project and that's exactly what I got. My first lesson happened before I could even get anything onscreen! I had my ESP32 translating a formatted HTTP GET request into a call into Arduino AS7341 library <code>readAllChannels()</code> and return the results as JSON. This basic browser-based UI was supposed to query that ESP32 and display results onscreen. In the interest of rapid development, I hosted the browser HTML and JavaScript files on my desktop, and that was my mistake. The HTTP GET action failed with this error message in the browser developer console:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Access to fetch at 'http://esp32-as7341.local/as7341?atime=29&amp;astep=599&amp;gain=8&amp;led_ma=0' from origin 'http://localhost:8080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a beginner web developer, I had no idea what this error message meant. My journey of enlightenment started by searching for this error message, which <a rel="noreferrer noopener" href="https://cors-errors.info/error-messages#e2a2" target="_blank">led me to this page</a> that unfortunately assumed more knowledge than I had. But this error message did suggest a solution of setting 'no-cors' which I tried without understanding what it meant. I no longer got the error message, but I didn't get any data results, either. I read up on "<a rel="noreferrer noopener" href="https://cors-errors.info/faq#dfdb" target="_blank">What is an opaque response?</a>" and confirmed data results were intended to be inaccessible. Well, that's not going to work for me! So I went to <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank">MDN page on CORS</a>. "Cross-Origin Resource Sharing" is something a web server has to explicitly choose to participate in, something my ESP32 Arduino sketch has not done. I decided it's OK for arbitrary web pages to query my ESP32 and I could declare that with a single additional line added to my Arduino sketch (wildcard for <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin" target="_blank">Access-Control-Allow-Origin</a>).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>server.sendHeader("Access-Control-Allow-Origin", "*");</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once my ESP32 started sending that in its server headers, I could host browser HTML and JS from my desktop development server and enjoy the rapid code/test/fix/repeat loop of browser JavaScript code. But what about later? It would be a big hassle to require everyone to set up their own web server to play with this code. I thought I had a solution for that: host the browser UI on GitHub pages, but that idea was also a failure. When I tested the idea, I got this error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Mixed Content: The page at 'https://roger-random.github.io/as7341_webui/' was loaded over HTTPS, but requested an insecure resource 'http://esp32-as7341.local/as7341?atime=29&amp;astep=599&amp;gain=8&amp;led_ma=0'. This request has been blocked; the content must be served over HTTPS.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>So much for that! I remember early days of the web when it was common to mix HTTP and HTTPS. My banking site was in HTTPS but used icons and images served over HTTP. This approach meant the server didn't have to encrypt those images, saving CPU time and its follow-on effects. (Lower electricity consumption, less datacenter cooling, etc.) But it didn't take long before nefarious geniuses figured out how to cause problems, so mixing HTTP and HTTPS went from commonplace, to triggering a notification, to triggering obnoxious dialogs, and now to complete ban. GitHub Pages would not serve over HTTP, and I'm not going to make everyone jump though the hoops of adding HTTPS to an ESP32 Arduino sketch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To avoid problems with CORS and with Mixed Content, the best solution is to have my ESP32 Arduino sketch serve the HTML and JavaScript in addition to the AS7341 HTTP API endpoint. This turned out to be <a href="https://newscrewdriver.com/2023/01/19/esp32-arduino-web-server-no-file-upload/">more complicated than I thought it would be</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

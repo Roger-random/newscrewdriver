@@ -1,0 +1,45 @@
+---
+layout: post
+title: Budibase With PostgreSQL
+date: 2024-08-31 12:30:00.000000000 +00:00
+type: post
+post_id: '44984'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- postgresql
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  _publicize_job_id: '97459911221'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-30 20:31:49'
+  firehose_sent: '1725132635'
+  timeline_notification: '1725132637'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/31/budibase-with-postgresql/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I now have <a href="https://newscrewdriver.com/2024/08/30/postgresql-docker-container-has-tools-i-need/">PostgreSQL running in a Docker container</a>, and it will host my personal finance tracking database while I learn how to build a user-friendly interface front end using Budibase. I decided against using Budibase's built-in database because, as the documentation stated, "<em>Budibase DB is a NoSQL database and not generally ideal for extensive relationship functionality</em>". Having a separate data structure has another benefit: if I decide Budibase won't suit my needs, I can keep the PostgreSQL database and start a new interface project with different technology. There's a chance this will happen as I'm starting to think perhaps the rest of Budibase aren't ideal for extensive relationship functionality either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I haven't used it enough to make that declaration, so onward with my project. First I will need to send my normalized data into PostgreSQL. Since I already had everything in a Jupyter notebook, I searched for a PostgreSQL interface library and <a href="https://www.psycopg.org/psycopg3/docs/">found <code>psycopg</code></a>. Thanks to the quickly iterative nature of Jupyter it didn't take long before all my tables went into a PostgreSQL database. If all goes well, I won't need my Jupyter notebook anymore.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>During these iterations, I would connect my Budibase app to the partially-migrated database to verify what I've done so far worked. I add more data with each iteration and I found that if I update PostgreSQL table structure (add/remove column) Budibase starts failing left and right. I guess this isn't a supported scenario, either. I found the workaround is to go into Budibase "Data" section and click "Fetch tables" again so it can update its own internal handling of new database structure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I migrated all of my data, I can see them within Budibase's PostgreSQL connector under the "Tables" tab. Pretty straightforward. I could then use "Relationships" table to declare the foreign keys in each table, something <a href="https://newscrewdriver.com/2024/08/27/no-budibase-support-for-csv-data-relationships/">I couldn't do for CSV-imported</a> data tables in Budibase DB. So that's a win! The third tab "Queries" is interesting. I could figure out custom queries in <code>psql</code> then copy the result into this section for use elsewhere in my Budibase app. Creating an entry in this list is a simple button click, as is editing an existing entry. But if I decide I didn't need a custom SQL query... I couldn't find any way to delete an entry from the list of queries. How odd! Well, no matter, I will edit its title to be "ABANDONED" and if I need a custom query in the future, I'll recycle the slot and edit the abandoned query instead of creating a new one. And there's a lot of creation ahead, as I learn the division of labor between PostgreSQL queries and <a href="https://newscrewdriver.com/2024/09/01/budibase-data-binding/">Budibase data binding</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

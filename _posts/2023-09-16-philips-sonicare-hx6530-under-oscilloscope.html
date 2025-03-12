@@ -1,0 +1,101 @@
+---
+layout: post
+title: Philips Sonicare (HX6530) Under Oscilloscope
+date: 2023-09-16 12:30:00.000000000 +00:00
+type: post
+post_id: '39049'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39031'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1694996266
+  _publicize_job_id: '87639141060'
+  timeline_notification: '1694892624'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/16/philips-sonicare-hx6530-under-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm partway through <a href="https://newscrewdriver.com/2023/09/15/philips-sonicare-hx6530/">disassembling a retired Sonicare electric toothbrush</a>, far enough to see all the internal components. The likelihood of irreversible damage rises sharply from this point. Before I do anything destructive, I wanted to check out some electrical characteristics under <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/08/24/finally-bought-a-real-oscilloscope/" target="_blank">my oscilloscope</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39020,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mcu-pic16f726.jpg?w=1024" alt="" class="wp-image-39020"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest chip on this circuit board is a <a rel="noreferrer noopener" href="https://www.microchip.com/en-us/product/PIC16F726" target="_blank">Microchip PIC16F726</a> microcontroller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39012,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-alpha-omega-chips.jpg?w=1024" alt="" class="wp-image-39012"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next largest are a pair of chips with the logo of <a rel="noreferrer noopener" href="https://aosmd.com/" target="_blank">Alpha &amp; Omega Semiconductor</a>. A brand I've encountered in a few previous teardowns as a provider of field-effect transistors. Their <a rel="noreferrer noopener" href="https://aosmd.com/products/mosfets/p-channel-mosfets-8v-60v/ao8801a" target="_blank">8801</a> is a pair of P-channel FET and the <a rel="noreferrer noopener" href="https://aosmd.com/products/mosfets/low-voltage-mosfets-12v-30v/ao8808a" target="_blank">8808</a> is a pair of N-channel FET, sitting close to the actuator coil wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't see any other significant-looking chips on this board. I thought there might be a lithium-ion battery management chip like a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/08/24/single-cell-lithium-ion-battery-management-system-module-4056/" target="_blank">4056</a>, but I found no likely candidates. Perhaps such tasks are handled in software running on that PIC16F726.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39031,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-wires.jpg?w=1024" alt="" class="wp-image-39031"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First target: big test pads labeled "Tx" and "Rx". These names usually denotes serial communication and I was curious if there'd be any sort of diagnostic messages during runtime. I don't know any of its parameters (voltage, baud rate, etc) so the first pass is to look at them under the oscilloscope. As a user, there were only a few events I can trigger: start/stop brushing, and start/stop charging. I was disappointed but not surprised to see no electrical activity on these pads. The chip is staying quiet until it sees the right access code, which I don't have.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":39026,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-charging-coil-ends-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39026"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":39027,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-charging-coil-one-end-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39027"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Second target: the inductive charging coil. Channels 3 and 4 were connected to either end of the coil and plotted relative to battery negative as ground. The plot on the left has both channels 3 and 4, the plot on the right has only channel 3.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had expected to see a 60Hz sine wave on this coil when sitting on the charging base, which runs on household power ~120V AC @ 60Hz. What I saw had a period of around 11us, which translates to about 90 <em>kilohertz</em>. That was a surprise, as well as the amplitude. I had expected it to be symmetric about the ground plane but it's actually going from about 0V to 5V. And finally, it is a square wave and not a sine wave. In short, I expected none of this and I don't understand what I'm looking at.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I left the toothbrush on the charging base connected to the oscilloscope until the status LED went from blinking ("charging") to steady on ("charge complete"). I measured the battery voltage at 4.1V at this point. I thought perhaps the inductive charging coil would look different when it's not actively charging, but it looks pretty much the same.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":39023,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-brush-coil-ends-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39023"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":39025,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-brush-coil-one-end-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39025"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Third target: the brush actuator coil driven by those Alpha &amp; Omega FETs. Again channels 3 and 4 were connected to either end of the coil and plotted relative to battery negative. The plot on the left has both channels 3 and 4, the one on the right only has channel 3.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When actively brushing, the coil is activated in one direction (~5V on channel 3, 0V on channel 4.) for roughly 1.25ms. Then both ends are grounded for roughly 0.7ms. Then the coil is energized the other way (0V on channel 3, ~5V on channel 4) for roughly the same duration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Every 30 seconds the brushing pauses and the toothbrush issues a "beep' to remind us to switch to a different set of teeth. I had been curious if this was implemented as reduced voltage level or reduced coil energizing cycle. The answer is the latter: all of the time periods described above shortens by roughly 25%, that was enough to stop the coil from brushing but enough to cause an audible beep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39024,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-brush-coil-fried.jpg?w=1024" alt="" class="wp-image-39024"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After watching the brush actuator waveform for a few cycles, the toothbrush fell silent and the waveform collapsed to a single phase. Oh no, what happened?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39063,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-probe-weight-broke-actuator-coil-wire.jpg?w=1024" alt="" class="wp-image-39063"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the coil wires had broken. It was designed to handle stress of brush vibration, but not with the additional weight of an oscilloscope probe. That was too much and metal fatigue took care of the rest. Well, I've seen what I wanted to see so this is a good place to stop my oscilloscope examination and <a href="https://newscrewdriver.com/2023/09/17/philips-sonicare-hx6530-circuit-board-and-charging-coil/">resume mechanical disassembly</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

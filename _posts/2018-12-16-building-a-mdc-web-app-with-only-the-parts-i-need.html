@@ -1,0 +1,39 @@
+---
+layout: post
+title: Building A MDC Web App With Only The Parts I Need
+date: 2018-12-16 13:30:18.000000000 +00:00
+type: post
+post_id: '17452'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- LRWave
+- MDC Web
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '25526307467'
+  timeline_notification: '1544995964'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/12/16/building-a-mdc-web-app-with-only-the-parts-i-need/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignright size-thumbnail wp-image-17442" src="https://newscrewdriver.com/wp-content/uploads/2018/12/material-design-logo.png?w=150" alt="Material Design logo" width="150" height="150">One criticism of using Materialize CSS is that we were pulling down the entire library and all of its resources for our project, whether we are using them or not. Aside from the obvious inefficient use of bandwidth, it also presented a challenge when we wanted SGVHAK Rover to be usable independently without an internet connection. This meant we had to <a href="https://github.com/Roger-random/SGVHAK_Rover/commit/73b878af903b4db0f9ed803a6b67535b2376756f">make a copy of the entire library in our project</a> to serve locally.</p>
+<p>To avoid this problem, MDC Web (<a href="https://github.com/material-components/material-components-web">Material Design Components for Web</a>) is designed so projects could pull in features piecemeal. Now each web app only has to download the parts they needed. The reason this isn't typically done is because of another inefficiency: there is overhead per HTTP transaction so we can't have MDC web components come down in tiny little individual pieces - the overhead would easily wipe out any space savings.</p>
+<p>To avoid <em><strong>that</strong> </em>problem, MDC Web uses <a href="https://webpack.js.org/">webpack</a> to bundle all the individual pieces into a consolidated file that only requires a single HTTP download transaction. So instead of a HTML file demanding tens to hundreds of individual CSS and JavaScript files, we have a single HTML file, that loads a single bundled CSS file, and a single bundled JavaScript file. These bundles are standalone pieces that can be served by any web server independent of MDC Web webpack infrastructure. Maybe even copied to a rover.</p>
+<p>I was looking forward to this functionality and was happy to see it was covered in Section 5 of the <a href="https://github.com/material-components/material-components-web/blob/master/docs/getting-started.md">Getting Started</a> guide. After putting in the configuration required, it was a matter of typing <code>npm run build</code> to generate my compact representation. I copied the generated <code>bundle.css</code> and <code>bundle.js</code> files and my <code>index.html</code> to a separate directory for the next test.</p>
+<p>When I served up my Getting Started project via the development server <code>npm start</code>, Chrome developer console showed that the simple button required downloading 462KB of support files. That's roughly the same order of magnitude as what it would take to download Materialize and all supporting information, and I was eager to see improvement.</p>
+<p>I then went to the separate directory with the built bundles. To ensure that I'm indeed free from npm and webpack, I served these bundle files using an entirely different infrastructure: Python 3's development web server. The environment variables $PORT and $IP were already set for a Cloud 9 environment and were reused:</p>
+<blockquote><p><code>python3 -m http.server $PORT --bind $IP</code></p></blockquote>
+<p>In the browser developer console, I could see that these files - and only these files - were downloaded. They added up to 32KB which was larger than I had hoped for in such a simple example, but maybe there's room for further optimization. In any case, that's definitely a tremendous improvement over 462KB.</body></html></p>

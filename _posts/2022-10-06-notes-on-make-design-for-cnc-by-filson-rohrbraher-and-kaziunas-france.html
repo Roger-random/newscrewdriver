@@ -1,0 +1,60 @@
+---
+layout: post
+title: 'Notes on "Make: Design for CNC" by Filson, Rohrbraher, and Kaziunas France'
+date: 2022-10-06 12:30:00.000000000 +00:00
+type: post
+post_id: '32936'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Books
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32966'
+  _publicize_job_id: '77451328166'
+  timeline_notification: '1665084620'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/06/notes-on-make-design-for-cnc-by-filson-rohrbraher-and-kaziunas-france/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After skimming through <a href="https://newscrewdriver.com/2022/08/29/notes-on-make-bluetooth-by-allan-coleman-and-mistry/">Maker Media's <em>Bluetooth</em> book</a>, I did the same for their <em><a rel="noreferrer noopener" href="https://amzn.to/3UJfGZd" target="_blank">Design for CNC: Furniture Projects &amp; Fabrication Technique</a></em> (*) published in 2017. The cover listed authors as Anne Filson, Gary Rohrbacher, and Anna Kaziunas France. Bill Young didn't get on the cover but was included in "About the Authors" section at the end. The focus is on building human-scale furniture by using CNC routers to cut flat pieces out of 4' x 8' sheets of plywood. Details are given for some (but not all) of the pieces we see on the authors' site <a rel="noreferrer noopener" href="http://atfab.co/" target="_blank">AtFAB</a>, and readers without all the equipment (which includes me) are encouraged to join the <a rel="noreferrer noopener" href="https://100kgarages.com/" target="_blank">100kGarages community</a> for help to turn ideas into reality.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CAD software used for examples was <a rel="noreferrer noopener" href="https://www.sketchup.com/" target="_blank">SketchUp</a> 2015, that particular version is no longer available. While there is <a rel="noreferrer noopener" href="https://www.sketchup.com/plans-and-pricing/sketchup-free" target="_blank">still a free Sketchup tier</a>, it is limited to their browser-based release. CAM software in the book is <a rel="noreferrer noopener" href="https://www.vectric.com/products/vcarve-pro" target="_blank">Vectric VCarve</a>, which never had a free tier. The authors' CNC router is a <a rel="noreferrer noopener" href="https://www.shopbottools.com/products/alpha" target="_blank">ShopBot PRSalpha</a> and discussion on cutters mostly referenced <a href="https://www.onsrud.com/" target="_blank" rel="noreferrer noopener">Onsrud</a>. Obviously, a reader with more in common with authors' setup will have an easier time following along. I have none of it, but I skimmed the book to see what I can learn. Here are the bits that I thought worth jotting down:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Chapter 2 had several sections that are valuable to anyone building structures out of flat sheets of material, whether CNC routing big pieces out of plywood or laser-cutting small things out of acrylic. They describe some basic joints, that lead to assemblies, leading to styles of structures. These were the building blocks for projects later in the book and are applicable to building 3D things out of 2D pieces no matter what tools (software or hardware) we use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Chapter 3 describes their design process using SketchUp. Some of the concepts are applicable to all CAD software, some are not. Explanations are sometimes lacking. The author used something called the Golden Ratio without explaining what it is or why it is applicable, so we have no idea when it would be appropriate to use in our own designs. We are shown how CAD helps keep various views of the same object in sync, but at certain places the book also says to use "Make Unique" to break this association without explaining why it was necessary. I had hoped to see automated tooling to support managing 3D structures and their 2D cutting layout, but no such luck. This workflow used a "Model" layer to work in 3D and a "Flat" layer to lay out the same shapes in 2D space for cutting followed by a "Cut" layer with just 2D vectors to export to CAM software. It feels like a motivated software developer can help automate this process. (Perhaps someone has in the past five years! I just have to find it.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I noticed a trend of information becoming less generally applicable as the book went on. By the time we got to CAM in Chapter 7, it was very specific to VCarve with few generalizations that we can take and apply to other CAM software. One missed opportunity was a discussion on climb milling versus conventional milling. The book explains that there are so many variables involved (the material, the cutter, the machine) a specific setup may work better one way versus the other. The only way to know is to try both approaches and use whichever one works better. Problem: they never explained what "better" means in this context. What do we look for? What metrics do we use to decide if one is better than the other? The authors would have a lot of experience seeing various results firsthand. That would have been valuable and applicable no matter what CAM software we use, but they didn't share that knowledge and just left us hanging. Or perhaps they have seen so much, it never occurred to them that beginners would have no idea how to judge.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another disappointment was in the area of parametric design. In chapter 5 they covered the fact that plywood is not made to precise dimensions, and we'd need to adjust accordingly. However, the recommended default method of adjustment is to scale the entire project rather than adjust a thickness parameter. Later in chapter 12 they showed how to modify a few of their designs by plugging parameters into an app written in <a rel="noreferrer noopener" href="https://processing.org/" target="_blank">Processing</a>. However, the app is limited to the variables allowed by the authors, and each app is unique to a project. The book doesn't cover how to do parametric design in SketchUp. (Maybe it can't?) But more disappointingly, the book doesn't cover the ins and outs of how to write parametric capability for our own designs. The authors started this book by saying how designing and customizing for our own purposes is a huge part of what makes CNC routed projects preferable to generic designs from IKEA, so it was a huge letdown to see nothing about making our own parametric designs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I would have appreciated more information on working with wood grain. Wood grain is discussed mostly as a cosmetic concern and not a structural one. I guess using plywood mitigates most of those worries? I would have also wanted to see more actual finished pieces. Most of the images in this book were 3D renders and not real pictures, another letdown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite these disappointments I felt I learned a lot from this book generally applicable to building 3D structures from 2D shapes. The resources section at the end looked promising for more information on designing for CNC that go beyond wooden furniture. And finally, unrelated to the topic or the book content, the colophon pointed me to <a rel="noreferrer noopener" href="https://asciidoc.org/" target="_blank">AsciiDoc</a>, which is something I might look into later for future Sawppy documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

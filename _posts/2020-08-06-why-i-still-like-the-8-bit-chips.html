@@ -1,0 +1,35 @@
+---
+layout: post
+title: Why I Still Like The 8-Bit Chips
+date: 2020-08-06 12:30:20.000000000 +00:00
+type: post
+post_id: '22017'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags: []
+meta:
+  _thumbnail_id: '18964'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '47426579301'
+  timeline_notification: '1596742343'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/06/why-i-still-like-the-8-bit-chips/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I was sad to see ROS2 <a href="https://newscrewdriver.com/2020/08/05/notes-on-ros2-and-rosserial/">seemed to be leaving <code>rosserial</code> behind</a>, which also abandons the simple 8-bit microcontrollers they supported. They may not measure up on the megahertz or the megabyte numbers, but they still had their advantages for quick and simple prototyping.</p>
+<p>My favorite part is the fact they tend to require minimal support components, or occasionally none at all. This feature allows me to do <a href="https://newscrewdriver.com/2017/11/09/supercon-2017-badge-pan-base-mechanical-assembly/">simple "deadbug" projects where I solder components directly to the pins of the chip skipping the circuit board</a>. This advantage is directly linked to their disadvantages: modern processors usually require an external clock signal source because it's hard to build an accurate fast clock on board the chip, in contrast the older and slower chips can make do with on board oscillators because they're not as dependent on an accurate clock. Similarly, many modern chips require external voltage regulation support because they need to run within a narrow voltage range and the older chips are much more relaxed about it. The PIC16F18345 I occasionally play with can be hooked up directly to a couple of AA batteries (or a single lithium ion cell) and as the battery voltage drops, the chip doesn't seem to care.</p>
+<p>The older simpler chips also tend to be more robust. In addition to tolerating a wider range of voltage input, they also tolerate a large range of current output. Some of the modern controllers' output pins can't even sustain 20 milliamps, the standard amount to illuminate a LED. It felt very weird for me to wire up a transistor just to do a LED. In contrast, the <a href="http://ww1.microchip.com/downloads/en/devicedoc/40001795e.pdf">PIC16F18345 is specified to support 50 milliamps</a>.</p>
+<p>And really, they're just good simple tools for good simple projects. I was happy to dust off an old PIC program for the <a href="https://newscrewdriver.com/2019/04/05/dusting-off-past-pic-led-driver-projects-for-potential-vfd-driver/">hacked-up VFD driver project</a>. When I only needed to flip some pins around, I really don't need a Swiss army knife of fancy peripherals.</p>
+<p></body></html></p>

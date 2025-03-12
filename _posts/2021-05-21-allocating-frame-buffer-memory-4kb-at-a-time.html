@@ -1,0 +1,138 @@
+---
+layout: post
+title: Allocating Frame Buffer Memory 4KB At A Time
+date: 2021-05-21 12:30:00.000000000 +00:00
+type: post
+post_id: '26617'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26662'
+  _publicize_job_id: '58651785990'
+  timeline_notification: '1621625437'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/21/allocating-frame-buffer-memory-4kb-at-a-time/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Getting insight into computational processing workload was not absolutely critical for version 1.0.0 of my ESP_8_BIT_composite Arduino library. But now that the first release is done, it was very important to <a href="https://newscrewdriver.com/2021/05/20/lightweight-performance-metrics-have-caveats/">get those tools up and running</a> for the development toolbox. Now that people have a handle on speed, I turned my attention to the other constraint: memory. An ESP32 application only has about 380KB to work with, and it takes about 61K to store a frame buffer for ESP_8_BIT. Adding double-buffering also doubled memory consumption, and I had actually half expected my second buffer allocation to fail. It didn't, so I got double-buffering done, but how close are we skating to the edge here?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately I did not have to develop my own tools here to gain insight into memory allocation, ESP32 SDK already had one in the form of <code><a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/heap_debug.html#heap-information" target="_blank">heap_caps_print_heap_info()</a></code> For my purposes, I called it with the <code>MALLOC_CAP_8BIT</code> flag because pixels are accessed at the single byte (8 bit) level. Here is the memory output running my test sketch, before I allocated the double buffers. I highlighted the blocks that are about to change in red:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Heap summary for capabilities 0x00000004:
+  At 0x3ffbdb28 len 52 free 4 allocated 0 min_free 4
+    largest_free_block 4 alloc_blocks 0 free_blocks 1 total_blocks 1
+  <span class="has-inline-color has-vivid-red-color">At 0x3ffb8000 len 6688 free 5872 allocated 688 min_free 5872
+    largest_free_block 5872 alloc_blocks 5 free_blocks 1 total_blocks 6</span>
+  At 0x3ffb0000 len 25480 free 17172 allocated 8228 min_free 17172
+    largest_free_block 17172 alloc_blocks 2 free_blocks 1 total_blocks 3
+  At 0x3ffae6e0 len 6192 free 6092 allocated 36 min_free 6092
+    largest_free_block 6092 alloc_blocks 1 free_blocks 1 total_blocks 2
+  At 0x3ffaff10 len 240 free 0 allocated 128 min_free 0
+    largest_free_block 0 alloc_blocks 5 free_blocks 0 total_blocks 5
+  At 0x3ffb6388 len 7288 free 0 allocated 6784 min_free 0
+    largest_free_block 0 alloc_blocks 29 free_blocks 1 total_blocks 30
+  At 0x3ffb9a20 len 16648 free 5784 allocated 10208 min_free 284
+    largest_free_block 4980 alloc_blocks 37 free_blocks 5 total_blocks 42
+<span class="has-inline-color has-vivid-red-color">  At 0x3ffc1f78 len 123016 free 122968 allocated 0 min_free 122968
+    largest_free_block 122968 alloc_blocks 0 free_blocks 1 total_blocks 1</span>
+  At 0x3ffe0440 len 15072 free 15024 allocated 0 min_free 15024
+    largest_free_block 15024 alloc_blocks 0 free_blocks 1 total_blocks 1
+  At 0x3ffe4350 len 113840 free 113792 allocated 0 min_free 113792
+    largest_free_block 113792 alloc_blocks 0 free_blocks 1 total_blocks 1
+  Totals:
+    free 286708 allocated 26072 min_free 281208 largest_free_block 122968</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was surprised at how fragmented the memory space already was even before I started allocating memory in my own code. There are ten blocks of available memory, only two of which are large enough to accommodate an allocation for 60KB. Here is the memory picture after I allocated the two 60KB frame buffers (and two line arrays, one for each frame buffer.) With the changed sections highlighted in red.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Heap summary for capabilities 0x00000004:
+  At 0x3ffbdb28 len 52 free 4 allocated 0 min_free 4
+    largest_free_block 4 alloc_blocks 0 free_blocks 1 total_blocks 1
+ <span class="has-inline-color has-vivid-red-color"> At 0x3ffb8000 len 6688 free 3920 allocated 2608 min_free 3824</span>
+<span class="has-inline-color has-vivid-red-color">    largest_free_block 3920 alloc_blocks 7 free_blocks 1 total_blocks 8</span>
+  At 0x3ffb0000 len 25480 free 17172 allocated 8228 min_free 17172
+    largest_free_block 17172 alloc_blocks 2 free_blocks 1 total_blocks 3
+  At 0x3ffae6e0 len 6192 free 6092 allocated 36 min_free 6092
+    largest_free_block 6092 alloc_blocks 1 free_blocks 1 total_blocks 2
+  At 0x3ffaff10 len 240 free 0 allocated 128 min_free 0
+    largest_free_block 0 alloc_blocks 5 free_blocks 0 total_blocks 5
+  At 0x3ffb6388 len 7288 free 0 allocated 6784 min_free 0
+    largest_free_block 0 alloc_blocks 29 free_blocks 1 total_blocks 30
+  At 0x3ffb9a20 len 16648 free 5784 allocated 10208 min_free 284
+    largest_free_block 4980 alloc_blocks 37 free_blocks 5 total_blocks 42
+<span class="has-inline-color has-vivid-red-color">  At 0x3ffc1f78 len 123016 free 56 allocated 122880 min_free 56</span>
+<span class="has-inline-color has-vivid-red-color">    largest_free_block 56 alloc_blocks 2 free_blocks 1 total_blocks 3</span>
+  At 0x3ffe0440 len 15072 free 15024 allocated 0 min_free 15024
+    largest_free_block 15024 alloc_blocks 0 free_blocks 1 total_blocks 1
+  At 0x3ffe4350 len 113840 free 113792 allocated 0 min_free 113792
+    largest_free_block 113792 alloc_blocks 0 free_blocks 1 total_blocks 1
+  Totals:
+    free 161844 allocated 150872 min_free 156248 largest_free_block 113792</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first big block, which previously had 122,968 bytes available, became the home of both 60KB buffers leaving only 56 bytes. That is a very tight fit! A smaller block, which previously had 5,872 bytes free, now had 3,920 bytes free indicating that's where the line arrays ended up. A little time with the calculator with these numbers arrived at 16 bytes of overhead per memory allocation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is good information to inform some decisions. I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/10/initial-issues-with-esp_8_bit-color-composite-video-out-library/" target="_blank">had originally planned</a> to give the developer a way to manage their own memory, but I changed my mind on that one just as I did for double buffering and performance metrics. In the interest of keeping API simple, I'll continue handling the allocation for typical usage and trust that advanced users know how to take my code and tailor it for their specific requirements.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The ESP_8_BIT line array architecture allows us to split the raw frame buffer into smaller pieces. Not just a single 60KB allocation as I have done so far, it can accommodate any scheme all the way down to allocating 240 horizontal lines individually at 256 bytes each. That will allow us to make optimal use of small blocks of available memory. But doing 240 instead of 1 allocation for each of two buffers means 239 additional allocations * 16 bytes of overhead * 2 buffers = 7,648 extra bytes of overhead. That's too steep of a price for flexibility.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a compromise, I will allocate in the frame buffer in 4 kilobyte chunks. These will fit in seven out of ten available blocks of memory, an improvement from just two. Each frame would consist of 15 chunks. This works out to an extra 14 allocations * 16 bytes of overhead * 2 buffers = 448 bytes of overhead. This is a far more palatable price for flexibility. Here are the results with the frame buffers allocated in 4KB chunks, again with changed blocks in red:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Heap summary for capabilities 0x00000004:
+  At 0x3ffbdb28 len 52 free 4 allocated 0 min_free 4
+    largest_free_block 4 alloc_blocks 0 free_blocks 1 total_blocks 1
+<span class="has-inline-color has-vivid-red-color">  At 0x3ffb8000 len 6688 free 784 allocated 5744 min_free 784
+    largest_free_block 784 alloc_blocks 7 free_blocks 1 total_blocks 8</span>
+<span class="has-inline-color has-vivid-red-color">  At 0x3ffb0000 len 25480 free 724 allocated 24612 min_free 724
+    largest_free_block 724 alloc_blocks 6 free_blocks 1 total_blocks 7
+  At 0x3ffae6e0 len 6192 free 1004 allocated 5092 min_free 1004
+    largest_free_block 1004 alloc_blocks 3 free_blocks 1 total_blocks 4</span>
+  At 0x3ffaff10 len 240 free 0 allocated 128 min_free 0
+    largest_free_block 0 alloc_blocks 5 free_blocks 0 total_blocks 5
+  At 0x3ffb6388 len 7288 free 0 allocated 6776 min_free 0
+    largest_free_block 0 alloc_blocks 29 free_blocks 1 total_blocks 30
+<span class="has-inline-color has-vivid-red-color">  At 0x3ffb9a20 len 16648 free 1672 allocated 14304 min_free 264
+    largest_free_block 868 alloc_blocks 38 free_blocks 5 total_blocks 43
+  At 0x3ffc1f78 len 123016 free 28392 allocated 94208 min_free 28392
+    largest_free_block 28392 alloc_blocks 23 free_blocks 1 total_blocks 24</span>
+  At 0x3ffe0440 len 15072 free 15024 allocated 0 min_free 15024
+    largest_free_block 15024 alloc_blocks 0 free_blocks 1 total_blocks 1
+  At 0x3ffe4350 len 113840 free 113792 allocated 0 min_free 113792
+    largest_free_block 113792 alloc_blocks 0 free_blocks 1 total_blocks 1
+  Totals:
+    free 161396 allocated 150864 min_free 159988 largest_free_block 113792</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instead of almost entirely consuming the block with 122,968 bytes leaving just 56 bytes, the two frame buffers are now distributed among smaller blocks leaving 28,329 contiguous bytes free in that big block. And we still have anther big block free with 113,792 bytes to accommodate large allocations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at this data, I could also see allocating in smaller chunks would have led to diminishing returns. Allocating in 2KB chunks would have doubled the overhead but not improved utilization. Dropping to 1KB would double the overhead again, and only open up one additional block of memory for use. Therefore allocating in 4KB chunks is indeed the best compromise, assuming my ESP32 memory map is representative of user scenarios. Satisfied with this arrangement, I proceeded to work on <a href="https://newscrewdriver.com/2021/05/22/til-some-video-equipment-support-both-pal-and-ntsc/">my first and last bug of version 1.0.0: PAL support</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

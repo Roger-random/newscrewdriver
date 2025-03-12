@@ -1,0 +1,36 @@
+---
+layout: post
+title: Learning Github Actions For Automating Verification
+date: 2020-02-05 12:30:44.000000000 +00:00
+type: post
+post_id: '20423'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40358318062'
+  timeline_notification: '1580934760'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/05/learning-github-actions-for-automating-verification/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I <a href="https://newscrewdriver.com/2020/02/04/first-foray-into-python-unit-tests/">wrote up some basic unit tests</a> for my Sawppy rover Ackermann math, I wanted to make sure the tests are executed automatically. I don't always remember to run the tests, and a test that isn't getting executed isn't very useful, obviously. I knew there were multiple tools available for this task, but lacking the correct terminology I wasted time looking in the wrong places. I eventually learned this came under the umbrella of <a href="https://en.wikipedia.org/wiki/Continuous_integration">CI/CD tools</a>. (Continuous integration/continuous deployment.) Not only that, a tool to build my own process has been sitting quietly waiting for me to get around to using it: GitHub Actions.</p>
+<p>The <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions">GitHub Actions documentation</a> was helpful in laying out the foundation for me as a novice, but I learn best when the general foundation is grounded by a concrete example. When looking around for an example, I realized again one was sitting right in my face: the wemake Python style guide code analysis tool is also <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions">available as a prebuilt GitHub Action</a>.</p>
+<p>Using it as a template, I modified <a href="https://github.com/Roger-random/sawppy_ros/blob/master/.github/workflows/unittests.yml">my YAML configuration file</a> so it ran my Python unit tests in addition to analyzing my Python code style. And that it would do this upon every push to the repository, or whenever someone generates a pull request. Now we have insight into the condition of my code style and basic functionality upon every GitHub interaction, ensuring that nobody can get away with pushing (or create a pull request) with code that is completely untried and fundamentally broken. If they should try to get away with such a thing, GitHub will catch them doing it, and deliver proof. It's not extensive enough to catch esoteric problems, but it provides a baseline sanity check.</p>
+<p>I feel like this is something good to keep going and put into practice for all my future coding projects. Well, at least the nontrivial ones... I'll probably skip doing it for <a href="https://newscrewdriver.com/2020/01/20/arduino-mozzi-wilhelm-exercise/">simple Arduino demo sketches</a> and such.</p>
+<p></body></html></p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: Two Weeks with the MPLAB Xpress PIC16F18345 Evaluation Board
+date: 2017-09-14 09:00:01.000000000 +00:00
+type: post
+post_id: '11471'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9287107817'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/14/two-weeks-with-the-mplab-xpress-pic16f18345-evaluation-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-11625 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/dm164141-box.jpg" alt="DM164141 box" width="1024" height="912">It's been about two weeks since I started learning the <a href="http://www.microchip.com/DevelopmentTools/ProductDetails.aspx?PartNO=DM164141">MPLAB Xpress PIC16F18345 Evaluation Board</a> in earnest. I went from having only a vague idea about PIC micro controllers to having a decent grasp on the strengths and weaknesses of Microchip's family of 8-bit PIC micro controllers. From never putting my hands on a physical PIC to writing several simple programs and wiring the PIC up to physical components. This is my two-week report.</p>
+<p>The short version: The PIC is solid. Everything around the PIC16F18345 feels like a good start of an idea, but the current state is very rough.</p>
+<p>The longer version, starting by getting the bad news out-of-the-way first:</p>
+<p><strong>Missing Technical Information</strong>: I had made a first pass through the PIC16F18345 data sheet to learn about the chip. It had more information than I could possibly absorb on the first pass. But similar information is nowhere to be found for the evaluation board built around the chip. The only documentation on the product page is a <a href="http://ww1.microchip.com/downloads/en/DeviceDoc/50002462D.pdf">quick start guide</a> that boils down to "Login to MPLAB Xpress website". There is no data sheet, no <a href="http://www.microchip.com/forums/m1007937.aspx">schematic</a>.</p>
+<p><em>First example</em>: I stumbled across the USB serial port functionality by reading an <a href="https://mplabxpress.microchip.com/mplabcloud/example/details/313">example</a>. I should have been able to learn about it from technical documentation.</p>
+<p><em>Second example</em>: There are two soldering pads on the board labelled "3V3" and "5V" implying it's possible to switch voltage levels, but no details on how. Again, this should have been documented.</p>
+<p>I hope this is the effect of a new product in a young product line, and it'll just take some time for the documentation to show up. In the meantime, I remain in the dark about the specifics of this board.</p>
+<p><strong>MPLAB Xpress</strong>: I appreciate Microchip is making PIC development more accessible by moving software into the cloud, and building PIC programming hardware into a simple evaluation board. It is all very low-friction up until I found out the MPLAB Code Configurator (MCC) module requires Java to run. I hope they move MCC to be web-based as well. Once they do that, it'll be possible to do PIC development from platforms like Chromebook and Raspberry Pi. Which will broaden their market for PIC development.</p>
+<p><strong>MPLAB X</strong>: Since I had installed Java on my Ubuntu anyway, I decided to investigate their full-featured IDE to compare against the web-based Xpress. I thought that I could compile the *.hex file in MPLAB X and copy it onto the evaluation board the same way as I do for MPLAB Xpress. Unfortunately this plan was foiled by how the two components interact.</p>
+<p>When MPLAB X launches, the USB mass storage device on the evaluation board disappears. It doesn't reappear until I quit MPLAB X and unplug/replug the board. I was hopeful this meant MPLAB X could talk to the evaluation board directly, bypassing the file copy stage, but I saw nothing of the sort. None of the MPLAB X programming functions seemed to know how to talk to the evaluation board. So in order to update the program on the chip, I have to quit MPLAB X and unplug/replug the board. This is an unacceptable workflow. I have to stick with MPLAB Xpress until I find a solution.</p>
+<p><strong>Serial communication is flaky</strong>: In addition to the USB mass storage device disappearing under MPLAB X, I also had problem with the USB serial port for the chip to talk to my PC running Ubuntu. It would frequently fall out of sync with the host PC and result in gibberish. I could work around the issue by making sure software flow control is activated, then quit/restart my instance of <a href="https://help.ubuntu.com/community/Minicom">minicom</a>. But this shouldn't be necessary.</p>
+<p><strong>No hardware debugging</strong>: The USB mass storage based programming interface is pretty innovative. The downside is that there is no way to debug the code running on the hardware through this USB port.</p>
+<hr>
+<p>OK, I'm done complaining. It's time to recognize the good this product represents.</p>
+<p>For the audience of people like me, interested in getting into PIC programming, it is fantastic. This <a href="http://www.microchip.com/mplab/mplab-xpress/mplab-xpress-evaluation-boards">product line</a> has <em><strong>lowered the barrier of entry tremendously.</strong></em> Ignoring MCC, the software side is far more easily accessible than before. On the hardware side, the evaluation board has a retail price of $12, a fraction of the price of admission previously charged for PIC development.</p>
+<p>Before this product, the least expensive PIC programmer device from Microchip (<a href="http://www.microchip.com/Developmenttools/ProductDetails.aspx?PartNO=PG164130">PICkit 3</a>) has a MSRP of $60. And that money doesn't even include any of the connectors, the circuit board, serial port breakout, power supply, or the PIC itself! All of those required pieces have been simplified and integrated into a single $12 evaluation board.</p>
+<p>What I have in my hands today feels like a very rough first draft of a new and very promising product line. As a PIC development platform for beginners, we're nowhere near perfect today. The features are rough and the documentation is thin. But I sincerely hope Microchip keeps refining this effort and filling in the gaps of this product line.</body></html></p>

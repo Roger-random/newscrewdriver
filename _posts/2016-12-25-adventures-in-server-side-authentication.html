@@ -1,0 +1,44 @@
+---
+layout: post
+title: Adventures in Server-Side Authentication
+date: 2016-12-25 23:31:10.000000000 +00:00
+type: post
+post_id: '3251'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Adventure Book
+- Google
+- Rails
+- Ruby
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '91301188'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/12/25/adventures-in-server-side-authentication/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-3540 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/01/google-sign-in.png" alt="google-sign-in" width="194" height="81">The latest chapter comes courtesy of the <a href="https://developers.google.com/identity/">Google Identity Platform</a>. For my next Rails app project, I decided to venture away from the user password authentication engine outlined in the Hartl <a href="https://www.railstutorial.org">Ruby on Rails Tutorial</a> sample app. I had seen the "Sign in with Google" button on several web sites (like <a href="https://www.codecademy.com/">Codecademy</a>) and decided to see it from the other side: Users for my next Rails project will sign in with Google!</p>
+<p>The client-side code was straightforward following directions in the Google documentation. The HTML is literally copy-and-paste, the JavaScript needed some reworking to translate into CoffeeScript for the standard Rails asset pipeline but wasn't terribly hard.</p>
+<p>The server side was less straightforward.</p>
+<p>I started with the guide <a href="https://developers.google.com/identity/sign-in/web/backend-auth">Authenticate with a Backend Server</a> which had links to the <a href="https://developers.google.com/api-client-library/">Google API Client Library</a> for (almost all) of the server side technologies including Ruby. The guide page itself included examples on using the client library to validate the ID token in Java, Node.JS, PHP, and Python. The lack of Ruby example would prove problematic because each flavor of the client library seems to have different conventions and use different names for the functionality.</p>
+<p>Java library has a dedicated GoogleIdTokenVerifier class for the purpose. Node.JS library has a GoogleAuth.OAuth2 class with a verifyIdToken method. PHP has a Google_Client class with a verifyIdToken method. And to round out the set, Python library has oauth2client.verify_id_token.</p>
+<p>Different, but they're all in a similar vein of "verify", "id", and "token" so I searched the <a href="http://www.rubydoc.info/github/google/google-api-ruby-client/">Ruby Google API client library documentation</a> for those keywords in the name. After a few fruitless hours I concluded what I wanted wasn't there.</p>
+<p>Where to next? I went to the library's <a href="https://github.com/google/google-api-ruby-client">Github page</a> for clues. I had to wade through a lot of material irrelevant to the immediate task because the large library covers the entire surface of Google services.</p>
+<p>I thought I had hit the jackpot when I found reference to the <a href="https://github.com/google/google-auth-library-ruby">Google Auth Library for Ruby</a>. It's intended to handle all authentication work for the big client library, with the target completion date of Q2 2015. (Hmm...) Surely it would be here!</p>
+<p>It was not.</p>
+<p>After too many wrong turns, I looked at <a href="https://github.com/google/signet">Signet</a> in detail. It has a OAuth2::Client class, which sounded very similar to the other libraries, but it had no "verify" method so every time I see a reference to Signet I keep deciding to look elsewhere. Once I decided to read into the details of Signet::OAuth2::Client, I finally figured out that it had a <a href="http://www.rubydoc.info/github/google/signet/Signet%2FOAuth2%2FClient%3Adecoded_id_token">decoded_id_token</a> method that can optionally verify the token.</p>
+<p>So it had the verification feature but the keyword "verify" itself wasn't in the name, throwing off my search multiple times.</p>
+<p>Gah.</p>
+<p>Nothing to do now but to take some deep breaths, clear out the pent-up frustration, and keep on working...</body></html></p>

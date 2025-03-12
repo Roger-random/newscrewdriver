@@ -1,0 +1,179 @@
+---
+layout: post
+title: FormLabs Form 1+ Laser Power via OpenFL
+date: 2022-10-02 12:30:00.000000000 +00:00
+type: post
+post_id: '32867'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32877'
+  _publicize_job_id: '77315300816'
+  timeline_notification: '1664739020'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/02/formlabs-form-1-laser-power-via-openfl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After FormLabs stoped supporting the Form 1/1+ printers, they released a set of tools collectively called OpenFL letting people play with the hardware. We can either stay within the realm of laser resin 3D printing or come up with something entirely different. After I successfully installed the toolset and <a href="https://newscrewdriver.com/2022/10/01/formlabs-form-1-openfl-api-connection/">established Python communication with the printer</a>, I wanted to explore the laser module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the top of Printer.py I see two references to laser power: an audit toggle and a power ceiling of 64mW.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>    AUDIT_LASER_POWER = True
+    LASER_POWER_MAX_MW = 64</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for where the ceiling is used, I found this method:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>    def check_laser_ticks(self, power):
+        """ Raises if the power (in laser ticks) is above our safe threshold
+        """
+        mW = self.ticks_to_mW(power)
+        if mW &gt; self.LASER_POWER_MAX_MW:
+            raise LaserPowerError('Requested power is dangerously high.')</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>From this method I learned laser power is measured in two different ways: "ticks", which is a hardware-specific measure, and the more general units of "mW" (milliwatts). There are two methods to convert between them. The <code>ticks_to_mW</code> seen here, and its inverse <code>mW_to_ticks</code>. Reading those methods, I see that ticks is an uint16 (unsigned 16-bit integer) value so valid range is 0 to 65535. So what's the maximum possible power via this API?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt;&gt;&gt; p.ticks_to_mW(65535)
+80.71</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>So 64mW is the recommended maximum, any higher may raise LaserPowerError but if we have the option to ignore that and turn the dial up to 80.71mW.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also see that the conversion depends on a laser power lookup table presumably established with factory calibration and saved in nonvolatile memory. Using OpenFL we can see that table.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt;&gt;&gt; p.read_laser_table()
+[[0, 0, 0], [0.1, 0.02, 9.0], [0.2, 0.03, 12.0], [0.3, 0.03, 14.0], [0.4, 0.04, 16.0], [0.5, 0.05, 18.0], [0.6, 0.06, 19.0], [0.7, 0.07, 22.0], [0.8, 0.1, 24.0], [0.9, 0.23, 25.0], [1.0, 3.77, 26.0], [1.1, 8.22, 28.0], [1.2, 12.76, 29.0], [1.3, 17.34, 30.0], [1.4, 22.06, 32.0], [1.5, 26.73, 33.0], [1.6, 31.53, 34.0], [1.7, 36.33, 35.0], [1.8, 41.11, 36.0], [1.9, 46.0, 37.0], [2.0, 50.92, 38.0], [2.1, 55.92, 39.0], [2.2, 60.72, 40.0], [2.3, 65.81, 41.0], [2.4, 70.8, 41.0], [2.5, 75.79, 42.0], [2.6, 80.71, 43.0]]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Actually powering up the laser requires calling one of several methods, which accept input in some combination of machine coordinates or real dimensions. I chose to experiment using <code>set_laser_mm_mW()</code> which simultaneously updates galvanometer position and laser power. For my first test I set the laser to 1 milliwatt.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt;&gt;&gt; p.set_laser_mm_mW(0, 0, 1)
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "c:\users\me\openfl\OpenFL\Printer.py", line 502, in set_laser_mm_mW
+    return self.set_laser_uint16(x, y, self.mW_to_ticks(mW))
+  File "c:\users\me\openfl\OpenFL\Printer.py", line 485, in set_laser_uint16
+    expect_success=True)
+  File "c:\users\me\openfl\OpenFL\Printer.py", line 180, in _command
+    r = self._wait_for_packet(wait, verbose=verbose)
+  File "c:\users\me\openfl\OpenFL\Printer.py", line 195, in _wait_for_packet
+    p = self.poll()
+  File "c:\users\me\openfl\OpenFL\Printer.py", line 220, in poll
+    self._process_raw(raw)
+  File "c:\users\me\openfl\OpenFL\Printer.py", line 150, in _process_raw
+    cmd = Command(self.packet[1])
+  File "C:\Users\me\miniconda3\envs\openfl\lib\site-packages\enum\__init__.py", line 348, in __call__
+    return cls.__new__(cls, value)
+  File "C:\Users\me\miniconda3\envs\openfl\lib\site-packages\enum\__init__.py", line 663, in __new__
+    raise ValueError("%s is not a valid %s" % (value, cls.__name__))
+ValueError: 147 is not a valid Command</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hmm. There's a problem with OpenFL Printer API class processing response packet from the printer. But the outgoing command apparently works, because I got a dim glow from the laser. Following that with <code>p.set_laser_mm_mW(0, 0, 0)</code> turned the laser back off along with another ValueError: 147. This is good enough for me to set up some voltage probes. The laser has four wires: red, black, blue, and yellow. Here are their voltages at various milliwatt settings, relative to yellow which is connected to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th>Power (mW)</th>
+<th>Red</th>
+<th>Black</th>
+<th>Blue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 (OFF)</td>
+<td>11.20</td>
+<td>8.67</td>
+<td>4.89</td>
+</tr>
+<tr>
+<td>1</td>
+<td>11.20</td>
+<td>7.40</td>
+<td>3.75</td>
+</tr>
+<tr>
+<td>10</td>
+<td>11.20</td>
+<td>7.27</td>
+<td>3.61</td>
+</tr>
+<tr>
+<td>20</td>
+<td>11.19</td>
+<td>7.12</td>
+<td>3.52</td>
+</tr>
+<tr>
+<td>30</td>
+<td>11.19</td>
+<td>7.01</td>
+<td>3.44</td>
+</tr>
+<tr>
+<td>40</td>
+<td>11.18</td>
+<td>6.91</td>
+<td>3.36</td>
+</tr>
+<tr>
+<td>50</td>
+<td>11.18</td>
+<td>6.80</td>
+<td>3.28</td>
+</tr>
+<tr>
+<td>60</td>
+<td>11.18</td>
+<td>6.71</td>
+<td>3.24</td>
+</tr>
+<tr>
+<td>70</td>
+<td>11.17</td>
+<td>6.63</td>
+<td>3.20</td>
+</tr>
+<tr>
+<td>80</td>
+<td>11.16</td>
+<td>6.55</td>
+<td>3.14</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:image {"align":"center","id":32879,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/image-1.png?w=449" alt="" class="wp-image-32879"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These values weren't as enlightening as I had hoped they would be, but maybe these snapshots will make more sense <a href="https://newscrewdriver.com/2022/10/03/formlabs-form-1-laser-power-during-print/">in the context of a normal print job</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

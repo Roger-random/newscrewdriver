@@ -1,0 +1,38 @@
+---
+layout: post
+title: Visualizing SGVHAK Rover Chassis Calculations
+date: 2018-05-02 20:54:06.000000000 +00:00
+type: post
+post_id: '16126'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  timeline_notification: '1525319650'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17430853785'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/02/visualizing-sgvhak-rover-chassis-calculations/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When we were putting together code to calculate <a href="https://en.wikipedia.org/wiki/Ackermann_steering_geometry">Ackermann steering angles</a> for <a href="https://github.com/Roger-random/SGVHAK_Rover">SGVHAK rover</a>'s wheels, initial testing was done via Python command line using some fixed test values to match against results pre-calculated by hand. Once we built some confidence our math was on the right track, it was time to start testing against more varied inputs.</p>
+<p>There was just one minor problem - at this point in rover development, our software is a tiny bit ahead of the hardware which means we can't test on hardware that <a href="https://newscrewdriver.com/2018/04/10/rover-frame-assembly/">hasn't yet been assembled</a>. Even if we could, it wouldn't be a great idea to jump from a small fixed set of test values to actual hardware. As an intermediate step, we created a bit of code to visualize results of <a href="https://github.com/Roger-random/SGVHAK_Rover/blob/master/SGVHAK_Rover/roverchassis.py">roverchass.py calculations</a>: the "Chassis Configuration" screen will show what our control code <em>thinks</em> all six wheels should be doing. (This shows the <em>intent</em>, which is different from hardware telemetry of what's <em>actually</em> happening.)</p>
+<p><img class="alignnone size-full wp-image-16113" src="https://newscrewdriver.com/wp-content/uploads/2018/04/sgvhak-rover-chassis-config.png" alt="SGVHAK Rover Chassis Config" width="953" height="387"></p>
+<p>Each of the six wheels got its own blue box, laid out roughly analogous to their physical position on the rover chassis. Originally wheel steering &amp; speed was displayed as text: number of degrees a wheel should be steered, and a second number reflecting the intended velocity for each wheel. This was accurate information but it took some effort to interpret. To make this information easier to understand, numerical text was <a href="https://github.com/Roger-random/SGVHAK_Rover/commit/96ffe9e8717da51379d6206bc31c3aa568545f25#diff-ba3b54985cb721692466de9f2eb8c9cc">changed to a visual representation</a>.</p>
+<p>By using HTML's <code>&lt;canvas&gt;</code> element, we could draw some simple graphics. Each wheel is represented by a black rectangular outline. A wheel's steering angle is now represented by tilting its rectangle to that angle. Inside a wheel's rectangle is a green fill representing desired velocity. When a wheel is supposed to be stopped, there is no green fill and its black rectangle is empty. When a wheel is supposed to be rolling forward, green rectangle fills from the middle upwards. Faster velocity is represented by more green in the upper half. For a wheel that should be rolling backwards, green fills downwards instead.</p>
+<p>This visualization of roverchassis.py calculation results were far easier for humans to understand. This made it very quick to validate that roverchassis is behaving roughly correctly. There's a place for precise engineering calculations, but there's also place for a quick glance to check "yeah, that looks about right."</p>
+<p></body></html></p>

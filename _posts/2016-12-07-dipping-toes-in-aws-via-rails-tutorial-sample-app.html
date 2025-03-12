@@ -1,0 +1,54 @@
+---
+layout: post
+title: Dipping toes in AWS via Rails Tutorial Sample App
+date: 2016-12-07 15:41:01.000000000 +00:00
+type: post
+post_id: '2909'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Amazon Web Services
+- Rails
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29746100755'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/12/07/dipping-toes-in-aws-via-rails-tutorial-sample-app/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-2922 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2016/12/aws_logo.jpg" alt="aws_logo" width="180" height="68">Amazon Web Services is a big, big ball of yarn. For somebody just getting started, the<a href="https://aws.amazon.com/documentation/"> list of AWS products</a> is quite intimidating. It's not any fault of Amazon, it's just the nature of building out such a comprehensive system. Fortunately, Amazon is not blind to the fact people can get overwhelmed and put admirable effort into a gentle introduction via their Getting Started resources: a series of (relatively) simple guided tours through select parts of the AWS domain.</p>
+<p>At the end of it all, though, a developer has to roll up their sleeves and dive in. The question then is: where? In previous times, I couldn't make up my mind and got stuck. This time around, I have a starting point: <a href="https://www.railstutorial.org/">Michael Hartl's Ruby on Rails Tutorial</a> sample app, which wants to store images on Amazon S3 (Simple Storage Service).</p>
+<p>Let's make it happen.</p>
+<p>One option is to blaze the simplest, most direct path to get rolling, but I resisted. The example I found on stackoverflow.com granted the rails app full access to storage with my AWS root credentials. Functionally speaking that would work, but that is a very bad idea from a security practices standpoint.</p>
+<p>So I took a detour through Amazon IAM (Identity and Access Management). I wanted to learn how to do a properly scoped security access scheme for the Rails sample app, rather than giving it the Golden Key to the entire kingdom. Unfortunately, since IAM is used to manage access to all AWS properties, it is a pretty big ball of yarn itself.</p>
+<p>Eventually I found my on-ramp to AWS: A <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/s3-access-control.html">section in the S3 documentation</a> that discussed access control via IAM. Since I control the rails app and my own AWS account, I was able to skip a lot of the cross-account management for this first learning pass, boiling it down to the basics of what I can do for myself to implement <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">IAM best practices</a> on S3 access for my Rails app.</p>
+<p>After a few bumps in the exploration effort, here's what I ended up with.</p>
+<hr>
+<p><strong>Root account</strong>: This has access to <em><strong>everything</strong></em>, so we want to use this account <em>as little as possible </em>to minimize risk of compromising this account. Login to this account just long enough to activate multi-factor authentication and create an IAM user account with "AdministratorAccess" privileges. Log out of the management console as root, log back in under the new admin account to do everything else.</p>
+<p><strong>Admin account</strong>: This account is still very powerful so it is still worth protecting. But if it should be compromised, it can at least be shut down without closing the whole Amazon account. (If root is compromised, all bets are off.) Use this account to set up the remaining items.</p>
+<p><strong>Storage bucket</strong>: While logged in as the admin account, go to the S3 service dashboard and create a new storage bucket.</p>
+<p><strong>Access policy</strong>: Go to the IAM dashboard and create a new S3 access policy. The "resource" of the policy is the storage bucket we just created. The "action" we allow are the minimum set needed for the rails sample app and no more.</p>
+<ol>
+<li>PutObject - this permission allows the rails app to upload the image file itself.</li>
+<li>PutObjectAcl - this permission allows the rails app to change the access permission on the image object, make the image publicly visible to the world. This is required for use as the source field of an HTML &lt;img&gt; tag in the rails app.</li>
+<li>DeleteObject - when a micropost is deleted, the app needs this permission so the corresponding image can be deleted as well.</li>
+</ol>
+<p><strong>Access group</strong>: From the IAM dashboard, create a new access group. Under the "Permissions" list of the group, attach the access policy we just created. Now any account which is a member of the group has enough access the storage bucket to run the rails sample app.</p>
+<p><strong>User</strong>: From the IAM dashboard, create a new user account to be used by the rails app. Add this newly user to the access group we just created, so it is a part of the group and can use the access policy we created. (And no more.)</p>
+<p>This new user, which we granted only a low level of access, will not need a password since we'll never log in to Amazon management console with it. But we will need to generate an app access key and secret key.</p>
+<p>Once all of the above are done, we have everything we need to put into Heroku for the Rails Tutorial sample app. A S3 storage bucket name, plus the access and secret key of the low level user account we created to access that S3 storage bucket.</p>
+<hr>
+<p>While this is far more complex than the stackoverflow.com answer, it is more secure. Plus a good exercise to learn the major bits and pieces of an AWS access control system.</p>
+<p>The above steps will ensure that, if the Rails sample app should be compromised in any way, the hacker has only the permissions we granted to the app and no more. While the hacker can put new images on the S3 bucket and make them visible, or delete existing images, but they can't do anything else in that S3 bucket.</p>
+<p>And most importantly, the hacker has no access to any other part of my AWS account.</body></html></p>

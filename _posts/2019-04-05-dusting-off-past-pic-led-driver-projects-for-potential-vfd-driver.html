@@ -1,0 +1,38 @@
+---
+layout: post
+title: Dusting off Past PIC LED Driver Projects For Potential VFD Driver
+date: 2019-04-05 12:30:18.000000000 +00:00
+type: post
+post_id: '18257'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29437981790'
+  timeline_notification: '1554492684'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/05/dusting-off-past-pic-led-driver-projects-for-potential-vfd-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>While the VFD salvaged from a VHS timer/tuner unit was designed to <a href="https://newscrewdriver.com/2019/04/04/original-nec-vsl0010-a-vfd-power-source/">run on voltages unfamiliar to me</a>, once we <a href="https://newscrewdriver.com/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/">probed the control pinout</a> I found it much less intimidating. The entire array can be treated as a matrix with its eight grids along one axis and ten elements along another axis. The array is only partially filled: there aren't actually 80 elements on the VFD. A driver chip will energize one grid at a time, and energize the desired elements within that grid. After some time, the driver will move on to the next grid and its corresponding elements. When the switching happens quickly enough, our human eye sees only a completely illuminated display and would not notice that grid-to-grid cycling.</p>
+<p><img class="alignnone size-full wp-image-18241" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-annotated-1.jpg" alt="NEC VSL0010-A VFD Annotated" width="1600" height="652"></p>
+<p>This general principle is identical to how I <a href="https://newscrewdriver.com/2017/10/18/pic-controller-for-ltc-4627jr-led-now-accepts-strings/">drove a LTC-4627JR 7-segment LED array</a> in an earlier PIC project. The only real difference is that the transistors I had used earlier is only good for the +5V used by that LED array and not suitable for +30V for this VFD, but that can be addressed by substituting some switching components.</p>
+<p><img class=" size-full wp-image-13953 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/img_5272.jpg" alt="IMG_5272" width="1024" height="768"></p>
+<p>In the previous project, I was interested in learning KiCAD and the process of ordering custom PCBs for a device for potential low-volume production. Many lessons were learned, most of which discouraged me from pursuing the thought further. This time around there is no fantasy of volume production, this will be an one-off project for a single salvaged VFD.</p>
+<p>But now that I know the concept of a display matrix is generically applicable across multiple units, this time around I'm more inclined to keep the PIC side very simple and move more display-specific logic into driving logic which usually runs on a more programmer-friendly device like an Arduino or Raspberry Pi. (Or maybe even a ESP32!) So this time around I'm not going to decode ASCII characters or anything along those lines: I'm going to create a PIC driver that listens for commands over I2C specifically about cycling through and toggling pins. The idea is to avoid unnecessary PIC code churn that uselessly reinvent the wheel <a href="https://github.com/Roger-random/I2C_LTC-4627JR">from one LED display</a> to <a href="https://github.com/Roger-random/HelloLTC5723HR">another</a>, instead moving that to the Arduino/Pi/ESP32/etc side.</p>
+<p><img class=" size-full wp-image-12384 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/img_5238.jpg" alt="IMG_5238" width="1024" height="768"></p>
+<p></body></html></p>

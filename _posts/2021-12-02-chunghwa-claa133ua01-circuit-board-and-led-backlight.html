@@ -1,0 +1,86 @@
+---
+layout: post
+title: Chunghwa CLAA133UA01 Circuit Board and LED Backlight
+date: 2021-12-02 12:30:00.000000000 +00:00
+type: post
+post_id: '27699'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Backlight
+- CLAA133UA01
+- LCD Panel
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27693'
+  _publicize_job_id: '66050354984'
+  timeline_notification: '1638477033'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/02/chunghwa-claa133ua01-circuit-board-and-led-backlight/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I tried and <a href="https://newscrewdriver.com/2021/12/01/chunghwa-claa133ua01-polarizer-glue-stronger-than-polarizer-film/">failed to salvage the polarizer film of a Chunghwa CLAA133UA01</a> display panel, but that wasn't the primary objective anyway. I turned to the real goal of salvaging its LED backlight and the first step is to remove the perimeter protective film. Most of my prior salvaged panels were held together with thin black plastic tape, this panel is slightly different in its use of shiny metallic foil tape. I was surprised to see it, as I thought foil would short-circuit the components underneath. Perhaps it is some sort of metallized plastic instead of metal foil. This stuff rips more easily than others but at least its adhesive still came off cleanly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27688,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/11/chunghwa-claa133ua01-04-peeling-foil-tape.jpg?w=700" alt="" class="wp-image-27688"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the foil was removed, I could see three important-looking chips on the circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27690,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/11/chunghwa-claa133ua01-06-video-driver-candidate-mst7337f-a-aq2t842b-1049b.jpg?w=700" alt="" class="wp-image-27690"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Closest to the cable connector is a chip marked MST7337F-A AQ2T842B 1049B. A web search found <a rel="noreferrer noopener" href="https://www.kynix.com/Detail/1126158/MST7337F-LF.html" target="_blank">Kynix Semiconductor MST7337</a> which is a chip for NTSC/PAL/SECAM automotive TV applications. I don't think this is the right chip, but the correct answer eludes me. I might have better luck if I knew the logo, which is distinctive but not one I recognize. I didn't see that logo on the Kynix Semiconductor page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27691,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/11/chunghwa-claa133ua01-07-aat11771-a2u274-1052.jpg?w=700" alt="" class="wp-image-27691"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next chip was marked AAT11771 A2U274 1052. A web search found a hit: <a href="http://aat-ic.com/en-us/product.php?category=154&amp;subcategory=159&amp;product=301" target="_blank" rel="noreferrer noopener">Advanced Analog Technology AAT11771</a> is a controller for driving TFT LCD displays.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27689,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/11/chunghwa-claa133ua01-05-led-backlight-driver-candidate-a706b-a38t-66040.jpg?w=700" alt="" class="wp-image-27689"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The third important-looking chip was marked A706B A38T 66040. Its proximity to the LED backlight connector makes it a prime candidate for the LED driver, it's even next to the inductor + capacitor pairing consistent with a boost converter to raise voltage high enough to drive strings of LEDs. A search for A706B found that <a rel="noreferrer noopener" href="https://www.astm.org/a0706_a0706m-16.html" target="_blank">A706 is a standardized grade of steel bars</a> for concrete reinforcement, but I saw nothing about a LED driver chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27692,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/11/chunghwa-claa133ua01-08-backlight-fpc.jpg?w=700" alt="" class="wp-image-27692"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pulling up the backlight connector for a look, I can see there are five thin conductors, one per contact point plus one thick conductor using three contact points. Remaining contact points between them are apparently unused. Based on what I've seen on other panels, I guessed the thick conductor is a common source for five current sinks for five parallel strings of LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27693,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/11/chunghwa-claa133ua01-09-backlight-test-ok.jpg?w=700" alt="" class="wp-image-27693"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This hypothesis was quickly and easily tested with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/" target="_blank">a LED tester</a>, so if I never manage to find information on that LED driver chip I should at least be able to drive these strings directly via copious test points visible in that area of the circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Until I find need for another diffused LED light source, this is a good stopping point. I put the LED backlight back into storage and pulled a non-dead panel out of my hardware archives. This one is <a href="https://newscrewdriver.com/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/">still attached to a nominally working HP Stream 7 tablet</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

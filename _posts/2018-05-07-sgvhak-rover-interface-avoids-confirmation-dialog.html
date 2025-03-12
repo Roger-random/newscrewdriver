@@ -1,0 +1,40 @@
+---
+layout: post
+title: SGVHAK Rover Interface Avoids Confirmation Dialog
+date: 2018-05-07 09:00:36.000000000 +00:00
+type: post
+post_id: '16135'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Design
+- HTML
+- JavaScript
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1525708873'
+  _publicize_job_id: '17585638776'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/07/sgvhak-rover-interface-avoids-confirmation-dialog/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-16119 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/shutdown-reboot.png" alt="Shutdown Reboot" width="563" height="199"></p>
+<p>Our SGVHAK Rover's brain prefers to be shut down gracefully rather than having its power removed at an arbitrary time. If power cuts out in the middle of a system write operation, it risks corrupting our system storage drive. While <a href="https://github.com/Roger-random/SGVHAK_Rover">our control software</a> is written to be fairly platform-agnostic, we're primarily running it on Raspberry Pi which lacks a hardware shutdown button. So we need to create an UI to initiate a system shutdown via software.</p>
+<p>The easiest thing to do would be to add a "Shutdown" button. And since it is a rather drastic event, have a "Are you sure?" confirmation dialog. This historically common pattern is falling out of favor with user interface designers. Computer users today are constantly inundated with confirmation dialog making them less effective. If our user has built up a habit of dismissing confirmation dialog without thinking, a confirmation dialog is no confirmation at all.</p>
+<p>So how do we enforce confirmation of action without resorting to the overplayed confirmation dialog? We have to design our UI to prevent an accidental shutdown from a wayward finger press. To accomplish this goal, our shutdown procedure is designed so user must make a deliberate series of actions, none of which is "Yes/No' on an ineffectual dialog box.</p>
+<p>First - our user must enter a "System Power" menu. If they entered by mistake, any of the three active buttons will take then back to main menu. There's no way to accidentally shutdown with a single mistaken tap.</p>
+<p>Second - they must select "Shutdown" or "Reboot", forcing a deliberate choice to be made before our UI activates "OK" button. If an incorrect selection is made, it can be corrected without accidentally triggering the action because both options are on the far left of the screen and "OK" is on the far right. Bottom line: Even with two accidental presses, our system will not shut down or reboot.</p>
+<p>Third - With the "OK" button now activate after two deliberate actions, the user can tap it to begin the shutdown (or reboot) process.</body></html></p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: Pixelblaze Pixel Map For LED Helix
+date: 2019-07-04 12:30:26.000000000 +00:00
+type: post
+post_id: '18796'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18831'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32493035423'
+  timeline_notification: '1562268730'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/04/pixelblaze-pixel-map-for-led-helix/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Completing <a href="https://newscrewdriver.com/2019/07/03/3d-printed-end-pieces-complete-led-helix-chassis/">first draft of a LED helix mechanical chassis</a> means everything is in place to dig into <a href="https://www.tindie.com/products/electromage/electromage-pixelblaze-v2-wifi-led-controller/">Pixelblaze</a> and start playing with the software end of things. There are a selection of built-in patterns on the default firmware, and they were used to verify all the electrical bits are connected correctly.</p>
+<p>But I thought the <a href="https://github.com/simap/pixelblaze/blob/master/README.mapper.md">Pixel Mapper</a> would be the fun part, so I dove in to details on how to enter a map to represent my helical LED strip. There are two options: enter an explicit array of XYZ coordinates, or write a piece of JavaScript that generates the array programmatically. The former is useful for arrangements of LEDs that are irregularly spaced, building a shape in 3D space. But since a helix is a straightforward mathematical concept (part of why I chose it) a short bit of JavaScript should work.</p>
+<p>There are two examples of JavaScript generating 3D maps, both represented cubes. There was a program to generate a 2D map representing a ring. My script to generate a helical map started with the "Ring" example with following modifications:</p>
+<ul>
+<li>Ring example involved a single revolution. My helix has 30 LEDs per revolution around the cylinder, making 10 loops on this 300 LED strip. So I multiplied the pixel angular step by ten.</li>
+<li>I've installed the strip starting from the top of the cylinder and winds downwards, so Z axis is decremented as we go. Hence the Z axis math is reversed from that for the cube examples.</li>
+</ul>
+<p>We end with the pixel map script as follows.</p>
+<blockquote><p>
+<code>function (pixelCount) {</code><br />
+<code>  var map = [];</code><br />
+<code>  for (i = 0; i &lt; pixelCount; i++) {</code><br />
+<code>    c = -i * 10 / pixelCount * Math.PI * 2</code><br />
+<code>    map.push([Math.cos(c), Math.sin(c), 1-(i/pixelCount)])</code><br />
+<code>  }</code><br />
+<code>  return map</code><br />
+<code>}</code>
+</p></blockquote>
+<p>Tip: remember to hit "Save" before leaving the map editor! Once saved, we could run the basic <code>render3D()</code> pattern from <a href="https://github.com/simap/pixelblaze/blob/master/README.mapper.md">Pixel Mapper documentation</a>.</p>
+<blockquote><p>
+<code>export function render3D(index, x, y) {</code><br />
+<code>  hsv(x, y, z)</code><br />
+<code>}</code>
+</p></blockquote>
+<p>And once we see a volume in <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV color space</a> drawn by this basic program, the next step is <a href="https://newscrewdriver.com/2019/07/05/pixelblaze-pattern-rgb-xyz-3d-octants/">writing my own test program to verify coordinate axis</a>.</body></html></p>

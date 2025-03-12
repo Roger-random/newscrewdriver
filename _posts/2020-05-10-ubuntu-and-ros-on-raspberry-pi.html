@@ -1,0 +1,40 @@
+---
+layout: post
+title: Ubuntu and ROS on Raspberry Pi
+date: 2020-05-10 12:30:22.000000000 +00:00
+type: post
+post_id: '21448'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Raspberry Pi
+- Ubuntu
+- Ubuntu Core
+meta:
+  _thumbnail_id: '21449'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44078485869'
+  timeline_notification: '1589139096'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/10/ubuntu-and-ros-on-raspberry-pi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Since I just discovered that I can <a href="https://newscrewdriver.com/2020/05/09/debian-with-raspberry-pi-desktop-on-hp-mini-110-1134cl-and-dell-latitude-x1/">replace Ubunto with lighter-weight Raspbian on old 32-bit PCs</a>, I thought it would be a good time to quickly jot down some notes about going the other way: replacing Raspbian with Ubuntu on Raspberry Pi.</p>
+<p>When I started building Sawppy in early 2018, I was already thinking ahead to turning Sawppy from a remote-controlled toy to an autonomous robot. Which meant a quick survey to the state of ROS. At the time, ROS Kinetic was the latest LTS release, targeted for Ubuntu 16.</p>
+<p>Unfortunately the official release of Ubuntu 16 <a href="http://releases.ubuntu.com/16.04.6">did not include an <code>armhf</code> build suitable for running on a Raspberry Pi</a>. Some people would build their own ROS from source code to make it run on Raspbian, I took one attempt and the build errors took more time to understand and resolve than I wanted to spend. I then chose the less difficult path of finding a derived released of Ubuntu 16 that ran on the platform: <a href="https://ubuntu-mate.org/blog/ubuntu-mate-xenial-raspberry-pi/">Ubuntu Mate 16</a>. An afternoon's worth of testing verified basic ROS Kinetic capability, and I set it aside for revisiting later.</p>
+<p>Later on in 2018, Ubuntu 18 was released, followed by <a href="http://wiki.ros.org/melodic/Installation">ROS Melodic</a> matching that platform. By then <a href="https://wiki.debian.org/RaspberryPi">support for running Debian (&amp; deriviatives) on armhf</a> had migrated to Ubuntu, and they released both the <a href="https://newscrewdriver.com/2019/08/10/raspberry-pi-web-kiosk-boots-faster-on-raspbian-than-ubuntu-core/">snap-based Ubuntu Core</a> and <a href="https://ubuntu.com/download/raspberry-pi">Ubuntu 'classic' for Raspberry Pi</a>. These are minimalist server images, but desktop UI components can be installed if needed. Information to do so can be <a href="https://wiki.ubuntu.com/ARM/RaspberryPi">found on Ubuntu wiki</a> but obviously UI is not a priority when I'm looking at robot brains. Besides, if I wanted an UI, Ubuntu Mate 18 is still available as well. For Ubuntu 20 released this year, the <a href="https://ubuntu.com/download/raspberry-pi">same choices continue to be offered</a>, which should match well with <a href="http://wiki.ros.org/noetic/Installation">ROS Noetic</a>.</p>
+<p>I don't know how relevant this is yet for ROS on a Raspberry Pi, but I noticed not only are 32-bit <code>armhf</code> binaries available, so are 64-bit <code>arm64</code> binaries. Raspberry Pi 3 and 4 have CPU capable of running <code>arm64</code> code, but Raspbian has remained 32-bit for compatibility with existing Pi software and with low-end devices like the Raspberry Pi Zero incapable of <code>arm64</code>. More than just an ability to address more memory, moving to <code>arm64</code> instruction set was also a chance to break from some inconvenient bits of architectural legacy which in turn allowed better <code>arm64</code> performance. Though the performances increase are minor as applied to a Raspberry Pi, ROS releases include precompiled <code>arm64</code> binaries so the biggest barrier to entry has already been removed and might be worth a look.</p>
+<p>[UPDATE <a href="https://newscrewdriver.com/2020/08/03/update-on-arm64-ros2-on-pi/">I found a good reason to go for <code>arm64</code>: ROS2</a>]</p>
+<p></body></html></p>

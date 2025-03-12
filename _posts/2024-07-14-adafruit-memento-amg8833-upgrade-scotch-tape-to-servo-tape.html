@@ -1,0 +1,81 @@
+---
+layout: post
+title: 'Adafruit Memento + AMG8833: Upgrade Scotch Tape to Servo Tape'
+date: 2024-07-14 12:30:00.000000000 +00:00
+type: post
+post_id: '44201'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44204'
+  wordads_ufa: s:wpcom-ufa-v4:1721087617
+  firehose_sent: '1720985437'
+  _publicize_job_id: '96237502161'
+  timeline_notification: '1720985439'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-15 23:55:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/14/adafruit-memento-amg8833-upgrade-scotch-tape-to-servo-tape/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I taped an AMG8833 thermal sensor to my Adafruit Memento camera to create a thermal vision camera, and finally got my code <a href="https://newscrewdriver.com/2024/07/13/adafruit-memento-amg8833-numpy-and-list-comprehension/">fast enough to keep up with the sensor's speed limit</a> at around ten frames per second. It turned out to be a great practice lesson in CircuitPython performance optimization! Now I need to wrap up some loose ends.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was one little change on the software side: because I'm using color to represent temperature, sometimes color in the real world can be confusing. So I <a href="https://github.com/Roger-random/circuitpython_tests/commit/98c25667a423278554738dfb12a772dd31a66200">flipped the visual camera mode to black-and-white</a> ensuring all color visible on screen comes from thermal data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44123,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/adafruit-memento-with-amg8833-sensor-taped-on.jpg?w=1024" alt="" class="wp-image-44123"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I worked on improving how the AMG8833 is mounted. I used cellophane tape because it was quick and easy and good enough for me to start experimenting. But it's pretty fragile and would not fit in the Memento carrying case that came as part of Adabox 021. Now that the experiment is a success, it's worth effort to make a better mount.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44206,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/adafruit-amg8833-sensor-in-clear-heat-shrink-tube.jpg?w=800" alt="" class="wp-image-44206"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The sensor is now protected by a bit of transparent heat-shrink tubing, and the wires were re-soldered so they exit out the side instead of back.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44204,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/adafruit-memento-with-amg8833-sensor-attached-with-servo-tape.jpg?w=1024" alt="" class="wp-image-44204"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then used some double-sided foam tape to attach the sensor module closer to the visual camera module. This position blocked three of the front panel LEDs but I haven't been using them anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44205,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/adafruit-memento-with-amg8833-sensor-attached-now-fits-in-carrying-case.jpg?w=800" alt="" class="wp-image-44205"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And now it fits in carrying case! I thought having a thermal camera would be neat, but I was never sure how much I would actually use one. Now I have a low resolution DIY version, I'll see if it comes in handy. I can see several future possibilities:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol class="wp-block-list">
+<!-- wp:list-item --></p>
+<li>I might take this apart for another project idea. For one thing, this project didn't make use of Memento's <a href="https://newscrewdriver.com/2024/07/05/adafruit-memento-a-k-a-pycamera-photography-parameters/">photography capabilities</a> at all and I think that's a shame.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Maybe I'll upgrade to <a href="https://www.adafruit.com/product/4407">a better sensor module</a> breakout board.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Maybe I'll decide a thermal camera is useful enough to finally buy a FLIR ONE for myself.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Time will tell.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For now, I'm still thinking about electronics that help me see what I can't see with my own eyes. Thermal cameras do that, and <a href="https://newscrewdriver.com/2024/07/15/revisiting-budget-digital-microscopes/">so do microscopes</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

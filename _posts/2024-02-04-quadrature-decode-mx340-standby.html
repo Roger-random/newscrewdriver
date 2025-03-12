@@ -1,0 +1,55 @@
+---
+layout: post
+title: Quadrature Decode MX340 Standby
+date: 2024-02-04 12:30:00.000000000 +00:00
+type: post
+post_id: '41845'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  firehose_sent: '1707078624'
+  _publicize_job_id: '91683673887'
+  timeline_notification: '1707078625'
+  wordads_ufa: s:wpcom-ufa-v4:1707183835
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/04/quadrature-decode-mx340-standby/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got an Arduino Nano connected to the internals of a Canon Pixma MX340 multi-function inkjet, specifically the quadrature encoder reporting on rotational motion of the paper feed motor gear assembly. After <a href="https://newscrewdriver.com/2024/02/03/quadrature-decode-mx340-startup/">capturing the power-up sequence</a>, I pressed the button again to capture the power-down standby sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41854,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-standby-no-print.png?w=1024" alt="" class="wp-image-41854"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This standby sequence took twice as long as the power-up sequence, 18 seconds versus 9. Almost 11 seconds were spent rolling backwards relative to printing feed direction, traversing about 248,000 encoder counts. Eight times more than the backwards roll during power-up, which traversed ~31,000 encoder counts. That long rearward roll was followed by a forward roll for ~25,000 encoder counts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>During this roll, there were no paper motion and the print carriage sits in the parked position. What effect could this roll have? At the moment, my only guess is something preparing the ink cartridges to sit for a while. It would make sense for the power-up sequence to prepare the ink cartridges for use, and then for the standby sequence to prepare them for storage. Trying to figure out the details of this preparatory work is on the to-do list for later this teardown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Besides that very long motion, there are several small movements back and forth. Looking at the data, I can see the times and duration differ between them, but each of those smaller movements traversed 1800 encoder counts. Reviewing the startup sequence, most of those small movements were also 1800 encoder counts. This is interesting. I will have to determine how many degrees of rotation corresponds to 1800 encoder counts, then look for a mechanism that corresponds to such a rotation during later disassembly. This little detail should be easier to understand than <a href="https://newscrewdriver.com/2024/02/05/quadrature-decode-mx340-print/">the actual printing process</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

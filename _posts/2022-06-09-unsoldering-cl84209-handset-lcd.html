@@ -1,0 +1,64 @@
+---
+layout: post
+title: Unsoldering CL84209 Handset LCD
+date: 2022-06-09 12:30:00.000000000 +00:00
+type: post
+post_id: '30743'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30744'
+  _publicize_job_id: '73482061225'
+  timeline_notification: '1654803072'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/09/unsoldering-cl84209-handset-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/06/07/cl84209-base-station-lcd-segment-map/">mapping out the segments</a> on the LCD salvaged from the base station of an AT&amp;T CL84209 cordless phone system, I have reached the limits of what I can do in the absence of additional information. It has been wonderfully instructive to have a handset from the same system with its own LCD. I found that <a href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/">both LCD respond to the same command protocol</a>, so I could power up the handset circuit and watch what happens under a logic analyzer then try to replicate the same behavior for the base station LCD. Now it is time for me to remove the LCD from the handset circuit board. I wanted to do so for two reasons:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>I don't really want to keep the entire handset circuit board. It is designed to talk to a base station that no longer exists.</li>
+<li>It might be hiding some useful secrets underneath the LCD. I have a working knowledge of how all the pins work, but I might learn more from probing the circuit board independent of the LCD.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>A bit of time with the solder station and I have separated the LCD to see that there's... almost no components hidden underneath.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30751,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-handset-backlight-led3.jpg?w=1024" alt="" class="wp-image-30751"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just a single side-illumination LED in the upper right corner marked LED3. It feeds into a backlight mechanism much less sophisticated than <a href="https://newscrewdriver.com/2021/06/24/amazon-fire-sr043kl-backlight-layers/">a Fire tablet's backlight</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30753,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-handset-pcb-front.jpg?w=1024" alt="" class="wp-image-30753"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>But now we can see copper traces on this side of the circuit board. I was happy to see that my arbitrary left-to-right pin numbering matched what's silkscreened here, purely by accident! I had thought pin 1 or 5 could be the power supply, and decided 1 was enable and 5 was supply. Now I get confirmation because 1 is a very narrow signal trace and 5 is a much thicker power trace. 2 and 3 were also thin digital signal lines for I<sup>2</sup>C, and 4 is connected to a big grid-patterned plane consistent with ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Those were great confirmations of my earlier guesses, but even better is information about the rest of the pins. The surprise was that pin 9 appears to be connected, because I had thought it was one of the capacitors I saw on the back side. Another surprise is that pin 6, which I thought would connect to a +5.2V supply, seems to connect only to one of four vias (marked by white circles) going to the other side of the circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30754,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-handset-pcb-back.jpg?w=1024" alt="" class="wp-image-30754"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following those four vias to the other side, I find a pair of capacitors. Now that the LCD has been unsoldered, my multimeter could measure their capacitance: the one on the left read 823nF and the one on the right 775nF. Looking over popular capacitors on Digi-Key, these might be 0.82uF +/- 10% capacitors. But even more importantly: now that I can see the traces, I understand one capacitor bridges the +3.3V line and the +5.2V line, and the other bridges the two square wave lines. My electronics knowledge isn't good enough to know what this means. But once I replicated this part of the circuit, I saw <a href="https://newscrewdriver.com/2022/06/10/lcd-driver-has-own-voltage-boost-converter-after-all/">a voltage boost converter in action</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

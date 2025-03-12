@@ -1,0 +1,106 @@
+---
+layout: post
+title: Exploring Low Power ESPHome Nodes
+date: 2022-02-26 12:30:00.000000000 +00:00
+type: post
+post_id: '28752'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- ESPHome
+- Home Assistant
+- INA219
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28715'
+  _edit_last: '98499281'
+  _publicize_job_id: '69511413384'
+  timeline_notification: '1645907451'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669019768
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/26/exploring-low-power-esphome-nodes/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I investigated <a href="https://newscrewdriver.com/2022/02/25/adding-up-power-in-esphome-and-home-assistant/">adding up power over time</a> into a measure of energy, I found that I have the option of doing it either on board my ESPHome microcontroller or on the Home Assistant server. I'm personally in favor of moving as much computation on the server as I can, and another reason is because keeping the sensor node lightweight gives us the option of putting it to sleep in between sensor readings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Preliminary measurements put this MP1584EN + ESP8266 + INA219 at a combined average power draw of somewhere around a quarter to a third of a Watt. This is pretty trivial in terms of home power consumption, but not if there is ambition to build nodes that run on battery power. For example, let's do some simple math with a pair of cheap NiMH rechargeable AA batteries. With a nominal capacity of 2000 mAh and nominal voltage of 1.2V each, that multiplies out (1.2 V * 2 Amps  1 hour * 2 batteries) to 4.8 Watts over an hour. Actual behavior will vary a lot due other variables, but that simple math gives an order of magnitude. Something that constantly draws 0.3 Watt would last somewhere on the order of (4.8 / 0.3) 16 hours, or less than a day, on a pair of rechargeable AA NiMH batteries.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESPHome has options for putting a node <a href="https://esphome.io/components/deep_sleep.html">into deep sleep</a>, and the simplest options are based on time like running for X seconds and sleep for Y minutes. For more sophisticated logic, a <code>deep_sleep.enter</code> action is exposed to enter sleep mode. There is also a <code>deep_sleep.prevent</code> action to keep a node awake, and the example is to keep a node awake long enough to upload a code update. This is a problem I've <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/02/14/esp8266-micropython-exception-handling-helps-robustness/" target="_blank">tripped over during my MicroPython adventure</a> and it's nice to see someone has provided a solution in this framework.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The example code reads retained value on a MQTT topic to decide whether to go to sleep or not. I think this is useful, but I also want a locally controlled method for times when MQTT broker is unreachable for any reason. I wanted to dedicate a pin on the ESP8266 for this, with an internal pull-up and an external switch to pull to ground. When the pin is low, the node will go to sleep as programmed. If the pin is high, the node stays awake. I will wire this pin to ground via a jumper so that when the jumper is removed, the node stays awake. And if the jumper is reinstalled, the node goes to sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Such GPIO digital activity can be specified via <a rel="noreferrer noopener" href="https://esphome.io/components/binary_sensor/index.html" target="_blank">ESPHome Binary Sensor</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>deep_sleep:
+  run_duration: 30s
+  sleep_duration: 2min
+  id: deep_sleep_1
+
+binary_sensor:
+  - platform: gpio
+    name: "Sleep Jumper"
+    id: sleep_jumper
+    pin:
+      number: 13
+      mode:
+        input: true
+        pullup: true
+    on_press:
+      then:
+        - logger.log: "Preventing deep sleep"
+        - deep_sleep.prevent: deep_sleep_1
+    on_release:
+      then:
+        - logger.log: "Entering deep sleep"
+        - deep_sleep.enter:
+            id: deep_sleep_1
+            sleep_duration: 1min</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>But this is not <strong><em>quite </em></strong>good enough, because <code>on_press</code> only happens if the high-to-low transition happens while the node is awake. If I pull the jumper while the node is asleep, upon wake the pin state is low and my code for high-to-low transition does not run. I needed to check the binary sensor state elsewhere before the sleep timer happens. In the case of this particular project, I also used the analog pin to read battery voltage once every few seconds, so I removed the check from <code>on_press</code> to <a rel="noreferrer noopener" href="https://esphome.io/components/sensor/adc.html" target="_blank">ADC sensor</a> <code>on_value</code>. (I left <code>on_release</code> code in place so it will still go to sleep when jumper is reinstalled.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sensor:
+  - platform: adc
+    pin: A0
+    name: "Battery"
+    update_interval: 5s
+    on_value:
+      if:
+        condition:
+          binary_sensor.is_on: sleep_jumper
+        then:
+          - logger.log: "Preventing deep sleep"
+          - deep_sleep.prevent: deep_sleep_1</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This performs a jumper check every time the ADC value is read. This is pretty inelegant code, linking two unrelated topics, but it works for now. It also avoids the problem of digital signal debouncing, which would cause <code>on_press</code> and <code>on_release </code>to both be called in rapid succession unless a <a rel="noreferrer noopener" href="https://esphome.io/components/binary_sensor/index.html#delayed-on-off" target="_blank"><code>delayed_on_off</code></a> filter is specified.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ideally, this sensor node would go to sleep immediately after successfully performing a sensor read operation. This should take less than 30 seconds, but the time is variable due to external conditions. (Starting up WiFi, connect to router, connect to Home Assistant, etc.) The naive approach is to call <code>deep_sleep.enter</code> in response to <code>on_value</code> for a sensor, but that was too early. <code>on_value</code> happens immediately after the value is read, <em><strong>before</strong></em> it was submitted to Home Assistant. So when I put it to sleep in <code>on_value</code>, Home Assistant would never receive data. I have to find some other event corresponding to "successfully uploaded value" to trigger sleep, and I haven't found it yet. The closest so far is the Home Assistant client <a href="https://esphome.io/components/api.html?highlight=connection#api-connected-condition"><code>api.connected</code></a> condition, but that falls short on two fronts. The first is that it does not differentiate between connecting to Home Assistant (useful) versus ESPHome dashboard (not useful). The second is that it doesn't say anything about success/failure of sensor value upload. Maybe it's possible to do something using that condition, in the meantime I wait 30 seconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A quick search online found <a rel="noreferrer noopener" href="https://ncrmnt.org/2021/12/06/optimizing-esp8266-esphome-for-battery-power-and-making-an-ice-bath-thermometer-as-well/" target="_blank">this person's project</a> also working to prolong battery life for an ESP8266 running ESPHome, and their solution is to use MQTT instead of the Home Assistant communication API. I guess they didn't find an "after successful send" event, either. Oh well, at least I'm getting data from INA219 between sleep periods, and <a href="https://newscrewdriver.com/2022/02/27/a-tale-of-two-adcs-esp32-versus-ina219/">that data looks pretty good</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

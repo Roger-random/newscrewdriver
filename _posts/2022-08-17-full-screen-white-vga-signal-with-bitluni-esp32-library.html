@@ -1,0 +1,80 @@
+---
+layout: post
+title: Full Screen White VGA Signal with Bitluni ESP32 Library
+date: 2022-08-17 12:30:00.000000000 +00:00
+type: post
+post_id: '32015'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+- VGA
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32022'
+  _publicize_job_id: '75848051870'
+  timeline_notification: '1660764631'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669192533
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/17/full-screen-white-vga-signal-with-bitluni-esp32-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Over two and a half years ago, I had the idea to repurpose a failed monitor into a color-controllable lighting panel. I established it was technically feasible to <a href="https://newscrewdriver.com/2020/01/29/vga-signal-generation-with-pic-feasible/">generate a solid color full screen VGA signal with a PIC</a>, then I promptly got distracted by other projects and never dug into it. I still have the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/01/17/strange-failure-of-monoprice-monitor-10734/" target="_blank">weirdly broken monitor</a> and I still want a large diffuse light source, but now I have to concede I'm unlikely to dedicate the time to build my own custom solution. In the interest of expediency, I will fall back to leveraging someone else's work. Specifically, <a rel="noreferrer noopener" href="https://bitluni.net/esp32-vga" target="_blank">Bitluni's work to generate VGA signals with an ESP32</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bitluni's initial example has since been packaged into <a href="https://github.com/bitluni/ESP32Lib">Bitluni's ESP32Lib Arduino library</a>, making the software side very easy. On the hardware side, I dug up one of my breadboards already populated with an ESP32 and plugged in the VGA cable I had cut apart and modified for my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/01/27/sparklecon-2020-day-2-arduino-vgax/" target="_blank">earlier VGAX experiment</a>. Bitluni's library is capable of 14-bit color with the help of a voltage-dividing resistor array, but I only cared about solid white and maybe a few other solid colors. The 3-bit color mode, which did not require an external resistor array, would suffice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I loaded up Bitluni's <a rel="noreferrer noopener" href="https://github.com/bitluni/ESP32Lib/blob/master/examples/VGAHelloWorld/VGAHelloWorld.ino" target="_blank">VGAHelloWorld example sketch</a> and... nothing. After double-checking my wiring to verify it is as expected, I loaded up a few other sketches to see if anything else made a difference. I got a picture from <a href="https://github.com/bitluni/ESP32Lib/blob/master/examples/VGASprites/VGASprites.ino">the VGASprites example</a>, though it had limited colors as it is a 14-bit color demo and I had only wired up 3-bit color. Simplifying code in that example step by step, I narrowed down the key difference to be the resolution used: VGAHelloWorld used MODE320x240 and VGASprites used MODE200x150. I changed VGAHelloWorld to MODE200x150 resolution, and I had a picture.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was not entirely a surprise. The big old malfunctioning monitor had a native resolution of 2560x1600. People might want to display a lower resolution, but that's still likely to be in the neighborhood of high-definition resolutions like 1920x1080. There was no real usage scenario for driving such a large panel with such low resolutions. The monitor's status bar said it was displaying 800x600, but 200x150 is one-sixteenth of that. I'm not sure why this resolution, out of many available, is the one that worked.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't think the problem is in Bitluni's library, I think it's just idiosyncrasies of this particular monitor. Since I resumed this abandoned project in the interest of expediency, I didn't particular care to chase down why. All I cared about was that I could display solid white, so resolution didn't matter. But timing mattered, because VGAX output signal timing was slightly off and could not fill the entire screen. Thankfully Bitluni's code worked well with this monitor's "scale to fit screen" mode, expanding the measly 200x150 pixels to its full 2560x1600. An ESP32 is overkill for just generating a full screen white VGA signal, but it was the most expedient way for me to <a href="https://newscrewdriver.com/2022/08/18/monoprice-monitor-internals-round-2-10734/">turn this monitor into a light source</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32068,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/monoprice-10734-full-white-rgb-input.jpg?w=1024" alt="" class="wp-image-32068"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>#include &lt;ESP32Lib.h&gt;
+
+//pin configuration
+const int redPin = 14;
+const int greenPin = 19;
+const int bluePin = 27;
+const int hsyncPin = 32;
+const int vsyncPin = 33;
+
+//VGA Device
+VGA3Bit vga;
+
+void setup()
+{
+  //initializing vga at the specified pins
+  vga.init(vga.MODE200x150, redPin, greenPin, bluePin, hsyncPin, vsyncPin); 
+
+  vga.clear(vga.RGB(255,255,255));
+}
+
+void loop()
+{
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>UPDATE: After I had finished this project, I found <a rel="noreferrer noopener" href="https://github.com/smaffer/espvgax" target="_blank">ESPVGAX</a>: a VGA signal generator for the cheaper ESP8266. It only has 1-bit color depth, but that would have been sufficient for this. However there seem to be a problem with timing, so it might not have worked for me anyway. If I have another simple VGA signal project, I'll look into ESPVGAX in more detail.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

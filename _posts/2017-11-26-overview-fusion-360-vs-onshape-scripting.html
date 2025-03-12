@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'Overview: Fusion 360 vs. Onshape Scripting'
+date: 2017-11-26 23:04:09.000000000 +00:00
+type: post
+post_id: '15511'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Fusion 360 vs. Onshape
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11871986791'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/26/overview-fusion-360-vs-onshape-scripting/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>My fascination with gears led me to the <a href="https://en.wikipedia.org/wiki/Scripting_language">scripting mechanism</a> in both Fusion 360 and Onshape. Both CAD packages offer only minimal gear generation capabilities, and not even built-in to the main software: Spur gear generation was given in the form of an external add-in. This meant they are ideal introductory entry points to examine the different design philosophies.</p>
+<p>The Onshape team invented their own scripting language called <a href="https://www.onshape.com/featurescript">FeatureScript</a>. It has some <a href="https://cad.onshape.com/FsDoc/tokens.html">superficial similarities with C-style languages</a> which helps a software developer get up and running more quickly on the new language. The code libraries are designed specifically around designing parts within a Onshape feature studio.</p>
+<p>In contrast, Autodesk did not try to invent a new language. Instead, they decided to support multiple existing languages and let the user choose the one that best suits their purpose. C++ or Python. (Fusion 360 used to also support JavaScript, but support has been deprecated.)</p>
+<p><strong>Readability</strong>: Because FeatureScript was designed specifically for its task, the code is much more direct and readable. All API are designed to fit with FeatureScript because that's the only language supported. Fusion 360 C++/Python code must call into the Autodesk library code which had to be adapted to be usable across languages. <em>Advantage: Onshape.</em></p>
+<p><strong>Performance</strong>: C++ can be compiled to native code and executed on the local computer. For small tasks, this will be the fastest possible option. Python code running locally wouldn't be quite as fast, but unlike FeatureScript, it does not have to deal with network latency. <em>Advantage: Fusion 360</em></p>
+<p><strong>Security</strong>: FeatureScript executes in a secure sandbox on Onshape server, and thus limited in risk for exploitation by bad actors. In contrast, a native C++ binary can easily host hostile code. Python is slightly better in this regard, but it's not clear how much effort (if any) Fusion 360 puts into running Python securely. <em>Advantage: Onshape</em></p>
+<p><strong>Development</strong>: Like the rest of Onshape, all work with FeatureScript takes place within the user's web browser window. If the developer does not like the Onshape FeatureScript editor, they are unfortunately stuck. In contrast, Fusion 360 presents many options. C++ development takes place on a platform-appropriate IDE (<a href="https://en.wikipedia.org/wiki/Microsoft_Visual_Studio">Visual Studio</a> for Windows, <a href="https://en.wikipedia.org/wiki/Xcode">Xcode</a> for MacOS) and for Python the <a href="https://en.wikipedia.org/wiki/Spyder_(software)">Spyder IDE</a> is provided. <em>Advantage: Fusion 360</em></p>
+<p><strong>Evolution</strong>: FeatureScript is owned by Onshape and any future evolution is fully under Onshape control. Since all FeatureScript written by users are stored on Onshape servers, they can validate any future changes for compatibility. In contrast, Autodesk owns neither C++ nor Python and could not direct future evolution. And since Autodesk does not host the plug-in code, they have no visibility on breaks in compatibility. Lastly, as history has shown, Autodesk can choose to abandon a language (JavaScript) and all the users on it. <em>Advantage: Onshape</em></p>
+<p><strong>Capability</strong>: FeatureScript is constrained to feature creation in a parts studio. Autodesk API is currently roughly similar, focused on the model designer portion of Fusion 360, but they are starting to branch out. As of this writing they've just started rolling out some basic scripting capabilities for the CAM module and stated intention to do more. <em>Advantage: Fusion 360</em></p>
+<hr>
+<p><img class=" size-full wp-image-9999 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/08/python-logo.png" alt="Python Logo" width="355" height="112">For the immediate future, I intend to focus on Fusion 360 scripting via Python. I've wanted to become more proficient in Python, and this would be a good way to look at Python through a lens entirely different from writing Qt code on a Raspberry Pi. I also have ambition to write Fusion 360 plug-in that leverages external libraries to provide novel services, and that's not possible when stuck inside the FeatureScript sandbox. I will just have to keep a careful eye on the Python library imports in an effort to keep the security risks under control.</p>
+<p> </body></html></p>

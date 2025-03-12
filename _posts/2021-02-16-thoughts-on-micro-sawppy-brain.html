@@ -1,0 +1,55 @@
+---
+layout: post
+title: Thoughts on Micro Sawppy Brain
+date: 2021-02-16 12:30:00.000000000 +00:00
+type: post
+post_id: '24945'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24836'
+  _publicize_job_id: '54872053826'
+  timeline_notification: '1613507411'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/16/thoughts-on-micro-sawppy-brain/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My <a href="https://newscrewdriver.com/2021/02/15/remaining-to-do-for-my-next-unity-3d-adventure/">diversion to learn a bit of Unity 3D</a> was a good change of pace, but now I will set that aside and return to rover work. My latest little rover Micro Sawppy Beta 3 (MSB3) had a few interesting features that I reviewed before taking this Unity break, most recently <a href="https://newscrewdriver.com/2021/02/06/micro-sawppy-beta-3-differential-link/" target="_blank" rel="noreferrer noopener">a few notes on MSB3's living hinge differential link</a>. MSB3 was built around the TT gearbox, which requires DC motor drivers commanded by some kind of rover brain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have the option of using the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/09/micro-sawppy-beta-1-electronics/" target="_blank">same brain I used for MSB1 and MSB2</a>, which was adapted from Sawppy V1 and allowed me to control everything with servo PWM control signals. This worked for MSB1 and MSB2 because they were all micro servos. Four in their original form for steering, and six <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/04/converting-mg90s-metal-gear-micro-servo-to-continuous-rotation/" target="_blank">modified to continuous rotation</a> to drive the wheels. But now that I've converted rover locomotion to DC gear motors, I'll have to switch to something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My current generation of rover software was originally written for SGVHAK rover, which had DC motors in its wheels and used <a rel="noreferrer noopener" href="https://www.basicmicro.com/motor-controller" target="_blank">RoboClaw motor controllers</a>. Those are nice, but far too expensive for my micro Sawppy price target. Or I could continue controlling via PWM by using <a href="https://amzn.to/3qCNzL7">forward/reverse brushed DC motor controllers</a>(*) from the world of remote control hobbies. These are far less expensive than RoboClaw controllers but also less capable. Unfortunately they are still too expensive to meet my price target. Motivation to find a cheap commodity was why I investigated commodity L298N driver boards earlier.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I've always known I couldn't keep using a Raspberry Pi. In order to meet my price target, I have to swap it out for something more affordable. For MSB1 I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/09/micro-sawppy-beta-1-electronics/" target="_blank">chose to use the Pi as a known quantity</a>, because the rest of the rover was all new and I wanted to reduce the number of unknowns for the first prototype. After several revisions I'm at MSB3 and I've decided it's fine if a baseline micro Sawppy didn't have the computing power of a Raspberry Pi as long as there are <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/16/micro-sawppy-beta-2-equipment-bay/" target="_blank">provisions for people to upgrade</a> if they wish. So any microcontroller capable of generating the required PWM control signals (for servos and for L298N motor drivers) would suffice. The classic Arduino is always the first candidate I consider for a project, but ATmega328P based Arduinos only have 6 PWM channels. That's not enough here so I have to move upscale.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Classic ATmega328P-based Arduino are also missing another very important feature: WiFi. SGVHAK rover's Raspberry Pi based brain served up a <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/blob/master/docs/SGVHAK%20Rover%20Software.md" target="_blank">web browser-based rover control interface</a>. Controlling Sawppy from my touchscreen phone was very useful. Not just because of convenience but also because I didn't need to worry about building a separate device to act as handheld controller. Which, in a bit of cheat, also meant I did not counted the cost of controller phone in micro Sawppy budget. I justified this by saying many people today have old web-capable touchscreen phone or two sitting around collecting dust. Maybe a stretch, but I'm going with it!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want something more powerful than a classic ATmega328P-based Arduino, but more affordable than a Raspberry Pi, and can handle web-based network traffic over WiFi, the top candidate is pretty obvious: <a href="https://newscrewdriver.com/2021/02/17/esp32-feels-less-disorienting-this-time/">ESP32, we meet again</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

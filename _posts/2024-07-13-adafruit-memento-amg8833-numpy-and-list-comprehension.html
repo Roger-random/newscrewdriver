@@ -1,0 +1,92 @@
+---
+layout: post
+title: 'Adafruit Memento + AMG8833: NumPy and List Comprehension'
+date: 2024-07-13 12:30:00.000000000 +00:00
+type: post
+post_id: '44191'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44123'
+  _oembed_65ceaffd2e64c9f5b28384a26c6ce2d6: "{{unknown}}"
+  _oembed_95279b0643d49e8a41c9a703b23f1c1e: "{{unknown}}"
+  wordads_ufa: u:wpcom-ufa-v4:1720995648
+  _publicize_job_id: '96214027264'
+  _oembed_7b7a748fc9308041e2dbb18b04b20abc: "{{unknown}}"
+  firehose_sent: '1720899047'
+  timeline_notification: '1720899047'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-14 22:22:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/13/adafruit-memento-amg8833-numpy-and-list-comprehension/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Pairing an AMG8833 thermal sensor with an Adafruit Memento camera gave me a thermal camera, but my code was running quite slowly. I found an example illustrating use of (<code>ulab.numpy</code> subset of) NumPy for interpolating data from AGM8833's sensor grid to a larger grid, and <a href="https://newscrewdriver.com/2024/07/12/adafruit-memento-amg8833-add-interpolation/">adapted it to my project</a>. My performance marker timers say this resulted in total of ~320ms per frame, or roughly 3 frames per second. Here's an excerpt from rendering four frames:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>read 38028 scaled 596 mapped 1520 blit 27626 grid 224501 refresh 24528 total 316799
+read 38237 scaled 596 mapped 1520 blit 28789 grid 223636 refresh 24438 total 317216
+read 38296 scaled 566 mapped 1580 blit 27567 grid 226170 refresh 24438 total 318617
+read 38356 scaled 626 mapped 1728 blit 28849 grid 198901 refresh 24587 total 293047</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>More important than the interpolation itself was having an example for me to study NumPy. My takeaway is to avoid writing loops iterating through arrays as much as possible. Almost every performance win here boils down to substituting a tightly iterating loop with a single operation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Bitmap as NumPy Array</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest win was converting my thermal overlay drawing commands into a single NumPy operation. The critical part is creating a <code>ndarray</code> view on top of existing bitmap data in order to avoid copying its bits around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>output_ndview = np.frombuffer(output_bitmap,dtype=np.uint16).reshape((240,240))</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was the key allowing me to describe large scale bitmap operations without having to write my own <code>for</code> loops to iterate over <code>x,y</code> coordinates. The loops are still happening, of course, but now they're within fast native code free of Python runtime overhead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Subset Blues</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew <code>ulab.numpy</code> was a subset of full NumPy and was curious if the missing parts would be something I wished for or if they're too esoteric and I wouldn't miss their absence. The answer is the former: even as a beginner I quickly ran into situations where I found a NumPy answer on something like a Stackoverflow thread only to find features missing from <code>ulab.numpy</code>. One example is <code>repeat()</code>, which I replaced with my own series of unrolled copy operations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">List Comprehension For Palette Lookup</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final bit of code to be replaced by NumPy operations was a thermal color palette lookup. My first implementation did it easily with nested <code>for</code> loops iterating through x and y axis, but it's not fast. This feels like an operation that might have a NumPy operator, but nothing in <code>ulab.numpy</code> sounded applicable. Full NumPy offers a way to execute an arbitrary Python function over every element in an array, but that was missing from <code>ulab.numpy</code>. After reading through several Stackoverflow threads I decided to create a list comprehension out of palette lookup and build a NumPy array around the list. I've already <a href="https://newscrewdriver.com/2024/06/13/not-a-fan-of-python-succinct-syntax/">explained why I didn't like list comprehensions</a>, but performance numbers don't lie: performing palette lookup via list comprehension was at least an order of magnitude faster. For that kind of gain, I'll hold my nose and use a list comprehension.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Final Results</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've replaced almost every <code>for </code>loop in my old code with NumPy operations, the only remaining inner loop <code>for</code> generates my list comprehension. All of these changes add up to quite an improvement. As can be seen in these times involved in generating four frames:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>read 38624 scaled 775 interpolated 1132 mapped 2444 blit 28551 grid 6199 refresh 25361 total 103086
+read 38624 scaled 626 interpolated 924 mapped 2175 blit 28730 grid 33319 refresh 25153 total 129551
+read 38594 scaled 685 interpolated 1043 mapped 2295 blit 27716 grid 6288 refresh 25452 total 102073
+read 38504 scaled 656 interpolated 924 mapped 2295 blit 28044 grid 33289 refresh 25213 total 128925</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>As low as 102ms, almost 10fps, which is great! In fact, it marks the finish line. 9-10fps is as fast as the AMG8833 can deliver due to <a href="https://www.flir.com/support-center/oem/as-far-as-30-fps-vs.-9-fps-video-rates-are-concerned-why-use-one-over-the-other/">legal limitations imposed on thermal sensors</a>. Going faster won't gain anything thus ends this practice session of CircuitPython performance optimization. I will <a href="https://newscrewdriver.com/2024/07/14/adafruit-memento-amg8833-upgrade-scotch-tape-to-servo-tape/">wrap up a few details</a> and move on to the next project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">https://github.com/Roger-random/circuitpython_tests/blob/main/pycamera_amg88xx/code.py</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

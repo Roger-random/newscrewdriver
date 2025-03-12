@@ -1,0 +1,72 @@
+---
+layout: post
+title: InfluxDB Investigation Skipping 1.x, Going Straight To 2.x
+date: 2022-01-27 12:30:00.000000000 +00:00
+type: post
+post_id: '23767'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28326'
+  _publicize_job_id: '68238008314'
+  timeline_notification: '1643315416'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/27/influxdb-investigation-skipping-1-x-going-straight-to-2-x/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I read enough to <a href="https://newscrewdriver.com/2022/01/26/learning-influxdb-basics/">gain some working knowledge</a> of how to use InfluxDB, it was time to get hands-on. And the first decision to make is: what version? The InfluxDB project made a major version breaking change <a rel="noreferrer noopener" href="https://www.influxdata.com/blog/influxdb-2-0-open-source-is-generally-available/" target="_blank">not that long ago</a>. And older projects like the <a rel="noreferrer noopener" href="https://github.com/David00/rpi-power-monitor/wiki/Software-5.-All-About-the-Database" target="_blank">Raspberry Pi Power Monitor project</a> is still tied to the 1.x lineage of InfluxDB. Since this is an experiment, I would keep the footprint light by running InfluxDB in a Docker container. So when I looked on InfluxDB's official Docker repository I was puzzled to see it had only 1.x releases. [<strong>Update</strong>: 2.x images are now available, more details below.] Looking around for an explanation, I <a rel="noreferrer noopener" href="https://github.com/influxdata/influxdb/issues/16649" target="_blank">saw the reason</a> was because they did not yet have (1) feature parity and (2) a smooth automatic migration from 1.x to 2.x. This could mean bad things happening to people who periodically pull <code>influxdb:latest</code> from Docker Hub. While this problem was being worked on, InfluxDB 2 Docker images are hosted on <code>quay.io/influxdb/influxdb</code> instead of Docker hub.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found it curious Docker didn't have a standard mechanism to hold back people who are not ready to take the plunge for a major semantic version change, but I'm not diving into that rabbit hole right now. I have no dependency on legacy 1.x features, or a legacy 1.x database to migrate, or code using the old SQL-style query language. Therefore I decided to dive in to InfluxDB 2 with the knowledge I would also have to learn its new Flux query language that looks nothing like SQL.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Referencing the document <em><a rel="noreferrer noopener" href="https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/" target="_blank">Running InfluxDB 2.0 and Telegraf Using Docker</a></em>, I quickly got a bare-bones instance of InfluxDB 2 up and running. I didn't even bother trying to persist data on the first run: it was just to verify that the binaries would execute, and that the network ports were set up correctly so I could get into the administration UI to poke around. On the second run I mapped a volume to <code>/root/.influxdbv2</code> so my data would live on after the container itself is stopped. Now all I need to do is to <a href="https://newscrewdriver.com/2022/01/28/managed-influxdb-arduino-client-access/">get some data to store</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[<strong>Update</strong>: After InfluxDB Docker Hub was updated to release version 2 binaries, the mapped volume path changed from <code>/root/.influxdbv2</code> to <code>/var/lib/influxdb2</code>. See the <a rel="noreferrer noopener" href="https://hub.docker.com/_/influxdb" target="_blank">InfluxDB Docker Hub repository</a> for details under the section titled: <em>Upgrading from quay.io-hosted InfluxDB 2.x image</em>. In my case it wasn't quite as straightforward. The migration was introduced in InfluxDB 2.0.4, but I got all the way up to 2.1.1 from quay.io before I performed this migration. A direct switch to 2.1.1 did not work: it acted as if I had a new InfluxDB instance and didn't have any of my existing data. Trying to run 2.0.4 would fail with a "<code>migration specification not found</code>" error due to a <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/upgrade/downgrade/" target="_blank">database schema change introduced in 2.1.0</a>. Fortunately, running 2.1.0 docker image appeared to do the trick, loading up all the existing data. After that, I could run 2.1.1 and still keep all my data.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Docker <a href="https://github.com/compose-spec/compose-spec/blob/master/spec.md" target="_blank" rel="noreferrer noopener">compose file</a> I used to run 2.1.1 image hosted on quay.io, data stored in the subdirectory "mapped" which is in the same directory as the <code>docker-compose.yml</code> file:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>version: "3.8"
+
+services:
+  server:
+    image: quay.io/influxdb/influxdb:2.1.1
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+    volumes:
+      - ./mapped/:/root/.influxdbv2/</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Update: here's the version to use latest Docker hub image instead:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>version: "3.8"
+
+services:
+  server:
+    image: influxdb:latest
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+    volumes:
+      - ./mapped/:/var/lib/influxdb2/</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

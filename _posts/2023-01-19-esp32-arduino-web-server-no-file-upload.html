@@ -1,0 +1,70 @@
+---
+layout: post
+title: 'ESP32 Arduino Web Server: No File Upload?'
+date: 2023-01-19 12:30:00.000000000 +00:00
+type: post
+post_id: '34653'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- ESP32
+- HTML
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34639'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674255659
+  _publicize_job_id: '80707259767'
+  timeline_notification: '1674160233'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/19/esp32-arduino-web-server-no-file-upload/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In the interest of data integrity and security, modern web browsers impose constraints on JavaScript code running within that browser's environment. <a href="https://newscrewdriver.com/2023/01/18/html-location-matters-for-cors-and-mixed-content/">I ran into two of them very early on</a>: CORS and Mixed Content. They restrict how content from different web servers are allowed to interact with each other, which was a situation I stumbled into by hosting a HTTP endpoint on my ESP32 and hosting my browser UI files on my desktop computer: these are different servers!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The easiest way to avoid tripping over constraints like CORS or Mixed Content is to serve everything from the same server. In my case, that meant I should serve my browser UI HTML/JavaScript alongside AS7341 HTTP endpoint on the same ESP32. Sadly, this isn't as easy as I had hoped because Arduino doesn't really have the concept of uploading files to a board. When we choose "Upload Sketch" it will compile and upload executable code, but there's no way to also send my index.html and script.js files for serving over HTTP. Probably because such support varies wildly across different Arduino-compatible microcontrollers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For ESP32 specifically, a section of flash memory can be allocated for use like a disk drive via <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html" target="_blank">a mechanism called SPIFFS</a>. It is possible to put HTML and JavaScript files in SPIFFS to be served via HTTP. (Example: <a rel="noreferrer noopener" href="https://github.com/me-no-dev/ESPAsyncWebServer" target="_blank">ESPAsyncWebServer</a> can serve files from SPIFFS.) I implemented this concept for <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/15/esp32-http-was-easy-but-sending-files-need-spiffs/" target="_blank">an ESP32-based Micro Sawppy controller</a>, but that was using Espressif's ESP-IDF framework inside the PlatformIO environment. There's no direct counterpart for Arduino framework and Arduino IDE. Somebody has written an <a rel="noreferrer noopener" href="https://github.com/me-no-dev/arduino-esp32fs-plugin" target="_blank">Arduino IDE extension to upload files to ESP32 SPIFFS</a>, but that was last released in 2019 and as of writing is <a rel="noreferrer noopener" href="https://github.com/me-no-dev/arduino-esp32fs-plugin/issues/30" target="_blank">not yet compatible with latest version of Arduino IDE</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could embed those files as strings directly in source code, but that means I have to review my HTML and JavaScript to make sure I'm not using any special characters. The most obvious requirement is exclusive use of single quotes and no double quotes. Any backslash would also have special meaning in Arduino source code. This can get annoying very quickly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An alternative is to treat those files as binary files and embed them in source code as hexadecimal values. I've done this for embedding animated GIF data inside an Arduino sketch, and there's a handy command to do so: "<code>xxd -i index.html index.html.h</code>" This uses <code><a rel="noreferrer noopener" href="https://packages.ubuntu.com/search?keywords=xxd" target="_blank">xxd</a></code>, a hex dump command-line utility included in Ubuntu distributions by default. I still have to modify the output file, though:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Add "const" keyword to make sure it goes into flash storage instead of RAM.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Remove "unsigned" keyword to fit with signature for WebServer <code>server.send()</code>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Add a 0x00 to the end of the hex dump to null-terminate the string. (Technically it means I should add 1 to the "length" value as well, but I'm not using that value.)</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This works, but still quite cumbersome. I'm not sure it's better than the hassle of writing HTML and JavaScript in a C string compatible way. There has to be something better than either of these options, but until I find it, I'll jump through these hoops. Fortunately, I only have to do this when updating files served by my ESP32. Most of the time I'm updating code and seeing how they work served from my development desktop, a much simpler process that made <a href="https://newscrewdriver.com/2023/01/20/desktop-ie11-helps-debug-windows-phone-8-1-browser-but-also-going-away-soon/">debugging challenges less of a headache than they already are</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

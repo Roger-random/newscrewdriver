@@ -1,0 +1,60 @@
+---
+layout: post
+title: Adding Noble Specified Hardware Failed To Enable BLE Discovery
+date: 2020-10-01 12:30:00.000000000 +00:00
+type: post
+post_id: '22607'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- 13-r010dx
+- Node-RED
+meta:
+  _thumbnail_id: '22444'
+  _publicize_job_id: '49452678853'
+  timeline_notification: '1601580604'
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669797225
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/01/adding-noble-specified-hardware-failed-to-enable-ble-discovery/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've known <a href="https://newscrewdriver.com/2020/09/30/node-red-challenge-round-2-bluetooth-low-energy/">Bluetooth Low Energy (BLE)</a> to be a new technology that can still be challenging to interface with. I've had success so far with Node-RED making hard things easy, most recently in <a href="https://newscrewdriver.com/2020/09/26/monitoring-samsung-500t-discharge-charge-cycle/">reading battery power state in an old Windows 10 laptop</a>. So I wanted to see if BLE can be just as easy. The answer: it was not. Getting <code><a href="https://flows.nodered.org/node/node-red-contrib-noble-bluetooth">node-red-contrib-noble-bluetooth</a></code> set up and launching a flow was easy, but attempting to discover nearby BLE devices caused Node-RED itself to crash.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p><code>No compatible USB Bluetooth 4.0 device found!</code></p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the crash stack, the culprit appears to be <a rel="noreferrer noopener" href="https://github.com/noble/noble" target="_blank">Noble, the Node.js BLE module</a> upon which the Node-RED extension was built. There are some native code components that were built for Noble support, and if things go sour in native code, it fails like native code, hence the jarring failure. Quite unlike the typical recoverable JavaScript exception I've become spoiled by.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching on that error message, I found more information in <a rel="noreferrer noopener" href="https://github.com/noble/noble/issues/472" target="_blank">this GitHub issue</a> filed against Noble, which pointed to a Noble document explaining that <a href="https://github.com/noble/node-bluetooth-hci-socket#compatible-bluetooth-40-usb-adapters">support is limited to a fixed list of hardware</a>. Not surprisingly, the chip on board my experimental laptop was not on the list. I searched for the hardware on that list, and thought the <a rel="noreferrer noopener" href="https://amzn.to/32AX6rL" target="_blank">Asus USB-BT400</a> (*) was cheap enough to order and give it a try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the BT400 to function under Noble, I also needed to circumvent the normal driver installation process and instead install WinUSB so Noble can directly access the hardware to bypass Windows' Bluetooth stack. The WinUSB installation link in Noble Wiki is dead, but a web search pointed to <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/winusb-installation" target="_blank">this link</a> as the modern replacement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once WinUSB driver was installed for the Asus USB-BT400 Bluetooth adapter, Noble was able to find it and didn't crash when I attempted to discover nearby BLE devices. Unfortunately, neither did it find any of the BLE hardware I had on hand for this test. I had hoped that, even if I couldn't use that hardware, I could at least discover their presence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This test was not a success, ah well. Life moves on to <a href="https://newscrewdriver.com/2020/10/02/raspberry-pi-gpio-on-node-red-needs-raspberry-pi-os/">other experiments</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

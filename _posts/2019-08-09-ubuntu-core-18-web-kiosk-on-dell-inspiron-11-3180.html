@@ -1,0 +1,40 @@
+---
+layout: post
+title: Ubuntu Core 18 Web Kiosk Experiment on Dell Inspiron 11 3180
+date: 2019-08-09 12:30:48.000000000 +00:00
+type: post
+post_id: '19126'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- PC
+tags:
+- Dell
+- Ubuntu Core
+meta:
+  _thumbnail_id: '19143'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '33868391308'
+  timeline_notification: '1565379084'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/09/ubuntu-core-18-web-kiosk-on-dell-inspiron-11-3180/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>While experimenting with <a href="https://newscrewdriver.com/2019/08/06/dell-latitude-x1-now-running-ubuntu-core-18/">Ubuntu Core 18 on a 14-year old Dell Latitude X</a>1, I ran into problems and wanted to verify it was a hardware support issue and not a mistake on my part. So I brought my much younger Inspiron 11 (3180) up on Ubuntu Core 18 as well. It <a href="https://newscrewdriver.com/2019/08/08/dell-latitude-x1-running-ubuntu-core-18-no-graphics-but-ch341-usb-serial-works/">verified the issue was indeed hardware support</a> and not my mistake, hampering functionality on the Latitude X1.</p>
+<p>After I got my answer, I thought since I've already got this Inspiron 11 up and running, I might as well continue experimenting on it. I proceeded to follow through the rest of the steps in the tutorial for <a href="https://tutorials.ubuntu.com/tutorial/ubuntu-web-kiosk">setting up a web kiosk on Ubuntu Core</a>. Since this machine had recent hardware, I encountered no hardware issues and got a dedicated web kiosk machine up and running.</p>
+<p>Browsing a few web sites, basic browser functionality seem to be present. The first missing functionality I noticed was a lack of sound. A little poking confirmed that Linux audio system <a href="https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture">ALSA</a> is not installed as part of Ubuntu Core. If someone wants sound on their Ubuntu Core machine, they'll have to install it. This is fits with my expectation for a bare minimum "Core" OS.</p>
+<p>Another feature I noticed is the lack of persistent state. As far as I can tell, everything is ephemeral and lost upon reset. No cookies are preserved across sessions, and it appears the cache is flushed as well. Whether this is a bug or a feature depends on application. It would be desirable for public use web terminal where we really want to wipe everything and start over for every new user.</p>
+<p>And it isn't intended to be a general use web browser, anyway. The cursor can be hidden and so can the navigation bar. I enabled the navigation bar expecting a normal browser tool bar, but it is actually a very minimalist bar with a few buttons like back and refresh. There is no URL input field, as appropriate for a kiosk dedicated to serving specific pages.</p>
+<p>Sometimes this is exactly what I would need making Ubuntu Core an ideal bare-minimum OS for an Intel-based machine. But in this day and age, those aren't our only options. Projects along these lines are also commonly built with a Raspberry Pi. How well does Ubuntu Core work on a Raspberry Pi, <a href="https://newscrewdriver.com/2019/08/10/raspberry-pi-web-kiosk-boots-faster-on-raspbian-than-ubuntu-core/">compared to Raspberry Pi's standard Raspbian OS</a>?</p>
+<p></body></html></p>

@@ -1,0 +1,35 @@
+---
+layout: post
+title: Microchip "Curiosity" Development Board and its Zero Ohm Resistors
+date: 2017-11-06 12:31:41.000000000 +00:00
+type: post
+post_id: '14957'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+- TIL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11154263545'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/06/microchip-curiosity-development-board-and-its-zero-ohm-resistors/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When I purchased my batch of PIC16F18345 chips, Microchip offered 20% discount off standard price for its <a href="http://www.microchip.com/DevelopmentTools/ProductDetails.aspx?PartNO=DM164137">corresponding Curiosity development board (DM164137)</a>. I thought it might be interesting and added it to my order, but I hadn't pulled it out of its packaging until today.</p>
+<p>Today's motivation is the mTouch button built onto the board. As part of my investigation into projects I might tackle with the <a href="https://hackaday.io/project/27427-camera-badge-for-supercon-2017">Hackaday Superconference 2017 camera badge</a>, I found that the capacitive touch capabilities of the MCU is unused and thought it might be interesting to tie it into the rest of the camera badge. Before I try to fabricate my own touch sensors, I thought it'd be a good idea to orient myself with an existing mTouch implementation. Enter the Curiosity board.</p>
+<p>Looking over the board itself and the schematics on the user's guide, I noticed a generous scattering of zero ohm surface-mount resistors. If I had seen zero ohm resistors in isolation, I would have been completely mystified. Many electronics beginner like myself see a zero ohm resistors as something that does nothing, take up space, and there's no point. For those beginners, a web search would have led them to <a href="https://electronics.stackexchange.com/questions/42756/what-is-the-usage-of-zero-ohm-miliohm-resistor">this StackExchange thread</a>, possibly <a href="https://en.wikipedia.org/wiki/Zero-ohm_link">the Wikipedia article</a>, or maybe the <a href="https://hackaday.com/2016/12/03/the-zero-ohm-resistor/">Hackaday post</a>.</p>
+<p><img class="alignnone size-full wp-image-14990" src="https://newscrewdriver.com/wp-content/uploads/2017/11/curiosity-zero-ohms.jpg" alt="Curiosity Zero Ohms" width="1160" height="1215">But I was not introduced to them in isolation - I saw them on the Curiosity board and in this context their purpose was immediately obvious: a link between pins on the PIC socket and the peripheral options built on that board. If I wanted to change which pins connected to which peripherals, I would not have to cut traces on the circuit board, I just had to un-solder the zero ohm resistor. Then I can change the connection on the board by soldering to the empty through-holes placed on the PCB for that purpose.</p>
+<p>This was an illuminating "Oh that makes sense!" introduction to zero ohm resistors.</p>
+<p></body></html></p>

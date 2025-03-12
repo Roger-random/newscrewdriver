@@ -1,0 +1,56 @@
+---
+layout: post
+title: I Do Not (Yet?) Meet The Prerequisites For Multiple View Geometry in Computer
+  Vision
+date: 2020-07-12 12:30:41.000000000 +00:00
+type: post
+post_id: '19866'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _oembed_99a2d59d86d52711c095ff5c3c63dbf4: '<blockquote class="wp-embedded-content"
+    data-secret="YdOdgrfOZt"><a href="https://www.pyimagesearch.com/start-here/">Start
+    Here with Computer Vision, Deep Learning, and OpenCV</a></blockquote><iframe title="&#8220;Start
+    Here with Computer Vision, Deep Learning, and OpenCV&#8221; &#8212; PyImageSearch"
+    class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position:
+    absolute; clip: rect(1px, 1px, 1px, 1px);" src="https://www.pyimagesearch.com/start-here/embed/#?secret=YdOdgrfOZt"
+    data-secret="YdOdgrfOZt" width="500" height="282" frameborder="0" marginwidth="0"
+    marginheight="0" scrolling="no"></iframe>'
+  _oembed_time_99a2d59d86d52711c095ff5c3c63dbf4: '1573447651'
+  _oembed_f63f5c176939f8fac256242960102003: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here&#39;s
+    an awesome collection of well-written material for learning TONS of computer vision
+    topics and methods from <a href="https://twitter.com/PyImageSearch?ref_src=twsrc%5Etfw">@PyImageSearch</a>!
+    <a href="https://t.co/4suRYheiaD">https://t.co/4suRYheiaD</a></p>&mdash; Edje
+    Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1181928508723011584?ref_src=twsrc%5Etfw">October
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_f63f5c176939f8fac256242960102003: '1573447651'
+  _thumbnail_id: '21653'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46493264626'
+  timeline_notification: '1594582252'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/12/i-do-not-yet-meet-the-prerequisites-for-multiple-view-geometry-in-computer-vision/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Python <a href="https://newscrewdriver.com/2020/07/11/notes-on-opencv-outside-of-python/">may not be required for performing computer vision with or without OpenCV</a>, but it does make exploration easier. There are unfortunately limits to the magic of Python, <a href="https://xkcd.com/353/">contrary to glowing reviews humorous</a> or serious. An active area of research that is still very challenging is extracting world geometry from an image, something very important for robots that wish to understand their surroundings for navigation.</p>
+<p>My understanding of computer vision says the <a href="https://www.pyimagesearch.com/2018/09/03/semantic-segmentation-with-opencv-and-deep-learning/">image segmentation is very close to an answer here</a>, and while it is useful for robotic navigation applications such as autonomous vehicles, it is not quite the whole picture. In the example image, pixels are assigned to a nearby car, but such assignment doesn't tell us how big that car is or how far away it is. For a robot to successfully navigate that situation, it doesn't even really need to know if a certain blob of pixels correspond to a car. It just needs to know there's an object, and it needs to know the movement of that object to avoid colliding with it.</p>
+<p>For that information, most of today's robots use an active sensor of some sort. Expensive LIDAR for self driving cars capable of highway speeds, <a href="https://newscrewdriver.com/2019/01/26/xbox-360-kinect-and-rtab-map-handheld-3d-environment-scanning/">repurposed gaming peripherals for indoor hobby robot projects</a>. But those active sensors each have their own limitations. For the Kinect sensor I had experimented with, the limitation were that it had a very limited range and it only worked indoors. Ideally I would want something using passive sensors like stereoscopic cameras to extract world geometry much as humans do with our eyes.</p>
+<p>I did a bit of research to figure out where I might get started to learn about the foundations of this field, following citations. One hit that came up frequently is the text <a href="https://amzn.to/3e6Cqfy"><em>Multiple View Geometry in Computer Vision</em></a> (*) I found the <a href="http://www.robots.ox.ac.uk/~vgg/hzbook/">web page for this book</a>, where I was able to download a few sample chapters. These sample chapters were enough for me to decide I do not (yet) meet the prerequisites for this class. Having a robot make sense of the world via multiple cameras and computer vision is going to take a lot more work than telling Python to <code>import vision</code>.</p>
+<p>Given the prerequisites, it looks pretty unlikely I will do this kind of work myself. (Or more accurately, I'm not willing to dedicate the amount of study I'd need to do so.) But that doesn't mean it's out of reach, it just means I have to find some related previous work to leverage. "Understand the environment seen by a camera" is a desire that <a href="https://newscrewdriver.com/2020/07/13/might-a-robot-utilize-google-arcore/">applies to more than just robotics</a>.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

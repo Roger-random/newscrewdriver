@@ -1,0 +1,39 @@
+---
+layout: post
+title: Phoebe Receives Raspberry Pi Brain After PID Tuning
+date: 2018-09-13 09:00:45.000000000 +00:00
+type: post
+post_id: '16775'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22107708047'
+  timeline_notification: '1536854485'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/13/phoebe-receives-raspberry-pi-brain-after-pid-tuning/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once the motor's spin direction was sorted out, I connected both encoders to verify A/B signals are in sync with motor direction. Again this is checked by commanding motor movement via Ion Studio software and watching the reported encoder value.</p>
+<p>When wired correctly, encoder counter will increase when motor is commanded to spin in the positive direction, and decrease when motor spins negative. If hooked up wrong, the encoder value will decrease when the motor spins positive, and vice versa. The fix is simple: power down the system, and swap the A/B quadrature encoder signal wires.</p>
+<p>Once the motor direction is verified correct, and encoder wires verified to match motor direction, we can proceed to the final phase of Roboclaw setup: determine <a href="https://en.wikipedia.org/wiki/PID_controller">PID coefficients</a> for motor control.</p>
+<p>PID tuning is something of a black art. Fortunately, while a perfect tune is very difficult to obtain, it's not that hard to get to "good enough." Furthermore, Ion Studio features an "Auto Tune" option to automatically find functional PID coefficients. During SGVHAK Rover construction we had no luck getting it to work and resorted to <a href="https://newscrewdriver.com/2018/04/09/adventures-in-manually-tuning-roboclaw-pid/">tuning PID coefficients manually</a>. Fortunately, this time around Ion Studio's automatic PID tuning works. I'm not sure what changed, but I'm not going to complain.</p>
+<p>Once PID coefficients have been written to Roboclaw NVRAM, we no longer need to use the Windows-based Ion Studio software. From here on out, we can use a Raspberry Pi to control our motors. The Pi 3 was mounted so its microSD card remains accessible, as well as its HDMI port and USB ports. This meant trading off access to GPIO pins but we're not planning to use them just yet so that's OK.</p>
+<p>Software-wise, the Raspberry Pi 3's microSD card has a full desktop installation of <a href="http://wiki.ros.org/kinetic">ROS Kinetic</a> on top of Ubuntu Mate 16.04 <a href="https://ubuntu-mate.org/raspberry-pi/">compiled for Raspberry Pi</a>. In addition to <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/raspberry_pi_3_setup/#install-linux-ubuntu-mate">all the Robotis software for TurtleBot 3</a>, it also has a clone of the <a href="https://github.com/sonyccd/roboclaw_ros">ROS control node</a>, as well as a clone of the <a href="http://wiki.ros.org/xv_11_laser_driver/Tutorials/Running%20the%20XV-11%20Node">Neato LIDAR control node</a>.</p>
+<p>The wiring is not very neat or pretty but, again, this is just a rough first draft.</p>
+<p><img class=" size-full wp-image-16776 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-turtlebot-stage-2-encoder-pi.jpg" alt="Phoebe TurtleBot Stage 2 Encoder Pi" width="1024" height="934"></p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/152807-phoebe-receives-raspberry-pi-brain-after-pid-tuning">Hackaday.io</a>)</p>
+<p></body></html></p>

@@ -1,0 +1,85 @@
+---
+layout: post
+title: USB Power Bank Teardown (Duracell DU7169)
+date: 2022-03-12 12:30:00.000000000 +00:00
+type: post
+post_id: '28955'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- DU7169
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28964'
+  _publicize_job_id: '70094065058'
+  timeline_notification: '1647117004'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/12/usb-power-bank-teardown-duracell-du7169/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:image {"align":"right","id":28965,"width":88,"height":256,"style":{"color":[]}} --><html><body></p>
+<figure class="wp-block-image alignright is-resized"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-label.jpg?w=350" alt="" class="wp-image-28965" width="88" height="256"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Contemplating <a href="https://newscrewdriver.com/2022/03/11/battery-options-for-solar-monitor/">options for powering my current project</a>, I decided to repurpose an old USB power bank I bought nearly ten years ago. The primary problem with this device is that today's devices expect more power than it could deliver. Specified to output up to one amp, I don't think it could deliver that anymore. Most of my USB devices would cause it to shut down instead of charge. Another problem with this device is that its soft-touch outer plastic shell has become sticky. It is now impossible to keep clean and unpleasant to touch. It sat unused for several years in this state but now I have a potential use so I proceeded to violate the "Do Not Open" warning on the label.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were no fasteners in the plastic shell to help disassembly, I just had to dig into seams and start prying it apart. Carefully, because puncturing a lithium-ion battery cell would be very bad news and electronics are still powered by said battery. (Use <a rel="noreferrer noopener" href="https://www.ifixit.com/Store/Tools/Prying_and_Opening" target="_blank">plastic tools</a>!) Once the plastic shell was removed, we are left with the functional guts of the device:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28963,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-insides.jpg?w=1024" alt="" class="wp-image-28963"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The green cylinder is a lithium-ion battery cell in the very common 18650 (18mm diameter, 65mm length) form factor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28959,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-battery.jpg?w=1024" alt="" class="wp-image-28959"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm not sure what MH27311 or ICR18650 meant exactly, but a web search found them sprinkled liberally across many eBay listings for lithium battery cells. I infer these were designations for a line of batteries that were popular enough to become eBay keyword salad. The next figure is the important one: nominal capacity of 2600 milliamp-hours. Nominal voltage of 3.7V is typical for lithium-ion cells. Finally, a date of December 2nd, 2013. This is probably the manufacturing date, though it would contradict the "Date: 2013-10" written on the outside label. Maybe it's actually February 12th, 2013? <a href="https://xkcd.com/1179/" target="_blank" rel="noreferrer noopener">Dates are hard</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Onward to the electronics, which were a pleasant surprise. They are two circuit boards connected to each other through two rows of four pins &amp; sockets. I had expected a single circuit board or multiple circuit boards bonded together in some difficult-to-remove way. I didn't expect nice easy pin and socket setup.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are the two sides of the first circuit board:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":28962,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-input-board-top.jpg" alt="" class="wp-image-28962"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":28961,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-input-board-bottom.jpg" alt="" class="wp-image-28961"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>The top circuit board hosted the minimal user interface: four LEDs indicators (LED1 through LED4) and a push button (SW1). This side also has all of the designations printed on it: MS-B2600MPW-PC-A REV:A0 FR4 2013-5-4 26.3X18.5X1.2mm. The other side is dominated by an IC that presumably runs the show. I suspect it is a chip specifically designed to run a USB power bank, but there are no markings for me to investigate further. I also see globs of sturdy yellow material (epoxy?) that holds the chip in place as well as reinforcing the infamously fragile micro USB connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are the two sides of the second circuit board:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":28967,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-output-board-top.jpg" alt="" class="wp-image-28967"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":28966,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/duracell-usb-power-bank-output-board-bottom.jpg" alt="" class="wp-image-28966"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>One side is dominated by connectors: one USB-A connector and two rows of four-pin connectors. Nestled between them is an electrolytic capacitor and soldering points for the battery cell labeled BT+ and BT-.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought I might see signs of damaged component somewhere that would explain the poor power output performance of this thing, but if present I don't recognize them. That's fine, I don't intend to use the 5V output portion of this device anyway. I'll <a href="https://newscrewdriver.com/2022/03/13/usb-power-bank-charging-looks-ok/">quickly test</a> the portions I actually need.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

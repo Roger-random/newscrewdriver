@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Sawppy on ROS: Open Problems'
+date: 2019-01-13 14:26:52.000000000 +00:00
+type: post
+post_id: '17628'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Sawppy the Rover
+tags: []
+meta:
+  timeline_notification: '1547418415'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26499622562'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/13/sawppy-on-ros-open-problems/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A great side effect of giving a presentation is that it requires me to gather my thoughts in order to present them to others. Since members of RSSC are familar with ROS, I collected my scattered thoughts on ROS over the past few weeks and condensed the essence into a single slide that I've added to <a href="https://1drv.ms/p/s!Ak-SQhDpVdvoloAVocbMb-YTPUXgxg">my presentation</a>.</p>
+<p><img class=" size-full wp-image-17641 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/backyard-sawppy-1600.jpg" alt="backyard sawppy 1600" width="1600" height="901"></p>
+<p>From building and running my <a href="https://newscrewdriver.com/category/projects/phoebe-turtlebot/">Phoebe robot</a>, I learned about the basics of ROS using a two-wheeled robot on flat terrain. Sticking to 2D simplifies a lot of robotics problems and I thought it would help me expand to a six-wheeled rover to rough terrain. Well, I was right on the former but the latter is still a big step to climb.</p>
+<p>The bare basic responsibilities of a ROS TurtleBot chassis (and derivatives like Phoebe) is twofold: subscribe to topic <code>/cmd_vel</code> and execute movement commands published to that topic, and from the resulting movement, calculate and publish odometry data to topic <code>/odom</code>.</p>
+<p>Executing commands sent to <code>/cmd_vel</code> is relatively straightforward when Sawppy is on level ground. It would not terribly different from existing code. The challenge comes from uneven terrain with unpredictable traction. Some of Sawppy's wheels might slip and resulting motion might be very different from what was commanded. My experience with Phoebe showed that while it is possible to correct for minor drift, major sudden unexpected shifts in position or orientation (such as when Phoebe runs into an unseen obstacle) throws everything out of whack.</p>
+<p>Given the potential for wheel slip on uneven terrain, calculating Sawppy odometry is a challenge. And that's before we consider another problem: the inexpensive serial bus servos I use do not have fine pitched rotation encoders, just a sensor for servo angle that only covers ~240 of 360 degrees. While I would be happy if it just didn't return any data when out of range, it actually returns random data. I haven't yet figured out a good way to filter the signal out of the noise, which would be required to calculate odometry.</p>
+<p>And these are just challenges within the chassis I built, there's more out there!</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/158208">Hackaday.io</a>)</p>
+<p></body></html></p>

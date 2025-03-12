@@ -1,0 +1,45 @@
+---
+layout: post
+title: Breadboard Prototype of VFD Driver Project
+date: 2019-04-15 12:30:00.000000000 +00:00
+type: post
+post_id: '18341'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1555356665'
+  _oembed_527958cdf54886ae4d417fe220aad0a5: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Trying
+    to be clever with pin assignment so I could pack chips tightly in my vacuum fluorescent
+    display collaboration with <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>.
+    We&#39;ll find out if this bites me later... <a href="https://t.co/YHt76eV9kg">pic.twitter.com/YHt76eV9kg</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1115667721226571777?ref_src=twsrc%5Etfw">April
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '29795922764'
+  _oembed_time_527958cdf54886ae4d417fe220aad0a5: '1555366445'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/15/breadboard-prototype-of-vfd-driver-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once we had some idea of what we wanted to do, it's time to start wiring things up on a breadboard to see if it actually does anything interesting. Dealing with actual chips meant reading their data sheets and figure out where the rubber meets the road and how well theory meets practice.</p>
+<p>Not having a lot of first-hand experience with such modules, it was a great way to learn by doing. The first surprise was behavior of the 74HC138 decoder module: Conceptually it takes a three-bit input and decodes it to one of eight pins. Conceptually we thought that meant raising one of eight pins high, but it actually lowers one of eight pins low.</p>
+<p>We thought this was going to be a problem and started looking into inverters... before we realized it is a perfect pairing with ULN2003 to do what we actually wanted: The ULN2003 line inverts its input in the sense that when an input pin is high it connects the output pin to ground. So the output of a 74HC138 decoder (seven pins high, one pin low) driving ULN2003 results in seven pins connected to ground and one floating. We can work with this.</p>
+<p>A 4-digit, 7-segment LED module stood in for the vacuum fluorescent display while all the logic got worked out. This flexibility is exactly where a<span style="color:var(--color-neutral-600);"> breadboard is strong, letting us experiment and verify pieces of our circuit piecemeal. But it is not great for looking respectable or for long-term reliability, so once it successfully ran the LED module, we start planning to commit the design to soldering parts on a prototype PCB.</span></p>
+<p><img class=" size-full wp-image-18342 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/pic16f18345-vfd-breadboard-and-pcb.jpg" alt="PIC16F18345 VFD breadboard and PCB" width="1600" height="1200"></p>
+<p></body></html></p>

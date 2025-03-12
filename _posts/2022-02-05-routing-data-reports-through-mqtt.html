@@ -1,0 +1,67 @@
+---
+layout: post
+title: Routing Data Reports Through MQTT
+date: 2022-02-05 12:30:00.000000000 +00:00
+type: post
+post_id: '28451'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- InfluxDB
+- MQTT
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28470'
+  _publicize_job_id: '68610032663'
+  timeline_notification: '1644093009'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/05/routing-data-reports-through-mqtt/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once a <a href="https://newscrewdriver.com/2022/02/04/using-grafana-despite-chronograf-integration/">read-only Grafana dashboard was up and running</a>, I had end-to-end data flow from voltage measurement to a graph of those measurements over time. This was a good first draft, from here I can pick and choose where to start refining the system. First thought: it was cool that an ESP8266 Arduino could log data straight to an InfluxDB2 server, but I don't think that is the best way to go. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>InfluxDB is a great database to track historical data, but sometimes I want just the most recent measurement. I don't want to have to spin up a full InfluxDB client library and perform a query just to retrieve a single data point. That would be a ton of unnecessary overhead! Even worse, due to the overhead, not everything has an InfluxDB client library and I don't want to be limited to the subset that does. And finally, tracking historical data is only one aspect of the system, at some point I want to take action based on data and measurements. InfluxDB doesn't help at all for that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To improve these fronts, I'm going to add a MQTT broker to my home network in the form of a docker container running <a rel="noreferrer noopener" href="https://mosquitto.org/" target="_blank">Eclipse Mosquitto</a>. MQTT is a simple publish/scribe system. The voltage measuring node I've built out of an ESP8266 is a publisher, and InfluxDB is a subscriber for that data. If I want the most recent measurement, I can subscribe to the same data source and see it at the same time InfluxDB does.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've read the <a rel="noreferrer noopener" href="https://hackaday.com/2016/05/27/minimal-mqtt-control-and-clients/" target="_blank">Hackaday MQTT primer</a>, and I understand it is a popular tool for these types of projects. It's been on my to-do list ever since and this is the test project for playing with it. Putting MQTT into this system lets me start small with a single publisher and a single subscriber. If I expand on this system, it is easy to add more to my home MQTT network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a popular and lightweight protocol, MQTT enjoys a large support ecosystem. While not everything has an InfluxDB client library, almost everything has a MQTT client library. Including ESP8266 Arduino, and InfluxDB in the form of <a rel="noreferrer noopener" href="https://www.influxdata.com/integration/mqtt-monitoring/" target="_blank">a Telegraf plugin</a>. But after looking over that page, I understand it is designed for direct consumption and has little (no?) options for data transformation. This is where <a href="https://newscrewdriver.com/2022/02/06/move-calculation-off-microcontroller-to-node-red/">Node-RED enters the discussion</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>My simple <code>docker-compose.yml</code> for running Mosquitto:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>version: "3.8"
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    restart: unless-stopped
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - ./config:/mosquitto/config
+      - ./data:/mosquitto/data
+      - ./log:/mosquitto/log</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

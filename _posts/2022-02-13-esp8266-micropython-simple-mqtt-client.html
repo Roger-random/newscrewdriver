@@ -1,0 +1,53 @@
+---
+layout: post
+title: ESP8266 MicroPython Simple MQTT Client
+date: 2022-02-13 12:30:00.000000000 +00:00
+type: post
+post_id: '28569'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- MicroPython
+- MQTT
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28562'
+  _publicize_job_id: '68952151731'
+  timeline_notification: '1644784231'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/13/esp8266-micropython-simple-mqtt-client/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got <a href="https://newscrewdriver.com/2022/02/12/second-esp8266-voltage-monitor-is-directly-wired-to-buck-converter/">my second voltage monitoring ESP8266 up and running</a>. Power comes from my lead-acid battery array stepped down with a DC buck converter, and data communication is over WiFi. I could work with MicroPython over WiFi using WebREPL, where I confirmed I can obtain a value from ESP8266 ADC. Next step: report that ADC value via MQTT.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The instance of Mosquitto MQTT broker I've got running in a docker container is password restricted, so I called <code>docker exec</code> on my running Mosquitto container to obtain a command line inside the container, and from there <a rel="noreferrer noopener" href="https://mosquitto.org/man/mosquitto_passwd-1.html" target="_blank">run <code>mosquitto_passwd</code> tool</a> to create a username and a password for this ESP8266.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I have to figure out how to make use of that new name and password. I had assumed there would be a MQTT client library for MicroPython and I was correct. In fact, there were several! One of my top web search results went to <a rel="noreferrer noopener" href="https://randomnerdtutorials.com/micropython-mqtt-publish-bme680-esp32-esp8266/" target="_blank">a page on Random Nerd Tutorials</a>, which used <a rel="noreferrer noopener" href="https://github.com/RuiSantosdotme/ESP-MicroPython/blob/master/code/MQTT/umqttsimple.py" target="_blank">umqttsimple.py</a>. That probably would have worked, but it hasn't been updated in three years so I looked for something more recent. Continuing my search, I found <a rel="noreferrer noopener" href="https://mpython.readthedocs.io/en/master/library/mPython/umqtt.simple.html" target="_blank">a MQTT page</a> on documentation for the mPython board. It's not the hardware I'm using but from that page I learned MicroPython developers maintain <a rel="noreferrer noopener" href="https://github.com/micropython/micropython-lib" target="_blank">a GitHub repository <code>micropython-lib</code></a> for useful MicroPython code libraries outside of core MicroPython project. This collection of libraries included <a href="https://github.com/micropython/micropython-lib/tree/master/micropython/umqtt.simple">a simple MQTT client</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running the MQTT publish example, an exception was raised when I called <code>connect()</code>. This is a minimalist library so the <code>MQTTException </code>class was equally minimal: only a value of 5 was returned as the error code. It's not very descriptive but I had guessed it was because the example code didn't include the username and password I had setup for this client. Putting those in eliminated exception 5, which is good, but now I'm looking at a different exception: 2. I have no further guesses and need to go online for research.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Finding the MQTT specification online, I went to the section <a rel="noreferrer noopener" href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html#_Toc385349257" target="_blank">describing return code values for MQTT connect</a>.  This table listed 5 as "not authorized" which makes sense for lack of username and password. But error 2 is "identifier rejected" which is a puzzle. Officially, the error condition is "The Client identifier is correct UTF-8 but not allowed by the Server" but my client identifier is a straightforward string. Trying a few different client identifier strings didn't make a difference. Suspecting it's a problem in my MQTT broker, I tried the <a href="https://test.mosquitto.org/" target="_blank" rel="noreferrer noopener">Mosquitto public test server</a> and got the same error. What's going on?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The answer is a known bug in this simple MQTT library, <a rel="noreferrer noopener" href="https://github.com/micropython/micropython-lib/issues/445" target="_blank">filed as issue #445</a>. Apparently a recent release of Mosquitto tightened up spec compliance requirements and this simple MQTT library does not conform. It has something to do with keepalive and specifying zero is no longer tolerated. Specifying a nonzero value allowed my connection to succeed without error, but I understand it is only a hack because I'm not actually doing any of the other work to actually keep alive at my specified interval. Since this particular project is going to report an ADC value and immediately go into deep sleep, it also means I would immediately disconnect from Mosquitto MQTT broker and disconnect from WiFi. So I don't think I'll get in trouble for lying with a keepalive interval, as long as I bail before my lie causes a problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But this little adventure with MQTTException reminded me of one advantage of using MicroPython: getting access to <a href="https://newscrewdriver.com/2022/02/14/esp8266-micropython-exception-handling-helps-robustness/">exception handling mechanisms</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

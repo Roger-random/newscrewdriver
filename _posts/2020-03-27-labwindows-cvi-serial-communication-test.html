@@ -1,0 +1,37 @@
+---
+layout: post
+title: LabWindows/CVI Serial Communication Test
+date: 2020-03-27 12:30:26.000000000 +00:00
+type: post
+post_id: '20998'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '20987'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42302290426'
+  timeline_notification: '1585337445'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/27/labwindows-cvi-serial-communication-test/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I was done with <a href="https://newscrewdriver.com/2020/03/26/labwindows-cvi-getting-started-guide/">LabWindow's Hello World tour</a>, it was time for some independent study, focused on fields I'm personally interested in. Top of the list was serial port communications. Researching them ahead of time indicated it was capable of arbitrary protocols. Was that correct? I dived into the RS-232 API to find out.</p>
+<p>Before we can open a serial port for communication, we must first find it. And the LabWindows/CVI RS-232 library for enumerating serial port is... nothing. There isn't one. A search on <a href="https://forums.ni.com/t5/LabWindows-CVI/Finding-COM-port-number-programatically/td-p/3192159">user forums indicate this is the consensus</a>: if someone wants to enumerate serial ports, they have to go straight to the underlying Win32 API.</p>
+<p>Puzzled at how a program is supposed to know which COM port to open without an enumeration API, I went into the sample applications directory and found a generic serial terminal program. How did they solve this problem? They did not: they punted it to the user. There is a slider control for the user to select the COM port to open. If the user doesn't know which device is mapped to which COM port, it is not LabWindows' problem. So much for user-friendliness.</p>
+<p>I had a 3D printer handy for experimentation, so I tried to use the sample program to send some <a href="https://marlinfw.org/meta/gcode/">Marlin G-code commands</a>. The first obstacle is baud rate: USB serial communication can handle much faster speeds than old school RS-232 so my printer defaults to 250,000 baud. The sample program's baud selection control only went up to 57,600 baud so the sample program had to be modified to add a 250,000 baud option. After that was done, everything worked: I could command the printer to home its axis, move to position, etc.</p>
+<p>First test: success! Time to dig deepeer.</p>
+<p></body></html></p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: Protecting User Identity
+date: 2017-01-01 02:16:03.000000000 +00:00
+type: post
+post_id: '3429'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Adventure Book
+- Google
+- Rails
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '286281483'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/01/01/protecting-user-identity/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-3540 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/01/google-sign-in.png" alt="google-sign-in" width="194" height="81">Recently, web site security breaches have been a frequent topic of mainstream news. The technology is evolving but this chapter of technology has quite some ways to go yet. Learning web frameworks gives me an opportunity to understand the mechanics from web site developer's perspective.</p>
+<p>For my project I decided to use <a href="https://developers.google.com/identity">Google Identity</a> platform and let Google engineers take care of identification and authentication. By configuring the Google service to retrieve only basic information, my site never sees the vast majority of personally identifiable information. It never sees the password, name, e-mail address, etc.</p>
+<p>All my site ever receives is a string, the Google ID. My site uses it to identify an user account. With the security adage of "what I don't know, I can't spill" I thought this was a pretty good setup: The only thing I know is the Google ID, I can't spill anything else.</p>
+<p>Which led to the next question: what's the worst that can happen with the ID?</p>
+<p>I had thought the ID is something Google generated for my web site. More specifically my site's Client ID. I no longer believe so. A little experimentation (aided by a change in Client ID for the security issue previously documented) led me to now believe it's possible the Google ID is global across all Google services.</p>
+<p>This means if a hacker manages to get a copy of my site's database of Google ID, they can cross-reference to databases of other compromised web sites. Potentially assembling a larger picture out of small pieces of info.</p>
+<p>While I can't stop using Google ID (I have to have <em>something</em> to identify an user) I can make it more difficult for a hacker to cross-reference my database. I've just <a href="https://github.com/Roger-random/rr-adventurebook/commit/648d8461986c1cf2e314df1c7298303ffa39af79">committed a change</a> to hash the ID before it is stored in the database. Salted with a value that is unique per deployed instance of the app.</p>
+<p>Now for a hacker to penetrate the identity of my user, they must do <em><strong>all</strong> </em>of the following:</p>
+<ol>
+<li>Obtain a copy of the database.</li>
+<li>Obtain the hashing salt used by the specific instance of the app which generated that database.</li>
+<li>Already have the user's Google ID, since they won't get the original ID out of my database of hashed values.</li>
+</ol>
+<p>None of which are impossible, but certainly a lot more effort than it would have otherwise taken.</p>
+<p>I think this is a worthwhile addition.</body></html></p>

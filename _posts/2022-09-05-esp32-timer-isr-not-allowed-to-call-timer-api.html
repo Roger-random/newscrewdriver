@@ -1,0 +1,106 @@
+---
+layout: post
+title: ESP32 Timer ISR Not Allowed to Call Timer API
+date: 2022-09-05 12:30:00.000000000 +00:00
+type: post
+post_id: '32403'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- Fan Strobe LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32415'
+  _publicize_job_id: '76442671391'
+  timeline_notification: '1662406250'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669885476
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/05/esp32-timer-isr-not-allowed-to-call-timer-api/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Conceptually I knew using <code>delayMicroseconds()</code> inside an interrupt service routine (ISR) was a bad idea. But I <a href="https://newscrewdriver.com/2022/09/04/migrating-fan-strobe-led-project-to-esp32/">tried it anyway on an ESP32</a> and now I have a crash stack to prove it was indeed a bad idea. A solid reason to switch over to using hardware timers. My fan strobe LED project has two needs: the first delay is between tachometer wire signal and turning LED on (this delay may be zero) followed by a second delay before turning LED back off. Duration of both of these delays vary in order to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/09/02/fan-strobe-led-adjustments-via-esphome/" target="_blank">produce desired visual effects</a>. Translating this concept directly into timers results in this pseudocode:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Interrupt handler triggered by tachometer signal. Starts timer that calls step 2 when first it ends.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Interrupt handler triggered by expiration of first delay. Turn on LED and start timer that calls step 3 when it ends.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Interrupt handler triggered by expiration of second delay, turn off LED.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, that direct translation doesn't work. At least not with <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/arduino-esp32/en/latest/api/timer.html" target="_blank">ESP32 Arduino Core Timer APIs</a>. The timer alarm callback ("call step 2" and "call step 3" above) is specified at the time an alarm timer is configured, and not something I can change in between steps 2 and 3 above. Furthermore, I had no luck changing the timer duration in between calls, either. Either the change has no effect (duration doesn't change) or the timer alarm interrupt stops triggering entirely. The only way I got something resembling my initial pseudocode is to tear down and rebuild a timer on every call to step 1, then do it again on step 2, and repeat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That code <em>felt </em>wrong, and it didn't take long for me to see concrete evidence it <em>was </em>wrong. I could adjust my delay parameters a few times, but within 2-3 minutes of running this sketch my ESP32 would crash with the following stack:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>WARNING Found stack trace! Trying to decode it
+WARNING Decoded 0x40088dcc: invoke_abort at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp32/panic.c:715
+WARNING Decoded 0x40089049: abort at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp32/panic.c:715
+WARNING Decoded 0x40089dbf: xQueueGenericReceive at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/queue.c:2038
+WARNING Decoded 0x400f1001: removeApbChangeCallback at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-cpu.c:224
+WARNING Decoded 0x400817f9: timerEnd at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-timer.c:174
+WARNING Decoded 0x40081095: pulse_off_handler() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400814c9: __timerISR at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-timer.c:174
+WARNING Decoded 0x400874cd: _xt_lowint1 at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/xtensa_vectors.S:1154
+WARNING Decoded 0x4008568d: esp_dport_access_int_abort at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp32/dport_access.c:216
+WARNING Decoded 0x40087e63: spi_flash_enable_interrupts_caches_and_other_cpu at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/cache_utils.c:203
+WARNING Decoded 0x4008857a: spi_flash_guard_end at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/flash_ops.c:172
+ (inlined by) spi_flash_read at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/flash_ops.c:664
+WARNING Decoded 0x401659c9: nvs::nvs_flash_read(unsigned int, void*, unsigned int) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_ops.cpp:76
+WARNING Decoded 0x40164289: nvs::Page::readEntry(unsigned int, nvs::Item&amp;) const at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_page.cpp:871
+WARNING Decoded 0x401642fd: nvs::Page::eraseEntryAndSpan(unsigned int) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_page.cpp:871
+WARNING Decoded 0x40164979: nvs::Page::eraseItem(unsigned char, nvs::ItemType, char const*, unsigned char, nvs::VerOffset) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_page.cpp:871
+WARNING Decoded 0x4016337a: nvs::Storage::eraseMultiPageBlob(unsigned char, char const*, nvs::VerOffset) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_storage.cpp:579
+WARNING Decoded 0x40163751: nvs::Storage::writeItem(unsigned char, nvs::ItemType, char const*, void const*, unsigned int) at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_storage.cpp:579
+WARNING Decoded 0x40162b3b: nvs_set_blob at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/nvs_flash/src/nvs_api.cpp:547
+WARNING Decoded 0x400d8407: esphome::esp32::ESP32Preferences::sync() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/components/esp32/preferences.cpp:124
+WARNING Decoded 0x400e35dd: esphome::preferences::IntervalSyncer::on_shutdown() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400e3665: std::_Function_handler&lt;void (), esphome::preferences::IntervalSyncer::setup()::{lambda()#1}&gt;::_M_invoke(std::_Any_data const&amp;) at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400e34e6: std::function&lt;void ()&gt;::operator()() const at /data/cache/platformio/packages/toolchain-xtensa32/xtensa-esp32-elf/include/c++/5.2.0/functional:1710
+ (inlined by) esphome::Scheduler::call() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/scheduler.cpp:204
+WARNING Decoded 0x400e1319: esphome::Application::loop() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/application.cpp:69
+WARNING Decoded 0x400e391e: loop() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x400f0e29: loopTask(void*) at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/main.cpp:23
+WARNING Decoded 0x4008a05a: vPortTaskWrapper at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/port.c:355 (discriminator 1)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm not sure what <code>removeApbChangeCallback()</code> meant. I <a rel="noreferrer noopener" href="https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/esp32-hal-cpu.c" target="_blank">found the code</a>, but there were no code comments explaining what "Apb" is. A general web search found one potential explanation of "<a rel="noreferrer noopener" href="https://esp32.com/viewtopic.php?t=23590" target="_blank">Advanced Peripheral Bus</a>". Whatever it is, it was called as part of a FreeRTOS queue receive. This was a surprise. I know FreeRTOS queues can be used from inside an ISR to schedule work to be performed outside an ISR, but that would be an <a rel="noreferrer noopener" href="https://www.freertos.org/a00119.html" target="_blank">ISR-safe queue send</a>, not a receive. Hitting a receive path inside an ISR feels wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking further down the call stack, I see NVS (nonvolatile storage) calls like I saw when I failed to use <code>delayMicroseconds()</code> on the stack. Why are storage APIs being called? I didn't look into it earlier, hoping I could avoid the problem by moving to timers, but it's clear I need to better understand what's going on. Poking around in ESPHome code, I believe this is trying to save state of my parameters so it could be restored in case of system reset or shutdown. If so, I should be able to deactivate such behavior by setting <code>restore_mode</code> parameter to <code>ALWAYS_OFF</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>WARNING Found stack trace! Trying to decode it
+WARNING Decoded 0x400f0ea8: initApbChangeCallback at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-cpu.c:224
+WARNING Decoded 0x400817e2: timerBegin at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-timer.c:174
+WARNING Decoded 0x4008110c: tach_pulse_handler() at /config/esphome/.esphome/build/fan-strobe-led/src/esphome/core/gpio.h:62
+WARNING Decoded 0x40081185: __onPinInterrupt at /data/cache/platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-gpio.c:220
+WARNING Decoded 0x400874dd: _xt_lowint1 at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/xtensa_vectors.S:1154
+WARNING Decoded 0x40087c65: spi_flash_op_block_func at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/spi_flash/cache_utils.c:203
+WARNING Decoded 0x40084f17: ipc_task at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/esp32/ipc.c:62
+WARNING Decoded 0x4008a06a: vPortTaskWrapper at /home/runner/work/esp32-arduino-lib-builder/esp32-arduino-lib-builder/esp-idf/components/freertos/port.c:355 (discriminator 1)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that did indeed stop writes to nonvolatile storage. The bad news is that did not avoid crashing my ESP32. It's still crashing on an Apb change callback, though this time without any NVS calls on the stack. (There's still one line of <code>spi_flash_op_block_func</code>, though.) What's going on? I decided to look deeper. Reading <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/arduino-esp32/en/latest/api/timer.html" target="_blank">documentation for hardware timers in ESP-IDF</a> (one layer below ESP32 Arduino Core) I saw the explanation: "<em>It </em>[ESP32 timer ISR callback] <em>cannot call other timer APIs.</em>" Aha! My timer ISR is not allowed to adjust and kick off another timer. This makes my initial pseudocode impossible to implement, and I have to <a href="https://newscrewdriver.com/2022/09/06/polling-esp32-timer-shows-wobble/">devise a different approach</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

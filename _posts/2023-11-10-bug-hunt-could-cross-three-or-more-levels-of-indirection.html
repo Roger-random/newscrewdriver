@@ -1,0 +1,61 @@
+---
+layout: post
+title: Bug Hunt Could Cross Three or More Levels of Indirection
+date: 2023-11-10 12:30:00.000000000 +00:00
+type: post
+post_id: '40206'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- '7577'
+- Dell
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39972'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1699648738
+  _publicize_job_id: '89255217942'
+  timeline_notification: '1699648201'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/10/bug-hunt-could-cross-three-or-more-levels-of-indirection/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When running Proxmox VE, my Dell Inspiron 7577's onboard Realtek Ethernet would quit at unexpected times. Network transmission halts, and a network watchdog timer fires which triggers a debug error message. One proposed workaround is to change to a different Realtek driver. But after <a href="https://newscrewdriver.com/2023/11/09/realtek-r8168-driver-is-not-r8169-driver-predecessor/">learning about the tradeoffs</a> involved, I decided against pursuing that path.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This watchdog timer error message has been reported by many users on Proxmox forums, and <a href="https://forum.proxmox.com/threads/system-hanging-after-upgrade-nic-driver.129366/page-4#post-596604" target="_blank" rel="noreferrer noopener">some kind of a fix</a> is en route. I'm not confident it'll help me, because it deactivated ASPM on Realtek devices but turning off ASPM across the board on my computer didn't keep the machine online. I'm curious how that particular fix was developed, or the data that informed the fix. Thinking generally, pinning such a failure down requires jumping through three levels of indirection. My poorly-informed speculation is as follows:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first and easiest step is the watchdog timer itself. A call stack is part of the error message, which might be enough to determine the code path that started the timer. But since it is a production binary, the call stack has incomplete symbols. Getting more information would require building a debug kernel in order to get full symbols.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that information, it should be relatively straightforward to get to the second step: determining what network operation timed out. But then what? Given the random and intermittent nature, the failing network operation was probably just an ordinary transaction that had succeeded many times before and should have succeeded again. But for whatever reason, failed this time because the Realtek driver and/or hardware got in a bad state.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And that's the difficult third step: how to look at an otherwise ordinary network transaction and deduce a cause for the bad Realtek state. It probably wasn't the network transaction itself! Which meant at least one more indirect jump. The fix en route dealt with PCIe ASPM (PCI Express Active State Power Management) which probably wasn't directly on the code path for a normal network data transmission. I'm really curious how that deduction was made and, if the incoming fix doesn't address my issue, how I can use similar techniques to determine what put <em>my </em>hardware in a bad state.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From the outside, that process feels like a lot of black magic voodoo I don't understand. For now I will sit tight with my reboot cron job workaround and wait for the updated kernel to arrive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: A Proxmox VE update has arrived bringing kernel 6.2.16-18-pve to replace 6.2.16-15-pve I had been running. Despite my skepticism about ASPM, either that change or another in this update seems to be successful keeping the machine online!]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Featured image created by <em><a href="https://www.bing.com/images/create" target="_blank" rel="noreferrer noopener">Microsoft Bing Image Creator powered by DALL-E 3</a></em> with prompt "<em>Cartoon drawing of a black laptop computer showing a crying face on screen and holding a network cable</em>"</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

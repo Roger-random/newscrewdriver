@@ -1,0 +1,93 @@
+---
+layout: post
+title: Good First Impressions of GMKtec NucBox3
+date: 2023-02-14 12:30:00.000000000 +00:00
+type: post
+post_id: '35163'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35127'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676406731
+  _publicize_job_id: '81507764753'
+  timeline_notification: '1676406609'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/14/good-first-impressions-of-gmktec-nucbox3/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was fun to <a href="https://newscrewdriver.com/2023/02/13/looking-inside-gmktec-nucbox3/">poke around internal hardware of a tiny PC</a> I wanted to investigate for use as a robot brain. This <a href="https://amzn.to/3Y2e2Di">GMKtec NucBox3 I ordered off Amazon</a> (*) is a more affordable variation on the <a href="https://en.wikipedia.org/wiki/Next_Unit_of_Computing">Intel NUC formula</a>, and its price (significantly lower than Intel's own NUC) makes me more willing to experiment with it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Decent PC for Windows 11 Home</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>But before I take any risk with nonstandard usage, I should verify it worked as advertised. The 128GB SATA SSD came installed with Windows 11 Home edition build 21H2. Upon signing in with my Microsoft account, it started the update process to build 22H2. I assumed the machine came with a license of Windows either <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/01/07/windows-10-can-activate-with-windows-8-hardware-key/" target="_blank">embedded in the hardware</a> or otherwise registered. Windows 11 control panel "Activation state" says "Windows is activated with a digital license linked to your Microsoft account" which I found to be ambiguous. I shrugged because I plan to use it as ROS brain and, if so, I'm likely to run Ubuntu instead of Windows. And if I wipe the SATA drive with a fresh installation of Windows 11, it sounds like I can log in with my Microsoft account and retrieve its license.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The more informative aspect of Windows sign-in and registration is letting me get a feel of the machine in its default configuration. All hardware drivers are in place with no question marks in device manager. Normal user interface tasks were responsive and never frustrating, which is better than <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/09/01/discount-dell-inspiron-laptop-lacks-sata-connector/" target="_blank">certain other budget Windows computers I've tried</a>. A NucBox3 is a perfectly competent little Windows box for light duty computer use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35175,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/gmktec-nucbox3-uefi-menu-via-windows.jpg?w=1024" alt="" class="wp-image-35175"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One oddity I found with the NucBox3 was the lack of a power-up screen letting me change boot behavior with a keypress. When a PC first powers up, there's typically a prompt telling me to press F12 to enter a menu to select a boot device, or DEL to enter system setup, etc. Not on a NucBox3, though: we always boot directly into Windows. The only way I found to enter hardware menu was from within Windows: under "Settings"/"System"/"Recovery" we can choose "Advanced startup" to boot into a special Windows menu, where I can select "Advanced Options" and choose "UEFI Firmware Settings". This is expected to be an infrequent activity most users would never do, so I guess it's OK for the process to be a convoluted.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">UEFI Menu</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I got into UEFI menu for NucBox3 I was surprised by how many options are listed. Far more than any branded (Dell, etc) computer I've seen and even more than hobbyist-focused motherboards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35178,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/gmktec-nucbox3-uefi-menu-advanced.jpg?w=1024" alt="" class="wp-image-35178"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Some of these options like "Debug Configuration" almost feel like they weren't supposed to ship in a final product. My hypothesis is that I'm looking at the default full menu of options for a manufacturer using this AMI (American Megatrends, Inc) UEFI firmware. Maybe the manufacturer was expected to trim it down as appropriate for their product, and maybe nobody bothered to do that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35180,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/gmktec-nucbox3-uefi-menu-chipset-i2c.jpg?w=1024" alt="" class="wp-image-35180"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Under the "Chipset" menu we have device configuration for many peripherals absent from this device. They're marked [Disabled] but the menu option didn't even need to be here. The final line was also the most surprising: a selection for resistors on I2C buses. On one hand, I've never seen a PC's I2C hardware exposed in any user-visible form before. On the other hand, if I can figure out where SDA/SCL lines are on this motherboard, maybe I can <em>really </em>have some fun. Why bother with a Raspberry Pi or even <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/16/esp32-webserver-made-as7341-accessible-via-http-get/" target="_blank">an ESP32 to bridge I2C hardware</a> if I can attach them directly to this PC?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Ubuntu Server</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>But all those shiny lights in UEFI menus were just a distraction. What I really want right now is to control boot sequence so I can boot from a USB flash drive to install Ubuntu Server 22.04 LTS. I found I could do it from the "Boot" section of UEFI menu. Ubuntu Server was installed, it worked, and that was no surprise. A computer competent at a full Windows 11 GUI rarely has a problem with text-based network-centric Ubuntu Server, and indeed I had no problems here. For a ROS brain I would want gigabit networking, all four CPU cores, RAM, storage, and USB peripherals. They are all present and accounted for, even sleep mode if I want to put a robot to sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Variable Input Voltage</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next experiment was to see if this computer is tolerant of variable DC supply voltage. On paper it requires 12V DC and the supplied AC adapter was measured at 12.27V DC. I could buy a boost/buck converter that takes a range of input voltages <a rel="noreferrer noopener" href="https://amzn.to/3RRtW0Y" target="_blank">and output a steady 12V</a> (*) but it would be more efficient to run without such conversion if I could get away with it. Since the NucBox3 used a standard 5.5mm OD barrel jack for DC power input, it was easy to wire it up to my bench power supply. I found it was willing to boot up and run from 10VDC to 12.6VDC, the operating voltage range of 3S LiPo battery packs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Good ROS Brain Candidate</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This little computer successfully ran Ubuntu Server on (simulated) battery power. It handily outperforms the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/08/31/dell-inspiron-11-3000-3180-as-robot-brain-candidate/" target="_blank">Dell 11 3180 I previously bought as ROS brain candidate</a> and is much more compact for easy integration on robot chassis. Bottom line, I have a winner on my hands here!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm glad that Newegg advertisement <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/02/05/window-shopping-mystery-mini-pc-of-many-names/" target="_blank">made me aware of an entire ecosystem of inexpensive small PCs</a>. I need to keep this product category in mind as candidates for potential future projects. I have many options to consider, depending on a project's needs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

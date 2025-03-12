@@ -1,0 +1,72 @@
+---
+layout: post
+title: Accelerate Fusion 360 API Object Creation With DirectDesignType
+date: 2018-01-08 09:00:54.000000000 +00:00
+type: post
+post_id: '15720'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Fusion 360
+- Python
+tags:
+- Performance
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '13354270600'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/01/08/accelerate-fusion-360-api-object-creation-with-directdesigntype/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-15721 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/64cylinders.jpg" alt="64Cylinders" width="1330" height="603"></p>
+<p>Exploring the capabilities of the Fusion 360 API will involve experiments creating objects via script. Since it's all code, it's easy to repeat a process many times, a natural allure of using scripts to automate repetitive tasks. The downside is that Fusion 360 (as of time of writing) has problems resulting in slow response.</p>
+<p>The sample code below creates an array of small cylinders one at a time. (This is not the most efficient method to create an array of cylinders but merely an illustration of the problem.) The size of the array can be adjusted by changing the value of <code>arraySize</code> before running the script. For a 4x4 array, the results are almost instantaneous. On a modern Core i5, slowdowns can be observed in an 8x8 array. The first few cylinders are fast, but as additional cylinders appear, each new cylinder takes longer than the last.</p>
+<p>Fusion 360 performs a lot of bookkeeping overhead to track these operations. While the majority are outside our control, we do have control over the most expensive overhead: the timeline. It is useful when we are working with hand-created designs, but unnecessary for script - if we want to change anything, we'd update the script and run it again. In the user interface, we can click on the gear in the lower right hand side and select "Do not capture Design History". To do the same thing in script, we can set the type of the design object to DirectDesignType. (Uncomment line in sample code below.)</p>
+<p>This mitigates but does not solve the problem. While it is now practical to generate far larger number of objects, there is still a noticeable slowdown as the object counts go up. According to <a href="https://forums.autodesk.com/t5/fusion-360-api-and-scripts/creating-cylinders/m-p/7051309#M3226">this forum post</a>, this issue has been logged as a defect for the development team. Perhaps a future release of Fusion 360 will create the last object as quickly as it created the first.</p>
+<pre>import adsk.core, adsk.fusion, adsk.cam, traceback
+
+arraySize = 8 # Will extrude arraySize^2 objects
+
+def run(context):
+  ui = None
+  try:
+    app = adsk.core.Application.get()
+    ui = app.userInterface
+
+    app.documents.add(adsk.core.DocumentTypes.FusionDesignDocumentType)
+
+    # adsk.fusion.Design.cast(app.activeProduct).designType = adsk.fusion.DesignTypes.DirectDesignType # Uncomment to turn off tracking timeline
+
+    rootComp = adsk.fusion.Design.cast(app.activeProduct).rootComponent
+    sketch = rootComp.sketches.add(rootComp.xYConstructionPlane)
+    extrudeDistance = adsk.core.ValueInput.createByReal(1)
+
+    rangeX = range(1-arraySize, arraySize, 2)
+    rangeY = range(1-arraySize, arraySize, 2)
+
+    for nowX in rangeX:
+      for nowY in rangeY:
+        sketch.sketchCurves.sketchCircles.addByCenterRadius(
+          adsk.core.Point3D.create(nowX, nowY, 0), 0.5)
+
+        rootComp.features.extrudeFeatures.addSimple(
+          sketch.profiles[-1],
+          extrudeDistance,
+          adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
+
+        adsk.doEvents()
+
+except:
+  if ui:
+    ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))</pre>
+<p>This code is also <a href="https://github.com/Roger-random/F360ObjCreateSlowdown">available on Github</a>.</body></html></p>

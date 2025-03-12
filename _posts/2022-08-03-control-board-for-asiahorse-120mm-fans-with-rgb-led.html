@@ -1,0 +1,60 @@
+---
+layout: post
+title: Control Board for Asiahorse 120mm Fans with RGB LED
+date: 2022-08-03 12:30:00.000000000 +00:00
+type: post
+post_id: '31779'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Asiahorse
+- Cooling Fan
+- LED
+- Pixelblaze
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31784'
+  _publicize_job_id: '75409202087'
+  timeline_notification: '1659555005'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/03/control-board-for-asiahorse-120mm-fans-with-rgb-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a trio of PC cooling fans with embedded addressable RGB LED. They were designed to plug into a control hub that came in the bundle, but that hub had only a limited set of patterns and appeared to send the same signal to all fans. In order to run my own light show and control each fan individually, I <a href="https://newscrewdriver.com/2022/08/02/pinout-for-asiahorse-120mm-fan-magic-i-120-v2/">determined the fan pinout</a> and will now build my own control board for these fans.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31782,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-fans-converted-to-jst-xh-connector.jpg?w=1024" alt="" class="wp-image-31782"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first problem was wiring. These fans came with a JST-PH style plug with 2.0mm pitch. (Distance between pins.) My perforated prototype circuit boards (and most connectors and components on hand) have a pitch of 0.1" (~2.54mm) and would not fit. To work around this problem today, I cut off the factory connector and crimped on a replacement. These are <a href="https://amzn.to/3zS8WzN" target="_blank" rel="noreferrer noopener">JST-XH clones</a>(*) with 0.1" pitch. In the future, I might consider buying some <a rel="noreferrer noopener" href="https://amzn.to/3OvUXnp" target="_blank">perforated prototype boards with 2.0mm pitch</a> (*) but that would have the problem of using components with 0.1" pitch. The real solution is to make my own circuit boards that can accommodate whatever pitch I need, but that's beyond my reach at the moment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31787,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-fan-control-board-with-pixelblaze.jpg?w=1024" alt="" class="wp-image-31787"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To generate individual control signals for these fans, I will be using the very awesome <a rel="noreferrer noopener" href="https://electromage.com/pixelblaze" target="_blank">Pixelblaze</a> controller. For power I will be using one of my salvaged 12V DC power bricks. It is rated for up to 1.5A which should be sufficient for a trio of fans and 12*3 = 36 LEDs. The barrel jack has a 5.5mm outer diameter and 2.1mm inner diameter, so I soldered a <a rel="noreferrer noopener" href="https://amzn.to/3aYtrkw" target="_blank">matching power jack</a> (*) to the board. This will deliver power for the fans, with a decoupling capacitor to smooth things out. A <a href="https://amzn.to/3B7sqkW">buck converter</a> (*) with convenient 5V preset feeds from that 12V rail to deliver 5V for Pixelblaze and LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I soldered some 2N2222A transistors for potential control of fan speed, but for this first iteration they're pulled high so the fans spin all the time. It would have been easier to solder fan motor low wire directly to ground, but I have ambition of fan control in a future update.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The LEDs are connected in serial across all three fans. Pixelblaze data is connected to "data in" of the first fan, whose "data out" is connected to "data in" of the second fan, and onwards to the third fan. Configured for 12*3 = 36 WS2812-style LEDs, the Pixelblaze has individual control of every LED with a single data line. And for the first time, these three fans show patterns different from each other. With this new power I can <a href="https://newscrewdriver.com/2022/08/04/orthogonal-fans-with-pixelblaze-3d-mapping/">make things even more interesting</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

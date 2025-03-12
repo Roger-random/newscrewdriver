@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'Dell Latitude X1 Running Ubuntu Core 18: No Graphics But CH341 USB Serial
+  Works'
+date: 2019-08-08 12:30:26.000000000 +00:00
+type: post
+post_id: '19112'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- PC
+tags:
+- Dell
+meta:
+  _oembed_a090ef58084d7aa34abb546d8444c415: "{{unknown}}"
+  _thumbnail_id: '19130'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '33826030852'
+  timeline_notification: '1565292749'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/08/08/dell-latitude-x1-running-ubuntu-core-18-no-graphics-but-ch341-usb-serial-works/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>It was a pleasant surprise to see the <a href="https://newscrewdriver.com/2019/08/06/dell-latitude-x1-now-running-ubuntu-core-18/">Ubuntu Core 18 up and running on a 14-year old Dell Latitude X1</a>, even more pleasant to see it is lightweight enough to be speedy and responsive on such old and slow hardware. But given its age, I knew not to expect everything to work on the stock i386 image. There's no way they can package a comprehensive set of device drivers on such a compact package. I speculate it was not the intent, either. Ubuntu Core is targeted to embedded projects where it is typical to generate an OS image custom tailored to the specific hardware. So the fact it mostly works out of the box is a tremendous bonus, and the missing hardware support is not a bug.</p>
+<p>That said, I'm not terribly interested in generating the custom <a href="https://en.wikipedia.org/wiki/Device_tree#Usage_in_Linux">device tree</a> (or whatever mechanism Ubuntu Core uses) to utilize all peripherals on this Latitude X1. I'm more interested in working with what I already have on hand. During initial configuration I already learned that the wireless module did not work properly. What works, and what doesn't?</p>
+<p>Again I'm not interested in an exhaustive list, I just wanted to find enough to enable interesting projects. Getting this far meant text output and keyboard input functions in addition to wired networking. The next thing to try is to activate the graphics subsystem and mouse input. Looking on Ubuntu's tutorial web site, I found the <a href="https://tutorials.ubuntu.com/tutorial/ubuntu-web-kiosk">web kiosk example</a> which would test hardware necessary to offer a useful set of web-related functionality.</p>
+<p>Following the tutorial steps, I could get the machine to switch display modes, but it never got as far as showing a web browser, just a few lines I didn't understand. At this point I wasn't sure if I followed the procedures correctly or if the hardware failed, so I duplicated the steps with Ubuntu Core 18 running on my modern Dell Inspiron 11 (3180) laptop. I <a href="https://newscrewdriver.com/2019/08/09/ubuntu-core-18-web-kiosk-on-dell-inspiron-11-3180/">saw a web browser</a>, so the procedures were correct and the hardware is at fault. Oh well.</p>
+<p>Comparing what's on screen after starting <code>mir-kiosk</code> on both machines, I see the gibberish lines on the X1 actually resemble the mouse arrow but distorted and scattered across interleaved lines. Lending to the hypothesis that video support on stock Ubuntu Core 18 i386 image needs some tweaks before it can support the video hardware on board a Latitude X1. The fact some lines showed up tells me it's close, but I'm choosing not to invest the time to make it work.</p>
+<p>The next idea is to test USB serial communications. I plugged in an Arduino Nano knockoff with the CH341 USB-serial chip and ran <code>dmesg</code> to learn the device was picked up, understood, and assigned a <code>ttyUSB</code> device path. This particular Arduino was already flashed with a sketch that sent data through the serial port, and as a crude test I used <code>cat /dev/ttyUSB0</code> to see if anything comes up: it did! This is wonderful news. The Latitude X1 can act as high-level processor counterpart to a lower level controller communicating over USB serial opening up project possibilities. I'll have to think on that for a while.</p>
+<p></body></html></p>

@@ -1,0 +1,100 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Button Status Report
+date: 2023-12-29 12:30:00.000000000 +00:00
+type: post
+post_id: '41330'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- inkjet
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  wordads_ufa: s:wpcom-ufa-v4:1703974632
+  _publicize_job_id: '90670293480'
+  firehose_sent: '1703881826'
+  timeline_notification: '1703881827'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have my Saleae Logic 8 logic analyzer set up to listen in on the communication between control panel and main board of a Canon Pixma MX340 multi-function inkjet. After <a href="https://newscrewdriver.com/2023/12/28/canon-pixma-mx340-control-panel-logic-analyzer-capture-targets/">picking a few scenarios to record</a>, I decided to start by looking at its steady-state behavior. I expect this to provide a baseline I can compare against for examining state change behaviors. I think I can get my baseline behavior from the trace where I pressed four buttons, as there should be plenty of steady-state information between my button presses.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41192,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-on-with-no-activity-1ms.png?w=826" alt="" class="wp-image-41192"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's a snapshot of steady-state behavior under the oscilloscope. Channel 1 (yellow, main board to control panel) is held high, transmitting no data. Channel 3 (cyan, control panel enable) is held high to keep the K13988 chip active. The only activity here is on channel 2 (magenta, control panel to main board) where a short burst of activity occurs every 9+ milliseconds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41194,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-no-activity.png?w=826" alt="" class="wp-image-41194"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming in, it looks like a simple square wave.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41343,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-transmitting-0x80-1.png?w=459" alt="" class="wp-image-41343"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When interpreted as 250000 baud 8E1 serial data, this pulse represents a single byte of data with value of 0x80. Saleae Logic software measured interval of these pulses at 9.2ms apart, and a different value is conveyed if a button is pressed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Button Pressed</th>
+<th class="has-text-align-center" data-align="center">Value reported every 9.2ms<br>(Hexadecimal)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">(None)</td>
+<td class="has-text-align-center" data-align="center">0x80</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">OK</td>
+<td class="has-text-align-center" data-align="center">0xC9</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">Right/+</td>
+<td class="has-text-align-center" data-align="center">0xCA</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">Left/-</td>
+<td class="has-text-align-center" data-align="center">0xCB</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">Back</td>
+<td class="has-text-align-center" data-align="center">0x93</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at these values, I noticed "OK", "Right/+" and "Left/-" generated consecutive values, but "Back" was very different. Looking at the <a href="https://newscrewdriver.com/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/" target="_blank" rel="noreferrer noopener">button matrix I mapped out earlier</a>, I see the three consecutive values were all associated with pin 1. This increases my confidence in my button matrix, and this reported value is probably the button's position in that matrix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This button matrix state is sent every 9.2ms, even if there's additional communication between the main board and control panel. For example, during the ~70ms required to <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/">update information displayed on the LCD screen</a>, button matrix state is still sent in between all the display data acknowledgements.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

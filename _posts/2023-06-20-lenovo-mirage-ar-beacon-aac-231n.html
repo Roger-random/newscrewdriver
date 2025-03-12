@@ -1,0 +1,99 @@
+---
+layout: post
+title: Lenovo Mirage AR Beacon (AAC-231N)
+date: 2023-06-20 12:30:00.000000000 +00:00
+type: post
+post_id: '37386'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- xr
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37381'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1687388720
+  _publicize_job_id: '85079881592'
+  timeline_notification: '1687289406'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/06/20/lenovo-mirage-ar-beacon-aac-231n/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A shiny plastic "lightsaber" is the main peripheral of <em>Star Wars: Jedi Challenges</em> and <a href="https://newscrewdriver.com/2023/06/19/reys-saber-from-star-wars-jedi-challenges-aac-101b/">it was fun to take apart</a>. There was another peripheral in the box, a glowing ball beacon to support certain scenarios.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37382,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-intact.jpg?w=1024" alt="" class="wp-image-37382"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In this beacon's base is a three-position switch. Center position is off, and moving to either side would illuminate the soft white translucent sphere. One position gives us cyan, the other position magenta. Given this behavior, I guessed the lowest-cost implementation would be a strictly analog system with LEDs connected to a resistor network. Time to open it up and see if my guess is correct.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37377,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-bottom-aa-battery-door.jpg?w=1024" alt="" class="wp-image-37377"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This beacon uses AA batteries instead of lithium-ion rechargeable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37378,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-bottom-aa-battery-tray.jpg?w=1024" alt="" class="wp-image-37378"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Product labels live in the AA battery tray.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37383,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-label.jpg?w=405" alt="" class="wp-image-37383"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike the lightsaber, there is no FCC ID here meaning it doesn't communicate with the phone or the lightsaber over radio waves. There is no USB port or any other hardwired communication. There might possibly be some kind of communication via lights or sound.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37379,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-bottom-fasteners.jpg?w=1024" alt="" class="wp-image-37379"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two Philips-head fasteners live under those stickers. Remove those stickers, then two screws, followed by a few plastic clips to separate top and bottom halves.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37385,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-top-removed.jpg?w=1024" alt="" class="wp-image-37385"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Wow, my guess of "a few LEDs and a few resistors" was very wrong. This is a surprisingly complex mainboard. I've already ruled out radio wave or hardwired data communication. Looking on the board, I couldn't find anything I recognized as a light sensor for optical communication or a microphone/speaker for audio communication. If this is completely passive, why all this hardware?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37384,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-mainboard.jpg?w=1024" alt="" class="wp-image-37384"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instead of a cyan LED and a magenta LED, in the middle was a full RGB LED capable of arbitrary colors. The surface mount component itself appears identical to the unit illuminating the tip of the lightsaber. Full color capability is not a huge surprise in itself. But in the absence of external communication, how would it know to display another color?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37380,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-cpu-stm8s003f3.jpg?w=642" alt="" class="wp-image-37380"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can see the following markings on the chip in the corner:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>S033
+PHVG
+725Y</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching on these designations, my first hit was <a href="https://www.reddit.com/r/electronic_cigarette/comments/7jsib2/history_of_issues_with_suorin_air/">a question about an electronic cigarette</a>. I know nothing about vaping hardware, but I had not expected them to require microcontroller smarts, either. (I'm surprised twice within a short span.) The chip was identified as the <a href="https://www.st.com/en/microcontrollers-microprocessors/stm8s003f3.html">STM8S003F3</a> and a look in its datasheet confirmed the device marking for UFQFPN20 packaging has a first line of <code>S033</code> matching what I see here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The STM8S003F3 is a relatively simple 8-bit microcontroller with eight kilobytes of flash program storage and a single kilobyte of working memory. These are modest specs, a fraction of the ATmega328P at the heart of an Arduino Uno, but it is still overkill for a device that just shines a LED in one of two colors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37381,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-beacon-disassembled.jpg?w=1024" alt="" class="wp-image-37381"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This beacon must be capable of far more than what I've seen it do. Which is highly likely, given my short time spent actually playing <em>Star Wars: Jedi Challenges</em>. But looking at the hardware in front of me here, I don't see how it could interact with the rest of the system to unleash said capability. Still, it was an interesting look inside. I'm enjoying this particular streak of teardowns so I will <a href="https://newscrewdriver.com/2023/06/07/ditching-phone-based-virtual-reality-for-pc/">continue with the rest of my phone-based headsets</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

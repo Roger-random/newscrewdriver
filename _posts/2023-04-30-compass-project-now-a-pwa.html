@@ -1,0 +1,139 @@
+---
+layout: post
+title: Compass Project Now a PWA
+date: 2023-04-30 12:30:00.000000000 +00:00
+type: post
+post_id: '36441'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36278'
+  _publicize_job_id: '83667045168'
+  timeline_notification: '1682883032'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684887708
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/30/compass-project-now-a-pwa/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The full scope of PWA (Progressive Web App) is too much for me to comprehend with my limited web development skills. Fortunately, I don't need to. PWA helper libraries exist, including some tailored to specific web frameworks. <a href="https://newscrewdriver.com/2023/04/29/notes-on-angular-service-workers-pwa-guide/">Reading over a developer guide for Angular framework's PWA helper</a>, I understood it offers basic PWA service worker functionality without much effort. Naturally, I had to give it a try and see how it turns my Compass project, a simple practice Angular web app, into a PWA.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following instructions, I ran "<code>ng add @angular/pwa</code>" in my project and looked over <a href="https://github.com/Roger-random/compass/commit/a19d872651b4055ae8a67869c3e7e3385235b660">the changes it made</a>. As expected, there were several modifications to configuration JSON files on top of adding one of their own <code>ngsw-config.json</code>. Eight placeholder icon PNG files (showing the Angular logo) were added to the source tree, each representing a different resolution from 72x72 up to 512x512. Notably, the only TypeScript source code change was in <code>app.module.ts</code> to register service worker file <code>ngsw-worker.js</code>, and that service worker file is not part of the source tree where we can enhance it. And if there's an extension mechanism, I don't see it. This tells me behavioral changes are limited to what we can affect via settings in <code>ngsw-config.json</code>. For app authors that want to go beyond, they'd have to write their own PWA service worker from scratch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I don't have any ambition of code changes in this first run. I replaced those placeholder icon PNG files. Change them from the Angular logo to a crude compass I whipped up in a few minutes. Plus a few edits to the application name and cosmetic theme color. (Duplicated in two locations: the <code>.webmanifest</code> file and in <code>index.html</code>.) I built the results, <a href="https://roger-random.github.io/compass">deployed to GitHub Pages</a>, and brought it up on my Android phone Chrome browser to see if anything looks different.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Good news: Android Chrome recognized the site is available as a PWA and offered the option to install it. (Adding yet another browser interface bar to the clutter...) I clicked install, and my icon in all its crudeness was added to my Android home screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bad news: I tapped the icon, saw the loading splash screen (with an even bigger version of my crude icon in the middle) and then... nothing. It was stuck at the splash screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I killed the app and tried a second time, which was successful: my compass needle came up on screen after a brief pause. (1-2 seconds at most.) I returned to home screen, tapped the icon again, and it came up instantly. Implying the app was suspended and resumed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few hours later, I tapped the icon again. It was apparently no longer suspended and no longer available for resume, because I saw the splash screen again and it got stuck again. Killing the app and immediately trying again was successful.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The observed pattern is thus: Initial launch would get stuck at the splash screen due to an undiagnosed issue. Killing the stuck app and immediately relaunching would be successful. Suspend and resume works, but if a suspended app is terminated, we're back to the initial launch problem upon relaunch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since it wasn't possible to change any code in <code>@angular/pwa</code> I'm not sure what I did wrong. Following instructions for "<em><a href="https://angular.io/guide/service-worker-devops#debugging-the-angular-service-worker">Debugging the Angular service worker</a></em>" I headed over to the <a href="https://roger-random.github.io/compass/ngsw/state">debug endpoint ngsw/state</a> where I saw it couldn't download <code>favicon.ico</code> from the server. (Full debug output error message below.) I could see <a href="https://roger-random.github.io/compass/favicon.ico">the file exists</a> on the server, so I don't understand why this PWA service worker could not download it. At the moment I'm at a loss as to how to diagnose this further. For today I'm going to declare a partial success and <a href="https://newscrewdriver.com/2023/05/01/nokia-lumia-520-rm-915-teardown/">move on</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: I've figured it out. By default the PWA service worker assumes the app was deployed to server root, which in this case was incorrect. Since it is hosted at <code>https://roger-random.github.io/compass/</code> I needed to run "<code>ng deploy --base-href /compass/</code>"]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Appendix</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Full error from https://roger-random.github.io/compass/ngsw/state</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>NGSW Debug Info:
+
+Driver version: 15.2.8
+Driver state: EXISTING_CLIENTS_ONLY (Degraded due to failed initialization: Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico)
+Error: Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico)
+    at PrefetchAssetGroup.cacheBustedFetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:479:17)
+    at async PrefetchAssetGroup.fetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:449:19)
+    at async PrefetchAssetGroup.fetchAndCacheOnce (https://roger-random.github.io/compass/ngsw-worker.js:428:21)
+    at async https://roger-random.github.io/compass/ngsw-worker.js:528:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9)
+Latest manifest hash: ecc53033977c5c6ddfd3565d7c2bc201432c42ff
+Last update check: 37s199u
+
+=== Version ecc53033977c5c6ddfd3565d7c2bc201432c42ff ===
+
+Clients: 
+
+=== Idle Task Queue ===
+Last update tick: 42s670u
+Last update run: 37s668u
+Task queue:
+
+
+Debug log:
+
+[37s320u] Error(Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico), Error: Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico)
+    at PrefetchAssetGroup.cacheBustedFetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:479:17)
+    at async PrefetchAssetGroup.fetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:449:19)
+    at async PrefetchAssetGroup.fetchAndCacheOnce (https://roger-random.github.io/compass/ngsw-worker.js:428:21)
+    at async https://roger-random.github.io/compass/ngsw-worker.js:528:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9) Error occurred while updating to manifest 271c8a71bf2acb8075fc93af554137c2e15365f2
+[37s229u] Error(Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico), Error: Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico)
+    at PrefetchAssetGroup.cacheBustedFetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:479:17)
+    at async PrefetchAssetGroup.fetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:449:19)
+    at async PrefetchAssetGroup.fetchAndCacheOnce (https://roger-random.github.io/compass/ngsw-worker.js:428:21)
+    at async https://roger-random.github.io/compass/ngsw-worker.js:528:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9) initializeFully for ecc53033977c5c6ddfd3565d7c2bc201432c42ff
+[37s110u] Error(Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico), Error: Failed to retrieve hashed resource from the server. (AssetGroup: app | URL: /favicon.ico)
+    at PrefetchAssetGroup.cacheBustedFetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:479:17)
+    at async PrefetchAssetGroup.fetchFromNetwork (https://roger-random.github.io/compass/ngsw-worker.js:449:19)
+    at async PrefetchAssetGroup.fetchAndCacheOnce (https://roger-random.github.io/compass/ngsw-worker.js:428:21)
+    at async https://roger-random.github.io/compass/ngsw-worker.js:528:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9
+    at async https://roger-random.github.io/compass/ngsw-worker.js:519:9) Error occurred while updating to manifest 271c8a71bf2acb8075fc93af554137c2e15365f2</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

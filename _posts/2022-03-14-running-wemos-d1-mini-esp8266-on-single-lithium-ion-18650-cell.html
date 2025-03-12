@@ -1,0 +1,53 @@
+---
+layout: post
+title: Running Wemos D1 Mini ESP8266 On Single Lithium-Ion 18650 Cell
+date: 2022-03-14 12:30:00.000000000 +00:00
+type: post
+post_id: '28993'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- DU7169
+- ESP8266
+- INA219
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28994'
+  _publicize_job_id: '70173167355'
+  timeline_notification: '1647286215'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/14/running-wemos-d1-mini-esp8266-on-single-lithium-ion-18650-cell/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've taken apart a broken USB power bank and the 18650 battery cell within has stayed within nominal range. Its <a href="https://newscrewdriver.com/2022/03/13/usb-power-bank-charging-looks-ok/">battery and charging circuit looks good</a>, or at least doesn't do anything obviously bad with that battery. I take it as confirmation of my hypothesis that it's the 5V boost output circuit that is broken, which is great because I plan to ignore that part.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I couldn't quite decipher the exact voltage regulator used on board the <a rel="noreferrer noopener" href="http://newscrewdriver.com/2022/01/29/hello-wemos-d1-mini-clone/" target="_blank">Wemos D1 Mini clone</a> I bought via Amazon. But from my time <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/09/running-esp8266-on-tired-alkaline-aa-batteries/" target="_blank">running these modules on weak AAs</a>, they seem to behave like LDO (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Low-dropout_regulator" target="_blank">low-dropout regulator</a>) in that they are happy to deliver 3.3V even if the input voltage hovers barely above 3.3V. And if the supply voltage drops even further, that is passed through instead of quitting or making weird noises like <a href="https://newscrewdriver.com/2022/02/28/investigating-mp1584-for-solar-power/">as a MP1584 buck converter did</a>. As long as I keep this 18650 cell operating in the healthy range of 3V to 4.2V, I can wire it directly to the "5V" input pin on a Wemos D1 Mini module and it should deliver enough power to run an ESP8266 and INA219.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To mount the USB power bank circuit, I first looked at the existing pin headers hoping they'll mount directly on a perforated prototype board with 0.1" pitch. Sadly they are slightly narrower than that (2mm pitch?) and would not fit. However, the battery connectors are close enough to 0.3" apart that I could solder 0.1" header pins and mount that to the board. This is a perfect way to tap directly into the battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28995,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/usb-power-bank-header-pins-in-battery-connector.jpg?w=1024" alt="" class="wp-image-28995"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I cut up a small piece of plastic (expired credit card) to serve as insulation between circuit boards and from there it was straightforward to mount this on my prototype board. The battery cell is then soldered to these pins and temporarily secured with tape.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was all ready to solder these pins directly to the Wemos D1 Mini as well, but then I realized doing so would leave no graceful way to cut power. So  I added a pair of jumpers (one for BT+, one for BT-) allowing me to turn things off if needed. Once I finished soldering (and probing to verify I hadn't shorted anything) I put the jumpers in and saw the blinking LED of an ESP8266 starting up. Success!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bypassing the broken power output portion of this USB power bank puts this little piece of equipment back to work instead of tossing it in electronic waste. But it also meant I lost over-discharge protection so I will have to <a href="https://newscrewdriver.com/2022/03/15/esp8266-adc-helps-avoid-over-discharging-battery/">implement that myself</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

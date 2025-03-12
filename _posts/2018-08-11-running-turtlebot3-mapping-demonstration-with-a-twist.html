@@ -1,0 +1,44 @@
+---
+layout: post
+title: Running TurtleBot3 Mapping Demonstration (With a Twist)
+date: 2018-08-11 09:00:17.000000000 +00:00
+type: post
+post_id: '16598'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20975839295'
+  timeline_notification: '1534003850'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/11/running-turtlebot3-mapping-demonstration-with-a-twist/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>We've found our way to the source code for the simple <code>turtlebot3_drive</code> node. It's a simple starting point to explore writing code in ROS that'll be worth returning to in the future. In the meantime I keep looking at the other fun stuff available in ROS... like making the robot a little bit smarter. Enter the TurtleBot SLAM (<a href="https://en.wikipedia.org/wiki/Simultaneous_localization_and_mapping">simultaneous location and mapping</a>) demonstration <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/#virtual-slam-with-turtlebot3">outlined in the manual</a>.</p>
+<p>Like all of the TurtleBot3 demo code from the e-Manual, we start by launching the Gazebo simulation environment.</p>
+<blockquote><p><code>roslaunch turtlebot3_gazebo turtlebot3_world.launch</code></p></blockquote>
+<p>Then we can launch the node to run one of several different algorithms. Each have strengths and weaknesses, this one has the strength of "it's what's in the manual" for a starting point.</p>
+<blockquote><p><code>roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping</code></p></blockquote>
+<p>Note: If this node failed to launch with the error <code>ERROR: cannot launch node of type [gmapping/slam_gmapping]: gmapping</code> it means the required module has not been installed. Install (on Ubuntu) with <code>sudo apt install ros-kinetic-slam-gmapping</code>.</p>
+<p>If successful, this will launch RViz and we can see the robot's map drawn using what it can detect from its initial position.</p>
+<p><img class=" size-full wp-image-16605 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/initial-slam-map.png" alt="Initial SLAM map" width="991" height="498"></p>
+<p>To fill out the rest of the map, our virtual TurtleBot needs to explore its space. <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/#virtual-slam-with-turtlebot3">The manual</a> suggests running the '<code>turtlebot3_teleop</code>' module so we can use our keyboard to drive TurtleBot around turtle world. But I think it's more fun to watch the robot map its own world, so let's launch <code>turtlebot3_drive</code> instead.</p>
+<blockquote><p><code>roslaunch turtlebot3_gazebo turtlebot3_simulation.launch</code></p></blockquote>
+<p>Using this simple self-exploration mode the turtle world will be mapped out eventually. How long this will take depends on luck. One interesting observation is that there's no explicit randomness in the <code>turtlebot3_drive</code> source code, but because the Gazebo simulation environment inserts randomness in the data to simulate unpredictability of real sensors, <code>turtlebot3_drive</code> ends up being a random walk.</p>
+<p>Once our robot has completed mapping its world, we can save it for the navigation demo.</p>
+<blockquote><p><code>rosrun map_server map_saver -f ~/map</code></p></blockquote>
+<p><img class=" size-full wp-image-16606 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/final-slam-map.png" alt="Final SLAM map" width="920" height="660"></p>
+<p>More details on how to tune SLAM algorithm parameters are in the <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/slam/">SLAM chapter of the manual</a>, which is mainly focused on running the real robot rather than simulation but most of the points still apply.</body></html></p>

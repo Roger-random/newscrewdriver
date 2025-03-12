@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Windows Shopping LINX: Connecting LabVIEW To Maker Hardware'
+date: 2020-05-24 12:30:28.000000000 +00:00
+type: post
+post_id: '21659'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- LabView
+meta:
+  _thumbnail_id: '21660'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44646115154'
+  timeline_notification: '1590348640'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/24/windows-shopping-linx-connecting-labview-to-maker-hardware/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When I <a href="https://newscrewdriver.com/2020/03/24/window-shopping-labview-2019/">looked over LabVIEW earlier</a> with the eyes of a maker, my biggest stumbling block was trying to connect to the kind of hardware a maker would play with. LabVIEW has a huge library of hardware interface components for sophisticated professional level electronics instrumentation. But I found nothing for simple one-off projects like the kind I have on my workbench. I got as far as finding a reference to a mystical "Direct I/O" mechanism, but no details.</p>
+<p>In hindsight, that was perfectly reasonable. I was browsing LabVIEW information presented on their primary site targeted to electronics professionals. I thought the lack of maker-friendly information meant National Instruments didn't care about makers, but I was wrong. It actually meant I was not looking at the right place. LabVIEW's maker-friendly face is on an entirely different site, the <a href="https://www.labviewmakerhub.com/">LabVIEW MakerHub</a>.</p>
+<p>Here I learned about LINX, an architecture to interface with maker level hardware starting with the ubiquitous Arduino, Raspberry Pi, and extensible to others. From the <a href="https://www.labviewmakerhub.com/doku.php?id=libraries:linx:faq">LINX FAQ</a> and the <a href="https://www.labviewmakerhub.com/doku.php?id=learn:libraries:linx:misc:linx-internals">How LINX Works</a> page I got the impression it allows individual LabVIEW VI (virtual instrument) to correspond to individual pieces of functionality on an Arduino. But very importantly, it implies that representation is distinct from the physical transport layer, where there's only one serial (or WiFi, or Ethernet) connection between the computer running LabVIEW and the microcontroller.</p>
+<p>If my interpretation is true this is a very powerful mechanism. It allows the bulk of LabVIEW program to be set up without worrying about underlying implementation. Here's one example that came to mind: A project can start small with a single Arduino handling all hardware interface. Then as the project grows, and the serial link becomes saturated, functions can be split off into separate Arduinos with their own serial link plugged in to the computer. Yet doing so would not change the LabVIEW program.</p>
+<p>That design makes LabVIEW much more interesting. What dampens my enthusiasm is the lack of evidence of active maintenance on LabVIEW MakerHub. I see support for BeagleBone Black, but not any of the newer BeagleBone boards (Pocket is the obvious candidate.) The <a href="https://www.labviewmakerhub.com/doku.php?id=learn:libraries:linx:supported_devices">list of supported devices</a> list Raspberry Pi only up to 2, Teensy only up to 3.1, Espressif ESP8266 but not the ESP32, etc. Balancing that discouraging sight is that the code is on Github, and we <a href="https://github.com/MakerHub/LINX">see more recent traffic there</a> as well as the <a href="https://www.labviewmakerhub.com/forums/">MakerHub forums</a>. So it's <em>probably</em> not dead?</p>
+<p>LINX looks very useful when the intent is to interface with LabVIEW on the computer side. But when we want something on the computer other than LabVIEW, <a href="https://newscrewdriver.com/2020/05/25/window-shopping-firmata-connect-microcontrollers-to-computers/">we can use Firmata</a> which is another implementation of the concept.</p>
+<p><strong>UPDATE</strong>: And just after I found it (a few years after it launched) NI is killing MakerHub with big bold red text across the top of the site: "<span style="color:#ff0000;"><strong>This site will be deprecated on August 1, 2020"</strong></span></p>
+<p></body></html></p>

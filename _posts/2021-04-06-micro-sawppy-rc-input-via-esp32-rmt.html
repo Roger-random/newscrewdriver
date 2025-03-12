@@ -1,0 +1,54 @@
+---
+layout: post
+title: Micro Sawppy RC Input Via ESP32 RMT
+date: 2021-04-06 12:30:00.000000000 +00:00
+type: post
+post_id: '25905'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ESP32
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25919'
+  _oembed_52dbbd7ddff45925779f936fb70bbbc0: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Lack
+    of low speed torque hampers its rugged terrain ability, but can still climb an
+    obstacle roughly as tall as its wheel diameter.<br>The speed makes it feel less
+    &quot;scholarly study exploration&quot; and more &quot;curious puppy exploring&quot;
+    which I&#39;m OK with. <a href="https://t.co/vPgNy0FQYy">pic.twitter.com/vPgNy0FQYy</a></p>&mdash;
+    Sawppy (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1375229078257590272?ref_src=twsrc%5Etfw">March
+    25, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '56853167236'
+  timeline_notification: '1617737422'
+  _oembed_time_52dbbd7ddff45925779f936fb70bbbc0: '1617744648'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/06/micro-sawppy-rc-input-via-esp32-rmt/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As one of many options I wanted to offer on my micro Sawppy rover ESP32 brain, I wanted to teach it to understand servo motor signals sent by radio control receivers. I found an example online of a project doing a similar thing and read through their code to see how they did it. Cross checking with Espressif documentation on ESP32's RMT peripheral, <a href="https://newscrewdriver.com/2021/04/05/notes-on-esp32-rmt-peripheral-for-receiving-rc-pwm/">that precedent taught me how to configure</a> RMT to read servo control PWM input.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When configured for signal receive, RMT watches the state of a digital signal and measure the time duration for on and off periods of signal pulses. There are a set of events that can be configured to trigger an interrupt service routine (ISR) for the application developer to pick up the measured data for processing. There are two challenges here. First is the general challenge of writing an ISR. There are constraints on what ISR code can do, and what APIs it can call. Violating such constraints will usually lead to mysterious hard-to-diagnose problems. The second challenge is specific to the ESP32 RMT peripheral, because the ISR code will have to know where to fetch data, which flags to check, and which flags to set or clear upon exit. Again doing this wrong usually results in weird behavior.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, it's not absolutely required to write my own ISR. Espressif provides a default ISR for handling RMT events and parses data into a defined format and communicated via a <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/freertos_additions.html#ring-buffers" target="_blank">ring buffer, an Espressif extension to FreeRTOS</a>. Espressif's own RMT sample code to process infrared remote control signal uses this default ISR, and I decided to follow that precedent instead of diving into the challenge of writing my own ISR.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the RMT parameters is a clock divisor, stepping the default 80MHz sampling rate down to something that would work well for the signal at hand. I decided to use a divider of 80, so the signal is sampled at 1 MHz. This makes the math easier for me to understand in my head, because each RMT 'tick' is now one microsecond. The servo control signal pulse of 1 to 2 milliseconds maps cleanly to 1000 to 2000 microseconds. This is lower resolution than the divider of 10 used by my RC precedent, but it means I don't have to multiply everything by eight in my head and having one thousand levels of differentiation should still be more than enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first draft didn't work because the default RMT ISR would never send data on the ring buffer. I know it is retrieving data and putting it on the ring buffer, because after a few seconds I would see "ring buffer full" error on the serial debug monitor. Eventually I figured out I misunderstood what "idle" meant in RMT documentation. I thought "idle" meant we lost the signal and need to go into some kind of recovery routine, so I set it to 32 milliseconds. This is wrong! "Idle" in this context actually meant the end of a single data signal of interest. Because servo control signals were arriving every ~16 milliseconds, the RMT idle threshold was never tripped and thus RMT thought data had not yet completed. The fix is to change idle threshold down to something far shorter than 16 milliseconds but comfortably longer than actual signal. Once I understood my problem <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/commit/f9a981849a630cfb665c6ead515faded639e37ba#diff-9159b0a52af15aaadfcfe308213c1d9413ac4f80d47180de4f25f56a5302641a" target="_blank">and fixed it</a>, RMT ISR started signaling data ready on the ring buffer, allowing me to retrieve servo control durations and translate that to my micro Sawppy joystick messages. Once that translation layer is in place, the little rover is <a href="https://newscrewdriver.com/2021/04/07/micro-sawppy-beta-3-running-with-spektrum-radio-control/">no longer tied to a wired joystick</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

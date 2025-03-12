@@ -1,0 +1,48 @@
+---
+layout: post
+title: Simple Logger Extended With Subset List
+date: 2020-05-26 12:30:35.000000000 +00:00
+type: post
+post_id: '21581'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Logging
+- UWP
+meta:
+  _thumbnail_id: '21568'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_f63f5c176939f8fac256242960102003: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here&#39;s
+    an awesome collection of well-written material for learning TONS of computer vision
+    topics and methods from <a href="https://twitter.com/PyImageSearch?ref_src=twsrc%5Etfw">@PyImageSearch</a>!
+    <a href="https://t.co/4suRYheiaD">https://t.co/4suRYheiaD</a></p>&mdash; Edje
+    Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1181928508723011584?ref_src=twsrc%5Etfw">October
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1590521440'
+  _publicize_job_id: '44726758848'
+  _oembed_time_f63f5c176939f8fac256242960102003: '1590528039'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/26/simple-logger-extended-with-subset-list/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the features about ETW I liked was <a href="https://docs.microsoft.com/en-us/uwp/api/windows.foundation.diagnostics.logginglevel">LoggingLevel</a>. It meant I no longer had to worry about whether something might be too overly verbose to log. Or that certain important messages might get buried in a lot of usually-unimportant verbose details. By assigning a logging level, developers have the option to filter messages by level during later examination. Unfortunately I got lost with ETW and had to take a step back with <a href="https://newscrewdriver.com/2020/05/22/simple-logging-to-text-file/">my own primitive logger</a>, but that didn't make the usefulness go away. In fact I quickly found that I wanted it as <a href="https://newscrewdriver.com/2020/05/23/communicating-with-3d-printer-added-a-twist/">things got complex</a>.</p>
+<p>In my first experiment <a href="https://github.com/Roger-random/UWPTest/tree/master/Hello3DP"><code>Hello3DP</code></a> I put a big text box on the application to dump data. For the second experiment <code><a href="https://github.com/Roger-random/UWPTest/tree/master/PollingComms">PollingComms</a></code> I have a much smaller text area so I could put some real UI on the screen. However, the limited area meant the verbose messages quickly overflowed the area, pushing potentially important information off screen. I still want to have everything in the log file, but I only need a subset displayed live in the application.</p>
+<p>I was motivated to take another stab at ETW but was similarly unsuccessful. In order to resolve my immediate needs I started hacking away at my simple logger. I briefly toyed with the idea of using a small database like <a href="https://en.wikipedia.org/wiki/SQLite">SQLite</a>. Microsoft even put in the work for <a href="https://docs.microsoft.com/en-us/windows/uwp/data-access/sqlite-databases">easy SQLite integration</a> in UWP applications. Putting everything into a database would allow me to query by LoggingLevel, but I thought it was overkill for solving the problem at hand.</p>
+<p>I ended up adding a separate list of strings. Whenever the logger receives a message, it looks at the level and decides if it should be added to the subset of string as well. By default I limited the subset to 5 entries, and only at <code>LoggingLevel.Information</code> or higher. This was something I could pass into the on screen text box to display and notify me in real time (or at least within ~1 second) what is going wrong in my application.</p>
+<p>Once again I avoided putting in the work to learn how to work with ETW. I know I can't put it off forever but this simple hack kicked that can further down the road.</p>
+<p>[<a href="https://github.com/Roger-random/UWPTest/blob/master/PollingComms/Logger.cs">This kick-the-can exercise is publicly available on GitHub</a>]</p>
+<p></body></html></p>

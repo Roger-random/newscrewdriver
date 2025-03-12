@@ -1,0 +1,51 @@
+---
+layout: post
+title: Old PyTorch Without GPU Is Enough To Start
+date: 2021-12-18 12:30:00.000000000 +00:00
+type: post
+post_id: '27900'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- OpenAI
+- PyTorch
+- Reinforcement Learning
+- Spinning Up in Deep RL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27882'
+  _publicize_job_id: '66667743075'
+  timeline_notification: '1639859418'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/18/old-pytorch-without-gpu-is-enough-to-start/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2021/12/17/installing-code-for-openai-spinning-up-in-deep-rl/">mostly successfully followed the installation</a> instructions for OpenAI's <em>Spinning Up in Deep RL</em>. I am optimistic this particular Anaconda environment (in tandem with the OpenAI guide) will be enough to get me off the ground. However, I don't expect it to be enough for doing anything extensive. Because when I checked the installation, I saw it pulled down PyTorch 1.3.1 which is now fairly old. As of this writing, PyTorch LTS is 1.8.2 and Stable is 1.10. On top of that, this old PyTorch runs without CUDA GPU acceleration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>&gt;&gt;&gt; print(torch.__version__)
+1.3.1
+&gt;&gt;&gt; print(torch.cuda.is_available())
+False</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>NVIDIA's CUDA API has been credited with making the current boom in deep learning possible, because CUDA opened up GPU hardware for usage other than its original gaming intent. Such massively parallel computing hardware made previously impractical algorithms practical. However, such power does incur overhead. For one thing, data has to be copied from a computer's main memory to memory modules on board the GPU before they can be processed. And then, the results have to be copied back. For smaller problems, the cost of such overhead can swamp the benefit of GPU acceleration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I believe I ran into this when working through Codecademy's TensorFlow exercises. I initially set up CPU-only TensorFlow on my computer to get started and, once I had that initial experience, I installed TensorFlow with GPU support. I was a little surprised to see that small teaching examples from Codecademy took more time overall on the GPU accelerated installation than the CPU-only installation. One example took two minutes to train in CPU-only mode, but took two and a half minutes with GPU overhead. By all reports, the GPU will become quite important once I start tackling larger neural networks, but I'm not going to sweat the complexity until then.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So for <em>Spinning Up in Deep RL</em>, my first goal is to get some experience running these algorithms <a href="https://newscrewdriver.com/2021/12/19/notes-on-introduction-to-rl-by-openai/">in a teaching examples context</a>. If I am successful through that phase (which is by no means guaranteed) and start going beyond small examples, then I'll worry about setting up another Anaconda environment with a modern version of PyTorch with GPU support.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

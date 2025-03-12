@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'Fun with C# Strings: Interpolation and Verbatim'
+date: 2020-08-28 12:30:00.000000000 +00:00
+type: post
+post_id: '21455'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags: []
+meta:
+  _thumbnail_id: '21568'
+  _publicize_job_id: '48225114611'
+  timeline_notification: '1598643019'
+  _oembed_eddaa814de5087b289f24edcce0f2c0a: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">I
+    bought a Mitutoyo electronic indicator on faith that they&#39;re popular enough,
+    I can find information online to interface with its data port. Turns out there&#39;s
+    no need to hunt: the inbox pamphlet tells me how. I did not expect that! A very
+    pleasant surprise. <a href="https://t.co/nvOCcgCb4h">pic.twitter.com/nvOCcgCb4h</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1287870898398064640?ref_src=twsrc%5Etfw">July
+    27, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_eddaa814de5087b289f24edcce0f2c0a: '1598669326'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/28/fun-with-c-strings-interpolation-and-verbatim/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Relating to <a href="https://newscrewdriver.com/2020/08/27/icon-fun-with-segoe-mdl2/">my adventures exploring iconography</a>, this UWP application exercise also managed to add some novelty to a foundational concept: strings. Strings of characters to represent human readable text is a basic part of computer programming. Our very first "Hello World" program would use them... for the "Hello World" is itself a string! Even if someone learning programming had not yet covered the concept of strings, they use it right from the start. As such a fundamental building block, I had no reason to expect to find anything interesting or novel when I wrote C# code. It looks like C, so I assumed all strings behaved like C.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was surprised to learn my assumption was wrong: there are some little handy syntactic shortcuts available in a C# program. Nothing that can't be done some other way in the language and certainly nothing earth shattering, but nifty little tools all the same. I was most fascinated by the <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/" target="_blank">special characters</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first one is $, the <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated">string interpolation prefix</a>. I first came across it in a sample program that made generating some text output more succinct. It allows us to put variable names inline with the text and some tool in the compilation chain will handle the details of interpreting variable values as text and build the string for display.  It definitely made the sample code easier to read, and can be nice in my own programs as well. It made code for <a href="https://newscrewdriver.com/2020/05/26/simple-logger-extended-with-subset-list/">my own simple logger</a> easier to read. There is some minor security concern here as automatic interpolation risk introducing unexpected behavior, but at least for small play projects I'm not concerned.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other special character is @, call the <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/verbatim">verbatim identifier</a>. It disables almost all string processing for escape sequences, making it easy to use strings that have file paths: we no longer need to worry about the slashes accidentally becoming an escape character. It's not something terribly common in my projects, but I do have to deal with paths and when I do so in C# this is going to reduce a lot of annoyance. And in direct contrast to interpolation, verbatim may actually cut down on security attack surface by making sure nothing unexpected can occur with escape sequences by eliminating the behavior completely. More tools in the toolbox is always good.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

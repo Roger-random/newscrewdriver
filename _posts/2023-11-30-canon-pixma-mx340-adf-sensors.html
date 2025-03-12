@@ -1,0 +1,127 @@
+---
+layout: post
+title: Canon Pixma MX340 ADF Sensors
+date: 2023-11-30 12:30:00.000000000 +00:00
+type: post
+post_id: '40734'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40447'
+  wordads_ufa: s:wpcom-ufa-v4:1703391479
+  _publicize_job_id: '89865792920'
+  timeline_notification: '1701376222'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/30/canon-pixma-mx340-adf-sensors/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm <a href="https://newscrewdriver.com/2023/11/29/canon-pixma-mx340-cover-switch-and-power-supply/">diving into the electronic guts</a> of a partially disassembled Canon Pixma MX340 multi-function inkjet, starting from the top: the automatic document feeder (ADF).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40440,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-motor-and-sensors.jpg?w=1024" alt="" class="wp-image-40440"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Inside the paper feed mechanism is a pair of sensors that appear to be photo-interrupter switches.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40447,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-sensors.jpg?w=1024" alt="" class="wp-image-40447"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see a simple circuit board and through-hole components, so it looked like an easy starting point. There were no fasteners holding these two circuit boards in place, just cleverly shaped plastic molded into the body. A four-wire harness connects this sensor assembly to the main board. I see wires colored red, black, yellow, and purple. I guessed they would be power, ground, signal 1 and signal 2. (I was wrong.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":40741,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-document-present-sensor-board-front.jpg?w=800" alt="" class="wp-image-40741"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40742,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-document-present-sensor-board-back.jpg?w=800" alt="" class="wp-image-40742"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's front and back of the sensor that senses when a document has been placed in the ADF. Looking at the back, I see a tiny surface-mount resistor labeled R51 and marked with "471" for 47 * 10<sup>1</sup> = 470 Ohms. This is a common value used for a LED current-limiting resistor, so that implies the associated pin is emitter LED power and the adjacent pin ground. Which makes sense, as it was routed to one of the pins of the receiver as well. Process of elimination says the final pin should be the sensor signal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40744,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-document-present-sensor-board-back-with-labels.jpg?w=1024" alt="" class="wp-image-40744"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Turning the printer on, my hypothesis was verified with the volt meter. When light between the emitter and receiver is blocked, the sensor signal is at 3.3V. Probably pulled up by something on the mainboard. When there is no blockage between the emitter and receiver, the sensor signal pin is pulled to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the 3.3 volts I detected on the signal wire, I had expected power to be 3.3V as well and was mildly surprised to measure 5.5V on that wire. Why go through the complexity of having multiple voltage planes? Maybe the engineers thought it would better to have higher voltage running through the long skinny wire from mainboard to sensor. But if so, why not use 24V DC directly from the power supply and use a bigger current-limiting resistor? 5.5V must present a useful tradeoff between 3.3V and 24V but I don't know those Canon engineers' considerations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":40747,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-paper-feed-sensor-board-front.jpg?w=800" alt="" class="wp-image-40747"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":40746,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-paper-feed-sensor-board-back.jpg?w=800" alt="" class="wp-image-40746"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other sensor detects whether a sheet of paper has been successfully fed into the ADF mechanism. It seems to use the same photo-interrupter sensor and the circuit works similarly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40750,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-paper-feed-sensor-board-back-with-labels.jpg?w=1024" alt="" class="wp-image-40750"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Working back to the long 4-wire harness, I was surprised to discover my initial guess on wire assignments were backwards from the actual measured behavior.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center"></th>
+<th class="has-text-align-center" data-align="center">Red</th>
+<th class="has-text-align-center" data-align="center">Black</th>
+<th class="has-text-align-center" data-align="center">Yellow</th>
+<th class="has-text-align-center" data-align="center">Purple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">Expected</td>
+<td class="has-text-align-center" data-align="center">Power</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center">Signal</td>
+<td class="has-text-align-center" data-align="center">Signal</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">Actual</td>
+<td class="has-text-align-center" data-align="center">Signal 1</td>
+<td class="has-text-align-center" data-align="center">Signal 2</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+<td class="has-text-align-center" data-align="center">+5.5V DC Power</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>I guess Canon doesn't care much for wire color convention, where red is usually power and black for ground. Alternatively, maybe this was a production hiccup that inadvertently reversed the color order loaded on the wire harness machine. Maybe the relevant Canon engineering team decided: "Well, it is wired right electrically, so we'll just ship with the wrong wire colors." A valid choice! The end user never sees these wires and would never care about their color anyway. Maybe the story is documented in an errata for Canon technicians that I would never see.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's fine, I got what I came here for. Next up: <a href="https://newscrewdriver.com/2023/12/01/canon-pixma-mx340-adf-motor/">the ADF motor</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

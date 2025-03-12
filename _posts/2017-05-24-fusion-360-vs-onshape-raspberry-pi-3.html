@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'Fusion 360 vs. Onshape: Raspberry Pi'
+date: 2017-05-24 16:56:41.000000000 +00:00
+type: post
+post_id: '5173'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Fusion 360 vs. Onshape
+- Raspberry Pi
+- WebGL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '5406534942'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/05/24/fusion-360-vs-onshape-raspberry-pi-3/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignleft size-thumbnail wp-image-5172" src="https://newscrewdriver.com/wp-content/uploads/2017/05/raspberry-pi-logo.png?w=254" alt="raspberry-pi-logo" width="127" height="150">And now for something completely silly: let's look at how our two competing hobbyist-friendly CAD offerings fare on the hobbyist-friendly single-board computer, the Raspberry Pi.</p>
+<p>(Spoiler: both failed.)</p>
+<p><em><strong>Raspberry Pi</strong></em></p>
+<p>I have on hand the Raspberry Pi 3 Model B. Featuring a far more powerful CPU than the original Pi which finally made the platform usable for basic computing tasks.</p>
+<p>When the Raspberry Pi foundation <a href="https://www.raspberrypi.org/blog/introducing-pixel/">updated its Raspbian operating system with PIXEL</a>, they switched the default web browser from Epiphany to Chromium, the open-source fork of Google's Chrome browser. Bringing in a mainstream HTML engine resulted in far superior compatibility with a wider range of web sites, supporting many of the latest web standards, including <a href="https://en.wikipedia.org/wiki/WebGL">WebGL</a> which is what we'll be playing with today.</p>
+<p><em><strong>Autodesk Fusion 360</strong></em></p>
+<p>Fusion 360 is a native desktop application compiled for Windows and MacOS, so we obviously couldn't run that on the Pi. However, there is a web component: Fusion 360 projects can be shared on the Autodesk 360 collaboration service. From there, the CAD model can be viewed in a web browser via WebGL on non-Windows/MacOS platforms.</p>
+<p>While such files can be viewed on a desktop machine running Ubuntu and Chromium, a Raspberry Pi 3 running Chromium is not up to the task. Only about half of the menu bar and navigation controls are rendered correctly, and in the area of the screen where the actual model data should be, we get only a few nonsensical rectangles.</p>
+<p><em><strong>Onshape</strong></em></p>
+<p>Before this experiment I had occasionally worked on my Onshape projects on my desktop running Ubuntu and Chromium, so I had thought the web-based Onshape would have an advantage in Raspberry Pi Chromium. It did, just not usefully so.</p>
+<p>In contrast to A360's partial menu UI rendering, all of Onshape's menu UI elements rendered correctly. Unfortunately, the actual CAD model is absent in the Raspberry Pi Chromium environment as well. We get the "Loading..." circle and it was never replaced by the CAD model.</p>
+<p><em><strong>Conclusion</strong></em></p>
+<p>Sorry, everyone, you can't build a web-based CAD workstation with a $35 Raspberry Pi 3.</p>
+<p>You can, however, use these WebGL sites as a stress test of the Raspberry Pi. I had three different ways of powering my Pi and this experiment proved enlightening.</p>
+<ol>
+<li>A Belkin-branded 12V to 5V USB power adapter: This one delivered good steady voltage at light load, but when the workload spiked to 100% the voltage dropped low enough for the Pi to brown out and reset.</li>
+<li>A cheap Harbor Freight 12V to 5V USB adapter: This one never delivered good voltage. Even at light load, the Pi would occasionally flash the low-voltage warning icon, but never low enough to trigger a reboot. When the workload spiked to 100%, the voltage is still poor but also never dropped enough to trigger a reset. Hurray for consistent mediocrity!</li>
+<li>An wall outlet AC to 5V DC power unit (specifically advertised to support the Raspberry Pi) worked as advertised - no low-voltage warnings and no resets.</li>
+</ol>
+<p></body></html></p>

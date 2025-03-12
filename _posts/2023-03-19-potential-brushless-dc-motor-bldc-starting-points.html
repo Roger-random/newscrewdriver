@@ -1,0 +1,67 @@
+---
+layout: post
+title: Potential Brushless DC Motor (BLDC) Starting Points
+date: 2023-03-19 12:30:00.000000000 +00:00
+type: post
+post_id: '35495'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35388'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1679343576
+  _publicize_job_id: '82453599340'
+  timeline_notification: '1679254317'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/19/potential-brushless-dc-motor-bldc-starting-points/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Learning more about brushless DC motor control have been on my to-do list for several years, ever since I learned of another maker's problems with <a href="https://newscrewdriver.com/2020/01/11/projects-using-brushless-motors-must-account-for-controller-start-up-behavior/">motor control algorithms that did not suit the task</a>. I'm still not ready to dive into this field yet, but I thought I've collected enough potential sources of information that it's worth writing them down.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ESP32 MCPWM</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I looked at ESP32, one of the <a href="https://newscrewdriver.com/2021/02/19/notes-on-esp32-pwm-peripherals/">features that caught my eye</a> was its <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/mcpwm.html">motor control pulse-width modulation (MCPWM) peripheral</a>. I used it for my Micro Sawppy rover project which used it to control DC gearmotors in each of the rover's six wheels. But it is also applicable for controlling two brushless DC motors. <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/tree/master/examples/peripherals/mcpwm/mcpwm_bldc_hall_control" target="_blank">Espressif's ESP32 BLDC control example </a>project looked interesting. Putting it to work directly without modification requires a motor with integrated hall sensor and additional hardware (MOSFETs and gate drivers) I don't have at the moment. I've noticed that MCPWM seems to be missing from more recent Espress microcontrollers, does this mean customer demand hasn't been high enough to justify continued development? If so, that's a shame but also a warning I might not want to get too invested in a feature of uncertain future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">SimpleFOC</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For something more fully-featured than an Espressif demo, I could look at <a rel="noreferrer noopener" href="https://www.simplefoc.com/" target="_blank">SimpleFOC</a>. It's a library for Arduino framework that supports many microcontrollers with Arduino cores. Ranging from the original ATMega328P to STM32 to ESP32. (<a href="https://docs.simplefoc.com/microcontrollers">ESP32 port claims to use its MCPWM peripheral</a>.) This is promising, but SimpleFOC documentation seems to be aimed at people who already knew a lot about brushless motors and know what they want. I need to do more studying before I can absorb information within.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are a few "reference implementations" for power circuits controlled by SimpleFOC software, but it looks like most of them are out of stock due to the global semiconductor shortage. There are also projects that build on SimpleFOC like <a href="https://hackaday.com/2023/03/15/take-a-ride-through-the-development-of-a-custom-bldc-motor-controller/">this custom wheeled robot controller featured on Hackaday</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">VESC</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another open-source project for brushless motor control is <a href="https://vesc-project.com/">VESC</a>. Its documentation is even more opaque to me than SimpleFOC was. (One of them could be built on top of the other for all I know.) What I got out of VESC site is that its primary focus are on brushless motors of sizes suitable for carrying a person around: electric skateboards, scooters, etc.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Theory of Operation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking online for beginner-level introductions, I first found <em><a href="https://resources.altium.com/p/build-advanced-brushless-motor-controller">How to Make Advanced BLDC Motor Controllers</a></em> which, despite the name, stayed quite beginner-friendly and did not get very advanced. Here I learned terminology like "trapezoidal drive" which is easier to implement than "sinusoidal drive" which is what field-oriented controllers like SimpleFOC and VESC does. I also learned of dangers like "shot-through condition" which risks short-circuiting and blowing out our controller circuit and/or our power supply.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another beginner-friendly article is <em><a href="https://www.digikey.com/en/articles/how-to-power-and-control-brushless-dc-motors">How to Power and Control Brushless DC Motors</a></em>. This is the second time I got a beginner's primer from Digi-Key's Article Library. The <a href="https://newscrewdriver.com/2022/08/30/resistors-negotiate-5v-power-in-usb-type-c/">previous lesson involved USB power delivery</a>. And with these two successes, I think I should look around that library to find more educational resources. It didn't take long before I found <em><a href="https://www.digikey.com/en/articles/controlling-sensorless-bldc-motors-via-back-emf">Controlling Sensorless, BLDC Motors via Back EMF</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, this study syllabus is only important because I want to understand what's going on behind the scenes. If I just want to spin a motor, the easiest thing to do is to buy a commercial controller. Which <a href="https://newscrewdriver.com/2023/03/20/brushless-motor-controller-for-multirotor-aircraft/">I've also done to see what I can learn</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

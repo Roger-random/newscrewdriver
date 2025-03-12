@@ -1,0 +1,51 @@
+---
+layout: post
+title: HP Stream 7 Really Wants Its Battery
+date: 2022-01-17 12:30:00.000000000 +00:00
+type: post
+post_id: '28203'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- HP Stream 7
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28204'
+  _publicize_job_id: '67804664922'
+  timeline_notification: '1642451470'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/17/hp-stream-7-really-wants-its-battery/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been trying to get a HP Stream 7 tablet running in a way suitable to use as a future project user interface or maybe a data dashboard. Meaning I wanted it to run on external power indefinitely even though it could not do so on USB power alone. When I supplied power directly to the battery it would shut down after some time. The current session deals with disconnecting the battery and feeding the tablet DC directly, but this machine was designed to run with a battery and it really, really wanted its battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I could feed it DC power and it would power up, it would intermittently complain about its battery being very low. This must be in hardware because it would occur when booting into either Windows <a href="https://newscrewdriver.com/2022/01/16/hp-stream-7-running-debian-with-raspberry-pi-desktop/">or a  Debian distribution of Linux</a>. This shouldn't be an input voltage problem, as my bench power supply should be keeping it at 3.7V. But there's something trigging this error message upon startup and I have to retry rebooting several times before operation would resume:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote">
+<p><code>HP Battery Alert</code></p>
+<p><code>The system has detected the storage capacity of the battery stated below to be very low. For optimal performance, please attach the power adapter to charge the battery over 3%, and then re-power on the unit.</code></p>
+<p><code>Primary (internal) Battery</code></p>
+<p><code>Currently Capacity: 2 %</code></p>
+<p><code>System will auto-shutdown after 10 second</code></p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>Perhaps my bench power supply isn't as steady as I assume it is. Perhaps there are problems keeping up with changes in power demand and that would occasionally manifest as a dip in voltage that triggers the battery alert. Another symptom that supports the hypothesis is the fact I couldn't use USB peripherals while running on the bench power supply. When I plug in a USB peripheral, the screen goes black and the system resets, consistent with a power brownout situation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So to make the hardware happy and to support sudden spikes in power requirements, I really need to plug the battery back in. Trying to run without battery was a fun experiment but more importantly it gave me an idea on running this tablet on continuous external power: <a href="https://newscrewdriver.com/2022/01/18/disabling-hp-stream-7-battery-drivers-when-externally-powered/">silence the battery driver</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

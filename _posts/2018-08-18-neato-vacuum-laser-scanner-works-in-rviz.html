@@ -1,0 +1,42 @@
+---
+layout: post
+title: Neato Vacuum Laser Scanner Works in RViz
+date: 2018-08-18 09:00:09.000000000 +00:00
+type: post
+post_id: '16650'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- LIDAR
+- MP1584
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1534608034'
+  _publicize_job_id: '21216349890'
+  _thumbnail_id: '16648'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/18/neato-vacuum-laser-scanner-works-in-rviz/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-medium wp-image-16651 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/08/scanner-motor-spins.jpg?w=147" alt="Scanner Motor Spins" width="147" height="300">I bought a laser scanner salvaged from a Neato robot vacuum <a href="https://www.ebay.com/itm/283094400379">off eBay</a>. The promised delivery date is mid next week but the device showed up far earlier than anticipated. Which motivated me to drop other projects and check out the new toy immediately.</p>
+<p>The first test is to verify the rotation motor works. According to instructions, it <a href="http://wiki.ros.org/xv_11_laser_driver/Tutorials/Connecting%20the%20XV-11%20Laser%20to%20USB">demands 3.0 volts</a> which I dialed up via my bench power supply. Happily, the scanner turns. After this basic verification, I took one of the <a href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/">adjustable voltage regulators I bought to power a Raspberry Pi</a> and dialed it down to an output of 3.0 volts. Since the connectors have a 2mm pitch, my bag of 4-pin JST-XH connectors could be persuaded to fit. It even looks like the proper connector type, though the motor connector only uses two pins out of four.</p>
+<p>The instructions also had data pinout, making it straightforward to solder up an adapter to go between it and a 3.3V capable USB serial adapter. <a href="https://amzn.to/2o6RrcA" target="_blank" rel="noopener">This particular adapter</a> (*) claims to supply 3.3V between 100-200mA. Since the instruction said the peak power draw is around 120mA, it should be OK to power the laser directly off this particular USB serial adapter.</p>
+<p><img class=" size-full wp-image-16652 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/scanner-power-and-data.jpg" alt="Scanner Power and Data" width="800" height="298"></p>
+<p>With physical connection complete, it's time to move on to the software side. This particular XV-11 ROS node is available in both binary and source code form. I chose to clone the Github source code because I have ambition to go in and read the source code later. The source code compiled cleanly and RViz, the data visualizer for ROS data, was able to parse laser data successfully.</p>
+<p>That was an amazingly smooth and trouble-free project. I'm encouraged by the progress so far. I hope we could incorporate this into a robot and, if it proves successful, I anticipate buying more of these laser sensors off eBay in the future.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

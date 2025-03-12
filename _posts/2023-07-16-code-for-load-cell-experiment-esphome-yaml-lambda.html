@@ -1,0 +1,138 @@
+---
+layout: post
+title: Code for Load Cell Experiment (ESPHome YAML Lambda)
+date: 2023-07-16 12:30:00.000000000 +00:00
+type: post
+post_id: '37941'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37924'
+  timeline_notification: '1689535805'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1689536122
+  _publicize_job_id: '85801772499'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/16/code-for-load-cell-experiment-esphome-yaml-lambda/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got a set of inexpensive load cells hooked up to <a href="https://newscrewdriver.com/2023/07/15/initial-sleep-activity-data/">log signs whether I'm getting a good night's sleep</a>. It was an experiment that was both interesting to me and fits within the quite-significant limitations of these cheap little things. I'm going to leave that setup collecting data for a while, in the meantime I want to write down details on the software side before I forget.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I did not try to compensate for temperature or for system warmup, those two together could affect final weight output by as much as half a kilogram. But in the specific purpose of tracking changes on a minute-by-minute basis, those factors could be ignored.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This sensor and HX711 amplifier combination has a recurring issue sending occasional readings that do not reflect what's actually happening. To minimize effect of these spurious data points, I have taken the following measures:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>The reported weight value is the <a href="https://esphome.io/components/sensor/index.html#median">median weight</a> out of the past minute and a half. Median value filter is more tolerant of spurious data of drastically different values.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Once I had everything set up, I noted the minimum measured value (empty bed) and the maximum expected value (bed with me in it) and discarded all values outside of that range as "Off Scale Low" and "Off Scale High". That will throw out some spurious data but still leaves those within the expected range.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The reported delta value is not the difference between the maximum and minimum values seen within a time window. I track the second-largest and second-smallest values and report that delta instead. This way I can ignore spurious outliers, though it only works as long as spurious data doesn't happen multiple times within a minute. Fortunately that's been the case so far. If the problem gets worse I'll have to devise something else.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>And here's the ESPHome YAML. If you want to copy/paste this code, feel free to do so. But make sure the values of hx711 "<code>dout_pin</code>" and "<code>clk_pin</code>" matches your hardware. The constants used to filter off-scale high/low will also need to be adjusted to fit your setup:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>sensor:
+  - platform: template
+    name: "Delta"
+    id: load_cell_delta
+    accuracy_decimals: 0
+    update_interval: never # updates only from code, no auto-updates
+  - platform: template
+    name: "Off Scale Low"
+    id: load_cell_toolow
+    accuracy_decimals: 0
+    update_interval: never # updates only from code, no auto-updates
+  - platform: template
+    name: "Off Scale High"
+    id: load_cell_toohigh
+    accuracy_decimals: 0
+    update_interval: never # updates only from code, no auto-updates
+  - platform: hx711
+    name: "Filtered"
+    dout_pin: D2
+    clk_pin: D1
+    gain: 128
+    update_interval: 0.5s
+    filters:
+      median:
+        window_size: 180
+        send_every: 120
+    on_raw_value:
+      then:
+        lambda: |-
+          static int load_window = 0;
+          static float load_max = 0.0;
+          static float load_second_max = 0.0;
+          static float load_min = 0.0;
+          static float load_second_min = 0.0;
+
+          // Ignore spurious readings that imply negative weight
+          if (x &gt; -500000) // Constant experimentally determined for each setup
+          {
+            id(load_cell_toolow).publish_state(x);
+            return;
+          }
+          // Ignore spurious readings that exceed expected maximum weight
+          if (x &lt; -1500000) // Constant experimentally determined for each setup
+          {
+            id(load_cell_toohigh).publish_state(x);
+            return;
+          }
+          
+          // Reached the end of our min/max window, publish observed delta
+          if (load_window++ &gt; 120)
+          {
+            load_window = 0;
+
+            // Use second largest/smallest values, in case the absolute
+            // max/min were outliers.
+            id(load_cell_delta).publish_state(load_second_max-load_second_min);
+          }
+          
+          if (load_window == 1)
+          {
+            // Starting a new min/max window
+            load_max = x;
+            load_second_max = x;
+            load_min = x;
+            load_second_min = x;
+          }
+          else
+          {
+            // Update observations in min/max window
+            if (x &gt; load_max)
+            {
+              load_second_max = load_max;
+              load_max = x;
+            }
+            if (x &lt; load_min)
+            {
+              load_second_min = load_min;
+              load_min = x;
+            }
+          }</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

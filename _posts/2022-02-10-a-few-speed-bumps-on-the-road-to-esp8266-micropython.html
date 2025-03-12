@@ -1,0 +1,116 @@
+---
+layout: post
+title: A Few Speed Bumps on the Road to ESP8266 MicroPython
+date: 2022-02-10 12:30:00.000000000 +00:00
+type: post
+post_id: '28152'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Python
+tags:
+- ESP8266
+- MicroPython
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28376'
+  _publicize_job_id: '68824565124'
+  timeline_notification: '1644525021'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/10/a-few-speed-bumps-on-the-road-to-esp8266-micropython/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I decided to <a href="https://newscrewdriver.com/2022/02/09/next-practice-round-micropython-on-esp8266/">play with MicroPython on an ESP8266</a> and started with MicroPython documentation page appropriately titled <em><a href="https://docs.micropython.org/en/latest/esp8266/quickref.html">Quick reference for the ESP8266</a></em>. It was <em>almost</em> (but not entirely) smooth sailing with the inexpensive <a rel="noreferrer noopener" href="https://amzn.to/3qetPjU" target="_blank">Wemos D1 Mini clone</a>(*) I had on hand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had recently switched desktop computers, with a fresh installation of Windows, so everything had to be reinstalled. Starting with Python, since I need that to <a href="https://github.com/espressif/esptool">run esptool tool</a> to flash Espressif devices. It got its own virtual Python environment with <a href="https://docs.python.org/3/library/venv.html">venv</a> and I could start working with the ESP8266.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I verified that flash size matched 4MB as per Amazon product listing with <code>esptool.py --port COM4 flash_id</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then the first step in MicroPython directions: erase whatever might be in flash: <code>esptool.py --port COM4 erase_flash</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Followed by flashing the board with MicroPython, version 1.17 was the latest as of this writing: <code>esptool.py --port COM4 --baud 460800 write_flash --flash_size=detect 0 esp8266-20210902-v1.17.bin</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>esptool.py v3.1
+Serial port COM4
+Connecting....
+Detecting chip type... ESP8266
+Chip is ESP8266EX
+Features: WiFi
+Crystal is 26MHz
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Auto-detected Flash size: 4MB
+Flash will be erased from 0x00000000 to 0x0009afff...
+Flash params set to 0x0040
+Compressed 633688 bytes to 416262...
+Wrote 633688 bytes (416262 compressed) at 0x00000000 in 9.4 seconds (effective 537.1 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That looked good! But I thought I'd verify anyway: <code>esptool.py --port COM4 --baud 460800 verify_flash --flash_size=detect 0 esp8266-20210902-v1.17.bin</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>esptool.py v3.1
+Serial port COM4
+Connecting....
+Detecting chip type... ESP8266
+Chip is ESP8266EX
+Features: WiFi
+Crystal is 26MHz
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Auto-detected Flash size: 4MB
+Flash params set to 0x0040
+Verifying 0x9ab58 (633688) bytes @ 0x00000000 in flash against esp8266-20210902-v1.17.bin...
+-- verify OK (digest matched)
+Hard resetting via RTS pin...</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This all looked good, but during this process I found communication with my board was unreliable. Occasionally I would fail to connect:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>esptool.py v3.1
+Serial port COM4
+Connecting........_____....._____....._____....._____....._____....._____....._____
+
+A fatal error occurred: Failed to connect to Espressif device: Invalid head of packet (0x08)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The frustrating part is that I don't know what causes this, all I could do is retry until it worked. I didn't notice anything I did differently between the times that worked and the times that failed. Is it the ESP8266? Is it the CH340 serial port bridge? Is it my USB cable? I can't tell. The good news with MicroPython is that, once it is flashed, I could work via serial port without further headaches with <code>esptool</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I remembered that PlatformIO Visual Studio Code had a serial port monitor, and it was indeed able to connect. But as the name stated, it was only a monitor and while I could see a MicroPython prompt I couldn't type any commands back. Looking around Visual Studio extension marketplace I found <a rel="noreferrer noopener" href="https://marketplace.visualstudio.com/items?itemName=nordic-semiconductor.nrf-terminal" target="_blank">a serial terminal extension</a> published by Nordic Semiconductor. This allowed me to type commands into the MicroPython prompt and verify it worked, but frustratingly I could not copy/paste in this terminal. So much for a modern integrated environment! I returned to <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">trusty old PuTTY</a> for my MicroPython serial terminal needs and <a href="https://newscrewdriver.com/2022/02/11/esp8266-micropython-automatically-remembers-wifi/">got to work</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,87 @@
+---
+layout: post
+title: FormLabs Form 1+ Display Board Rev 01
+date: 2022-09-15 12:30:00.000000000 +00:00
+type: post
+post_id: '32514'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32571'
+  _publicize_job_id: '76766178207'
+  timeline_notification: '1663270213'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/15/formlabs-form-1-display-board-rev-01/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Following <a href="https://newscrewdriver.com/2022/09/14/more-formlabs-form-1-mainboard-io/">wires on the mainboard</a> in a broken FormLabs Form 1+ laser resin 3D printer, I found harnesses leading to several components mounted on the front panel. There is a sensor to detect if the lid is open. (Or more technically, if a magnet is nearby. A magnet is embedded in the lid.) There is also a button combined with embedded LED illumination. And finally, the dot matrix display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32573,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-startup-formlabs-logo.jpg?w=1024" alt="" class="wp-image-32573"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When this printer boots up, a short logo animation is shown before proceeding to display text, indicating arbitrary dot matrix graphics capability and not restricted to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/06/cl84209-base-station-lcd-character-set/" target="_blank">alphanumeric character display of a built-in font</a>. Which is great for flexibility but would also mean it is more complex to operate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32572,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-board-removed.jpg?w=1024" alt="" class="wp-image-32572"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After removing four tiny hex screws I could pull the display circuit board free. (Promptly losing one of four plastic spacers between the circuit board and front panel.) Now I can confirm its blue color came directly from the display and not a tint imparted by front panel plastic window. We also see the circuit board is a FormLabs custom breakout board labeled with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>FORMLABS, INC.
+DISPLAY BOARD REF 01
+334056-01</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>But what is that module hosted by the board? I couldn't see any identifying markings as-is. Maybe there are some on the back? The display module is held in place by four twisted rear metal tabs that I could straighten out with pliers, freeing the module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32584,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-oled-backside.jpg?w=1024" alt="" class="wp-image-32584"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had noticed the pixel illumination didn't look like backlit LCD, and here we see it very clearly marked as an OLED unit. Nice! Printed on the back were the following information:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>PG-2832ALBM
+P1471277-20-D14</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And my search for that text came up with... nothing. Quite disappointing! I went on the internet to see if anyone else has identified this OLED module but didn't find anything definitive. What I found was "<em><a rel="noreferrer noopener" href="https://forum.formlabs.com/t/possible-oled-display-swap-spare/187" target="_blank">Possible OLED display swap/spare</a></em>" on the FormLabs user forums, posted by someone before they even received their Form 1 printer. They speculated it might be an <a rel="noreferrer noopener" href="https://newhavendisplay.com/2-23-inch-blue-graphic-oled-module/" target="_blank">NHD-2.23-12832UCB3</a> by Newhaven Display, which has a <a rel="noreferrer noopener" href="https://support.newhavendisplay.com/hc/en-us/articles/4414488972695--SSD1305" target="_blank">SS1305 controller</a>. Sadly, they never returned to FormLabs forum to confirm their speculation, so I guess I'll have to try that myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32586,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/newhaven-display-oled-223-graphic-blue-module-pcb-back__36130.jpg?w=922" alt="" class="wp-image-32586"><br />
+<figcaption class="wp-element-caption">(Image from <a href="https://newhavendisplay.com/2-23-inch-blue-graphic-oled-module/" target="_blank" rel="noreferrer noopener">Newhaven Display International product page</a>)</figcaption>
+</figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>FormLabs circuit board has 10 IO pins in two rows of five. Newhaven Display's website shows a very different breakout circuit board of 20 IO pins in a single row. But this difference could be explained. The display has very flexible IO configuration options: "<em>This self-illuminating module has 6800/8080 parallel, serial SPI or I2C interface compatibility.</em>" A custom FormLabs circuit board would only need to accommodate the interface they actually use in the product, ignoring pins for other interface options.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32588,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-board-removed-back.jpg?w=1024" alt="" class="wp-image-32588"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The collection of components on the FormLabs board looks broadly similar to the Newhaven board, though missing a few parts that could likewise be explained by supporting just data one interface instead of several. I would feel better if there's a match between information printed on the OLED module itself and what's listed on Newhaven Display website. But I felt more confident after looking at the thin FPC ribbon cable connecting the OLED to the circuit board: They are both 24-pins and have a very similar layout, including a truncated pin 4. Furthermore, they are both printed with the text:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>E308847 F-D 1 94V-0</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>If these were two different displays, they're using the same FPC ribbon cable so there's a chance they use the same control protocols. Newhaven Display website says they welcome custom orders so maybe PG-2832ALBM is a FormLabs custom derivative of 2832UCB3? Either way, it is a promising starting point for <a href="https://newscrewdriver.com/2022/09/16/formlabs-form-1-display-board-routing/">a deeper look</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

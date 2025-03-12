@@ -1,0 +1,55 @@
+---
+layout: post
+title: Hobbyist-Friendly LCD Controllers
+date: 2022-05-01 12:30:00.000000000 +00:00
+type: post
+post_id: '30009'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29994'
+  _publicize_job_id: '72040729913'
+  timeline_notification: '1651433409'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/01/hobbyist-friendly-lcd-controllers/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I dug up my collection of salvaged LCDs, I had expected to find bare arrays that I could power directly. But the first two <a href="https://newscrewdriver.com/2022/04/30/landline-answering-system-handset-lcd-cl84209/">units I probed</a> turned out to have a controller embedded in the display. The good news is that I wouldn't have to worry about complex multiplexing AC signals, the bad news is that the problem shifts to deciphering a digital communication protocol. With this switch, I decided it would be wise to pause and take a look at existing information on LCD controllers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm excluding controllers dealing with large LCD arrays like those on computer and television screens, or even modern high resolution touchscreen phones, as they have signal requirements that exceed my current electronics skill. I'm starting at the lower end of the spectrum where they are accessible to the electronics hobbyist. The field appears to be dominated by two classics: the PD8544 and the HD44780. Both of these designations refer to specific products, but due to their popularity, they have become de facto generic names covering the many clones and compatible controllers that also exist.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyone who remembers Nokia's classic snake game has spent time staring at a PCD8544-controlled LCD. Sometimes called the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Nokia_5110" target="_blank">Nokia 5110</a> LCD, after the phone that introduced faceplate customization. PCD8544 was the brains literally behind the dot matrix screen on classic Nokia phones. Once the market moved to large touchscreens, a lot of Nokia phones were retired, making these screens easily and cheaply available for hobbyists. The bad news is that old Nokia bricks are no longer found in a drawer in every house, it's been too long. The good news is that the display can still be purchased in a <a rel="noreferrer noopener" href="https://amzn.to/3kmH3qV" target="_blank">hobbyist-friendly breakout board format</a>.(*) There exists multiple Arduino libraries for drawing to such a screen. Reading <a rel="noreferrer noopener" href="https://learn.adafruit.com/nokia-5110-3310-monochrome-lcd?view=all" target="_blank">Adafruit documentation</a>, I see there are eight pins in the interface instead of nine on the screens I have. I had hoped maybe my screen is closely related to a PCD8544 with an extra pin for some additional feature, but if so, pin orderings have been switched around as the VCC and GND pins are further apart. Fortunately the PCD8544 datasheet is widely available (here's <a rel="noreferrer noopener" href="https://cdn-shop.adafruit.com/datasheets/pcd8544.pdf" target="_blank">a mirror hosted by Adafruit</a>) so it gives me an idea of what data stream for a SPI-controlled LCD looks like.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other LCD controller targeted by several different Arduino libraries is the HD44780, an LCD dot matrix display tailored for showing alphanumeric characters. Making it very popular for devices that need to show a few words to the user, anything from household appliances to industrial machinery. It's not technically a graphics display, but it can be <a rel="noreferrer noopener" href="https://hackaday.com/2016/04/09/tetris-everywhere-character-lcd-edition/" target="_blank">hacked to show graphics</a> via "custom fonts". This ability to range from easy text output to complex graphics hacks make them a good choice for hobbyist projects, as they are <a rel="noreferrer noopener" href="https://amzn.to/36WpF9h" target="_blank">sold in project-friendly format and easily affordable</a> (*). Another (admitted flawed) metric of popularity is that somebody saw fit to write <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Hitachi_HD44780_LCD_controller" target="_blank">a Wikipedia page for HD44780</a>, an honor granted to few other LCD controllers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Could my salvaged display be a HD44780 compatible unit? First glance says no: the typical wiring requires 16 pins. A closer look gave me a bit of hope, as two of those pins may be absent for units without built-in backlight, bringing it down to 14 pins. There's also a 4-bit operation mode, dropping it down to 10 pins. Removing just one more pine would bring it down to 9, but even then, it requires four data lines and my display uses two. For this reason I don't expect much resemblance between my salvaged LCD controller and a HD44780. There are many other Arduino libraries for different LCD modules, but I didn't know how to further narrow down the possibilities. Aside from laboriously searching through every pinout diagram in documentation, which I'm not inclined to do right now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at my other favorite prototyping ecosystem, ESPHome also has <a rel="noreferrer noopener" href="https://esphome.io/components/display/pcd8544.html" target="_blank">support for the Nokia-popularized PCD8544</a>, though not the HD44780. Other units supported under their <a rel="noreferrer noopener" href="https://esphome.io/index.html#display-components" target="_blank">Display Components</a> umbrella are mostly I2C and SPI devices plus a few UART controlled units sprinkled in between. They all use fewer than nine pins. However, they did remind me of the SPI protocol which makes me think my salvaged LCD may be a SPI unit. The two data lines may be MISO and MOSI pins. (The PCD8544 appears to be a SPI device without MOSI.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search for "nine pin LCD" found this electronics StackExchange question titled <a href="https://electronics.stackexchange.com/questions/95679/do-9-pin-lcd-modules-have-a-standard-interface"><em>Do 9 pin LCD modules have a standard interface?</em></a> Sadly, the answer appears to be "No". The specific example in this thread was identified as a UC164904, which is a SPI device plus extra pins like two for LED backlight control. As my particular unit had an external backlight, it is definitely not a UC164904.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If information on my LCD unit is to be found online, I will need to be more specific than "it has nine pins". But if they both have nine pins, perhaps they're controlled the same way? I tried the easiest (and pretty risky) test that came to my mind and <a href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/">was surprised when it worked</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

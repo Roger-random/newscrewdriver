@@ -1,0 +1,49 @@
+---
+layout: post
+title: Hobbyist Level CNC Tool Change Support (M6)
+date: 2022-10-25 12:30:00.000000000 +00:00
+type: post
+post_id: '20471'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19647'
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '78079462760'
+  timeline_notification: '1666726211'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1671774119
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/25/hobbyist-level-cnc-tool-change-support-m6/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In <a href="https://newscrewdriver.com/2020/02/11/successful-polycarbonate-plastic-engraving-session/">our experiments so far</a>, the project CNC machine used <a href="https://github.com/bdring/Grbl_Esp32" target="_blank" rel="noreferrer noopener">Bart Dring's ESP32 port of Grbl</a> to translate G-code into stepper motor step+direction control pulses. It offers a lot of neat upgrades over <a href="https://github.com/gnea/grbl" target="_blank" rel="noreferrer noopener">standard Grbl running on an Arduino</a>, and both are fantastically affordable way to get into CNC. The main issue with Grbl running on microcontrollers is the fact they are always limited by the number of input/output pins available. Some of Bart Dring's ESP32 enhancements were only possible because the ESP32 had more pins than an ATmega328.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But like all tinkerers, we crave more. Grbl (&amp; derivatives) are understandably lacking support for features that are absent from majority of hobbyist grade CNC. The wish list items in the local maker group mostly center around the capability to use multiple tools in a single program.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Tool change is the most obvious one. Grbl recognizes just enough to support a manual tool change operation: stop the spindle, move to a preset tool change position, and wait before proceeding. Automated tool changing is out of scope.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which explains the next gap in functionality: tool length offset. Not all tools are of the same length and the controller needs to know each tool length to interpret G-code correctly. Grbl doesn't seem to have a tool length table to track this information. It is a critically important feature to make automated tool change useful, but the lack of latter means the lack of former is not surprising.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And following the cascade of features, we'd also love to have cutter radius compensation for individual tools. Typically used in industrial machinery to gradually adjust for tool wear, it usually doesn't matter in the type of tolerances involved in the context of hobbyist machines. But it is useful and nice to have if multiple tools come into the picture, each with their own individual idiosyncracies.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These capabilities get into the domain of industrial controllers well beyond a hobbyist budget. Or at least, they used to be. People are experimenting with hardware builds to implement their own automatic tool changing solutions. And on the software side, Grbl derivatives <a rel="noreferrer noopener" href="https://github.com/grblHAL/core" target="_blank">like GrblHAL</a> have added support for the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/G-code#List_of_M-codes_commonly_found_on_FANUC_and_similarly_designed_controls_for_milling_and_turning" target="_blank">M6 (automatic tool change) code</a> allowing multiple tools in a single CNC program. Is it a practical short-term goal for my project? Heck no! I can't even cut anything reliably yet. But it's nice to know the ecosystem is coming together to make hobbyist level tool-changing CNC practical. It'd be useful for a wide variety of CNC tasks, including routing vs. drilling operations for <a href="https://newscrewdriver.com/2022/12/22/circuit-board-milling-fixture-first-draft/">milling circuit boards</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

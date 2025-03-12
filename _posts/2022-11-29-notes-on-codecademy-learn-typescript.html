@@ -1,0 +1,49 @@
+---
+layout: post
+title: Notes on Codecademy "Learn TypeScript"
+date: 2022-11-29 12:30:00.000000000 +00:00
+type: post
+post_id: '33814'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33831'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669849995
+  _publicize_job_id: '79188245797'
+  timeline_notification: '1669753903'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/29/notes-on-codecademy-learn-typescript/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to go back and take another look at Angular web application development framework, because I've learned a lot about web development since my earlier attempt. But before I do, I want to review TypeScript, which is what Angular uses to tame some of JavaScript's wild nature. Conveniently, Codecademy has a "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-typescript" target="_blank">Learn TypeScript</a></em>" course for me to do exactly that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As its name implies, TypeScript imposes some of the benefits of data type enforcement to JavaScript's default data type system, where anything can go anywhere. The downside of JavaScript's flexibility is that it also allowed many bugs to hide until emerging at very inconvenient times. While it's always possible to move to an entirely different language if type safety is desirable, the beauty of TypeScript is that it maintains full compatibility with JavaScript so we don't have to leave that ecosystem (JS runtimes, libraries, tools, etc.) to gain benefits of compile-time type checks. TypeScript accomplishes this magic by performing its checks on TypeScript source files. Once everything has been verified to be satisfactory, that source code is translated to standard JavaScript for execution.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But before that compiler runs, TypeScript syntax gives us a lot of tools to organize our code to catch bugs at "compile" time. (More accurately TypeScript-to-JavaScript <a href="https://en.wikipedia.org/wiki/Source-to-source_compiler" target="_blank" rel="noreferrer noopener">transpiling</a> time.) There are static code analysis features to find problems. Starting with simple ones like a mistyped variable name would get caught because it has no declared type. We also get (illusions of) features like <code><a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/enums.html" target="_blank">enum</a></code> so we can constrain values within a defined valid set.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, in order to stay compatible with JavaScript, TypeScript couldn't offer all the rigorousness of a strictly typed language. There are various middle ground features sprinkled throughout so we don't have to take all-or-nothing. The type guard of "[property] in [object]" aligns with "duck typing" patterns: checks for the method we care about instead of the exact object type or interface. It was also amusing to see support for generics, which is becoming a feature in strictly typed languages but now we have it in TypeScript as well compiling down to "do whatever you want" JavaScript. That leads to things like <a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures" target="_blank">Index Signatures</a> with no real counterpart in strictly typed languages, and I credit its existence to JavaScript for being weird. I wouldn't blame everything on JavaScript, though. I sometimes stumble across TypeScript union types, which lets us support a limited set of types. In one practice exercise, we have an array that can be an array of one of two types. I typed <code>TypeA[] | TypeB[]</code> which made sense to my brain, but that was not acceptable. I had to use <code>(TypeA | TypeB)[]</code> and I still don't understand why.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This course also exposed me to certain JavaScript things that were not specific to TypeScript. There was a brief mention of documentation comments: <code>/** */</code> blocks that included markup like <code>@param</code> and <code>@returns</code>. I vaguely recall seeing this before but I no longer remember what this is called and the course didn't give me a pointer. This course was also the first time I saw JavaScript <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters" target="_blank">rest parameters</a> and its counterpart <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank">spread syntax</a>. And finally, this is where I learned of <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed" target="_blank"><code>number.toFixed()</code></a> which I will definitely use in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like all Codecademy courses, this one gives us enough context for us to navigate product document on our own. In this case, the official reference is <a rel="noreferrer noopener" href="https://www.typescriptlang.org/docs/handbook/intro.html" target="_blank">The TypeScript Handbook</a>. Explanations in the handbook <a href="https://newscrewdriver.com/2022/11/30/notes-on-typescript-handbook/">make a lot more sense to me</a> after this Codecademy course than it did before, so I'd say "<em>Learn TypeScript</em>" was worth my time investment.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

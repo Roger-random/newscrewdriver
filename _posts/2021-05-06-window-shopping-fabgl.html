@@ -1,0 +1,49 @@
+---
+layout: post
+title: 'Window Shopping: FabGL'
+date: 2021-05-06 12:30:00.000000000 +00:00
+type: post
+post_id: '26433'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26467'
+  _publicize_job_id: '58049240628'
+  timeline_notification: '1620329404'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/06/window-shopping-fabgl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a <a href="https://newscrewdriver.com/2021/05/05/packaging-esp_8_bit-video-code-into-arduino-library/">minimally functional ESP32 Arduino display library</a> that lets sketches use the color composite video signal generator of ESP_8_BIT to send their own graphics to an old-school tube TV. However, all I have as an interface is a pointer into the frame buffer. This is fine when we just need a frame buffer to hand to something like a video game console emulator, but that's a bit too raw to use directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I need to put a more developer-friendly graphics library on top of this frame buffer, and I have a few precedents in mind. It needs to be at least as functional as the <a rel="noreferrer noopener" href="https://github.com/Avamander/arduino-tvout/" target="_blank">existing TVout Arduino library</a>, which only handles monochrome but does offer a minimally functional graphics API. My prime candidate for my purpose is the <a href="https://learn.adafruit.com/adafruit-gfx-graphics-library" target="_blank" rel="noreferrer noopener">Adafruit GFX Library</a>. That is the target which contenders must exceed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm willing to have an open mind about this, so I decided to start with the most basic query of "ESP32 graphics library" which <a href="http://www.fabglib.org/">pointed me to FabGL</a>. That homepage loaded up with a list of auto-playing videos that blasted a cacophony of overlapping sound as they all started playing simultaneously. This made a terrible first impression for no technical fault of the API itself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I muted the tab and started reading, I saw the feature set wasn't bad. Built specifically for the ESP32, FabGL offers some basic user interface controls, a set of drawing primitives, even a side menu of audio and input device support. On the display side (the reason I'm here) it supports multiple common display driver ICs that usually come attached to a small LCD or OLED screen. In the analog world (also the reason I'm here) it supports color VGA output though not at super high color depths.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But when I started looking for ways to adapt it to some other display mechanism, like mine, I came up empty handed. If there is provision to expose FabGL functionality on a novel new display like ESP_8_BIT color composite video generator, I couldn't find it in the documentation. So I'll cross FabGL off my list for that reason (not just because of those auto-playing videos) and look at something else that <a href="https://newscrewdriver.com/2021/05/07/window-shopping-lvgl/">has well-documented ways to work on an external frame buffer</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

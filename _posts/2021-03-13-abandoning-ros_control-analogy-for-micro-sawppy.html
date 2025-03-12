@@ -1,0 +1,51 @@
+---
+layout: post
+title: Abandoning ros_control Analogy for Micro Sawppy
+date: 2021-03-13 12:30:00.000000000 +00:00
+type: post
+post_id: '25591'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25527'
+  _publicize_job_id: '55901676812'
+  timeline_notification: '1615667406'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/13/abandoning-ros_control-analogy-for-micro-sawppy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Every time I revisit the task of <a href="https://newscrewdriver.com/2021/03/12/revisiting-sawppy-geometry-jupyter-notebook/">writing Sawppy rover control code</a>, I'm optimistic that I'm one step closer to not having to rewrite from scratch again. This time around, I'm <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/09/goals-and-challenges-for-sawppy-esp32-software/" target="_blank">following conventions</a> set by decade-long development of ROS (Robot Operating System) but writing in low-level C code that should run on anything from embedded microcontrollers on up. This approach <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/11/manual-control-square-peg-in-a-ros-round-hole/" target="_blank">adds a few challenges</a> but I hope it'll be more adaptable to other platforms (both software and hardware) in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the hardware front, many robot chassis that advertise ROS compatibility uses the velocity command (<code>cmd_vel</code>) topic as their interface layer to ROS autonomy logic nodes. Hardware-specific code listens to messages sent to that topic, and handle translating desired velocity into physical movement. I will follow that precedent but I also had the ambition to go one step further with some inspiration from <code>ros_control</code>. The key word is "had", past tense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As I understand it, <a rel="noreferrer noopener" href="http://wiki.ros.org/ros_control" target="_blank">ros_control</a> original motivation was to interface with components that one would find on a robot arm, creating a generic interface for motors and actuators. This allows for generalized operation with ROS nodes like the <a rel="noreferrer noopener" href="https://moveit.ros.org/" target="_blank">MoveIt framework for motion planning</a>, and it is also the <a href="http://gazebosim.org/tutorials/?tut=ros_control" target="_blank" rel="noreferrer noopener">interface layer for switching between real and virtual robots</a> for the <a rel="noreferrer noopener" href="https://ignitionrobotics.org/libs/gazebo" target="_blank">Ignition Gazebo</a> simulator. And since it's generic, it's perfectly valid to try to apply those concept to motors and actuators for chassis locomotion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like the concept, but I got lost when wading into documentation. When I dug into one of the actual interfaces like <a href="http://docs.ros.org/en/noetic/api/effort_controllers/html/classeffort__controllers_1_1JointPositionController.html"><code>JointPositionController</code></a>, I saw only a <code>setCommand()</code> that sends a single double-precision floating point value. This is clearly only part of the picture. What is the context that number? For actuators like RC servo it would be a rotation, but for a linear actuator it would be a distance. How would I communicate that information, along with other context like whether that rotation/distance is along X, Y, or Z axis?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Furthermore, the interface assumes closed-loop control on every actuator, since the interface has <code>getPosition()</code> to query status and <code>setGains()</code> to adjust PID coefficients. I wouldn't be able to offer any of that on a micro Sawppy rover. RC servos do perform closed-loop control, but the loop is closed within the servo and the robot has no visibility to actual position or adjust PID coefficients. And without an encoder wheel, TT gear motors have no closed loop control at all. Some ROS tutorials (<a rel="noreferrer noopener" href="https://snapcraft.io/blog/your-first-robot-the-driver-4-5" target="_blank">like this one</a>) asserted there's no point to <code>ros_control</code> on low-end robots and I now understand their point.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I don't understand concepts of <code>ros_control</code> yet, I've chosen to postpone that idea for ESP32 Micro Sawppy software. The worst downside is that I might go down a path that will require another rewrite in the future. But hey, I've done it before and I can do it again. To mitigate this risk, I'll still communicate my rover actuator commands using unit conventions <a rel="noreferrer noopener" href="https://www.ros.org/reps/rep-0103.html" target="_blank">as described by REP103</a>. So I'll communicate steering angles using radians instead of RC servo commands, which should be friendlier to conversion to different actuators in the future. Similarly, wheel speed will be communicated in meters per second rather than motor power level, again in the hopes it'll be generic enough for other actuators in the future. Today I'll <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/blob/micro_sawppy/esp32_sawppy/lib/messages/wheel_msg.h" target="_blank">pack them into a single message</a> for short term ease and deal with that problem later. I have a more immediate problem: I found the TT gearboxes have a <a href="https://newscrewdriver.com/2021/03/14/exploring-tt-gear-motor-speed-range/">narrower range of speed</a> than I originally thought.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

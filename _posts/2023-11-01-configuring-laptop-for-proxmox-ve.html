@@ -1,0 +1,77 @@
+---
+layout: post
+title: Configuring Laptop for Proxmox VE
+date: 2023-11-01 12:30:00.000000000 +00:00
+type: post
+post_id: '39927'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- '7577'
+- Dell
+- Linux
+- Proxmox
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '36301'
+  wordads_ufa: s:wpcom-ufa-v4:1698954161
+  _publicize_job_id: '88995661414'
+  timeline_notification: '1698867051'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/01/configuring-laptop-for-proxmox-ve/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm migrating my light-duty server duties from my Dell Latitude E6230 <a href="https://newscrewdriver.com/2023/10/31/dell-inspiron-7577-laptop-as-light-duty-server/">to my Dell Inspiron 7577</a>. When I started playing with KVM hypervisor on the E6230, <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/" target="_blank" rel="noreferrer noopener">I installed Ubuntu Desktop instead of server for two reasons</a>: I didn't know how to deal with the laptop screen, and I didn't know how to work with KVM via the command line. But the experience allowed me to learn things I will incorporate into my 7577 configuration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Dealing with the Screen</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>By default, Proxmox VE would leave a simple text prompt on screen, which is fine because most server hardware don't even have screens attached. On a laptop, keeping the screen on wastes power and probably cause long-term damage as well. I found <a href="https://forum.proxmox.com/threads/ve-5-1-host-how-to-turn-off-laptop-screen.38115/" target="_blank" rel="noreferrer noopener">an answer on Proxmox forums</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Edit <code>/etc/default/grub</code> to add "<code>consoleblank=30</code>" (30 is timeout in seconds) to <code>GRUB_CMDLINE_LINUX</code> if an entry already existed. If not, add a single line <code>GRUB_CMDLINE_LINUX="consoleblank=30"</code>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Run <code>update-grub</code> to apply this configuration.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Reboot</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another default behavior: when closing the laptop lid, the laptop goes to sleep. I don't want this behavior when I'm using it as mini-server. I was surprised to learn <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/" target="_blank" rel="noreferrer noopener">the technique I found for Ubuntu Desktop</a> would also work for server edition as well: edit <code>/etc/systemd/logind.conf</code> and change <code>HandleLidSwitch</code> to <code>ignore</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Making the two above changes turn off my laptop screen after the set number of seconds of inactivity, and leaves the computer running when the lid is closed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Dealing with KVM</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>KVM is a big piece of software with lots of knobs. I was intimidated by the thought of learning all command line options and switches on my own. So, for my earlier experiment, I ran <a href="https://virt-manager.org/" target="_blank" rel="noreferrer noopener">Virtual Machine Manager</a> on Ubuntu Desktop edition to keep my settings straight. I've learned bits and pieces of interacting with KVM via its <code>virsh</code> command line tool, but I have yet to get comfortable enough with it to use command line as the default interface.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, many others felt similarly and there are other ways to work with a KVM hypervisor. My personal data storage solution TrueNAS has moved from a FreeBSD-based system (now named TrueNAS CORE) to a Linux-based system (a parallel sibling product called TrueNAS SCALE). TrueNAS SCALE included virtual machine capability with KVM hypervisor which looked pretty good. After a quick evaluation session, I decided <a href="https://newscrewdriver.com/2023/04/27/first-impressions-proxmox-ve-vs-truenas-scale/" target="_blank" rel="noreferrer noopener">I preferred working with KVM using Proxmox VE</a>, a whole operating system built on top of Debian/Ubuntu dedicated to the job. Hosting virtual machines with the KVM hypervisor and tools to monitor and manage those virtual machines. Instead of Virtual Machine Manager's UI running on Ubuntu Desktop, both TrueNAS SCALE and Proxmox VE expose their UI as a browser-based interface accessible over the network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I liked the idea of doing everything on a single server running TrueNAS SCALE, and may eventually move in that direction. But there is something to be said of keeping two isolated machines. I need my TrueNAS SCALE machine to be absolutely reliable, an appliance I can leave running its job of data storage. It can be argued it's a good idea to use a different machine for more experimental things like ESPHome and Home Assistant Operating System. Besides, unlike normal people, I have plenty of PC hardware sitting around. <a href="https://newscrewdriver.com/2023/11/02/running-home-assistant-os-under-proxmox-ve/">Put some of them to work</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

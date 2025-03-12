@@ -1,0 +1,80 @@
+---
+layout: post
+title: 'FreeNAS USB Flash Boot Drives: Mirroring For Fault Tolerance.'
+date: 2017-07-16 09:00:10.000000000 +00:00
+type: post
+post_id: '8061'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7155586875'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/16/freenas-mirrored-usb-flash-boot-drives-for-error-tolerance/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-5610 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/06/freenas-logo.png" alt="FreeNAS Logo" width="260" height="73">FreeNAS encourages the use of USB flash drives as the operating system boot drive. This allows FreeNAS to dedicate all of the motherboard SATA connectors for data storage drives. I didn't think commodity USB flash drives are trustworthy enough to hold the operating system, but I was willing to experiment and be proven wrong.</p>
+<p>The very first night, I got worrying news from the nightly system check:</p>
+<pre>  pool: freenas-boot
+ state: ONLINE
+status: One or more devices has experienced an unrecoverable error.  An
+        attempt was made to correct the error.  Applications are unaffected.
+action: Determine if the device needs to be replaced, and clear the errors
+        using 'zpool clear' or replace the device with 'zpool replace'.
+   see: <a href="http://illumos.org/msg/ZFS-8000-9P" target="_blank" rel="noreferrer noopener">http://illumos.org/msg/ZFS-8000-9P</a>
+  scan: scrub repaired 3K in 0h10m with 0 errors
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        freenas-boot  ONLINE       0     0     0
+          da0p2     ONLINE       0     0    11
+
+errors: No known data errors</pre>
+<p>Looking on the bright side, "No known data errors" is comforting, as is the "repaired [...] with 0 errors". It's nice FreeNAS was able to repair whatever was wrong with my USB stick. I suspect inexpensive commodity USB flash drives frequently encounter errors that are silently corrected by the operating system. Still, an error is an error and it'll only be a matter of time before I run into a serious problem.</p>
+<p>Fortunately, FreeNAS authors had the foresight to make sure a bad boot device does not become a single point of failure. A second one can be added to the system act as a <a href="http://doc.freenas.org/11/system.html#mirroring-the-boot-device">mirror to the boot device</a>. If either of them fails, the other can take over.</p>
+<p>Much to my dismay, the second USB stick I tried also encountered a data checksum error. I didn't have much luck figuring out how to interpret the checksum error code, but I did learn that it is supposed to be zero. The first stick returned 21, the second 26.</p>
+<p>I tried a third USB stick and was relieved to finally see a zero checksum. The output below was generated when I ran 'zpool status' while the third stick is in the middle of replacing the second stick.</p>
+<pre>  pool: freenas-boot
+ state: ONLINE
+status: One or more devices is currently being resilvered.  The pool will
+        continue to function, possibly in a degraded state.
+action: Wait for the resilver to complete.
+  scan: resilver in progress
+config:
+
+        NAME             STATE     READ WRITE CKSUM
+        freenas-boot     ONLINE       0     0     0
+          mirror-0       ONLINE       0     0    21
+            da0p2        ONLINE       0     0    21
+            replacing-1  ONLINE       0     0     0
+              da1p2      ONLINE       0     0    26
+              da2p2      ONLINE       0     0     0  (resilvering)
+
+errors: No known data errors</pre>
+<p>I also found a fourth USB stick that was checksum error-free, so I had it take the place of the first one.</p>
+<pre id="shell_output" class="ix"><span class="shell_ff shell_be">  pool: freenas-boot
+ state: ONLINE
+  scan: scrub repaired 0 in 0h29m with 0 errors
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        freenas-boot  ONLINE       0     0     0
+          mirror-0  ONLINE       0     0    21
+            da1p2   ONLINE       0     0     0
+            da2p2   ONLINE       0     0     0
+
+errors: No known data errors        </span></pre>
+<p>Now both boot drives in the mirror set have zero checksum error, but the mirror volume overall still has checksum error 21 from the first USB stick. I'm still learning if that means anything (bad) and what it would take to reset that to zero.</body></html></p>

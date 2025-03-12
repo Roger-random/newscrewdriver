@@ -1,0 +1,43 @@
+---
+layout: post
+title: Simple Logging To Text File
+date: 2020-05-22 12:30:54.000000000 +00:00
+type: post
+post_id: '21567'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Logging
+- UWP
+meta:
+  _thumbnail_id: '21568'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44572262772'
+  timeline_notification: '1590175871'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/22/simple-logging-to-text-file/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Even though I <a href="https://newscrewdriver.com/2020/05/21/complexity-of-etw-leaves-a-beginner-lost/">aborted my adventures into Windows ETW logging</a>, I still wanted a logging mechanism to support future experimentation into Universal Windows Platform. This turned into an educational project in itself, learning about other system interfaces of this platform.</p>
+<h2><strong>Where do I put this log file?</strong></h2>
+<p>UWP applications are not allowed arbitrary access to the file system, so if I wanted to write out a log file without explicit user interaction, there are only a few select locations available. I found the <code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.storage.knownfolders">KnownFolders</a></code> enumeration but those were all user data folders, I didn't want these log files clogging up "My Documents" and such. I ended up putting the log file in <a href="https://docs.microsoft.com/en-us/uwp/api/windows.storage.applicationdata.temporaryfolder"><code>ApplicationData.TemporaryFolder</code></a>. This folder is subject to occasional cleanup by the operating system, which is fine for a log file.</p>
+<h2><strong>When do I open and close this log file?</strong></h2>
+<p>This required a trip into the world of <a href="https://docs.microsoft.com/en-us/windows/uwp/launch-resume/app-lifecycle">UWP application lifecycle</a>. I check if the log file existed and, if not, create and open the log file from three places: <code>OnLaunched</code>, <code>OnActivated</code>, and <code>OnResuming</code>. In practice it looks like I mostly see <code>OnLaunched</code>. The flipside is <code>OnSuspending</code>, where the application template has already set up a suspension deferral buying me time to write out and close the log file.</p>
+<h2>How do I write data out to this log file?</h2>
+<p>There is a helpful <a href="https://docs.microsoft.com/en-us/windows/uwp/get-started/fileio-learning-track">Getting Started with file input/output</a> document. In it, the standard recommendation is to use the <code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.storage.fileio">FileIO</a></code> class. It links to a section in the UWP developer's guide titled <a href="https://docs.microsoft.com/en-us/windows/uwp/files/"><em>Files, folders, and libraries</em></a>. The page <a href="https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-reading-and-writing-files"><em>Create, write, and read a file</em></a> was helpful for me to see how these differ from classic C file I/O API.</p>
+<p>These <code>FileIO</code> classes promise to take care of all the complicated parts, including async/await methods so the application is not blocked on file access. This way the user interface doesn't freeze until the load or save operation completes, instead remaining responsive while file access was in process.</p>
+<p>But when I used the <code>FileIO</code> API naively, writing upon every line of the log file, I received a constant stream of exceptions. Digging into the call stack of the exception (actually several levels deep in the chain) told me there was a file access collision problem. It was the page <em><a href="https://docs.microsoft.com/en-us/windows/uwp/files/quickstart-reading-and-writing-files">Best practices for writing to files</a></em> that cleared things up for me: these async <code>FileIO</code> libraries create temporary files for each asynchronous action and copy over the original file upon success. When I was writing once per line, too many operations were happening in too short of a time resulting in the temporary files colliding with each other.</p>
+<p>The solution was to write less frequently, buffer up a set of log messages so I write a larger set of them with each <code>FileIO</code> access, rather than calling once per log entry. Reducing the frequency of write operations resolved my collision issue.</p>
+<p>[<a href="https://github.com/Roger-random/UWPTest/blob/master/Hello3DP/Logger.cs">This simple text file logging class is available on GitHub</a>.]</body></html></p>

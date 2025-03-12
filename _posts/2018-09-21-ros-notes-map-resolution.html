@@ -1,0 +1,46 @@
+---
+layout: post
+title: 'ROS Notes: Map Resolution'
+date: 2018-09-21 09:00:44.000000000 +00:00
+type: post
+post_id: '16757'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _oembed_022f0df7088f9d332fcc8aa581b89c5b: "{{unknown}}"
+  _oembed_e8f9ea159e5deb7f38edc424d3b24461: "{{unknown}}"
+  _oembed_ebd0fe6538b4e04a3873e3904630cd97: "{{unknown}}"
+  _oembed_5576186dc280c9e22ae555004a2cee11: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22388354189'
+  timeline_notification: '1537545768'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/21/ros-notes-map-resolution/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that I'm driving my TurtleBot-derived robot Phoebe around and mapping my house, I'm starting to get some first-hand experience with robotic mapping. One of the most fascinating bits of revelation concerns map resolution.</p>
+<p>When a robot launches the <a href="http://wiki.ros.org/gmapping">Gmapping module</a>, one of the parameters (<code>delta</code>) dictates the granularity of the occupancy grid in meters. For example, setting it to 0.05 (the value used in <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/slam/#slam">TurtleBot 3 mapping demo</a>) means each square in the grid is 0.05 meters or 5 cm on each side.</p>
+<p>This feels reasonable for a robot that roams around a household. Large objects like walls would be fine, and the smallest common obstacle in a house like table legs can reasonably fill a 5cm x 5cm cell on the occupancy grid. If the grid cells were any larger, it would have trouble properly accounting for chair and table legs.</p>
+<p><img class="alignnone size-full wp-image-16856" src="https://newscrewdriver.com/wp-content/uploads/2018/09/low-resolution-sharp-map-5cm.png" alt="Low Resolution Sharp Map 5cm" width="1177" height="682"></p>
+<p>So if we make the grid cells smaller, we would get better maps, right?</p>
+<p>It's actually not that simple.</p>
+<p>The first issue stems from computation load. Increasing resolution drastically increases the amount of memory consumed to track the occupancy grid, and increases computation requirements to keep grid cells updated. The increase in memory consumption is easy to calculate. If we halve the grid granularity from 5cm to 2.5cm, that turns each 5cm square into four 2.5cm squares. Quadrupling the memory requirement for our occupancy grid. Tracking and maintaining this map is a lot more work. In my experience the mapping module has a lot <a href="https://newscrewdriver.com/2018/09/05/learning-when-a-computer-is-struggling-to-perform-ros-mapping/">harder time matching LIDAR scan data to the map</a>, causing occasional skips in data processing that ends up reducing map quality.</p>
+<p>The second issue stems from sensor precision. An inexpensive LIDAR like my unit <a href="https://newscrewdriver.com/tag/neato/">salvaged from a Neato robot vacuum</a> isn't terribly precise, returning noisy distance readings that varies over time even if the robot and the obstacle are both standing still. When the noise exceeds map granularity, the occupancy grid starts getting "fuzzy". For example, a solid wall might no longer be a single surface, but several nearby surfaces.</p>
+<p><img class=" size-full wp-image-16855 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/high-resolution-fuzzy-map-1cm.png" alt="High Resolution Fuzzy Map 1cm" width="1173" height="679"></p>
+<p>As a result of those two factors, arbitrarily increasing the occupancy map resolution can drastically increase the cost without returning a worthwhile improvement. This is a downside to going "too small", and it was less obvious than the downside of going "too large." There's a "just right" point in between that makes the best trade-offs. Finding the right map granularity to match robots and their tasks is going to be an interesting challenge.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/153161-ros-notes-map-resolution">Hackaday.io</a>)</p>
+<p></body></html></p>

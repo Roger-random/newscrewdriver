@@ -1,0 +1,52 @@
+---
+layout: post
+title: Google AIY Vision Bonnet &amp; Accessories
+date: 2022-10-23 12:30:00.000000000 +00:00
+type: post
+post_id: '33245'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- AIY
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33246'
+  timeline_notification: '1666553462'
+  _publicize_job_id: '78009727086'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666690016
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/23/google-aiy-vision-bonnet-accessories/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The key component of a <a href="https://newscrewdriver.com/2022/10/22/google-aiy-vision-kit/">Google AIY Vision kit</a> is the "Vision Bonnet", a small circuit board to sit atop the Raspberry Pi Zero WH bundled in the kit. In addition to all the data interface available via the standard Raspberry Pi GPIO pins, this peripheral also gets "first dibs" on raw camera data. The camera itself is a standard <a rel="noreferrer noopener" href="https://www.raspberrypi.com/products/camera-module-v2/" target="_blank">Raspberry Pi Camera V2.1</a> but instead of connecting directly to the Raspbery Pi Zero, the camera cable connects directly to the vision bonnet. There is then a second cable connecting from vision bonnet to the Raspberry Pi camera connector, for the bonnet to forward camera data to the Pi after Vision Bonnet is done processing it. This architecture ensures the Vision Bonnet will never be constrained by data interface limitations onboard the Pi. It can get raw camera feed and do its magic before camera data even gets into a Pi.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The vision coprocessor on this Vision Bonnet circuit board is a <a href="https://ark.intel.com/content/www/us/en/ark/products/122461/intel-movidius-myriad-2-vision-processing-unit-4gb.html" target="_blank" rel="noreferrer noopener">Movidius Myriad MA2450</a>, launched in 2016 and discontinued in 2020. Based on its application here, I infer the chip can accelerate inference operations for vision-based convolutional neural networks that fit within <a rel="noreferrer noopener" href="https://aiyprojects.withgoogle.com/vision#constraints" target="_blank">constraints outlined in the AIY Vision documentation</a>. I don't know enough about the field of machine vision to judge whether these constraints are typical or if they pose an unreasonable burden. What I do know is that, now that everything has been discontinued, I probably shouldn't spend much more time studying this hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My interest in commercially available vision coprocessors has since shifted to <a rel="noreferrer noopener" href="https://docs.luxonis.com/projects/hardware/en/latest/pages/BW1098OAK.html" target="_blank">Luxonis OAK-D</a> and related products. In addition to a camera array (two monochrome cameras for stereoscopic vision and one color camera for object detailed) it is built around Luxonis OAK SoM (System on Module) built around the newer <a rel="noreferrer noopener" href="https://ark.intel.com/content/www/us/en/ark/products/125926/intel-movidius-myriad-x-vision-processing-unit-4gb.html" target="_blank">Movidius Myriad MA2485</a> chip. Luxonis has also provided far more software support and product documentation on their OAK modules than Google ever did for their AIY Vision Bonnet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":33254,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/10/google-aiy-vision-bonnet-back.jpg?w=1024" alt="" class="wp-image-33254"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't notice much of interest on the back side of AIY Vision Bonnet. The most prominent chip is marked U2, an <a href="https://www.microchip.com/en-us/products/microcontrollers-and-microprocessors/32-bit-mcus/sam-32-bit-mcus/sam-d" target="_blank" rel="noreferrer noopener">Atmel (now Microchip) SAM-D</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":33256,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/10/google-aiy-vision-button-vs-aiy-voice-button.jpg?w=1024" alt="" class="wp-image-33256"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The remainder of hardware consists of a large clear button with three LEDs embedded within. (Red, green, and blue.) That button hosts a small circuit board that connects to the vision bonnet via a small ribbon cable. It also hosts connectors for the piezo buzzer and the camera activity ("privacy") LED. The button module appears identical to the counterpart in AIY Voice kit (right side of picture for comparison) but since voice kit lacked piezo buzzer or LED, it lacked the additional circuit board.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

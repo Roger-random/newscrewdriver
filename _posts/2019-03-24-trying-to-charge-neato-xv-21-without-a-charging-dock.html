@@ -1,0 +1,47 @@
+---
+layout: post
+title: Trying To Charge Neato XV-21 Without  a Charging Dock
+date: 2019-03-24 13:27:01.000000000 +00:00
+type: post
+post_id: '18179'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Neato
+meta:
+  timeline_notification: '1553459225'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '28997946339'
+  _thumbnail_id: '18185'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667810138
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/24/trying-to-charge-neato-xv-21-without-a-charging-dock/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When I found my Neato XV-21 in a thrift store, it wouldn't power on and it didn't have its charging dock. I originally thought I would buy it just for parts but it's been a long and interesting adventure poking at how these robot vacuums worked. I made enough progress to catch [<a href="https://twitter.com/MLE_Online/status/1096245601962872833">Emily</a>]'s interest, who saw another Neato robot vacuum in a thrift store and bought it. Hers had the advantage of a charging dock so we could <a href="https://newscrewdriver.com/2019/03/20/examining-neato-xv-12-charging-dock/">open one up to see how it worked</a>.</p>
+<p>Armed with that knowledge, I thought I'd try to build my own replacement charging dock for my Neato XV-21. I bought two 24V DC power supplies similar to that inside a Neato charging dock at the <a href="https://newscrewdriver.com/2019/02/23/w6trw-amateur-radio-club-swap-meet/">W6TRW swap meet</a>. Since I didn't have a good way to make contact with a Neato's charging strips, I opened up my robot vacuum and rigged up a test configuration using clip leads on my crowded workbench.</p>
+<p> </p>
+<p>The first candidate was a power supply with HP branding.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-hp-supply.jpg" target="_blank" rel="noopener noreferrer"><img class=" size-medium wp-image-18184 alignright" src="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-hp-supply.jpg?w=340" alt="Neato charging experiments HP supply" width="170" height="300"></a>The HP power supply label said 24V @ 1.5A, which is slightly lower than 24V @ 1.67A listed on the supply inside a Neato dock, but I thought it was worth a try. First I verified the open circuit voltage was 24V, then I clipped it to the vacuum. The Neato woke up as if it saw a power source, but two seconds later it acted as if the power source went away. The output voltage on the power supply had dropped to under 1V and remained there. I thought maybe I burned out something, but if I unplug the power supply and plug it back in, its output open circuit voltage was back up to 24V. This behavior indicated no permanent damage was done, but that I had tripped some sort of internal protection mechanism.</p>
+<p>I then did what, in hindsight, I should have done as my first step: tried charging my vacuum with a bench power supply. I set the dials to 24V and 1.67A, like the label on Neato charging dock's power supply, and hooked up the wires. My bench power supply immediately hit the current limit I had set, and voltage has sagged to a little over 14V. Since that's within the range of NiMH battery voltage, it appears the Neato had connected its DC input directly into its batteries.</p>
+<p>NiMH batteries are fairly durable so this isn't necessarily a horrible thing to do in and of itself. But it does mean the Neato will happily soak up more than the rated power of its power supply. Which explains the HP power supply behavior: it is an over-current protection mechanism that is great for safety in case of short circuits but inconvenient for trying to charge a Neato.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-verifone-supply.jpg" target="_blank" rel="noopener noreferrer"><img class=" size-medium wp-image-18186 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-verifone-supply.jpg?w=320" alt="Neato charging experiments VeriFone supply" width="160" height="300"></a>The second salvaged power supply had VeriFone branding and claimed it is capable of 24V @ 1.7A. This is better than the unit inside a Neato, but now we know this is only part of the story. The real question is how it behaves when connected to something that draws more than its rated 1.7A. Does this also have an over-current protection mechanism?</p>
+<p>The answer is yes. Again its open circuit voltage is 24V as advertised, but once wired to a Neato, the voltage collapses to around 12. After collapse, it quickly builds up to about 15, then the voltage collapses again. The Neato is very optimistic, showing itself to be charging, but there is negligible actual progress in charging the battery.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-dell-supply.jpg" target="_blank" rel="noopener noreferrer"><img class=" size-medium wp-image-18181 alignright" src="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-dell-supply.jpg?w=298" alt="Neato charging experiments Dell supply" width="149" height="300"></a>But now that I know the current capacity is the limiting concern, maybe another power supply with higher amperage limits will work even if its maximum voltage is lower than 24 Volts. So I pulled out an old <a href="https://newscrewdriver.com/2018/01/20/del-xps-m1330-power-port-salvaged-using-desoldering-tool/">salvaged Dell power supply</a> that only claims to deliver 19.5 V but could do so at 3.34 A. I verified its open circuit voltage was over 19 V, connected it to a Neato, which again woke up thinking there's a charger. But once power started flowing, output voltage collapsed to 7.5V and remained there until a power cycle like the HP power supply did.</p>
+<p>Out of three DC power adapters that should have worked on paper, zero actually worked for charging my Neato vacuum because the Neato drew far more than their rated amperage. So for the immediate future, my Neato charging will be done with my bench power supply. To make this easier, I made an easy (if not particularly pretty) modification to my Neato vacuum. Two holes were drilled on each side of a charging contact. Something I now have the confidence to do, because I've taken apart the charging contacts and saw there were no critical parts at risk.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-drilled-holes-around-contacts.jpg" target="_blank" rel="noopener noreferrer"><img class=" size-full wp-image-18183 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-drilled-holes-around-contacts.jpg" alt="Neato charging experiments drilled holes around contacts" width="1600" height="1067"></a></p>
+<p>With these holes drilled, it was easy to connect my bench power supply's alligator clip leads for charging.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-drilled-holes-around-contacts-for-alligator-clips.jpg" target="_blank" rel="noopener noreferrer"><img class=" size-full wp-image-18182 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/neato-charging-experiments-drilled-holes-around-contacts-for-alligator-clips.jpg" alt="Neato charging experiments drilled holes around contacts for alligator clips" width="1600" height="1067"></a></p>
+<p></body></html></p>

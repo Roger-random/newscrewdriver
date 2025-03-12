@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'I2C on PIC: Microchip MCC Boilerplate Is A Pretty Good Tutorial In Itself.'
+date: 2017-09-18 09:00:26.000000000 +00:00
+type: post
+post_id: '11627'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9415577371'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/18/i2c-on-pic-microchip-mcc-boilerplate-is-a-pretty-good-tutorial-in-itself/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After completing the <a href="http://microchipdeveloper.com/mcu1101:start">MCC tutorial</a>, I knew I wanted to start learning about implementing <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I²C</a> on the PIC micro controller. I planned to use PIC in conjunction with a Raspberry Pi and I²C is the protocol already used by existing Raspberry Pi peripherals. I wanted my PIC projects to play well with others in this ecosystem.</p>
+<p>The Microchip tutorial covered <a href="http://microchipdeveloper.com/mcu1101:project-12">serial communication with the EUSART module</a> but not communication with the MSSP (Master Synchronous Serial Port) module that assists with implementing the I²C protocol.  I went hunting for such a tutorial elsewhere on the Microchip web site but didn't find one.</p>
+<p>At this point I was not terribly worried. The <a href="http://www.microchip.com/wwwproducts/en/PIC16F18345">PIC16F18345</a> data sheet provided an overview of implementing I²C using the MSSP module.  Section 30.5 <em>I2C Slave Mode Operation</em> included a list of operations during normal I²C communication. This list was almost a <a href="https://en.wikipedia.org/wiki/Pseudocode">pseudo-code</a> outline of what the developer needs to do to implement I²C communication on the PIC.</p>
+<p>I would be happier if there was a tutorial walking through the actual code of an I²C implementation, but the pseudo-code should be enough to help me take whatever boilerplate MCC (<a href="http://microchipdeveloper.com/xpress:opening-mcc-in-mplab-xpress">MPLAB Xpress Code Configurator</a>) generated and filling in the missing parts.</p>
+<p>I created a new PIC project and used MCC to enable the MSSP module for I²C communication. After auto generation was complete, I went into the code ready to get to work. And... hmm... what's this?</p>
+<p><img class=" size-full wp-image-11659 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2017/09/i2csample.png" alt="I2CSample" width="720" height="183"></p>
+<p>The MCC boilerplate is more than just a bunch of function prototypes, it's actually an implementation of an I²C slave acting like a EEPROM device. This was, for all practical purposes, the tutorial I had been looking for. Within an hour I was controlling the brightness of a single LED via commands sent over I²C bus and interpreted by my PIC.</p>
+<p>So let this be an announcement to other PIC programming novices: sometimes the tutorial you're looking for is right in the MCC boilerplate code.</p>
+<p> </p>
+<p></body></html></p>

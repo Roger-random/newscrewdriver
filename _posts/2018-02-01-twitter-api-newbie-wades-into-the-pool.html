@@ -1,0 +1,45 @@
+---
+layout: post
+title: Twitter API Newbie Wades Into The Pool
+date: 2018-02-01 14:14:15.000000000 +00:00
+type: post
+post_id: '15835'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags:
+- Twitter
+meta:
+  _oembed_cf29394ba33be7499498387500c730fb: "{{unknown}}"
+  _oembed_adf4dbc89bc2fa0ac4f2779f170ca24b: "{{unknown}}"
+  _oembed_021fb9ba0ac393d1fd3c3ec0d490fd20: "{{unknown}}"
+  _oembed_5b063c4625a2072452959c6679958f8d: "{{unknown}}"
+  _oembed_5169fc55372d2fc9ec93c5b5b5905c5c: "{{unknown}}"
+  _oembed_93ff73352ac797b424b086d67fb0e6dd: "{{unknown}}"
+  _oembed_29cd94239234c33ed4bfd4a7b4e9a027: "{{unknown}}"
+  _rest_api_published: '1'
+  timeline_notification: '1517523258'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '14280706277'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/02/01/twitter-api-newbie-wades-into-the-pool/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="  wp-image-15838 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/02/twitter-developer.jpg" alt="Twitter Developer" width="348" height="104">Twitter trends are easy to follow by searching for the hashtag. The default view given by Twitter shows the most popular tweets with that tag, and there are options to see the most recent tweets first, or browse them by photo, etc. But what if someone wants the tweets organized another way? Fortunately Twitter knows they can't cover everybody's desires and offers a developer API for those with creative ideas on tweets.</p>
+<p>Twitter's API is a "RESTful" design. It follows many of the ideas of REpresentational State Transfer (<a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>) but not strictly adhering to all of it. Functionally, it is built around HTTP GET and POST requests and returns information in the text-based JavaScript Object Notation (<a href="https://en.wikipedia.org/wiki/JSON">JSON</a>) format. The details of those HTTP requests - and the JSON that it retrieves - are documented on <a href="https://developer.twitter.com">Twitter's developer site</a>.</p>
+<p>Before the aspiring Twitter app author can get anywhere, though, one needs to <a href="https://apps.twitter.com">register with Twitter for access</a> to these APIs. Once an app is registered, it is assigned a set of secret access keys and tokens. This allows Twitter to monitor usage and limit/disable Twitter access by individual applications.</p>
+<p>Once registered, the code experimentation can begin. As a RESTful API communication via JSON, any web-friendly development framework can be used. (And if it is not web friendly... why would it have anything to do with Twitter?) As a starting point, Twitter has a non-exhaustive <a href="https://developer.twitter.com/en/docs/developer-utilities/twitter-libraries">list of libraries</a> that cater to different programming environments.</p>
+<p>Out of this list, <a href="https://github.com/bear/python-twitter">Python-Twitter</a> was chosen as the first step into this world. Python language is fun and easy to experiment with. Python-Twitter installs easily via Python's pip package manager. And yes - it also happens to be the first entry on the list.</p>
+<p>A few commands into Python interactive console was rewarded with immediate results, though sadly also a few issues. Text of some tweets were truncated. Perhaps this has something to do with the recent increase in Twitter's character limit? Whatever the root cause, <a href="https://github.com/bear/python-twitter/issues/491">it is tracked as an open issue</a> in Python-Twitter's repository.</p>
+<p>The first few search queries returned only 15 results, even when there were definitely more than 15 answers. This turned out to be the default limit which is <a href="https://github.com/bear/python-twitter/issues/495">easily increased up to 100 results</a> per search query. Going any further, unfortunately, is not possible with the standard search API. As of a few months ago, the only option to do more is to subscribe to the very expensive Twitter Enterprise API. This is out of the question for a hobbyist! Fortunately people have already complained and this past November Twitter responded with a <a href="https://blog.twitter.com/developer/en_us/topics/tools/2017/introducing-twitter-premium-apis.html">premium search API</a> to bridge the gap. Even though it is free, access is restricted so a registered developer has to <a href="https://developer.twitter.com/en/apply-for-access">apply for access</a>.</p>
+<p>Even if access is obtained, premium search is a new feature accessible via a new endpoint that is not yet supported by any of the Python libraries on Twitter's list. Searching with a unique part of <a href="https://developer.twitter.com/en/docs/tweets/search/api-reference/premium-search.html#DataEndpoint">the API URL</a> ("30day") found <a href="https://github.com/twitterdev/search-tweets-python">this Python search tweet API</a> that might be worth a look. If it doesn't fit the bill for whatever reason, it might be time to build a custom solution.</body></html></p>

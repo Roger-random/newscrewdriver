@@ -1,0 +1,44 @@
+---
+layout: post
+title: Limiting Google Client ID Exposure
+date: 2016-12-27 13:54:55.000000000 +00:00
+type: post
+post_id: '3344'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Adventure Book
+- Google
+- TIL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '141975565'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/12/27/limiting-google-client-id-exposure/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-3540 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/01/google-sign-in.png" alt="google-sign-in" width="194" height="81">Today's educational topic: the varying levels of secrecy around cloud API access.</p>
+<p>In the previous experiment with AWS, things were relatively straightforward: The bucket name is going to be public, all the access information are secret, and none of them are ever exposed to the user. Nor are they checked into the source code. They are <a href="https://devcenter.heroku.com/articles/config-vars">set directly on the Heroku server as environment variables</a>.</p>
+<p>Implementing a web site using <a href="https://developers.google.com/identity">Google Identity</a> got into a murky in-between for the piece of information known as the client ID. Due to how the OAuth system is designed, the client ID has to be sent to the user's web browser. Google's <a href="https://developers.google.com/identity/sign-in/web/">primary example</a> exposed it as a HTML <code>&lt;meta&gt;</code> tag.</p>
+<p>The fact the client ID is publicly visible led me to believe the client ID is not something I needed to protect, so I had merrily <a href="https://github.com/Roger-random/rr-adventurebook/commit/2d82774262f55380626bb3e1bcfeb0dbf6f06b8e">hard-coded it into my source and checked it into Github</a>.</p>
+<p>Oops! According to this section of the <a href="https://developers.google.com/terms/">Google Developer Terms of Service</a> document, that was bad. See the sections I highlighted in bold:</p>
+<blockquote><p>Developer credentials (such as passwords, keys, and <strong>client IDs</strong>) are intended to be used by you and identify your API Client. You will keep your credentials confidential and make reasonable efforts to prevent and discourage other API Clients from using your credentials. <strong>Developer credentials may not be embedded in open source projects.</strong>
+</p></blockquote>
+<p>Looks like we have a "secret but not secret" level going on: while the system architecture requires that the client ID be visible to an user logging on to my site, as a developer I am still expected to keep it secret from anybody just browsing code online.</p>
+<p>How bad was this mistake? As far as security goofs go, this was thankfully benign. On the Google developer console, the client ID is restricted to a specific set of URIs. Another web site trying to use the same client ID will get an error:</p>
+<p><img class=" size-full wp-image-3405 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2016/12/google-uri-mismatch.png" alt="google-uri-mismatch" width="721" height="384"></p>
+<p>IP addresses can be spoofed, of course, but this mitigation makes abuse more difficult.</p>
+<p>After this very instructional detour, I updated my project's <a href="https://github.com/Roger-random/rr-adventurebook/commit/6793ad4ae316b34b2da78ebb383df61ffd38bb76">server-side</a> and <a href="https://github.com/Roger-random/rr-adventurebook/commit/8b5b32d7835e4990c28a63916d519e188df4489d">client-side</a> code to retrieve the client ID from an environment variable. The app will still end up sending the client ID in clear text to the user's web browser, but at least it isn't in plain sight searchable on Github.</p>
+<p>And to close everything out, I also went into the Google developer console to revoke the exposed client ID, so it can no longer be used by anybody.</p>
+<p>Lesson learned, moving on...</body></html></p>

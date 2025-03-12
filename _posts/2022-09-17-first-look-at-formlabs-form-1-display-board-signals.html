@@ -1,0 +1,86 @@
+---
+layout: post
+title: First Look at FormLabs Form 1+ Display Board Signals
+date: 2022-09-17 12:30:00.000000000 +00:00
+type: post
+post_id: '32613'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32614'
+  _publicize_job_id: '76830209103'
+  timeline_notification: '1663443008'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/17/first-look-at-formlabs-form-1-display-board-signals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm working to understand the OLED dot matrix display from a broken FormLabs Form 1+ laser resin printer. It is hosted on a FormLabs custom circuit board and, after <a href="https://newscrewdriver.com/2022/09/16/formlabs-form-1-display-board-routing/">tracing through copper traces of that board</a>, I have a candidate list of five wires for further investigation. When I went to attach my Saleae logic analyzer, I decided to attach probes to all eight unknown wires. (Out of ten wires total and I have identified two: the ground and 3.3VDC V<sub>cc</sub> wires.) It wasn't much extra effort and I was curious if anything was going on. I then captured traces for four activities:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Power-on: when I plugged the 24VDC power supply into the printer.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Startup: when I pressed the front panel button to start its logo animation, ending at the "lid is open" warning.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Steady: Several seconds when the display stays at "lid is open" warning, with no updates.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Ready/Open/Ready: Using a magnet, I toggled the display from "ready" to "cover open" and back to "ready" again.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Trace for "Steady" showed no activity at all. I had expected the system to refresh the display periodically regardless of update activity, but I just captured five seconds of silence. This is quite a contrast from the super chatty display from an AT&amp;T CL84209 handset where I had 2569 messages within 10 seconds! Here I have nothing. Well, at least that was out of the way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Trace for "Power-on" and "Startup" was interesting because it captured activity on two of the three wires that were unused. One looked like clock and another looked like data, so I asked Saleae Logic to treat them as I2C. They came back as valid I2C messages.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>write to 0x48 ack data: 0x01 0x00 
+write to 0x48 ack data: 0x00</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong><em>Hypothesis</em></strong>: printer mainboard has an I2C peripheral bus and it's been routed all the way to the OLED display module circuit board. I2C is not used by this particular display module, but the design gives FormLabs an option to switch to an I2C display module without changing the rest of printer hardware. In the meantime, a logic analyzer connected to the display module would see traffic on the I2C bus. By this hypothesis, such traffic is intended for other components instead of this display, so I'll ignore it until/unless I discover a reason to revisit. [UPDATE: I found a <a href="https://www.nxp.com/products/sensors/ic-digital-temperature-sensors/digital-temperature-sensor-and-thermal-watchdog:LM75B" target="_blank" rel="noreferrer noopener">NXP LM75B</a> on the mainboard, an I2C temperature sensor that could answer to address 0x48.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32624,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/saleae-logic-formlabs-oled-inconsistent-spi.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/saleae-logic-formlabs-oled-inconsistent-spi.png?w=1024" alt="" class="wp-image-32624"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to the five wires of interest: three wires showed activity correlating with screen updates. I didn't see any activity independent of screen update, so these wires might be a dedicated peripheral data line. If it is a peripheral bus, every other peripheral on the bus stayed quiet during my test set of activities. At first glance I thought this was SPI, but a closer look revealed behavior inconsistent with SPI.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Mainboard cable pin 3 -- connected to logic analyzer channel 0 (white line) -- showed infrequent level changes near the start of every activity. A good candidate for SPI "Chip Select" or Enable, except data transfers seem to happen both when it is low and when it is high. Which shouldn't happen if it is indeed Enable.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Mainboard cable pin 4 -- connected to logic analyzer channel 4 (yellow line) -- shows regular level changes during every activity. A good candidate for SPI Clock, except the candidate data line changes within each "clock" pulse" which shouldn't happen if it is indeed clock.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Mainboard cable pin 6 -- connected to logic analyzer channel 5 (green line) -- shows level changes at irregular bursts. A good candidate for SPI Data, except it pulses out of sync with "clock".</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>If this is SPI, why does it look weird? If this is not SPI, what is it? I'll have to <a href="https://newscrewdriver.com/2022/09/18/second-try-with-formlabs-form-1-display-board-signals/">check over my setup and try again</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

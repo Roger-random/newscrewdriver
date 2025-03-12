@@ -1,0 +1,77 @@
+---
+layout: post
+title: 'Notes on ML-Agents Development History (Part 2: Version 1.0 to Present)'
+date: 2021-12-27 13:32:54.000000000 +00:00
+type: post
+post_id: '28062'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags:
+- ML-Agents
+- Reinforcement Learning
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27869'
+  timeline_notification: '1640640777'
+  _publicize_job_id: '66993881323'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/27/notes-on-ml-agents-development-history-part-2-version-1-0-to-present/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Looking back at Unity blog posts and GitHub release notes, we can see ML-Agent's <a href="https://newscrewdriver.com/2021/12/26/quick-look-at-ml-agents-development-history-part-1-up-to-version-1-0/">evolution during the prerelease beta phase</a>. From initial announcement leading up to an official version 1.0, they added many features promised in the original announcement, and made big architectural changes like how brains fit in the object hierarchy of a Unity project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On 2020/5/12, ML-Agents reached an <a href="https://blog.unity.com/technology/announcing-ml-agents-unity-package-v1-0" target="_blank" rel="noreferrer noopener">official version 1.0</a>, with a package organization that is covered by version compatibility guarantees going forward in the future. This guarantee is significant, because it means users can have better confidence their own projects will function. It also means more work for Unity because any future large-scale architectural changes will have to be made in a compatible way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another change in ML-Agents development is that they're no longer writing a Unity blog post for every release. I had thought this merely reflected a slower, more deliberate development with fewer changes to announce, but looking over release notes I still see plenty of significant changes. Given this, I suspect the lower blog traffic reflect a change in customer communication priorities inside the Unity organization. Perhaps they've moved on to YouTube videos or something? If so, that would be a shame, as I <a href="https://newscrewdriver.com/2021/12/06/today-i-learned-about-flippa/" target="_blank" rel="noreferrer noopener">prefer the written word</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In any case, <a href="https://github.com/Unity-Technologies/ml-agents/releases" target="_blank" rel="noreferrer noopener">ML-Agents GitHub repository release notes</a> made it clear development continued rapidly:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Release 2 (2020/5/20) has minor fixes and the current "Verified" build.</li>
+<li>Release 3 (2020/6/10)</li>
+<li>Release 4 (2020/7/15) added parameter randomization</li>
+<li>Release 5 (2020/7/31)</li>
+<li>Release 6 (2020/8/17) updated version requirements: Python now 3.6.1 and NumPy now 1.19.0 in sync with TensorFlow</li>
+<li>Release 7 (2020/9/21) IActuator abstract classes for generic action spaces. Initial PyTorch implementation.</li>
+<li>Release 8 (2020/10/14)</li>
+<li>Release 9 (2020/11/3)</li>
+<li>Release 10 (2020/11/19) Match3 environment (ML-Agents play Bejeweled!) and PyTorch is now the default.</li>
+<li>Release 11 (2020/12/21)</li>
+<li>Release 12 (2020/12/22)</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The above releases were summarized in the <a rel="noreferrer noopener" href="https://blog.unity.com/technology/happy-holidays-from-the-unity-ml-agents-team" target="_blank">ML-Agents 2020 End of Year recap</a> blog post, and development continued through 2021:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Release 13 (2021/2/24) TensorFlow removed. (<code>--torch-device=cpu</code> to tell PyTorch to use CPU for training. This will be useful later.)</li>
+<li>Release 14 (2021/3/8)</li>
+<li>Release 15 (2021/3/17) BufferSensor for agents to observe variable number of entities. MultiAgentGroup interface for training multiple different agents simultaneously, and MA-POCA trainer for them.</li>
+<li>Release 16 (2021/4/13)</li>
+<li>Release 17 (2021/4/27): Minimum Unity up to 2019.4. API breaking changes. Multiple behaviors via HyperNetworks</li>
+<li>Release 18 (2021/6/9): Added colab notebooks.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The version and API changes for release 17 smelled like preparation for a new version, which was confirmed by a blog post talking about <a rel="noreferrer noopener" href="https://blog.unity.com/technology/ml-agents-v20-release-now-supports-training-complex-cooperative-behaviors" target="_blank">training complex cooperative behaviors</a>. This is all very exciting stuff, but I noticed development activity came to a screeching halt. After years of releases every few weeks (sometimes multiple times in a single month) there hasn't been anything in the second half of 2021. I don't know why but I <a href="https://newscrewdriver.com/2021/12/28/browsing-ml-agents-resources-github-and-forums/">poked around a bit to see if I can find clues</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[Update: <a href="https://github.com/Unity-Technologies/ml-agents/releases/tag/release_19">Release 19</a> became available on 2022/1/14.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

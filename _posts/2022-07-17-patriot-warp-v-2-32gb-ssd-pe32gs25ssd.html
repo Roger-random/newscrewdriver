@@ -1,0 +1,71 @@
+---
+layout: post
+title: Patriot WARP V.2 32GB SSD (PE32GS25SSD)
+date: 2022-07-17 12:30:00.000000000 +00:00
+type: post
+post_id: '31467'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31479'
+  _publicize_job_id: '74815284403'
+  timeline_notification: '1658086205'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/17/patriot-warp-v-2-32gb-ssd-pe32gs25ssd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When the cost of flash memory dropped low enough for consumer-level solid state drives to come to market, it was a time when multicore multi-gigahertz processors sit mostly idle waiting for data to be fetched from a spinning platter hard drive. SSDs resolved that performance bottleneck and provided a huge boost to overall system performance. But like all revolutionary technology, early implementations had some serious teething issues. Some problems required operating system support like <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Trim_(computing)" target="_blank">TRIM</a> to solve, which didn't show up until later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In those pre-TRIM days, the most affordable consumer-level SSD were built around a JMF602 controller. It helped make SSD affordable, but without TRIM and related functions, those drives weren't durable. My first two SSDs used JMF602 and both drives died within two years of use. When I plug them into a computer's SATA port, they no longer enumerate as devices as if they weren't plugged in at all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I forgot I had kept those two drives until I found them in my pile of old computer hardware. I might as well open them up before I dispose of them. I don't expect to see much: just a circuit board inside a 2.5" form factor metal case. But I was curious if those two circuit boards would be identical: it is fairly common for multiple manufacturers to use the same reference implementation and sell basically identical devices.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":31475,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/patriot-warp-v.2-32gb-top.jpg?w=600" alt="" class="wp-image-31475"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":31474,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/patriot-warp-v.2-32gb-bottom.jpg?w=600" alt="" class="wp-image-31474"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>First up is Patriot's WARP V.2 with a paltry 32GB capacity, model PE32GS25SSD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31477,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/patriot-warp-v.2-32gb-bottom-removed.jpg?w=1024" alt="" class="wp-image-31477"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found the expected single circuit board inside. The infamous JMF602 chip amongst multiple Samsung flash chips. I see a row of four vias on the lower right edge resembling an unpopulated debug header. (Not that I'd know how to debug this thing.) In the lower left, adjacent to the SATA data connector, is an unpopulated connector blocked off by the metal case. We'll see this again later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31479,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/patriot-warp-v.2-32gb-disassembled.jpg?w=1024" alt="" class="wp-image-31479"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Four more Samsung flash chips reside on the other side of the circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31554,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/patriot-warp-v.2-32gb-unsoldered-flash.jpg?w=1024" alt="" class="wp-image-31554"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I now remember why I kept the drive even after it failed: I had personal data on this drive when stopped responding. Even though it doesn't enumerate as a SATA device for me, I was worried that the data could still be recovered. Perhaps through that debug header, or possibly a SATA diagnostic tool could unlock it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Making data really difficult to recover is easy with a spinning platter hard drive: I would open it up to expose those shiny platters. Everyday household dust would render those data surfaces unreadable except to maybe the NSA. But at the time I didn't know how to perform similar data destruction with SSDs. I had contemplated drilling a hole through each flash chip, but now that I have a hot air rework station, I decided to remove all 16 flash chips from the board. If someone wants to steal my data, they'll have to decipher how my data was spread across these chips and do a lot of soldering. I may still drill a hole through one of those chips just for curiosity, but first I want to compare and contrast this drive with <a href="https://newscrewdriver.com/2022/07/18/ocz-core-series-v2-120gb-ssd-oczssd2-2c120g/">my second SSD</a> based on the same JMF602 controller.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

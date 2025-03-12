@@ -1,0 +1,98 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Wires for Logic Analyzer
+date: 2024-01-23 12:30:00.000000000 +00:00
+type: post
+post_id: '41699'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41679'
+  firehose_sent: '1706041802'
+  wordads_ufa: s:wpcom-ufa-v4:1706128761
+  _publicize_job_id: '91347238197'
+  timeline_notification: '1706041803'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/23/canon-pixma-mx340-control-panel-lcd-wires-for-logic-analyzer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm taking apart my old Canon Pixma MX340 multi-function inkjet and the <a href="https://newscrewdriver.com/2024/01/22/canon-pixma-mx340-control-panel-lcd-is-next-target/">next step in this adventure</a> is to tap into communication between the main chip (marked NEC K13988) and LCD screen (no markings found) of its control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Earlier exploration of the circuit board indicated 5 of 24 pins on 1mm pitch LCD connector are wired to the K13988 indirectly via resistors and capacitors. I want to solder wires to connect those signals to my logic analyzer, and the easiest to solder features are five 330 ohm resistors much larger than other surrounding features. Out of habit I soldered the wire colors to match my oscilloscope channel colors, forgetting that I skipped the oscilloscope probing step and thus there would be no color mismatch concern here. Oops.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true} --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">LCD Pin</th>
+<th class="has-text-align-center" data-align="center">Wire color</th>
+<th class="has-text-align-center" data-align="center">Saleae channel</th>
+<th class="has-text-align-center" data-align="center">K13988 pin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">Yellow</td>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">28</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">Red</td>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">26</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">Blue</td>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">27</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">Green</td>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">9</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">Black</td>
+<td class="has-text-align-center" data-align="center">0</td>
+<td class="has-text-align-center" data-align="center">10</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have some idea of the kind of data that flows between that K13988 chip and system main board. Since this K13988 to LCD link sits downstream, I expect to see some subset of that data passed through. For me, the most interesting unknown is... why five wires? I've already traced out 3.3V power and ground to other pins on the connector, so they're not involved in this set of five.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Something like asynchronous serial or I2C would need only two wires. SPI would need four wires, but that would still leave one explained wire. My best guess is the last wire controls LCD screen contrast, possibly via an analog voltage level. I recall seeing such a control scheme, designed so it's trivial to implement a contrast adjustment knob by connecting a potentiometer to that wire. Those resistors and capacitors I see between K13988 and LCD are consistent with this idea, possibly implementing a filter to help turn a digital PWM signal into an analog voltage level.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The possibility of an analog signal was why I <a href="https://newscrewdriver.com/2024/01/24/canon-pixma-mx340-control-panel-lcd-pin-assignment/">started my Saleae Logic session in analog mode</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,83 @@
+---
+layout: post
+title: FormLabs Form 1+ Internals on Workbench
+date: 2022-09-29 12:30:00.000000000 +00:00
+type: post
+post_id: '32799'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32800'
+  _publicize_job_id: '77222493357'
+  timeline_notification: '1664479819'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/29/formlabs-form-1-internals-on-workbench/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been taking apart a broken FormLabs Form 1+ laser resin 3D printer because I wanted to learn as much as I can from a piece of hardware I probably wouldn't have bought on my own. Also, it is taking up too much space. Once I <a href="https://newscrewdriver.com/2022/09/28/formlabs-form-1-z-axis-assembly/">separated the Z-axis subassembly from the rest of the printer chassis</a>, I could place the entire electrical and electronics nervous system on my workbench. The printer wouldn't print anything in this state, of course, but it thinks it could. I'm very amused to read "Ready to print" on the OLED status display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first experiment with this "benchtop printer" is to see what components are necessary to run through a print program. I knew some connections between components must have been open-loop, because the printer mainboard had no idea the galvanometer control board was fried nor that the resin tray tilt motor was damaged. What else is the mainboard unaware of? Here are my findings:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>OK to disconnect:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<code>GALVO X SIGNAL, GALVO X POWER, GALVO Y SIGNAL,</code> and <code>GALVO Y POWER</code>. The galvanometers are a motor+sensor combination and requires closed-loop control with the galvanometer control board. However, the connection from printer mainboard to galvo control board is open loop.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>TILT </code>stepper motor is open-loop control, mainboard has no feedback on resin tray position.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>LASER </code>could be disconnected and still allow print program to run.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>DISPLAY </code>is one-way SPI communication.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>LED wires for <code>BUTTON</code> is optional.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Needs to be connected:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<code>INTERLOCK</code> door safety is something the mainboard definitely checks. It can be bypassed by taping a magnet onto the sensor. Could also try connecting the sensor wire (blue) to ground (black) but I have not tried this.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Switch wires for <code>BUTTON </code>is needed for a confirmation press before printing process begins.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Z LIMIT and Z MOTOR are required to run through Z-axis homing procedure.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Laying out all the components on a workbench in running condition also lets me try a long shot idea: <a href="https://newscrewdriver.com/2022/09/30/formlabs-form-1-electrical-failure-reproduced/">providing alternate negative voltage path</a> for galvanometer control.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

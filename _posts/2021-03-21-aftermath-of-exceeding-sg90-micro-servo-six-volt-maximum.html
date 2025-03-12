@@ -1,0 +1,60 @@
+---
+layout: post
+title: Aftermath of Exceeding SG90 Micro Servo Six Volt Maximum
+date: 2021-03-21 12:30:00.000000000 +00:00
+type: post
+post_id: '25696'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Micro Servo
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25698'
+  _publicize_job_id: '56216988193'
+  timeline_notification: '1616355016'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667291791
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/21/aftermath-of-exceeding-sg90-micro-servo-six-volt-maximum/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted Micro Sawppy rover to be a beginner-friendly design, which meant avoiding the hassles of working directly with lithium chemistry rechargeable battery cells. I <a href="https://newscrewdriver.com/2021/03/20/initial-thoughts-on-micro-sawppy-rover-battery-power/">investigated a few options</a>, starting with four AA alkaline cells in series, but none were able to sustain power in the five-to-six volt range I sought. Sagging under four volts in the worst case. I thought the next obvious step in the investigation would be to add an AA battery for five AA in series. This was a mistake.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had examined <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/12/29/notes-on-micro-servo-electronics/" target="_blank">micro servo electronics earlier</a>, and I found that operating at their quoted 4.8V nominal voltage was actually unreliable. I really needed to feed them at least five to six volts. In my experiment earlier, I found my little servo could operate at 7.4V (nominal voltage of two-cell lithium cells) but would not tolerate 8.4V (fully charged two-cell lithium cells.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on this knowledge, I thought five AA cells would be fine, as they would have a maximum voltage of 7.2V. However, I had forgotten that my high voltage experiment were on a MG90S servo, not a SG90. And with the variation of electronics across all those servos I had taken apart, results for one wouldn't be reliable for another anyway. I added the fifth AA cell and, immediately upon applying power, I smelled the telltale scent of unhappy electronics.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Uh-oh.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I disconnected power and examined my two servos that no longer responded to commands. They were warm to the touch and have a distinct bulge of melted plastic on their enclosure. The title image showed one of these damaged servos (right) next to an unused servo from the same batch (left) both angled to highlight surface features. I opened up the bulged case and saw the servo control chip has melted the top of its chip packaging. And not only that, it melted a rectangle into the blue plastic enclosure which was directly under the bubble.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":25699,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/sg90-overvoltage-melt-enclosure-imprint.jpg?w=1024" alt="" class="wp-image-25699"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It is obvious that I should not feed these micro servos any more than 6V, the historical standard for remote control hobby electronics. Derived from the voltage for four fully charged nickel-cadmium (NiCad) battery cells in series. Which meant if I wanted to increase power level for the rest of Micro Sawppy, I would need a regulator to ensure micro servos input voltage do not exceed 6V. This would mean extra components and complexity, but at the moment I see no way around it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is a slim chance the problem isn't as dire as it appears at the moment. My cardboard box rover uses a breadboard and jumper wires to create its circuitry, and this system doesn't have very high current-carrying capacity. It is possible that I'm losing a lot of power to resistance of thin wires, a problem that has <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/05/03/casualty-in-debugging-5v-supply-for-prototype-vfd-driver/" target="_blank">occasionally plagued past projects</a>. Now that the breadboard and jumper wires have done their job of exposing problems in a prototype, I should move on to a circuit board with soldered connections. Trying four AA batteries on that circuit would be a better representation of the little rover's power situation, as well as freeing me from <a href="https://newscrewdriver.com/2021/03/22/another-esp32-dev-kit-layout/">physical constraints of breadboard dimensions</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

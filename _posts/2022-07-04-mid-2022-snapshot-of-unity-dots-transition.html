@@ -1,0 +1,58 @@
+---
+layout: post
+title: Mid 2022 Snapshot of Unity DOTS Transition
+date: 2022-07-04 12:30:00.000000000 +00:00
+type: post
+post_id: '31153'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31166'
+  _publicize_job_id: '74356493210'
+  timeline_notification: '1656963040'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/04/mid-2022-snapshot-of-unity-dots-transition/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As a curious hobbyist, I can learn Unity at my own pace <a href="https://newscrewdriver.com/2022/07/03/notes-on-data-oriented-design-textbook/">choosing topics that interest me</a>. More importantly, I have the luxury of pausing when I'm more interested in learning something else. No game development shipping deadline to meet, just a few <a href="https://newscrewdriver.com/tag/art-happens/">Unity projects for fun</a> here and there. This meant I first learned about Unity DOTS at the end of 2021, and I had to catch up to what has happened since. Since Unity's DOTS transition is still in progress, the information on this page will quickly become outdated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My sources are <a rel="noreferrer noopener" href="https://blog.unity.com/topic/dots" target="_blank">Unity blog posts tagged with DOTS</a>, plus two YouTube playlists:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>
+<em><a rel="noreferrer noopener" href="https://www.youtube.com/playlist?list=PLX2vGYjWbI0S1wHRTyDiPtKLEPTWFi4cd" target="_blank">Unite Copenhagen 2019 - DOTS</a></em>. This playlist of 17 videos was at Unity's own conference in 2019, where they invited people to start sinking their teeth into DOTS. A lot of future-looking discussion about goals and aims, but there were enough tools and support infrastructure to start experimentation. (As opposed to Unite LA 2018, which was more of a DOTS introduction as fewer tools were available for testing.)</li>
+<li>
+<em><a rel="noreferrer noopener" href="https://www.youtube.com/playlist?list=PLX2vGYjWbI0TMJrYFmLi-inr7DiIkGO4W" target="_blank">Unity at GDC 2022</a></em>. This playlist of 17 videos spanned Unity presentations at Game Developer Conference earlier this year. Not all of the videos on this list involve DOTS. But those that did, gave us an update on how things have progressed (or not progressed) since 2019.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given that information, my understanding today: Unity DOTS adoption is to improve performance of Unity titles on modern hardware <em><strong>while still preserving</strong></em> Unity's flexibility, existing codebase, and friendliness to users. Especially beginners!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>"Improved performance" is usually shown off by <a rel="noreferrer noopener" href="https://unity.com/megacity" target="_blank">demonstrating huge complex scenes</a>, but at the core it aims to better align Unity runtime code with how modern multicore CPUs go about their work. Yes, this would allow huge and complex scenes previously impossible, but it also means reducing power and resources consumed to deliver scenes built today. This is especially important for those publishing titles for battery-powered cell phones and tablets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that is runtime code. At design time, Unity will stay with the current <code>GameObject</code>-oriented design paradigm. All those tutorials out there will still work, all the components on Unity Marketplace could still be used. Paraphrasing a presenter: "Design time stays people-friendly, DOTS changes the runtime to become computer-friendly." Key to this duality is a procedure that was called "conversion" but has since been renamed "baking" to translate a set of <code>GameObject</code> data for use via Entities and Components. <code>GameObject</code> code are converted to Systems that execute on said data. These systems ideally work in units that can be compiled to native code with the Burst compiler and scheduled by the Jobs system for distribution across all available CPU cores. But if that's too big of a leap to make in one conversion, Unity aims to support intermediate levels of functionality so developers can adopt DOTS piecemeal as they are ready and do so in places that make sense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, it is possible to do dive into the deep end of the pool and directly create Entities/Components /Systems. However, the Unity editor is not (yet?) focused on supporting that workflow, current work is focused on helping the user base make this "baking" transition over the next few years. Which means <a rel="noreferrer noopener" href="https://unity.com/solutions/instant-games" target="_blank">certain Unity initiatives</a> for a fully DOTS era may be put on hold.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Learning DOTS, the biggest mental hurdle for me has been around Entities. Conceptually, Unity <code>GameObject</code> are already composed of components. Though actual code differs between two different schools of components, it was a close-enough concept for me to understood. It was similarly easy for me to comprehend that executable code logic move to systems to work on those components. From there, it was easy for me to conclude <code>GameObject</code> are converted to Entities, but that is wrong. (Or at least, hinders maximizing potential of DOTS.) I'm still struggling with this myself and I hope for an "A-ha!" moment at some point in the future.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

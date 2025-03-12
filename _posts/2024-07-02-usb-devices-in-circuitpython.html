@@ -1,0 +1,60 @@
+---
+layout: post
+title: USB Devices In CircuitPython
+date: 2024-07-02 12:30:00.000000000 +00:00
+type: post
+post_id: '44028'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43920'
+  timeline_notification: '1719948607'
+  firehose_sent: '1719948606'
+  _publicize_job_id: '95920532794'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-03 21:13:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/02/usb-devices-in-circuitpython/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've done two projects in CircuitPython and <a href="https://newscrewdriver.com/2024/07/01/good-initial-impressions-of-circuitpython/">decided I'm a fan</a>. The second project was a USB keyboard which brought my attention to CircuitPython's USB capability advantage over classic Arduino setups. They look interesting, but having two projects also exposed some strange CircuitPython microcontroller behavior.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Scenario 1: Plug in second CircuitPython board</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can have a CircuitPython project up and running along attached to my computer with its console output shown on Mu's serial terminal. If I then plug in a second CircuitPython microcontroller, execution of the first one would halt with <code>KeybardInterrupt</code> as if I had pressed Control+C. I was surprised to discover this interaction as I had expected them to operate independently.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Scenario 2: Unplug one of two CircuitPython boards</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I have two CircuitPython projects up and running attached to my computer, again with console output shown on Mu serial terminal, unplugging the one not connected to Mu would halt the not-unplugged unit with <code>KeyboardInterrupt</code>. Why doesn't it just keep running?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Control+D To Resume</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>In both cases I could soft restart the board by pressing Control+D in Mu serial terminal, but this would obviously be a problem if that device <em>was </em>my keyboard running KMK firmware. I can't press Control+D if my keyboard's KMK firmware has been halted with <code>KeyboardInterrupt</code>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought maybe this was a KMK keyboard thing, but I quickly determined it's more general. Whichever CircuitPython device is plugged/unplugged, the other device halts. The good news is that this seems to only happen if Mu serial terminal was connected. Maybe this is a Mu issue? Either way, it appears a way to avoid this problem is to deactivate the serial terminal of a CircuitPython microcontroller after development is complete and it is "running in production". I went looking for instructions on how I might accomplish such a goal and found Adafruit's <em><a href="https://learn.adafruit.com/customizing-usb-devices-in-circuitpython">Customizing USB Devices in CircuitPython</a></em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is: yes, it is possible to deactivate the serial text terminal as well as the <code>CIRCUITPY</code> USB storage volume. The magic has to happen in <code>boot.py</code>, which runs before USB hardware configuration occurs. This document also explains that USB MIDI hardware is also part of CircuitPython default USB behavior, something I hadn't noticed because I hadn't played with MIDI.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The document also explains more about how CircuitPython's USB magic works behind the scenes. Valuable background to understand how microcontroller implementation can limit the number of USB devices that can be presented over a single cable. There's also a second USB serial port that is off by default. It can be turned on after turning off certain other hardware, if we ever need an asynchronous serial port separate from the Python REPL console. Good to know as I proceed to <a href="https://newscrewdriver.com/2024/07/03/adafruit-memento-camera-assembly-adabox-021/">play with other CircuitPython devices</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

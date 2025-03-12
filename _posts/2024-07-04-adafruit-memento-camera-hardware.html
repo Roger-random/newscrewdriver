@@ -1,0 +1,46 @@
+---
+layout: post
+title: Adafruit Memento Camera Hardware
+date: 2024-07-04 12:30:00.000000000 +00:00
+type: post
+post_id: '44053'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44045'
+  wordads_ufa: u:wpcom-ufa-v4:1720211442
+  _publicize_job_id: '95976304459'
+  timeline_notification: '1720121453'
+  firehose_sent: '1720121457'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-05 20:32:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/04/adafruit-memento-camera-hardware/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've opened my Adabox 021 and <a href="https://newscrewdriver.com/2024/07/03/adafruit-memento-camera-assembly-adabox-021/">assembled the Memento camera within</a>. Installing and running their "<a href="https://learn.adafruit.com/adafruit-memento-camera-board/fancy-camera">Fancy Camera</a>" CircuitPython test app was fun for a bit and a good test to verify everything worked, but my objective with Adafruit products is always to try building something of my own. At the moment I'm on a theme of learning CircuitPython. But before I start writing code, I need to know what hardware peripherals are available.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As per usual, Adafruit publish great documentation for their products, and I quickly found their Memento camera <a href="https://learn.adafruit.com/adafruit-memento-camera-board/pinouts">hardware peripheral pinout page</a>. It is pretty packed! The good news is this means a lot of peripherals are already onboard and available for experimentation. The bad news is that packing all this hardware doesn't leave much room for adding anything else. I had expected to find a handful of pads we can solder to access extra unused pins, but <a href="https://learn.adafruit.com/adafruit-memento-camera-board/downloads">looking at the schematic</a> nearly every pin is already in use. In fact we had already "run out" as one of the peripherals on board is a GPIO expansion chip to add even more pins in order to read user button presses.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only pin not already in use was routed to expansion port A0 which is open and available. (Port A1 is already occupied for driving front face plate LEDs.) There's another open port marked STEMMA QT which is something <a href="https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma-qt">Adafruit uses for making I2C connections easy</a>. It taps into the I2C bus, which already has several passengers on board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Mechanically, the most obvious approach would be to tap into existing front and rear faceplate mounting points. They are held with small fasteners and it would be easy to use them to bolt on something else. I may have to find longer fasteners when I do, though. Another approach would be to go tool-free and use something with a bit of spring/flexibility to clip onto support posts from the side. Other than those four support posts (one at each corner, with fasteners front and back for faceplates) I saw no provisions for mounting hardware. But I think those four posts will be enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I have some idea of the hardware on board, time to look at the <a href="https://newscrewdriver.com/2024/07/05/adafruit-memento-a-k-a-pycamera-photography-parameters/">software side of Memento</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

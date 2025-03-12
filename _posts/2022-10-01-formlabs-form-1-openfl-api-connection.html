@@ -1,0 +1,109 @@
+---
+layout: post
+title: FormLabs Form 1+ OpenFL API Connection
+date: 2022-10-01 12:30:00.000000000 +00:00
+type: post
+post_id: '32848'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Software
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '23390'
+  timeline_notification: '1664652621'
+  _publicize_job_id: '77286136398'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/01/formlabs-form-1-openfl-api-connection/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had a longshot idea to revive the galvanometer control of a broken FormLabs Form 1+ resin laser 3D printer. <a href="https://newscrewdriver.com/2022/09/30/formlabs-form-1-electrical-failure-reproduced/">It didn't work and galvanometer remains broken</a>. Because the printer also had a broken resin tray tilt motor and other smaller problems, I wasn't trying to get it to print again. What I had in mind was to repurpose the optical core into a laser light show machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was made possible because FormLabs opened up the Form 1/1+ for experimentation after they stopped supporting the hardware. Since they are no longer responsible if anything goes wrong, they freed the hardware for people to mess around with. This consisted of a special build of the PreForm software, which will flash a special (final?) edition of firmware. This firmware is willing to talk to a PC beyond accepting print jobs from PreForm. To make this communication easier, they released a Python library. All of these were posted <a rel="noreferrer noopener" href="https://github.com/formlabs/openfl" target="_blank">on a GitHub repository</a> under their "OpenFL" umbrella.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I really appreciate the fact FormLabs did this, exposing an API to control hardware independently of PreForm print jobs make it possible to do things completely outside the realm of printing. One of their examples turn the Z-axis stepper motor into a <a rel="noreferrer noopener" href="https://github.com/Formlabs/OpenFL/tree/master/examples/midi" target="_blank">single-channel MIDI instrument</a> making buzzy electromechanical music. The API also allows control of laser power and galvanometer position, which lead to my idea of turning the printer into a laser light show machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But first, I had to get it up and running. The first problem is that, as a seven-year-old Python library, it was written for Python 2 which is now discontinued. To create a backwards compatible Python environment, I used <a href="https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links" target="_blank" rel="noreferrer noopener">Miniconda</a> to create a Python 2 environment called "openfl"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>conda create --name openfl python=2</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following instructions in OpenFL repository I setup and installed Python dependencies. It allowed me to load OpenFL library but I immediately ran into an error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Python 2.7.18 |Anaconda, Inc.| (default, Apr 23 2020, 17:26:54) [MSC v.1500 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; from OpenFL import Printer as P
+&gt;&gt;&gt; p = P.Printer()
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "OpenFL\Printer.py", line 62, in __init__
+    self.dev = usb.core.find(idVendor=self.VID, idProduct=self.PID)
+  File "C:\Users\me\miniconda3\envs\openfl\lib\site-packages\usb\core.py", line 1297, in find
+    raise NoBackendError('No backend available')
+usb.core.NoBackendError: No backend available
+&gt;&gt;&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This "No backend available" error came from <code>pyusb </code>library, complaining about a missing dependency outside of Python: we need a compatible USB driver installed. Solving this error required the following chain of events:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Read up on PyUSB at https://pyusb.github.io/pyusb/</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Which point me to LibUSB at https://libusb.info/</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Which pointed me to its Wiki for running on Windows at https://github.com/libusb/libusb/wiki/Windows#How_to_use_libusb_on_Windows</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Which recommended the Zadig utility at https://zadig.akeo.ie/</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zadig offered several options for USB drivers, I tried them in the order recommended by LibUSB.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>
+<strong>WinUSB (v6.1.7600.16385)</strong>: nope, still got "No backend available" error</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<strong>libusb-win32 (v1.2.6.0)</strong>: looks good!</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>Python 2.7.18 |Anaconda, Inc.| (default, Apr 23 2020, 17:26:54) [MSC v.1500 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; from OpenFL import Printer as P
+&gt;&gt;&gt; p = P.Printer()
+&gt;&gt;&gt; p.state()
+&lt;State.MACHINE_READY_TO_PRINT: 3&gt;
+&gt;&gt;&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm in! Now to poke around and <a href="https://newscrewdriver.com/2022/10/02/formlabs-form-1-laser-power-via-openfl/">see what I can do with the laser</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

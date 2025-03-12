@@ -1,0 +1,40 @@
+---
+layout: post
+title: Refining the LTC-4627JR Driver Board
+date: 2017-10-02 09:00:52.000000000 +00:00
+type: post
+post_id: '13173'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- KiCad
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9894818812'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/02/polishing-and-refining-the-ltc-4627jr-driver-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I am lucky to have some local people who have worked with <a href="http://kicad-pcb.org/">KiCad</a> and were willing to help a beginner. I've asked for tips before I started, but much of them didn't make sense until I had a run with my own project. Now I can go back and ask the questions again, and with some firsthand experience to anchor the concepts, the answers make much more sense.</p>
+<p>I learned that there were flaws in my schematic. I had connected my <a href="https://en.wikipedia.org/wiki/PIC_microcontroller">PIC</a> micro controller output pin directly to the base of a <a href="https://en.wikipedia.org/wiki/2N2222">2N2222</a> transistor. I shouldn't directly expose the 2N2222 to the full voltage and current from the PIC. It is not an immediately catastrophic condition - I got my bread board prototype up and running without them - but in their absence the transistors end up burning much more power than necessary and likely reduces their lifespan. So the schematic receives five additional resistors, one for each transistor.</p>
+<p>I also neglected a pull-up resistor recommended for the Vpp pin in the <a href="http://www.microchip.com/Developmenttools/ProductDetails.aspx?PartNO=PG164130">PICkit 3 manual</a>. Again, my bread board seems to run OK without it, but it's better to follow spec.</p>
+<p>These six additional resistors complicate the PCB layout. Fortunately, I received some useful tips here as well. I chose one design pattern to practice: separate the front and back layers into vertical and horizontal traces. This requires copious use of vias to connect these individual segments into a full connection. I had been concerned that every via is a connection and a potential source of failure, but I've been reassured that's not a concern. When the horizontal/vertical division, wire traces can cross paths in a safe manner because the directions keep those traces isolated.</p>
+<p>I also learned the concept of a fill zone, which makes it easier to distribute the voltage input and ground to all the components on the chip. Instead of running individual narrow traces that might not be able to handle the full power, they are distributed across all the spare surface area I can reach. I use my front copper layer to distribute power, and the back copper layer became the ground layer.</p>
+<p>The downside is that, by breaking horizontal and vertical onto their individual layers, it because much more difficult to visually follow the logic of a board. A situation not helped by the fill zones, which obscure other layers so I have to look at the front and back separately.</p>
+<p><img class=" size-full wp-image-13223 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/pcb5-f-cu.png" alt="PCB5 F.Cu" width="855" height="933"></p>
+<p><img class=" size-full wp-image-13225 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/10/pcb5-b-cu.png" alt="PCB5 B.Cu" width="854" height="930"></p>
+<p>The upside of this approach is that it makes layout much easier to do. And despite the visual appearance, the net result is actually simpler despite being broken up across the two layers. Before learning these techniques my trace count was in the 180-200 range. Now it sits at 164 and this is <em><strong>after</strong> </em>adding six resistors to the circuit complexity.</p>
+<p>These are quite satisfying steps forward.</p>
+<p>(The work described in this blog post are <a href="https://github.com/Roger-random/I2C_LTC-4627JR">publicly available on Github</a>.)</p>
+<p></body></html></p>

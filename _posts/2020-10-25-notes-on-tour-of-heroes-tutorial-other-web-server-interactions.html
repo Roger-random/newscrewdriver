@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'Notes on "Tour of Heroes" Tutorial: Other Web Server Interactions'
+date: 2020-10-25 12:30:00.000000000 +00:00
+type: post
+post_id: '23119'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22766'
+  _publicize_job_id: '50329117392'
+  timeline_notification: '1603654211'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/25/notes-on-tour-of-heroes-tutorial-other-web-server-interactions/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The Angular "Tour of Heroes" tutorial section 6 "Get Data From Server" covered the standard interactions: Create, Read, Update, and Delete <a href="https://newscrewdriver.com/2020/10/24/notes-on-tour-of-heroes-tutorial-c-and-d-of-crud/">commonly referred to as CRUD</a>. But it didn't stop there and covered a few other server operations. I was intrigued the next section was titled "Search by name" because I was curious how a client side single page application could search data on a static web server.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It turns out the application does not actually perform the search, the "search by name" example is built around sending a GET URL with a "<code>name=</code>" query parameter and processing the results. So the example here isn't actually specific to searching, it's just a convenient example to demonstrate a general server query/response outside of the simplified CRUD mode. It can be argued that this fits under the umbrella of R of CRUD, but this is as far as I'll pick that nit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p> Lucky for us, the search query parameter appears to be part of the feature set of the in-memory web API we're using to stand in for a web server. Like the rest of the tutorial CRUD operations, none of this will actually work on a static web server. But that's fine, we get to see the magic of Observable used in a few different ways. Like a new convention of ending an observable name  with the $ character and asynchronously piping into a <code>*ngFor</code> directive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For me, the most interesting new concept introduced in this section is the rate-limiting functionality of <code><a rel="noreferrer noopener" href="https://www.learnrxjs.io/learn-rxjs/operators/filtering/debouncetime" target="_blank">debounceTime()</a></code> filter from RxJS. Aside from being a piece of commonly needed (and thus commonly re-implemented) functionality, it shows the power of using RxJS for asynchronous operations where we can stick these kind of filters in the pipeline to accomplish goals. I don't fully understand how it works or how I might reuse it in other contexts. I think I have to learn more about <code>Subject&lt;T&gt;</code> first? But anyway, what we've seen here is pretty cool and worth following up with more reading later.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

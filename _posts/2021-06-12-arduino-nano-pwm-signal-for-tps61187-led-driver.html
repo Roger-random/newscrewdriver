@@ -1,0 +1,80 @@
+---
+layout: post
+title: Arduino Nano PWM Signal for TPS61187 LED Driver
+date: 2021-06-12 12:30:00.000000000 +00:00
+type: post
+post_id: '27035'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27036'
+  _publicize_job_id: '59519749169'
+  timeline_notification: '1623526211'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/12/arduino-nano-pwm-signal-for-tps61187-led-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Trying to revive the LED backlight from a LG Lp133WF2(SP)(A1) laptop display panel, I am focused on a TPS61187 LED driver chip on its integrated circuit board. After studying its datasheet, I <a href="https://newscrewdriver.com/2021/06/11/soldering-wires-to-tps61187-led-driver/">soldered a few wires to key parts of the circuit</a> and applied power, checking the circuit as I went. Nothing has gone obviously wrong yet, so the final step is to give that driver chip a PWM signal to dictate brightness.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is where I am happy I've added Arduino to my toolbox, because I was able to whip up a controllable PWM signal generator in minutes. Putting an Arduino Nano onto a breadboard, I wired up a potentiometer to act as interactive input. 5V power and ground were shared with the panel, and <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/" target="_blank">one of the PWM-capable output pins</a> was connected to the TPS61187 PWM input line via a 10 kΩ resistor as per datasheet. I found that my enable line already had a 1 kΩ resistor on board, so now I wired enable directly to the 5V line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I wanted some confidence in my circuit before plugging the panel into the circuit, I also wired a test LED in parallel with the PWM signal line. I had originally thought I could use the LED already on board the Arduino, but that is hard-wired to pin 13 which is not one of the PWM-capable pins, so the external LED was necessary for me to run my PWM-generating test code, which thanks to the Arduino framework was as easy as:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>int sensorPin = A0;    // select the input pin for the potentiometer
+int ledPin = 3;        // select the pin for the LED
+int sensorValue = 0;   // variable to store the value coming from the sensor
+
+void setup() {
+  // declare the ledPin as an OUTPUT:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // read potentiometer position
+  sensorValue = analogRead(sensorPin);
+
+  // map analogRead() range to analogWrite() range
+  sensorValue = map(sensorValue, 0, 1023, 0, 255);
+
+  analogWrite(ledPin, sensorValue);
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My external test LED brightened and dimmed in response to potentiometer knob turns, so that looked good. My heart started racing as I connected the panel to my Arduino breadboard, which is then connected to my benchtop power supply. Even though I'm powering this system with 5V, I used a bench power supply instead of a USB port. Because I didn't know how much the panel drew and didn't want to risk damaging my computer. Also, by using a benchtop power supply I could monitor the current draw and also set a limit of 120mA (20mA spread across 6 strings) for the first test.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I powered up the system with the potentiometer set to minimum, then slowly started turning the knob clockwise...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27043,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-28-the-backlight-lives.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-28-the-backlight-lives.jpg?w=1024" alt="" class="wp-image-27043"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It lit up! It lit up! Woohoo!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was very excited at this success, jumping and running down the hallway. It was a wild few minutes before I could settle down and calmly <a href="https://newscrewdriver.com/2021/06/13/a-closer-look-at-led-backlight-panel/">take a closer look</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

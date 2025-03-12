@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'Sawppy Issue: Serial Bus Servo'
+date: 2020-11-30 12:30:00.000000000 +00:00
+type: post
+post_id: '21895'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '18218'
+  _oembed_3d8761e7865d4e134c8b7a4c852b0318: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Driving
+    robots by cellphone at <a href="https://twitter.com/sparklecon23b?ref_src=twsrc%5Etfw">@sparklecon23b</a>
+    <a href="https://twitter.com/23bShop?ref_src=twsrc%5Etfw">@23bShop</a> <a href="https://twitter.com/SawppyRover?ref_src=twsrc%5Etfw">@SawppyRover</a>
+    <a href="https://t.co/XA5mvm5Zrz">pic.twitter.com/XA5mvm5Zrz</a></p>&mdash; Ilya
+    O (@DJ_ilyaO) <a href="https://twitter.com/DJ_ilyaO/status/1221985440267292672?ref_src=twsrc%5Etfw">January
+    28, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1606768226'
+  _publicize_job_id: '51673730287'
+  _oembed_time_3d8761e7865d4e134c8b7a4c852b0318: '1606797155'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/11/30/sawppy-issue-serial-bus-servo/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was surprised when I learned <a href="https://newscrewdriver.com/2020/11/29/sawppy-issue-misumi-aluminum-extrusions/">Misumi aluminum extrusions weren't as easily available as I had originally thought</a>. I was less surprised to learn that serial bus servos were a problem as well. When I started the project I knew they were on the rare side but thought it was worth a shot. I'm still a fan and stand by everything <a href="https://hackaday.com/2018/07/05/wrangling-rc-servos-becoming-a-hassle-try-serial-bus-servos/" target="_blank" rel="noreferrer noopener">in my Hackaday overview</a>, but I admit spotty worldwide availability is only the first of many problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even when serial bus servos are available, the selection of sizes and capabilities is limited relative to more common motors. If someone wanted to make <a rel="noreferrer noopener" href="https://hackaday.io/project/166430-sawppy-rover-666" target="_blank">a small Sawppy like Dean</a>, or <a href="https://hackaday.io/project/165401-qmrd3" target="_blank" rel="noreferrer noopener">a big Sawppy like Quinn</a>, it's hard to find serial bus servos of the appropriate size. And even if serial bus servos can be found in the right size, the communication protocol is not standardized. Dean has yet to figure out the protocol for the tiny servos he found. And then there's the software side of the problem, where each protocol needs corresponding code written for Sawppy's brain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another problem is that their position feedback has been disappointingly limited, at least in the LewanSoul/Hiwonder LX-16A servos on my own Sawppy. They could turn a full 360 degrees, but only return reliable position data for ~240 degrees within that range. That makes it difficult to calculate wheel odometry. Rhys Mainwaring tackled this problem with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/" target="_blank">the Curio rover software stack</a>, but no matter how good the extrapolation code works it's not as good as actual data. I think my effort to do things on the cheap did not pan out and, if a robot wants wheel odometry, we have to go to real wheel encoders separate from the drive motor. Marco Walther (mw46d)'s <a href="https://github.com/Roger-random/Sawppy_Rover/tree/master/modifications/Marco_Walther" target="_blank" rel="noreferrer noopener">Sawppy wheel modification</a> sets a precedent on how this might be done.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thanks to feedback from fellow rover fans around the world, I have since learned serial bus servos are not the best choice for a project that I intended for people to build around the world. I should fall back to more common components like RC servos and DC motors. But whatever is ultimately used as the steering actuator, I want to improve <a href="https://newscrewdriver.com/2020/12/01/sawppy-issue-steering-angle-adjustment/">how steering angle is adjusted</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

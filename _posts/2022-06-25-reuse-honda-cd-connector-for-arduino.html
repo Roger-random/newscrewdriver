@@ -1,0 +1,79 @@
+---
+layout: post
+title: Reuse Honda CD Connector for Arduino
+date: 2022-06-25 12:30:00.000000000 +00:00
+type: post
+post_id: '30990'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Arduino
+- Honda CD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30968'
+  _publicize_job_id: '74038841735'
+  timeline_notification: '1656185417'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/25/reuse-honda-cd-connector-for-arduino/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I got over the excitement of <a href="https://newscrewdriver.com/2022/06/24/honda-cd-panel-lights-and-lcd-backlight/">lighting up the bulbs and LEDs on a Honda CD control panel</a>, I returned to the original CD player mainboard. The labels on its panel connector gave me the confidence to apply power and expect illumination instead of the smoke of fried electronics. But now I have the labels documented for future reference, I will remove the connector for my own use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30968,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-salvaged.jpg?w=1024" alt="" class="wp-image-30968"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Desoldering was mostly smooth except for the trio of ground pins. They were connected to thick ground traces that dissipated a lot of heat, making it difficult to melt the solder. For the final ground pin, I saw the solder had melted and pulled hard on the connector. Unfortunately, it had not yet melted all the way through so my yank damaged the pin. Well, at least I still have two intact ground pins to work with.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I still don't know the manufacturer or name for this connector, but it is very similar to the connector <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/25/salvage-tape-deck-faceplate-connector-toyota-86120-08010/" target="_blank">I saw on a Toyota tape deck</a> doing the same job. Which meant it shared the pin pitch of 0.1" (just like a perforated prototype board!) and two rows 0.1" apart (just like a perforated prototype board!) staggered with a 0.05" offset. (Just like... oh no! It isn't.) For the Toyota tape deck project, I gave up on a circuit board and directly soldered wires to connect pins. But I had been thinking about the problem since then and I have an idea I want to try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30966,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-and-cracked-prototype-board.jpg?w=1024" alt="" class="wp-image-30966"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I took one of my perforated prototype boards, cut a groove down a row of holes, and snapped it off. This exposed a row of semicircular vias that I could solder to one of the two rows on this connector. For the other row, I would still have to solder to wires directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30970,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-with-arduino-nano.jpg?w=1024" alt="" class="wp-image-30970"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's not nearly as solid of a connection as a custom circuit board with the proper pin layout, but it is still far better than nothing. My modified prototype board left <em>just </em>enough space to accommodate an Arduino Nano.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30967,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-arduino-nano-wiring.jpg?w=1024" alt="" class="wp-image-30967"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping this assembly over allowed me to solder wires between the Arduino and the salvaged connector. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31062,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-arduino-board-on-connector.jpg?w=1024" alt="" class="wp-image-31062"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It is a far more compact and less accident-prone solution than my previous breadboard mess.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30826,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-with-arduino.jpg?w=1024" alt="" class="wp-image-30826"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sadly, it did not work straight off the bat. I had to do some debugging to bring it to parity with my breadboard solution, but the debugging session also <a href="https://newscrewdriver.com/2022/06/26/honda-cd-lcd-driver-mystery-problems-solved/">solved a standing mystery</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Arduino code and other information for this investigation is <a href="https://github.com/Roger-random/Sanyo_LC75883" target="_blank" rel="noreferrer noopener">available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

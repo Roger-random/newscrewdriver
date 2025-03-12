@@ -1,0 +1,59 @@
+---
+layout: post
+title: Adafruit PyCamera Library Includes Custom OV5640 Support
+date: 2024-07-06 12:30:00.000000000 +00:00
+type: post
+post_id: '44083'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44045'
+  wordads_ufa: u:wpcom-ufa-v4:1720390263
+  firehose_sent: '1720294224'
+  timeline_notification: '1720294225'
+  _publicize_job_id: '96027536679'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-07 22:13:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/06/adafruit-pycamera-library-includes-custom-ov5640-support/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I am playing with my Adafruit Memento a.k.a. PyCamera which means digging into Adafruit's CircuitPython library and sample code. I first looked over its <a href="https://newscrewdriver.com/2024/07/05/adafruit-memento-a-k-a-pycamera-photography-parameters/">photography parameters under software control</a>, and now I move on to the software implementation. Skimming through <a href="https://github.com/adafruit/Adafruit_CircuitPython_PyCamera">source code for PyCamera CircuitPython library</a>, I see its functionality were largely stitched together from existing Adafruit CircuitPython libraries corresponding to hardware components on board. The notable exception is that PyCamera has its own code to interface with the OV5640 camera module instead of leveraging an <a href="https://github.com/adafruit/Adafruit_CircuitPython_OV5640">existing OV5640 CircuitPython library</a>. This is interesting, why might Adafruit choose to split their OV5640 support?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>PyCamera library is very much a "batteries included" bundle optimized to a particular piece of hardware, and the split fits with this design priority. Not only does the library expose interface to the camera module and the LCD screen module, it has code optimized for them to work together. The viewfinder capability is one example. This is literally all it takes to continuously send camera sensor data to LCD:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>import adafruit_pycamera
+
+pycam = adafruit_pycamera.PyCamera()
+while True:
+    pycam.blit(pycam.continuous_capture())</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Adafruit's <a href="https://docs.circuitpython.org/projects/ov5640/en/latest/">OV5640 library</a> does not have a <code>continuous_capture()</code> method, and <a href="https://docs.circuitpython.org/projects/st7789/en/latest/">their ST7789 library</a> lacks a <code>blit()</code> method. Together these two PyCamera-specific APIs minimize delay between camera capture and LCD output so we can have a responsive viewfinder screen. Code comments in <code>blit()</code> explain it bypasses <a href="https://learn.adafruit.com/circuitpython-display-support-using-displayio/introduction">their <code>displayio</code> graphics library</a> for speed, but incurs the tradeoff of not playing well with overlapping graphics elements. To mitigate this problem, camera UI text are not rendered by camera app code. They are rendered by <code>make_camera_ui()</code> within PyCamera library to ensure they stay clear of <code>blit()</code> zone. This was not how I had expected the implementation to go, interesting!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another difference I found is that PyCamera OV5640 code is built on top of <code><a href="https://docs.circuitpython.org/en/latest/shared-bindings/espcamera/index.html">espcamera</a></code> module, restricting it to run on Espressif microcontrollers. In contrast, the standalone OV5640 library uses an abstraction layer called <code>imagecapture</code>. <a href="https://github.com/search?q=repo%3Aadafruit%2Fcircuitpython+path%3A**%2FParallelImageCapture.h&amp;type=code">Searching in CircuitPython source code</a>, I see implementations for Atmel SAMD and Raspberry Pi Pico microcontrollers, but not for Espressif. I'm sure it would have been possible to add Espressif support to existing OV5640 library, but I can see how it was easier for PyCamera to go its own way. It knows it has an ESP32-S3 and it wants speed optimizations tailored to hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I can understand this approach to designing PyCamera library, it does make exploration more difficult. A big monolithic library means it's harder to compose its elements in different ways to experiment off the designed path. I want a quick experiment, and the monolithic nature means I have to design something that largely resembles existing PyCamera sample code but <a href="https://newscrewdriver.com/2024/07/07/amg8833-module-finally-unwrapped/">with my added twist</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Appendix: On the Arduino side, PyCamera is also tied to Espressif's camera library. For the OV5640 by itself, <a href="https://learn.adafruit.com/adafruit-ov5640-camera-breakout">Adafruit's guide to their breakout module</a> didn't mention Arduino at all.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

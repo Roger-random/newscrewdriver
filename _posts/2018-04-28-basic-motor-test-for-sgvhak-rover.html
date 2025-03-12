@@ -1,0 +1,38 @@
+---
+layout: post
+title: Basic Motor Test for SGVHAK Rover
+date: 2018-04-28 11:54:18.000000000 +00:00
+type: post
+post_id: '16022'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Bootstrap
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1524941662'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17284473629'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/28/basic-motor-test-for-sgvhak-rover/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Our first opportunity to deploy the new <a href="https://getbootstrap.com/">Bootstrap</a>-based touch-friendly HTML UI was a basic but critical motor test. A <a href="http://www.ionmc.com/34VDC_c_19.html">RoboClaw motor controller</a> utilizes encoder feedback to know what the motor is doing. Based on this feedback, logic within the controller adjusts its electrical output to deliver either a commanded velocity or a commanded position. For any of that to work, an encoder must be installed properly. Our rover's travelling wheel motors incorporated a pair of LED+photo diode units as <a href="https://en.wikipedia.org/wiki/Rotary_encoder#Incremental_rotary_encoder">optical quadrature encoders</a>. Since we have a pair of sensors, there are two possible ways to wire them to RoboClaw input: one of which is correct and other is backwards.</p>
+<p>To verify wiring, we need a basic motor test that will instruct RoboClaw to drive its motor at some power level, which is something it can do without encoder input. Then the test will query for encoder count and verify positive motor motion increments encoder count. If positive motion decrements encoder count, we'll need to swap some wires.</p>
+<p>Which wires need swapping? That depends on which way our motor is turning. We want positive motor rotation to correspond to forward rover motion, which means the left and right sides of the rover will be wired in mirror image. For rover's right side wheels, positive motion will be clockwise (when viewed from rover's right) and rover left wheels will be counter-clockwise. This desire to see the wheel motion in context of rover chassis is why we wanted this motor test to be usable on board the rover itself via the Raspberry Pi touchscreen.</p>
+<p>If positive motor motion is rotating in the direction we want, and we need to swap wires, then we swap the encoder wires to maintain motor direction. If we need to swap wires and our motor is spinning in the wrong direction, we leave the encoder wires alone and swap our motor control wires instead. If the direction is wrong, and encoder is in sync, we'll need to swap both sets of wires.</p>
+<p><img class="alignnone size-full wp-image-16023" src="https://newscrewdriver.com/wp-content/uploads/2018/04/basic-motor-test.png" alt="Basic Motor Test" width="707" height="246"></p>
+<p>HTML UI work described in this post began with <a href="https://github.com/Roger-random/RogerPiBot/commit/80035d5f615e30fac371d738c2449d2e41515333">this commit</a> visible on Github.</p>
+<p></body></html></p>

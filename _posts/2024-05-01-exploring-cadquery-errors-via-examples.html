@@ -1,0 +1,79 @@
+---
+layout: post
+title: Exploring CadQuery Errors Via Examples
+date: 2024-05-01 13:10:58.000000000 +00:00
+type: post
+post_id: '43245'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1714594260'
+  _thumbnail_id: '43206'
+  timeline_notification: '1714594262'
+  _publicize_job_id: '94166218497'
+  wordads_ufa: u:wpcom-ufa-v4:1714686254
+  _elasticsearch_data_sharing_indexed_on: '2024-05-02 21:46:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/01/exploring-cadquery-errors-via-examples/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>CadQuery <a href="https://newscrewdriver.com/2024/04/30/cadquery-assemblies-overview/">documentation page on assemblies</a> seem to be the last of their conceptual overviews page. After that was <a href="https://cadquery.readthedocs.io/en/latest/examples.html">a large list of examples</a>, which illustrated many concepts not explicitly covered by earlier overview pages. I expect this page will be a great reference if I continue using CadQuery. To make the most of it, though, I should run through it once now so I have concepts in the back of my head even if I don't fully understand all the subtleties yet. It also turned out to be an opportunity to see how CadQuery behaves when things don't go perfectly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This opportunity came from my decision not to copy/paste each example into CQ-editor. I typed the commands in line by line, pressing F5 after each line to see results of the most recent action. This helps my memory retention and understanding of CadQuery commands. This also means I would occasionally make mistakes as I go.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm worried about the fact CadQuery documentation didn't have a section on how CadQuery handles errors. I'm not talking about raising and catching exceptions kind of error-handling, I'm referring to how it reports errors in user input. FreeCAD set a low bar to clear, as it too often <a href="https://newscrewdriver.com/2024/04/22/infuriating-freecad-error-messages/">reports only a "Recompute failed!"</a> and left the user up a creek. The good news is that CadQuery seems to offer more feedback, the bad news is the feedback can be quite opaque. Here are two examples:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">TypeError: object of type '<code>float</code>' has no <code>len()</code><br />
+</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was mystified when this error came up because I didn't call <code>len()</code> on anything, but I did type in a pair of coordinates as floating point numbers so I knew at least which line of code to look at. It didn't take long before I found I had mistakenly typed a period instead of a comma on the second coordinate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>r = r.pushPoints([(0, 0.75),(0<mark style="background-color:#fcb900" class="has-inline-color">.</mark>-0.75)])</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Great, but the error message was not terribly unhelpful. I'm worried I'll pull my hair out at future equally unhelpful errors, we'll just have to see. But I'm optimistic based on my experiment to deliberately make the same error on the first coordinate instead of the second:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>r = r.pushPoints([(0<mark style="background-color:#fcb900" class="has-inline-color">.</mark> 0.75),(0,-0.75)])</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>For this line, CadQuery gave me this error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>SyntaxError: invalid syntax. Perhaps you forgot a comma?</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is wonderful! I don't know why behavior differed between first and second coordinates. (Maybe the negative sign has something to do with it?) But I am very encouraged by the fact CadQuery at least tried to be helpful.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ValueError: No pending wires present</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thanks to CadQuery's initial overview page, I know what "wires" are in this context. (2D entities with a length but no surface area or volume.) And since I typed in each command on its own separate line, I was able to use CQ-editor's ability to step through line-by-line to understand this was an error from a call to <code>extrude()</code>. I looked over my commands before calling <code>extrude()</code>, which drew a 2D profile line by line. I eventually found a typo in one of the coordinates, which mean its endpoint didn't line up with another and left a gap in my 2D profile.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The bad news is this is worse than FreeCAD error message, which at least told me the profile was not closed. The good news is that I can mitigate such errors by using different 2D sketch commands. For example <code>lineTo()</code> will always draw from the previous point to ensure there are no gaps, and <code>close()</code> will draw a line from the previous point to the first point and ensure shape is closed. I hope that will spare me future headaches.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the meantime, exploring examples introduced me to some <a href="https://newscrewdriver.com/2024/05/02/cadquery-extrude-until-could-prove-powerful/">novel and potentially powerful tools like "extrude until"</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

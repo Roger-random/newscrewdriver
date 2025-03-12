@@ -1,0 +1,38 @@
+---
+layout: post
+title: What To Do When Await Waits Too Long
+date: 2020-05-20 12:30:08.000000000 +00:00
+type: post
+post_id: '21555'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- async/await
+meta:
+  _thumbnail_id: '21556'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44488845303'
+  timeline_notification: '1590003284'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/20/what-to-do-when-await-waits-too-long/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I had originally planned to defer learning about how to cancel out of an asynchronous operation, but the <a href="https://newscrewdriver.com/2020/05/19/unexpected-behavior-serial-device-read-timeout-only-applies-when-theres-data/">unexpected "timeout doesn't time out" behavior</a> of asynchronous serial port read gave me the... opportunity... to learn about cancellation now.</p>
+<p>My first approach was hilariously clunky in hindsight: I found <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenany"><code>Task.WhenAny</code></a> first, which will complete the <code>await</code> operation if any of the given list of <code>Task</code> objects completed. So I built a new Task object whose only job is to wait through a short time and complete. I packed it and the serial read operation task together into an array, and when the <code>await</code> operation completed I could see whether the read or the timeout <code>Task</code> completed first.</p>
+<p>It seemed to work, but I was unsatisfied. I felt this must be a common enough operation that there would be other options, and I was right: digging through the documentation revealed there's a very similar-sounding <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.waitany"><code>Task.WaitAny</code></a> which has an overload that accepts a <code>TimeSpan</code> as one of the parameters. This is a shorter version of what I did earlier, but I still had to pack the read operation into a Task array of a single element.</p>
+<p>Two other overloads of <code>Task.WaitAny</code> accepted a <code>CancellationToken</code> instead, and I initially dismissed them. Creating a <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource"><code>CancellationTokenSource</code></a> is the most flexible way to give me control over when to trigger a cancellation, but I thought that was for times when I had more sophisticated logic deciding when to cancel. Spinning up a whole separate timer callback to call <code>Cancel()</code> felt like overkill.</p>
+<p>Except it didn't have to be that bad: <code>CancellationTokenSource</code> has a constructor that accepts a count of milliseconds before canceling, so that timer mechanism was already built-in to the class. Furthermore, by using <code>CancellationTokenSource</code>, I still retain the flexibility of canceling earlier than the timeout if I should choose. This felt like the best choice when I only have a single <code>Task</code> at hand. I can reserve <code>Task.WhenAny</code> or <code>Task.WaitAny</code> for times when I have multiple <code>Task</code> objects to coordinate. Which is also something I hope to defer until later, as I'm having a hard enough time understanding all the nuances of a single <code>Task</code> in practice. <a href="https://newscrewdriver.com/2020/05/21/complexity-of-etw-leaves-a-beginner-lost/">Maybe some logging can help</a>?</p>
+<p>[<a href="https://github.com/Roger-random/UWPTest/tree/master/Hello3DP">This <code>Hello3DP</code> programming exercise is publicly available on GitHub</a>]</p>
+<p></body></html></p>

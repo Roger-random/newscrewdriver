@@ -1,0 +1,46 @@
+---
+layout: post
+title: 'Roboclaw ROS Driver: Encoder Count Logging Error'
+date: 2018-09-16 09:00:21.000000000 +00:00
+type: post
+post_id: '16795'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22207595158'
+  timeline_notification: '1537113689'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/16/roboclaw-ros-driver-encoder-count-logging-error/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">Once I fixed the <code>ticks_per_meter</code> error, I could drive Phoebe around by sending movement command messages to the <code>/cmd_vel</code> topic. However, I could not do this for very long (sometimes minutes, sometimes mere seconds) before the <a href="https://github.com/sonyccd/roboclaw_ros">Roboclaw ROS driver</a> would crash with the following error:</p>
+<blockquote><p>
+<code>File "roboclaw_node.py", line 232, in run</code><br />
+<code>    rospy.logdebug(" Encoders %d %d" % (enc1, enc2))</code><br />
+<code>TypeError: %d format: a number is required, not NoneType</code>
+</p></blockquote>
+<p>Once crashed, Phoebe no longer responds to movement commands, and that is bad. What's going on here? The instance of <code>TypeError</code> that brought the whole thing crashing down gives us a place to start: one of its <code>%d</code> parameters (which could have been either <code>enc1</code> or <code>enc2</code>) has a value of <code>None</code> instead of a number representing encoder count.</p>
+<p>Looking through the <a href="https://github.com/sonyccd/roboclaw_ros/blob/master/roboclaw_node/nodes/roboclaw_node.py">source code file</a>, I could see that the encoder values were initialized to <code>None</code> then replaced with an encoder count by a call to Roboclaw API <code>ReadEncM1</code> / <code>ReadEncM2</code>. If this call should fail, there's a <code>try</code>/<code>except</code> block to catch the error, but that leaves the encoder value at <code>None</code>, causing the crash I've experienced.</p>
+<p>There exists an <code>if</code> statement whose intention might be to avoid this crash by checking for existence of the variable, but I don't understand how it would help. Encoder count variables would always exist since they were declared and initialized to <code>None</code>.</p>
+<p>There are two parts to this problem:</p>
+<ol>
+<li>Why is the Roboclaw API call failing?</li>
+<li>If it fails, how can we avoid crashing on <code>TypeError</code>?</li>
+</ol>
+<p>Part 2 is easier so let's address that first. <code>TypeError</code> complains when the variables are not numbers, so let's explicitly check for numbers. Looking through trusty StackOverflow found <a href="https://stackoverflow.com/questions/3441358/what-is-the-most-pythonic-way-to-check-if-an-object-is-a-number">this method</a> of checking for numeric values in Python, so let's use that to guard against <code>TypeError</code>.</p>
+<p>This change would not address the root cause of API call failing, it's just a band-aid to avoid fatally crashing and burning. When we fail to retrieve encoder count using Roboclaw API, our internal information become stale which causes more problems down the line. Problems like bad odometry calculations, which will cascade to more problems.</p>
+<p>What we really need to do is to address the failing API call, which I'll work on next. In the meantime this band-aid has been <a href="https://github.com/sonyccd/roboclaw_ros/pull/16">submitted via a pull request</a>.</body></html></p>

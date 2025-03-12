@@ -1,0 +1,95 @@
+---
+layout: post
+title: Canon Pixma MX340 Contact Image Sensor Signal
+date: 2023-12-08 12:30:00.000000000 +00:00
+type: post
+post_id: '40915'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40925'
+  timeline_notification: '1702067410'
+  firehose_sent: '1702067408'
+  wordads_ufa: s:wpcom-ufa-v4:1703391522
+  _publicize_job_id: '90116839396'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/08/canon-pixma-mx340-contact-image-sensor-signal/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a contact image sensor (CIS) from the scanner module of a Canon MX340 multi-function inkjet. Connecting its wires to my oscilloscope, <a href="https://newscrewdriver.com/2023/12/07/canon-pixma-mx340-contact-image-sensor-connector/">I found a wire that I believe to convey image data</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40912,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-12-oscilloscope-freeze.png?w=800" alt="" class="wp-image-40912"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The yellow line is probably the clock signal, and the green line fluctuates in rough correlation with sensor light levels. When the sensor bar is facing down, the signal hovers near lower voltage levels. When it is facing up towards the light, more of the signal line shows at a higher voltage. I think this is the "analog" output format for <a href="https://newscrewdriver.com/2023/12/06/canon-contact-image-sensor/" target="_blank" rel="noreferrer noopener">Canon contact image sensors</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If the yellow line is indeed the clock signal for each sensor pixel, and the voltage level is an analog representation of the brightness of that pixel, there is still one missing piece of data: how would we know when a scan line had completed and another begins? There must be a signal on one of the other wires, and I know there's something that occasionally flashes past this screen. Time to chase that down.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40919,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-12-oscilloscope-sync-7.png?w=800" alt="" class="wp-image-40919"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Playing around with the oscilloscope trigger, I eventually pinned the flashing culprit down to the red wire. Its voltage is raised high for a single clock cycle at a rate of 425.543Hz. Dividing the frequency of the yellow clock signal (2.37538MHz) by 425.543 yields 5582 yellow clock cycles per red cycle. The scanner bed is 8.5 inches wide, so 5582/8.5 ~= 656. This would make sense for a 600dpi image scanner bar that is slightly wider than the scan bed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This oscilloscope plot also shows the red signal wire voltage looks wavy, but not when compared against the blue signal wire. I think these two voltage values are intended to be evaluated together: the "new scan line" signal should be evaluated as red voltage minus blue voltage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40921,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-12-oscilloscope-look-up-finger-dark-scan-lines.png?w=800" alt="" class="wp-image-40921"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Keeping the oscilloscope trigger on the red wire, I changed horizontal scale to see a longer time duration. Lengthening the time scale 5000 times (from 100ns/grid to 500us/grid) showed scan lines represented by analog voltage. This particular plot shows three scan lines (one and a half scan line on either side of the trigger in the middle) and there's a dip in the middle of each scan line. This is with the sensor bar looking up at the room ceiling so my finger is casting a shadow in the middle. I got excited that I could see some correlation between oscilloscope plot and light level, getting very close to understanding this sensor. But there's a big problem: The shadow part looks pretty consistent, but the bright parts jump around wildly. Why is the data so noisy?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40923,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-12-oscilloscope-flickr-cycle.png?w=800" alt="" class="wp-image-40923"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I lengthened the time scale again, by ten times to 5ms/grid so I could see about 30 scan lines at once. There's definitely a pattern here, what is it?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40925,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-connector-wires-on-6-7-11-12.jpg?w=1024" alt="" class="wp-image-40925"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Perhaps the fluctuation is normal? Since I just learned red wire voltage level appears to be relative to blue wire voltage level, maybe the image signal analog voltage is relative to another baseline. I moved the blue wire over to the pin adjacent to the signal wire to see if they fluctuate together in sync.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40927,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-11-12-oscilloscope-look-up-finger-dark-scan-lines.png?w=800" alt="" class="wp-image-40927"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is the baseline voltage hypothesis appears confirmed, with dark pixels dropping to the level of the newly relocated blue wire. These three scan lines show me holding my hand over the sensor bar, with several fingers casting shadows. The bad news is the non-shadowed areas are still fluctuating wildly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40923,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-sensor-6-7-8-12-oscilloscope-flickr-cycle.png?w=800" alt="" class="wp-image-40923"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I went back to staring at the earlier oscilloscope plot capture, trying to decipher a pattern to its repetition. The breakthrough came when I counted the period of repetition: at 5ms/grid, this is repeating every three grids plus a little more. So period of a little over 15ms, or a frequency somewhere under 66Hz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ah-Ha!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was literally a light bulb moment: the image sensor bar is not only picking up the overhead lights, it's picking up the 60Hz cycle of household AC power behind those lights. To test this hypothesis, I turned off my room's overhead lights and switched to a battery-powered LED flashlight. The fluctuations disappeared, hypothesis confirmed! Now I feel pretty good about <a href="https://newscrewdriver.com/2023/12/09/canon-pixma-mx340-scanner-image-sensor-pinout/">my understanding of this image sensor</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

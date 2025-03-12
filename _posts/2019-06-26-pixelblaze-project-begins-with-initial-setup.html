@@ -1,0 +1,54 @@
+---
+layout: post
+title: Pixelblaze Project Begins With Initial Setup
+date: 2019-06-26 12:30:16.000000000 +00:00
+type: post
+post_id: '18749'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18744'
+  _publicize_job_id: '32222812847'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1561577429'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/26/pixelblaze-project-begins-with-initial-setup/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A <a href="https://www.bhencke.com/pixelblaze">Pixelblaze</a> is a small board who generates data signals for a color LED strip to display interesting dynamic patterns. These patterns are described via a program written in a web-based editor running on the Pixelblaze itself. It is a nifty little self-contained unit for projects that involve a large number of individually addressable LEDs. I have a prototype Pixelblaze V3 on hand for a candidate project. I'll be using my blog here to publish a first draft of Pixelblaze general setup and configuration information, as well as documenting my work to apply a Pixelblaze to a specific LED project.</p>
+<p>The first thing to do with a freshly unpacked Pixelblaze is to connect it directly to a computer's USB port. A standard computer USB port will not provide enough power to drive a large LED strip, but it is a stable and known power source. It is useful for verifying a Pixelblaze was undamaged in shipping and for performing initial setup.</p>
+<p><img class=" size-full wp-image-18761 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/06/ubuntu-wifi-selection-1.png" alt="Ubuntu WiFi selection" width="1366" height="768"></p>
+<p>Less than a minute after being plugged in, a new Pixelblaze would show itself as an open WiFi access point our device could connect to.</p>
+<p><img class="alignnone size-full wp-image-18759" src="https://newscrewdriver.com/wp-content/uploads/2019/06/pixelblaze-network-connect-1.png" alt="Pixelblaze network connect" width="1366" height="768"></p>
+<p>Once connected, open a web browser and try to load any URL, we will be redirected to Pixelblaze WiFi Settings menu. The browser will complain there's no internet access but this is expected: we're just using this to connect to an actual WiFi access point. Select the network we want to use and login.</p>
+<p><em><strong>Optional</strong></em>: check the discovery service box. Because after this step is complete, Pixelblaze will not longer be an open access point: it would have joined the new network. To reconnect to Pixelblaze and resume setup, we will need to know its IP address. If this is not possible (or just inconvenient) check the discovery service box. This is an optional feature to let a Pixelblaze announce its address on a network.</p>
+<p><img class="alignnone size-full wp-image-18758" src="https://newscrewdriver.com/wp-content/uploads/2019/06/pixelblaze-discovery-1.png" alt="Pixelblaze discovery" width="1366" height="768"></p>
+<p>Once Pixelblaze's own WiFi access point disappears, our device can rejoin the original network and visit <a href="http://discover.electromage.com/">http://discover.electromage.com</a> to see addresses for discovery-enabled Pixelblaze on the same network.</p>
+<p><img class="alignnone size-full wp-image-18757" src="https://newscrewdriver.com/wp-content/uploads/2019/06/pixelblaze-connected-1.png" alt="Pixelblaze connected" width="1366" height="768"></p>
+<p>If discovery is not enabled and the Pixelblaze IP address is known, we can point our web browser to that address. Or if discovery is enabled, we can clicking "Open" from the Pixelblaze Discovery Service list. Once a Pixelblaze is configured for a WiFi network, the "Saved Patterns" menu is where it will start.</p>
+<p>Change to Strip Settings menu to configure our Pixelblaze for our LED strip.</p>
+<p><img class="alignnone size-full wp-image-18760" src="https://newscrewdriver.com/wp-content/uploads/2019/06/pixelblaze-strip-settings-1.png" alt="Pixelblaze Strip Settings" width="1366" height="768"></p>
+<p><strong>Name</strong>: This will show a Pixelblaze default name, we can optionally replace it with a friendlier one.</p>
+<p><strong>Brightness</strong>: This is a slider bar that defaults to 100% brightness. In the case of most LED strips, this will be a blindingly bright setting that consumes a lot of power. For our initial test and experimentation, we don't need to blind ourselves or burn that much power. Move that slider lower: somewhere in the 10-20% range will still be easily visible.</p>
+<p><strong>LED Type</strong>: Change this to match the communication protocol used by the LED strip that the Pixelblaze will be driving. If the modules on a LED strip is not on the list, check online to see which of the listed modules are compatible and select that. Example: SK9822 LEDs are compatible with APA102, so we can select APA102 for LED strips that use SK9822 modules.</p>
+<p><strong>Pixels</strong>: Change this to match the number of modules on the LED display that the Pixelblaze will be driving. Example: a 5 meter long strip with 60 LEDs per meter will have a total of 5 * 60 = 300 pixels.</p>
+<p><strong>Data Speed</strong>: Leave this setting alone for now.</p>
+<p><strong>Color Order</strong>: Leave this setting alone for now.</p>
+<p>Once the Strip Settings have been updated to match our intended LED output device, we shift our focus to hardware. Unplug the Pixelblaze from our computer, and warm up our soldering iron, it's <a href="https://newscrewdriver.com/2019/06/27/connecting-led-strip-to-pixelblaze/">time to connect LED strip to Pixelblaze</a>.</p>
+<p></body></html></p>

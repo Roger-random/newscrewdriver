@@ -1,0 +1,36 @@
+---
+layout: post
+title: 'Roboclaw ROS Driver: Odometry Calculation Reversal'
+date: 2018-09-19 09:00:55.000000000 +00:00
+type: post
+post_id: '16802'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22315324567'
+  timeline_notification: '1537373259'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/19/roboclaw-ros-driver-odometry-calculation-reversal/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">I'm making good progress on integrating ROS into my TurtleBot variant called Phoebe. I've just configured RViz to plot Phoebe's location as reported by <a href="https://github.com/sonyccd/roboclaw_ros">Roboclaw ROS driver</a>'s odometry information topic <code>/odom</code>. On the same plot, I've also placed data reported by <a href="https://newscrewdriver.com/tag/neato/">Phoebe's scanning LIDAR</a>. Everything looked good when I commanded Phoebe to drive forward, but the geometry went askew as soon as Phoebe started turning. The LIDAR dots rotated one way, and the odometry reporting arrow rotated another. Something is wrong in the geometry calculation code.</p>
+<p>For this particular problem I knew exactly where to start looking. When I assembled Phoebe, I knew I needed to configure motors in the way expected by the Roboclaw ROS driver. The README didn't explicitly say which motor went on which side, so I went into the source code and got conflicting answers. In the motor driving routine (<code>cmd_vel_callback</code>) it performed calculation for right wheel motion and sent it to motor 1, and left wheel motion went to motor 2.</p>
+<p>However, this doesn't match encoder calculation code. The method <code>EncodeOdom::update_publish</code> expects its parameters to be (<code>enc_left, enc_right</code>). In method <code>Node::run</code>, it retrieves encoder values from motor 1 and saves it in variable <code>enc1</code>, and <code>enc2</code> for motor 2, then calls <code>update_publish(enc1, enc2)</code>. Which would treat encoder value of motor 1 as enc_left instead of enc_right, the opposite of what we'd want.</p>
+<p>So the fact data on <code>/odom</code> is going the wrong way was not a surprise, but why didn't the LIDAR transform also suffer the same problem? This was traced down to an earlier change submitted as a fix for the reverse transform problem - that commit added a negative sign in front of the calculated angle when broadcasting odom -&gt; base_link transform. But that only masked and didn't fix the underlying problem. The transform might look right, but /odom data is still all wrong, and variables like <code>self.last_enc_right</code> is actually holding the left side value.</p>
+<p>The correct fix would be to reverse the parameter order when calling <code>EncodeOdom::update_publish</code> which correctly assigns encoder 1 count the right motor, and encoder 2 the left motor. And with the underlying problem fixed, we no longer need the negative sign so that can be deleted.</p>
+<p>With this fix, Phoebe's laser plot and odometry plot in RViz appear to agree with each other and both correspond correctly to the direction Phoebe is turning. I've submitted this fix <a href="https://github.com/sonyccd/roboclaw_ros/pull/18">as a pull request</a> on the Roboclaw ROS driver.</body></html></p>

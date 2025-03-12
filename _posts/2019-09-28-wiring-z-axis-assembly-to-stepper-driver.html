@@ -1,0 +1,54 @@
+---
+layout: post
+title: Wiring Z-Axis Assembly To Stepper Driver
+date: 2019-09-28 12:30:48.000000000 +00:00
+type: post
+post_id: '19655'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19657'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_4c450361c0b177b80ee2232f0f9fb692: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">The
+    Open Source Rover Project ⚙️<br>Want to build your own low-cost rover model? Construct
+    a mini robot inspired by <a href="https://twitter.com/MarsCuriosity?ref_src=twsrc%5Etfw">@MarsCuriosity</a>
+    with our plans and off-the-shelf parts: <a href="https://t.co/qraedH6dHa">https://t.co/qraedH6dHa</a>
+    <a href="https://t.co/XGyAVtNs00">pic.twitter.com/XGyAVtNs00</a></p>&mdash; NASA
+    JPL (@NASAJPL) <a href="https://twitter.com/NASAJPL/status/1024370356738437125?ref_src=twsrc%5Etfw">July
+    31, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '35781303999'
+  timeline_notification: '1569699111'
+  _oembed_36a3a610bcebb04edb0f228a4f025aaf: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Three
+    axes working for the first time on the SGVHAK pen plotter/CNC! <a href="https://twitter.com/Regorlas?ref_src=twsrc%5Etfw">@Regorlas</a>
+    made most of this happen. I was responsible for the janky zip ties <a href="https://t.co/RtOi7E0r9V">pic.twitter.com/RtOi7E0r9V</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1176347493929369601?ref_src=twsrc%5Etfw">September
+    24, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_36a3a610bcebb04edb0f228a4f025aaf: '1569700092'
+  _oembed_time_4c450361c0b177b80ee2232f0f9fb692: '1569751732'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/28/wiring-z-axis-assembly-to-stepper-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The Monoprice Select Mini 3D Printer is an impressive demonstration of how costs could be wrung out of a basic cartesian 3D printer design. We could debate whether the tradeoffs were worthwhile, but the level of integration resulting in parts count reduction is indisputable. I have <a href="https://newscrewdriver.com/2019/09/27/repurposing-broken-3d-printer-x-axis-to-use-as-z-axis/">extracted the X-axis from a non-functioning Mini printer</a> intending to leverage its highly integrated mechanical assembly. But it turned out the advantageous mechanical integration was balanced by the disadvantages of electronics integration.</p>
+<p>The Mini 3D main board is a single monolithic circuit board, with stepper motor driver chips surface mounted directly to the PCB. This meant electronics associated with the X-axis mechanical assembly could not be easily extracted and reused, and we had to use a stand-alone stepper motor driver.</p>
+<p>While I was busy routing wires for X and Y axis and <a href="https://newscrewdriver.com/2019/09/25/wiring-organization-with-spiral-wrap-and-zip-ties/">cleaning up the tangles</a>, Emily stepped up to handle the task of wiring this Z-axis. In the shop she found a stepper motor driver module gathering dust and got approval to use it in this project. The motor presumably runs best on 12V as that was the power supplied by the Mini's AC adapter, but there was no existing 12V power rail on our machine to tap into. Our Grbl ESP32 controller ran on USB 5V from the laptop, which was itself running on standard Dell 19V power. The Parker ZETA4 controllers plugged directly to 110V AC and each had its own internal power supply.</p>
+<p>So Emily also had to dig up an 110V AC to 12V DC power supply to wire up to the stepper driver. It was also gathering dust and had amperage capacity far higher than what we needed for the motor, but it was easily available so we went with it. Once everything was wired up, it's time to test what we have.</p>
+<p></body></html></p>

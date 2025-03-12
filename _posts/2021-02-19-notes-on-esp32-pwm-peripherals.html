@@ -1,0 +1,71 @@
+---
+layout: post
+title: Notes on ESP32 PWM Peripherals
+date: 2021-02-19 12:30:00.000000000 +00:00
+type: post
+post_id: '24959'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24996'
+  timeline_notification: '1613766660'
+  _oembed_4f93375b96129048aa0b6ef8e2fd9129: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">&quot;Hey
+    micro Sawppy rovers, come get your upgrades.&quot;<br>&quot;Not now, we&#39;re
+    busy!&quot;<a href="https://twitter.com/hashtag/CountdownToMars?src=hash&amp;ref_src=twsrc%5Etfw">#CountdownToMars</a>
+    <a href="https://twitter.com/hashtag/PerseveranceRover?src=hash&amp;ref_src=twsrc%5Etfw">#PerseveranceRover</a>
+    <a href="https://twitter.com/hashtag/Mars2020?src=hash&amp;ref_src=twsrc%5Etfw">#Mars2020</a>
+    <a href="https://twitter.com/hashtag/MarsPerseverance?src=hash&amp;ref_src=twsrc%5Etfw">#MarsPerseverance</a>
+    <a href="https://t.co/ovFlcrRmhb">pic.twitter.com/ovFlcrRmhb</a></p>&mdash; Sawppy
+    (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1362495555222401024?ref_src=twsrc%5Etfw">February
+    18, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '55016159220'
+  _oembed_time_4f93375b96129048aa0b6ef8e2fd9129: '1613779323'
+  _oembed_5799de2cb26165bf80df902c8162a1a8: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">One
+    of these gearboxes sound... grouchy. <a href="https://t.co/qDIJ0mbNLT">pic.twitter.com/qDIJ0mbNLT</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1350972987407814659?ref_src=twsrc%5Etfw">January
+    18, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_5799de2cb26165bf80df902c8162a1a8: '1613804200'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/19/notes-on-esp32-pwm-peripherals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Now that we've celebrated the <a href="https://newscrewdriver.com/2021/02/18/mars-2020-perseverance-surface-operations-begin/">success of Perseverance rover's arrival on Mars</a>, I resume working on my little rovers. I was happy to discover that <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/17/esp32-feels-less-disorienting-this-time/" target="_blank">I'm less intimidated by the ESP32 than I was</a> over two years ago. I now have a basic understanding of its capabilities and the ecosystem that has grown up around it. Enough to figure out where to start if I have a problem to solve. And the problem of the day is to determine if micro Sawppy can use an ESP32 as its brain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reason I started looking at the ESP32 is because of its WiFi capability and its low cost. I liked the idea of web browser-based UI like what I wrote for SGVHAK rover and adapted for Sawppy. But that ran on a Raspberry Pi which, even in its lowest-cost Pi Zero form, is far more expensive than an ESP32. My experience with other ESP32 projects like <a href="https://newscrewdriver.com/tag/pixelblaze/" target="_blank" rel="noreferrer noopener">Ben Hencke's Pixelblaze</a> and <a href="https://newscrewdriver.com/2019/08/16/evaluate-grbl-for-xy-stage/" target="_blank" rel="noreferrer noopener">Bart Dring's Grbl port</a> taught me the ESP32 is quite capable of serving up HTML user interfaces. So the next thing to do is to verify an ESP32 can generate all the control signals for a Sawppy rover, which means investigating its PWM capabilities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>PWM (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Pulse-width_modulation" target="_blank">Pulse Width Modulation</a>) is a tool that can be used to solve many problems in a microcontroller. For micro Sawppy I need PWM capability to control four steering micro servos and the six wheel drive motors. It doesn't matter if they are micro servos modified for continuous rotation or a real DC motor driver like the L298N, they all need PWM signals. And what I found was that no only can ESP32 generate PWM signals, it has separate interfaces dedicated to specific problem someone might want to solve with PWM.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First up is <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/ledc.html" target="_blank">LEDC</a>, the Light Emitting Diode Control module. I bring this up first because our first project with any new piece of electronics is to blink a LED, and in many tutorials the next step is learning how to vary the brightness of a LED via PWM. LEDC is designed with the intent of controlling intensity of up to 16 LEDs via PWM.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another problem commonly solved with PWM is to convert a digital signal into an analog one. This is sort of like controlling the brightness level of a LED, but some applications are sensitive to the sharp pulse transitions of a PWM signal. One example is for generating sounds, which needs a smoother output. And here the ESP32 delivers a dedicated <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/dac.html" target="_blank">DAC</a> (<a href="https://en.wikipedia.org/wiki/Digital-to-analog_converter">digital-analog converter</a>) peripheral. Anticipating that this would be used for audio, Espressif provisioned it to interface with I2S which is popular with audio applications. This may be fun to look at later, but it is not critical for driving a little rover.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, I was surprised to find there is a dedicated <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/mcpwm.html" target="_blank">Motor Control PWM module</a> for generating PWM signals sent to motor driver modules like the L298N. It included many motor-specific features absent from LEDC, but they are mostly aimed at controlling brushless motors which usually have three coils each requiring independent control. ESP32's MCPWM is set up to control two brushless motors, which means controlling six coils. But it is not required to control brushless motors, each of those coil control an be used to control a single DC brushed motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So the ESP32 MCPWM peripherals can control six brushed DC motors, which is a perfect fit for a six-wheel-drive little rover. I should be able to use four channels of LEDC to generate PWM to control four steering servos. This first pass over the spec sheet supports the idea of using ESP32 as little rover brain, though there is <a href="https://newscrewdriver.com/2021/02/20/notes-on-esp32-input-output-pins/">a potential problem in assigning control signals</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'FreeNAS USB Flash Boot Drives: Wide Variations in Performance'
+date: 2017-07-17 09:00:34.000000000 +00:00
+type: post
+post_id: '8125'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7186253827'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/17/freenas-usb-flash-boot-drives-wide-variations-in-performance/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Since I went into this FreeNAS project with the expectation to experiment and learn, I followed the recommendation to use commodity USB flash drives as the operating system boot drive despite my skepticism. The previous blog post discussed checksum errors found on some of the USB flash drives I had on hand, and how FreeNAS is able to mitigate the errors by mirroring the operating system across multiple USB sticks. This greatly increased my confidence entrusting the FreeNAS operating system to these USB thumb drives.</p>
+<p>Usually these devices are used for ferrying files from one computer to another. They expect to see some files copied onto the drive, then copied off the drive in order. (<em>sequential</em> read/write operations.) Putting them in service as the operating system drive is an entirely different work pattern, with small pieces of data written at unpredictable places and other data retrieved from equally unpredictable places. (<em>random</em> read/write operations.)</p>
+<p>I was aware of this difference and it was part of my skepticism using USB sticks as operating system drive. Now that I'm using it, I can see how it works in reality. Thanks to FreeNAS boot device mirroring, I have the confidence to go into this experiment without risking my data.</p>
+<p>Outside of errors or outright failures, the other thing I had expected was degraded performance. If the flash memory controller chip is optimized for sequential operations, it might be bad at random operations. Unfortunately there was no way to tell up front. The software running on the flash drive controller isn't something manufacturers put on the packaging. And every company has their own algorithm.</p>
+<p>Since they are so cheap, the easiest thing to do is to just go and try it. The result is clear: some USB flash memory drive controllers are far <em><strong>far </strong></em>better at this workload than others.</p>
+<p>Some of this difference is felt immediately, in the time taken for the mirroring duplication process. During this "resilvering" process roughly 2GB of data is copied to the new flash drive. Out of the two drives that had no checksum errors, one of them was able to complete the process in a little over two hours. The other took 26 hours, more than ten times longer!</p>
+<p>Their difference is also visible in the FreeNAS system performance reporting page. Since FreeNAS keeps the two drives in sync, it's easy to see how they respond to identical workloads. The flash drive identified as (da1) breezes through work, never more than 50% busy. Its mirrored sibling (da2) struggles to complete the same work, frequently spiking up to 100% busy.</p>
+<p><img class=" size-full wp-image-8154 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/07/diskbusy.png" alt="DiskBusy" width="626" height="439"></p>
+<p>One of these is much less happy at their new job than the other.</p>
+<p>Between the checksum errors and the disk busy graph, I am now much better enlightened on the varying quality of USB flash drives. I had thought of them as all basically equivalent, so I just bought whichever is the cheapest. My attitude has now changed. From here on out, whenever I need to buy USB flash drives, I'll look for those made by SanDisk.</p>
+<p></body></html></p>

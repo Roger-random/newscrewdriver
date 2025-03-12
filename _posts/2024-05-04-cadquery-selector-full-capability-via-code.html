@@ -1,0 +1,58 @@
+---
+layout: post
+title: CadQuery Selector Full Capability Via Code
+date: 2024-05-04 16:17:29.000000000 +00:00
+type: post
+post_id: '43279'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43206'
+  wordads_ufa: u:wpcom-ufa-v4:1715024745
+  firehose_sent: '1714864651'
+  timeline_notification: '1714864652'
+  _publicize_job_id: '94261247304'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-06 19:47:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/04/cadquery-selector-full-capability-via-code/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Since CadQuery designs are described via Python code syntax, it has several <a href="https://newscrewdriver.com/2024/05/03/cadquery-natural-code-cad-advantages/">code-friendly advantages</a> that I hope will prove useful. But I was wary of CadQuery selector examples like <code>.edges("|Z")</code> to select all edges parallel to the Z axis. This seems useful, but "|Z" means an opaque string as far as Python syntax checking is concerned. Special syntax for strings embedded in source code is nothing new, inline assembly and inline SQL as the top two examples coming to my mind. And as one language hiding inside another, I've always encountered problems with them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I was happy to learn that such strings are merely a shorthand and not selectors' true form. Officially they are Python code just like the rest of CadQuery. That "|Z" shorthand translates into a call to <code>cadquery.selectors.ParallelDirSelector()</code> with a vector pointing along the Z axis. That is one of several listed in <a href="https://cadquery.readthedocs.io/en/latest/apireference.html#selectors">selector section of the API reference</a>. In addition to <a href="https://cadquery.readthedocs.io/en/latest/selectors.html">selectors getting their own page</a> in CadQuery documentation. The string shorthand is itself a Python selector method <a href="https://cadquery.readthedocs.io/en/latest/classreference.html#cadquery.selectors.StringSyntaxSelector"><code>StringSyntaxSelector</code></a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Selectors were one of the biggest features that motivated me to ramp up on CadQuery, so learning their implementation as actual methods gave me peace of mind. It means if I run into problems with the special text string, I can always fall back to code. The other advantage is that using long form code syntax selectors open up capabilities not (yet?) available via a shorthand string. Three selectors caught my attention:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>
+<a href="https://cadquery.readthedocs.io/en/latest/classreference.html#cadquery.selectors.NearestToPointSelector"><code>NearestPointSelector</code></a> to select an entity near the given coordinate. Useful for finding that one face or edge at a specific known point.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code><a href="https://cadquery.readthedocs.io/en/latest/classreference.html#cadquery.selectors.BoxSelector">BoxSelector</a></code> to select all entities within a box. This should allow me to do things like selecting all edges where two objects met up, so I can perform a chamfer operation to smooth edges transitioning from one object to another.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code><a href="https://cadquery.readthedocs.io/en/latest/classreference.html#cadquery.selectors.BaseDirSelector">BaseDirSelector</a></code> may be part of a solution to build a CadQuery UI. GUI CAD users are accustomed to clicking on an object to select it. This involves performing a 3D ray cast to transform the mouse click coordinate backwards through the 3D camera transform to obtain a vector through 3D space. I think that vector can be passed into this selector to perform hit-testing, but I could be wrong. This is pretty far down the line (if I get to it at all) so there's little immediate need to figure it out just yet. It's one of many <a href="https://newscrewdriver.com/2024/05/05/cadquery-external-integration-potential/">potential CadQuery extension project ideas</a>.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --><br />
+</body></html></p>

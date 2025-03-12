@@ -1,0 +1,36 @@
+---
+layout: post
+title: Ups and Downs Implementing I²C on PIC
+date: 2017-09-20 09:00:25.000000000 +00:00
+type: post
+post_id: '12025'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9487236956'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/20/ups-and-downs-implementing-i%c2%b2c-on-pic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The original intent of the <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I²C </a>bus is clearly stated in its name: Inter-Integrated Circuit. It is meant for communication between chips living near each other on the same circuit board. It isn't designed to be used communicating across wires bridging multiple breadboards on a hobbyist project. So the simplicity of its design is partially related to the fact there's very little idiot-proofing built-in.</p>
+<p>Which is a long-winded way of saying... I broke something. After wiring up the 7-segment LED, I started writing I²C code to control what gets displayed. I was puzzled by the fact my project became gradually less functional over the course of a few hours. I assumed I did something bone-headed in my code but troubleshooting eventually eliminated my code as an issue.</p>
+<p>There was a fault in my hardware - the common ground wire I used to connect between the Raspberry Pi and the PIC was only providing an intermittent connection. After repairing the bad solder job, I was surprised to find it did not restore functionality. It's not clear how the I²C circuit worked while the ground wire was unreliable - the system must have found some other path for ground and something along that line caused damage. Or maybe the intermittent connection was causing current surges through the system as it connected and disconnected at unpredictable times.</p>
+<p>The bottom line is that my PIC could still send bytes over I²C but it could no longer receive. When running the boilerplate EEPROM code, this meant my Pi could read from the faux EEPROM on the PIC but any write operation would fail. I guess it's time for me to get a replacement <a href="http://www.microchip.com/wwwproducts/en/PIC16F18345">PIC16F18345</a>.</p>
+<p>In the meantime, I wanted to keep working on the 7-segment project. But how could I tell the LED what to display if I can't send data? This constraint led to an extremely unorthodox I²C communication protocol: I tell the LED what to display by reading the faux EEPROM. The number of bytes retrieved in each read operation is then displayed on  a digit of the LED.</p>
+<p>So for the attached picture showing 0x16F1, I performed four reads from the EEPROM: Read 1 byte, stop. Read 6 bytes, stop. Read 15 bytes, stop. Read 1 byte, done. This super ugly hack will unblock my project while I wait for <a href="https://www.digikey.com/">Digi-Key</a> to deliver a replacement PIC, but yuck! This is no way to design an I²C protocol!</p>
+<p>[caption id="attachment_12062" align="aligncenter" width="1024"]<img class=" size-full wp-image-12062 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/uglyi2cprotocol.jpg" alt="UglyI2CProtocol" width="1024" height="494"> The project display dimly showing "16F1"[/caption]</p>
+<p></body></html></p>

@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'CircuitPython Test Run: MX340 Control Panel'
+date: 2024-05-27 22:45:00.000000000 +00:00
+type: post
+post_id: '43538'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43539'
+  wordads_ufa: u:wpcom-ufa-v4:1719279493
+  firehose_sent: '1716876367'
+  timeline_notification: '1716876367'
+  _publicize_job_id: '94962703125'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-25 01:34:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/27/circuitpython-test-run-mx340-control-panel/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2024/05/26/notes-on-adafruit-welcome-to-circuitpython/">reading through</a> AdaFruit's "Welcome to CircuitPython" guide, the obvious next step is to tackle a project to apply what I've learned. I do want to apply it to a rover project, but I fear that's too big of a first step. Looking around at what I have, I decided to communicate with the control panel I salvaged out of a Canon Pixma MX340 multi-function inkjet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>During my teardown I mapped out the <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/">pinout of its ribbon cable connector to printer logic board</a>. I then connected my logic analyzer (and other tools) to understand its communication to the best of my ability, with <a href="https://newscrewdriver.com/2024/01/26/canon-pixma-mx340-control-panel-round-2-summary/">findings summarized here</a>. In theory, all I have to do is to use CircuitPython to tell my KB2040 how to replicate what I observed coming from MX340 logic board, and I will have a control panel I can use for a future project. In practice, I'm sure it wouldn't be quite that easy but hey that's the fun part!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining my deciphered pinout list, I connected the three pins leading to the NEC K13988 chip on board. Asynchronous serial transmit, receive, and the chip enable pin. I also need to supply +3.3V DC logic power and connect ground, but that doesn't strictly need to be on the small 1.0mm pitch connector. I found a few capacitors that presented a larger surface for soldering my wires. For this first round I won't bother wiring up the direct connection to two buttons (Power and Stop) and two LEDs (Power and Alarm) as getting those working should be fairly straightforward for a microcontroller project and I don't foresee any educational challenges there. I can do that after I tackle the more interesting challenge of <a href="https://newscrewdriver.com/2024/05/28/circuitpython-busio-for-hardware-serial-communication/">CircuitPython serial communication</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

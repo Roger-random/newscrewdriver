@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'WebAssembly: A High Level Take On Low Level Concepts'
+date: 2018-01-17 18:02:29.000000000 +00:00
+type: post
+post_id: '15763'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags: []
+meta:
+  timeline_notification: '1516240952'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '13733459911'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/01/17/webassembly-a-high-level-take-on-low-level-concepts/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-medium wp-image-15764 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2018/01/webassembly.png?w=300" alt="webassembly" width="300" height="158"><a href="http://webassembly.org/">WebAssembly</a> takes the concepts of low-level assembly language and brings them to web browsers. A likely first question is "Why would anybody want to do that?" And the short answer is: "Because not everybody loves JavaScript."</p>
+<p>People writing service-side "back-end" code have many options on technologies to use. There are multiple web application platforms that are built around different languages. <a href="http://rubyonrails.org/">Ruby on Rails</a> and <a href="http://sinatrarb.com/">Sinatra</a>, <a href="https://www.djangoproject.com/">Django</a> and <a href="http://flask.pocoo.org/">Flask</a>, <a href="http://www.php.net/">PHP</a>, <a href="https://nodejs.org/en/">Node.JS</a>, the list goes on.</p>
+<p>In contrast, client-side "front end" code running on the user's web browser has a far more limited choice in tools and only a single choice for language: JavaScript. The language we know today was not designed with all of its features and capabilities up front. It was a more organic growth that evolved alongside the web.</p>
+<p>There have been multiple efforts to tame the tangle that is modern JavaScript and impose some structure. The Ruby school of thought led to <a href="http://coffeescript.org/">CoffeeScript</a>. Microsoft came up with <a href="https://www.typescriptlang.org/">TypeScript</a>. Google invented <a href="https://www.dartlang.org/">Dart</a>. What they all had in common was that none have direct browser support like JavaScript. As a result, they all trans-compile into JavaScript for actual execution on the browser.</p>
+<p>Such an approach does address problems with JavaScript syntax, by staying within well-defined boundaries. Modern web browsers' JavaScript engines have learned to look for and take advantage of such structure, enabling the resulting code to run faster. A project focused entirely on this aspect - making JavaScript easy for browsers to run fast - is <a href="http://asmjs.org/">asm.js</a>. By limiting JavaScript to a very specific subset , sometimes adding hints to the browser it is so, allows JavaScript that can be parsed down to very small and efficient code. Even if it ends up being very difficult for a human to read.</p>
+<p>Projects like asm.js make the resulting code run faster than general JavaScript, but that's only once code starts running. Before it runs, it is still JavaScript transmitted over the network, and JavaScript that needs to be parsed and processed. The only way to reduce this overhead is to describe computation at a very low-level in a manner more compact and concise than JavaScript. This is WebAssembly.</p>
+<p>No web developer is expected to hand-write WebAssembly on a regular basis. But once WebAssembly adoption takes hold across the major browsers (<a href="https://caniuse.com/#feat=wasm">and it seems to be making good progress</a>) it opens up the field of front-end code. Google is unlikely to build TypeScript into Chrome. Microsoft is unlikely to build Dart into Edge. Mozilla is not going to bother with CoffeeScript. But if they all agree on supporting WebAssembly, all of those languages - <a href="https://www.hanselman.com/blog/NETAndWebAssemblyIsThisTheFutureOfTheFrontend.aspx">and more</a> - can be built on top of WebAssembly.</p>
+<p>The concept can be taken beyond individual programming languages to entire application frameworks. <a href="http://webassembly.org/demo/Tanks/">One demonstration of WebAssembly's potential</a> runs the Unity 3D game engine, purportedly with smaller download size and faster startup than the previous asm.js implementation.</p>
+<p>An individual front end web developer has little direct need for WebAssembly today. But if it takes off, it has the potential to enable serious changes in the front end space. Possibly more interesting than anything since... well, JavaScript itself.</body></html></p>

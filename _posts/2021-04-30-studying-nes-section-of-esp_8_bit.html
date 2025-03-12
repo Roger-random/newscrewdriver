@@ -1,0 +1,68 @@
+---
+layout: post
+title: Studying NES Section of ESP_8_BIT
+date: 2021-04-30 12:30:00.000000000 +00:00
+type: post
+post_id: '26328'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26324'
+  _publicize_job_id: '57813189017'
+  timeline_notification: '1619811005'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/30/studying-nes-section-of-esp_8_bit/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm not sure why <a href="https://newscrewdriver.com/2021/04/29/esp_8_bit-atari-mode-mysteriously-stopped-working/">ESP_8_BIT Atari mode stopped working on my ESP32</a>, but I wasn't too bothered by it. My objective is to understand the NTSC color composite video signal generation code, which I assumed was shared by all three emulators of ESP_8_BIT so one should work as well as another. I switched the compile-time flag to Nintendo mode, saw that it started display on screen, and resumed my study.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code>emu_loop()</code> function indicated <code>_lines</code> was the frame buffer data passed from one of three emulators to the underlying video code. This was defined in <code>video_out.h</code> as <code>uint8_t**</code> and as its name implied, it is an array representing lines on screen. Each element of this array is a pointer to another array, storing <code>uint8_t</code> represent pixels on screen. This is a very flexible design that allowed variation in vertical and horizontal pixels, just by changing the size of one array or another. It also accommodates any extra data necessary for a line on screen, for example if there are padding requirements for byte alignment, without code changes. That said, ESP_8_BIT appears to use a fixed resolution of 256 pixels wide by 240 lines high: In <code>video_out.h</code>, <code>video_init()</code> always sets <code>_active_lines</code> to 240, and the <code>for()</code> loop inside <code>blit()</code> is hard-coded to 256.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Inside <code>blit()</code> I learned one of my assumptions was wrong. I thought <code>video_out.h</code> was common across all three emulators, but there were slight variations marked out by <code>#ifdef</code> sections. I confess I didn't understand what exactly these different chunks of code did, but I could make two observations: (1) if I wanted to use this code in my own projects I only need one of the code paths, and (2) they have something to do with the color palette for each emulator.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that lead, I started looking at the color palette. Each emulator has its own color palette, when running in NTSC mode (my target) it is returned by the aptly named <code>ntsc_palette()</code> function. This appears to be a fixed array which was interesting. 8-bit color was very limiting and one of the popular ways to get around this limitation was to use an optimized <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Palette_(computing)#Adaptive_palette" target="_blank">adaptive palette</a> to give an impression of more colors than were actually available. Another reason I had expected to find variable palette was the technique of palette animation (a.k.a. <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Color_cycling" target="_blank">color cycling</a>) common in the 8-bit era. Neither technique would be possible with a fixed palette. On the upside, it simplifies my code comprehension task today so I can't complain too much.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With some basic deductions in hand on how this code works, I wanted to do a quick exercise to test accuracy of my knowledge. I wrote a quick routine to fill the frame buffer with the entire range of 256 values, isolated into little blocks. This should give me a view of the range of colors available in the palette.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>    for(int y = 0; y &lt; 240; y++)
+    {
+      yMask = (((y&gt;&gt;4)&lt;&lt;4)&amp;0xF0);
+      for(int x = 0; x &lt; 256; x++)
+      {
+        _lines[y][x] = ((x&gt;&gt;4)&amp;0x0F) | yMask;
+      }
+    }
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I ran this in the Nintendo emulator mode, I got what appeared to be four repeats of the same set of color. Referencing back to Nintendo code path in <code>video_out.h</code> I can see it meshes. Color value was bitwise-AND with <code>0x3F</code> meaning only the lower six bits of the color value are used. Cycling through 256 meant 64 colors repeated 4 times.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>        case EMU_NES:
+            mask = 0x3F;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't need four repeats of the same 64 colors, so I edited my test program a bit to leave just a single bar on screen. Now I can take <a href="https://newscrewdriver.com/2021/05/01/observations-on-esp_8_bit-nintendo-and-sega-colors/">a closer look at these colors</a> generated by ESP_8_BIT.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on Angular Architecture Guide
+date: 2020-10-27 12:30:00.000000000 +00:00
+type: post
+post_id: '22733'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22766'
+  _publicize_job_id: '50403976198'
+  timeline_notification: '1603827019'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/27/notes-on-angular-architecture-guide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2020/10/26/fixing-warnings-of-typescript-strict-mode-violation-after-tour-of-heroes-tutorial/">completing two beginner tutorials</a>, I returned for another pass through the <a rel="noreferrer noopener" href="https://angular.io/guide/architecture" target="_blank">Angular Architecture Guide</a>. These words now make a lot more sense when backed by the hands-on experience of the two tutorials. There are still a few open question marks, though, the long standing top of my list are <a rel="noreferrer noopener" href="https://angular.io/guide/architecture-modules" target="_blank">Angular Modules</a>. I think each of the tutorial is contained into a single module? That would explain why I haven't seen it in action yet. It doesn't help that JavaScript also has a "Module" concept, makes things confusing to a beginner like myself. And as if that's not confusing enough, there are also "Libraries" which are different from modules... how? I expect these concepts won't become concrete until I tackle larger projects that incorporate code from multiple different sources.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In contrast, <a rel="noreferrer noopener" href="https://angular.io/guide/architecture-components" target="_blank">Angular Components</a> have become very concrete and these pages even use excerpts from the "Tour of Heroes" tutorial to illustrate its concepts. I feel I have a basic grasp of components now, but I'm also aware I still need to read up on a few things:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Component metadata so far has been a copy-and-paste affair with limited explanation. It'll be a challenge to strike out on my own and get the metadata correct. Not just because I don't know what I should do, but also I haven't seen what the error messages are like.</li>
+<li>Data binding with the chart of four types of binding looks handy, I hope it's repeated and expanded in more detail elsewhere in documentation so I can get some questions answered. One example: I read "Angular processes all data bindings once for each JavaScript event cycle" but I have to ask... what's a JavaScript event cycle? The answer lies elsewhere.</li>
+<li>Pipes feel like something super useful and powerful, looking forward to playing more with the concept and maybe even create a few of my own.</li>
+<li>Directives seem to be a generic concept whose umbrella is fuzzy, but I've been using task-specific directives in the tutorial. <code>*ngFor</code> and <code>*ngIf</code> are structural directives. Attribute directive was used in two-way data binding. Both types have their own specific guide pages.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading the <a rel="noreferrer noopener" href="https://angular.io/guide/architecture-services" target="_blank">broad definition of services</a> I started thinking "Feels like <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/05/26/simple-logger-extended-with-subset-list/" target="_blank">my UWP Logger</a>, maybe I can implement a logger service as exercise." Only to find out they're way ahead of me - the example is a logger (to console) service! I had hoped this section would help clear up the concept of service providers, but it is still fuzzy in my head. I understand the default is root, which is a single instance for everything, and this is what was used in the tutorials. I will need to go find examples of providers at other granularities, which apparently can be as specific as per component where each instance of component gets its own instance of that service. When would that be useful? I have yet to learn the answer. But at least I've written these questions down so I'm less likely to forget.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,61 @@
+---
+layout: post
+title: Notes on L298 Dual Full-Bridge Driver
+date: 2021-01-25 12:30:00.000000000 +00:00
+type: post
+post_id: '24724'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24736'
+  timeline_notification: '1611606686'
+  _publicize_job_id: '53896497800'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666690570
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/25/notes-on-l298-dual-full-bridge-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My little rover project switched away from modified servos with unpredictable motor drivers to <a href="https://newscrewdriver.com/2021/01/24/tt-gear-motor-teardown/">pure DC gear motors</a>. The good news is that this switch allows me to take control of the motor driver. The bad news is that... well, now I have to control motor drivers myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For this exploration, I'll start with a classic the L298. These are featured in countless tutorials for turning digital logic into physical motion with motors and solenoids. It is not the latest technology, it is not compact, it is not efficient, but I expect L298 (or clones) to be available anywhere maker electronics are available. It's such a classic that in the <a rel="noreferrer noopener" href="https://www.st.com/resource/en/datasheet/l298.pdf" target="_blank">official ST Electronics datasheet PDF</a>, diagrams are blurry as if scanned from paper instead of generated directly. At least the text is clear, but it is also amusingly dated "Jenuary 2000" so maybe we're looking at a document with OCR-enhanced text (with OCR errors) and old scanned diagrams.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When used to control DC motors like my current project, a L298 is usually put to work running two motors. There are two sides "A" and "B" each with its own control signals and output pins, though both share common power supply and ground pins. Motor can be driven at up to 45V with occasional spikes are allowed up to 50V.  Electrical current is up to 2A with occasional peaks of 3A. Steady state, that multiplies out to 45V * 2A * 2 motors = 180 Watts, a respectable chunk of power which explains why there is a big metal tab for heat dissipation and datasheet says operating temperature may rise to as high as 130°C.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The chip itself requires 5V input for internal logic, separate from the motor power supply. For digital logic purposes, anything under 1.5V is treated as logic low. This is relatively high threshold and is intentionally done to to mitigate electrical noise coming from motors next door. Fortunately that should not present problems for newer 3.3V microcontrollers like ESP32, Teensy and newer Arduinos. Data pins draw up to 100uA which shouldn't be a problem to pair it with modern chips with far less amperage capacity than <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/08/06/why-i-still-like-the-8-bit-chips/" target="_blank">old school 8-bit chips</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":21580,"sizeSlug":"large","linkDestination":"none"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/05/l298-bidirectional-dc-motor-control.jpg?w=936" alt="" class="wp-image-21580"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Figure 6 explains how our microcontroller controls motor behavior. Direction is commanded by raising one input high and pulling other low. If they are equal, we get motor brake which we are warned must still not exceed 2A. If enable is low, the motor coasts independent of input values. Reading this chart, I understand that proportional motor speed control is accomplished by putting a PWM signal into the enable pin, alternating between applying power and coasting. However, I don't see a recommendation on what my PWM frequency should be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search found <a rel="noreferrer noopener" href="https://electronics.stackexchange.com/questions/309056/l298n-pwm-frequency" target="_blank">this electronics StackExchange answer</a> that claims single-digit kilohertz would be sufficient. However, there's also a contradiction in an answer that first claims PWM is done on the control input lines and enable is simply tied to high (always enable), but then links to <a href="https://store.arduino.cc/usa/arduino-motor-shield-rev3">the Arduino motor shield</a> with L298N where the schematic clearly has PWM input lines going to the enable pins. Strange! I'll follow Arduino precedent and send PWM control to the enable pin.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another use for the enable pin is in the power up/down sequence. Enable pin should be pulled low before motor supply is turned on, and should be low before motor supply is turned off. Speaking of power, when driving inductive loads (and motors certainly are) a 4-diode network is required to dissipate power that might feed back to the circuit from these coils.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saw several mentions of a current sensing resistor, and I see a "Rs" in all the schematics, but there's no specification for resistance value or any other information beyond that they should be grounded as close to L298's GND pin as possible. No reference for how L298 interprets current as a function of ohms resistance. Eventually I figured it out: the current sensing pin is only a provision for those that want to add a current sensing circuit to their design elsewhere. The L298 itself doesn't care, and that's why ohms are not specified in this datasheet. It's going to be implementation-dependent so time for me to <a href="https://newscrewdriver.com/2021/01/26/trying-generic-l298n-driver-board/">get my hands on an implementation</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

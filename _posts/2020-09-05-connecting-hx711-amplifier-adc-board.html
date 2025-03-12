@@ -1,0 +1,40 @@
+---
+layout: post
+title: Connecting HX711 Amplifier ADC Board
+date: 2020-09-05 12:30:00.000000000 +00:00
+type: post
+post_id: '22342'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _thumbnail_id: '22271'
+  _publicize_job_id: '48506320731'
+  timeline_notification: '1599334225'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/05/connecting-hx711-amplifier-adc-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I finished <a href="https://newscrewdriver.com/2020/09/04/start-simple-with-low-cost-load-cell/">wiring the strain gauge array for a load cell</a>, I pulled the bundled circuit board out of its anti static bag. According to the product listing, this is built around a HX711 amplifier and analog-to-digital (ADC) converter. All that information I read earlier about putting excitation voltages into a Wheatstone bridge to interpret small changes in strain gauge resistance? All that magic is done inside this chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The bundle included some classic 0.1" pitch pins to solder to the circuit board, but I thought I had a better idea. I pulled out my JST-XH connector kit and used the six-position wire-to-board unit for my strain gauge array connection. JST-XH is polarized to help ensure I don't plug it in backwards. However, it is bigger than plain unadorned headers so it didn't fit with the surface mount components already on the board, requiring that I mount it to the flat backside instead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't perform the same JST-XH replacement for the digital data connection, because I wanted the flexibility to use jumper wires to connect this board to something I can use to read data from a HX711. Looking around for software libraries online, I <a href="https://github.com/bogde/HX711" target="_blank" rel="noreferrer noopener">found a HX711 library for Arduino</a> so I pulled out my prototyping breadboard with an Arduino Nano already on board. This is as good of a starting point as any.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Four jumper wires were needed: power, ground, data, and clock. The hardware is ready to go, so I switched gears to software and <a href="https://newscrewdriver.com/2020/09/06/hx711-interface-library-as-introduction-to-platformio/">today's little plot twist of PlatformIO</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

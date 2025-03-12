@@ -1,0 +1,67 @@
+---
+layout: post
+title: 'Motion Decoder Fail: Zero Delta Between Two Samples'
+date: 2024-02-07 12:30:00.000000000 +00:00
+type: post
+post_id: '41876'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  wordads_ufa: s:wpcom-ufa-v4:1707424713
+  firehose_sent: '1707337807'
+  _publicize_job_id: '91772188667'
+  timeline_notification: '1707337810'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/07/motion-decoder-fail-zero-delta-between-two-samples/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have wired up an Arduino Nano to a retired Canon Pixma MX340 multi-function inkjet, reading the position reported by a rotary motion quadrature encoder in its paper feed motor gearbox assembly. I want to learn how that mechanism worked, and thought it would be helpful to process raw encoder data into <a href="https://newscrewdriver.com/2024/02/06/canon-pixma-mx340-decoder-round-2-goals/">a list of movements undertaken by the mechanism</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41837,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup-closeup-on-initial-move.png?w=1024" alt="" class="wp-image-41837"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the graph I plotted earlier, this looked pretty straightforward. I added code in my Arduino sketch to poll encoder value in a tight loop and, when two consecutive readings have zero delta between them, treat that as a stopped segment between two movements.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This approach did not work at all! But its failure taught me more about this system's behavior.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First lesson: as the print carriage moved around, it jostles the whole frame enough for this paper feed encoder to bounce one or two counts off target. I don't know if it's impossible/impractical to move this motor system by a single encoder position, or if the control system just decided it wasn't important enough to bother. Either way, there are small drifts that were too small for me to see in my earlier graphs but would falsely break up zero-delta periods.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A closely related observation: the motor decelerates as it approached its target position, and it doesn't always hit its target precisely by the time it coasted to a stop. (This is assuming a move of 1798 counts was intended to be a 1800 count move.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of that coast phase, the graph shows it can take 20-30 milliseconds before everything comes to a stop. This is a problem, because the Arduino is polling encoder fast enough that it will see the same value multiple on consecutive polls. So if I'm deciding based on zero delta between two readings, it would prematurely conclude the gear train has stopped when it was merely at the very beginning of acceleration or the slow tail end of deceleration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After one deceleration, the system might immediately start accelerating to execute another motion. One example is visible as the second and third movement in the graph above. From Arduino Nano's perspective, the delta between two consecutive readings never reached zero between those two movements. Maybe the printer control board decided "slow enough" and started the next move before things actually stopped, or maybe the Arduino is not polling fast enough to catch that brief moment of zero rotation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had a laugh at how my system managed to poll encoder value at a rate that is simultaneously too fast and too slow. But the conclusion from these new observations is clear: I can't get away with just two encoder samples and look for a zero delta between them, my code will have to <a href="https://newscrewdriver.com/2024/02/08/motion-decoder-timestamp-switching-to-microseconds/">base its decisions on more reliable factors</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

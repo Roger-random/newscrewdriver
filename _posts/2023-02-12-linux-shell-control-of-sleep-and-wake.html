@@ -1,0 +1,77 @@
+---
+layout: post
+title: Linux Shell Control of Sleep and Wake
+date: 2023-02-12 12:30:00.000000000 +00:00
+type: post
+post_id: '34954'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Linux
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33107'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676234134
+  _publicize_job_id: '81446727040'
+  timeline_notification: '1676234033'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/12/linux-shell-control-of-sleep-and-wake/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've extracted the 3.5" SATA HDD from a Seagate Backup+ Hub external USB hard drive and installed it internally into a desktop PC tower case. I configured the PC as a TrueNAS replication target so it will keep a backup copy of data stored on my TrueNAS array. I couldn't figure how to make it "take over" or "continue" the existing replication set on this disk created from Raspberry Pi, so I <a href="https://newscrewdriver.com/2023/02/11/notes-from-zfs-adventures-for-truenas-replication/">created an entirely new ZFS dataset</a> instead. It's a backup anyway and I have plenty of space.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But replication only happens once a day for a few minutes, and I didn't want to keep the PC running around the clock. I automated my Raspberry Pi's power supply via Home Assistant. That complexity was unnecessary for a modern PC as they include low-power sleep mode capability missing from (default) Raspberry Pi. I just need to figure out how to access that capability from the command line, and I found an answer with <code>rtcwake</code> and <code>crontab</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">rtcwake</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are many power-saving sleep modes available in the PC ecosystem, not all of which runs seamlessly under Linux as they each require some level of hardware and/or software driver support. Running <code>rtcwake --list-modes</code> is supposed to show what's applicable to a piece of hardware. However, I found that even though "disk" (hibernate to disk) is listed, my attempt to use it merely caused the system to become unresponsive without going to sleep. (I had to reset the system.) I then tried "mem" (suspend system, keep power only to memory) and that seemed to work as expected. Your mileage will vary depending on hardware. I can tell my computer to sleep until 11:55PM with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sudo rtcwake --mode mem --date 23:55</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">hwclock</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The command above allowed me to put the computer to sleep, and schedule wake for five minutes before midnight. On my machine, it displayed the target time and went to sleep. But the listed target time was not 23:55! I thought I did something wrong, but after a bit of poking around I realized I didn't. I wanted 23:55 my local time, and Ubuntu had set up my PC's internal hardware clock to UTC time zone. The listed target time is in relative to UTC time of hardware clock. To set our current local time zone we run <code>timedatectl</code>. To see current hardware clock we can run this command:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sudo hwclock --show --verbose</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wasn't surprised that putting the computer to sleep required "sudo" privileges, but I was surprised to see that <code>hwclock </code>needed that privilege as well. Why is reading the hardware clock important to protect? I don't know. Sure, I can understand setting the clock may require privileges, but reading? <code>timedatectl</code> didn't require sudo privileges to read. So <code>hwclock</code>'s requirement was a surprise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ssh</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another consequence of running <code>rtcwake </code>from a <code>ssh </code>session is that a sleep computer would leave my ssh prompt hanging. It will eventually time out with "broken pipe" but if I want to hurry that along, there's a special key sequence to terminate a <code>ssh</code> session immediately: Press the &lt;Enter&gt; key, then type ~. (tilde symbol followed by period.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">crontab</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I didn't really want to run the command manually, anyway. I want to automate that part as well. In order to schedule a job to execute that command at a specific time and interval, I added this command to the cron jobs table. Since I need root privileges to run <code>rtcwake</code>, I had to add this line to root user's table with "<code>sudo crontab -e</code>":</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>10 0 * * * rtcwake --mode mem --date 23:55</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first number is minutes, the next number hours. "10 0" means to run this command ten minutes after midnight, which should be long enough for TrueNAS replication to complete. The three asterisks mean every day of the month, every month, every day of the week. So "10 0 * * *" translates to "ten minutes after midnight every day" putting this PC to sleep until five minutes before midnight. I chose five minutes as it should be more than long enough for the machine to become visible on the network for TrueNAS replication. When this all works as intended (there have been hiccups I haven't diagnosed yet) this PC, which usually sits unused, would wake up for only fifteen minutes a day instead of wasting power around the clock.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: The Good And The Bad Of Living With Azteeg X5 Mini WiFi
+date: 2018-07-05 09:00:51.000000000 +00:00
+type: post
+post_id: '16396'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Azteeg X5 Mini
+- Monoprice Maker Select
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '19698894620'
+  timeline_notification: '1530806949'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/05/the-good-and-the-bad-of-living-with-azteeg-x5-mini-wifi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Once the <a href="http://www.panucatt.com/azteeg_X5_mini_reprap_3d_printer_controller_p/ax5mini.htm">Azteeg X5 Mini</a> was properly installed in my <a href="https://monoprice.com/product?p_id=21864">Monoprice Maker Select</a>, the printer went right back to work making parts for <a href="http://sawppy.com">Sawppy</a>. I'm extremely happy about how quiet the stepper motors are running. The loudest noise by far is the power supply cooling fan, which is at least a steady white noise that more easily fades to the background versus the constantly varying sound of stepper motors printing an object.</p>
+<p>The first test print with X5 Mini in control showed signs of under-extrusion. Tuning extrusion parameters is a continuing challenge but I blame the printer hardware and not the electronics control board for that issue. This was eventually solved by upgrading the entire print head, a story to be covered later.</p>
+<p>While the core functionality is pretty solid, some of the auxiliary features of a Azteeg X5 Mini are rather less so.</p>
+<p>The most irritating problem is its WiFi feature. Out of the box it <a href="http://panucattdevices.freshdesk.com/support/solutions/articles/1000258070-setting-up-wireless-connection-on-x5mini-wifi">acts as a WiFi access point with default name and password</a>. There is a menu to change the default name and password so my printer wouldn't be vulnerable to pranksters in range. After changing those menu values and rebooting as recommended, I can see my new "AP SSID" and "AP Password" values in the menu. But the actual access point continued using the old SSID and password as if the menu had no effect. I'd like to think such a glaring security issue would be patched by now, but I just have to wait for them to fix this.</p>
+<p>Separate from the WiFi issue, there are some problems upon startup, manifesting itself in one of three ways:</p>
+<ol>
+<li>Upon power-up, the status LEDs usually start blinking. But every once in a while, the onboard LEDs are solid on and not blinking. The board does not respond at all in this state.</li>
+<li>Even if the LEDs start blinking and the board responds, it may boot into a state where all control communication looks OK but nothing moves. It will talk to my OctoPi as if everything is OK: The board will accept G-code and show progress processing them and return "OK" after every command... but no motor movements occur.</li>
+<li>Even if the board responds to movement, occasionally the homing cycle at the beginning of a print job fails for no reason I could diagnose.<img class=" size-full wp-image-16399 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/07/homing-error.png" alt="Homing error" width="324" height="128">
+</li>
+</ol>
+<p>In all three cases, the workaround is to turn off the printer and turn it back on again. This can get annoying at times because it sometimes require multiple on/off cycles to get there. Once printing actually starts, everything performs well. And the best part - no smell of stress electronics threatening to burst into flames.</p>
+<p> </body></html></p>

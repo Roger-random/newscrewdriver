@@ -1,0 +1,53 @@
+---
+layout: post
+title: Notes on Codecademy "Learn Vue.js"
+date: 2023-05-03 12:30:00.000000000 +00:00
+type: post
+post_id: '36502'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36527'
+  timeline_notification: '1683142207'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683237868
+  _publicize_job_id: '83751338748'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/03/notes-on-codecademy-learn-vue-js/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm far from an expert with the Angular web app framework, but I'm itching to look around. Use what I've learned of Angular as a baseline to compare design tradeoffs against those made by other web app frameworks. <a href="https://newscrewdriver.com/2023/05/02/next-study-topic-vue-js/">I thought Vue.js was worth a look</a>, and I'll start with Codecademy's "<a href="https://www.codecademy.com/learn/learn-vue-js">Learn Vue.js</a>" course. It was very short and really didn't cover very much of Vue.js at all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that learning Angular helped introduce many web app framework concepts, making this Vue.js lesson easier to understand despite its short whirlwind tour format. When it came to Vue directives, I can immediately see similarities between Vue's "<code>v-if</code>" and Angular's "<code>#ngIf</code>". <code>v-for</code> and <code>#ngFor</code>, etc. A novelty to me was the concept of directive <a href="https://vuejs.org/api/built-in-directives.html#v-on">modifiers</a> which are shorthand for calling common methods. <code>v-on:submit.prevent</code> is an event handler for a form "<code>submit</code>" event, and appending "<code>.prevent</code>" means Vue will also call <code>Event.preventDefault()</code>. Something many event handlers would do but, with the modifier, they won't have to explicitly do so.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One area this course skipped, probably in the interest of keeping things simple, was by using Vue as a single monolithic CDN-delivered package. Bypassing the entire build/bundle process. Initially I thought "yikes" at how large the result must be. Until I looked at the download size of <code>vue.global.prod.js</code> and saw <em>all of Vue</em> weighed in at just 128 kilobytes, almost half the size of a tree-shaken, minified, optimized production build of Angular app boilerplate.  And it can be further GZip-compressed down to 48 kilobytes for space-constrained places <a href="https://newscrewdriver.com/2023/03/18/hello-espasyncwebserver/">like ESP8266 flash memory</a>. OK, that'll work!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Half the course (two out of four sections) focused on building forms with Vue. This was unfortuate for me personally because I never really dug into doing forms with Angular, so I couldn't make a direct comparison between those two frameworks. I <a href="https://angular.io/guide/forms-overview">read enough about forms in Angular</a> to learn that there were two different ways to do it. I didn't know enough to choose between them, so I never did either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Still, building forms allowed us to cover a lot of general ground about using Vue. It let us see how Vue wanted our code to be organized in one gigantic object passed into the constructor. (I would later learn this was the "Options API" approach, the alternative "Composition API" was not covered in this Codecademy course.) We have data properties, computed properties that calculte based on data, watchers to act in response to data changes, and methods to for everything else not directly llinked to a property. It seems like a better structure than a wide-open JavaScript class, especially for components with a tight focus.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The fourth and final section covered doing CSS in Vue. I was quite wary of this section, as I've read some complaints about CSS delivered by JavaScript code at runtime. It means the browser rendering engine has no opportunity to preview and preprocess those CSS rules before the JavaScript code inserts them, a pattern which can have disastrous impact on rendering performance. What this Vue.js course covered isn't quite the full-fledged "<a href="https://cssinjs.org/">CSS-in-JS</a>" (which has <a href="https://www.codecademy.com/learn/learn-css-in-js">its own Codecademy course</a>) but I'd still be cautious of using <code>v-bind:style</code>. On the other hand, <code>v-bind:class</code> seems like less of a danger. In this approach, the browser gets to process CSS beforehand and we're toggling application on and off via JavaScript code. I'm more inclined to go with <code>v-bind:class</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, I was looking forward to seeing how Vue handled componentization and I was very disappointed to see it was considered out of scope of this course. I think it'd be instructive to see how Angular components compared to Vue components, maybe see how they compare to LitElement, and how they compare to standard web components. Well, I won't find any of those answers here because the course mentioned componentization as being very useful and never got into how to do so! I'll have to <a href="https://newscrewdriver.com/2023/05/04/notes-on-vue-js-quick-start/">look elsewhere for that information</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

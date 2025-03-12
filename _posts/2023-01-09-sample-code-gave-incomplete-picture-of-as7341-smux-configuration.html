@@ -1,0 +1,64 @@
+---
+layout: post
+title: Sample Code Gave Incomplete Picture of AS7341 SMUX Configuration
+date: 2023-01-09 12:30:00.000000000 +00:00
+type: post
+post_id: '34490'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34443'
+  _publicize_job_id: '80395277655'
+  timeline_notification: '1673296218'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683101453
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/09/sample-code-gave-incomplete-picture-of-as7341-smux-configuration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Reading through <a href="https://newscrewdriver.com/2023/01/08/unrolling-adafruit-as7341-readallchannels/">Adafruit AS7341 Arduino library implementation of <code>readAllChannels()</code></a>, I was happy to see it mostly confirmed information I understood from datasheet reading. It also had something else: how to configure AS7341 sensor multiplexor (SMUX). Details of which were critical information <a href="https://newscrewdriver.com/2022/12/30/ams-as7341-smux-configuration-is-critical-yet-absent-from-datasheet/">completely missing from the datasheet</a>, mere a note that AMS provides sample code. [Update: <a href="https://newscrewdriver.com/2023/02/02/as7341-project-postscript-smux-mystery-solved/">Details were in an Application Note</a>.] I say sample code is a poor substitute for proper documentation and my position remains unchanged.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I thought I might have a good shot at figuring out SMUX configuration registers, given that I have found three sample points. DFRobot has an Arduino AS7341 library. Adafruit has their own implementation of an Arduino AS7341 library. And hidden in the examples folder of Adafruit's library is an Arduino sketch that doesn't use Adafruit's library at all, written by an AMS application support engineer. Comparing and contrasting between them should tell me a lot!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, as soon as I took a closer look my expectation went down in flames. These three examples are writing the exact same bytes to the exact same registers. There's nothing to compare and contrast at all. This feels like someone at AMS wrote a SMUX configuration at one point and it's just been copied and pasted ever since. All we really have to work with are the skimpy comments in these configuration routines.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on these comments, each register corresponds to a single sensor, except when it controls two sensors. Bits in the register control which ADC is connected. It was easy to infer that zero representing no connection to any ADC at all, but other than that the bits are inconsistent. Setting register 0x0F to 0x30 supposedly connected to ADC2, but for register 0x0A it was 0x03 that connected to ADC2. Some of the sensors have a "left" and "right" but it's not clear what that means. My best guess is from the datasheet figure showing sensor array layout:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":34579,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-sensor-array.jpg?w=1024" alt="" class="wp-image-34579"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Maybe "F3 left set to ADC2" means connecting only the left side F3 sensor, leaving the right side F3 sensor unused? That would mean we're using half the available sensor area to gather light, which seems sub-optimal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And most critically, the comments weren't enough for me to figure out how I'd create a different SMUX configuration. There's nothing about any of these in the datasheet, which remains my biggest complaint to AMS. The only description I found in the datasheet is that flicker detection sensor must be connected to ADC5.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One odd thing I noticed about this copied-and-pasted code snippet is the fact it sends twenty bytes of SMUX configuration as twenty write operations of single bytes to sequential registers 0x00 through 0x13 inclusive. Why do it in such an efficient way? For my project I converted that to a faster and more efficient single write operation of twenty bytes and it seems to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news is that these sample code snippets help us configure SMUX to do <em>something </em>useful in line with functionality demonstrated by these samples. The bad news is that we don't have enough information to design and build our own SMUX configurations to suit specific needs. I guess if someone wants to use AS7341 professionally they can ask AMS application support team to build a custom SMUX configuration for them. For an electronics hobbyist like myself, these fixed configurations are sufficient for me to <a href="https://newscrewdriver.com/2023/01/10/as7341-spectral-color-sensor-with-mozzi-on-avr-arduino/">complete my project</a>, but I am still grumpy with AMS about it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/color_organ/blob/main/nonblock_example/nonblock_example.ino" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

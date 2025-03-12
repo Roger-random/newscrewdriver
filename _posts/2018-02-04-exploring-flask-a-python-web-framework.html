@@ -1,0 +1,35 @@
+---
+layout: post
+title: Exploring Flask, a Python Web Framework
+date: 2018-02-04 18:15:21.000000000 +00:00
+type: post
+post_id: '15841'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _rest_api_published: '1'
+  timeline_notification: '1517796924'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '14384782208'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/02/04/exploring-flask-a-python-web-framework/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-15842 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/02/flask.png" alt="flask" width="180" height="161">Today's exploration centers around <a href="http://flask.pocoo.org/">Flask</a>, a framework for building web sites with the Python programming language. The motivation was a new project that will be discussed separately, the important detail for now is that it needed to interact with some existing Python libraries and desired a user interface accessible from multiple different (and separate) devices. It seemed to make sense to turn the central device into a web server and expose the user interface to its clients using HTML.</p>
+<p>There had been previous explorations into writing web server software using Ruby on Rails, which is not the best fit for this project. The first issue is the language - we need to talk to a Python library and there's no need to jump through language translation layers for a simple project. The second issue is complexity - Rails is a full <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC framework</a> for building an app on a database and we don't need that here, either.</p>
+<p>If we wanted the Python equivalent to Ruby on Rails, the popular choice of the day is <a href="https://www.djangoproject.com/">Django</a>. But since we don't, Flask is the lighter-weight framework we'll play with today. Sometime in the future, when a project is right for Django, we'll explore using the right tool for the job.</p>
+<p>Flask is a thin layer that's a short step above having to call Python's HTTP and URL classes directly, and can be <a href="http://flask.pocoo.org/docs/0.12/quickstart/">very quick to get started</a>.  A simple Hello World type of app requires only a single Python file and a few lines of code, no database configuration and project generation necessary. The developer builds up from this simple foundation. This is great for keeping things simple and easy to work with. For the most part, features that a developer would want can be added piecemeal.</p>
+<p>The downside is that Flask also skips out on a lot of web practices that aren't explicitly features, but are very nice to have by default. For example, the default Ruby on Rails generator for HTML <code>&lt;form&gt;</code> includes a token to prevent <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">cross-site request forgery</a>. This is not explicitly a feature a developer would think of adding, and could easily get overlooked especially when the forms are generated manually. Fortunately most of the Flask add-ons to generate forms - like <a href="http://flask-wtf.readthedocs.io/en/stable/csrf.html">this one</a> - automatically includes CSRF protection.</p>
+<p>Some caution would be warranted if the Flask application is going to be a public web site, but for a local network project prototype it should be good enough.</body></html></p>

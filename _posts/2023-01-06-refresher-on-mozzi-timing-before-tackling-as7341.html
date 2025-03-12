@@ -1,0 +1,58 @@
+---
+layout: post
+title: Refresher on Mozzi Timing Before Tackling AS7341
+date: 2023-01-06 12:30:00.000000000 +00:00
+type: post
+post_id: '34439'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- AVR
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34514'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673147146
+  _publicize_job_id: '80310523242'
+  timeline_notification: '1673037102'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/06/refresher-on-mozzi-timing-before-tackling-as7341/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2023/01/05/new-project-mozzi-as7341/">decided to tackle the challenge</a> of writing a Mozzi-friendly way to use an AS7341 sensor, using nonblocking I2C library <code>twi_nonblock</code>. At a high level, this is a follow-up to my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/07/30/second-attempt-success-mozzi-mma7660/" target="_blank">MMA7660 accelerometer Mozzi project</a> several years ago. Due to lack of practice in the meantime I have forgotten much about Mozzi and need a quick refresher. Fortunately, <em><a rel="noreferrer noopener" href="https://sensorium.github.io/Mozzi/learn/a-simple-sketch/" target="_blank">Anatomy of a Mozzi sketch</a></em> brought most of those memories back.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I connected a salvaged audio jack to the breadboard where I already had an Arduino Nano and my Adafruit AS7341 breakout board. (The AS7341 will sit idle while I refamiliarize myself with Mozzi before I try to integrate them.) After I confirmed the simple sine wave sketch generated an audible tone on my test earbuds, I started my first experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to verify that I understood my timing constraints. I added three counters: the first is incremented whenever <code>loop()</code> is called. The second when Mozzi calls the <code>updateControl()</code> callback, and the third for <code>updateAudio()</code> callback. Inside <code>loop()</code>, I check <code><a href="https://reference.arduino.cc/reference/en/language/functions/time/millis/" target="_blank" rel="noreferrer noopener">millis()</a></code> to see if at least one second has passed. If it had, I print values of all three counters before resetting them back to zero. This test dumps out the number of times each of these callbacks occur every second.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>loop 165027 updateControl 64 updateAudio 16401<br>loop 164860 updateControl 63 updateAudio 16384<br>loop 165027 updateControl 64 updateAudio 16401<br>loop 164859 updateControl 64 updateAudio 16384<br>loop 165027 updateControl 64 updateAudio 16401<br>loop 164860 updateControl 63 updateAudio 16384<br>loop 165028 updateControl 64 updateAudio 16400<br>loop 164859 updateControl 64 updateAudio 16385<br>loop 165027 updateControl 64 updateAudio 16400<br>loop 164858 updateControl 64 updateAudio 16384<br>loop 165029 updateControl 63 updateAudio 16401<br>loop 164858 updateControl 64 updateAudio 16384<br>loop 165027 updateControl 64 updateAudio 16401<br>loop 164858 updateControl 64 updateAudio 16384<br>loop 165029 updateControl 64 updateAudio 16400<br>loop 164860 updateControl 63 updateAudio 16384</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Arduino framework calls back into <code>loop()</code> as fast as it possibly can. In the case of this Mozzi Hello World, it is called roughly 165,000 times a second. This represents a maximum on <code>loop()</code> frequency: as a sketch grows in complexity, this number can only drop lower.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In a Mozzi sketch, <code>loop()</code> calls into Mozzi's <code>audioHook()</code>, which will call the remaining two methods. From this experiment I see <code>updateControl()</code> is called 63 or 64 times a second, which lines up with the default value of Mozzi's <code>CONTROL_RATE</code> parameter. If a sketch needs to react more quickly to input, a Mozzi sketch can <code>#define CONTROL_RATE</code> to a higher number. Mozzi documentation says it is optimal to use powers of two, so if the default 64 is too slow we can up it to 128, 256, 512, etc.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We can't dial it up too high, though, before we risk interfering with <code>updateAudio()</code>. We need to ensure <code>updateAudio()</code> is called whenever the state of audio output needs to be recalculated. Mozzi's default STANDARD mode runs at 16384Hz, which lines up with the number seen in this counter output. If we spend too much time in <code>updateControl()</code>, or call it too often with a high <code>CONTROL_RATE</code>, we'd miss regular update of <code>updateAudio()</code> and those misses will cause audible glitches. While 16 times every millisecond is a very high rate of speed by human brain standards, a microcontroller can still do quite a lot of work in between calls as long as we plan our code correctly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Part of a proper plan is to make sure we don't block execution waiting on something that takes too long. Unfortunately, Arduino's Wire library for I2C blocks code execution waiting for read operations to complete. This wait is typically on the order of single-digit number of milliseconds, which is fast enough for most purposes. But even a single millisecond of delay in <code>updateControl()</code> means missing more than 16 calls to <code>updateAudio()</code>. This is why we need to break up operations into a series of nonblocking calls: we need to get back to <code>updateAudio()</code> between those steps during execution. Fortunately, <a href="https://newscrewdriver.com/2023/01/07/hello-as7341-id-via-non-blocking-i2c/">during setup we can get away with blocking calls</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

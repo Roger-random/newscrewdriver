@@ -1,0 +1,90 @@
+---
+layout: post
+title: Angular Component Dynamic Resizing
+date: 2023-04-08 12:30:00.000000000 +00:00
+type: post
+post_id: '36185'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36104'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681081657
+  _publicize_job_id: '83030936000'
+  timeline_notification: '1680982224'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/08/angular-component-dynamic-resizing/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Learning to work within Angular framework, I had to figure out how to get my content onscreen <a href="https://newscrewdriver.com/2023/04/07/angular-component-size-and-resize/">at the location and size I wanted</a>. (Close enough, at least.) But that's just the start. What happens when the user resizes the window? That opens a separate can of worms. In my <a href="https://newscrewdriver.com/2021/05/13/hsv-color-wheel-of-256-rgb332-colors/">RGB332 color picker web app</a>, the color picker is the only thing onscreen. This global scope meant I could listen to <a href="https://developer.mozilla.org/en-US/docs/web/api/window/resize_event">Window resize event</a>, but listening to window-level event <a href="https://stackoverflow.com/questions/35527456/angular-window-resize-event">isn't necessarily going to work</a> for solving a local element-level problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So how does an Angular component listen to an event? I found several approaches.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<a href="https://angular.io/api/core/Renderer2#listen">Renderer has a <code>listen()</code> method</a> for attaching event listeners, with some examples listed on this StackOverflow thread titled <em><a href="https://stackoverflow.com/questions/35080387/dynamically-add-event-listener">Dynamically add event listener</a></em>. These guys were talking about Angular 4, which is quite some time ago.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://angular.io/api/platform-browser/EventManager#addEventListener">EventManager has an <code>addEventListener()</code> method</a>. Target for this method is typed to be <code>HTMLElement</code>, more specific than Renderer's <code>any</code>.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's not clear what tradeoffs are involved using Renderer versus EventManager. In both cases, we can listen to events on an object that's not necessarily our component. Perhaps some elements are valid for one API versus another? Perhaps there's a prioritization I need to worry about? If I only care about listening to events that apply to my own specific component, things can be slightly easier:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<a href="https://angular.io/api/core/HostListener">@HostListener decorator</a> allows us to attach a component method as the listener callback to an event on a component's host object. It's not as limited as it appears at first glance, as events like "window:resize" <a href="https://stackoverflow.com/questions/39300526/how-i-can-detect-window-resize-instantly-in-angular-2">apparently propagates through the tree</a> so our handler will fire even though it's not on the Window object.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>In all of the above cases, we're listening on a global event (window.resize) to solve a local problem (react to my element's change in size.) I was glad to see that web standards evolved to give us a local tool for solving this local problem:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">ResizeObserver</a> is not something supported by core Angular infrastructure. I could write the code to interact with it myself, but someone has written <a href="https://github.com/ng-web-apis/resize-observer">an Angular module for ResizeObserver</a>. This is part of a larger "<a href="https://ng-web-apis.github.io/">Web APIs for Angular</a>" project with several other modules with similar goals: give an "Angular-y" way to leverage standardized APIs.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried this new shiny first, but my callback function didn't fire when I resized the window. I'm not sure if the problem was the API, the Angular module, my usage of it, or that my scenario not lining up with the intended use case. With so many unknowns, I backed off for now. Maybe I'll revisit this later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Falling back to @HostListener, I could react to "window.resize" and that callback did fire when I resized the window. However, <code>clientWidth/clientHeight</code> size information is unreliable and my Three.js object is not the right size to fill its parent &lt;DIV&gt;. I deduced that when "window:resize" fired, we have yet to run through full page layout.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that setback, I fell back to an even cruder method: upon every call to my animation frame callback, I check the &lt;DIV&gt; <code>clientWidth/clientHeight</code> and resize my Three.js renderer if it's different from existing values. This feels inelegant but it'll have to do until I have a better understanding of how ResizeObserver (or an alternative standardized local scope mechanism) works.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that can wait, I have lots to learn with what I have on hand. <a href="https://newscrewdriver.com/2023/04/09/magnetometer-service-as-rxjs-practice/">Starting with RxJS and magnetometer</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

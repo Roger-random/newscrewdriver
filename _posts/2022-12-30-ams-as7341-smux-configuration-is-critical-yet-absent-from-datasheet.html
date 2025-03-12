@@ -1,0 +1,81 @@
+---
+layout: post
+title: AMS AS7341 SMUX Configuration is Critical Yet Absent from Datasheet
+date: 2022-12-30 12:30:00.000000000 +00:00
+type: post
+post_id: '34372'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34288'
+  _publicize_job_id: '80107188722'
+  timeline_notification: '1672432223'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683101516
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/30/ams-as7341-smux-configuration-is-critical-yet-absent-from-datasheet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to understand the capabilities of the AMS AS7341 11-channel spectral color sensor and <a href="https://newscrewdriver.com/2022/12/29/notes-on-ams-as7341-core-features/">started orienting myself with its datasheet</a>. The sensor seems quite capable but also quite complex to operate. The biggest barrier on the critical path (I must understand it to do anything with the sensor) is SMUX or sensor multiplexor. The onboard ADC (analog to digital converter) only has 6 channels to serve 11 sensor channels, the SMUX decides which subset of 6 is read at any given time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given their importance, I was quite baffled to find no documentation in the datasheet describing SMUX configuration registers. The closest thing I found was in section 8.4:"<em>ams provides reference code and an application note on how to configure the SMUX</em>." [UPDATE: <a href="https://newscrewdriver.com/2023/02/02/as7341-project-postscript-smux-mystery-solved/">Found the Application Note</a>.] First of all, sample code is not a substitute for proper documentation. Second, I see neither sample code nor SMUX configuration application note on the <a rel="noreferrer noopener" href="https://ams.com/as7341#tab/documents" target="_blank">product's supporting documents section</a>. This is... unsatisfactory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I hope I can resolve that "WTF?" item later, so I set that aside and continued learning about sensor parameters. I started thinking of this sensor as a small digital camera and I could use photography analogies to understand AS7341 parameters. A digital camera has three important variables in every shot:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Aperture size</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Shutter speed controlling duration of exposure</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Film ISO equivalent controlling sensor sensitivity.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>For an AS7341:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>It is a point sensor, so its aperture size is a pinhole camera and not adjustable.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Integration time parameters control duration of exposure, equivalent to shutter speed.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Gain parameter control sensor sensitivity, equivalent to ISO.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Integration time is controlled via parameters ATIME and ASTEP. ATIME is a single register at 0x81, and the entire range of 8-bit values (0-255) are valid. ASTEP is a 16-bit value split across two registers: 0xCA (low byte) and 0xCB (high byte.) 65535 is a reserved value for ASTEP, but 0-65534 are valid. Together they control the ADCfullscale parameter, which is defined as (ATIME+1)*(ASTEP+1) and has this footnote:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>"<em>The maximum ADC count is 65535. Any ATIME/ASTEP field setting resulting in higher ADCfullscale values would result in a full-scale of 65535</em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This I found curious: if the maximum is 65535, the maximum possible representation in 16-bits, why do we need ATIME at all? ASTEP can cover the entire 16 range all by itself rendering ATIME superfluous. There's a story here missing from the datasheet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a starting point for exploration, the datasheet listed 50ms (ATIME 29 ASTEP 599) as the typical integration time. I'll start there and go higher or lower as needed. And as I'm just starting out, I hope I can safely ignore <a href="https://newscrewdriver.com/2022/12/31/additional-ams-as7341-sensor-functionality/">some of the auxiliary features</a> until later.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

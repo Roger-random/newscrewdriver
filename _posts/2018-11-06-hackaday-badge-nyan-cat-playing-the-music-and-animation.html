@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'Hackaday Badge Nyan Cat: Playing the Music And Animation'
+date: 2018-11-06 11:46:35.000000000 +00:00
+type: post
+post_id: '17107'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  timeline_notification: '1541533598'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23988788132'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/06/hackaday-badge-nyan-cat-playing-the-music-and-animation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I found Nyan Cat song sheet music transcribed by a <a href="https://musescore.com/user/179139/scores/170886">musescore.com contributer</a> and translated it into <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge/log/154557-music-syntax-and-guide">scientific pitch notation</a> used by the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> for use on its successor, the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>. Now I have to figure out how to actually play it.</p>
+<p>The first reference was the "play" button on musescore.com. When playing the song, the web page also highlights the current measure being played. This information may be obvious to experienced musicians, but super helpful to newcomers like myself trying to decipher sheet music. With this highlight tool, I could see which measures are played and the patterns in which they repeat to build the Nyan Cat song.</p>
+<p>The second reference was the existing "mario" song on the badge, which showed one way to <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/tune_player.c">organize a song in code</a>. Each measure is in its own array, and music playback consists of making calls to play measures in a particular sequence. I built on top of this idea and built another array <code>nyancat_measures[]</code> around them for convenient indexing. Then a separate array <code>nyancat_sequence[]</code> was created to track the order in which to play the measures. Playing the song would then be a matter of walking the sequence array in order and play each indexed measure as we go.</p>
+<p>And finally - it's time to put the sights and sounds together! The Nyan Cat badge app runs in a tight infinite loop checking the time via the <code>millis()</code> API. The video playback speed is controlled by one variable <code>time_for_next_frame</code> tracking the time for the next frame, and now music playback will be tracked with <code>time_for_audio_update</code>.</p>
+<p>Is this perfect? No.</p>
+<p>Unpacking and rendering a frame of animation takes a few tens of milliseconds. Occasionally this overlaps with a desired music start time, causing a note to end up playing a touch too long. The converse is also true - if music processing is underway at a desired animation frame time, there will be a brief animation glitch.</p>
+<p>But it's good enough for a badge hack.</p>
+<p><img class=" size-full wp-image-17103 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/11/nyancatmusic-v.jpg" alt="NyanCatMusic-V" width="776" height="1095"></p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</p>
+<p></body></html></p>

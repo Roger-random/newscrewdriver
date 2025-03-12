@@ -1,0 +1,65 @@
+---
+layout: post
+title: Using Grafana Despite Chronograf Integration
+date: 2022-02-04 12:30:00.000000000 +00:00
+type: post
+post_id: '28431'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Grafana
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28432'
+  _publicize_job_id: '68571460843'
+  timeline_notification: '1644006616'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/04/using-grafana-despite-chronograf-integration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2022/02/03/initial-lessons-on-esp8266-arduino-sketch-for-influxdb/">learned some valuable lessons</a> making an ESP8266 Arduino log data into InfluxDB, giving me ideas on things to try for future iterations. But for the moment I'm getting data and I want to start playing with it. This means diving into <a rel="noreferrer noopener" href="https://www.influxdata.com/time-series-platform/chronograf/" target="_blank">Chronograf</a>, the visualization charting component of InfluxDB.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to get data around the clock, I've changed my plans for monitoring solar panel voltage and connected the datalogging ESP8266 to the lead-acid battery array instead. This allows me to continue refining and experimenting with data at night when the solar panel generates no power. It also means the unnecessarily high power consumption also means the battery is being unnecessarily drained, but an ESP8266 on full power is still consuming only a small percentage of what my lead-acid battery array can deliver so I'm postponing that problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Chronograf was pretty easy to get up and running. Querying on the tags of my voltage measurement/table, plotting logged voltage values over time. This is without getting distracted by all the nifty toys Chronograf has to offer. Getting a basic graph allows me to explore how to present this data in some sort of dashboard, and here I ran into a problem. There doesn't seem to be a way within Influx to present a Chronograf chart in a read-only manner. I found <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/visualize-data/dashboards/control-dashboard/" target="_blank">no access control on the data visualization dashboard</a>, nor could I find access restriction options at an <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/users/" target="_blank">Influx users level</a>. Not that I could <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/users/create-user/" target="_blank">create new users from the UI</a>...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>Additional users cannot be created in the InfluxDB UI.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>A search for more information online directed me to the Chronograf GitHub repository, where there is <a rel="noreferrer noopener" href="https://github.com/influxdata/chronograf/issues/1661" target="_blank">a reference to a Chronograf "Viewer" role</a>. Unfortunately, that issue is several years old, and I think this feature got renamed sometime in the past few years. Today a search for "viewer role" on InfluxDB Chronograf documentation comes up empty.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only access control I've found in InfluxDB is via API tokens, and I don't know how that helps me when logged in to use Chronograf. The only way I know to utilize API tokens is from outside the system, which means firing up a separate Docker container running another visualization charting software package: <a rel="noreferrer noopener" href="https://grafana.com/" target="_blank">Grafana</a>. Then I could add InfluxDB as a data source with a read-only API token so a Grafana dashboard has no way to modify InfluxDB data. This feels very clumsy and I'm probably making a beginner's mistake somewhere, but it gives me peace of mind to leave Grafana displaying on a screen without worry about my InfluxDB data integrity. This lets me see the data so I know the system is working end-to-end as I go back and <a href="https://newscrewdriver.com/2022/02/05/routing-data-reports-through-mqtt/">rework how data is communicated</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For reference here is my very simple <code>docker-compose.yml</code> for my <a rel="noreferrer noopener" href="https://hub.docker.com/r/grafana/grafana" target="_blank">Grafana</a> instance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>version: "3.8"
+
+services:
+  server:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/var/lib/grafana</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

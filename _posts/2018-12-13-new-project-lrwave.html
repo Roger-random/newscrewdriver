@@ -1,0 +1,34 @@
+---
+layout: post
+title: 'New Project: LRWave'
+date: 2018-12-13 13:30:28.000000000 +00:00
+type: post
+post_id: '17446'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- LRWave
+- Web Audio API
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1544736692'
+  _publicize_job_id: '25403603077'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/12/13/new-project-lrwave/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17448 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/12/lrwave-logo-128.png" alt="LRWave Logo 128" width="128" height="128">And now we switch gears to address something that came up earlier. During my <a href="https://newscrewdriver.com/2018/12/07/crt-test-rig-produced-lissajous-curves/">successful collaboration session with [Emily] to draw Lissajous curves on an old CRT</a>, one of the deflection coils was driven by a stereo amplifier based on signals from an app running on my phone. What I had wanted to try was to drive both deflection axis from the amplifier using different signals sent to the left and right stereo channels. Unfortunately, the <a href="https://play.google.com/store/apps/details?id=com.dmitsoft.tonegenerator">simple tone generator</a> app I had use doesn't allow independent channel control. Well, <em><strong>somebody</strong></em> should write an app to do this, and the best way to make sure the app does what I want is to write it myself. Thus formed a convenient excuse for me to dive back into the software world for my next project.</p>
+<p>In this day and age, the easiest way to distribute a piece of code is to make it a web app of some flavor. The basic way is to create a sound file (MP3 or similar) on the server with the desired wave form, and download to the browser for playback. But this is pretty clunky. It would be great if there's a way to generate and manipulate audio wave forms using JavaScript running on the browser, no server-side code required.</p>
+<p>I started with the <a href="https://www.w3schools.com/html/html5_audio.asp">HTML5 <code>&lt;audio&gt;</code> tag</a>, which would allow implementing the "basic way" above of playing a sound clip generated on the server but not the preferred path. For the more advanced approach to work, there would need to be a browser-side API that are supported by modern browsers. Which implies a W3C standard of some sort. I started dreaming up technical terms that might let me find such an API, and after a few searches with fancy words like "frequency generation API" I found the much simpler named <a href="https://www.w3.org/TR/webaudio/">Web Audio API</a>. Double-checking on the "Can I Use" reference site, we can see <a href="https://caniuse.com/#search=web%20audio%20API">it's widely implemented enough</a> to be interesting.</p>
+<p>Since it's a simple utility, it has a simple utilitarian name of "<a href="https://github.com/Roger-random/lrwave">LRWave</a>." Just something to generate different wave forms to be sent out to left and right channels. Following the simplicity of the app, its logo is two instances of the <a href="https://material.io/tools/icons/?icon=volume_up&amp;style=baseline">Google Material speaker icon</a> facing left and right. In between them are two different waves from a <a href="https://commons.wikimedia.org/wiki/File:Sine_waves_different_frequencies.svg">public domain SVG file</a> signifying the intent that it sends different waves to each speaker.</body></html></p>

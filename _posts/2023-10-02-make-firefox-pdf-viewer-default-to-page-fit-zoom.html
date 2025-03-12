@@ -1,0 +1,83 @@
+---
+layout: post
+title: Make Firefox PDF Viewer Default to Page Fit Zoom
+date: 2023-10-02 12:30:00.000000000 +00:00
+type: post
+post_id: '39311'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39397'
+  wordads_ufa: s:wpcom-ufa-v4:1696387024
+  _publicize_job_id: '88138939578'
+  timeline_notification: '1696275028'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/02/make-firefox-pdf-viewer-default-to-page-fit-zoom/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One of the reasons I started looking at Angular web development framework a few years ago was because it was backed by Google and I saw that as a positive thing at the time. One of the reasons <a href="https://newscrewdriver.com/2023/10/01/window-shopping-marko-js/">I looked at Marko web development framework</a> now is because I no longer see Google backing as a positive thing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I remember Google when it was a young and idealistic startup and today's mega corporation <a href="https://pluralistic.net/2023/10/03/not-feeling-lucky/#fundamental-laws-of-economics" target="_blank" rel="noreferrer noopener">has strayed quite far from its "Don't be evil" origins</a>. A few years ago I would enthusiastically add new Google products to my life. Today I am skeptical of new Google launches, due to fiascos like <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Google_Stadia" target="_blank">Stadia</a> and disruptions caused by their <a href="https://killedbygoogle.com/">historical tendencies to kill products</a>. And of the Google products I'm already using, I keep my eyes open for alternatives that might help me reduce Google's grip on my digital life.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As part of this transition, I'm working to reduce reliance on Google's Chrome browser. I have Firefox installed but remembering to use it instead of Chrome requires breaking longtime habits. My latest motivation to do so is <a rel="noreferrer noopener" href="https://arstechnica.com/gadgets/2023/09/googles-widely-opposed-ad-platform-the-privacy-sandbox-launches-in-chrome/" target="_blank">Google's aggressive push for additional user tracking</a> to increase its advertising revenue, and maybe this time my switchover will stick. I plan to keep Chrome around to run Google-specific properties like Gmail and YouTube (since Google is tracking me there anyway) but use Firefox for everything else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So far there's nothing in Firefox that made me regret switching, and I've found a feature that might make the switch worthwhile all on its own: I can make Firefox PDF viewer default to "Page Fit"!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I remember when downloading Adobe's free Acrobat reader was a standard part of setting up a new machine. Today, PDF's ubiquity meant browsers tend to include PDF viewing capability. I'm tired of Adobe trying sneaky things to generate revenue from free Acrobat reader, so I am happy to skip that download. But there was one little annoyance: I prefer to read my PDF with each page zoomed to fit the window. I know how to set that default on Acrobat reader but that's not how it opens by default in a browser's integrated PDF viewer window.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I never found a way to do what I want in Chrome's PDF viewer. Microsoft's Chromium-based Edge browser is a little better: there's a keyboard shortcut Control + "\"  to change zoom setting. I got in the habit of pressing Control+"\" twice whenever I opened a PDF in Edge, which zooms to page, but it would be nice if I didn't even have to do that. A web search found confirmation <a rel="noreferrer noopener" href="https://answers.microsoft.com/en-us/microsoftedge/forum/all/zoom-setting-for-pdf-viewer-in-edge/d5682340-1137-478e-9b8b-7e373717251a" target="_blank">this was not possible</a> in Edge.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By default, Firefox opens PDF in "Automatic Zoom" mode, which isn't what I want. I searched for a Firefox equivalent to Control+"\" in Edge but I found something better: <a rel="noreferrer noopener" href="https://support.mozilla.org/en-US/questions/1074524" target="_blank">this support page</a> with instructions on how to change that default, it even had a link to <a href="https://github.com/mozilla/pdf.js/pull/3850">the GitHub pull request </a>that implemented the feature. Sweet!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In case those links go dead in the future, here's the summary:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Type "<code>about:config</code>" into Firefox address bar</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>We will see a warning screen and we have to decide to accept the risk and continue.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>In the search box, type "<code>pdfjs.defaultZoomValue</code>"</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Click the pencil to edit.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Type in <code>page-fit</code>. (Or, if that's not personal preference, <em>one</em> of the following supported options: <code>auto</code>, <code>page-actual</code>, <code>page-fit</code> or <code>page-width</code>.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Click the check icon to save.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now Firefox PDF viewer will open with my preferred zoom setting, no need to press Control+"\" twice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If Google had left Chrome alone as a consumer-friendly browser, I don't know if Firefox PDF default zoom capability would have enticed me to switch. However, now that Google is getting greedy and I'm starting to use Firefox, this feature is definitely one that will make me want to stay with Firefox. In the meantime, another Google "revenue enhancement" policy change motivated me to start <a href="https://newscrewdriver.com/2023/10/03/dusting-off-canon-eos-m100/">using a real camera again</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

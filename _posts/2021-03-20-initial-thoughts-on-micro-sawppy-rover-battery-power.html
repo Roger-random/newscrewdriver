@@ -1,0 +1,45 @@
+---
+layout: post
+title: Initial Thoughts on Micro Sawppy Rover Battery Power
+date: 2021-03-20 12:30:00.000000000 +00:00
+type: post
+post_id: '25682'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25684'
+  timeline_notification: '1616268607'
+  _publicize_job_id: '56179288881'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/20/initial-thoughts-on-micro-sawppy-rover-battery-power/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Wiring up <a href="https://newscrewdriver.com/2021/03/19/cardboard-rover-testbed-wheels-turning-and-steering/">all the motorized components on my cardboard rover testbed</a> exposed a few minor problems that were easily fixed, but  exposed battery power as a headache I'll have to deal with. <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/06/powering-sawppy-the-rover/" target="_blank">Sawppy Rover V1</a> and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/09/micro-sawppy-beta-1-electronics/" target="_blank">Micro Sawppy Beta 1</a> both used lithium-polymer battery packs from the world of remote-control hobbies. They are lightweight and powerful, but they are also sensitive to mechanical damage and occasionally react very badly to abuse. I have ambition to make Micro Sawppy a small beginner-friendly rover design, so I didn't want people to be intimidated by all the dire warning surrounding proper LiPo care and feeding. Also, while lithium battery costs have dramatically dropped over the past years, they are still relatively expensive and I wanted to keep Micro Sawppy affordable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which was why for my cardboard rover testbed, I started with a pack of four AA alkaline batteries. Alkaline AAs are common, inexpensive, and tolerant of abuse. Four of them in series deliver a maximum of six volts, aligning with the maximum rated voltage for TT gearmotors and SG90 servos I used on Micro Sawppy. Which is why a four-pack of AA is a very popular way to power <a rel="noreferrer noopener" href="https://www.adafruit.com/product/3244" target="_blank">small robot kits</a> using those components. The difference is that they usually only have a pair of TT gearmotors, whereas Micro Sawppy has six. They also have fewer than four SG90 micro servos like those handling corner steering here. With all of these components, my cardboard rover has proved to be too much work for four AAs. Dragging its output voltage below four volts and triggering a brownout reset of the ESP32 brain.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My next idea on a way out of this predicament is to use a commodity USB power bank. They produce nominal 5V for charging USB devices. They are usually built around lithium batteries, but they are a self-enclosed device with a durable shell and protective circuitry. Making them a beginner-friendly safe way to incorporate lithium battery power. Officially USB1 only allowed devices to draw half an amp at five volts, which is not nearly enough for a rover. But newer USB power banks advertise higher power levels, some of them communicate <a rel="noreferrer noopener" href="https://www.speedguide.net/faq/how-do-usb-devices-draw-more-than-05-amps-without-414" target="_blank">using a secret handshake</a> to indicate this capability. I had a few different power banks on hand, advertising maximum output of up to 2A. Unfortunately none of those were able to sustain power delivery for my cardboard box rover, either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of these power sources advertised power ranging from 5V but none of them could sustain that under the load of Micro Sawppy motors. I then returned to the idea of using alkaline AA batteries and thought... what if I added one battery, for five AA batteries in series? The answer is: some <a href="https://newscrewdriver.com/2021/03/21/aftermath-of-exceeding-sg90-micro-servo-six-volt-maximum/">micro servos get <em>very </em>unhappy and quit</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

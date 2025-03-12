@@ -1,0 +1,41 @@
+---
+layout: post
+title: No Budibase Support For CSV Data Relationships
+date: 2024-08-27 12:30:00.000000000 +00:00
+type: post
+post_id: '44932'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-27 08:43:04'
+  firehose_sent: '1724787029'
+  _publicize_job_id: '97357073322'
+  timeline_notification: '1724787031'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/27/no-budibase-support-for-csv-data-relationships/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to migrate my personal finance tracking from a spreadsheet to a database. I knew my spreadsheet had accumulated errors over the years, but I didn't really know how big of a mess it was. Not until I tried to perform database normalization where I <a href="https://newscrewdriver.com/2024/08/26/jupyter-notebook-for-spreadsheet-clean-up/">brought up a Jupyter notebook</a> to quickly iterate through this side quest. It handled all the repetitious fixes, some search/replace rules to fix inconsistency, and split the data into multiple tables as per normalization rules. While slicing the data up for multiple tables, my code is also responsible for generating unique identification numbers in a table (primary keys) to be used in references from other tables (foreign keys).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had used <a href="https://docs.python.org/3/library/csv.html">Python default CSV (comma-separated value) library</a> to read data exported from Excel into dictionary objects. I performed my error correction and data normalization with Python dictionaries and at the end I wrote those processed dictionaries back out as CSV files. One file per dictionary representing one database table. I thought I was in good shape as I went into Budibase data import menu to upload these CSV into the <a href="https://docs.budibase.com/docs/budibasedb">Budibase built-in database</a>. The file uploads were uneventful, but then I tried to define relationships between those tables and got stuck. It seems Budibase does not allow relationships to be defined for tables of data uploaded from CSV files, which feels like an odd oversight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Defining relationships between tables is definitely supported in Budibase. Almost every supported data source type has a "Define existing relationships" section. There's one for <a href="https://docs.budibase.com/docs/mysql-mariadb#define-existing-relationships">MySQL/MariaDB</a>, there's a section for <a href="https://docs.budibase.com/docs/oracle#defining-relationships">Oracle</a>, another for <a href="https://docs.budibase.com/docs/ms-sql-server#define-existing-relationships">Microsoft SQL Server</a>, and a section for <a href="https://docs.budibase.com/docs/postgresql#defining-relationships">PostgreSQL</a>. There is no such section for <a href="https://docs.budibase.com/docs/csv-import">CSV Import</a>, but I had thought that was merely a documentation omission. Surely there is a way to define existing relationships between tables! But the option is absent from Budibase user interface, so it wasn't an omission after all. I probably should have tested this assumption earlier, before I put in all the work for data cleanup and normalization. Now I have to figure out some other way forward. Next candidate: <a href="https://newscrewdriver.com/2024/08/28/no-budibase-support-for-imported-nested-json/">JSON data import</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'FreeCAD Notes: Distance'
+date: 2023-09-08 12:30:00.000000000 +00:00
+type: post
+post_id: '38855'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- freecad
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '38861'
+  timeline_notification: '1694201448'
+  wordads_ufa: u:wpcom-ufa-v4:1694201570
+  _publicize_job_id: '87394694635'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/08/freecad-notes-distance/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm on my FreeCAD learning journey and I've had to change some of my Onshape habits. For sketching, I was able to adapt from Onshape's "Midpoint" constraint to FreeCAD's "Constrain Symmetrical" once I figured out <a href="https://newscrewdriver.com/2023/09/07/freecad-notes-midpoint/">a workaround to avoid redundancy errors with FreeCAD's implicit constraints</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm generally in favor of having one way to do something instead of offering multiple similar ways, so I'd be OK if it was a deliberate decision not to add a dedicated "Midpoint" constraint when "Constrain Symmetrical" is functionally equivalent. But I doubt it, because that's not been the typical FreeCAD pattern. It already has two confusingly similar workbenches "Part" and "<a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/07/28/freecad-notes-part-design-first-impressions/" target="_blank">Part Design</a>", and multiple competing workbenches for assemblies. (It's up to "Assembly3" and "Assembly4" now.) And right on the sketching constraints toolbar, where a "Midpoint" may have been deemed redundant, we have three separate tools to denote linear dimension: "Constrain horizontal distance", "Constrain vertical distance", and "Constrain distance."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":38861,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/freecad-vertical-horizontal-distance-constraints.jpg?w=1024" alt="" class="wp-image-38861"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each of these have valid use, because these distance constraints are driven by project requirements that may dictate we measure horizontally, measure vertically, or measure the direct line distance. Once I saw these three options listed side by side I immediately understood why they were there, but I was surprised because Onshape handled the problem differently.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In Onshape, there's just a single dimension operation. In my experience it is usually a direct line measurement equivalent to FreeCAD's "Constrain distance". But sometimes I do need to constrain distance along a horizontal or vertical axis. In these cases, Onshape lets me drag the distance number away from the object. If I drag far enough away horizontally, it becomes a vertical distance constraint. The number is recalculated accordingly, and I can edit it afterwards as desired. A horizontal distance constraint is done similarly, by dragging the number away from the object either above or below vertically. This heuristic typically works well, but can be frustrating for features at a shallow angle: I would have to drag pretty far before Onshape understood I don't want the shallow angle, I want horizontal/vertical.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that experience in mind, I think I might come to prefer having three distinct and explicit methods to constrain a distance despite my typical preference to have a single way to do something. The only downsides with this approach are a bit of extra screen real estate taken up by the toolbar, and the fact I'll eventually have to memorize three different keyboard shortcuts to become fluent at FreeCAD.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

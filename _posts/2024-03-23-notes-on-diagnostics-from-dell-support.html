@@ -1,0 +1,73 @@
+---
+layout: post
+title: Notes On Diagnostics From Dell Support
+date: 2024-03-23 12:30:00.000000000 +00:00
+type: post
+post_id: '42650'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37171'
+  firehose_sent: '1711222207'
+  _publicize_job_id: '92968081194'
+  timeline_notification: '1711222209'
+  wordads_ufa: s:wpcom-ufa-v4:1711324172
+  _elasticsearch_data_sharing_indexed_on: '2024-03-24 23:51:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/03/23/notes-on-diagnostics-from-dell-support/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My Dell XPS 8950 has started exhibited unpredictable bug checks. (Blue Screen of Death) <a href="https://newscrewdriver.com/2024/03/22/notes-on-dell-supportassist/">I poked around Dell's SupportAssist software</a> and found a lot of promising troubleshooting tools, but none of them fixed it. Out of ideas on software fixes, and unwilling to void the warranty by modifying hardware, I used SupportAssist text chat feature to open an official trouble ticket with Dell technical support. They eventually fixed the issue, but it took a few weeks to get there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As expected, they wanted to try the easy things first. This meant repeating many SupportAssist tools which I already knew would be doomed to fail. And Windows tools (like restore points) that did no better. Since hardware diagnostics tests passed, their suspicion moved to operating system corruption. This involved trying a lot of procedures I already knew about, and have already run, but they want to do it again. There were a few bits of novelty:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>I had forgotten the <a href="https://www.dell.com/support/kbdoc/en-us/000178177/how-to-use-windows-reliability-monitor-to-identify-software-issues">Windows Reliability History</a> tool existed.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Run SFC (System File Checker) which was a tool <a href="https://newscrewdriver.com/2022/08/16/windows-sfc-system-file-checker-revived-explorer/">I've used before to save my bacon</a> but not this time.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Perform a "<a href="https://dell.to/4aaWL0S">Windows Clean Boot</a>" which was a procedure I had never seen before.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Disable services associated with "Killer Internet" and its "xTend" features. I had always suspected they were marketing items that did more harm than good, this step reinforced my suspicion.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Run <a href="https://dell.to/3Gygz0T">a script to collect system logs</a> for submission. This was weird, it seems like a capability that should be a part of SupportAssist's tool box.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The <a href="https://dell.to/46WS3B4">procedure to obtain "Windows Installation Date"</a> obtained a date about a year before I even bought this computer. Not sure what that was about.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Throughout this arduous process,I was instructed to reinstall Windows three separate times in three different ways: first with SupportAssist's OS reinstall option, then Windows' built in recovery option, finally a clean install via an USB drive created with <a href="https://www.microsoft.com/en-us/software-download/windows11">Microsoft's Media Creation Tool</a>. This is on top of the re-installation I had already performed before contacting Dell support. With all this practice, I got <em>really good </em>at Windows setup!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each time I reinstalled Windows, I had to reinstall SupportAssist. Clicking on text chat created a new chat session. Which meant I was sent to someone expecting to open a new ticket and I'd have to spend time to get them straightened out with my existing ticket number.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With each bug check, I get a crash memory dump to prove their latest idea hadn't resolved my issue. Sadly Dell's support ticket web interface allowed only a maximum of five attachments. I quickly reached my limit and additional memory dumps had to submitted by sharing files via my Microsoft OneDrive and Google Drive accounts and sending a link via text chat. This was... sub-optimal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Weeks later, I've exhausted all their scripted solutions and finally granted an escalation to senior support technicians. They reviewed my ticket and came to the conclusion I hoped they would: some <a href="https://newscrewdriver.com/2024/03/24/dell-xps-8950-components-replaced-under-warranty/">hardware components would need to be replaced</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

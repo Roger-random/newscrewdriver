@@ -1,0 +1,90 @@
+---
+layout: post
+title: Move Calculation Off Microcontroller to Node-RED
+date: 2022-02-06 12:30:00.000000000 +00:00
+type: post
+post_id: '28473'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- InfluxDB
+- MQTT
+- Node-RED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22266'
+  _publicize_job_id: '68647833873'
+  timeline_notification: '1644179462'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/06/move-calculation-off-microcontroller-to-node-red/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I <a href="https://newscrewdriver.com/2022/02/05/routing-data-reports-through-mqtt/">added MQTT</a> for distributing data, I wanted to change how calculations were done. Using a microcontroller to read a voltage requires doing math somewhere along the line. The ADC (analog-to-digital) peripheral on a microcontroller will return an integer value suitable for hardware registers, and we have to convert that to a floating-point voltage value that makes sense to me. In my first draft ESP8266 voltage measurement node, getting this conversion right was an iterative process:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Take an ADC reading and convert to voltage using a conversion multiplier.</li>
+<li>Comparing against voltage reading from my multimeter.</li>
+<li>Calculate a better conversion factor.</li>
+<li>Reflash ESP8266 with Arduino sketch that includes the new conversion factor.</li>
+<li>Repeat.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The ESP8266 ADC is pretty noisy, with probable contributions from other things like temperature variations. So there was no single right conversion factor value, it varies through time. The best I can hope for is a pretty-close average tradeoff. While looking for that value, the loop of recalculating and uploading got to be pretty repetitious. I want to move that conversion work off of the Arduino so it can be more easily refined and updated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One option is to move that work to the data consumption side. This means logging raw ADC values into InfluxDB and whoever queries that data is responsible for conversion. This preserves original unmodified measurement data allowing the consumers to be smart about dealing with jitter and such. I like that idea but not ready to dive into that sort of data analysis just yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To address both of these points, I pulled Node-RED into the mix. I've played with this flow computing tool earlier and I think my current project aligns well with the strengths of Node-RED. The voltage conversion process, specifically, is a type of data transformation people do so often in Node-RED that there is <a rel="noreferrer noopener" href="https://cookbook.nodered.org/basic/map-between-different-number-ranges" target="_blank">a standard node <code>Range </code>for this purpose</a>. Performing voltage conversion in a Range node means I could fine-tune the conversion and update by clicking "Deploy" which is much less cumbersome than recompiling and uploading an Arduino sketch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Node-RED also allows me to carry both the original and converted data through the flow. I use a <code>Change</code> node to save original ADC value to another property before using <code>Range </code>to convert ADC value to voltage. Now I have a Node-RED message with both original and converted data. Now I need to put that into the database, and I searched the public Node-RED library for "InfluxDB" and I decided to try <a rel="noreferrer noopener" href="https://flows.nodered.org/node/node-red-contrib-stackhero-influxdb-v2" target="_blank">node-red-contrib-stackhero-influxdb-v2</a> first since it explicitly supported version 2 of InfluxDB. I'm storing the raw ADC values now even though I'm not doing anything with it yet. The idea is to keep track so in the future I can explore voltage conversion on the data consumption side.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To test this new infrastructure design using MQTT and Node-RED, I'll pull <a href="https://newscrewdriver.com/2022/02/07/switching-to-esp32-for-next-exercise/">an ESP32 development board</a> out of my pile of parts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is my Node-RED function to package data in the format expected by node-red-contrib-stackhero-influxdb-v2 InfluxDB write node. Input data: <code>msg.raw_ADC</code> is the original ADC value, and <code>msg.payload</code> the voltage value converted by Range node:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>var fields = {V: msg.payload, ADC: msg.raw_ADC};
+var tags = {source: 'batt_monitor_02',location: 'lead_acid'};
+var point = {measurement: 'voltage',
+      tags: tags,
+      fields: fields};
+var root = {data: [point]};
+msg.payload = root;
+return msg;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My simple <code>docker-compose.yml</code> for running Node-RED:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>version: "3.8"
+
+services:
+  nodered:
+    image: nodered/node-red:latest
+    restart: unless-stopped
+    ports:
+      - 1880:1880
+    volumes:
+      - ./data:/data</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

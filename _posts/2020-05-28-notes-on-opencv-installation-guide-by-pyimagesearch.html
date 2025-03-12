@@ -1,0 +1,48 @@
+---
+layout: post
+title: Notes on OpenCV Installation Guide by PyImageSearch
+date: 2020-05-28 12:30:31.000000000 +00:00
+type: post
+post_id: '21602'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- OpenCV
+- Python
+meta:
+  _thumbnail_id: '21606'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_f63f5c176939f8fac256242960102003: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here&#39;s
+    an awesome collection of well-written material for learning TONS of computer vision
+    topics and methods from <a href="https://twitter.com/PyImageSearch?ref_src=twsrc%5Etfw">@PyImageSearch</a>!
+    <a href="https://t.co/4suRYheiaD">https://t.co/4suRYheiaD</a></p>&mdash; Edje
+    Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1181928508723011584?ref_src=twsrc%5Etfw">October
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '44808671327'
+  timeline_notification: '1590694257'
+  _oembed_time_f63f5c176939f8fac256242960102003: '1590696040'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/28/notes-on-opencv-installation-guide-by-pyimagesearch/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once I <a href="https://newscrewdriver.com/2020/05/27/trying-opencv-getting-started-guide-by-pyimagesearch/">decided to try</a> PyImageSearch's <a href="https://www.pyimagesearch.com/start-here/">Getting Started guide</a>, the obvious step #1 is about installing OpenCV. Like many popular open source projects, there are two ways to get it on a computer system: (1) use a package manager, or (2) build from source code. Since the focus here is using OpenCV from Python, the package manager of choice is pip.</p>
+<p>Packages that can be installed via pip are not necessarily done by the original authors of a project. If it's popular enough, someone will take on the task of building from open source code and make those built binaries available to others, and PyImageSearch <em><a href="https://www.pyimagesearch.com/2018/09/19/pip-install-opencv/">pip install opencv</a></em> guide says that is indeed the case here for OpenCV.</p>
+<p>I appreciated the explanation of differences between the four different packages, a result of two different yes/no options: headless or not, and <em>contrib</em> modules or not. The headless option is appropriate for machines used strictly for processing and do not need to display any visual interface, and <em>contrib</em> describes a set of modules that were contributed by people outside of core OpenCV team. These have grown popular enough to be offered as a packaged bundle.</p>
+<p>What's even more useful was an explanation of what was <em>not</em> in any of these packages available via pip: modules that implement patented algorithms. These "non-free" components are commonly treated as part of OpenCV, but are not distributed in compiled binary form. We may build them from source code for exploration, but any binary distribution (for example, use in commercial software product) requires dealing with lawyers representing owners of those patents.</p>
+<p>Which brings us to the less easy part of the OpenCV installation guide: building from source code. PyImageSearch offers instructions to do so on <a href="https://www.pyimagesearch.com/2018/08/17/install-opencv-4-on-macos/">macOS</a>, <a href="https://www.pyimagesearch.com/2018/08/15/how-to-install-opencv-4-on-ubuntu/">Ubuntu</a>, and <a href="https://www.pyimagesearch.com/2019/09/16/install-opencv-4-on-raspberry-pi-4-and-raspbian-buster/">Raspbian for a Raspberry Pi</a>. The author specifically does <strong><em>not</em> </strong>support Windows as a platform for learning OpenCV. If I want to work in Windows, I'm on my own.</p>
+<p>Since I'm just starting out, I'm going to choose the easy method of using pre-built binaries. Like most Python tutorials, PyImageSearch highly recommends a Python environment manager and includes instructions for <code>virtualenv</code>. My Windows machine already had Anaconda installed, so I used that instead to install <code>opencv-contrib-python</code> in an environment created for <a href="https://newscrewdriver.com/2020/05/29/notes-on-learn-opencv-by-example-by-pyimagesearch/">this first phase of OpenCV exploration</a>.</p>
+<p></body></html></p>

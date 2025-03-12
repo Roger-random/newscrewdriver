@@ -1,0 +1,55 @@
+---
+layout: post
+title: First Step In Material Design Adventure Foiled By Ubuntu's Default Old NodeJS
+date: 2018-12-14 13:30:53.000000000 +00:00
+type: post
+post_id: '17440'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- LRWave
+- MDC Web
+meta:
+  _oembed_793a182ebecbc627c03638cfc8ef1d17: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '25448996625'
+  timeline_notification: '1544823186'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/12/14/first-step-in-material-design-adventure-foiled-by-ubuntus-default-old-nodejs/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>With the decision to tackle a new web-based software project, the next decision is what web-based UI framework to build the app in. My last web-based software project was to <a href="https://newscrewdriver.com/2018/04/30/a-fresh-start-for-sgvhak-rover-ui/">build an UI for SGVHAK rover</a> at the beginning of the year. In the fast-paced world of front-end web development, that's ancient history.</p>
+<p>The rover UI project used <a href="https://materializecss.com/">Materialize CSS</a> library to create an interface that follows Google's <a href="https://material.io/">Material Design</a> guidelines. At the time, Google offered web developers a library called "Material Design Lite" but with the caveat they're revamping the entire web development experience. There was little point in climbing the learning curve for a deprecated library like MDL. As Materialize CSS was close to using <a href="https://getbootstrap.com/">Bootstrap</a>, a known quantity, the choice was appropriate for the situation.</p>
+<p>Now, at the end of the year, we have Google's promised revamp in the form of <a href="https://material.io/develop/web/">Material Design Components for Web</a>. I am still a fan of Material so my signal generator utility project LRWave will be my learning project to use Google's new library.</p>
+<p>Diving right into the <a href="https://material.io/develop/web/docs/getting-started/">Getting Started Guide</a> during a local <a href="https://www.meetup.com/LearnTeachCode/events/nxnwmqyxqbmb/">coding meetup</a>, I got as far as the end of "Step 1" executing <code>npm start</code> when I ran into my first error :</p>
+<blockquote><p>
+<code>ERROR in ./app.scss</code><br />
+<code>    Module build failed: SyntaxError: Unexpected token {</code><br />
+<code>        at exports.runInThisContext (vm.js:53:16)</code><br />
+<code>        at Module._compile (module.js:374:25)</code><br />
+<code>        at Object.Module._extensions..js (module.js:417:10)</code><br />
+<code>        at Module.load (module.js:344:32)</code><br />
+<code>        at Function.Module._load (module.js:301:12)</code><br />
+<code>        at Module.require (module.js:354:17)</code><br />
+<code>        at require (internal/module.js:12:17)</code></p>
+<p>[...]</p></blockquote>
+<p><img class=" size-full wp-image-17445 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/12/webpack-error.png" alt="webpack error" width="1124" height="833"></p>
+<p>Since <code>app.scss</code> was only three lines for Step 1, it was trivial to verify there's no typo to account for an unexpected "{". A web search for this error message implicated an out-of-date installation of NodeJS, which triggered a memory from when I first started experimenting with NodeJS on my installation of Ubuntu 16.04. When trying to run <code>node</code> at the command line, a fresh install of Ubuntu 16.04 would tell the user:</p>
+<blockquote><p>
+<code>The program 'node' is currently not installed. You can install it by typing:</code><br />
+<code>sudo apt install nodejs-legacy</code>
+</p></blockquote>
+<p>That suffix "legacy" is a pretty good hint this thing is old. Running <code>node --version</code> returned v4.2.6. Checking the <a href="https://nodejs.org/en/">Node JS website</a>, today's LTS is v10.14.2 and latest is 11.4.0. So yes, 4.2.6 is super old! Fortunately there's a pointer to a <a href="https://github.com/nodesource/distributions/blob/master/README.md">more updated set of binaries maintained by Nodesource</a> that plays well with Ubuntu's built-in package management system. Following those directions automatically uninstalled legacy binaries and replaced them with up-to-date versions.</p>
+<p>Once I'm running on non-ancient binaries, I could continue following MDC Web's Getting Started guide on my computer. But this experience motivated me to look into a different option...</body></html></p>

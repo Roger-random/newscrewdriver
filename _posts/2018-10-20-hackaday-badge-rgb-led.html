@@ -1,0 +1,43 @@
+---
+layout: post
+title: Hackaday Badge RGB LED
+date: 2018-10-20 17:59:19.000000000 +00:00
+type: post
+post_id: '17019'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _oembed_94656feda18c5fe51798e3d77662bff9: "{{unknown}}"
+  timeline_notification: '1540083561'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23411002730'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/20/hackaday-badge-rgb-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The canonical introductory activity in microcontroller programming is to blink a LED. The <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> makes this easy because there's already an LED on board. Actually three LEDs - a red, a green, and a blue inside a single integrated unit.</p>
+<p><img class=" size-full wp-image-17021 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/badge-rgb-led.jpg" alt="Badge RGB LED" width="624" height="492"></p>
+<p>To make this even easier to access, this LED can be commanded from the onboard BASIC interpreter enhanced with badge-specific command <code>led</code>. It makes the LED blinking activity nearly trivial. This is a great way to get people started in a way that is as non-intimidating as possible</p>
+<p>The custom <code>led</code> command in the BASIC interpreter is handled by the function <code>led_statement</code> inside <code><a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/basic/ubasic.c">ubasic.c</a></code>, which calls the function <code>set_led</code> inside <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.c"><code>hw.c</code>.</a> Custom user programs written in C can call <code>set_led</code> as well, or copy code from <code>set_led</code> to manipulate LED hardware directly. They set the state of several predefined PIC hardware pins. In <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/hw.h"><code>hw.h</code></a>, we see the following</p>
+<blockquote><p>
+<code>#define LED_R LATDbits.LATD6</code><br />
+<code>#define LED_G LATFbits.LATF1</code><br />
+<code>#define LED_B LATDbits.LATD7</code>
+</p></blockquote>
+<p><img class="size-full wp-image-17020 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/belgrade-badge-leds.png" alt="Belgrade Badge LEDs" width="197" height="191"></p>
+<p>These pins match up with what we see <a href="https://hackaday.io/project/80627/gallery#516d5bd730684b8318e2fa9119565b8f">on the schematic</a>, wired to three pins on the controller each in series with a current-limiting resistor and the corresponding LED.</p>
+<p>So if someone wants to blink the LED on/off, they are all set. The infrastructure exists to do so from either BASIC or from C.</p>
+<p>However, if they want to do something more sophisticated than just on or off - such as dimming, pulsing, or mixing the three LEDs to create custom colors, the existing infrastructure is not enough. In order to create a light intensity level somewhere between full on and full off, additional code will be required. The PIC is perfectly capable of creating this pulse-width modulated (PWM) activity on an output pin, it'd take just a bit of code, and should be one of the easier custom coding project to tackle.</body></html></p>

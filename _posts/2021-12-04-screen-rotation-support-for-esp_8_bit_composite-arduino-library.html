@@ -1,0 +1,73 @@
+---
+layout: post
+title: Screen Rotation Support for ESP_8_BIT_Composite Arduino Library
+date: 2021-12-04 12:30:00.000000000 +00:00
+type: post
+post_id: '27732'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Composite Video
+- CRT
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27729'
+  timeline_notification: '1638649812'
+  _publicize_job_id: '66128312870'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/04/screen-rotation-support-for-esp_8_bit_composite-arduino-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've had my head buried in <a href="https://newscrewdriver.com/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/">modern LED-illuminated digital panels</a>, so it was a good change of pace to switch gears to old school CRTs for a bit. Several months have passed since I <a href="https://newscrewdriver.com/2021/05/25/cat-and-galactic-squid/">added animated GIF support</a> to my <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/libraries/esp_8_bit-color-composite-video-library/" target="_blank">ESP_8_BIT_Composite video out Arduino library</a> for ESP32 microcontrollers. I opened up the discussion forum option for my GitHub repository and a few items have been raised, sadly I haven't been able to fulfill the requests ranging from NTSC-J support (I don't have a corresponding TV) to higher resolutions (I don't know how). But one has just dropped in my lap, and it was something I can do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/21" target="_blank">Issue #21</a> was a request for the library to implement <a rel="noreferrer noopener" href="https://learn.adafruit.com/adafruit-gfx-graphics-library/rotating-the-display" target="_blank">Adafruit GFX capability to rotate display orientation</a>. When I first looked at rotation, I had naively thought Adafruit GFX would handle that above <code>drawPixel()</code> level and I won't need to write any logic for it. This turned out to be wrong: my code was expected to check rotation and alter coordinate space accordingly. I looked at the big CRT TV I had sitting on my workbench and decided I wasn't going to sit that beast on its side, and then promptly forgot about it until now. Whoops.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking into Adafruit's generic implementation of <code>drawPixel()</code>, I saw a code fragment that I could copy:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  int16_t t;
+  switch (rotation) {
+  case 1:
+    t = x;
+    x = WIDTH - 1 - y;
+    y = t;
+    break;
+  case 2:
+    x = WIDTH - 1 - x;
+    y = HEIGHT - 1 - y;
+    break;
+  case 3:
+    t = x;
+    x = y;
+    y = HEIGHT - 1 - t;
+    break;
+  }</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting this into my own <code>drawPixel()</code> was a pretty straightforward way to handle rotated orientations. But I had overridden several other methods for the sake of performance, and they needed to be adapted as well. I had <code>drawFastVLine</code>, <code>drawFastHLine</code>, and <code>fillRect</code>, each optimized for their specific scenario with minimal overhead. But now the meaning of a vertical or horizontal line has become ambiguous.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking over at what it would take to generalize the vertical or horizontal line drawing code, I realized they have become much like <code>fillRect()</code>. So instead of three different functions, I only need to make <code>fillRect()</code> rotation aware. Then my "fast vertical line" routine can call into <code>fillRect()</code> with a width of one, and similarly my "fast horizontal line" routine calls into <code>fillRect()</code> with a height of one. This invokes some extra computing overhead relative to before, but now the library is rotation aware and I have less code to maintain. A tradeoff I'm willing to make.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While testing behavior of this new code, I found that Adafruit GFX library uses different calls when rendering text. Text size of one uses <code>drawPixel()</code> for single-pixel manipulation. For text sizes larger than one, they switch to using <code>fillRect()</code> to draw more of the screen at a time. I wrote a program to print text at all four orientations, each at three different sizes, to exercise both code paths. It has been added to the collection of code examples as <code>GFX_RotatedText</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Satisfied that my library now supports screen rotation, I <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/releases/tag/v1.3.0" target="_blank">published it as version 1.3.0</a>. But that turned out to be incomplete, as I <a href="https://newscrewdriver.com/2021/12/05/arduino-library-versioning-for-esp_8_bit_composite/">neglected to update the file <code>library.properties</code></a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

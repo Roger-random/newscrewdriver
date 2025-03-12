@@ -1,0 +1,80 @@
+---
+layout: post
+title: LED Strobing to Fan Speed Signal
+date: 2022-09-01 12:30:00.000000000 +00:00
+type: post
+post_id: '32345'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- Cooling Fan
+- ESP8266
+- Fan Strobe LED
+- LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32359'
+  _oembed_0de33977e8af28956e9f7fee83896a2f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Some
+    cooling fans have a speed-reporting wire. Briefly flashing LEDs based on that
+    tachometer signal creates a strobe light. <a href="https://t.co/kpRmdyNmVE">pic.twitter.com/kpRmdyNmVE</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1565467668282347521?ref_src=twsrc%5Etfw">September
+    1, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '76320828749'
+  timeline_notification: '1662060607'
+  _oembed_1e083e1465812d4a73b77ec4bc4144e9: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Some
+    cooling fans have a speed-reporting wire. Briefly flashing LEDs based on that
+    tachometer signal creates a strobe light. <a href="https://t.co/kpRmdyNmVE">pic.twitter.com/kpRmdyNmVE</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1565467668282347521?ref_src=twsrc%5Etfw">September
+    1, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_1e083e1465812d4a73b77ec4bc4144e9: '1662071665'
+  _oembed_time_0de33977e8af28956e9f7fee83896a2f: '1662071749'
+  _oembed_3ec0297d56ca0b3b8417f1133692a39a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Some
+    cooling fans have a speed-reporting wire. Briefly flashing LEDs based on that
+    tachometer signal creates a strobe light. <a href="https://t.co/kpRmdyNmVE">pic.twitter.com/kpRmdyNmVE</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1565467668282347521?ref_src=twsrc%5Etfw">September
+    1, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_3ec0297d56ca0b3b8417f1133692a39a: '1708471249'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/01/led-strobing-to-fan-speed-signal/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The reason I <a href="https://newscrewdriver.com/2022/08/31/nextec-work-light-led-array/" target="_blank" rel="noreferrer noopener">cared about power-on response time of a salvaged LED array</a> is because I wanted to use it as a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Strobe_light" target="_blank">strobe light</a> shining on a cooling fan pulsing once per revolution. Historically strobe lights used xenon bulbs for their fast response, as normal incandescent bulbs were too slow. This LED array used to be a battery-powered work light with no concern of reaction time, but LEDs are naturally faster than incandescent. Is it fast enough for the job? PC case fan specifications usually range from the hundreds to low thousands of RPM. Using 1200RPM as a convenient example, that means 1200/60 seconds per minute = 20 revolutions per second. Pulsing at 20Hz should be easy for any LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the hardware side of controlling LED flashes, I used a 2N2222A transistor because I had a bulk bag of them. They are usually good for switching up to 0.8 Amps of current. I measured this LED array and it drew roughly 0.3 Amps at 11.3V, comfortably within limits. I just need to connect this transistor's base to a microcontroller to toggle this light on and off. For this experiment I repurposed the board I had built for the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/28/temperature-responsive-cereal-box-fan/" target="_blank">first version of my bedstand fan project</a>. I unsoldered the TMP36 sensor to free up space for 2N2222A and associated LED power wire connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This board also had the convenience of an already-connected fan tachometer wire. My earlier project used it for its original purpose of counting fan RPM, but now I will use those pulses to trigger a LED flash. Since timing is critical, I can't just poll that signal wire and need a hardware interrupt instead. Within Arduino framework I could use <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/" target="_blank">attachInterrupt()</a> for this purpose and run a small bit of code on every tachometer wire signal pulse. Using an ESP8266 for this job had an upside and a downside. The upside is that interrupts could be attached to any available GPIO pin, I'm not limited to specific pins like I would have been with an ATmega328P. The downside is that I <a rel="noreferrer noopener" href="https://arduino-esp8266.readthedocs.io/en/3.0.2/reference.html#interrupts" target="_blank">have to use an architecture-specific keyword <code>IRAM_ATTR</code></a> to ensure this code lives in the correct part of memory, something not necessary for an ATmega328P.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Because it runs in a timing-critical state, ISR code is restricted in what it can call. ISR should do <em>just </em>what they <em>absolutely need</em> to do at that time, and exit allowing normal code to resume. So many time-related things like <code>millis()</code> and <code>delay()</code> won't work as they normally would. Fortunately <code>delayMicroseconds()</code> can be used to control duration of each LED pulse, even though I'm not supposed to dawdle inside an ISR. Just for experiment's sake, though, I'll pause things just a bit. My understanding of documentation is as long as I keep the delay well under 1 millisecond (1000 microseconds) nothing else should be overly starved for CPU time. Which was enough for this quick experiment, because I started noticing motion blur if I keep the LED illuminated for more than ~750 microseconds. The ideal tradeoff between "too dim" and "motion blurred" seems to be around 250 microseconds for me. This tradeoff will be different for every different combination of fan, circuit, LED, and ambient light.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My minimalist Arduino sketch for this experiment (using <code>delayMicroseconds()</code> against best practices) is publicly available on GitHub, as <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP8266Tests/tree/main/fan_tach_led" target="_blank"><code>fan_tach_led</code> within my ESP8266Tests repository</a>. Next step in this project is to <a href="https://newscrewdriver.com/2022/09/02/fan-strobe-led-adjustments-via-esphome/">move it over to ESPHome for bells and whistles</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/Regorlas/status/1565467668282347521","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1565467668282347521
+</div>
+</figure>
+<p><!-- /wp:embed --><br />
+</body></html></p>

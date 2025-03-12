@@ -1,0 +1,47 @@
+---
+layout: post
+title: Notes on Reinforcement Learning Algorithm Implementations Published by OpenAI
+date: 2021-12-21 12:30:00.000000000 +00:00
+type: post
+post_id: '27962'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- OpenAI
+- Reinforcement Learning
+- Spinning Up in Deep RL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27882'
+  _publicize_job_id: '66779009892'
+  timeline_notification: '1640118610'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/21/notes-on-reinforcement-learning-algorithm-implementations-published-by-openai/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>OpenAI's <em>Spinning Up in Deep RL</em> guide has <a href="https://newscrewdriver.com/2021/12/20/notes-on-deep-reinforcement-learning-resources-by-openai/">copious written resources</a>, but it also offers resources in the form of algorithm implementations in code. Each implementation is accompanied by a background section talking about how the algorithm works, summarized by a "Quick Facts" section that serves as a high-level view of how these algorithms differ from each other. As of this writing, there are six implementations. I understand the main division is that there are three "on-policy" algorithms and three "off-policy" algorithms. Within each division, the three algorithms are roughly sorted by age and illustrate an arc of researchin the field. The best(?) on-policy algorithm here is <a rel="noreferrer noopener" href="https://spinningup.openai.com/en/latest/algorithms/ppo.html" target="_blank">Proximal Policy Optimization (PPO)</a> and representing off-policy vanguard is <a rel="noreferrer noopener" href="https://spinningup.openai.com/en/latest/algorithms/sac.html" target="_blank">Soft Actor-Critic (SAC)</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These implementations are geared towards teaching these algorithms. Since priority is placed on this learning context, these implementations are missing enhancements and optimizations that would make the code harder to understand. For example, many of these implementations do not support parallelization.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is great for its intended purpose of supplementing <em>Spinning Up</em>, but some people wanted an already optimized implementation. For this audience, OpenAI published the <a rel="noreferrer noopener" href="https://github.com/openai/baselines" target="_blank">OpenAI baselines</a> a few years ago to serve as high water marks for algorithm implementation. These baselines can serve either as starting point for other projects, or benchmarks to measure potential improvements against.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, it appears these baselines have gone a little stale. Not any fault of the implementations themselves, but merely due to the rapidly moving nature of this research field. The repository hosts implementations using TensorFlow version 1.0, which has been deprecated. There's a (partial? full?) conversion to TensorFlow 2.0 in a separate branch, but that never merged back to the main branch for whatever reason. As of this writing there's <a rel="noreferrer noopener" href="https://github.com/openai/baselines/issues/1078" target="_blank">an open issue asking for PyTorch implementations</a>, prompted by OpenAI's own proclamation that <a href="https://openai.com/blog/openai-pytorch/">they will be standardizing on PyTorch</a>. (This proclamation actually led to the PyTorch conversion of <em>Spinning Up in Deep RL</em> examples.) However, there's no word yet on PyTorch conversions for OpenAI baselines so anyone who want implementations in PyTorch will either have to optimize the <em>Spinning Up </em>implementations themselves or look elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, all of this assumes reinforcement learning will actually solve the problem, which I've learned <a href="https://newscrewdriver.com/2021/12/22/notes-on-deep-reinforcement-learning-doesnt-work-yet/">might not be a good assumption</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

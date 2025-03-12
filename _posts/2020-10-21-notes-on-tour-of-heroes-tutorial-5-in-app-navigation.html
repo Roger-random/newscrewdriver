@@ -1,0 +1,52 @@
+---
+layout: post
+title: 'Notes on "Tour of Heroes" Tutorial 5: In-App Navigation'
+date: 2020-10-21 12:30:00.000000000 +00:00
+type: post
+post_id: '23021'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+- Tour of Heroes
+meta:
+  _thumbnail_id: '22766'
+  _publicize_job_id: '50186219579'
+  timeline_notification: '1603308614'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/21/notes-on-tour-of-heroes-tutorial-5-in-app-navigation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After getting an <a href="https://newscrewdriver.com/2020/10/20/notes-on-tour-of-heroes-tutorial-4-adding-services/">introduction to Angular services</a>, I have some understanding but also know I still have a lot to read up on. I see several practice projects ahead, implementing my own Angular services, before I really understand when and where to best utilize its powers. Setting them aside as exercises for later, I proceeded to the next section of the Tour of Heroes tutorial for <a rel="noreferrer noopener" href="https://angular.io/tutorial/toh-pt5" target="_blank">implementing in-app navigation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For me, this is the most novel part of learning how to develop a single-page application (SPA) with Angular as the specific example. HTML navigation is very much based on the idea of pages and navigation between them. The "single page" of SPA implies that pattern has been circumvented, but manged to do so while maintaining compatibility with web browsers and static content web servers. How was this magic accomplished?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The "a-ha" moment for me was when I learned about Angular server-side requirements. Even though the server only needs to serve static content and does not need to run any application code, <a rel="noreferrer noopener" href="https://angular.io/guide/deployment#server-configuration" target="_blank">the server needs to be configured so that HTTP404 (not found) errors be sent back to index.html</a>. This is how the web browser's address bar can change in response to application activity, while still staying on the same page, because those URLs will get sent back to the single HTML page and served up instead of the HTTP404 error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And when the page loads up (or stays up, really) in response to that new URL, that attempted URL is sent back into the page as well. This informs the SPA as to what to display in response. The code performing this processing is referred to as the router. For this tutorial, we are instructed to <a rel="noreferrer noopener" href="https://angular.io/tutorial/toh-pt5#add-the-approutingmodule" target="_blank">pull in an Angular module and call it the AppRoutingModule</a>. The interesting implication here is that despite being a key part of SPAs, the router is "just another module" and can be modified or swapped out with different router modules as needed. I don't know when this would be done or why, but it's always good to see flexibility in an architecture.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This tutorial also made use of something I hadn't seen before: the JavaScript template literal. It's not the focus of the tutorial so <a href="https://angular.io/tutorial/toh-pt5#add-heroservicegethero">they didn't say very much about it</a>, but they did at least call it out with a little note.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>Note the backticks ( ` ) that define a JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals"><em>template literal</em></a> for embedding the <code>id</code>.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a relative beginner to JavaScript programming, it's another item I have to add to the "to be investigated later" pile as I move on to <a href="https://newscrewdriver.com/2020/10/22/notes-on-tour-of-heroes-tutorial-setting-up-for-crud/">the next part of the tutorial</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

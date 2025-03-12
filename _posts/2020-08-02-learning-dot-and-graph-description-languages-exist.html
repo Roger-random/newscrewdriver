@@ -1,0 +1,36 @@
+---
+layout: post
+title: Learning DOT and Graph Description Languages Exist
+date: 2020-08-02 17:42:53.000000000 +00:00
+type: post
+post_id: '20971'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- TIL
+tags: []
+meta:
+  _thumbnail_id: '21996'
+  timeline_notification: '1596415377'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '47280073280'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/02/learning-dot-and-graph-description-languages-exist/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the conventions of ROS is the <code>/cmd_vel</code> topic. Short for "command velocity", it is commonly how high-level robot planning logic communicates "I want to move in this direction at this speed" to lower-level robot chassis control nodes of a robot. In ROS tutorials, this is <a href="http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics">usually the first practical topic</a> that gets discussed. This convention helps with one of the core promises of ROS: portability of modules. High level logic can be created and output to <code>/cmd_vel</code> without worrying about low level motor control details, and robot chassis builders know teaching their hardware to understand <code>/cmd_vel</code> allows them to support a wide range of different robot modules.</p>
+<p>Sounds great in theory, but there are limitations in practice and every once a while a discussion arises on how to improve things. I was reading <a href="https://discourse.ros.org/t/is-twist-still-a-good-velocity-command-interface/13218/14">one such discussion</a> when I noticed one message had an illustrative graph accompanied by a "source" link. That went to <a href="https://gist.github.com/tfoote/b7ef42baecc81fdfbc5acfb93fe74210">a Github Gist</a> with just a few simple lines of text describing that graph, and it took me down a rabbit hole learning about graph description languages.</p>
+<p>In my computer software experience, I've come across graph<strong><em>ical</em></strong> description languages like OpenGL, PostScript, and SVG. But they are complex and designed for general purpose computer graphics, I had no idea there were entire languages designed just for describing graphs. This particular file was DOT, with <a href="https://en.wikipedia.org/wiki/DOT_(graph_description_language)">more information available on Wikipedia</a> including the limitations of the language.</p>
+<p>I'm filing this under the "TIL" (Today I Learned) section of the blog, but it's more accurately a "How did I never come across this before?" post. It seems like an obvious and useful tool but not adopted widely enough for me to have seen it before. I'm adding it to my toolbox and look forward to the time when it would be the right tool for the job, versus something heavyweight like firing up <a href="https://inkscape.org/">Inkscape</a> or Microsoft Office just to create a graph to illustrate an idea.</p>
+<p></body></html></p>

@@ -1,0 +1,65 @@
+---
+layout: post
+title: Budibase Data Binding
+date: 2024-09-01 12:30:00.000000000 +00:00
+type: post
+post_id: '43850'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  firehose_sent: '1725219028'
+  _publicize_job_id: '97482885244'
+  _elasticsearch_data_sharing_indexed_on: '2024-09-01 03:19:17'
+  timeline_notification: '1725219030'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/09/01/budibase-data-binding/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2024/08/31/budibase-with-postgresql/">migrating from a spreadsheet into a PostgreSQL database</a>, I could get to work building an interface for my data with Budibase. The big sales pitch for Budibase is that I could be up and running in minutes. And that is indeed true as long as the interface I want is a big spreadsheet-like table. If I want something more specifically tailored to my data, it's going to take more than a few minutes. Laying out a page with data input/output elements is a pretty straightforward drag-and-drop <a href="https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a> affair, but bringing that page to life with real data <a href="https://docs.budibase.com/docs/introduction-to-bindings">requires Budibase data binding</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Immediately following introduction of data binding, Budibase documentation jumps into discussing the two supported languages. ("Handlebars" and "JavaScript".) I felt they should have covered <a href="https://docs.budibase.com/docs/bindings-scope">data binding scope</a> first. In hindsight understand that would have been a useful mental boundary before diving into syntax details of the two methods.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Handlebars</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The syntax more commonly seen in Budibase documentation is referred to as "handlebars", and it can be recognized by the two curly braces that open and close a handlebar expression. Judging by <a href="https://github.com/Budibase/budibase/blob/master/packages/string-templates/package.json">a <code>package.json</code> file</a>, this was built on top <a href="https://handlebarsjs.com/guide/">the HandlebarsJS library</a> alongside <a href="https://github.com/Budibase/handlebars-helpers">a Budibase helper library</a>. My first exposure to it in Budibase documentation was this example from the Design/Components/Table page:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"fontSize":"small"} --></p>
+<p class="has-small-font-size"><code>{{ toFixed (sum (pluck Table Block 1.Selected Rows 'KGS')) 2 }} KG</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This extracts data from the "KGS" column of all selected rows in Table Block 1, add those values together, round the sum to two decimal places, then append a "KG" suffix for display. Handlebars syntax allowed specifying such common operations quickly, a really powerful tool but completely inscrutable to a beginner not versed in the compact syntax. It also has its limitations. A significant one is that output of every handlebar expression is always a string. (Called out at the <a href="https://docs.budibase.com/docs/formula">end of the formula page</a>.) Plus, <a href="https://docs.budibase.com/docs/helpers">its extensive helper library</a> can't cover everything. There would inevitably come a time when we need access to a general-purpose language for the job.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">JavaScript</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want to create a binding that can't be done in handlebars (either fundamental limitation or just I don't know how) I can click a button to switch to JavaScript mode. This opens up a small text window for a JavaScript code snippet editor and my first step from "no-code" Budibase to "low-code" Budibase. Input comes from an expression that starts with a jQuery-like "$". The counterpart to the handlebars example above would be something like <code>$('Table Block 1.Selected Rows')</code>. That expression returns a JavaScript array (one element is one row) of dictionaries (key/value pairs of column name and value). From there, standard JavaScript syntax and libraries apply, and my JavaScript code runs until a <code>return</code> statement at the end with a processed value for Budibase to use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the pattern is to consume an array and produce a single output, many of the JavaScript data binding examples use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce"><code>reduce()</code></a>. That seems to be the most popular one, though other JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods">array iterators</a> are applicable. I think it's because handlebars can do most of the rest. In contrast, <code>reduce()</code> takes a snippet of custom logic and applies it. Generally speaking <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#when_to_not_use_reduce">there are times not to use <code>reduce()</code></a> but as far as I can tell a Budibase binding function is unlikely to touch upon those scenarios.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>To venture beyond Budibase default data presentation of a big spreadsheet-like table, I needed a bare minimum working knowledge of data binding in order to build my own interfaces. It didn't take long before <a href="https://newscrewdriver.com/2024/09/02/budibase-relationship-problems-read/">I encountered problems</a>, as expected for a beginner diving in for the first time.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

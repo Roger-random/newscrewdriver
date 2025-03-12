@@ -1,0 +1,91 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Button Presses Under Oscilloscope
+date: 2023-12-23 12:30:00.000000000 +00:00
+type: post
+post_id: '41185'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41186'
+  firehose_sent: '1703363464'
+  wordads_ufa: s:wpcom-ufa-v4:1710823068
+  _publicize_job_id: '90528783938'
+  timeline_notification: '1703363466'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-03-19 04:31:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/23/canon-pixma-mx340-control-panel-button-presses-under-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The control panel of a Canon Pixma MX340 multi-function inkjet has only one significant microchip. It is marked NEC K13988 and I've traced through <a href="https://newscrewdriver.com/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/">how it is connected to the rest of the circuit board</a>. Among these connections are two communication channels. One to the main board, and one to the LCD screen. I decided to look at main board communication first, wiring up those three pins to see how it looks under <a href="https://newscrewdriver.com/2022/08/24/finally-bought-a-real-oscilloscope/" target="_blank" rel="noreferrer noopener">my Siglent oscilloscope</a>. Since they were pins 1-3 on the circuit board connector, it was easiest to wire them up to channels 1-3 on the oscilloscope.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41190,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-plugged-in.png?w=826" alt="" class="wp-image-41190"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saw a little bit of activity when I plugged in the printer, before I turned it on. Pin 2 came up to about 2.5V DC, and pin 1 came up just a little higher for 300ms before dropping back. About one second later, pin 1 came up to 3.3V, followed a few tens of milliseconds later by pins 2 and 3 together. A few tens of milliseconds after that, pin 3 dropped to ground and pin 2 dropped to 2.5V at around the same time. Then pin 1 dropped to ground, and all three lines stayed that way (pin 1+3 ground, pin 2 at 2.5V DC) for the printer standby state.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I pressed the power button to turn on the printer, there was a flurry of activity I don't understand yet, but it quickly settled to this state:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41192,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-on-with-no-activity-1ms.png?w=826" alt="" class="wp-image-41192"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is what it looks like when the printer is on with data on the LCD screen, but nothing else happening. Pins 1 and 3 stay at 3.3V DC with no activity. Pin 2 (magenta line) sends something at regular intervals. A little over 9ms between pulses, or at the oscilloscope measured rate at 108.439Hz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41194,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-no-activity.png?w=826" alt="" class="wp-image-41194"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming in on the pin 2 state, it looks like it dips to ground for about 33us.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41196,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-back-button.png?w=826" alt="" class="wp-image-41196"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pressing a button triggers a change on pin 2 activity. For this exploration I tried the four buttons under the LCD screen, starting with the above trace representing the back button.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41198,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-left-button.png?w=826" alt="" class="wp-image-41198"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pressing left arrow/- generated trace above.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41199,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-right-button.png?w=826" alt="" class="wp-image-41199"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pressing right arrow/+.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41201,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-ok-button.png?w=826" alt="" class="wp-image-41201"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And pressing OK.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These snapshots make pin 2 look like a digital serial communication data stream describing user input to the main board. It's a short enough burst I can probably decode the values by hand [UPDATE: I <a href="https://newscrewdriver.com/2023/12/26/canon-pixma-mx340-control-panel-communication-appears-to-be-serial/" target="_blank" rel="noreferrer noopener">decoded them by hand</a>.] but right now I want to <a href="https://newscrewdriver.com/2023/12/24/canon-pixma-mx340-control-panel-lcd-updates-under-oscilloscope/">look at other pins first</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

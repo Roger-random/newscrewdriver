@@ -1,0 +1,47 @@
+---
+layout: post
+title: 'Xbox 360 Kinect Driver: OpenNI or OpenKinect (freenect)?'
+date: 2019-01-23 17:16:37.000000000 +00:00
+type: post
+post_id: '17678'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- ROS
+tags:
+- Kinect
+- OpenKinect
+- OpenNI
+meta:
+  _oembed_2d13857bbd4e3665bc9bdf467b618f71: "{{unknown}}"
+  _oembed_a8d99dc7998f95b013c606c886a6d141: "{{unknown}}"
+  _oembed_99b23f124b4244dad78b0fdbed1bbbe3: "{{unknown}}"
+  timeline_notification: '1548292599'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26861802446'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668933217
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/23/xbox-360-kinect-driver-openni-or-openkinect-freenect/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The Kinect sensor bar from my Xbox 360 has long been retired from gaming duty. For its second career as robot sensor, I have cut off its proprietary plug and <a href="https://newscrewdriver.com/2019/01/22/modify-xbox-360-kinect-for-pc-use/">rewired it for computer use</a>. Once I've verified the sensor bar is electrically compatible with a computer running Ubuntu, the first order of business was to turn fragile test connections into properly soldered wires protected by heat shrink tube. Here's my sensor bar with its new standard USB 2.0 connector and a <a href="https://hackaday.com/2017/12/27/jst-is-not-a-connector/">JST-RCY connector for 12 volt power</a>.</p>
+<p><img class="alignnone size-full wp-image-17697" src="https://newscrewdriver.com/wp-content/uploads/2019/01/xbox-360-kinect-with-modified-plugs-12v-usb.jpg" alt="xbox 360 kinect with modified plugs 12v usb" width="1600" height="632"></p>
+<p>With the electrical side settled, attention turns to software. The sensor bar can tell the computer it is a USB device, but we'll need additional driver software to access all the data it can provide. I chose to start with the Xbox 360 Kinect because of its wider software support, which means I have multiple choices on which software stack to work with.</p>
+<p><a href="https://structure.io/openni">OpenNI</a> is one option. This open source SDK is still around thanks to Occipital, one of the companies that partnered with PrimeSense. PrimeSense was the company that originally developed the technology behind Xbox 360 Kinect sensor, but they have since been acquired by Apple and their technology <a href="https://www.theverge.com/circuitbreaker/2017/9/17/16315510/iphone-x-notch-kinect-apple-primesense-microsoft">incorporated into the iPhone X</a>. Occipital itself is still in the depth sensor business with their <a href="https://structure.io">Structure</a> sensor bar. Available standalone or incorporated into products like <a href="https://www.mistyrobotics.com">Misty</a>.</p>
+<p><a href="https://openkinect.org/wiki/Main_Page">OpenKinect</a> is another option. It doesn't have a clear corporate sponsor like OpenNI, and seems to have its roots in the <a href="https://blog.adafruit.com/2010/11/10/we-have-a-winner-open-kinect-drivers-released-winner-will-use-3k-for-more-hacking-plus-an-additional-2k-goes-to-the-eff/">winner of the Adafruit contest</a> to create an open source Kinect driver. Confusingly, it is also sometimes called <code>freenect</code> or variants thereof. (Its software library is <code>libfreenect</code>, etc.)</p>
+<p>Both of these appear to still be receiving maintenance updates, and both have been used a lot of cool Kinect projects outside of Xbox 360 games. Ensuring there will be a body of source code available as reference for using either. Neither are focused on ROS, but people have written ROS drivers for both <a href="http://wiki.ros.org/openni_launch">OpenNI</a> and <a href="http://wiki.ros.org/freenect_launch">OpenKinect (freenect)</a>. (And even an effort to <a href="http://wiki.ros.org/rgbd_launch">rationalize across both</a>.)</p>
+<p>One advantage of OpenNI is that it provides an abstraction layer for many different depth cameras built on PrimeSense technology, making code more portable across different hardware. This does not, however, include the second generation Xbox One Kinect, as that was built with a different (not PrimeSense) technology.</p>
+<p>In contrast, OpenKinect is specific to the Xbox 360 Kinect sensor bar. It provides access to parts beyond the PrimeSense sensor: microphone array, tilt motor, and accelerometer.  While this means it doesn't support the second generation Xbox One Kinect either, there's a <a href="https://github.com/OpenKinect/libfreenect2">standalone sibling project <code>libfreenect2</code></a> for meeting that need.</p>
+<p>I don't foresee using any other PrimeSense-based sensors, so OpenNI's abstraction doesn't draw me. The access to other hardware offered by OpenKinect does. Plus I do hope to <a href="https://newscrewdriver.com/2019/01/21/ros-in-three-dimensions-starting-with-xbox-360-kinect/">upgrade to a Xbox One Kinect in the future</a>, so I decided to start my Xbox 360 Kinect experimentation using OpenKinect.</p>
+<p></body></html></p>

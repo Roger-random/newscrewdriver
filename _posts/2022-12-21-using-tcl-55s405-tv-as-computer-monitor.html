@@ -1,0 +1,77 @@
+---
+layout: post
+title: Using TCL 55S405 TV as Computer Monitor
+date: 2022-12-21 12:30:00.000000000 +00:00
+type: post
+post_id: '34265'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Appliance
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34276'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1671752840
+  _publicize_job_id: '79852422810'
+  timeline_notification: '1671654650'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/21/using-tcl-55s405-tv-as-computer-monitor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph {"placeholder":"Is your life today what you pictured a year ago?"} --><html><body></p>
+<p>I just bought a <a href="https://newscrewdriver.com/2022/12/20/lg-oled-look-gorgeous-but-webos-is-horrid/">LG OLED55B2AUA for my living room</a>, displacing a <a href="https://www.tcl.com/us/en/products/home-theater/4-series/tcl-55-class-4-series-4k-uhd-led-roku-smart-tv-55s405">TCL 55S405</a>. I have several ideas on what I could do with a retired TV, and the first experiment was to use it as a computer monitor. In short, it required adjusting a few TV settings and even then, there are a few caveats for using it with a Windows PC. Using it with a Mac was more straightforward.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"placeholder":"Is your life today what you pictured a year ago?"} --></p>
+<p>As expected, it is ludicrously large sitting on my desk. And due to the viewing angles of this (<a rel="noreferrer noopener" href="https://www.tomshardware.com/reviews/va-display-panel-definition,5770.html" target="_blank">I think VA</a>) panel, the edges and corners are difficult to read. I see why some people prefer their large monitors to be curved.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I noticed a delay between moving my mouse and movement of onscreen cursor. This delay was introduced by TV's image processing hardware. During normal TV programs, the audio can be delayed in order to stay in sync with the video. But that trick doesn't work for interactive use, which is why TVs have a "Game Mode" to disable such processing. For this TV, it was under "TV settings" / "Picture settings" / "Game mode". Turning it on allowed the mouse to feel responsive again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next problem was brightness. Using it as a monitor, I would sit much closer than I would a TV and there is too much light causing eyestrain. First part of the solution is to choose "Darker" option of "TV settings" / "Picture settings" / "TV brightness". Then I went to "TV settings" / "Picture settings" / "Fine tune picture" where I could turn "Backlight" down to zero. Not only did this make the screen more comfortable it reduced electrical power consumption as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>According to my <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Kill_A_Watt" target="_blank">Kill-A-Watt meter</a>, this large TV consumed only 35 watts once I turned the backlight down to minimum. This is actually slightly lower than the 32" Samsung computer monitor I had been using. Surprisingly, half of that power was not required to run the screen at all. When I "turn off" the TV, the screen goes dark but Kill-A-Watt still registered 17 watts, burning power for purposes unknown. Hunting around in the Settings menu, I found "System" / "Power" / "Fast TV Start" which I could turn off. When this TV is no longer set for fast startup, turning the TV off seems to really turn it off. Or at least, close enough that the Kill-A-Watt read zero watts. This is far better than my 32" Samsung which read 7W even in low-power mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since this is a TV, I did not expect high framerate capabilities. I knew it had a 24 FPS (frames-per-second) mode to match film speed and a 30 FPS mode for broadcast television. When I checked my computer video card settings, I was pleasantly surprised to find that 60Hz refresh rate was an option. Nice! This exceeded my expectations and is perfectly usable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the flipside, since this is a TV I knew it had HDCP (<a href="https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection" target="_blank" rel="noreferrer noopener">High-bandwidth Digital Content Protection</a>) support. But when I start playing protected content (streaming Disney+ on Microsoft Edge for Windows 11) the TV would choke and fail over to its "Looking for signal..." screen. Something crashed hard and the TV could not recover. To restore my desktop, I had to (1) stop my Disney+ playback and (2) power cycle the TV. Not just pressing the power button (that didn't work) I had to pull the power plug.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The pixels on this panel were crisp, and 4K UHD resolution actually worked quite well. 3840x2160 resolution at 55" diagonal works out to 80 DPI (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Dots_per_inch" target="_blank">dots per inch</a>), which is right within longtime computer monitor norms. For many years I had used a 15" monitor at 1024x768 resolution, which worked out to 85DPI. Of course, 80DPI is pretty lackluster compared with "High DPI" displays (Apple "Retina Display", etc.) now on the market with several hundred dots (or pixels) per inch. Despite crisp pixels at sufficient density, text on this panel isn't always legible under Windows because it doesn't work well with <a href="https://learn.microsoft.com/en-us/typography/cleartype/">Microsoft's ClearType</a> subpixel rendering. ClearType takes advantage of typical panel subpixel orientation, where the red/green/blue elements are laid out horizontally for each pixel. This panel, unfortunately, have its elements laid out vertically for each pixel, foiling ClearType trying to be clever. In order for this panel to take advantage of ClearType rendering, I would have to rotate the screen 90 degrees to portrait orientation. This isn't terribly practical, so I turned ClearType off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For comparison, a brief test with my Apple MacBook Air (M1) saw the following behavior:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Same 3640x2160 resolution and 60Hz refresh rates were available.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>I could activate HDR mode, an option that was grayed out and not available with the NVIDIA drivers on my Windows desktop. I lack MacOS HDR content so I don't know whether it actually works.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Streaming Disney+ on Firefox for MacOS showed video at roughly standard-definition DVD quality. This is consistent with behavior for non-HDCP displays, and much preferable to crashing the TV so hard I need to power cycle it.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>MacOS font rendering does not use color subpixels like Microsoft ClearType, so text looks good without having to turn off anything.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>It appears this TV is a better monitor for a MacOS computer than a Windows machine.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

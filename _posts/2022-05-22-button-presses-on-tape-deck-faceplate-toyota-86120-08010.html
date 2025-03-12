@@ -1,0 +1,70 @@
+---
+layout: post
+title: Button Presses on Tape Deck Faceplate (Toyota 86120-08010)
+date: 2022-05-22 12:30:00.000000000 +00:00
+type: post
+post_id: '30424'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- Arduino
+- LC75853N
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30464'
+  _publicize_job_id: '72818256153'
+  timeline_notification: '1653247825'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/22/button-presses-on-tape-deck-faceplate-toyota-86120-08010/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2022/05/21/segmented-lcd-on-tape-deck-faceplate-toyota-86120-08010/">mapped out all LCD segments</a> on a Toyota 86120-08010 tape deck faceplate, allowing me to control what is displayed from an Arduino. Constrained by the nature of a segmented LCD, of course. These segments were customized for a tape deck, doing what it needs and no more. Any projects trying to repurpose it would have to get creative. This will be even more difficult than <a rel="noreferrer noopener" href="https://twitter.com/Regorlas/status/1123111918971936768" target="_blank">abstract Nyan Cat on a VCR VFD</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I have more than just the LCD, I have the entire faceplate which gives me option for user interactivity. Two knobs which I still have, and buttons which are now gone but their electrical traces are still present. I can find something conductive to bridge these traces like the buttons used to do, or I can solder wires connecting to switches elsewhere. Either way, I needed to write code for my Arduino to read key scan data from the Sanyo LC75853N chip. Just like LCD segment control data, my goal is to emulate the original mainboard as closely as I can. I will be guided by the datasheet and what my logic analyzer captured.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thanks to lessons learned from doing LCD segment control CCB communication, reading keyscan data over CCB was relatively straightforward and I could dump control data out to Arduino serial monitor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30441,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-key-scan-serial-data.jpg?w=812" alt="" class="wp-image-30441"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will follow the KD1-KD30 numbering system used in the datasheet timing diagram.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30368,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-key-data-map.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-key-data-map.jpg?w=1024" alt="" class="wp-image-30368"></a><br />
+<figcaption>Button map for Toyota 86120-08010 faceplate. (Click to view full size)</figcaption>
+</figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This key map shows the KD number for almost all of the buttons on the faceplate, including the push action on both knobs. The lone exception is the "Eject" button, which has its own dedicated wire and is not part of LC75853N key matrix. These numbers may look odd at first glance, but they make sense once we look at how they would be wired to the LC75853N:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30444,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-key-scan-wires-used.jpg?w=662" alt="" class="wp-image-30444"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These fifteen buttons make use of KS3-6 and KI2-5, learning only KD14 unused in its matrix. If I wanted to add in a single button, I will try to find KS3 and KI4 traces on the faceplate to wire in KD14. If I want to add more buttons, I might need to solder directly to the unused IC pins KI1, KS1, and KS2 as I wouldn't expect any traces for those unused pins on the faceplate circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Feeling good that I've figured out the input &amp; output of this faceplate, it's time to <a href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/">wrap it all up</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this investigation is <a href="https://github.com/Roger-random/Sanyo_LC75853N">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

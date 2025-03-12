@@ -1,0 +1,69 @@
+---
+layout: post
+title: 'Notes on Google I/O 2023: CSS Viewport and Animations'
+date: 2023-05-16 12:30:00.000000000 +00:00
+type: post
+post_id: '36725'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Events
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36696'
+  timeline_notification: '1684265429'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684354489
+  _publicize_job_id: '84106015807'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/16/notes-on-google-i-o-2023-css-viewport-and-animations/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After watching a few Google I/O presentations <a href="https://newscrewdriver.com/2023/05/15/notes-on-google-i-o-2023-ar-material-3-chromeos-kiosk/">strictly for curiosity's sake</a>, I proceeded to a few sessions that might have some relevance on near-term project ideas. First up are a few sessions that cover new developments in web browser capabilities. Generally speaking, I expect I'd only use most of these indirectly via libraries, but it's neat to see what's possible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/cafbe05a-c19e-4fe5-9e25-61c5c0c2f6cf/">What's new in web</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a quick overview of new web development capabilities that, as tracked by <a href="https://web.dev/baseline/">Web Platform Baseline</a>, have enough support to become realistic option for deploying in production. The part that caught my attention were <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport">CSS viewport units</a> that lets us <a href="https://newscrewdriver.com/2023/04/15/compass-web-app-going-full-screen/">account for space consumed by browser UI</a>. More details were promised in another session "What's new in Web UI" so that's where I went next.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/0ac6834a-9ed1-4145-ad6e-2b23c02239b8/">What's new in Web UI</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I got a little more information about CSS viewport units here: not just small (with all browser UI present) and large (if all browser UI were absent) but also dynamic (adjusts as UI pieces moves in and out.) Nice! Related to this front are container queries that layout decisions to be made at a finer-grained level: parent container, instead of entire viewport.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>CSS nesting folds a major advantage of Sass into standard CSS. Cascade layers and scoped styles allow fine control over style sheet cascading and avoid collisions in the face of modern web platforms that combine all styles from components and bundle them into a single download.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We've always had <code>window.alert()</code> to ask the browser to pop up a modal dialog box, but it's very crude. Trying to recreate that illusion inside our web page required a lot of nasty DOM hackery. Popovers <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover">are still experimental</a>, but it promises all the refinement of HTML under author's control while letting the browser &amp; operating system handle all the windowing complexity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few quick demonstrations of nifty animations were given, with a pointer to another session "Whats new in web animations".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading"><a href="https://io.google/2023/program/170b44dc-47f0-409f-92fe-b5c70aab4569/">What's new in web animations</a></h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This presenter opened up with a great manifesto on how things should work: "animations that help users build an accurate mental model of how the interface works, thereby increasing the overall usability." When it works well, the user would rarely even notice their presence. What we usually notice to our annoyance are zealous overuse of animation getting in our way!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One incoming experimental feature is the <a href="https://developer.chrome.com/docs/web-platform/view-transitions/">View Transitions API</a> for managing CSS animation effects as it applies to elements entering and leaving the markup DOM structure. It caught my attention because this would be a standardized version of what I just saw in Vue with <code>&lt;Transition&gt;</code> and something I've found mentioned in <a href="https://angular.io/guide/transition-and-triggers#animate-entering-and-leaving-a-view">Angular Developer Guides</a> as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the effects demonstrated here are things I've seen online with other websites, but now it can be done strictly with CSS. No JavaScript required, which is great for moving workloads off the main thread.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These are all good things coming down the line for visual layout, but usually I'm more interested in <a href="https://newscrewdriver.com/2023/05/17/notes-on-google-i-o-2023-advanced-web-browser-capabilities/">hardware interfacing browser capabilities</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

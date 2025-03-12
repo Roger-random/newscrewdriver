@@ -1,0 +1,44 @@
+---
+layout: post
+title: Compass Web App Workarounds
+date: 2023-04-16 12:30:00.000000000 +00:00
+type: post
+post_id: '36265'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36278'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681673617
+  _publicize_job_id: '83252457205'
+  timeline_notification: '1681673415'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/16/compass-web-app-workarounds/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After giving my Compass web app the <a href="https://newscrewdriver.com/2023/04/15/compass-web-app-going-full-screen/">ability to go full screen</a>, it's working pretty much as I had imagined when I started this project. Except, of course, for the <a href="https://newscrewdriver.com/2023/04/12/compass-web-app-in-landscape-exposed-browser-bugs/">two problems that I believe to be browser bugs</a> outside of my control. I've always known that real-world web projects have a lot of ugly workarounds for problems hiding across browser implementations, but I had thought I could avoid that by targeting a single browser. (Chrome on Android with experimental magnetometer API.) Sadly, no such luck. It is time to get hacking.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The vertical text issue is merely cosmetic and the easiest to fix. I want <code>sideways-lr</code> but it doesn't work. Fortunately, <code>vertical-lr</code> is also a vertical text layout, just rotated in the opposite direction from the one I wanted. Because I only have a single line of text, adding <code>transform: rotate(180deg)</code> was enough to get the result I wanted. I believe there would be additional complications if there were more than one line of text, but that's a problem I don't have to deal with today. I <a href="https://github.com/Roger-random/compass/issues/3">opened a GitHub issue</a> to track removing this workaround, but as a practical matter, there's no real harm leaving this workaround in place even if <code>sideways-lr</code> starts working correctly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The same could not be said of the magnetometer <code>{referenceFrame: 'screen'}</code> problem, where landscape-left receives the result for landscape-right and vice versa. While the workaround is the same, adding <code>transform: rotate(180deg)</code> to flip things around, I can't leave this workaround the same way as I could vertical text. As soon as the upstream browser bug is fixed, my workaround rotation would cause the display to be wrong again. And even worse, there's no way for me to determine within the app whether the workaround is applicable. I couldn't issue a CSS media query for whether this bug is fixed! I don't know of a graceful way to handle this, but at least I've <a href="https://github.com/Roger-random/compass/issues/2">opened an issue for it</a> as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally for completeness, I <a href="https://github.com/Roger-random/compass/issues/1">opened an issue</a> tracking the fact magnetometer API is a preview experiment. Because it is likely to change, this app could stop working at any time. I expect that magnetometer API would mature to become available across multiple platforms, not just Chrome on Android. Once adoption broadens, this app needs to be updated from experimental to standard API.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

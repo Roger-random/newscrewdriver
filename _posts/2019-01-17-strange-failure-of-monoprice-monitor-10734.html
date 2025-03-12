@@ -1,0 +1,44 @@
+---
+layout: post
+title: Strange Failure Of Monoprice Monitor 10734
+date: 2019-01-17 13:30:23.000000000 +00:00
+type: post
+post_id: '17648'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '26647805084'
+  timeline_notification: '1547760715'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '17649'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/17/strange-failure-of-monoprice-monitor-10734/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Under examination at a recent <a href="https://www.meetup.com/SGVTech">SGVTech</a> meet is a strange failure mode for a big monitor. Monoprice item #10734 is a 30-inch diagonal monitor with 2560x1600 resolution. The display panel is IPS type and have LED back light - in short, it's a <a href="https://www.tomshardware.com/reviews/monoprice-30-inch-led-monitor,4046.html">pretty capable monitor</a>. Unfortunately, it has suffered a failure of some sort that makes it pretty useless as a computer monitor: certain subpixels on the screen no longer respond to display input.</p>
+<p>Here the monitor is supposed to display black text "What" on a white background. But as we can see, some parts inside the letters that are supposed to be dark are still illuminated, most visibly here in some green subpixels. The misbehaving pixels are not random, they are in a regular pattern, but I'm at a loss as to why this is happening.</p>
+<p><img class=" size-full wp-image-17649 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/monoprice-10734-subpixel-failure.jpg" alt="monoprice 10734 subpixel failure" width="1600" height="901"></p>
+<p>And these misbehaving subpixels drift in their value. Over a course of several minutes they will shift slightly in response to adjacent pixels. The end result is that anything left on screen for more than a few minutes will leave a ghost behind, its colors remembered by the misbehaving subpixels. It looks like old school CRT screen burn-in, but only takes a few minutes to create. Unplugging the monitor, waiting a few minutes, plugging it back in and turning it on does not eliminate the ghost. I need to wait a week before the ghosting fades to an undetectable level. This behavior means something, but I don't know what.</p>
+<p>In the hopes that there's something obviously broken, out came the screwdrivers to take the monitor apart. We were not surprised to find there are minimal components inside the metal case: there is the big panel unit, connected to a small interface board which hosts the power plug and all the video input ports, connected to an even smaller circuit board hosting the user control buttons.</p>
+<p><img class=" size-full wp-image-17650 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/monoprice-10734-backless.jpg" alt="monoprice 10734 backless" width="1600" height="1200"></p>
+<p>The panel is made by LG, model number LM300WQ6(SL)(A1).</p>
+<p><img class=" size-full wp-image-17651 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/01/monoprice-10734-panel-lg-lm300wq6-sl-a1.jpg" alt="monoprice 10734 panel lg lm300wq6 sl a1" width="1600" height="900"></p>
+<p>A web search found the LG datasheet for this panel. Because it is a 10-bits per color panel, and there are so many pixels, its data bandwidth requirements are enormous. 4 LVDS channels clocking over 70 MHz. There were no visibly damaged parts on its integrated circuit board. On the other end of LVDS interface cables, there were no visible damage on the interface board either.</p>
+<p><img class=" size-full wp-image-17652 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2019/01/monoprice-10734-interface-board.jpg" alt="monoprice 10734 interface board" width="1600" height="900"></p>
+<p>Before I opened this up and found the datasheet, I had thought maybe I could generate signals to feed this panel using a PIC or something. But the chips I have are grossly underpowered to talk to a 4-channel LVDS panel at required speed. Perhaps this could be a FPGA project in the future? For now this misbehaving monitor will sit in a corner gathering dust waiting for the time I get around to that project, or until the next housecleaning pass where it departs as electronic recycle, whichever comes first.</p>
+<p>[UPDATE: Inspired by NUCC, I decided to try <a href="https://newscrewdriver.com/2020/01/27/sparklecon-2020-day-2-arduino-vgax/">turning it into a light fixture</a>.]</p>
+<p></body></html></p>

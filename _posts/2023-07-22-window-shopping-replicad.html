@@ -1,0 +1,46 @@
+---
+layout: post
+title: Window Shopping replicad
+date: 2023-07-22 12:30:00.000000000 +00:00
+type: post
+post_id: '38012'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- occt
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38024'
+  timeline_notification: '1690054202'
+  _publicize_job_id: '85975696101'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1690141161
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/22/window-shopping-replicad/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I thought <a href="https://newscrewdriver.com/2023/07/21/window-shopping-cascade-studio/">Cascade Studio was a very interesting project</a>, providing a 3D model environment that can run entirely in the browser. Even offline if desired, as a locally-installed PWA. It is a code-based design system like CadQuery. While they all build on top of OpenCascade Technology kernel, the code-based API differences are larger than just the difference in language. (Python for CadQuery, JavaScript for Cascade Studio.) I found a lot to like, but also a few implementation details that I'm not fond of. That's OK, there are other projects out there, including <a href="https://replicad.xyz/">replicad</a>. (<a href="https://hackaday.com/2022/02/19/make-your-own-tabletop-game-organizers-with-online-tool/">Hackaday post</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Both replicad and Cascade Studio run entirely within the browser thanks to OpenCascade.js, which compiled the 3D kernel into WebAssembly. And despite the fact they both wrap OpenCascade concepts with JavaScript, their API are different. <a href="https://replicad.xyz/docs/intro">Reading through replicad documentation</a>, I learned their target scenarios are also different: Cascade Studio aims to be a full in-browser 3D model environment, presenting the JavaScript code as well as a 3D rendering. replicad is intended for people to share their designs online for others to use, by default presenting just the 3D object and the underlying code is not directly visible. But the viewer can <a href="https://replicad.xyz/docs/tutorial-overview/sharing-models/#parametric-models">make changes to model parameters</a> and have the shape recomputed. This reminds me of <a href="https://www.thingiverse.com/customizer">Thingiverse Customizer</a>, which is limited to OpenSCAD models.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Cascade Studio had the "Slider" UI option to allow customization as well, and one difference immediately jumped out at me: Cascade Studio allows the design author to specify maximum and minimum values for the slider, but replicad doesn't seem to allow setting limits on model parameters. This seems like an oversight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One significant advantaged I noticed in replicad API is their way of avoiding FreeCAD's topological rename problem that Cascade Studio also seems to share. Instead of specifying entities like edges with names or numbers, replicad has a system called <a href="https://replicad.xyz/docs/tutorial-overview/finders">finders</a> to find elements that meet a specified set of conditions. For example, it allows finding all edges at a particular Z height. Allowing us to apply a fillet without worrying about their specific names/numbers. This makes replicad closer to CadQuery, specifically with <a href="https://cadquery.readthedocs.io/en/latest/classreference.html?#selector-classes">its concept of selectors</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't see any references to constraint solving. Based on some of the examples, I believe the author expects us to write JavaScript code to compute what we need directly within our 3D object design code. It's a valid approach, but maybe not my favorite answer. I also didn't see any references to creating multipart assemblies. Perhaps I could find an answer in <a href="https://newscrewdriver.com/2023/07/23/window-shopping-cadhub/">a larger-scale overview like CadHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

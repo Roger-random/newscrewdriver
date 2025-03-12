@@ -1,0 +1,61 @@
+---
+layout: post
+title: NEXTEC Work Light LED Array
+date: 2022-08-31 12:30:00.000000000 +00:00
+type: post
+post_id: '32332'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Fan Strobe LED
+- LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32335'
+  timeline_notification: '1661974212'
+  _publicize_job_id: '76287873270'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/31/nextec-work-light-led-array/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While <a href="https://newscrewdriver.com/2022/08/30/resistors-negotiate-5v-power-in-usb-type-c/">experimenting with 5V power delivery over USB-C</a>, I thought of an experiment that will utilize my new understanding of computer cooling fan tachometer wire. For this experiment I will need a light source in addition to the fan itself. I wanted a nice and bright array of many LEDs, and preferably something already set up to run at around 12V so I wouldn't have to add current-limiting resistors. A few years ago, I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/12/15/disassemble-nextec-led-work-light/" target="_blank">took apart a Sears Craftsman NEXTEC work light</a> for its battery compartment. Now it is the LEDs turn to shine. That battery pack used three lithium 18650 cells in series, so it is in the right voltage range.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32338,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/nextec-led-array.jpg?w=1024" alt="" class="wp-image-32338"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think there was only a single fastener involved in this LED array, and it was already gone from teardown earlier so now everything slid apart easily.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32335,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/nextec-led-array-disassembled.jpg?w=1024" alt="" class="wp-image-32335"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like the LED housing and intend to use it, but I wanted to take a closer look at the LED array.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32337,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/nextec-led-array-pcb-front.jpg?w=1024" alt="" class="wp-image-32337"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I confirm the 24 white LEDs visible before disassembly, and there's nothing else hiding on this side of the board, just the power supply wires looping through for a bit of strain relief. We can also see that <a rel="noreferrer noopener" href="https://global.chervongroup.com/" target="_blank">Chervon Group</a> was the subcontractor who produced this device to be sold by Sears under their Craftsman branding.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32336,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/nextec-led-array-pcb-back.jpg?w=1024" alt="" class="wp-image-32336"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Everything is on the backside of this circuit board. From here we can see the 24 LEDs are arranged in 12 parallel sets of 2 LEDs in series, each set with a 240 Ohm resistor between them. Beyond that, to lower left I see a cluster of components and I'm not sure what they do. My best guess is battery over-discharge protection. Perhaps the component marked ZD1 is a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Zener_diode" target="_blank">Zener diode</a> to detect voltage threshold, working with power transistor Q1 to cut power if battery voltage drops too low.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most important thing is that I don't see a microcontroller that requires time to boot up. I will be pulsing this LED array rapidly and want minimal delay between power and illumination. If delay proves to be a problem, I'll try bypassing those lower-left bits: Relocate the power supply wire (brown wire, connects between markings R1 and ZD1) so it connects directly to the LED supply plane. Either to the transistor tab adjacent to the Q1 marking, or directly to the high end of any of those 12 parallel LED strings. But I might not need to perform that bypass. I will <a href="https://newscrewdriver.com/2022/09/01/led-strobing-to-fan-speed-signal/">try my experiment</a> with this circuit board as-is.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,138 @@
+---
+layout: post
+title: Angular + Three.js Hello World
+date: 2023-04-06 12:30:00.000000000 +00:00
+type: post
+post_id: '36108'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36104'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680902064
+  _publicize_job_id: '82977824679'
+  timeline_notification: '1680809406'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/06/angular-three-js-hello-world/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I decided to rewrite my magnetometer test app as an Angular web app. Ideally, I would end up with something more polished. But that is a secondary goal. The primary goal is to use it as <a href="https://newscrewdriver.com/2023/04/05/compass-web-app-for-angular-practice/">a practice exercise for building web apps with Angular</a>. Because there are definitely some adjustments to make when I can't just use global variables and functions for everything.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first task is to learn how to use Three.js 3D rendering library from within an Angular web app. I know this is doable from others <a href="https://medium.com/geekculture/hello-cube-your-first-three-js-scene-in-angular-176c44b9c6c0">who have written up their experience</a>, I only have to follow their lead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Installation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first step is obvious: install <a href="https://www.npmjs.com/package/three">Three.js library itself</a> into my project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>npm install --save three</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now my Angular app could import objects from Three, but it would fail TypeScript compilation because the compiler doesn't have type information. For that, <a href="https://www.npmjs.com/package/@types/three">a separate library</a> needs to be installed. This is only used at development time, so I save it as a development-only dependency.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>npm install --save-dev @types/three</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">HTML DOM Access via @ViewChild</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once installed I could create an Angular component using Three.js. Inside that component I could use most of the code from Three.js introduction "<a href="https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene">Creating a Scene</a>". One line I could not use directly is:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>document.body.appendChild( renderer.domElement );</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Because now I can't just jam something to the end of my HTML document's <code>&lt;BODY&gt;</code> element. I need to stay within the bounds of my Angular component. To do so, I name an element in my component template HTML file where I want my Three.js canvas to reside.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[...Component template HTML...]
+
+  &lt;div #threejstarget&gt;&lt;/div&gt;
+
+[...Component template HTML...]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the TypeScript code file, I can obtain a reference to this element with the <a href="https://angular.io/api/core/ViewChild">@ViewChild decorator</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  @ViewChild('threejstarget') targetdiv!: ElementRef;
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why the "!" suffix? If we declared the variable "<code>targetdiv</code>" by itself, TypeScript compiler would complain that we risk using a variable that may be null or undefined instead of its declared type. This is because TypeScript compiler doesn't know <code>@ViewChild</code> will handle that initialization. We use an exclamation mark (!) suffix to <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#null-and-undefined">silence this specific check on this specific variable</a> without having to turn on the (generally useful) null/undefined checks in TypeScript.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>(On the "To-Do" list: come back later and better understand how @ViewChild relates to <a href="https://stackoverflow.com/questions/32693061/how-can-i-select-an-element-in-a-component-template">similar directives @ViewChildren, @ContentChild, and @ContentChildren</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Wait until AfterViewInit</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>But there are limits to @ViewChild power. Our ElementRef still starts null when our component is initialized. @ViewChild could not give us a reference until the component template view has been created. So we have to wait until the <a href="https://angular.io/api/core/AfterViewInit">AfterViewInit stage of Angular component lifecycle</a> before adding Three.js render canvas into our component view tree.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  ngAfterViewInit() : void {
+    this.targetdiv.nativeElement.appendChild( this.renderer.domElement );
+  }</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>An alternative approach is to have &lt;CANVAS&gt; inside our component template, and attach our renderer to that canvas instead of appending a canvas created by renderer.domElement. I don't yet understand the relevant tradeoffs between these two approaches.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Animation Callback and JavaScript '<code>this</code>'</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>At this point I had a Three.js object onscreen, but it did not animate even though my <code><a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">requestAnimationFrame()</a></code> callback function was being called. A bit of debugging pointed to my mistaken understanding of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">how JavaScript handles an object's "this" reference</a>. My animation callback was getting called in a context where it was missing a "this" reference back to my Angular component, and thus unable to advance the animation sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>requestAnimationFrame(this.renderNeedle);</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>One resolution to this issue (JavaScript is very flexible, there are many other ways) is to declare a callback that has an appropriate "this" reference saved within it for use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>requestAnimationFrame((timestamp)=&gt;this.renderNeedle(timestamp));</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's a fairly trivial problem and it was my own fault. There are lots more to learn about animating and Angular from others online, like <a href="https://micbdev.medium.com/animating-a-counter-with-angular-using-requestanimationframe-5e7b020aa3e">this writeup</a> about an animated counter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Increase Size Budget</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that work I had a small Three.js animated object in my Angular application. When I run "ng build" at that point, I would see a warning:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Warning: bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 167.17 kB with a total of 667.17 kB.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>An empty Angular application already weighs in at over 200kB. Once we have Three.js in the deployment bundle, that figure ballooned by over 400kB and exceeded the default warning threshold of 500kB. This is a sizable increase, but thanks to optimization tools in the Angular build pipeline, this is actually far smaller than my simple test app. My test app itself may be tiny, but it downloaded the entire Three.js module from a CDN (content distribution network) and that file <code>three.module.js</code> is over a megabyte (~1171kB) in size. By that logic this is the better of two options, we just have to adjust the <code>maximumWarning</code> threshold in <code>angular.json</code> accordingly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first draft used a fixed-size &lt;DIV&gt; as my Three.js target, which is easy but wouldn't be responsive to different browser situations. For that I need to learn <a href="https://newscrewdriver.com/2023/04/07/angular-component-size-and-resize/">how to use CSS layout</a> for my target &lt;DIV&gt;</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

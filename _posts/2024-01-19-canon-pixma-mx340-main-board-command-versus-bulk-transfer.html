@@ -1,0 +1,52 @@
+---
+layout: post
+title: Canon Pixma MX340 Main Board Command Versus Bulk Transfer
+date: 2024-01-19 12:30:00.000000000 +00:00
+type: post
+post_id: '41643'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41609'
+  firehose_sent: '1705696225'
+  wordads_ufa: s:wpcom-ufa-v4:1705790406
+  _publicize_job_id: '91237906774'
+  timeline_notification: '1705696226'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/19/canon-pixma-mx340-main-board-command-versus-bulk-transfer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm writing a simple (hopefully) program to parse data flowing between main board and control panel of a Canon Pixma MX340 multi-function inkjet. It will listen to traffic in both directions by <a href="https://newscrewdriver.com/2024/01/18/simultaneously-listening-to-two-serial-ports/">constantly polling two serial ports for data availability</a> and process data as they come in on whichever port. My previous code listening for control panel button scan code was easily adapted, now I need to figure out how to handle main board commands.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on what I've seen so far, the majority (by byte count) of main board traffic updates LCD screen bitmap, with each screen refresh consisting of five bulk transfers of 196 bytes. Remaining traffic consist of two byte sequences, including the bytes leading up to each bulk transfer. So before anything else, I need to read through those two-byte commands and recognize the bulk transfer command so I know to skip ahead 196 bytes. Otherwise I'd end up trying to parse screen image bitmap as commands and that won't end well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Right now I don't plan to do anything with the LCD screen image bitmap data, they'll just be discarded. My Python project is just a command line tool with no practical way to show an image anyway. The closest thing I can do is print out an array of asterisks/spaces 196 columns wide and 40 rows tall. Which may be an interesting exercise but not very practical. I don't plan to render the LCD screen image bitmap data until I evolve to something more advanced. Either a computer app with a graphical interface, or an ESP32 serving up HTML, something along those lines.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I separate main board commands from image data, I want my program to comb through those commands. Look for sequences I've already analyzed, and call attention to any sequences I haven't seen yet. Articulating all these patterns in terms of Python code could be straightforward or a hidden gotcha could turn it into an interesting challenge. I decided to <a href="https://newscrewdriver.com/2024/01/20/canon-pixma-mx340-control-panel-command-sequence-lookup/">try the easy thing first</a> and see how far I get.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this quick-and-dirty data parsing project is <a href="https://github.com/Roger-random/canon_mx340/tree/main/control_panel_io_filter_python" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

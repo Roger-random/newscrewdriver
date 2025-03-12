@@ -1,0 +1,71 @@
+---
+layout: post
+title: AS7341 Spectral Color Sensor with Mozzi on AVR Arduino
+date: 2023-01-10 12:30:00.000000000 +00:00
+type: post
+post_id: '34503'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- AVR
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34514'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673559154
+  _publicize_job_id: '80426673751'
+  timeline_notification: '1673382642'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/10/as7341-spectral-color-sensor-with-mozzi-on-avr-arduino/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Looks like I will never learn how to build custom configurations for AS7341 SMUX, but <a href="https://newscrewdriver.com/2023/01/09/sample-code-gave-incomplete-picture-of-as7341-smux-configuration/">at least I have presets I could copy/paste</a> and that's good enough for my hobbyist level project. The goal is to convert I2C communication from Arduino's standard Wire library to the <code>twi_nonblock</code> library bundled as part of Mozzi library. Arduino Wire library would block execution while I2C communication is ongoing, which causes audible glitches with Mozzi sketches. Converting to <code>twi_nonblock</code> avoids that issue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using Adafruit's AS7341 Arduino library and sample sketches as my guide, it was relatively straightforward to converting initialization routines. Partly because most of them were single-register writes, but mostly because non-blocking isn't a big concern for setup. I could get away with some blocking operations which also verified I2C hardware was working before adding the variable of nonblocking behavior into the mix.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To replicate Adafruit's <code>readAllChannels()</code> behavior in a nonblocking manner, I split the task into three levels of state machines to track asynchronous actions:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Lowest level state machine tracks a single I2C read operation. Write the address, start a read, and copy the results.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Mid level state machine pulls data from all 6 AS7341 ADC. This means setting up SMUX to one of two presets then waiting for that to complete. Start sensor integration, then wait for that to complete. And finally copy sensor results. Each read operation is delegated to the lower level state machine.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>High level state machine runs the mid-level state machine twice, once for each SMUX preset configuration.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that high level state machine runs through both SMUX preset configurations, we have data from 10 spectral sensors. The flicker detector is the 11th sensor and not used here. This replicates the results of Adafruit's <code>readAllChannels()</code> without its blocking behavior. Getting there required an implementation which is significantly different. (I don't think I copied any Adafruit code.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While putting this project together, my test just printed all ten sensor values out to serial console. In order to make things a little more interesting, I brought this back full circle and emulated the behavior of Emily Velasco's color organ experiment. Or at least, an earlier version of it that played a single note depending on which sensor had returned highest count. (Emily has since experimented with vibrato and chords.) I added a lot of comments my version of the experiment hopefully making it suitable as a learning example. As a "Thank You" to Emily for introducing me to the AS7341, I packaged this project into <a rel="noreferrer noopener" href="https://github.com/emilyvelasco/color_organ/pull/1" target="_blank">a pull request on her color organ repository</a>, which she accepted and merged.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is not the end of the story. <code>twi_nonblock</code> supports only AVR-based Arduino boards like the ATmega328P-based Arduino Nano I used for this project. What about processors at the heart of other Arduino-compatible boards like the ESP32? They can't use <code>twi_nonblock</code> and would have to do something else for glitch-free Mozzi audio. That'll be <a href="https://newscrewdriver.com/2023/01/12/jst-sh-stemma-qt-and-3-5mm-headphone-audio-jack-for-esp32-mini/">a separate challenge to tackle</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/color_organ/blob/main/nonblock_example/nonblock_example.ino" target="_blank">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

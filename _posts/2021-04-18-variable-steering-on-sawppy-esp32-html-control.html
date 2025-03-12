@@ -1,0 +1,47 @@
+---
+layout: post
+title: Variable Steering on Sawppy ESP32 HTML Control
+date: 2021-04-18 12:30:00.000000000 +00:00
+type: post
+post_id: '26141'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26022'
+  _publicize_job_id: '57315985184'
+  timeline_notification: '1618774211'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/18/variable-steering-on-sawppy-esp32-html-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It's great to see my <a href="https://newscrewdriver.com/2021/04/17/micro-sawppy-beta-3-running-with-html-control/">ESP32-based HTML control scheme for Sawppy rover up and running end-to-end</a>. However, the code to get this far is an extremely rough first draft. I still have a lot of refinement work ahead. The first thing I wanted to tackle was control precision while the little rover is running at high speed. My <a href="https://newscrewdriver.com/2021/04/07/micro-sawppy-beta-3-running-with-spektrum-radio-control/">Spektrum radio gave me extremely precise control</a> over steering angle, but my touchscreen control was comparatively crude. Instead of going in the direction I want, it would dart too far one way, I would over-correct and it dart the other way, and repeat. I noticed this problem with my HTML touch joystick control pad with SGVHAK rover and Sawppy V1 rover, but they were larger rovers that travelled slower so the problem wasn't as bad. A little hyperactive rover with a much shorter wheelbase suffers far more from twitchy steering. So while it was something I just tolerated on the larger rovers, it became a priority to address on the little one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I implemented the first idea that came to mind: make the steering range variable as a function of speed. I hope this would feel intuitive relative to everyday cars, since we perform tight turns at low speed and learn to keep steering gentle at higher speeds. The caveat is that it wouldn't be implemented the same way. In our cars the steering ratio remains constant no matter the speed, we just learn to be gentle and not yank the wheel about on the highway. Now I am going to vary the control ratio and this might be confusing. When car manufacturers started exploring <a href="https://www.caranddriver.com/features/a15120796/prime-cuts-lexus-variable-gear-ratio-steering-feature/">variable-ratio power steering racks</a> on their cars, some early implementations made customers unhappy.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to my little rover. The initial implementation mapped the left-right position of my joystick pad directly to a particular turning radius, no matter what speed the rover is travelling. My first experiment is to modify that so the steering ratio would drop and turning radius would widen as speed increased. Meaning it would be very hard to maintain a specific turning radius while varying the speed, but that's not something I see as a rover driving pattern anyway so maybe it's OK for that to be difficult.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I implement the variable ratio, at top speed (joystick pad at the top edge) the left-right steering range is only a fraction of maximum. This allows me to fine-tune rover heading as it runs, and I don't have to worry about suddenly throwing the rover into a sharp U-turn by accident. This part worked well, but it is tricky to drive the rover while slowly accelerating since steering angle changes as I accelerate. It's possible this would prove to be a problem worse than the original one I set out to solve, I don't know yet. I'll drive with this variable ratio mechanism in place for a while and see how it goes. I'll also <a href="https://newscrewdriver.com/2021/04/20/sawppy-rover-driver-max-occupancy-one/">make sure only one person is driving</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/blob/main/esp32_sawppy/browser_ui/static/joystick.js#L205">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

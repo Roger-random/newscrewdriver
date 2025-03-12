@@ -1,0 +1,59 @@
+---
+layout: post
+title: TIL Some Video Equipment Support Both PAL and NTSC
+date: 2021-05-22 12:30:00.000000000 +00:00
+type: post
+post_id: '26651'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+- PAL
+meta:
+  _publicize_job_id: '58690519186'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26666'
+  timeline_notification: '1621711864'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/22/til-some-video-equipment-support-both-pal-and-ntsc/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2021/05/21/allocating-frame-buffer-memory-4kb-at-a-time/">sorted out memory usage</a> of my <code>ESP_8_BIT_composite</code> Arduino library, I had just one known issue left on the list. In fact, the <a href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/1" target="_blank" rel="noreferrer noopener">very first one</a> I filed: I don't know if <a href="https://en.wikipedia.org/wiki/PAL" target="_blank" rel="noreferrer noopener">PAL video format</a> is properly supported. When I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/02/extracting-esp_8_bit-sega-color-video/" target="_blank">pulled this color video signal generation code</a> from the original <code>ESP_8_BIT</code> project, I worked to keep all the PAL support code intact. But I live in NTSC territory, how am I going to test PAL support?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is where writing everything on GitHub paid off. Reading my predicament, [bootrino] <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/1" target="_blank">passed along a tip</a> that some video equipment sold in NTSC geographic regions also support PAL video, possibly as a menu option. I poked around the menu of the tube TV I had been using to develop my library, but didn't see anything promising. For the sake of experimentation I switched my sketch into PAL mode just to see what happens. What I saw was a lot of noise with a bare ghost of the expected output, as my TV struggled to interpret the signal in a format it could <em>almost</em> but not quite understand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew the old <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/11/24/sony-kp-53s35-teardown/" target="_blank">Sony KP-53S35 RPTV I helped disassemble</a> is not one of these bilingual devices. When <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/12/12/sony-kp-53s35-signal-board-a-components/" target="_blank">its signal processing board was taken apart</a>, there was an interface card to host a NTSC decoder chip. Strongly implying that support for PAL required a different interface card. It also implies newer video equipment have a better chance of having multi-format support, as they would have been built in an age when manufacturing a single worldwide device is cheaper than manufacturing separate region-specific hardware. I dug into my hardware hoard looking for a relatively young piece of video hardware. Success came in the shape of a DLP video projector, the <a href="https://www.benq.com/en-us/support/downloads-faq/products/projector/ms616st/manual.html">BenQ MS616ST</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26665,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/benq-ms616st-does-both-ntsc-and-pal.jpg?w=1024" alt="" class="wp-image-26665"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I originally bought this projector as part of a PC-based retro arcade console with a few work colleagues, but that didn't happen for reasons not important right now. What's important is that I bought it for its VGA and HDMI computer interface ports so I didn't know if it had composite video input until I pulled it out to examine its rear input panel. Not only does this video projector support composite video in both NTSC and PAL formats, it also had an information screen where it indicates whether NTSC or PAL format is active. This is important, because seeing the expected picture isn't proof by itself. I needed the information screen to verify my library's PAL mode was not accidentally sending a valid NTSC signal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Further proof that I am verifying a different code path was that I saw a visual artifact at the bottom of the screen absent from NTSC mode. It looks like I inherited a PAL bug from <code>ESP_8_BIT</code>, where rossumur was working on some optimizations for this area but left it in a broken state. This artifact would have easily gone unnoticed on a tube TV as they tend to crop off the edges with <a href="https://en.wikipedia.org/wiki/Overscan" target="_blank" rel="noreferrer noopener">overscan</a>. However this projector does not perform overscan so everything is visible. Thankfully the bug is easy to fix by removing an errant <code>if()</code> statement that caused PAL blanking lines to be, well, not blank.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thanks to this video projector fluent in both NTSC and PAL, I can now confidently state that my <code>ESP_8_BIT_composite</code> library supports both video formats. This closes the final known issue, which frees me to <a href="https://newscrewdriver.com/2021/05/23/animated-gif-decoder-library-exposed-problem-with-double-buffering/">go out and find more problems</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite" target="_blank">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,99 @@
+---
+layout: post
+title: Solar Lawn Light Capacitor Experiment
+date: 2024-07-28 12:30:00.000000000 +00:00
+type: post
+post_id: '44452'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- lawn light
+- Solar Power
+- supercapacitor
+meta:
+  firehose_sent: '1722195018'
+  _publicize_job_id: '96598132704'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44466'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-28 03:45:36'
+  timeline_notification: '1722195020'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/28/solar-lawn-light-capacitor-experiment/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm playing around with some old tired solar lawn lights I have in my back yard. I discovered their energy storage was in the form of AAA NiMH batteries, and as an experiment I was able to <a href="https://newscrewdriver.com/2024/07/27/solar-lawn-light-nimh-battery-replacement/">resurrect one lawn light with a salvaged NiMH battery cell</a>. I expect it to die again soon, though, because this is a very stressful application. First, a solar ornament sitting under the summer sun gets really hot, near the top end of NiMH operating temperature range, if not beyond. And second, I discovered these lights use 2V solar panels and would pass that all the way to battery terminals for charging. This also exceeds the recommended NiMH voltage range. Excess power would be dissipated as heat, which aggravates the temperature issue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the limited expected lifespan of NiMH battery in this application, I thought it was a good opportunity to play with a <a href="https://en.wikipedia.org/wiki/Supercapacitor">supercapacitor</a>. A relatively new branch of the capacitor family tree, they offer several orders of magnitude more energy storage capacity than other capacitor types though still less than commodity batteries. The types I can realistically purchase and play with can comfortably operate at summer heat temperatures, and their maximum voltage of 2.7V has a comfortable margin over solar cell output. Another key capacitor advantage over batteries are their tolerance for high charge and discharge rates, but that's not important here. Most importantly, prices have dropped enough for me to pick up a batch to play with. I went on Amazon and bought the <a href="https://amzn.to/4cJ57Oc">highest Farad-per-dollar listing I found that day</a>. (*) Once it arrived, I selected another lawn light for this capacitor experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Electrical Failure: Solar Cell</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having established that the YX805 chip at the heart of these lights won't do anything when the battery is below 0.9V, I used my bench power supply to charge my capacitor up to a NiMH-emulating 1.25V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44472,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/solar-light-electrical-test-with-500f-capacitor.jpg?w=800" alt="" class="wp-image-44472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I un-soldered the battery compartment wires and soldered them to the YX805 circuit board. The LED illuminated. This is good! Since my solar panel was facing downwards, this is appropriate behavior for a dark environment with energy in the battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44474,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/solar-light-electrical-test-with-500f-capacitor-led-still-on-while-in-sunlight.jpg?w=800" alt="" class="wp-image-44474"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then moved the assembly to a bright sunlit spot, and the LED continued shining. This is bad! It was supposed to go into battery-charging mode. Probing with my volt meter, I established the solar cell is not delivering any power so the YX805 chip thinks it's always dark.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Mechanical Failure: Brittle Plastic</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even if the solar cell was still functioning, I would not have been able to put this light back together. The plastic bracket directly underneath the solar cell had degraded under heat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44478,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/solar-light-top-bracket-crumbled-after-disassembly.jpg?w=800" alt="" class="wp-image-44478"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were four screws fastening the bottom and top covers together. When I started turning those screws, three of these corner posts crumbled apart. That left only one superficially intact, but the threads crumbled during removal so that final fourth post is just as useless as the rest. I can't install a replacement solar cell, as the dead cell and mounting posts were held with this glob of gray epoxy. Which, inconvenient for me, is still holding strong. If the solar cell was still good and I wanted to repair this mounting mechanism, I would have to design, 3D print, and epoxy something that sits apart from this crumbled assembly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Mechanical Failure: Not Enough Room</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The good news: a dead solar cell and broken mount meant I was free to experiment with fitting a capacitor inside. This capacitor is slightly larger than a D-size battery cell, and I'm trying to fit it in a device designed for AAA-sized cells.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44481,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/solar-light-battery-compartment-chiseled-out-for-a-500f-capacitor-hole.jpg?w=800" alt="" class="wp-image-44481"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I took a chisel and cut out the battery tray, which also took out two of the four mounting screw holes, but they had nothing to fasten to anyway. This tray is made of plastic and almost as brittle as the top bracket. Pieces of plastic crumbled under the chisel as I went.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44483,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/solar-light-off-center-hole-drilled-for-led.jpg?w=800" alt="" class="wp-image-44483"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I quickly made a hole big enough for the capacitor to fit, but not enough for the two halves to close together. I started an iterative process of "make hole bigger" and "test fit" then repeat. I made the hole larger and larger until it started encroaching upon the LED hole in the center. To make room, I turned the LED circuit board 180 degrees and drilled a small hole for LED to shine from an off-center position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44466,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/07/solar-light-too-small-for-500f-capacitor.jpg?w=1024" alt="" class="wp-image-44466"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>By the time I can close the two halves together, the capacitor was about half-exposed to the outside. Moving it further center would make the problem worse, because the solar panel bracket assembly would force the capacitor further away so <em>more </em>than half of it would be exposed out the bottom. And as it happens, I would need to move further center: I had put the capacitor too close to the outer edge, cutting into volume required for the glass component beneath. Fail! Fails all around, ah well. But it was fun to try. Now I know enough to decide <a href="https://newscrewdriver.com/2024/07/29/solar-lawn-light-staying-with-nimh/">I should stick with NiMH batteries</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

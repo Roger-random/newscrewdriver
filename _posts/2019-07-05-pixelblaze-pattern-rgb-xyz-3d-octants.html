@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'Pixelblaze Pattern: RGB-XYZ 3D Octants'
+date: 2019-07-05 12:30:36.000000000 +00:00
+type: post
+post_id: '18833'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18834'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32527377786'
+  timeline_notification: '1562355095'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/05/pixelblaze-pattern-rgb-xyz-3d-octants/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Pixelblaze documentation offers a simple pattern for testing that <a href="https://newscrewdriver.com/2019/07/04/pixelblaze-pixel-map-for-led-helix/">my 3D pixel map volume</a> is indeed doing something in three-dimensional space: a simple call piped coordinates (x,y,z) directly into the <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a> (hue, saturation, and value) for a LED color. This turns my LED helix into a cylindrical sample of the HSV color space. With this, I could look for color or brightness variations from one side of the cylinder to the other. A non-repeating variation across a single loop tells me X and Y axis are doing something, and a gradient from top to bottom tells me the Z axis is doing something.</p>
+<p>The next step is to go from verifying it does <em>something</em> to verifying the X, Y, and Z axis are indeed pointing in the intended directions. And to do that, I wanted something that visually distinguishes each of the three axis and shows the positive direction for each axis. To meet this requirement, I implemented a Pixelblaze pattern to display my 3D pixel map volume cut up into eight <a href="https://en.wikipedia.org/wiki/Octant_(solid_geometry)">octants</a>.</p>
+<p>Each axis will be assigned a color. To keep the axis color assignments easy to remember, They'll be mapped in the order they're typically named. Color components are usually listed in RGB order, and coordinates listed in XYZ order. Keeping the same order in both means red is X, green is Y, and blue is Z.</p>
+<p>Along each axis, the positive direction half of the pixels will receive the assigned color. Pixelblaze <code>render3D()</code> coordinate parameters are given in the range from 0.0 to 1.0, so pixels with a coordinate from 0.5 to 1.0 will receive the color assigned to that axis.</p>
+<p>Examples:</p>
+<ul>
+<li>(0,0,0) lies in the negative direction of every axis, so it doesn't receive any color and will be black.</li>
+<li>(1,1,1) lies in the positive half of every axis, so it receives R, G, and B turning white.</li>
+<li>(0.75, 0.15, 0.35) lies in the upper half of X, but lower half of Y and Z. So this pixel is assigned red.</li>
+</ul>
+<p>This <code>render3D()</code> pattern displayed on a 3D pixel mapped display will visually indicate alignment and direction of X by all the pixels with a red component, alignment and direction of Y with green, and Z with blue.</p>
+<p>Code for this test pattern is <a href="https://github.com/Roger-random/glowflow/blob/master/rgbxyz%20octants">available on Github</a>, and also shared on the public <a href="https://electromage.com/patterns">Pixelblaze pattern database</a> as "RGB-XYZ 3D Octants".</p>
+<p>It is a functional test pattern, but not very visually dynamic. Pixelblaze is all about animated LED patterns, so the next step is to <a href="https://newscrewdriver.com/2019/07/06/pixelblaze-pattern-rgb-xyz-3d-sweep/">make an <strong><em>animated</em></strong> variant</a> of this test pattern.</body></html></p>

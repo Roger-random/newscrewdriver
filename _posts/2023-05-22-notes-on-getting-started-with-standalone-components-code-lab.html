@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on "Getting Started with Standalone Components" Code Lab
+date: 2023-05-22 12:30:00.000000000 +00:00
+type: post
+post_id: '36788'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36810'
+  timeline_notification: '1684783833'
+  _publicize_job_id: '84273093520'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684880541
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/22/notes-on-getting-started-with-standalone-components-code-lab/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2023/05/21/notes-on-getting-started-with-angular-signals-code-lab/">enjoyed the code lab exercise</a> of <em>Getting Started with Angular Signals</em>, and I think I can learn even more from the exercise application source code. First up is learning "Angular Standalone". I've seen mentions of this feature before, but I misunderstood it to be an advanced feature I should postpone until later. It wasn't until an <a href="https://newscrewdriver.com/2023/05/19/notes-on-google-i-o-2023-angular-signals/">Angular presentation at Google I/O 2023</a> that I learned standalone components were intended to make Angular easier for beginners. My mistake! I noticed the Cipher sample project for Angular Signals were itself built with standalone components. Conveniently, the final page of that code lab pointed to another one: <em><a href="https://codelabs.developers.google.com/angular-standalone-components">Getting Started with Standalone Components</a></em>. So, I clicked that link to get my first look.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This code lab is a little bit older, about a year old judging from the fact it was written for Angular 14. But it wasn't too far out of date because I was able to follow along on Angular 16 with only minor differences. That said, some Angular knowledge was required to make those necessary on-the-fly changes and I wouldn't have known enough to do that earlier. Despite its bare-bones nature, template HTML in this code lab application used <a href="https://www.w3schools.com/html/html5_semantic_elements.asp">semantic HTML tags</a> like <code>&lt;article&gt;</code> and <code>&lt;section&gt;</code>. I was happy to see that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I learned a few things in addition to the main topic. As part of converting the boilerplate Angular application to use standalone components, I finally learned to recognized how Angular router is included in an app. Angular router is very powerful, core of component navigation and associated features like lazy-loading components. But it is big! For the sake of exercise, I took my newfound knowledge and built an empty Angular app without router. That came out to ~160kb from <code>ng build</code>. Adding the router back in and running <code>ng build</code> again got ~220kB of code. This means adding router ballooned size by over 37%. (220/160=1.375) Wow. At least now I think I know how to strip the router out of simple Angular applications that don't need it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This sample app also gave me another example of <a href="https://angular.io/guide/forms-overview">HTML forms in Angular</a>. I'm still not very confident in building my own Angular app to take form input, but I think I understand enough to recognize this application is using the "reactive form" option in Angular. Not the "template-driven form" option which uses the <code>NgModel</code> directive that (at least to my limited knowledge) resembles Vue.js <code>v-model</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, this code lab sample application plugged Google Cloud services that have nothing to do with Angular standalone. "<em>How to embed a chat dialogue in a standalone component using <a href="https://cloud.google.com/dialogflow/cx/docs/concept/integration/dialogflow-messenger">Dialogflow Messenger</a></em>" and "<em>How to deploy an Angular application to Google Cloud <a href="https://cloud.google.com/appengine/docs">App Engine</a> using Google Cloud CLI (gcloud)</em>". I'm probably never going to look at Diagflow Messenger again, but Google's App Engine is interesting enough for a look later. Right now I want to follow this code lab with a dive into <a href="https://newscrewdriver.com/2023/05/23/notes-on-angular-standalone-components-guide/">Angular developer guide for standalone components</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

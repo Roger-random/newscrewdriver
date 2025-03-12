@@ -1,0 +1,53 @@
+---
+layout: post
+title: 'FreeCAD Notes: Midpoint'
+date: 2023-09-07 12:30:00.000000000 +00:00
+type: post
+post_id: '38844'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- freecad
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38850'
+  footnotes: ''
+  timeline_notification: '1694115013'
+  wordads_ufa: u:wpcom-ufa-v4:1694215861
+  _publicize_job_id: '87364248449'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/07/freecad-notes-midpoint/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In between <a href="https://newscrewdriver.com/2023/09/06/idea-unity-lego-microgame-in-vr/">musing about VR projects</a> and other random ideas, I've been returning to FreeCAD and learning my way bit by bit. After my <a href="https://newscrewdriver.com/2023/07/28/freecad-notes-part-design-first-impressions/">initial introduction to Part Design workbench</a> I've been gradually gaining proficiency with it. Learning FreeCAD required changing some patterns I've developed while working in Onshape. Such changes were expected for adopting a different software package, so this is not a surprise, but adjustment takes time. The first "that took longer than it should" switchover example was replacing Onshape's midpoint constraint.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When sketching my design in Onshape, I frequently use the midpoint constraint to keep something in between two other things. Most commonly, I would place a point on a construction line and then select the midpoint constraint. FreeCAD doesn't have a dedicated "Midpoint" constraint but, for putting a point in the midpoint of a line, I should be able to use the "Symmetrical" constraint to accomplish the same thing. But as soon as I impose the "Symmetrical" constraint on my point and line, everything turns orange indicating some kind of an error. I pressed "Undo" so I could figure out a different way that wouldn't cause an error. But no matter what I tried, things would turn orange.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After several attempts all ending in orange lines, I thought "Self, go understand the error message!" It took me a minute to figure out where the error was shown in FreeCAD's interface, but once I did, I saw the error was "Redundant constraints: (61)" This was confusing to me because the point I had placed on the line was definitely not the midpoint, so the "Symmetrical" constraint was definitely required. What was the redundant constraint? FreeCAD's list of problematic constraint was a single number 61, which told me nothing. Fortunately, the (61) was a link I could click to take me to a "Constrain point onto object" linking the point and line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>How did this happen? When I clicked to place a point on the line, FreeCAD tried to be helpful and automatically added a "Constrain point onto object" between the two. Not knowing this had happened, I blissfully proceeded to add "Constrain symmetrical". Doing so made "Constrain point onto object" redundant because a line's midpoint is by definition always on that line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In other words: FreeCAD implicitly added a constraint and, when I made my wish explicit, complained that my explicit specification collided with its implicit inference. That was annoying, I had nothing to do with that implicit constraint but now I have to deal with it. Or do I? Looking at FreeCAD's user interface immediately below where "Redundant constraints (61)" was shown, I saw a checkbox for "Auto remove redundants". Hey, that sounded promising!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Except it was not useful. I checked that option and tried again. When I clicked to add a point on the line, it still added "Constrain point onto object" as before. Then when I added "Constrain symmetrical", FreeCAD looked at the two conflicting constraints and automatically removed the more recent one: "Constrain symmetrical". Which is to say, FreeCAD deleted my explicit wish in favor of its own incorrect guess. Bah.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I understood what happened, I could devise a workaround. When adding the point, I have to be careful to click in the empty space <em>near </em>the line but <em>not on </em>the line. Doing this meant FreeCAD would not add "Constrain point onto object" so when I explicitly specify "Constrain symmetrical" afterwards there would be no redundancy to cause problems. This would be a minor change in my behavior, and I think I'll get the hang of it quickly like FreeCAD's <a href="https://newscrewdriver.com/2023/09/08/freecad-notes-distance/">distance constraint feature</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

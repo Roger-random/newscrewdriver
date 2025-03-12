@@ -1,0 +1,56 @@
+---
+layout: post
+title: 'Next Practice Round: MicroPython on ESP8266'
+date: 2022-02-09 12:30:00.000000000 +00:00
+type: post
+post_id: '28524'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- ESP8266
+- MicroPython
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28374'
+  _publicize_job_id: '68779314874'
+  timeline_notification: '1644438634'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/09/next-practice-round-micropython-on-esp8266/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been running through "Hello World" level microcontroller projects, using my little Harbor Freight solar array as a target subject. I just finished <a href="https://newscrewdriver.com/2022/02/08/problems-making-esp32-hold-gpio-while-asleep/">a trial run of programming an ESP32 using ESP-IDF platform</a> and while analog input and power-saving deep sleep worked as expected, GPIO output pins did not. I thought I would use an external peripheral to get around the problem but, if I'm doing that, I might as well fall back to the cheaper ESP8266 used in a batch of <a rel="noreferrer noopener" href="https://amzn.to/3qetPjU" target="_blank">Wemos D1 Mini clone</a>(*) I had bought.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An earlier experiment with ESP8266 used the Arduino development platform. This time around, I'm trying MicroPython for the following reasons:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>With MicroPython I could modify my code without reflashing the entire ESP8266 as I had to do with Arduino.</li>
+<li>My Arduino sketch was a fairly short piece of code, but MicroPython promises to get going with even less code.</li>
+<li>Last time I looked at MicroPython I rejected it because <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/22/evaluating-my-options-for-esp32-development/" target="_blank">it didn't support a hardware peripheral</a> I wanted to use. (MCPWM of ESP32.) This time I'm using just the ADC, which is supported.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I actually wanted to try <a rel="noreferrer noopener" href="https://www.adafruit.com/circuitpython" target="_blank">CircuitPython</a>, Adafruit's derivative of MicroPython with changes focused on making things even easier for beginners to play with and something I first encountered on <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/11/19/eyes-at-supercon-adafruit-hallowing/" target="_blank">their HalloWing product</a>. However, a part of CircuitPython is exposing the microcontroller as a USB mass storage device and letting us drag-and-drop Python source files onto the board for instant execution. This requires native USB support on the microcontroller, which is <a rel="noreferrer noopener" href="http://docs.circuitpython.org/en/latest/ports/espressif/README.html" target="_blank">present on newer ESP32 variations</a> but not the one I have. There <a href="https://learn.adafruit.com/welcome-to-circuitpython/circuitpython-for-esp8266" target="_blank" rel="noreferrer noopener">used to be an ESP8266 version</a> without the drag-and-drop but Adafruit stopped supporting that configuration some time ago.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting CircuitPython back on the "look at later" list, I changed focus to MicroPython. I brought up documentation for <a rel="noreferrer noopener" href="https://docs.micropython.org/en/latest/esp8266/general.html" target="_blank">putting MicroPython on an ESP8266</a>. In 15 minutes I had an interactive Python command line over serial port, though there were <a href="https://newscrewdriver.com/2022/02/10/a-few-speed-bumps-on-the-road-to-esp8266-micropython/">a few speed bumps</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

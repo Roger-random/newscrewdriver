@@ -1,0 +1,67 @@
+---
+layout: post
+title: Canon Pixma MX340 Scanner Homing Sequence
+date: 2023-12-02 12:30:00.000000000 +00:00
+type: post
+post_id: '40788'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40789'
+  wordads_ufa: s:wpcom-ufa-v4:1703391533
+  _publicize_job_id: '89927045765'
+  timeline_notification: '1701549044'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/02/canon-pixma-mx340-scanner-homing-sequence/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm carefully taking apart my old Canon Pixma MX340 multi-function inkjet, exploring its workings as I go. I've recorded the <a href="https://newscrewdriver.com/2023/12/01/canon-pixma-mx340-adf-motor/">electrical parameters of the automatic document feeder (ADF) motor</a> during printer startup, completing this phase of ADF exploration. My next focus is the scanner module, starting with the scan head homing sequence.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40341,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-lifted-exposing-scanner-bed.jpg?w=1024" alt="" class="wp-image-40341"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>During power-up, there is a programmed sequence to ensure the scanner head is at its home position, sitting under the bar separating the small glass window (used for ADF scanning) and the large glass window for flatbed scanning. After <a href="https://newscrewdriver.com/2023/11/21/canon-pixma-mx340-scanner-rail/" target="_blank" rel="noreferrer noopener">opening up the scanner module</a>, I could manually place the scan head at various locations to observe its homing sequence. I think I now understand how it works and writing it down here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40794,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-scanner-axis-for-homing-description.jpg?w=800" alt="" class="wp-image-40794"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the purposes of this description, I'm arbitrarily labeling the home position as zero. Movement towards the small ADF scanner window is in the negative direction, and moving down the flatbed scanner page is in the positive direction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Usually, the scan head is already at the home position. It moves a little bit in the positive direction to verify it can detect its homing marker (more about that later) then returns to its home position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If the scan head is not already at the home position, it will keep moving in the positive direction for a short distance. I measured this distance to be the roughly the size of the ADF scanner window. So if the scan head was located somewhere under the ADF scanner window, this motion should bring the homing marker into view.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If that short positive distance fails to detect the homing marker, the scan head reverses direction and runs for a much longer distance. I think this is the size of the large flatbed scanner window. So if the scan head was located somewhere under the large window at power-up, it will scan a bit in the wrong direction (thinking it might be under the ADF window) then course-correct back towards the zero position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If the homing marker is not found after scanning in the negative direction for the size of the large glass, the printer enters an error state. Both its power LED and the "Alarm" LED will blink, and the LCD screen alternates between two messages: "Printer error has occurred" and "5011" which I assume is the error code indicating scan head homing failure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was fun to figure out how the scanner homing sequence worked, but it was even more fun to <a href="https://newscrewdriver.com/2023/12/03/canon-pixma-mx340-scanner-homing-marker/">spoof that homing marker</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

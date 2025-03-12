@@ -1,0 +1,58 @@
+---
+layout: post
+title: 'New Project: Phoebe TurtleBot'
+date: 2018-09-09 09:00:44.000000000 +00:00
+type: post
+post_id: '16764'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21961710544'
+  timeline_notification: '1536509204'
+  _thumbnail_id: '16768'
+  _edit_last: '98499281'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/09/new-project-phoebe-turtlebot/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>While my understanding of the open source <a href="http://www.ros.org/">Robot Operating System</a> is still far from complete, I feel like I'm far enough along to build a robot to run ROS. Doing so would help cement the concepts covered so far and serve as an anchor to help explore new areas in the future.</p>
+<p><a href="http://sawppy.com">Sawppy Rover</a> is standing by, and my long-term plan has always been to make Sawppy smarter with ROS. Sawppy's six-wheeled rocker-bogie suspension system is great for driving over rough terrain but fully exploiting that capability autonomously requires ROS software complexity far beyond what I could handle right now. Sawppy is still the goal for my ROS journey, but I need something simpler as an intermediate step.</p>
+<p>A <a href="https://www.turtlebot.com/">TurtleBot</a> is the official ROS entry-level robot. It is far simpler than Sawppy with just two driven wheels and restricted to traveling over flat floors. I've been playing with a <a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/#turtlebot3-simulation-using-gazebo">simulated TurtleBot 3</a> and it has been extremely helpful for learning ROS. Robotis will happily sell a complete <a href="http://www.robotis.us/turtlebot-3-burger-us/">TurtleBot 3 Burger for $550</a>. This represents a discounted bundle price less than the sum of MSRP for all of its individual components, but $550 is still a nontrivial chunk of change. Looking over its capabilities, though, I'm optimistic I could implement critical TurtleBot functionality using parts already on hand.</p>
+<ul>
+<li>
+<strong style="color:var(--color-text);">Onboard computer</strong><span style="color:var(--color-text);">: This one is easy. I have several Raspberry Pi 3 sitting around I could draft into the task, with all necessary accessories like a microSD card, </span><a href="https://cad.onshape.com/documents/ad745c39ef9b7783ed66b559/w/0fb03cbd962e64731f2bc52b/e/5a7d29501dcb7e910ae8e5b1">a case</a><span style="color:var(--color-text);">, and </span><a href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/">power supply</a><span style="color:var(--color-text);">.</span>
+</li>
+<li>
+<strong>Laser scanner</strong>: Instead of the <a href="http://www.robotis.us/360-laser-distance-sensor-lds-01-lidar/">Robotis LDS-01</a>, I'll use a <a href="https://newscrewdriver.com/tag/neato/">scanning LIDAR salvaged from a Neato robot vacuum</a> that I bought off eBay for experimentation. Somebody has already written <a href="http://wiki.ros.org/xv_11_laser_driver">a driver package</a> to report its data as a ROS <code>/scan</code> topic and I've <a href="https://newscrewdriver.com/2018/08/18/neato-vacuum-laser-scanner-works-in-rviz/">already verified</a> it sends data that the ROS visualization tool RViz can understand.</li>
+<li>
+<strong>Motor controller</strong>: Robotis <a href="http://support.robotis.com/en/product/controller/opencr.htm">OpenCR</a> is a very capable board with lots of expansion capabilities, but I have a <a href="https://newscrewdriver.com/2018/04/05/encoder-fixed-manual-pid-tuning-begins/">RoboClaw</a> left from <a href="https://newscrewdriver.com/category/projects/sgvhak-rover/">SGVHAK Rover</a> (<a href="https://hackaday.com/2018/08/03/now-enrolling-mars-rovers-going-to-school/">JPL Open Source Rover</a>) project so I'll use that instead. Somebody has already written <a href="https://github.com/sonyccd/roboclaw_ros">a driver package</a> to accept commands via ROS topic <code>/cmd_vel</code> and report motion via <code>/odom</code>, though I haven't tried it yet.</li>
+<li>
+<strong>Gearmotor + Encoder</strong>: TurtleBot 3 Burger's wheels are driven by <a href="http://www.robotis.us/dynamixel-xl430-w250-t/">Robotis Dynamixel XL430-W250-T serial bus servos</a> via their OpenCR board. Encoders are critical for executing motor commands sent to <code>/cmd_vel</code> correctly and for reporting odometry information via <code>/odom</code>. Fortunately some <a href="https://www.pololu.com/product/3245">gearmotor+encoder from Pololu</a> are available. These were formerly SGVHAK Rover's steering motors, but after <a href="https://newscrewdriver.com/2018/04/15/sgvhak-rovers-first-brief-drive-session/">one of them broke</a> they were all replaced with beefier motors. I'm going to borrow two of the remaining functioning units for this project.</li>
+<li>
+<strong>Wheel</strong>: Robotis has a wheel designed to bolt onto their servos, and they have mounting hardware for their servos. I'm going to borrow the wheel and mounting hardware from a self-balancing robot toy gathering dust on a shelf. (Similar but not identical to <a href="https://amzn.to/2neVQtZ" target="_blank" rel="noopener">this one</a>.(*)) That toy didn't have encoders on its motors, but they have the same mounting points and output shaft as the Pololu gearmotor so it was an easy swap. The third wheel, a free wheeling caster, was salvaged from a retired office chair.</li>
+<li>
+<strong>Chassis hardware</strong>: Robotis has designed a modular system (like an Erector Set) for building robot chassis like their TurtleBot variants. As for me... I have a 3D printer and I'm not afraid to use it.</li>
+<li>
+<strong>Battery</strong>: I'll be borrowing <a href="https://newscrewdriver.com/2018/06/06/powering-sawppy-the-rover/">Sawppy's 5200 mAh battery pack</a>.</li>
+</ul>
+<p>This forms the roster for my TurtleBot variant, with an incremental component cost of $0 thanks to the parts bin. "Parts Bin TurtleBot" is a mouthful to say and not a very friendly name. I looked at its acronym "PB-TB" and remembered R2-D2's nickname "Artoo". So I'm going to turn "PB" into Phoebe.</p>
+<p>I hereby announce the birth of my TurtleBot variant, Phoebe!</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/152634-new-project-phoebe-turtlebot">Hackaday.io</a>)</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

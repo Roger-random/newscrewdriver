@@ -1,0 +1,80 @@
+---
+layout: post
+title: 'Adafruit Memento + AMG8833: Add Interpolation'
+date: 2024-07-12 12:30:00.000000000 +00:00
+type: post
+post_id: '44177'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44123'
+  timeline_notification: '1720812629'
+  wordads_ufa: u:wpcom-ufa-v4:1720906002
+  _publicize_job_id: '96189397176'
+  firehose_sent: '1720812628'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-13 21:28:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/12/adafruit-memento-amg8833-add-interpolation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I paired an AMG8833 thermal sensor with my Adafruit Memento camera to build a thermal camera. I expected it to be an instructional learning project, I just didn't expect it to be a learning project about CircuitPython performance. <a href="https://newscrewdriver.com/2024/07/11/adafruit-memento-amg8833-overlay-performance-timers/">First step was to add performance timers</a> to quantify impact of future enhancements, which gave me a baseline. Here's an excerpt reflecting four frames rendered using <code>TileGrid</code>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>read 38087 scaled 3099 mapped 1789 grid 1728 blit 28223 refresh 360370 total 433296
+read 37789 scaled 3099 mapped 1759 grid 1758 blit 30190 refresh 359803 total 434398
+read 38713 scaled 3129 mapped 1788 grid 1729 blit 29683 refresh 362098 total 437140
+read 38296 scaled 3129 mapped 1758 grid 1759 blit 29146 refresh 360579 total 434667</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Total time per frame of roughly 430ms means a little over 2 frames per second.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Back to Bitmap</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I converted the code back to my naive dot-drawing code, which showed better numbers. Again, an excerpt of four frames:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>read 37760 scaled 3368 mapped 1609 blit 27239 grid 146836 refresh 24468 total 241280
+read 38266 scaled 3099 mapped 1580 blit 27239 grid 118077 refresh 24557 total 212818
+read 38206 scaled 3368 mapped 1609 blit 27746 grid 144750 refresh 24527 total 240206
+read 38237 scaled 3367 mapped 1610 blit 27269 grid 144750 refresh 24378 total 239611</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My dot-drawing code is within the "grid" bracket and that's why it got a lot slower. And "refresh" is technically wrong as I'm no longer calling <code>display.refresh()</code>. I'm actually calling <code>pycam.blit()</code> but since I'm already using the "blit" label for something else I left the label as "refresh".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a total cycle time of under 240ms, this was about 4 fps and almost double the speed of my TileGrid version. This is still very slow but the good news is the slowest parts are now code under my control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Add Interpolation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>With code under my control, NumPy experiment begins. I started by adapted <a href="https://learn.adafruit.com/improved-amg8833-pygamer-thermal-camera">PyGamer Thermal Camera</a> code to my project. It replaced my old code within "scaled" and output a 15x15 array of interpolated values. Despite this added functionality, execution time dropped from ~3.3ms to ~0.6ms. Nice!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately overall frame rate dropped from ~4fps to ~3fps because "grid" got slower: it now has to draw a thermal overlay of 15x15 data points instead of just 8x8.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>read 38028 scaled 596 mapped 1520 blit 27626 grid 224501 refresh 24528 total 316799
+read 38237 scaled 596 mapped 1520 blit 28789 grid 223636 refresh 24438 total 317216
+read 38296 scaled 566 mapped 1580 blit 27567 grid 226170 refresh 24438 total 318617
+read 38356 scaled 626 mapped 1728 blit 28849 grid 198901 refresh 24587 total 293047</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Slower frame rate is only a temporary setback, because this example helped me learn how (the <code>ulab.numpy</code> subset of) NumPy can be applied to my project. These lessons helped me <a href="https://newscrewdriver.com/2024/07/13/adafruit-memento-amg8833-numpy-and-list-comprehension/">unlock additional performance gains</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

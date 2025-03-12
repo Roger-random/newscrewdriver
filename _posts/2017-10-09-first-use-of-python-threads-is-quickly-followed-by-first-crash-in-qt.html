@@ -1,0 +1,53 @@
+---
+layout: post
+title: First Use of Python Threads is Quickly Followed By First Crash... in Qt
+date: 2017-10-09 09:00:10.000000000 +00:00
+type: post
+post_id: '13449'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags:
+- Qt
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10139885314'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/09/first-use-of-python-threads-is-quickly-followed-by-first-crash-in-qt/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-13341 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/10/qtlogo.png" alt="QtLogo" width="87" height="70">Based on experience, I fully expected my first venture into Python multi-threading to run into problems. I just didn't know exactly what that problem would look like. I had hoped that my first Python threading bug would be friendlier to understand and debug, just as the Python programming language has been friendlier for a beginner to write.</p>
+<p>Sadly, no such luck. After I started using my GPIO class, with the <a href="https://en.wikipedia.org/wiki/Switch#Contact_bounce">debounce</a> routine powered by <a href="https://docs.python.org/3.6/library/threading.html#timer-objects">threading.Timer</a>, the crash is a very unfriendly <code>Segmentation Fault</code>. Surprisingly, it's not the full "<code>Segmentation Fault (core dumped)</code>" so there was no core for me to debug with. No matter, it's my program and I can relaunch it under <a href="https://www.gnu.org/software/gdb/">gdb</a> and try to dissect each instance of the crash.</p>
+<p>The symptoms are consistent with a multi-thread timing issue:</p>
+<ul>
+<li>It is unpredictable. I could use my program for several minutes without a problem, or the program might die within a few seconds of launch.</li>
+<li>When something does go wrong, the actual point of failure that crashed in gdb is deep in the bowels of the system far from the actual problem.
+<ul>
+<li>In one case, a Python thread worker without any of my code on the stack.</li>
+<li>In another case, internal system corruption error "<code>Error in `python3': corrupted size vs. prev_size</code>"</li>
+</ul>
+</li>
+<li>The state of the rest of the system is also unpredictable. Using gdb's "<code>info threads</code>" command I could get an overlook of the rest of the program, and it looks different every time.</li>
+</ul>
+<p>I thought my timer-related code was simple: it checks the state of the input pin, and if the pin level has changed (after the debounce wait) also change the appearance of the visual indicator. The visual indication change was done by changing the <a href="http://doc.qt.io/qt-5/stylesheet-syntax.html">stylesheet</a> on the QWidget on screen. One of the error messages gave me my first clue that was my bug.</p>
+<p><code>Could not parse stylesheet of object 0x21f6f58</code></p>
+<p>Going back to look at the state of the other threads with this in mind, I saw they all had something in common: the main UI thread at the point of the crash is working on some part of visual rendering.</p>
+<p>So we have a candidate explanation: I had been updating the QWidget stylesheet in the timer callback, which executes on a thread that is not the main Qt UI thread. So when this occurs when the UI thread is in the middle or rendering the QWidget, it would see the data structure change out from under it by the timer thread. This is not good and could explain the crash.</p>
+<p>To test the hypothesis, I modified my program to perform stylesheet updates from the timer callback thread and do it frequently. Tens of times per second versus once every few seconds in my normal execution. The program now crashes consistently within a few seconds of launch which I saw as good confidence builder for my hypothesis.</p>
+<p>The next thing we need is a fix. I need to make sure the stylesheet update occurs on the UI thread, and it seems simplest to post a message to the UI thread event queue. I can accomplish this by emitting a signal from the timer thread and have that go to a slot on the UI thread via a <a href="http://doc.qt.io/qt-5/threads-qobject.html">Queued Connection</a>. The slot executes on the UI thread and can safely update the stylesheet there.</p>
+<p>After this modification, the test program is now only emitting a signal from the timer callback thread to queue a stylesheet update, instead of performing the actual update itself on the timer thread. And now the test program no longer crashes.</p>
+<p>I started debugging this believing I ran into a problem deep in the bowels of Python implementation internals. It turns out my clumsy use of threads had confused Qt.</p>
+<p>Lesson learned, moving on to the next lesson...</p>
+<p>(The project discussed in this blog post is <a href="https://github.com/Roger-random/tux_lab_thermoformer">publicly available on GitHub</a>. The threading fix is in <a href="https://github.com/Roger-random/tux_lab_thermoformer/commit/95ba11036d91041025ba413a461d075306fa82a2">this commit</a>.)</p>
+<p> </body></html></p>

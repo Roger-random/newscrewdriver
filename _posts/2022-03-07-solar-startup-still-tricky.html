@@ -1,0 +1,48 @@
+---
+layout: post
+title: Solar Startup Still Tricky
+date: 2022-03-07 12:30:00.000000000 +00:00
+type: post
+post_id: '28878'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Solar Power
+tags:
+- ESP8266
+- INA219
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28903'
+  _publicize_job_id: '69883818617'
+  timeline_notification: '1646685006'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/07/solar-startup-still-tricky/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have <a href="https://newscrewdriver.com/2022/03/06/mp1584-modification-version-2/">modified a second MP1584 buck converter module</a> so that it would not activate until input voltage surpasses 13V, comfortably above the output voltage of 3.3V. I want to connect input pins to a solar panel so the associated components (ESP8266 WiFi microcontroller and INA219 voltage/current sensor) would be powered exclusively by the sun.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First is a test run with my bench power supply. Gradually increasing supply voltage starting from zero volts. Thanks to the modification, there were no odd behavior or sounds of a MP1584 trying to work with too low of an input voltage, which is great. As I increased voltage past the ~13V threshold, I saw the blue LED of my ESP8266 blink and it booted up as planned. This time, it was able to find INA219 on I2C bus, which is <a href="https://newscrewdriver.com/2022/03/03/mp1584-modification-did-not-go-as-planned/">further than I got before</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Feeling optimistic, I connected this circuit to my solar panel at night and hoped I would wake up to find the system running. Sadly I woke up to disappointment, as there were no logged messages from the ESP8266. Probing the circuit with my volt meter, I confirmed a 3.3V supply voltage was present, but for whatever reason the ESP8266 failed to boot that morning. I manually disconnected and reconnected the circuit board, and this time ESP8266 booted up fine (now it has full daylight power) and started reporting values measured by INA219.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know what happened at sunrise. I hypothesize that when the solar panel output voltage rose past 13V, it has still yet to produce enough <em>power</em> to successfully start an ESP8266. So when MP1584 activated, it could supply 3.3V but not enough amperage to supply an ESP8266 through its boot process, putting it in a glitched state that was neither on nor off and stuck there until I power cycled the system. [UPDATE: Further experimentation found this hypothesis was correct, <a href="https://newscrewdriver.com/2022/03/10/plotting-solar-panel-voltage-and-power/" target="_blank" rel="noreferrer noopener">the panel would reach operating voltage well before generating appreciable power</a>.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't have my oscilloscope set up to capture the startup waveform to confirm or disprove this hypothesis. It's clear there are additional subtleties I don't know about starting up a circuit on solar power. Do I want to invest the time to learn and experiment with this problem domain? After thinking it over for a bit I decided "nah" and abandoned the idea of running everything exclusively on solar power. I'll retreat to what I know and incorporate batteries into the system instead. Starting simple with <a href="https://newscrewdriver.com/2022/03/08/start-simple-with-alkaline-aa-batteries/">household alkaline AA batteries</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

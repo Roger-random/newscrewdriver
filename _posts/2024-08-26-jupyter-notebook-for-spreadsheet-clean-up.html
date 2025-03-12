@@ -1,0 +1,48 @@
+---
+layout: post
+title: Jupyter Notebook For Spreadsheet Clean-Up
+date: 2024-08-26 12:30:00.000000000 +00:00
+type: post
+post_id: '44921'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44794'
+  firehose_sent: '1724700614'
+  wordads_ufa: u:wpcom-ufa-v4:1724814818
+  _publicize_job_id: '97331041316'
+  timeline_notification: '1724700616'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-26 07:54:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/26/jupyter-notebook-for-spreadsheet-clean-up/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Reading through Budibase documentation and playing around with the quick start tutorial app, I learned <a href="https://newscrewdriver.com/2024/08/25/initial-budibase-documentation-lessons/">many important details I will need to know</a> as I embark on my own project: converting my personal finance tracking spreadsheet into a database app. Before I start working on the app, though, I'll need to migrate my data over to a Budibase-friendly format.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Budibase accepts uploading data in CSV (comma-separated values) or JSON (JavaScript Object Notation) format. Excel can export a spreadsheet into CSV file format so I thought it would be easy, but once I loaded up my spreadsheet and took a good close look I realized it won't be that simple. My multi-sheet Excel file has built up many idiosyncrasies. Most of it was because I evolved my system over time but I didn't go back and change my older entries to match. My brain can parse the inconsistencies within, because it's the same brain that created them, but they'd trip up a computer database.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I made a copy of my spreadsheet and started editing it to prepare for migration. I plan to create new analysis tools around my migrated database, so I deleted all of my analysis cells leaving just raw data. I removed all empty rows and columns I used for visual separation, because they'd just be noise in the migration. I exported these results to a CSV, imported into Budibase, and it was still a mess. I need even more cleanup.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My next step was <a href="https://github.com/Roger-random/rogmoney/blob/main/jupyter/csv_test.ipynb">a Jupyter notebook</a>. Data cleaning is a pretty common task for data scientists and <a href="https://pandas.pydata.org/">Panda</a> is a common tool for the job. I don't think I need that level of complexity, though. Python has <a href="https://docs.python.org/3/library/csv.html">a built-in class to parse CSV</a> into a dictionary and that was sufficient for my needs. It was enough to let me iterate through my records and write rules to repair my data entry errors. Typos in names, inconsistent date formats, stuff like that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started updating structure of data as well, at first just to maintain data consistency between old and new data. But then I started changing things more drastically because my brain shifted gears from a spreadsheet table to a database. I started <a href="https://en.wikipedia.org/wiki/Database_normalization">normalizing my data</a> to the best of my ability (I think <a href="https://en.wikipedia.org/wiki/Database_normalization#Satisfying_4NF">I got to 4NF</a> but I'm not sure) because I understood that allows more efficient database operation. I'm pretty pleased at how it turned out! I'm sure I could have created spreadsheet macros to enforce data consistency, but a properly normalized database makes many of my old mistakes outright impossible. This was the point when I really felt I am making the right move: my personal finance tracking system should have been a database all along. I like my set of CSV files, one per table, and the next step is to <a href="https://newscrewdriver.com/2024/08/27/no-budibase-support-for-csv-data-relationships/">upload them into my Budibase project</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

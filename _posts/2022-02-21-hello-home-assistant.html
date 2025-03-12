@@ -1,0 +1,52 @@
+---
+layout: post
+title: Hello Home Assistant
+date: 2022-02-21 12:30:00.000000000 +00:00
+type: post
+post_id: '28666'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Home Assistant
+meta:
+  _publicize_job_id: '69300079633'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28686'
+  timeline_notification: '1645475412'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/21/hello-home-assistant/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have an existing home server set up to run Docker containers, it's how I've been trying out tools like InfluxDB. I <a href="https://newscrewdriver.com/2022/02/20/notes-on-home-assistant-core-docker-compose-file/">added an instance of <em>Home Assistant Core</em></a> to the list of running containers. When the first screen came up, I was happy to see that it required me to create a username and password before doing anything else. It's the minimum bar of security, far better than leaving it openly accessible to anyone to probe a known port.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I got through initial setup, I was shown the "Overview" dashboard. We can create our own dashboards, but the system starts with this one. It was automatically generated, and by default it is also managed automatically to show everything that pops up. It was populated by <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/met" target="_blank">a metrological (weather) widget</a>, set to the home location specified during initial setup. I infer this was done so anyone starting fresh with Home Assistant has at least one item to interact with. (Of course, with the focus on local control, Home Assistant has a "Depends on Cloud" label/disclaimer/warning on such features, because it depends on weather data published online.) With weather as starting point, I could add more cards representing devices that already existed on my home network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Canon MF420 printer supports <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/ipp" target="_blank">Internet Printing Protocol</a>.</li>
+<li>Home Plex media server surfaced various usage statics through <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/plex" target="_blank">Plex integration</a>.</li>
+<li>TV has built-in Roku functionality, which made it visible to <a href="https://www.home-assistant.io/integrations/roku/">Roku integration</a>. It was also visible to <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/homekit/" target="_blank">HomeKit integration</a>, but until I sort through the caveats on that page, I'll postpone setup.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The TV was not the only device visible via multiple integrations. My home wireless router was made by Asus, and by default it was visible to the <a href="https://www.home-assistant.io/integrations/upnp/">Universal Plug-and-Play Internet Gateway Device integration</a>. However, I disabled that in favor of a more device-specific <a href="https://www.home-assistant.io/integrations/asuswrt/">AsusWRT integration</a>. The latter took a bit more work, as I had to generate a SSH keypair for secure connection between Home Assistant and the router. The public key was pasted into the router's "Administration" control panel, in the "System" tab, under the "Service" section. I also had to enable SSH (LAN only) and I took the option to change to a nonstandard port.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once these integrations were added, their associated entities were automatically added to the "Overview" dashboard. This was a lot of data. In fact, I think it is too much data! Thus my first lesson in using Home Assistant is going into the entities list and disabling them. For example, at the moment I don't see a reason why I needed to know whether my TV is connected via Ethernet or wireless, so I disabled that particular entity. I appreciated the power of having all of these entities at my disposal, but this data overload is also why Home Assistant is not exactly considered beginner friendly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, getting my feet wet with Home Assistant was fun, but <a href="https://newscrewdriver.com/2022/02/22/notes-on-running-esphome-dashboard/">ESPHome is the reason I'm here</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

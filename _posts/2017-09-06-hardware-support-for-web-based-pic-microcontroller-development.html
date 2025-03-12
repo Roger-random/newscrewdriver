@@ -1,0 +1,34 @@
+---
+layout: post
+title: Hardware Support for Web-Based PIC Microcontroller Development
+date: 2017-09-06 09:00:39.000000000 +00:00
+type: post
+post_id: '10826'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9018534685'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/06/hardware-support-for-web-based-pic-microcontroller-development/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-10756 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/08/mplab-xpress-ide-logo.png" alt="MPLab Xpress IDE Logo" width="239" height="219">Normally, micro controller programs are written on a PC and compiled into binary code that is loaded onto the chip via a device generically called "<a href="https://en.wikipedia.org/wiki/Programmer_(hardware)">programmer</a>". Afterwards, the chip can be removed from the programmer device and start performing the tasks described in the binary code.</p>
+<p>These programmer devices are hardware peripherals. So as a web-based tool, MPLAB Xpress would not be able to utilize them without installing additional software to bridge the gap. This is counter to the "Xpress" goal of offering zero-install, low barrier to entry into the world of PIC.</p>
+<p>Microchip Technology's solution to this challenge is to <a href="http://www.microchip.com/mplab/mplab-xpress/mplab-xpress-evaluation-boards">create "MPLAB Xpress" branded evaluation boards with programmer hardware already on board</a>. This specific product line is designed to eliminate the need for specialized devices or driver software, because it talks to the connected computer as a USB flash storage device. As far as the PC knows, this evaluation board is just another USB flash drive, which the PC knows how to access it without special drivers.</p>
+<p>Customers with these evaluation boards could write a PIC program in their web browser with MPLAB Xpress and build the program into a binary file that the browser downloads. The downloaded file can then be copied to the evaluation board just like copying to a USB flash drive. Then the user presses the reset button on the board and the PIC16F18345 starts running the program.</p>
+<p>An interesting side note: how did Microchip implement a PIC programmer that accepts compiled binary code via USB flash storage? They did it with another PIC. The evaluation board has two PIC chips on board: One is a <a href="http://www.microchip.com/wwwproducts/en/PIC16F1454">PIC16F1454</a> always running the USB storage and programming functions. The other is the PIC16F18345 chip we're actually writing code for.</p>
+<p>So this is why the name of the cloud-based tool is in the name of this piece of hardware. This line of evaluation boards have been specifically designed to support the cloud-based tool, making it possible to get started writing code for PIC chips without installing any software.</body></html></p>

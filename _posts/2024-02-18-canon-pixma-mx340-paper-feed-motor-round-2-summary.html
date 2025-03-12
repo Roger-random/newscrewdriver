@@ -1,0 +1,60 @@
+---
+layout: post
+title: Canon Pixma MX340 Paper Feed Motor Round 2 Summary
+date: 2024-02-18 12:30:00.000000000 +00:00
+type: post
+post_id: '42012'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40594'
+  timeline_notification: '1708288227'
+  firehose_sent: '1708288225'
+  wordads_ufa: s:wpcom-ufa-v4:1710826066
+  _publicize_job_id: '92072523158'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-03-19 05:11:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/18/canon-pixma-mx340-paper-feed-motor-round-2-summary/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've had my head in the world of quadrature encoder counts for so long I almost forgot to get data on <a href="https://newscrewdriver.com/2024/02/17/mx340-line-feed-encoder-likely-delivers-8640-counts-per-revolution/">how they corresponded to the real world</a>. Now with "8640 encoder count per revolution" jotted down, I think it's a good time to wrap up this chapter of exploration. <a href="https://newscrewdriver.com/2024/01/27/canon-pixma-mx340-paper-feed-motor-round-2/">I started with only the knowledge that</a> this Canon Pixma MX340 multi-function inkjet would turn its paper feed motor even when not actually feeding paper. What is it doing? And while I have to wait for further disassembly for all the answers, I now know more about the control system than I did before.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given presence of the quadrature encoder, this was a closed-loop control algorithm that adjusted power sent to its DC motor based on position reported by the encoder. Plotting <a href="https://newscrewdriver.com/2024/02/03/quadrature-decode-mx340-startup/">encoder position vs. time</a> reinforced my guess this is primarily a position-based system ("turn 1800 counts") and less of a velocity-based system ("turn at 1800 counts per second").</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Though there is a velocity control aspect to the system. Plotting motor <a href="https://newscrewdriver.com/2024/02/13/mx340-paper-feed-motor-acceleration-deceleration/">velocity vs. time</a> added more information: unlike a hobby servo motor, this system doesn't try to hit the target position at its maximum speed. Some motions are slower than others, but it's not yet clear to me why some motions are faster than others.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though the system appears to be a position-based system with a high resolution encoder wheel, there is <a href="https://newscrewdriver.com/2024/02/12/simple-debounce-improved-motion-decoding/">a small range of error tolerance</a>. I saw frequent moves of 1800 encoder counts, but sometimes I saw only 1799 or 1798 that the system must have deemed close enough. It aligns with observed deceleration behavior where it seemed to deliberately err on the low side. Consistent with a desire to avoid the overshoot correction headaches of dealing with gear backlash.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Along with this understanding of system behavior, I also have a set of decoded quadrature reports in the companion GitHub repository. This chapter of exploration was interesting on its own, and it would be even better if the captured data becomes useful future reference, but that is yet to be determined.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This marks of my teardown phase 2, <a href="https://newscrewdriver.com/2024/02/19/mx340-teardown-phase-3-begins-with-print-carriage/">onward to phase 3</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

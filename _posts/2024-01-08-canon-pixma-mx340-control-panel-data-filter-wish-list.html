@@ -1,0 +1,53 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Data Filter Wish List
+date: 2024-01-08 12:30:00.000000000 +00:00
+type: post
+post_id: '41483'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40433'
+  firehose_sent: '1704745801'
+  _publicize_job_id: '90922449138'
+  timeline_notification: '1704745801'
+  wordads_ufa: s:wpcom-ufa-v4:1704837425
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/08/canon-pixma-mx340-control-panel-data-filter-wish-list/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>At this point in my adventures with a retired Canon Pixma MX340 multi-function inkjet, I have a rudimentary understanding of the asynchronous serial communication between its main board and its control panel. To help fill in remaining gaps in my knowledge, I want a tool that can recognize the patterns I've identified and <a href="https://newscrewdriver.com/2024/01/07/canon-pixma-mx340-control-panel-data-communication-what-else-is-there/">alert me whenever it sees something outside of those patterns</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a hardware level, I want this mechanism to listen in on data transmitted in both directions: from main board to control panel, and from control panel to main board. This is the default operating mode for an oscilloscope and a logic analyzer, which I've used to date. But if I want to build something with commodity hardware I will probably use hardware UARTs. They have provision to connect in a RX/TX pair of wires. If I want to use standard UART peripheral to listen to both directions, I will need two UART and connect their RX wires to each of two directions. Their TX wires would be left unconnected as I will not inject data into either path.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a software level, I want to describe the patterns I've observed so far on each channel. For the control panel to main board wire, this means watching the button matrix report every 9.2ms. It means looking for 0x20 sent as acknowledgement to main board commands. If anything else comes up, it will need to raise an alert in some way. Ideally it can dump out the unexpected data as well, but if not I can still use the logic analyzer to capture and analyze those events.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Similarly, the other wire carrying signals from main board to control panel will need to recognize the two-byte command sequences I've recorded to date, plus the 196-byte bulk transfers for LCD screen update. I want be alerted in case of command sequences I haven't seen yet. Or if a bulk transfer isn't 196 bytes or otherwise not fitting in the LCD screen update pattern.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The capability I wish for here doesn't feel particularly exotic. While my reverse-engineering project might not be a mainstream scenario, such capabilities would be useful for verification and testing. Useful for ensuring devices on either end of an asynchronous serial link is behaving according to spec. The challenge is whether I can figure out the right keywords to <a href="https://newscrewdriver.com/2024/01/09/window-shopping-wireshark/">find such a thing</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

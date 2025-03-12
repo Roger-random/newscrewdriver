@@ -1,0 +1,52 @@
+---
+layout: post
+title: Honda CD LCD Driver Mystery Problems Solved
+date: 2022-06-26 12:30:00.000000000 +00:00
+type: post
+post_id: '31000'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+- LC75883
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31061'
+  _publicize_job_id: '74069908083'
+  timeline_notification: '1656271850'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/26/honda-cd-lcd-driver-mystery-problems-solved/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been talking to the Sanyo LC75883 LCD driver chip on a Honda CD control panel by soldering wires directly to the board and running those signals to a breadboard. Once I found the correct connector to plug into that board, I transferred my (jumper wires and breadboard) experimental circuit to <a href="https://newscrewdriver.com/2022/06/25/reuse-honda-cd-connector-for-arduino/">something a little more compact</a>. But like all projects, it didn't work at first and needed some diagnosis.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first problem was a classic electronics problem: "Data In" and "Data Out" lines were reversed. This is a close cousin of the RX/TX problem, where we always have to figure out whose perspective a particular label is using. The RX (receive) line for one component needs to be wired to the TX (transmit) line of the other component, and vice versa. For my circuit, it meant "DO" on the connector pin 17 should go to the LC75883's "DI" pin. I had connected "DO" to "DO" and "DI" to "DI" which does nothing until I swapped them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After figuring out my DI/DO lines I was at parity with my breadboard circuit. Which is sufficient for controlling LCD output, but I just like before I still couldn't read input. I examined the remaining pins looking for things I could try. First experiment was with pin 15, which was labeled D-GND which might mean "Digital ground". I had been using the trio of pins labeled P-GND for my ground instead. I don't have a good guess what "P" stood for, but if I had been using the wrong ground that might explain the odd behavior I observed. Sadly, tying D-GND to P-GND made no noticeable difference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30969,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-silkscreen-labels.jpg?w=1024" alt="" class="wp-image-30969"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking down the list again, I decided to take another look at pin 19 labeled LCD-RST. There was a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/" target="_blank">similar RESET pin on the Toyota tape deck faceplate</a>. I had left that unconnected because the LC75853 driver chip on that board did not expose a reset pin so there was nothing to connect. Due to the similarities between these two chips, I thought I would do the same thing here. But I realized that was a mistake when I reviewed the LC75883 datasheet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30888,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/sanyo-lc75883-footprint.png?w=948" alt="" class="wp-image-30888"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike its sibling, this chip <strong><em>does </em></strong>expose a reset pin (76). Which meant I had been leaving reset unconnected and floating all this time. Not good! I soldered a 1kΩ resistor between pin 14 SWD-VDD and pin 19 LCD-RST in order to tie LCD-RST high, and after that, all input worked as expected. Turning the quadrature encoder knob no longer blanks out the screen at every other detent, and I could successfully read key scan report data to know which buttons had been pressed. And LCD output still worked just as before. This is great! I'm glad I figured out my mistake and frankly, I'm surprised this thing worked at all with a floating reset pin. That's my silliest mistake so far with this project, <a href="https://newscrewdriver.com/2022/06/27/honda-cd-control-detours/">the others weren't as bad</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

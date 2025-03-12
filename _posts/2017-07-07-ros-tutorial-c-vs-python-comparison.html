@@ -1,0 +1,34 @@
+---
+layout: post
+title: 'ROS Tutorial: C++ vs. Python Comparison'
+date: 2017-07-07 09:00:50.000000000 +00:00
+type: post
+post_id: '7504'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '6867249108'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/07/ros-tutorial-c-vs-python-comparison/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">When it came to walking through writing actual code to build nodes in a ROS (<a href="http://www.ros.org/">Robot Operating System</a>) network, the <a href="http://wiki.ros.org/ROS/Tutorials">tutorial</a> offered the reader the option to write the nodes in either <a href="http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28c%2B%2B%29">C++</a> or in <a href="http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29">Python</a>. I went through it in Python the first time around, then for curiosity's sake, I looked over the C++ version for comparison.</p>
+<p>The first glance was horrifying: Where the Python 'talker' sample was a small code listing with 20 lines of code, the C++ counterpart was sprawled over 100 lines of code. But a second glance quickly dispelled the impression: most of the lines in the C++ sample are comments explaining what's going on. Comments are good! When counting the actual executable lines of code, the two samples are roughly similar in size, which surprised me as I expected the C++ version to have a lot more overhead as typical of a lower-level language.</p>
+<p>A little reading of the comments and the tutorial page found the explanation: a lot of the tedious book-keeping that raw C++ programs have to contend with have been taken care of by <a href="http://www.boost.org/">Boost</a> code libraries. This is how the C++ version of the demo ended up almost as concise as the Python version.</p>
+<p>I still intend to continue my ROS education in Python, because I still think that's an interesting way for me to train my Python programming muscles. But it's nice to know that if I should ever need to do ROS coding in C++, I can get help to keep the complexities under control.</p>
+<p>Historically I've been skeptical of C++ libraries - they are really wonderful when things work as designed, but when things go wrong things the code quickly become very difficult to debug. This may or may not be true for C++ code using Boost libraries, I'll find out if I go there.</p>
+<p>One trivial detail: the Python 'talker' sent out the current time but the C++ version just sent out a counted integer. Looking at the documentation of the ROS libraries, it looks like the <a href="http://wiki.ros.org/rospy/Overview/Time">time utility used by the Python version</a> has a <a href="http://wiki.ros.org/roscpp/Overview/Time">straightforward counterpart in the C++ library</a>. Why wasn't it used in the C++ tutorial to match the Python tutorial? It may just be simple oversight, but I wonder if there's a more interesting story behind the scenes.</body></html></p>

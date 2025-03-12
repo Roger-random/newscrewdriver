@@ -1,0 +1,89 @@
+---
+layout: post
+title: Moving CNC Spindle Control To Equipment Panel
+date: 2022-12-23 12:30:00.000000000 +00:00
+type: post
+post_id: '20575'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '20561'
+  _oembed_2d45980b619a6ef0709e283cd2f5ba99: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">1:
+    unplug device from power strip for safety.<br>2: rewire device as planned.<br>3:
+    turn on power strip. Nothing.<br>4: debug for &gt;30 minutes, symptoms consistent
+    with lack of power.<br>5: plug device back into power strip.<br>6: victory.</p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1227121165526650881?ref_src=twsrc%5Etfw">February
+    11, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_2d45980b619a6ef0709e283cd2f5ba99: '1582711060'
+  _last_editor_used_jetpack: block-editor
+  _oembed_b1a0ce4b4b3c042d3c4018524dfd0672: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">1:
+    unplug device from power strip for safety.<br>2: rewire device as planned.<br>3:
+    turn on power strip. Nothing.<br>4: debug for &gt;30 minutes, symptoms consistent
+    with lack of power.<br>5: plug device back into power strip.<br>6: victory.</p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1227121165526650881?ref_src=twsrc%5Etfw">February
+    11, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_b1a0ce4b4b3c042d3c4018524dfd0672: '1647463116'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1671917290
+  _publicize_job_id: '79911213268'
+  timeline_notification: '1671827419'
+  _oembed_fd15b54c7ad313f12434c7405d53ce6a: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">1:
+    unplug device from power strip for safety.<br>2: rewire device as planned.<br>3:
+    turn on power strip. Nothing.<br>4: debug for &gt;30 minutes, symptoms consistent
+    with lack of power.<br>5: plug device back into power strip.<br>6: victory.</p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1227121165526650881?ref_src=twsrc%5Etfw">February
+    11, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_fd15b54c7ad313f12434c7405d53ce6a: '1708471123'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/23/moving-cnc-spindle-control-to-equipment-panel/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Thinking about <a href="https://newscrewdriver.com/2022/12/22/circuit-board-milling-fixture-first-draft/">CNC milling circuit boards</a> might have been looking too far ahead. But I also made some mechanical changes after the successful <a href="https://newscrewdriver.com/2020/02/11/successful-polycarbonate-plastic-engraving-session/" target="_blank" rel="noreferrer noopener">engraving session</a>. There was a distinct buzzing sound of vibration caught my attention. Unlike <a href="https://newscrewdriver.com/2020/01/09/running-cnc-program-again-shows-encouraging-consistency/" target="_blank" rel="noreferrer noopener">earlier tests with an endmill</a>, this engraving tip removed very little material and I thought overall noise would be reduced. Most of it were, but one particular sound stayed the same and I wanted to know what it was.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A little bit of investigation found the source of the buzz inside my spindle motor controller box. Bolted near the spindle up on our Z-axis gantry beam, it was <a href="https://newscrewdriver.com/2019/12/24/cnc-spindle-mounting-plate/" target="_blank" rel="noreferrer noopener">installed in that location</a> purely out of convenience. A decision that was apparently not well thought out and contributing to headaches. Earlier we found the box had <a href="https://newscrewdriver.com/2019/12/30/next-challenge-for-cnc-electrical-noise/" target="_blank" rel="noreferrer noopener">contributed electrical noise</a> to the system, now I realized it contributed mechanical noise as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to those problems, its current position also blocked the most promising path for us to <a href="https://newscrewdriver.com/2020/01/24/a-vortex-or-cyclone-separator-appears/" target="_blank" rel="noreferrer noopener">install a dust collection system</a>. And even if it was not directly blocking, we wouldn't want it to be near dust path anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of those factors motivated a move from its current gantry-mounted position down below decks to the equipment plate <a href="https://newscrewdriver.com/2019/09/23/mounting-parker-zeta4-under-table/" target="_blank" rel="noreferrer noopener">where the Parker motion control X/Y stepper driver modules are mounted</a>. In additional to longer wiring to cover the distance, a few other enhancements were made. We had a single capacitor installed on the motor wire to help our previous episode of electrical noise. Now the wire is longer and even more likely to turn into an antenna, so now we have one capacitor at each end. There's a ferrite core added to each end as well, and the ground wire is now bolted to the equipment panel plate. All of these should give us better electrical noise resistance than before.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to the motor wire, I extend wire connecting enable pin to E-stop so spindle power is cut when E-stop is pressed. I also extended the control wire for speed. Automated operation would require automatic speed control via Grbl, but this will do until I get around to it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":20560} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2020/02/spindle-control-mounted-below.jpg" alt="Spindle control mounted below" class="wp-image-20560"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Side amusement: since this project involved mains voltage, I unplugged this box before moving and rewiring it. Then I immediately forgot I had unplugged it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/Regorlas/status/1227121165526650881","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/Regorlas/status/1227121165526650881
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I plugged it back in, things started running as expected. This is a small step forward, something I like to interleave with <a href="https://newscrewdriver.com/2022/12/24/brief-look-at-a-linuxcnc-pendant/">investigations looking further ahead</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,112 @@
+---
+layout: post
+title: Cordless Handset LCD is I2C Device
+date: 2022-05-31 12:30:00.000000000 +00:00
+type: post
+post_id: '30600'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29994'
+  timeline_notification: '1654025405'
+  _publicize_job_id: '73149480085'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/31/cordless-handset-lcd-is-i2c-device/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm working to understand how to control the LCD on the handset of an AT&amp;T CL84209 landline phone system, and I started by observing the behavior of its eight IO pins (plus one pin already established to be ground) <a href="https://newscrewdriver.com/2022/05/30/cordless-handset-lcd-power-up-in-saleae-analog-mode/">using the analog mode of my Saleae Logic 8 analyzer</a>. Two pins were immediate candidates for a serial data pin and its corresponding clock pin, so I switched my analyzer to digital mode observing those two pins specifically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Mouse hovering over the clock line, the analyzer software told me it started at a frequency of 7.2kHz and then sped up to 100kHz during the startup sequence. 100kHz is very promising, because it matches <a href="https://en.wikipedia.org/wiki/I%C2%B2C#Design">"Standard Mode" speed of I<sup>2</sup>C</a>. The previous LCD controller I played with used a proprietary Sanyo protocol <a href="https://newscrewdriver.com/2022/05/14/sanyo-lc75853n-lcd-driver-archaeology/">called CCB</a>, but I'm hopeful this unknown chip uses Philips I<sup>2</sup>C. So in the spirit of "<a href="https://youtu.be/gNSoZzy-hyA?t=209" target="_blank" rel="noreferrer noopener">be sure to check the easy thing first</a>" I activated I<sup>2</sup>C protocol analyzer built in to Saleae's software. This presented a stream of decoded bytes and no sign of error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Good news: it is indeed I<sup>2</sup>C!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bad news: within less than ten seconds of powerup, there are 2569 captured and decoded messages. That is a lot of raw data to wade through when I don't datasheets to make sense of it all. But the situation isn't quite as bad as it initially looked. While I've tapped pins directly connected to the LCD, that doesn't mean all the data we see on those lines are relevant. I<sup>2</sup>C is a data bus for multiple devices to communicate, and I see multiple addresses listed in the I<sup>2</sup>C decoder output.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to filter messages by address, but I failed to find such an option in Saleae software. Instead, I copied the data output into a Jupyter notebook and wrote a bit of quick-and-dirty Python to parse them. There were ten unique I<sup>2</sup>C addresses in this output:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>{'0x52', '0x51', '0x50', '0x56', '0x3E', '0x53', '0x54', '0x55', '0x4B', '0x57'}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Scrolling through the decoder output, traffic to address 0x3E stood out because they were the longest. Many of these I<sup>2</sup>C messages had only one or two bytes, but some messages to 0x3E were much longer. The long messages have a pattern, they come in sets of three: two 18-byte messages followed by one with 19 bytes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>write to 0x3E ack data: 0x80 0x81 0x40 0x20 0x43 0x4F 0x4E 0x4E 0x45 0x43 0x54 0x49 0x4E 0x47 0x2E 0x2E 0x2E 0x20 
+write to 0x3E ack data: 0x80 0xC1 0x40 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 0x20 
+write to 0x3E ack data: 0x80 0x40 0x40 0x00 0x00 0x10 0x02 0x01 0x04 0x00 0x10 0x00 0x04 0x01 0x00 0x02 0x10 0x04 0x00 </code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>These messages won't have enough bits to control individual dots on the dot-matrix display. However, they might contain alphanumeric data for the LCD controller to use a font lookup table. Again, in the spirit of <a rel="noreferrer noopener" href="https://youtu.be/gNSoZzy-hyA?t=600" target="_blank">trying the easy thing first</a>, I compared the first line of data against an <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/ASCII" target="_blank">ASCII</a> chart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<figure class="wp-block-table" style="font-size:10px;">
+<table>
+<tbody>
+<tr>
+<td>0x80</td>
+<td>0x81</td>
+<td>0x40</td>
+<td>0x20</td>
+<td>0x43</td>
+<td>0x4F</td>
+<td>0x4E</td>
+<td>0x4E</td>
+<td>0x45</td>
+<td>0x43</td>
+<td>0x54</td>
+<td>0x49</td>
+<td>ox4E</td>
+<td>0x47</td>
+<td>0x2E</td>
+<td>0x2E</td>
+<td>ox2E</td>
+<td>0x20</td>
+</tr>
+<tr>
+<td>[?]</td>
+<td>[?]</td>
+<td>@</td>
+<td>[space]</td>
+<td>C</td>
+<td>O</td>
+<td>N</td>
+<td>N</td>
+<td>E</td>
+<td>C</td>
+<td>T</td>
+<td>I</td>
+<td>N</td>
+<td>G</td>
+<td>.</td>
+<td>.</td>
+<td>.</td>
+<td>[space]</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>"CONNECTING..." is the first line displayed on the LCD! We have a winner, time to <a href="https://newscrewdriver.com/2022/06/01/examining-control-data-for-lcd-at-i2c-address-0x3e/">dig into traffic addressed 0x3E</a> for this I2C LCD.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,76 @@
+---
+layout: post
+title: Canon Pixma MX340 Paper Feed Motion Recording Objectives
+date: 2024-01-28 12:30:00.000000000 +00:00
+type: post
+post_id: '41765'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41024'
+  firehose_sent: '1706473826'
+  wordads_ufa: s:wpcom-ufa-v4:1706576777
+  _publicize_job_id: '91483268887'
+  timeline_notification: '1706473827'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/28/canon-pixma-mx340-paper-feed-motion-recording-objectives/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have my old Canon Pixma MX340 multi-function inkjet in several pieces, but still linked with wires in running condition. I know that as I take this thing further apart, I will eventually reach a point where it no longer runs. Before that happens I would like to <a href="https://newscrewdriver.com/2024/01/27/canon-pixma-mx340-paper-feed-motor-round-2/">record motion of the paper feed motor</a>, which actuates multiple different mechanisms (not just feeding paper) via a series of mechanical systems I want to understand. For this exercise, I want to gather enough data so I could plot behavior of several sensors on the same timeline.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41027,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-paper-feed-encoder-front.jpg?w=1024" alt="" class="wp-image-41027"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first and most obvious data source is the quadrature encoder attached to one of the shafts in this system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41036,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-startup-paper-feed-encoder-backwards-fast.png?w=826" alt="" class="wp-image-41036"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On my first pass, I <a href="https://newscrewdriver.com/2023/12/13/canon-pixma-mx340-paper-feed-shaft-encoder/" target="_blank" rel="noreferrer noopener">looked at encoder waveform during system startup under an oscilloscope</a>, which told me it is a device operating at 3.3V DC logic level. During its startup sequence, quadrature state changes can occur in less than 100 microseconds. This is probably close to the maximum speed of this system, seeing how the signal took roughly 20 microseconds just to stabilize.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a ballpark guess, this tells me I want to sample at least once every 50 microseconds (20 kHz sampling rate) just to ensure I don't miss any pulses. And obviously if I want to calculate rotational speed from time between pulses, I would need a far higher sampling rate. I don't think that'll be necessary, though, given I didn't notice many speed changes in this system. It's probably good enough (and much easier) to calculate speed by counting number of pulses within a much longer time period.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40555,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-gears-behind-print-carriage.jpg?w=1024" alt="" class="wp-image-40555"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the same timeline, I want to plot the state of the photo interrupter sensor under this small circuit board. It sits above a geared mechanism driven by the same motor, and one of the gears has a partial disc that blocks this beam in certain positions. I'm sure it provides feedback into operating... whatever that is.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40571,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-paper-feed-roller.jpg?w=1024" alt="" class="wp-image-40571"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Less important is another photo interrupter sensor sharing the same wiring harness as above. I'm pretty sure it tells the printer when a sheet of paper has been successfully fed into the print path, but I thought it's worth getting confirmation. The incremental work to add this data point shouldn't be much, but I'm willing to abandon it if complications arise.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40675,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-print-head-carriage-belt-and-encoder-strip.jpg?w=1024" alt="" class="wp-image-40675"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The stretch goal is to also include print carriage horizontal motion encoder into the same data stream. If successful, it would give me full information on print engine motion. However, this encoder is buried within the print carriage behind ink cartridge interfaces. I haven't figured out how to tap into its signal yet. Getting to that circuit board may damage something beyond repair, so it is definitely not part of the first draft plan.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think that's a fair outline of <em>what</em> I want to accomplish. The obvious next question is: <a href="https://newscrewdriver.com/2024/01/29/logic-analyzer-quadrature-decoder/"><em>how</em> might I accomplish this</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

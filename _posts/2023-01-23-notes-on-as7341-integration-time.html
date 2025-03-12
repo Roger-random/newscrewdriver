@@ -1,0 +1,70 @@
+---
+layout: post
+title: Notes on AS7341 Integration Time
+date: 2023-01-23 12:30:00.000000000 +00:00
+type: post
+post_id: '34709'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34710'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674631176
+  _publicize_job_id: '80828637716'
+  timeline_notification: '1674505824'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/23/notes-on-as7341-integration-time/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After pleasantly surprised at the fact my web app project is <a href="https://newscrewdriver.com/2023/01/22/impressively-long-tail-of-android-chrome-updates/">unlikely to leave my old Android phones behind</a>, I got back to my "learn by doing" process. As originally planned, I'm going to leave my first draft "Basic" UI as-is for fallback/debug purposes. I made a copy to serve as the starting point of my "Standard" UI and initial focus is on sensor integration time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Full Width Control</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>First change was minor and cosmetic: "Basic" didn't use any CSS styles, and "Standard" started with just one style to make input sliders 100% of available width. The default width was annoyingly narrow. Making it full width helps me make finer adjustments.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ASTEP Value Fixed at ~10ms</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>AS7341 sensor integration time is controlled by two parameters: ATIME and ASTEP. As per datasheet, the resulting integration time follows the formula: (ATIME+1)*(ASTEP+1)*2.78 microseconds. My "Basic" UI exposed both parameters directly, but I want to use something more human-friendly for the "Standard" UI. I decided to keep ASTEP fixed at 3596. Per the formula (3596+1)2.78 microseconds = 9999.66 microseconds, or just a tiny bit less than 10 milliseconds. Keeping ASTEP fixed at 3596 means the ATIME range of 0-255 can dictate integration time anywhere from 10ms to 2560ms a.k.a. 2.56 seconds. This covers the entire time range I want for initial experiments. I may adjust this range in the future after playing with the sensor some more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Read Time is Double Integration Time</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I had set up the UI to adjust integration in 10ms increments, I took a few readings at various settings and noticed the actual time spent in <code>readAllChannels()</code> is a lot longer than integration time. If I configure for 1 second (1000ms), I end up waiting two seconds. I <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui/commit/1ff1a3af2d0f501260e7c51f72db5e05cdc00041" target="_blank">added a bit of tracking code to my ESP32 Arduino sketch</a> and verified it wasn't just my imagination: actual read time is over double integration time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was puzzling until I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/08/unrolling-adafruit-as7341-readallchannels/" target="_blank">remembered <code>readAllChannels()</code> implementation</a>: it configures AS7341 sensor multiplexor (SMUX) to read sensors F1-F4 plus clear and NIR, performs a read, then configures SMUX for sensors F5-F8 (keeping clear and NIR) and perform a second read. So, a one-second sensor integration time meant one second spent for F1-F4 and another second spent on F4-F8. Add in a few tens of milliseconds for processing and communication overhead, and we've explained the observation of a little bit over twice integration time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is something to keep in mind depending on sensor application. For example, if I want my browser UI to update once a second, I need to set integration time to be less than half a second.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">UX Design Decision</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which led to the next question: Should my browser UI show the integration time, because that's how I'm configuring the sensor? Or should it show double that time, because that is a better estimate of time I should expect to wait for a reading? <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui/commit/6bcf18a78f04746230fd4a9231b8c6b3b4400f53" target="_blank">I decided to go with double</a> for my "Standard" UI: this is a user experience issue, so I should be faithful to <a href="https://newscrewdriver.com/2023/01/24/as7341-adc-fullscale-and-led-illumination-control/">what the user will experience</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,65 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Round 2
+date: 2023-12-14 12:45:32.000000000 +00:00
+type: post
+post_id: '41047'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40433'
+  firehose_sent: '1702586734'
+  timeline_notification: '1702586735'
+  _publicize_job_id: '90285100279'
+  wordads_ufa: s:wpcom-ufa-v4:1703391179
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/14/canon-pixma-mx340-control-panel-round-2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After looking at the <a href="https://newscrewdriver.com/2023/12/13/canon-pixma-mx340-paper-feed-shaft-encoder/">paper feed roller shaft position encoders</a> of this Canon Pixma MX340 multi-function inkjet, I don't have too many other circuit boards to probe. But the remaining boards are significantly larger like the user control panel. I took <a href="https://newscrewdriver.com/2023/11/17/canon-pixma-mx340-control-panel/" target="_blank" rel="noreferrer noopener">a quick look at this earlier</a> during mechanical disassembly, now I want to look at it electrically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40427,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-adf-front-trim-freed.jpg?w=1024" alt="" class="wp-image-40427"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Thankfully, it is large mostly because it spaces things out for user-friendliness.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40413,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-control-panel-circuit-board.jpg?w=1024" alt="" class="wp-image-40413"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The circuit board only has a single layer of copper traces. Most of the components on the non-copper side are push buttons. There are a few LEDs, and a few jumper wires to help route signals over backside copper traces.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40433,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/11/canon-pixma-mx340-control-panel-circuit-board-back.jpg?w=1024" alt="" class="wp-image-40433"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Electrically speaking, this board needs to read the state of all the push buttons and report them back to the main board. It is also home to a bitmap LCD screen, displaying information on command from the main board. Plus the on/off state of those LEDs. All main board communication occurs over a small ribbon cable with 12 conductors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Functionally, this serves a similar purpose to the front face plate of a car audio system. I've looked at two units earlier, one from <a href="https://newscrewdriver.com/2022/05/23/pinout-of-tape-deck-faceplate-toyota-86120-08010/" target="_blank" rel="noreferrer noopener">a Toyota</a> and another from <a href="https://newscrewdriver.com/2022/06/28/lcd-driver-pinout-for-honda-cd/" target="_blank" rel="noreferrer noopener">a Honda</a>. Both of them used chips from Sanyo designed to perform both tasks (button matrix scanning and driving the LCD) on behalf of a main board via an electrical connector with roughly a dozen or two of conductors. Like those face plates, only a single significant looking chip resides on this printer control board. Perhaps it serves a similar purpose.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I dive in to that chip, though, I thought I would first explore around it. This is another lesson learned from those car faceplate teardowns: it is common for a few electrical conductors to be reserved for direct main board control bypassing that chip. If such direct connection wires are among the 12 conductors of this cable, knowing where they are would make later analysis easier. <a href="https://newscrewdriver.com/2023/12/15/canon-pixma-mx340-control-panel-to-main-board-connector/">I'll look at that connector first</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

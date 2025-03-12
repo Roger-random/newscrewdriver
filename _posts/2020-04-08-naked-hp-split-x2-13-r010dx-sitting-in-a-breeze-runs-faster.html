@@ -1,0 +1,43 @@
+---
+layout: post
+title: Naked HP Split X2 (13-r010dx) Sitting In A Breeze Runs Faster
+date: 2020-04-08 12:30:41.000000000 +00:00
+type: post
+post_id: '21051'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- 13-r010dx
+- Folding@Home
+meta:
+  _thumbnail_id: '21044'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42791433920'
+  timeline_notification: '1586374401'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/08/naked-hp-split-x2-13-r010dx-sitting-in-a-breeze-runs-faster/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Mobile computer processors must <a href="https://newscrewdriver.com/2020/04/07/desktop-pc-component-advantage-sustained-performance/">operate within tighter constraints than their desktop counterparts</a>. They sip power to prolong battery life, and that power also eventually ends up as heat that must be dissipated. Unfortunately both heat management mechanisms and batteries are heavy and take up space, so finding the proper balance is always a difficult challenge. It is typical for laptop computers to give up its ability to run sustained workloads at full speed. But if we're not worried about voiding warranties or otherwise rendering a mobile computer immobile, we can lift some of those constraints limiting full performance: run on an AC adapter to provide power, and get creative on ways to enhance heat dissipation.</p>
+<p>For this experiment I pulled out the most powerful computer <a href="https://newscrewdriver.com/2020/03/18/a-tale-of-three-laptops/">from my NUCC trio of research project machines</a>, the HP Split X2 (13-r010dx). The goal is to see if I can add it to my Folding@Home pool. Looking over <a href="https://ark.intel.com/content/www/us/en/ark/products/76608/intel-core-i3-4012y-processor-3m-cache-1-50-ghz.html">the technical specifications published by Intel for Core i3-4012Y CPU</a>, one detail caught my eye: it lists two separate power consumption numbers where most processors only have one. The typically quoted "Thermal Design Power" figure is at 11.5W, but this chip has an additional "Scenario Design Power" of 4.5W. This tells us the processor is designed for computers that only expect to run in short bursts. So even if TDP is 11.5W, it valid to design a system with only 4.5W of heat dissipation.</p>
+<p>Which is likely the case here, as I <a href="https://newscrewdriver.com/2020/02/24/hp-split-x2-13-r010dx-tablet-innards/">found no active cooling on this HP Split X2</a>. The outer case is entirely plastic meaning it doesn't even have great thermal conduction to the environment. If I put a sustained workload on this computer, I expect it to run for a while and then start slowing itself down to keep the heat manageable. Which is indeed what happened: after a few minutes of Folding@Home, the CPU clock cycle pulled back to roughly half, and utilization was pulled back half again meaning the processor is chugging along at only about a quarter of its maximum capability.</p>
+<p><img class=" size-full wp-image-21050 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/03/hp-split-x2-13-r010dx-thermal-throttling-e1585386922870.jpg" alt="HP Split X2 13-r010dx thermal throttling" width="637" height="433"></p>
+<p>For more performance, let's help that heat escape. Just<a href="https://newscrewdriver.com/2020/02/24/hp-split-x2-13-r010dx-tablet-innards/"> as I did earlier</a>, I pulled the core out of its white plastic case. This time for better ventilation rather than just curiosity.</p>
+<p><img class=" size-full wp-image-20596 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/02/hp-split-x2-13-r010dx-tablet-internals-removed-from-case.jpg" alt="HP Split X2 13-r010dx tablet internals removed from case" width="1920" height="1080"></p>
+<p>Removing it from its plastic enclosure helped only a tiny bit. Most of the generated heat are still trapped inside, so I pulled the metal shield off its main processor board. This exposed the slab of copper acting as CPU heat sink.</p>
+<p><img class=" size-full wp-image-21044 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/03/hp-split-x2-13-r010dx-cpu-heat-sink-under-shield.jpg" alt="HP Split X2 13-r010dx CPU heat sink under shield" width="1920" height="1080"></p>
+<p>Exposing that heat sink to ambient air helped a lot more, but passive convection cooling is still not quite enough. The final push was to introduce some active airflow. I was contemplating several different ideas on how to jury-rig an active cooling fan, but this low power processor didn't actually need very much. All I had to do is to set the computer down in the exhaust fan airflow from a PC tower case. That was enough for it to quickly climb back up to full 1.5 GHz clock speed with 100% utilization, and sustain running at that rate.<img class=" size-full wp-image-21049 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/03/hp-split-x2-13-r010dx-receiving-cooling-e1585386948384.jpg" alt="HP Split X2 13-r010dx receiving cooling" width="632" height="430"></p>
+<p>It's not much, but <a href="https://stats.foldingathome.org/donor/Regorlas">it is contributing</a>. I can leave it simulating folding proteins and <a href="https://newscrewdriver.com/2020/04/09/old-amd-gpu-for-foldinghome-ubuntu-struggles-windows-win/">move on to another computer</a>: my Luggable PC Mark I.</p>
+<p></body></html></p>

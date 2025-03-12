@@ -1,0 +1,65 @@
+---
+layout: post
+title: First Project Prototype Has Poor Precision
+date: 2020-08-26 12:30:00.000000000 +00:00
+type: post
+post_id: '21759'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- UWP
+meta:
+  _thumbnail_id: '21761'
+  _publicize_job_id: '48150599537'
+  timeline_notification: '1598470206'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/26/first-project-prototype-has-poor-precision/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been bringing pieces together to build a machine to <a href="https://newscrewdriver.com/2020/08/09/idea-visual-dimension-measurement/">take distance measurements visually</a>, with the primary motivation of measuring dimensions of circuit board features. Mechanically the machine is the three-axis motion control of a retired 3D printer, with a webcam sitting where the print nozzle used to be. It is controlled from a PC attached via USB, running software that I wrote as an exercise to learn UWP development. Once I <a href="https://newscrewdriver.com/2020/08/25/quick-notes-on-uwp-layout/">figured out enough of UWP layout engine</a>, I could put some user interface controls and take the thing on its first test drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Verdict: The idea has promise, but this first draft implementation is a bucket of fail.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the first test, I taped a Digi-Key PCB ruler onto the Y-axis carriage where the print bed used to be installed. The ruler has clearly labeled dimensions on board representative of components on a circuit board. The first and easiest test is to make sure my movement distances match the ruler distance and this machine flunked its first test.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have added a little circle in the middle of the camera field of view to serve as reference. I placed that circle at the 10 cm mark and commanded a move of 1 cm along the negative X axis. I expect the little circle to sit above the 9 cm mark as a result, but it is actually sitting at roughly 8.95 cm, a distance of 1.05 cm and roughly 5% longer than expected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":21760} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2020/06/camera-control-test-8.95mm.jpg" alt="Camera control test 8.95mm" class="wp-image-21760"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first hypothesis is that this is an effect of the camera's USB cable tugging on the camera as the print carriage moved, changing the viewing angle. It is, after all, <a href="https://newscrewdriver.com/2020/08/15/and-i-ended-up-with-tape/">merely held by tape</a> on this first draft. So I repeated the experiment along the Y axis, which does not move the camera carriage and would eliminate flexible tape as a variable. Again I see a 5-6% overshoot.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When two measurement tools disagree, bring in a third opinion to break the tie. I pulled out my digital caliper and measured the ruler markings and they match, indicating the problem is indeed with the printer mechanicals. For whatever reason, this motion control carriage is moving further than commanded. Perhaps the belts had stretched out? Whatever the reason, this behavior could very well be why the printer was retired. I think I can compensate by changing the steps-per-millimeter setting in printer firmware, all I need is a precise measurement of actual movement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which brings up the other half of my problem: I can only get plus or minus half a millimeter precision with this webcam configuration. I can't bring the camera any closer to the workpiece, because this webcam's autofocus fails to focus at such close ranges.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see two paths forward to address the optical precision shortcomings:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Use another camera, such as a "USB microscope". Most of the cheap ones are basically the electronics of a webcam paired with optics designed for short distance focus.</li>
+<li>Keep the camera but augment the optics with a clip-on macro lens. These are sold with the intent they let cell phone cameras focus on objects closer than they normally could.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Either should allow me to measure more accurately and tune the steps-per-millimeter value. While I contemplate my options, I went back into my UWP application to <a href="https://newscrewdriver.com/2020/08/27/icon-fun-with-segoe-mdl2/">play around with a few other features</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,63 @@
+---
+layout: post
+title: Bedside Fan and Light V2
+date: 2022-08-06 12:30:00.000000000 +00:00
+type: post
+post_id: '31850'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Asiahorse
+- Cardboard
+- Cooling Fan
+- ESP8266
+- ESPHome
+- Home Assistant
+- LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31852'
+  _publicize_job_id: '75506485188'
+  timeline_notification: '1659814339'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/06/bedside-fan-and-light-v2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2022/08/05/rgb-led-fan-hub-and-remote-asiahorse-magic-i-120-v2/">took apart the Asiahorse Magic-i 120 V2 control hub and remote</a> because I didn't need them anymore: I could control its trio of fans with my own circuit board. How shall I wield such power? It was fun playing with 3D coordinate mapping with a Pixelblaze, but my most immediate need is a lot less exciting: combination bedside fan and light to replace my <a href="https://newscrewdriver.com/2022/07/28/temperature-responsive-cereal-box-fan/" target="_blank" rel="noreferrer noopener">first bedside fan project</a>. (Which didn't have a light.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For such a simple use, the power of a Pixelblaze is overkill. So, my board was modified to use an ESP8266 (Wemos D1 Mini module) as its brain, running ESPHome for integration with Home Assistant. In the Pixelblaze demo, the fans were always on. Now they will be controlled by that ESP8266 as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31855,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-fan-array-newegg-box-back.jpg?w=1024" alt="" class="wp-image-31855"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm still not settled enough on the idea to spend the time designing and 3D printing a proper frame, but at least I've put a bit more effort into this cardboard creation. I'm reusing a corner of a Newegg shipping box (I think it was the very box used to ship the Asiahorse fan bundle) and I've turned it inside out so at least I don't have to stare at the Newegg logo every time I'm in bed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31857,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/asiahorse-fan-array-box-back.jpg?w=1024" alt="" class="wp-image-31857"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three large holes, one per fan, was cut from that cardboard for airflow. Twelve more holes, four per fan, were drilled into the cardboard for fan mounting screws. The physical assembly came together quickly, but there were a few more hiccups.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First problem was that FastLED, the addressable LED Arduino library used by ESPHome, is not compatible with the latest Arduino 3 framework at the time of this writing. Relevant <a rel="noreferrer noopener" href="https://esphome.io/components/light/fastled.html" target="_blank">ESPHome documentation page</a> listed the issues as 1264 and 1322 filed against FastLED Github repository. Until they are resolved, ESPHome offers a workaround for compiling against Arduino framework 2.7.4. Which is what I did to run these WS2812 LEDs. For the first draft, I'm not going to use the addressable nature at all, just a single solid color. I think it would be cool to have a falling waterfall pattern on these lights, but that'll be experimentation for later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second problem is that PWM control of fan speed results in an audible whine, probably an 1kHz whine which is the practical maximum speed for ESP8266 software PWM. The previous fan project removed the audible whine by adding a capacitor to smooth out voltage output. I could do that again, one capacitor per fan, but these fans run quietly enough at full speed I'm willing to skip PWM and have just on/off control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final problem is that I still want this fan to be responsive to temperature changes, turn itself off in the middle of the night when it got cool enough. I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/27/tmp36-temperature-sensor-esp8266-not-a-great-team/" target="_blank">wasn't happy with the TMP36 sensor</a> I bought for the previous experiment, so now I'm going to try another sensor: the <a href="https://newscrewdriver.com/2022/08/07/first-run-with-ds18b20-temperature-sensor/">DS18B20</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

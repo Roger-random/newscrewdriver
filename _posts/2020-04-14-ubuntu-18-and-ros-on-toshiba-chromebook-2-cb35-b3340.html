@@ -1,0 +1,39 @@
+---
+layout: post
+title: Ubuntu 18 and ROS on Toshiba Chromebook 2 (CB35-B3340)
+date: 2020-04-14 12:30:30.000000000 +00:00
+type: post
+post_id: '20872'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- ROS
+tags:
+- CB35-B3340
+- NUCC
+meta:
+  _thumbnail_id: '20851'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1586892636'
+  _publicize_job_id: '43027570330'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/14/ubuntu-18-and-ros-on-toshiba-chromebook-2-cb35-b3340/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Following default instructions, I was able to <a href="https://newscrewdriver.com/2020/04/13/developer-mode-and-crouton-on-toshiba-chromebook-2-cb35-b3340/">put Ubuntu 16 on a Chromebook in developer mode</a>. But the current LTS (Longer Term Support) release for ROS (Robot Operating System) is their "M" or <a href="http://wiki.ros.org/melodic/Installation">Melodic Morenia</a> release whose corresponding Ubuntu LTS is 18. (Bionic Beaver)</p>
+<p>As of this writing, Ubuntu 18 is not officially supported for Crouton. It's not explicitly forbidden, but it does come with a warning: "May work with some effort." I didn't know exactly what the problem might be, but given how easy it is to erase and restart on a Chromebook I decided to try it and see what happens.</p>
+<p>It failed failed with a hash sum failure during download. This wasn't the kind of failure I thought might occur with an unsupported build, download hash sum failure seems more like a flawed or compromised download server. I didn't understand enough about the underlying infrastructure to know what went wrong, never mind fixing it. So in an attempt to tackle a smaller problem with a smaller surface area, I backed off to the minimalist "cli-extra" install of Bionic which skips graphical user interface components. This path succeeded without errors, and I now have a command line interface that reported itself to be Ubuntu 18 Bionic.</p>
+<p>As a quick test to see if hardware is visible to software running inside this environment, I plugged in a USB to serial adapter. I was happy to see <code>dmesg</code> reported the device was visible and accessible via <code>/dev/ttyUSB0</code>. Curiously, the owner showed up as <code>serial</code> group instead of the usual <code>dialout</code> I see on Ubuntu installations.</p>
+<p>A visible serial peripheral was promising enough for me to proceed and <a href="http://wiki.ros.org/melodic/Installation/Ubuntu">install ROS Melodic</a>. I thought I'd try installation with Python 3 as the Python executable, but that went awry. I then repeated installation with the default Python 2. Since I have no GUI, I installed the <code>ros-melodic-ros-base</code> package. Its installation completed with no errors, allowing me to poke around and <a href="https://newscrewdriver.com/2020/04/15/first-few-issues-of-ros-on-ubuntu-on-crouton-on-chrome-os/">see how ROS works in this environment</a>.</p>
+<p></body></html></p>

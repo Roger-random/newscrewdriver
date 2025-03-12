@@ -1,0 +1,36 @@
+---
+layout: post
+title: 'Hackaday Badge Nyan Cat: Simplicity Pays Off'
+date: 2018-11-03 09:00:56.000000000 +00:00
+type: post
+post_id: '17094'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1541260932'
+  _publicize_job_id: '23882123533'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/03/hackaday-badge-nyan-cat-simplicity-pays-off/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17086 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/poptartcat320240.gif" alt="poptartcat320240" width="320" height="240">I'm adapting the Nyan Cat animation to the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> (close predecessor to the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>) and I chose to simplify the animated GIF data to a simple run-length encoding. RLE doesn't compress as much as GIF, but it makes the decode algorithm simple. A simple algorithm takes up little program memory on the PIC32, and more importantly, it takes up less of my time coding and debugging. The latter is quite important when I'm trying to do something within the timeframe of a single weekend, as most Supercon badge hackers do.</p>
+<p>The simplicity paid off when I wrote the code - just a few lines and only a few variables - and ran it on my Belgrade badge. The first test only decoded part of the first frame. I was actually quite surprised when the face of a cartoon cat looked back at me from the badge LCD! It is rare when a chunk of code works immediately on the first try.</p>
+<p>After the first partial frame was proven to work, I extended the for() loop to the entire image, then I wrote an infinite loop to cycle through all 12 frames of the animation. I made the design decision for code simplicity and it paid off tremendously. Drastically reducing the time spent on implementation and (quite unexpectedly) completely eliminated the time spent on debugging.</p>
+<p>If I had tried to port a GIF decode library I'm certain I would have needed to spend more time getting the code to compile and run on the badge, and it would not have been fun to debug if anything should go wrong.</p>
+<p>This project's progress is <a href="https://github.com/Roger-random/hackaday-belgrade-2018/commits/exploration">publicly visible on Github</a>.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</body></html></p>

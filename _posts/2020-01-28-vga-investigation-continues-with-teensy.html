@@ -1,0 +1,49 @@
+---
+layout: post
+title: VGA Investigation Continues with Teensy
+date: 2020-01-28 12:30:04.000000000 +00:00
+type: post
+post_id: '20348'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Investigations
+tags:
+- Teensy
+meta:
+  _thumbnail_id: '20363'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40060854339'
+  timeline_notification: '1580243416'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/28/vga-investigation-continues-with-teensy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>After deciding the <a href="https://newscrewdriver.com/2020/01/27/sparklecon-2020-day-2-arduino-vgax/">Arduino VGAX library was not going to serve my needs</a>, I started researching other ways to generate a VGA signal. What became clear pretty quickly was that a standard Arduino isn't fast enough to meet timing requirements without additional hardware support. So solutions that work entirely in software <a href="http://www.gammon.com.au/forum/?id=11608">will be roughly as limited as VGAX</a>, and those that work for higher resolutions <a href="https://dqydj.com/how-to-produce-640x480-vga-color-video-from-an-arduino/">require auxiliary hardware</a>.</p>
+<p>Given that fact, I started looking at VGA signal generation by a faster line of microcontrollers: the Teensy line. I have on hand a Teensy LC and a Teensy 4, and I found <a href="https://forum.pjrc.com/threads/45916-Teensy-3-6-VGA-driver">this thread on Teensy forums</a> announcing a library for generating VGA signal strictly in software, no auxiliary hardware. Browsing through the <a href="https://github.com/qix67/uVGA">Github repository of this uVGA library</a>, it looked quite promising. However, the primary target platform is the Teensy 3. I bracket it above and below with a Teensy 4 and a Teensy LC. Would one of them be able to run this code?</p>
+<p>An attempt to compile an uVGA example for the Teensy LC failed:</p>
+<blockquote><p>
+<code>In file included from /home/roger/Arduino/libraries/uVGA/examples/HelloWorldColour/HelloWorldColour.ino:3:0:</code><br />
+<code>/home/roger/Arduino/libraries/uVGA/uVGA.h:297:16: error: 'TCD_t' in 'class DMABaseClass' does not name a type</code><br />
+<code>DMABaseClass::TCD_t *edma_TCD; // address of eDMA TCD registers</code>
+</p></blockquote>
+<p>My best guess is that the Teensy LC lacks the direct memory access (DMA) capability uVGA requires. I've <a href="https://newscrewdriver.com/2020/01/13/first-experiment-in-teensy-audio-foiled-by-cpu-instruction-set/">already been foiled once</a> on the reduced hardware capability on a Teensy LC, so this was no surprise. DMA is critical for shuttling memory back and forth without bogging down the CPU for timing-critical tasks (like VGA signal generation) so this requirement is unlikely to be lifted.</p>
+<p>However, since my goal is only to generate a signal outputting a single color to the entire screen, I don't really need to shuttle data from a video frame buffer for display. If I'm willing to dig into the uVGA code, I can probably find a way to bypass the commands moving memory and accomplish my very specific goal.</p>
+<p>Before I start doing work, though, I should see what happens when I try compiling the same uVGA example for the Teensy 4:</p>
+<blockquote><p>
+<code>In file included from /home/roger/Arduino/libraries/uVGA/examples/HelloWorldColour/HelloWorldColour.ino:8:0:</code><br />
+<code>/home/roger/Arduino/libraries/uVGA/uVGA_valid_settings.h:59:17: note: #pragma message: No resolution defined for this CPU frequency. Known CPU frequency: 240Mhz, 192MHz, 180Mhz, 168Mhz, 144Mhz, 96Mhz, 72Mhz, 48Mhz</code>
+</p></blockquote>
+<p>It looks like the uVGA library has some hard-coded dependencies on a Teensy CPU's frequency, and it doesn't know what to do with the high speed of a Teensy 4. I expect that speed will open up new capabilities, but someone has to teach uVGA about a Teensy 4 before that could happen. If I'm willing to dig into uVGA code, this would be a more productive and forward-looking way to go and a positive contribution to the open source community.</p>
+<p>But before I can realistically contemplate that project, I'll need to become <a href="https://newscrewdriver.com/2020/01/29/vga-signal-generation-with-pic-feasible/">a lot more knowledgeable about VGA timing requirements</a>.</body></html></p>

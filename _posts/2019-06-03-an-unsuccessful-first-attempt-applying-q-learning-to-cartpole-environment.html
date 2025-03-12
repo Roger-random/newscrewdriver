@@ -1,0 +1,43 @@
+---
+layout: post
+title: An Unsuccessful First Attempt Applying Q-Learning to CartPole Environment
+date: 2019-06-03 12:30:54.000000000 +00:00
+type: post
+post_id: '18573'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags:
+- OpenAI Gym
+- Reinforcement Learning
+meta:
+  _thumbnail_id: '18574'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31468793129'
+  timeline_notification: '1559590265'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/03/an-unsuccessful-first-attempt-applying-q-learning-to-cartpole-environment/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the objectives of <a href="https://gym.openai.com/">OpenAI Gym</a> is to have a common programming interface across all of its different environments. And it certainly looks pretty good at the surface: we <code>reset()</code> the environment, take actions to <code>step()</code> through it, and at some point we get <code>True</code> as a return value for the <code>done</code> flag. Having a common interface allows us to use the same algorithm across multiple environments with minimal modification.</p>
+<p>But "minimal" modification is not "zero" modification. Some environments are close enough that no modifications are required, but not all of them. Sometimes an environment is just not the right fit for an algorithm, and sometimes there are important details which differ from one environment to another.</p>
+<p>One way environments differ is in <a href="http://gym.openai.com/docs/#spaces">different type of spaces</a>. An environment has two: an <code>observation_space</code> that describes the observed state of the environment, and an <code>action_space</code> that outlines valid actions an agent may choose to take. They change from one environment to another because they tend to have different observable properties and different actions an agent can take within them.</p>
+<p>As an exercise I thought I'd try to take the simple Q-Learning algorithm <a href="https://www.oreilly.com/learning/introduction-to-reinforcement-learning-and-openai-gym">demonstrated to solve the <code>Taxi</code> environment</a>, and slam it on top of <code>CartPole</code> just to see what happens. And to do that, I had to take <code>CartPole</code>'s state which is an array of four floating point numbers and convert it into an integer suitable for an array index.</p>
+<p>As an naive approach, I'll slice up the space into discrete slices. Each of four numbers will be divided into ten bins. Each bin will correspond to a single digit zero to nine, so the four numbers will be composed into a four digit integer value.</p>
+<p>To determine size of these bins, I executed 1000 episodes of the <code>CartPole</code> simulation while taking random actions via <code>action_space.sample()</code>. The ten bins are evenly divided between maximum and minimum values observed values in this sample run, and Q-learning is off and running... doing nothing useful.</p>
+<p>As shown in plot above, reward function is always 8, 9, 10, or 11. We never got above or below this range. Also, out of 10000 possible states, only about 50 were ever traversed.</p>
+<p>So this first naive attempt didn't work, but it was a fun experiment. Now the more challenging part: figuring out where it went wrong, and how to fix it.</p>
+<p>Code written in this exercise <a href="https://gist.github.com/Roger-random/72cb438d52f9899c44eb5a525ea1b249">is available here</a>.</p>
+<p> </p>
+<p></body></html></p>

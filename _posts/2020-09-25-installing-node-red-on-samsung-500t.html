@@ -1,0 +1,45 @@
+---
+layout: post
+title: Installing Node-RED on Samsung 500T
+date: 2020-09-25 12:30:00.000000000 +00:00
+type: post
+post_id: '22508'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Node-RED
+- Samsung 500T
+meta:
+  _thumbnail_id: '22509'
+  _publicize_job_id: '49229827024'
+  timeline_notification: '1601062211'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/25/installing-node-red-on-samsung-500t/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I saw that Node-RED community contributions included a general battery state-of-charge reporting node, I thought that would be <a href="https://newscrewdriver.com/2020/09/24/node-red-challenge-round-1-battery-level-reporting/">a practical and useful first step</a> into playing with contribution nodes. I wanted to give that specific ndoe a try because given my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/05/03/samsung-500t-disappointments/" target="_blank">past miserable user experience</a> on my Samsung 500T tablet, I was not terribly motivated to put in the effort required to write my own code to extract battery information. But I'm willing to see if that Node-RED node can work its magic here, and the first step of is, obviously, see if we can even install Node-RED on the unloved machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were many reasons to be pessimistic. Windows was and is still seen as a second-class citizen in many web-centric products. And not only is the tablet running Windows, it is stuck on an <strong><em>old </em></strong>version of Windows because of the whole <a rel="noreferrer noopener" href="https://answers.microsoft.com/en-us/windows/forum/windows_10-windows_install/text-may-not-appear-in-the-windows-interface-on/ed1823d3-c82c-4d7f-ba9d-43ecbcf526e9" target="_blank">Intel Clover Trail mess</a> preventing modern Windows 10 support. Furthermore, Clover Trail is a 32-bit only chip without support for <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/08/03/update-on-arm64-ros2-on-pi/" target="_blank"><code>x86-64</code> a.k.a. <code>amd64</code> instructions that are starting to become a requirement</a> on modern software frameworks. And it only has 1GB of RAM. And we're still dealing with that molasses-slow eMMC storage. The list goes on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately Node.JS <a rel="noreferrer noopener" href="https://nodejs.org/en/download/" target="_blank">still has a 32-bit Windows installer</a>, though installation failed after nearly an hour of grinding away. I was first disappointed but then relieved to see it was "merely" a timeout installing one of the auxiliary components. This was not a huge surprise given how slow this machine is, so I waited for the system to settle down (lots of backlog waiting on that eMMC) before retrying. Node.JS installation succeeded the second time and after that I installed Node-RED without drama.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Launching Node-RED faced another unnecessary hurdle in the form of Windows Firewall. Annoyingly, this was one of the differences between Windows 1607 and modern builds, so I had none of the menu options I've become familiar with. But eventually I was able to let Node.JS open up a port to serve the Node-RED user interface, where I could install <code><a rel="noreferrer noopener" href="https://flows.nodered.org/node/node-red-contrib-battery" target="_blank">node-red-contrib-battery</a></code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I dropped three nodes into the blank flow: an inject node, a debug node, and the newly installed battery node between them. I hit "Deploy" and clicked to see if that battery node can extract any information and... it can! Not a lot, as most of the fields are blank or null, but it did return the current battery voltage and the charge percentage. This is all I need to <a href="https://newscrewdriver.com/2020/09/26/monitoring-samsung-500t-discharge-charge-cycle/">observe this tablet's charge and discharge behavior</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

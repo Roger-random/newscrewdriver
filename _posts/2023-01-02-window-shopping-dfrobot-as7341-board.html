@@ -1,0 +1,47 @@
+---
+layout: post
+title: Window Shopping DFRobot AS7341 Board
+date: 2023-01-02 12:30:00.000000000 +00:00
+type: post
+post_id: '34405'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Window Shopping
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34412'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672781510
+  _publicize_job_id: '80187004640'
+  timeline_notification: '1672691402'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/02/window-shopping-dfrobot-as7341-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm intrigued by the AMS AS7341 11-channel spectral color sensor, and I've reached the limits of what I can learn from its (somewhat disappointing) datasheet <a href="https://newscrewdriver.com/2023/01/01/ams-as7341-calibration-application-note/">and application note documentation</a>. It's time to get some hands-on experience with the device, which hopefully would help me understand more of the documentation in a positive feedback cycle. Plus I just want to start playing with it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could buy the sensor chip itself from Digi-Key, which has <a rel="noreferrer noopener" href="https://www.digikey.com/en/product-highlight/a/ams/as7341-11-channel-spectral-sensor" target="_blank">published a product page highlighting AS7341</a>. Cost is reasonable for single quantities ($11.42 at time of writing) but at 3.1mm x 2mm x 1mm it is far too small for me to handle directly. I need a breakout board. The most obvious choice is <a rel="noreferrer noopener" href="https://www.digikey.com/en/products/detail/ams-osram/AS7341-EVAL-KIT/9959600" target="_blank">AMS' own evaluation kit</a>, but that is priced far too high ($189.38) for me to stomach. Thankfully there are other companies providing AS7341 breakout boards for electronics hobbyists like myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>DFRobot is one of these companies, and it has not one but two AS7341 offerings that differ by physical interface. <a rel="noreferrer noopener" href="https://www.dfrobot.com/product-2131.html" target="_blank">Product SEN0364</a> has connectivity via DFRobot's "Gravity" connector. Its <a rel="noreferrer noopener" href="https://www.dfrobot.com/product-2132.html" target="_blank">sibling product SEN0365</a> has generic 0.1" pitch breadboard-compatible headers. They both have mounting holes and voltage level shifters/converters for both signal and power interface with 3.3V and 5V parts. (AS7341 itself is a 1.8V part.) The Gravity port only has I2C communication, but the 0.1" header version also break out INT (optional signal for "reading complete") and GPIO (optional signal for "start reading"). Both include a pair of white LEDs for illumination controlled by AS7341 LDR pin, but that also meant LDR was not brought out so we can't use it to control external lights.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the software front, <a rel="noreferrer noopener" href="https://github.com/DFRobot/DFRobot_AS7341" target="_blank">DFRobot provides an Arduino library</a> and several example projects. I thought their <a rel="noreferrer noopener" href="https://www.hackster.io/DFRobotOfficial/comparison-of-common-light-sources-for-household-as7341-5a4111" target="_blank">household lights comparison test</a> was very interesting, using an AS7341 to show difference in emission spectra of various household lights. I understood the spectral plots, but they lost me when the math started going into <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/CIE_1931_color_space" target="_blank">CIE color spaces</a> like the AMS calibration data sheet did. The biggest problem with this example project is that its online listing is incomplete: the Arduino sketch for interfacing with AS7341 is listed, but the Processing sketch was missing. It plots results on a desktop computer screen and screenshots were included in the project writeup. Without it we'd just have a bunch of numbers in a serial terminal. It shouldn't be too hard to recreate using <a rel="noreferrer noopener" href="https://processing.org/reference/libraries/serial/index.html" target="_blank">Processing's Serial library</a> if one felt motivated to do so. Still, its absence was annoying.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Interesting but incomplete example projects won't change the fact DFRobot SEN0364 and SEN0365 seem like reasonable options for AS7341 breakout boards. Another option for AS7341 breakout board is Adafruit product #4698, which is <a href="https://newscrewdriver.com/2023/01/03/adafruit-as7341-board-4698/">what I eventually bought for myself</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,170 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Connector
+date: 2023-12-16 12:30:00.000000000 +00:00
+type: post
+post_id: '41071'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41073'
+  firehose_sent: '1702758609'
+  wordads_ufa: s:wpcom-ufa-v4:1703391443
+  _publicize_job_id: '90338475306'
+  timeline_notification: '1702758610'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/16/canon-pixma-mx340-control-panel-lcd-connector/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a Canon Pixma MX340 multi-function inkjet in a partially disassembled state, still running, and I'm learning how it works. Looking at the control panel, I was encouraged by how much I could learn just by <a href="https://newscrewdriver.com/2023/12/15/canon-pixma-mx340-control-panel-to-main-board-connector/">looking at the connector to the main board</a>, so I will keep going and look at its LCD screen connector.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first challenge is the LCD interface connector is even smaller and denser. My experience had been hobbyist-level electronics for a breadboard with pins 0.1" (~2.54mm) apart. The main board connector had just 1mm between pins, over double the density. This LCD connector doubles density again, with only 0.5mm between pins. Those thin copper traces were hard to see so I took my picture and exaggerated its contrast. Bright parts are now overblown and dark detail crushed, but the traces are much easier to see now and that's what's important today.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since Canon engineers thoughtfully labeled pin 1 with an arrow and number, I know to count pins right-to-left. The first thing to do is look for traces larger than the rest, usually indicating power/ground wires. I see three instances of two pins wired together: 6+7, 8+9, and 10+11. Visually following the copper traces, I found LCD pins 6+7 connected to mainboard pin 9 that delivers 3.3V even in standby mode. LCD 8+9 is connected to mainboard pin 10, the curiously thin ground pin. (LCD draw very little current, so that is consistent with the hypothesis pin 10 serves low power draw components.) C100 is the decoupling capacitor between those power and ground planes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>LCD pins 10+11 didn't go very far: they led to capacitor C101, the other side of which is ground. In fact, looking at that patch of copper, five more capacitors (C105 through C109 inclusive) connect corresponding LCD pins (19 through 23 inclusive) to ground. Working towards the right, C104 sits between LCD pins 17 and 16. C103 between LCD pins 15 and 14. C102 between LCD pins 14 and 13. I've seen <a href="https://newscrewdriver.com/2022/06/13/pinout-of-lcd-salvaged-from-att-cl84209/">LCD modules use external capacitors</a> before, but this is a much larger capacitor network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't see any traces going under the connector out the other side, so pins 12 and 18 are either unconnected or connected to one of the copper patches that run under the connector. One patch is ground, to which the connector's chassis pins soldered to. There's a smaller patch, which supplies power to pin 24.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This tiny super dense connector was intimidating at first glance, but as it turned out an explanation can be found within 3cm for majority of those pins. Only 5 pins out of 24 require <a href="https://newscrewdriver.com/2023/12/17/canon-pixma-mx340-control-panel-lcd-to-ic/">further exploration</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: I now have information on pins 1 through 5, which connects to NEC K13988 chip on the circuit board. Table has been updated accordingly.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Pin number</th>
+<th class="has-text-align-center" data-align="center">Connection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">NEC K13988 pin 28</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">NEC K13988 pin 26</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">NEC K13988 pin 27</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">NEC K13988 pin 9</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">NEC K13988 pin 10</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">10</td>
+<td class="has-text-align-center" data-align="center">C101 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">11</td>
+<td class="has-text-align-center" data-align="center">C101 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">12</td>
+<td class="has-text-align-center" data-align="center">3.3V, ground, or not connected</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">13</td>
+<td class="has-text-align-center" data-align="center">C102 to 14</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">14</td>
+<td class="has-text-align-center" data-align="center">C102 to 13 and C103 to 15</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">15</td>
+<td class="has-text-align-center" data-align="center">C103 to 14</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">16</td>
+<td class="has-text-align-center" data-align="center">C104 to 17</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">17</td>
+<td class="has-text-align-center" data-align="center">C104 to 16</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">18</td>
+<td class="has-text-align-center" data-align="center">3.3V, ground, or not connected</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">19</td>
+<td class="has-text-align-center" data-align="center">C105 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">20</td>
+<td class="has-text-align-center" data-align="center">C106 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">21</td>
+<td class="has-text-align-center" data-align="center">C107 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">22</td>
+<td class="has-text-align-center" data-align="center">C108 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">23</td>
+<td class="has-text-align-center" data-align="center">C109 to ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">24</td>
+<td class="has-text-align-center" data-align="center">3.3V DC</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

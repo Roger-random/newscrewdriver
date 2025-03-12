@@ -1,0 +1,208 @@
+---
+layout: post
+title: Lenovo Mirage AR Headset (AR-7561N)
+date: 2023-06-18 12:30:00.000000000 +00:00
+type: post
+post_id: '37263'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- xr
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37267'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1687392350
+  _publicize_job_id: '85025166482'
+  timeline_notification: '1687116679'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-29 03:10:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/06/18/lenovo-mirage-ar-headset-ar-7561n/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The Lenovo Mirage AR Headset (bundled with <em>Star Wars: Jedi Challenges</em>) <a href="https://newscrewdriver.com/2023/06/17/lenovo-mirage-ar-was-a-huge-disappointment/">was a huge disappointment</a>, now I'm going to extract what entertainment I can from tearing it down. From a mechanical engineering perspective, I was very impressed by what I saw. Unfortunately, robust mechanical design could not overcome fundamental product weaknesses.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37254,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-for-star-wars-jedi-challenges.jpg?w=1024" alt="" class="wp-image-37254"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I started the teardown, though, I was curious how it would enumerate as a USB device. I plugged it into a computer running Ubuntu and here's what got dumped out via <code>dmesg</code>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>usb 3-1: new full-speed USB device number 3 using xhci_hcd
+usb 3-1: New USB device found, idVendor=1f3b, idProduct=1000, bcdDevice= 2.00
+usb 3-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 3-1: Product: AR Head Mounted Device
+usb 3-1: Manufacturer: Lenovo
+usb 3-1: SerialNumber: 101215-0073
+hid: raw HID events driver (C) Jiri Kosina
+usbcore: registered new interface driver usbhid
+usbhid: USB HID core driver
+hid-generic 0003:1F3B:1000.0001: hiddev1,hidraw0: USB HID v1.11 Device [Lenovo AR Head Mounted Device] on usb-0000:00:14.0-1/input0</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like it conforms to USB HID standards, but as a "raw" device not obligated to conform to any common peripheral. Since it doesn't try to pretend to be something common (say, a mouse) we have to know its raw USB communication format in order to communicate with this device. If I still had the app installed on my phone, I could peek at its control schema using a USB reverse engineering tool like <a href="https://www.crowdsupply.com/great-scott-gadgets/cynthion">Cynthion</a> (formerly <a href="https://www.crowdsupply.com/great-scott-gadgets/luna/updates/the-history-of-luna">LUNA</a>). But I had neither. With my skill level and what I have on hand, I can't do much except take it apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37268,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-velcro-head-strap-removed.jpg?w=1024" alt="" class="wp-image-37268"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started with the easiest removal: the head strap which was held by hook-and-loop fasteners.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37269,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-phone-caddy.jpg?w=1024" alt="" class="wp-image-37269"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next was the phone caddy, the only other user-removable part in this system. Visible in this picture is the short USB cable for the headset electronics to communicate with the phone. I used this headset with a Google Pixel so this is the USB-C cable. The headset came with two other cables: micro-B for other Android phones, and a Lightning for Apple iPhones.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37271,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-phone-caddy-open.jpg?w=1024" alt="" class="wp-image-37271"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The caddy had to accommodate over a dozen different phones and thus had mechanisms to adjust for different width, height, and thickness.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37273,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-phone-caddy-disassembled.jpg?w=1024" alt="" class="wp-image-37273"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Working to meet those requirements were a lot of intricate details in the design of these injection-molded parts. (Aided by a few inserts made of stamped sheet metal.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37275,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-product-sticker.jpg?w=1024" alt="" class="wp-image-37275"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next to the caddy slot (and USB port) is a product information sticker.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37277,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-fasteners-accessible-from-bottom.jpg?w=1024" alt="" class="wp-image-37277"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reaching the end of user-serviceable parts, I pulled out my <a href="https://www.ifixit.com/products/mako-driver-kit-64-precision-bits">iFixit Mako screwdriver kit</a> and started removing fasteners visible on the bottom. (Center fastener was hidden under a sticker.) There were multiple different lengths of fasteners. Some were machine screws and some self-tap into plastic. But with one minor exception, I only needed a single screwdriver bit to drive them all. That must have been a conscientious decision by the mechanical engineering team and I appreciate their effort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37282,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-clear-front-removed.jpg?w=1024" alt="" class="wp-image-37282"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>First plastic piece to be removed was the clear front piece, whose removal exposed several more fasteners.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37280,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-fastener-hidden-by-smoked-side-piece.jpg?w=1024" alt="" class="wp-image-37280"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fasteners were also hidden under dark plastics on the sides, though these wouldn't be important until a little later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37284,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-top-clips-next-to-side-buttons-released.jpg?w=1024" alt="" class="wp-image-37284"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After removing every fastener I could find, the headset remains stubbornly sturdy. Flexing it in my hands failed to highlight any promising seams to pry against, so I started prying at every seam between different materials. The first clips to release were next to the side buttons.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37286,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-top-removed.jpg?w=1024" alt="" class="wp-image-37286"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following those clips around the perimeter allowed the top to be released and unveil a circuit board and a battery. The circuit board is labeled with <code>Legend_HMD_MB_PCB_V05 2017.08.10</code>. I interpret this to mean: Legend = project code name, HMD = head-mounted display,. MB = motherboard, PCB = printed circuit board, V05 = fifth revision. Followed by date of August 10th, 2017.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":37288,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-circuit-board-front.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-circuit-board-front.jpg?w=1024" alt="" class="wp-image-37288"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Biggest chip on the circuit board is an <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32f205re.html">STM32F205RE microcontroller</a>, built around an ARM Cortex-M3. The next biggest chip is a LFE5U-45F 6MG285C Lattice Semiconductor FPGA. I assume the camera-based object tracking algorithm is implemented in this FPGA. I couldn't find that specific part number on Lattice web site, perhaps it is an obsolete part? I was redirected to the page for <a href="https://www.latticesemi.com/Products/FPGAandCPLD/ECP5">Lattice ECP5 family</a> so I guess it's one of those. Most of the left third of this board is unpopulated, with footprint for at least one nontrivial BGA part. I wonder what they had planned for that area? That is near the trio of side buttons, perhaps they had plans for other headset designs with different side controls? One possibility is a touchpad and if so that BGA footprint might be a capacitive touch processor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37291,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-left-side-sticker-peel.jpg?w=1024" alt="" class="wp-image-37291"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The bottom of the phone tray caddy area turned out to be a sticker I needed to peel off in order to expose more fasteners.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37294,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-bottom-removed.jpg?w=1024" alt="" class="wp-image-37294"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once released, we could remove the louvered bottom as well as dark smoke colored side pieces.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37296,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-reflector-fasteners.jpg?w=1024" alt="" class="wp-image-37296"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Optical reflector assembly fasteners are now accessible.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37298,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-reflector-assembly.jpg?w=1024" alt="" class="wp-image-37298"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The optical reflector assembly (laying upside-down in this picture) consisted of three pieces of clear plastic with semi-reflective coatings. One flat sheet spans the entire width, and two curved half-width pieces one for each eye. Looking at the geometry, I now understand how this works and I'm not impressed. I don't know how much light the coating reflects and how much is transmitted, but using 50% as an example, this is what we would end up with:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Image from phone screen shines down to the flat sheet. 50% of the light is transmitted straight through and lost out the louvers in the bottom of the headset.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The remaining 50% is reflected to the two curved pieces. Of that original 50%, 25% is transmitted through and forwards, lost to the environment. The remaining 25% of that original light is reflected back towards the flat sheet.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The flat sheet reflects 12.5% of original light right back into the phone, where we can't see it.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>That leaves 12.5% of original phone screen light transmitted through the flat sheet into our eyes.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Only a small fraction of light makes it all the way to our eyes, no wonder everything was so dim! This reflector assembly is part of a recurring theme: it is mechanically sound with sturdy mounting, but robust mechanical engineering could not overcome a fundamentally inefficient optical path design.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I understand how it works, I'm not terribly interested in keeping this optical assembly for homebrew AR headset adventures. Also, for accurate projection I need to know the curvature of those two half-width pieces and I don't have that data. Reverse engineering that information takes knowledge of optics that I currently lack. Can I do something with this (or pieces of it) with the skills I have now? I'll set this reflector assembly aside for a little bit longer while I think.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37300,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-camera-surround-held-by-double-sided-tape.jpg?w=1024" alt="" class="wp-image-37300"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Resuming the teardown, I couldn't find any fasteners holding down plastic pieces surrounding the camera. A little exploratory prying popped them loose: they were held with double-side tape.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37302,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-camera-assembly.jpg?w=1024" alt="" class="wp-image-37302"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I could remove the camera assembly. Two cameras are held at a precise distance apart by a metal frame, the only metal structure in the entire headset. Metal rigidity would be useful to maintain distance, but it also serves as heat sink for the pair of cameras.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37304,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-camera-rear.jpg?w=1024" alt="" class="wp-image-37304"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A trio of Philips-head fasteners hold the camera to the frame. I had hoped for some identifying marks on the back of these cameras, but no luck. The only markers were on the thin ribbon cable. A QR code that scanned out to 8SSC28C19780AXYY7A55567 (no clue) and human readable text as follows:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>MDG001-200
+SUNNY
+B1734
+94V-0
+2PE
+E310562</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching the web for that information, I learned 94V-0 is an UL standard for flame resistance and probably refers to the FPC (flexible printed circuit) substrate. "Sunny" probably refers to <a href="http://www.sunnyoptical.com/en/default.html">Sunny Optical</a>, a Chinese company for camera modules. Lots of camera modules are listed on their website but I didn't find a match for any of these numbers. The site had <a href="http://www.sunnyoptical.com/en/pro/009021/index.html">a section for VR/AR products</a>, but the only listing is for an <a href="http://www.sunnyoptical.com/en/009021001/p1865.html">eyepiece lens</a>. Sunny E310562 got a few hits on eBay for camera modules corresponding to other Lenovo products, which makes me feel like I'm on the right track, but they look very different. Not sure what's going on there. I think I struck out.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37306,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-camera-lens-removed.jpg?w=1024" alt="" class="wp-image-37306"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The lens is removable. I don't know enough about small cameras to recognize if it this was a standardized lens mount form factor or something proprietary. I removed the lens hoping to see some identifying markers inside. I saw the imaging sensor array, but no identifiers. This camera was significantly larger than OV2640 popular with electronics hobbyist kits and much larger than what I've pulled from phones and tablets. I expect this to be a very capable camera and it's a shame I can't repurpose it for robot vision or something.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":37267,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/06/lenovo-mirage-ar-headset-disassembled.jpg?w=1024" alt="" class="wp-image-37267"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was a fun teardown and I learned more than I had expected, including an understanding of this optical reflector's fundamentally flawed design. But I'm not done yet: this is part of <em>Star Wars: Jedi Challenges</em> and <a href="https://newscrewdriver.com/2023/06/19/reys-saber-from-star-wars-jedi-challenges-aac-101b/">a Jedi needs a lightsaber</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

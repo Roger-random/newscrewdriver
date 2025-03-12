@@ -1,0 +1,59 @@
+---
+layout: post
+title: Resistors Negotiate 5V Power in USB Type C
+date: 2022-08-30 12:30:00.000000000 +00:00
+type: post
+post_id: '32312'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- USB-C
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32331'
+  _publicize_job_id: '76254798970'
+  timeline_notification: '1661887847'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673306089
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/30/resistors-negotiate-5v-power-in-usb-type-c/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Thanks to prompting by a comment, I am picking up where I left off <a href="https://newscrewdriver.com/2022/03/20/power-for-usb-c-is-more-complicated-than-red-wire-black-wire/">trying to supply power over a USB-C cable</a>. I love the idea of <a rel="noreferrer noopener" href="https://www.usb.org/usb-charger-pd" target="_blank">USB Power Delivery</a>, the latest version covers transferring up to 240W over a USB Type-C cable. But that power also comes with complexity, and I didn't want to figure out how to establish a power delivery contract when my project really just wanted five volts. Fortunately, the specification also describes a low-complexity way to manage 5V power over USB Type-C. But I had to be confident I was dealing with the correct wires, so I probed wiring with a <a rel="noreferrer noopener" href="https://amzn.to/3R9AkyO" target="_blank">small breakout board</a>. (*) I confirmed that the four red wires were V<sub>BUS</sub>, the green and white wires were indeed the differential data pairs, and the mystery yellow wire is the V<sub>CONN</sub> or CC (cable configuration) wire on the same side.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ah, yes, that "same side" was an interesting find. USB Type-C is physically shaped so there's no "upside-down" way to insert the plug, with symmetric wires. However, that also means each side has a set of D+/D-/CC wires, and a USB Type-A to Type-C adapter only connects to one side. It is up to the Type-C device to check both sides.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my previous experiment I learned that just connecting +5V to red and ground to black was enough to be recognized as a power source by some Type-C device but not my Pixel 3a phone. I found <a rel="noreferrer noopener" href="https://pinoutguide.com/CellularPhones-A-N/USB-C_Type-C_to_USB_cable_pinout.shtml" target="_blank">multiple</a> <a rel="noreferrer noopener" href="https://community.infineon.com/t5/Knowledge-Base-Articles/Termination-Resistors-Required-for-the-USB-Type-C-Connector-KBA97180/ta-p/253544" target="_blank">guides</a> that said to connect a 56kΩ pull-up resistor between CC and V<sub>BUS</sub>, but I wanted to know a little bit more without diving into the deep end of USB specifications. I found a <a rel="noreferrer noopener" href="https://forum.digikey.com/t/simple-way-to-use-usb-type-c-to-get-5v-at-up-to-3a-15w/7016" target="_blank">very accessible post on Digi-Key forums</a> describing the details of 5V @ 3A = 15W power over Type-C. Which is itself a simplified version of a much more complex <a href="https://www.digikey.com/en/articles/designing-in-usb-type-c-and-using-power-delivery-for-rapid-charging" target="_blank" rel="noreferrer noopener">Digi-Key overview of USB power</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like several other guides, it mentioned the resistors on both ends of the Type-C cable, but it also had this phrase: "<em>Together they form a voltage divider</em>" which was my "A-ha!" moment. It allowed components to negotiate 5V power delivery without a digital communication protocol. We just need a resistor on either side: one for the provider to indicate the amount available, and the other by the consumer to indicate its desired consumption. Then we just need an ADC to measure voltage value of the resulting voltage divider, and we'll know the safe power level.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I added the 56kΩ pull-up resistor to my circuit, my Pixel 3a lit up with "Charging slowly". I thought it was successfully charging at 500mA, but it wasn't. Over the next half hour, its battery level actually dropped! I put the circuit under <a rel="noreferrer noopener" href="https://amzn.to/3wwVgYL" target="_blank">a USB power meter</a>(*) and found it was only drawing a feeble 40mA. That meter also told me why: my circuit had supplied only 4.3V because I had a transistor in the circuit for power control and it dropped 0.7V from collector to emitter. This was why the power level was so low: a pull-up resistor to 4.3V was below the voltage threshold for 500mA power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to create a microcontroller-switchable 5V (not 4.3V) power supply, I went with my most expedient option of using another <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/" target="_blank">voltage regulator with an enable pin</a> connected to what used to be the transistor base. This raised the divided voltage within 500mA range, and finally the Pixel 3a started charging at that rate as confirmed by the USB power meter. And as an experiment to confirm my understanding, I dropped pull-up resistance down to 22kΩ. This raised the resulting voltage at the divider, and USB power meter reported that my Pixel 3a started drawing 1.5A. My buck converter is rated to handle this output and this way the phone charges faster.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: Hackaday has post <a href="https://hackaday.com/2023/01/04/all-about-usb-c-resistors-and-emarkers/" target="_blank" rel="noreferrer noopener">describing USB-C power for the electronic hobbyist audience</a>.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

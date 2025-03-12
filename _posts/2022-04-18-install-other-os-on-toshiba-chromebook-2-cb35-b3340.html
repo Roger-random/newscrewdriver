@@ -1,0 +1,113 @@
+---
+layout: post
+title: Install Other OS on Toshiba Chromebook 2 (CB35-B3340)
+date: 2022-04-18 12:30:00.000000000 +00:00
+type: post
+post_id: '29569'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- CB35-B3340
+- NUCC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '20541'
+  _publicize_job_id: '71536342906'
+  timeline_notification: '1650310204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/18/install-other-os-on-toshiba-chromebook-2-cb35-b3340/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I received <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/27/toshiba-chromebook-2-cb35-b3340-cracked-screen/" target="_blank">a broken Chromebook to play with</a>, I had assumed it was long out of support and my thoughts went to how I might install some operating system other than ChromeOS on it. Then I found that it <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/04/11/old-chromebook-lifespan-longer-than-originally-thought/" target="_blank">actually still had some supported lifespan left</a> so I decided to keep it as a Chromebook for occasional use. That supported life ended in September 2021, now it very bluntly tells me to buy a newer model: there will be no more Chrome OS after 92.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29749,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/chrome-os-final-update.png?w=781" alt="" class="wp-image-29749"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Time again to revisit the "install other OS" issue, starting with the <a href="https://mrchromebox.tech/">very popular reference Mr. Chromebox</a>. Where I learned newer (~2015 and later) Chromebooks are very difficult to get working with other operating systems. I guess this 2014 vintage Chromebook is accidentally close to optimal for this project. Following instructions, I determined this machine has the <a href="https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/" target="_blank" rel="noreferrer noopener">codename identifier "Swanky"</a> and I <a href="https://mrchromebox.tech/#devices" target="_blank" rel="noreferrer noopener">have the option</a> to replace default firmware with an implementation of UEFI, in theory allowing me to install any operating system that runs on this x86-64 chip and can boot off UEFI. But first, I had to figure out how to deactivate a physical write protect switch on this machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29751,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-mr-chromebox-write-protect-enabled.jpg?w=1024" alt="" class="wp-image-29751"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The line "Fw WP: Enabled" is what I need to change to proceed. Documentation on Mr. Chromebox site said I should look for a screw that grounds a special trace on the circuit board. Severing that connection would disable write protect. I found <a rel="noreferrer noopener" href="https://www.ifixit.com/Guide/Install+CloudReady+(or+other+OS)+on+Toshiba+Chromebook+2+(CB35-C3300)/127415" target="_blank">this guide on iFixit</a>, but it is for a slightly different model of Toshiba Chromebook with different hardware. That is a CB35-<strong>C</strong>33<strong>0</strong>0 and I have a CB35-<strong>B</strong>33<strong>4</strong>0. The most visible difference is that CPU has active cooling with a heat pipe and fan, but the machine in front of me is passively cooled.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I will need to find the switch on my own. Starting with looking up <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/03/04/toshiba-chromebook-2-cb35-b3340-hardware-internals/" target="_blank">my old notes on how to open up this machine</a> and get back to the point where I could see the metal shield protecting the mainboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29753,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-write-protect-candidate-1.jpg?w=1024" alt="" class="wp-image-29753"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the bottom cover removed, I have a candidate front and center.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29755,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-write-protect-candidate-1-unpoulated-pad.jpg?w=1024" alt="" class="wp-image-29755"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This screw has a two-part pad that could be grounding a trace, though there is an unpopulated provision for a component connected to that pad. This may or may not be the one. I'll keep looking for other candidates under the metal shield.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29757,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-write-protect-candidate-2.jpg?w=1024" alt="" class="wp-image-29757"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A second candidate was visible once the metal shield was removed. And this one has a little resistor soldered to half of the pad.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29759,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-write-protect-candidate-2-closeup.jpg?w=1024" alt="" class="wp-image-29759"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I decided to try this one first.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29762,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-write-protect-disable-washer.jpg?w=1024" alt="" class="wp-image-29762"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I took a thin sheet of plastic (some random product packaging) and cut out a piece that would sit between the split pad and the metal shield with screw.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29764,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-mr-chromebox-write-protect-disabled.jpg?w=1024" alt="" class="wp-image-29764"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was the correct choice, as firmware write-protection is now disabled. I suspect candidate #1 could be used for chassis intrusion protection (a.k.a. "has the lid been removed") but at this point I have neither the knowledge or the motivation to investigate. I have what I want, the ability to install UEFI (Full ROM) Firmware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What happens now? I contemplated the following options:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Install <a rel="noreferrer noopener" href="https://wiki.galliumos.org/About_GalliumOS" target="_blank">Gallium OS</a>. This is a Linux distribution based on Ubuntu and optimized for running on a Chromebook.</li>
+<li>I could go straight to the source and <a href="https://ubuntu.com/download/desktop" target="_blank" rel="noreferrer noopener">install Ubuntu directly</a>. Supposedly system responsiveness and battery life won't be as good, and I might have more hardware issues to deal with, but I'll be on the latest LTS.</li>
+<li>Or I can stay with the world of Chrome and install a Chromium OS distribution like <a rel="noreferrer noopener" href="https://www.neverware.com/freedownload" target="_blank">Neverware CloudReady</a>.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at Gallium, I see it purports to add hardware driver support missing from mainline Ubuntu and stripping things down to better suit a Chromebook's (usually limited) hardware. There were some complaints that some of Ubuntu's user-friendliness was trimmed along with the fat, but the bigger concern is that Gallium OS is based on Ubuntu 18 LTS and has yet to update to Ubuntu 20 LTS. This is very concerning as Ubuntu 22 LTS is expected to arrive soon. [UPDATE: Ubuntu 22 LTS "Jammy Jellyfish" <a href="https://discourse.ubuntu.com/t/jammy-jellyfish-release-notes/24668?_ga=2.72589331.1685234831.1650564217-778575510.1649483921">has been officially released</a>.] Has the Gallium project been abandoned? I decided to skip Gallium for now, maybe later I'll decide it's worth a try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I already had an installation USB drive for Ubuntu 20.04 LTS, so I tried installing that. After about fifteen minutes of playing around I found a major annoyance: keyboard support. A Chromebook has a different keyboard layout than standard PC laptops. The Chromebook keys across the top of the keyboard mostly worked fine as function keys, but there are only ten keys between "Escape" and "Power" so I didn't have F11 or F12. There is no "Fn" key for me to activate their non-F-key functions, such as adjusting screen brightness from the keyboard. Perhaps in time I could learn to navigate Ubuntu with a Chromebook keyboard, but I've already learned that I have muscle memory around these keys that I didn't know I had until this moment. It was also missing support for this machine's audio device, though that could be worked around with an external USB audio device like my <a rel="noreferrer noopener" href="https://amzn.to/3DYCe08" target="_blank">Logitech H390 headset</a>. (*) It is also possible to fix the audio issue within Ubuntu, work that Gallium OS supposedly has already done, but instead of putting in the work to figure it out I decided on the third option.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's nice to have access to the entire Ubuntu ecosystem and not restricted to the sandbox of a Chrome OS device, but I already have Ubuntu laptops for that. This machine was built to be a small light Chromebook and maybe it's best to keep it in that world. I created an installation USB drive for Neverware CloudReady and returned this machine to the world of Chrome OS. Unlike Ubuntu, the keyboard works in the Chrome OS way. But like Ubuntu, <a rel="noreferrer noopener" href="https://neverware.zendesk.com/hc/en-us/community/posts/360049537414-Toshiba-Cromebook-2-Bay-Trail-no-sound" target="_blank">there's no sound</a>. Darn. Oh well, I usually use my H390 headset when I wanted sound anyway, so that is no great hardship. And more importantly, it puts me back on the train of Chromium OS updates. Now it has Chromium OS 96, and there should be more to come. Not bad for a Chromebook that spent several years dumped in a cabinet because of a broken screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29770,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toshiba-chromebook-2-cb35-b3340-on-cloudready-96.4.36.jpg?w=889" alt="" class="wp-image-29770"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

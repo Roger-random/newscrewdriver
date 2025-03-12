@@ -1,0 +1,56 @@
+---
+layout: post
+title: 'Canon Pixma MX340 Control Panel Data Communication: Plug In'
+date: 2023-12-31 12:30:00.000000000 +00:00
+type: post
+post_id: '41373'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41303'
+  firehose_sent: '1704054616'
+  wordads_ufa: s:wpcom-ufa-v4:1704147606
+  _publicize_job_id: '90716466187'
+  timeline_notification: '1704054619'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/31/canon-pixma-mx340-control-panel-data-communication-plug-in/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've taken <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/">a first look at control panel LCD screen update data transmission</a> for a Canon Pixma MX340 multi-function inkjet. The bursts of data are too much for me to digest just yet, I'll revisit that challenge later. For now, I will look at data transmission through some of this machine's other state transitions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41231,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-plugged-in-10ms.png?w=826" alt="" class="wp-image-41231"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I might as well start at the beginning and look at what happens when I first plug the power cable into the machine. There's a short burst of activity (not visible to the user) before it goes into a standby state. Roughly 15ms after the chip enable signal (cyan channel 3 above) the control panel reported two bytes: 0x80 and 0x40. I've established 0x80 as the button matrix "no buttons pressed" report, leaving 0x40 as the mystery unknown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When sitting in powered on steady state, button matrix reports are sent every ~9.2ms. That happens here as well: another 0x80 0x40 sequence was sent ~9.2ms after the first. After the second report, the main board responds with two bytes: 0xFE 0xDC, meaning of which is unclear for now. The control panel responds with 0x20, which I've seen as an acknowledgement in other trace contexts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It appears in this initial startup state, the control panel NEC K13988 chip sends two bytes in its report. The 0x80 (no buttons pressed) and 0x40 (??). Somewhere along the line, that second byte is no longer sent as part of its regular ~9.2ms report. It might be the 0xFE 0xDC byte sequence I saw here, but I will need more data to puzzle out what's going on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Less than 0.1ms after the acknowledgement 0x20 was transmitted, the chip enable pin drops to ground and there's no further activity until the machine is <a href="https://newscrewdriver.com/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/">brought out of stand by and turned on</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

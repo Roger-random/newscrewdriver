@@ -1,0 +1,62 @@
+---
+layout: post
+title: Setting Up ESP8266 Arduino Sketch for InfluxDB
+date: 2022-02-02 12:30:00.000000000 +00:00
+type: post
+post_id: '28409'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- Arduino
+- ESP8266
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28326'
+  _publicize_job_id: '68489568191'
+  timeline_notification: '1643833807'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/02/setting-up-esp8266-arduino-sketch-for-influxdb/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I think I've got the <a href="https://newscrewdriver.com/2022/02/01/making-a-usb-data-only-cable/">hardware side sorted out</a> for building an ESP8266 that monitors voltage output of a solar panel, so it's time to dive into the software side. I want to log this data into InfluxDB as a learning exercise, and the <a rel="noreferrer noopener" href="https://docs.influxdata.com/influxdb/v2.1/api-guide/client-libraries/" target="_blank">list of client libraries</a> included a pointer to <a href="https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino">a GitHub repository</a> for an InfluxDB client library for ESP8266 and ESP32 running on their Arduino core.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Arduino is not exactly the most fully featured development environment, so I've been doing my Arduino development using PlatformIO plugin of Visual Studio Code. However, this is the first time I've had to manually add a third-party library and it's not the same as Arduino's Library Manager so I had to go online for a little help like <a rel="noreferrer noopener" href="https://community.platformio.org/t/how-to-include-arduino-library-in-platformio/15146" target="_blank">this forum thread</a>. I learned I should go to <a rel="noreferrer noopener" href="https://registry.platformio.org/" target="_blank">https://registry.platformio.org/</a> and search for the desired library. <a rel="noreferrer noopener" href="https://registry.platformio.org/search?q=InfluxDB" target="_blank">Searching on "InfluxDB"</a> resulted in several results, one of which is the same client library I found earlier but now with instructions on <a href="https://registry.platformio.org/libraries/tobiasschuerg/ESP8266%20Influxdb/installation" target="_blank" rel="noreferrer noopener">how to install into PlatformIO</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After compiling a simple test sketch, my serial output monitor returned gibberish. The key here is that baud rate must match between <a href="https://community.platformio.org/t/serial-monitor-baudrate/5837" target="_blank" rel="noreferrer noopener">my <code>platformio.ini</code> configuration file</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>monitor_speed = 115200</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And my serial output initialization code in <code>setup()</code> function of my sketch:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  Serial.begin(115200);</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another configuration issue concern information necessary to connect to my home WiFi and my InfluxDB server. This little sketch needs that information to run, but I don't want to include them in my source code since I intended to upload this to GitHub in a publicly accessible repository. I <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file-that-was-tracked-but-is-now-in-gitignore" target="_blank">found a solution on StackOverflow</a>: put my secret information in a separate <code>secrets.h</code> file. After I committed a basic version without any actual information, use the command <code>git update-index --<a rel="noreferrer noopener" href="https://www.git-scm.com/docs/git-update-index#_skip_worktree_bit" target="_blank">skip-worktree</a> secrets.h</code> to remove it from further Git activity. After that point, I could edit <code>secrets.h</code> and Git would not care to upload that information leaving my local secrets local, which is what I want.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once all of these setup details were taken care of, I could dive into code and <a href="https://newscrewdriver.com/2022/02/03/initial-lessons-on-esp8266-arduino-sketch-for-influxdb/">learn some valuable lessons</a> out of the experience.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Source code for this project is <a href="https://github.com/Roger-random/ESP8266Tests/tree/main/VoltageLogger" target="_blank" rel="noreferrer noopener">publicly accessible on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

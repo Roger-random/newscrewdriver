@@ -1,0 +1,55 @@
+---
+layout: post
+title: Phoebe 1.0 Complete
+date: 2018-10-13 09:00:31.000000000 +00:00
+type: post
+post_id: '16994'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539446528'
+  _publicize_job_id: '23152527010'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/13/phoebe-1-0-complete/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignnone size-full wp-image-16995" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-chassis-2.jpg" alt="Phoebe Chassis 2" width="1024" height="1024">I started the Phoebe project with the goal of building something to apply what I've learned about ROS. Get some hands-on experience, learning the ropes. Now that Phoebe can map and autonomously navigate its environment, it is a good place to pause and evaluate potential paths forward. (Also: I have other demands on my time so I need to pause my Phoebe work anyway... and now is a great time.)</p>
+<p><em><strong>Option #1: Better Refinement</strong></em></p>
+<p>Phoebe can map surroundings then, using that map, navigate that environment. This level of functionality is on parity with the baseline functionality of TurtleBot 3. Though neither the mapping nor the navigation is quite as polished as performed by TurtleBot built by people who know what they are doing. For that, Phoebe's ROS modules need tuning of their parameters to improve performance. There are also small bugs hiding in the system that need to be rooted out. I'm sure the <a href="https://newscrewdriver.com/2018/10/02/robot-disorientation-traced-to-timing-mismatch/">~100ms timing difference mystery</a> is only the tip of the iceberg.</p>
+<p>Risk: This is "the hard part" of not just building a robot, but building a <em>good</em> robot. And I know myself. Without a clear goal and visible progress towards that goal, I'm liable to get distracted or discouraged, trailing off and never really accomplishing.</p>
+<p><em><strong>Option #2: More ROS Functionality</strong></em></p>
+<p>I had been disappointed that the SLAM and navigation tutorials I've seen to date require a human to direct robot exploration. I had thought automated exploration would be part of SLAM but I was wrong. Thanks to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154087-next-project-goal-ros-navigation#discussion-list">helpful comments</a> by Hackaday.io user <span class="identity-card"><a href="https://hackaday.io/Humpelstilzchen">Humpelstilzchen</a> </span>(who is building a <a href="https://hackaday.io/project/25406-wild-thumper-based-ros-robot">pretty cool ROS robot</a> too) I've now learned autonomous exploration is built on top of SLAM and Navigation.</p>
+<p>So now that Phoebe can do SLAM and can navigate, adding one of the autonomous exploration modules would be the obvious next step.</p>
+<p>Risk: It's another ROS learning curve to climb.</p>
+<p><em><strong>Option #3: More Phoebe Functionality</strong></em></p>
+<p>Phoebe has wheel encoders and a LIDAR as input, and it might be interesting to add more. Ideas have included:</p>
+<ul>
+<li>Obstacle detection to augment LIDAR, such as
+<ul>
+<li>Ultrasound distance sensor.</li>
+<li>Infrared distance sensor (must avoid interference with LIDAR).</li>
+<li>Bumpers with microswitches to detect collision.</li>
+</ul>
+</li>
+<li>IMU (inertial measurement unit).</li>
+<li>Raspberry Pi camera or other video feed.</li>
+</ul>
+<p>Risk: Over-complicating Phoebe, which was always intended to be a minimal-cost baseline entry into the world of ROS following the footstep of ROS TurtleBot.</p>
+<hr>
+<p>Options 1 and 2 take place strictly in software, which means mechanical chassis will remain untouched.</p>
+<p>Option 3 changes Phoebe hardware, and that would start deviating from TurtleBot. There's value in being TurtleBot-compatible and hence value in taking a snapshot at this point in time.</p>
+<p>Given the above review, I declare the mechanical construction project of Phoebe the TurtleBot complete for version 1.0. As part of this, I've also updated the README file on <a href="https://github.com/Roger-random/phoebe">Phoebe's Github repository</a> to describe content. Because I know I'll start forgetting!</body></html></p>

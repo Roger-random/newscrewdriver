@@ -1,0 +1,76 @@
+---
+layout: post
+title: Notes on Commodity DRV8833 Breakout Board
+date: 2021-03-06 12:30:00.000000000 +00:00
+type: post
+post_id: '25424'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25425'
+  _publicize_job_id: '55628717555'
+  timeline_notification: '1615062607'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:20'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/06/notes-on-commodity-drv8833-breakout-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Having <a href="https://newscrewdriver.com/2021/03/04/window-shopping-drv8833-dc-motor-control-ic/">read through the datasheet for DRV8833 DC motor driver IC</a>, I was optimistic that they would be a good choice to control DC motors on the TT gearmotors I have installed on Micro Sawppy Beta 3 (MSB3) rover. DRV8833 operating voltage range of up to 10V is a much better fit for these 3-6V motors. Compared to the classic L298N motor controller with its 4 to 45V range. The lower voltage handling requirements, as well as being a much newer design using modern power management techniques, means a DRV8833 breakout board is far more compact than a L298N breakout board. Something clearly visible in this side-by-side picture. Physical volume is an important consideration when fitting electronics inside a little rover.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25430,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/02/l298n-and-drv8833-breakout-boards.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/02/l298n-and-drv8833-breakout-boards.jpg?w=1024" alt="Side by side size comparison of L298N and DRV8833 motor control IC breakout boards." class="wp-image-25430"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my first round of experiments, I bought a batch of 5 DRV8833 breakout boards from the <a rel="noreferrer noopener" href="https://amzn.to/2RY5NIm" target="_blank">lowest bidder of the day on Amazon</a> (*) I'm sure a different day will have a different lowest vendor when we <a rel="noreferrer noopener" href="https://amzn.to/3qN8MCD" target="_blank">issue a query for DRV8833</a>(*), because these breakout boards seem to be commodities offered by many different vendors. We also see this particular design from <a rel="noreferrer noopener" href="https://www.aliexpress.com/wholesale?SearchText=DRV8833" target="_blank">many vendors on AliExpress</a>. I noticed two or three very popular designs for a DRV8833 breakout board. I have no idea where this particular design came from. If the same factory is supplying all of these vendors, or if the design has been cloned by multiple manufacturers. Whatever the history, I see enough quantity to give me confidence these boards won't disappear overnight. We'll see if I'm right!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":25432,"width":497,"height":477,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large is-resized"><a href="https://newscrewdriver.com/wp-content/uploads/2021/02/bad-drv8833-instructions.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/02/bad-drv8833-instructions.jpg?w=993" alt="Incorrect instructions shown on some DRV8833 product listings." class="wp-image-25432" width="497" height="477"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In this particular product listing, one of the pictures serve as a rudimentary reference manual for the board. I was suspicious of these instructions so I probed this board to determine the circuit for myself <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/28/circuit-schematic-of-generic-l298n-driver-board/" target="_blank">as I did for the L298N board</a>. I'm glad I did! The instructions had swapped the "FAULT" and "SLEEP" pins for reasons unknown. Fortunately, those pins are optional so most users (including my intended use) won't be affected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are only a few supporting components on this board. From the DRV8833 datasheet I expected three capacitors and they are clearly visible. I also see two resistors and a LED. The LED was not on the datasheet, it was a bonus feature to indicate power supply is present, along with its 4.7kOhm current-limiting resistor. The final resistor is a 47kOhm pull-up resistor for the SLEEP pin, by default pulling it high to enable the board and giving us the option to leave the breakout board's (SL)EEP pin unconnected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":25435,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/02/drv8833-breakout-board-pcb-bottom.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/02/drv8833-breakout-board-pcb-bottom.jpg?w=1024" alt="Back side view of a DRV8833 breakout board, showing the J1 trace that can be cut to disconnect pull-up resistor and allow control over sleep functionality." class="wp-image-25435"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For applications that want to assert control over sleep/enable themselves, there is a provision on the back side of this breakout board. Cutting the trace on J1 will disconnect SLEEP from the pull-up resistor, opening up the pin to external control. If we should change our minds afterwards, we can solder across J1 pads to reconnect the pull-up resistor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>No such provisions exist for current chopping control. DRV8833 offers the option to limit maximum current by putting current-sensing resistors on the AISEN and BISEN pins, but this particular breakout board design connected those pins directly to ground without any provisions to add current-sensing resistors back in. Applications that want current chopping will have to go elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Remainder of the board was fairly straightforward, once we figure out the pin rename mapping. This board labelled its pins IN1-4 and OUT1-4 following precedent of L298N, instead of the names in the DRV8833 datasheet of pins 1 and 2 for channels A and B. For those that prefer this information in schematic form, here's what I drew up after my probing session for this board to guide my <a href="https://newscrewdriver.com/2021/03/07/test-driving-drv8833-with-esp32-mcpwm/">first experiment putting one to use</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":25438,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/02/drv8833-breakout-board-schematic.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/02/drv8833-breakout-board-schematic.jpg?w=1024" alt="Schematic diagram for a popular type of DRV8833 breakout board." class="wp-image-25438"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

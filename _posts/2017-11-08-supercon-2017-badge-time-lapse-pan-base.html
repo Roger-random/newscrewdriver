@@ -1,0 +1,47 @@
+---
+layout: post
+title: Supercon 2017 Badge - Time Lapse Pan Base
+date: 2017-11-08 16:49:21.000000000 +00:00
+type: post
+post_id: '15045'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Supercon
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11238303680'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/08/supercon-2017-badge-time-lapse-pan-base/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>It's Wednesday and a concrete plan is way overdue if I want to make a project for <a href="https://hackaday.io/superconference/">Supercon 2017</a> this coming weekend. The <a href="https://hackaday.io/project/27427-camera-badge-for-supercon-2017">badge is a little digital camera</a> so I started thinking about camera accessories that I could build. Since I won't have the camera itself until Friday, ideally the accessory has some baseline functionality that I can build before I get the badge itself.</p>
+<p>There are <a href="https://www.bhphotovideo.com/c/browse/Photography/ci/989/N/4294538916#Accessories">tons of accessories</a> for photography, but when the goal is to find something both electronic and mechanical, that narrows down the list. Browsing through a photography catalog, I considered a few accessories and settled down on one thing: a <a href="https://www.bhphotovideo.com/c/buy/Turntables-Panoramic-Stands/ci/6453/N/4075788768">pan base</a>. Useful for taking panoramic photos or time-lapse videos, it boils down to a little mechanical platform to turn the camera at a controlled rate as it does its thing.</p>
+<p>And most importantly: I can build something basic by this weekend and build upon it through the weekend as time and progress allows. This incremental development means if I don't get to them all, I'll still have something neat to show off. This minimizes the risk I'll get to the end of the weekend and have absolutely nothing to show.</p>
+<p><strong>Phase 1: Base Mechnicals</strong></p>
+<p>Build the electrical and mechanical parts of the pan base. Digging through the boxes of parts on hand, I think I have everything I need to build the base itself: I have a small slow stepper motor, an associated controller board, a thrust bearing for everything to spin on, and batteries. A PIC with a simple program should be enough to drive the controller board for a slow photography panning motion.</p>
+<p><img class=" size-full wp-image-15080 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/11/pan-base-parts.jpg" alt="Pan base parts" width="1024" height="768"></p>
+<p>Hopefully I can get it all put together by Friday, ideally with manual control so it can run by itself.</p>
+<p>If this is all I could do, it should be enough to put the camera badge on top and turn on video recording mode for a video that pans across the field of view.</p>
+<p><strong>Phase 2: Camera Time-Lapse Mode</strong></p>
+<p>If I get the mechanical base working on its own before Friday, it'll give me time to dive into writing the software for the camera. I'll need to understand the sample code enough to know what pieces I need to copy/paste to build a time-lapse video app for the camera. Hopefully it's as simple as taking the video recording application and slowing the frame-rate down.</p>
+<p>Once I know the code necessary to gather images and put them in a sequence, I'll worry about creating the UI to control things like time-lapse speed.</p>
+<p>If this is all I could do, it'll be enough to create cool time-lapse panning video clips to enter into the video contest.</p>
+<p><strong>Phase 3: Camera+Base Integration</strong></p>
+<p>This is the stretch goal in case everything above was easy and smooth (ha!): Integrate the camera and the base so the time-lapse application controls the panning base. The UI will allow control of not only the frame rate, but also the rotation speed as the time-lapse runs. The camera badge already has a simple API for I2C communication, so I'll probably have to write code to talk to the PIC controlling the stepper motor via I2C. Either that, or have the PIC32 on board the camera talk to the stepper motor board directly. Whichever is easiest to get running by the end of the weekend.</p>
+<p>If I can get this far, I can feel proud at what I have accomplished over Supercon 2017.</p>
+<p>Let's see how far I get. It's time to get to work!</p>
+<p> </p>
+<p></body></html></p>

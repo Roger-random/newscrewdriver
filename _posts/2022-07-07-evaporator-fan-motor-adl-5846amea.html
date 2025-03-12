@@ -1,0 +1,83 @@
+---
+layout: post
+title: Evaporator Fan Motor (ADL-5846AMEA)
+date: 2022-07-07 12:30:00.000000000 +00:00
+type: post
+post_id: '31103'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Appliance
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31112'
+  _publicize_job_id: '74476159832'
+  timeline_notification: '1657222216'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667121791
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/07/evaporator-fan-motor-adl-5846amea/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took apart a microwave oven turntable motor and <a href="https://newscrewdriver.com/2022/07/06/microwave-turntable-motor-tyj50-8a19/">found it surprisingly simple</a>. Encouraged, I dug through my "take apart later" pile for another appliance AC motor and found this item.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31111,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/evaporator-motor-adl-5846amea-intact.jpg?w=1024" alt="" class="wp-image-31111"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sticker says:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>2940rpm 0.14A
+ADL-5846AMEA 12732601
+115V 60Hz 4.6W Z.P CL.A
+SUNG SHIN 030307</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Searching for "ADL-5846AMEA" found this was an evaporator fan motor, meaning it was responsible for circulating cold air in a refrigerator. While we don't care which direction a microwave turntable turns, the direction is very important for a fan motor. Given this fact, and assuming reliability and low cost would be the driving factors in the design, I had expected to find a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Shaded-pole_motor" target="_blank">shaded-pole motor</a> inside this housing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31112,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/evaporator-motor-adl-5846amea-disassembled.jpg?w=1024" alt="" class="wp-image-31112"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was wrong! It was far more complex inside than I had expected. There are four distinct coils mounted to a circuit board with roughly a dozen other components. Through-hole capacitors and diodes are mounted on the same side as the coil.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31114,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/evaporator-motor-adl-5846amea-pcb-back.jpg?w=1024" alt="" class="wp-image-31114"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The opposite side are mostly surface-mounted components, with two large prominent field-effect transistors (FET1 and 2). For me, the most unexpected component is the label box up top:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>HALL IC
+-4° SHIFT</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Wow, there is a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Hall_effect_sensor" target="_blank">Hall-effect sensor</a> on this board, too?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31116,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/evaporator-motor-adl-5846amea-hall-effect-sensor.jpg?w=1024" alt="" class="wp-image-31116"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There it is, nestled between but slightly offset from the center point between those coils. Its presence means this control circuit has feedback on rotational speed of this motor. This can be something as simple as detecting a stall, or as complex as variable-speed control. This motor has only two wires for power input, leaving no provision for communicating speed control. Therefore if the hall sensor is for speed control, that control logic must be completely encapsulated inside this module. But following copper traces failed to find anything that resembled a digital microcontroller. I guess it is a completely analog control circuit, which is indistinguishable from voodoo magic for my current level of knowledge.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Why would a refrigerator need such complexity in a fan motor? There must have been a requirement that was deemed more important than "lowest cost" and my best guess is efficiency. Wikipedia claims shaded-pole motors are only about 26% efficient, and the rest would have turned into heat. Waste heat is especially bad for an evaporator fan motor that sits in the cold loop of the refrigerator. Making this motor more efficient reduces workload on the cooling system, helping the refrigerator meet <a rel="noreferrer noopener" href="https://www.energystar.gov/products/refrigerators" target="_blank">Energy Star</a> and other similar requirements around the world.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31119,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/evaporator-motor-adl-5846amea-bearing.jpg?w=1024" alt="" class="wp-image-31119"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two motor shaft bearings would have been another tradeoff between cost and efficiency. The motor shaft has a bearing assemblies front and back to reduce friction, which reduces heat and increases efficiency. It is more complex than a simple <a rel="noreferrer noopener" href="https://www.mcmaster.com/sleeve-bearings/" target="_blank">oil-embedded metal sleeve bearing</a> and less complex than a <a href="https://www.mcmaster.com/roller-bearings/" target="_blank" rel="noreferrer noopener">roller bearing</a>. My fingers could feel that the soft absorbent pads are oily, but I'm not sure what I'm looking at. Are they intended to serve as additional oil reservoir for the metal sleeve? Or are they supposed to draw oil out of it? This evaporator fan motor teardown was full of surprises, from the control circuit board to this bearing assembly. I love it.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

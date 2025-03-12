@@ -1,0 +1,49 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Is Next Target
+date: 2024-01-22 12:30:00.000000000 +00:00
+type: post
+post_id: '41678'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41679'
+  wordads_ufa: s:wpcom-ufa-v4:1706051422
+  _publicize_job_id: '91318175430'
+  firehose_sent: '1705955418'
+  timeline_notification: '1705955420'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/22/canon-pixma-mx340-control-panel-lcd-is-next-target/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Using <a href="https://newscrewdriver.com/2024/01/21/canon-pixma-mx340-control-panel-filter-app/">a Python script I wrote to match known patterns</a>, I am now confident I have a good record of communication between main board and control panel of a Canon Pixma MX340 multi-function inkjet. My next focus is communication between control panel's NEC K13988 chip and LCD screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've established the LCD is a <a href="https://newscrewdriver.com/2024/01/06/canon-pixma-mx340-control-panel-lcd-screen-data-as-excel-background-fill/" target="_blank" rel="noreferrer noopener">pixel-addressable display</a> with a resolution of 196-ish pixels wide and 34 pixels tall. With just five wires between K13988 and LCD, that's far too few to control all pixels directly, so those five wires must lead to an embedded controller on board the LCD itself. Something with a frame buffer who will scan through all the segment/common lines of the pixel array to refresh them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the delicate mounting mechanism and fine-pitched surface mount connector, I don't expect to extract this LCD from the control panel assembly. Any potential future repurpose project will use the entire control panel assembly and not just the LCD itself. If I have a project that wants a small LCD, I'm more likely to use something else. So my objective here is just for learning's sake. See if I can gain any further insight into the recorded (but not fully understood) communication between main board and control panel by looking at the LCD which lies downstream.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I started examining communication between main board and control panel, my first step was wiring things up to an oscilloscope. One of the reasons was because I didn't know the voltage going over those wires and my oscilloscope can handle a far wider voltage range than the logic analyzer. Now that I know this board runs on 3.3V DC (with the lone exception of a LED powered by 5.5V DC) I'm more comfortable skipping the oscilloscope step and go straight to <a href="https://newscrewdriver.com/2024/01/23/canon-pixma-mx340-control-panel-lcd-wires-for-logic-analyzer/">wiring up the board for my Saleae Logic 8</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

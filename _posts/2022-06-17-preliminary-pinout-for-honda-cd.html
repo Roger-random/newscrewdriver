@@ -1,0 +1,113 @@
+---
+layout: post
+title: Preliminary Pinout for Honda CD
+date: 2022-06-17 12:30:00.000000000 +00:00
+type: post
+post_id: '30875'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+- LC75883
+- Pinout
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30825'
+  _publicize_job_id: '73766674452'
+  timeline_notification: '1655494212'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/17/preliminary-pinout-for-honda-cd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a Honda in-dash CD (and HVAC) control board and I want to see if I can make its LCD work. After I <a href="https://newscrewdriver.com/2022/06/16/soldering-practice-with-honda-cd-lcd-driver/">melted through conformal coating</a> over the Sanyo LC75883 LCD driver chip, I was able to get an electrical connection with my meter so I can test for continuity between the pins (that are too fine for me to solder) to something I can more easily work with. I quickly found that much of the CD player functionality is connected to a small black rectangular connector I noticed earlier. Not just the LCD driver chip's data communication lines, but also the big central rotary knob and button.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is a large degree of uncertainty here, because I didn't find what all of the pins did. I also found two pins that both appear to be ground, and I don't know if there's an important distinction between those two pins. This incomplete understanding explains the problems I will encounter later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30820,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-connector.jpg?w=1024" alt="" class="wp-image-30820"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using the numbers on the circuit board silkscreen, the pins are 1 to 24 from right to left. (Silkscreen shows  1 in the upper right, 2 in the lower right, 23 in the upper left, and 24 in the lower left.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Preliminary Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>Vss (?)</td>
+<td>Either 7 or 9 is ground, maybe both?</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Vss (?)</td>
+<td>Either 7 or 9 is ground, maybe both?</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Vdd</td>
+<td>+5V power supply</td>
+</tr>
+<tr>
+<td>16</td>
+<td>DO</td>
+<td>CCB Data Out</td>
+</tr>
+<tr>
+<td>17</td>
+<td>DI</td>
+<td>CCB Data In</td>
+</tr>
+<tr>
+<td>18</td>
+<td>CL</td>
+<td>CCB Data Clock</td>
+</tr>
+<tr>
+<td>20</td>
+<td>CE</td>
+<td>CCB Chip Enable</td>
+</tr>
+<tr>
+<td>21</td>
+<td>A</td>
+<td>Encoder A, connects to ground when knob is at certain positions.</td>
+</tr>
+<tr>
+<td>22</td>
+<td>B</td>
+<td>Encoder B, connects to ground when knob is at certain positions.</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Button</td>
+<td>Connects to ground when "AUDIO PWR" button is pressed</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once these connections were made, I could make further progress. That is, running into an <a href="https://newscrewdriver.com/2022/06/18/honda-cd-lcd-driver-problems/">entirely different set of headaches</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

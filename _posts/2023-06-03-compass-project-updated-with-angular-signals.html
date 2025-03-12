@@ -1,0 +1,59 @@
+---
+layout: post
+title: Compass Project Updated with Angular Signals
+date: 2023-06-03 12:30:00.000000000 +00:00
+type: post
+post_id: '37023'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36278'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1685861892
+  _publicize_job_id: '84611292372'
+  timeline_notification: '1685820614'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/06/03/compass-project-updated-with-angular-signals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been digging through the sample for <em>Getting Started with Angular Signals</em> code lab and learned a lot beyond its primary aim of teaching me Angular Signals. But a beginner could only absorb so much. After learning a whole bunch of things including <a href="https://newscrewdriver.com/2023/06/02/angular-signals-code-lab-drag-drop-letters/">drag-and-drop with the Angular CDK</a>, my brain is full. I need to get back to hands-on practice to apply (some of) what I've learned and cement the lessons. Which means it's time for my Angular practice app Compass (recently <a href="https://newscrewdriver.com/2023/05/27/compass-project-updated-to-angular-16-standalone-components/">upgraded to Angular 16</a>) to use Angular Signals!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my practice app, I created a service to disseminate magnetometer sensor information. It subscribed to the relevant W3C sensor API and publishes data via <a href="https://rxjs.dev/guide/subject#behaviorsubject">RxJS <code>BehaviorSubject</code></a>. I didn't know it at a time, but I had effectively recreated a Signal using much more powerful (and heavyweight) RxJS mechanisms. One by one I converted to broadcast data via signals: magnetometer <a href="https://github.com/Roger-random/compass/commit/65739bbd30fd9d8424cee4f542f81f0821cb917f">x/y/z data</a>, magnetometer <a href="https://github.com/Roger-random/compass/commit/0a27154baace12e694682799d87a87f001508fd5">service status</a> (user-readable text string), and finally <a href="https://github.com/Roger-random/compass/commit/c1e92caff75e06e3a28e1dfb6e2f35070ac5db25">service state</a> (an enumeration). I also removed the workaround of making an explicit call to Angular change detection. I never did understand why I needed it under Mozilla Firefox and Microsoft Edge but not under Google Chrome. But after switching to Angular signals, I had different change detection problems to investigate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The switchover greatly simplified my application code, making it much more straightforward to read and understand. Running in a browser on my development desktop computer, I didn't have real magnetometer data but my placeholder data stream (sending data to the same signals) worked well. Making me optimistic as I deployed, and then surprised when I failed to see magnetometer data updates on an Android phone.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the failure was specific to the device, it was time for me to set up Chrome remote debugging for my phone. My development desktop has <a href="https://developer.android.com/studio">Android Studio</a> installed, so all of the device drivers for hardware debugging were in place. Following <a href="https://developer.chrome.com/docs/devtools/remote-debugging/">instructions on the Chrome documentation page DevTools/Remote Debugging</a>, I established a connection between Chrome DevTools on my desktop and Chrome on my phone. Forwarding port 4200 for my Angular development server, I could load up a development mode version of my app for easier debugging. Another advantage was that it'd show up as <code>http://localhost:4200</code>. The magnetometer sensor API is restricted to web code served via <code>https://</code> but there's an exemption for <code>http://localhost</code> for debugging as I'm doing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was happy to find the <a href="https://newscrewdriver.com/2023/05/18/notes-on-google-i-o-2023-browser-debugging/">Chrome DevTools advertised at Google I/O</a> worked very well in practice: there is a source map allowing me to navigate execution in terms of my Angular TypeScript source code (versus the transpiled JavaScript) and I could use logpoints to see execution progress without having to add <code>console.log()</code> to my app. Thanks to those lovely tools I was able to quickly determine that magnetometer <a href="https://developer.mozilla.org/en-US/docs/Web/API/Sensor/reading_event">reading event</a> handler was getting called as expected. That callback function called signal <code>set()</code> with new data, but those signals' dependencies were never called. I had two in Compass: numerical text in HTML template to display raw coordinates onscreen, and code to update position of compass needle drawn via three.js.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Just like earlier, I had a problem with <a href="https://newscrewdriver.com/2023/05/30/running-getting-started-with-angular-signals-code-lab-locally/">Angular Signals code <em><strong>not </strong></em>getting called</a> and breakpoints can't help debug why calls aren't happening. I reviewed the same documentation again but gained no insights this time. (I have the proper injection context, so what now?) Experimenting with various hypothesis, I found one hit: there's something special about the calling context of a sensor reading event handler incompatible with Angular signals. If I <a href="https://github.com/Roger-random/compass/commit/9e97690c45917c6316a94d1109058081e2ce4583">add a timed polling loop</a> calling the exact same code (but outside the context of a sensor callback) then my magnetometer updates occur as expected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This gives me a workaround, but right now I don't know if this problem is an actual bug with Angular Signals or if it is merely hacking over a mistake I've made elsewhere. I need more Angular practice to gain experience to determine which is which.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

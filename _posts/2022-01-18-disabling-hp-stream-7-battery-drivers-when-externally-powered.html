@@ -1,0 +1,45 @@
+---
+layout: post
+title: Disable HP Stream 7 Battery Drivers When Externally Powered
+date: 2022-01-18 12:30:00.000000000 +00:00
+type: post
+post_id: '28216'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- HP Stream 7
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28227'
+  _publicize_job_id: '67845881676'
+  timeline_notification: '1642537818'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/18/disabling-hp-stream-7-battery-drivers-when-externally-powered/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I gave up trying to run my HP Stream 7 tablet on external DC power <a href="https://newscrewdriver.com/2022/01/17/hp-stream-7-really-wants-its-battery/">with the battery unplugged</a>. The system is built with a high level of integration and it has become unreliable and too much of a headache to try running the hardware in a configuration it was not designed for. So I plugged the battery back in and installed Windows 10 again. And this time, the Intel chipset driver package installed successfully. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a surprise, because I thought my driver problems were caused by hardware I damaged when I soldered wires for direct DC power. Plugging in the battery allowed these drivers to install. And the driver package is definitely doing some good, because idle power draw with screen on minimum brightness has dropped from nearly 10W to just under 2W. This is a huge improvement in power efficiency!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I wanted the drivers for low power operation, but maybe I don't need every driver in the package. I went into device manager to poke around and found the key to my adventure: The "Batteries" section and more importantly the "Micro ACPI-Compliant Control Method Battery" device. This must have been the driver that rendered the system unbootable once I unplugged the battery -- as an integrated system, there's no reason for the driver to account for the possibility that the user would unplug the battery!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But now that I see this guy exists, I think perhaps it is part of the mechanism that outsmarted me and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/" target="_blank">was skeptical running on external power</a>. I disabled the drivers in the "Batteries" section and rebooted. I reconnected the <a href="https://newscrewdriver.com/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/">external power supply keeping battery at 3.7V</a>. Disabling the battery power related drivers were the key to around-the-clock operation. With the battery device absent from the driver roster, there's nothing to tell the system to shut down due to low battery. But since the battery hardware is present, the driver package could load and run and there's something to buffer sharp power draws like plugging in USB hardware. This configuration was successful running for a week of continuous operation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Drawing a modest two watts while idle, this tablet can now be used as anything from a data dashboard, to a digital picture frame, or any other project I might want to do in the future. I don't know what it will be yet, but I want to make sure I <a href="https://newscrewdriver.com/2022/01/19/miscellaneous-notes-on-hp-stream-7-installation/">write down a few things</a> I don't want to forget.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

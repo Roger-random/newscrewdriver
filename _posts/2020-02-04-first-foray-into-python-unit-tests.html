@@ -1,0 +1,37 @@
+---
+layout: post
+title: First Foray Into Python Unit Tests
+date: 2020-02-04 12:30:27.000000000 +00:00
+type: post
+post_id: '20416'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40318984414'
+  timeline_notification: '1580848279'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/04/first-foray-into-python-unit-tests/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When a Sawppy community member stepped up and <a href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/">released a ROS Melodic rover software stack</a>, I abandoned my own efforts since there was little point in duplicating effort. But in addition to rover control, that project was also a test run for a few other ideas. I <a href="https://newscrewdriver.com/2020/02/03/reworking-sawppy-ackermann-math-in-a-jupyter-notebook/">used a Jupyter notebook</a> to help work through the math involved in rover geometry, and I started using a <a href="https://newscrewdriver.com/2020/02/02/inviting-wemake-to-nitpick-my-python-code-style/">Python coding style static analysis tool</a> to enforce my code style consistency.</p>
+<p>I also wanted to start writing a test suite in parallel to my code development. It's something I thought would be useful in past projects but never put enough focus into it. It always seemed so intimidating to build test suites that are robust enough to catch all the bugs, when it takes effort to climb the learning curve to even verify the most basic functionality. What would be the point of that? Surely basic functionality would have been verified before code is pushed to a Github repository.</p>
+<p>Then I had the misfortune to waste many hours on a different project, because another developer did not even verify the code was valid Python syntax before committing and pushing to the repository. My idealism meant I wasted too many hours digging for another explanation, because "surely they've at least ran their code" and I was wrong. This taught me there's value in unit tests that verify basic functionality.</p>
+<p>So I brought up the <a href="https://docs.python.org/3/library/unittest.html">Python unit test library documentation</a>, and started writing a few basic tests for rover Ackermann geometry calculation. The biggest hurdle was that binary floating point arithmetic is not precise enough to use the normal equality comparison, and we don't even need that much precision anyway. Calculating Sawppy steering geometry isn't like calculating orbital trajectory for an actual mission to Mars. For production code using Python 3.5 onwards, there's a <a href="https://docs.python.org/3/library/math.html#math.isclose"><code>math.isclose()</code></a> available as a result of <a href="https://www.python.org/dev/peps/pep-0485/">PEP 485</a>. And for the purposes of Python unit tests, we can use <a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertAlmostEqual"><code>assertAlmostEqual()</code></a>. And how did I <a href="https://github.com/Roger-random/sawppy_ros/blob/master/scripts/chassis_wheel_calculator_tests.csv">generate my test data</a>? I used my Jupyter notebook! It's a nice way to verify my wemake-compliant code would generate the same output as the <a href="https://newscrewdriver.com/2020/02/03/reworking-sawppy-ackermann-math-in-a-jupyter-notebook/">original calculations hashed out in Jupyter notebook</a>.</p>
+<p>And finally, none of this would do any good if it doesn't get executed. If someone is going to commit and push bad code they didn't even try to run, they're certainly not going to run the unit tests, either. What I need is to learn how to <a href="https://newscrewdriver.com/2020/02/05/learning-github-actions-for-automating-verification/">make a machine perform the verification</a> for me.</p>
+<p></body></html></p>

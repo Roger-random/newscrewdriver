@@ -1,0 +1,46 @@
+---
+layout: post
+title: Additional AMS AS7341 Sensor Functionality
+date: 2022-12-31 12:30:00.000000000 +00:00
+type: post
+post_id: '34381'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34288'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672619376
+  _publicize_job_id: '80133983263'
+  timeline_notification: '1672518609'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/31/additional-ams-as7341-sensor-functionality/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm <a href="https://newscrewdriver.com/2022/12/30/ams-as7341-smux-configuration-is-critical-yet-absent-from-datasheet/">starting to get a handle on the basics</a> of an AMS AS7341 11-channel spectral color sensor. I know how to control sensitivity and exposure time, and I know I lack information on configuring the sensor multiplexor (SMUX) within the device. These are critical parameters for taking any readings and I need to understand them up front. For the moment I'll postpone the following auxiliary functions that I (hope) are not crucial to sensor operation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given this chip only has 8 pins to the outside world, I was surprised that one pin (LDR) was allocated to the task of sinking current for a LED. But it made sense once I thought about it: a source of illumination is a common need for spectral sensor applications. According to figure 37 describing the LED register, it is a constant-current sink that defaults to 12mA which is more than enough to illuminate a single LED. The register implies quite a range of current handling: we can set it to go as low as 4mA and as high as 258mA. A quarter of an amp is quite a lot for a single LED so I guess this is for driving multiple LEDs in parallel. For example, if we want to surround the sensor with a ring of lights. Even then, at a quarter of an amp I'd start to worry about thermal issues.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And heat is definitely a concern for this sensor, judging by its built-in capability to compensate for device temperature. This "autozero" capability takes about 15ms to perform and we can configure its frequency in the AZ_CONFIG register 0xD6. By default, autozero runs once before taking first reading and never again. We can configure it to run more frequently, in terms of once every X readings. I don't know how important temperature compensation is for this sensor. There's a chance it is only important for those who need absolute precision, but it is important enough to run at least once. (Datasheet recommends against setting register to zero.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to pins on the chip: INT can be configured to signal that a sensor reading is complete, intended to be connected to a microcontroller pin that signals an interrupt. This is not required as we can optionally poll the STATUS2 register via I2C for a bit indicating sensor reading is complete. And finally, a pin can be used to start a sensor reading but can also be used for general input/output hence it is labeled GPIO. This is also optional: we can start a sensor reading via I2C by setting a bit in the ENABLE register.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These features and others are neat but are not required for taking spectral color sensor readings. Either because they're not required at all (LED), or their default values are good enough to start (autozero) or we have alternatives (INT and GPIO.) I can come back to play with these later. For now, I want to <a href="https://newscrewdriver.com/2023/01/01/ams-as7341-calibration-application-note/">learn some higher-level concepts about this sensor</a> via its color calibration application note.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

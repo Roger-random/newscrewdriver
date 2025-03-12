@@ -1,0 +1,44 @@
+---
+layout: post
+title: Pixelblaze LED Helix "Glow Flow" Math
+date: 2019-07-11 12:30:06.000000000 +00:00
+type: post
+post_id: '18862'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18864'
+  _oembed_fd39109cfe2287380b67bad1f830a8fa: "{{unknown}}"
+  _oembed_b6957e27aed2afdb2c0913344c615947: "{{unknown}}"
+  _oembed_61f8c75bcd4d84c8c5f68d38770c3f27: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32740965739'
+  timeline_notification: '1562873446'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/11/pixelblaze-led-helix-glow-flow-math/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Once <a href="https://newscrewdriver.com/2019/07/10/new-sturdier-handle-for-led-helix-project/">new and more ergonomic handles</a> were installed on my LED helix project, it's time to pause on hardware advancements and switch gears back to software. Let's see what we can build with what we have on hand before going much further with CAD and 3D printing side of things.</p>
+<p>By this point I've selected one idea to implement, out of my list of candidate Pixelblaze projects: I want to implement a Pixelblaze pattern that gives the illusion my LED helix is a container holding brightly glowing liquid that moves around inside as it is moved. The accelerometer will provide input for physical motion, and Pixelblaze pattern code will adjust LED colors to present the intended illusion.</p>
+<p>And to accomplish this, we're going to have to do some math. Liquid sloshes about inside a container in response to sideways movement, and this is the acceleration vector of gravity downwards plus vector of however we're moving the container around.</p>
+<p>Rephrase another way: When a container of liquid is standing still on a flat surface, the downward direction of the container is lined up with downward direction of gravity. But when we start pushing the container around the surface, the downward direction of the container doesn't change but the downward direction of acceleration does: the direction is now gravity plus motion pushing it across the surface.</p>
+<p>Our LED helix 3D pixel map declares downward direction of the container as its Z axis, and the accelerometer reports downward direction of gravity plus motion. The difference moves the liquid, and this difference can be expressed in <a href="https://en.wikipedia.org/wiki/Spherical_coordinate_system">spherical coordinates</a>, translated from cartesian accelerometer data <a href="https://en.wikipedia.org/wiki/List_of_common_coordinate_transformations#From_Cartesian_coordinates_2">with standard formulae</a>. Once the two angles of spherical coordinates have been calculated, they can be used in <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Matrix_math_for_the_web">3D transforms</a> for each LED's pixel mapper coordinates.</p>
+<p>The result is to translate a LED pixel position based on spherical coordinate of accelerometer tilt, so we can color in a LED depending as a function of the "down" reported by accelerometer. And once the <a href="https://newscrewdriver.com/2019/07/12/pixelblaze-led-helix-pattern-glow-flow/">colorfully glowing LEDs start emulating liquid flowing inside a container</a>, we have our project name: the Glow Flow.</p>
+<p>Pixelblaze pattern code for this project is <a href="https://github.com/Roger-random/glowflow/blob/master/Glow%20Flow">available on Github</a>.</p>
+<p> </p>
+<p></body></html></p>

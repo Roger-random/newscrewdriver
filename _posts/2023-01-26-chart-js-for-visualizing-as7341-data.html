@@ -1,0 +1,50 @@
+---
+layout: post
+title: Chart.js For Visualizing AS7341 Data
+date: 2023-01-26 12:30:00.000000000 +00:00
+type: post
+post_id: '34746'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- HTML
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34747'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674856815
+  _publicize_job_id: '80925596852'
+  timeline_notification: '1674765014'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/26/chart-js-for-visualizing-as7341-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>There's no shortage of web frameworks that help us put pretty things on screen. I've been eyeing A-Frame, Three.js, and D3.js for use in the right project but <a href="https://newscrewdriver.com/2023/01/25/overkill-options-a-frame-three-js-and-d3-js/">all would be overkill</a> for my AS7341 interface: I just need to plot eight data points and there's no need for interactive drill-down. Would the web development ecosystem have something that fits the bill? The answer is definitely "Yes" because this is the same ecosystem that <a rel="noreferrer noopener" href="https://www.theregister.com/2016/03/23/npm_left_pad_chaos/" target="_blank">gave us "leftpad" and the debacle it caused</a>. Yeah, I could spend a few hours and write my own, but I know I don't have to.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I went on NPM to search for charting modules and as soon as I typed "chart" I got the suggestion to <a rel="noreferrer noopener" href="https://www.chartjs.org/" target="_blank">look at Chart.js</a>. A brief read of documentation told me this fits my needs. Simple, lightweight, and minimal interactivity capabilities that I plan to turn off anyway. No need for fancy graphics of WebGL or DOM interactivity of SVG, Chart.js draws onscreen using HTML Canvas. <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank">Canvas was the API</a> I used for my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/12/html-features-for-esp32-sawppy-rover/" target="_blank">Micro Sawppy browser interface</a>, so I have a rough idea of what Canvas could and could not do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With my limited needs, I don't expect to use most of Chart.js capabilities. But I'm happy to incorporate those that are convenient and require minimal/no effort on my part. One good bit of visual polish is its <a rel="noreferrer noopener" href="https://www.chartjs.org/docs/latest/developers/updates.html" target="_blank">ability to animate updates to chart data</a>, smoothly growing or shrinking bars in my bar chart based on updated AS7341 sensor data. Another bit of convenience was the ability to specify color used for each bar. I could draw the bar for one AS7341 sensor with the color that corresponds to its wavelength, which helps give me an intuitive grasp of the spectrum seen by AS7341. A quick web search found <a href="https://academo.org/demos/wavelength-to-colour-relationship/" target="_blank" rel="noreferrer noopener">Academo's interactive wavelength to color converter</a> and I used that to determine colors of each bar F1-F8.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What about the other sensors? I'm completely ignoring the flicker detector right now, and I decided not to draw the clear channel. From my experiments, the clear channel typically has the highest value (which makes sense as it's the sensor without any color filters blocking input) so I used its value as the Y-axis maximum. I also plotted the near infrared channel, but since it's invisible I plotted it using an arbitrary chosen dark red color. This seemed to work when I first wrote the code late at night under artificial light. The next morning, I played under natural sunlight and <a href="https://newscrewdriver.com/2023/01/27/as7341-sees-sunlight-very-differently-from-led/">that was an entirely different beast</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

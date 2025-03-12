@@ -1,0 +1,37 @@
+---
+layout: post
+title: Sawppy Rover's Negative Camber Traced to CAD Error
+date: 2018-05-31 09:00:23.000000000 +00:00
+type: post
+post_id: '16084'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Rover
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '18463112411'
+  timeline_notification: '1527782655'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/05/31/sawppy-rovers-negative-camber-traced-to-cad-error/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>There were a few bumps in the road on the way to turn a rocker-bogie suspension idea starting from a side view in a JPL PowerPoint into a 3D-printed model. Here we'll cover one particular error that didn't surface until we had a physical prototype standing on its own.</p>
+<p>When we put all the pieces together and held just by friction, we got a rough idea of how the rover will look. Since it was rough, there was no need to worry about minor alignments. Once things started getting buttoned down, though, weirdness become worrisome. Like this problem: the rover's front wheels have a clearly visible negative camber. In this front view picture, it's visible as a tilt to the left. In case the tilt is not visually obvious, look at where the wheel meets the table: it should be at the center of the wheel's width, but the contact patch is actually to the left because the entire wheel assembly is tilted left.</p>
+<p><img class="alignnone size-full wp-image-16085" src="https://newscrewdriver.com/wp-content/uploads/2018/04/negative-camber.jpg" alt="Negative Camber" width="742" height="1024"></p>
+<p>Negative camber is something occasionally seen on race cars that compete on maneuverability. It helps the tires "lean against" cornering forces at the expense of increased tire wear when going straight. There's a <a href="https://jalopnik.com/why-we-all-owe-stance-culture-a-huge-apology-1736757215">whole car subculture</a> of people who like to induce extreme negative camber into their cars for looks. And while I respect that people are free to do what they want to their own cars, I don't care to do it to mine and I definitely didn't set out to "stance" my rover. This is a bug, not a feature.</p>
+<p>Tracing through CAD operations, the cause was pinned down to rotate operations performed on the suspension arm segment connecting rover body to front wheel. This aluminum extrusion beam is vertically tilted downward from the body to the joint, and also rotated horizontally to splay out away from the body. When I performed the vertical rotation followed by the horizontal rotation, I didn't notice that the axis used for horizontal rotation was also affected by the vertical rotation. So I thought I was rotating about the vertical (Z) axis but I was actually rotating about an axis vertically tilted from Z. This oversight resulted in the camber.</p>
+<p>Editing the transformations to make sure we rotate about the actual X, Y, and Z axis (instead of a rotated variant) resolved this particular issue. It's just one example among many problems encountered while building a 3D printed rocker-bogie suspension.</p>
+<p></body></html></p>

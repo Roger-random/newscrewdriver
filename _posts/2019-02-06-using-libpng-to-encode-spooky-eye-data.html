@@ -1,0 +1,52 @@
+---
+layout: post
+title: Using LibPNG To Encode Spooky Eye Data
+date: 2019-02-06 13:30:42.000000000 +00:00
+type: post
+post_id: '17802'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Spooky Eyes
+meta:
+  _oembed_031d4e0f825353d9615919408dbfe0aa: "{{unknown}}"
+  _oembed_70483f15e3ae7ed936284570e66325ee: "{{unknown}}"
+  _oembed_e320fe402a6180bb26b3526f0e26750c: "{{unknown}}"
+  _oembed_6ac01c6faed5cb4095e7dcd2dfe21b21: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '27357645027'
+  timeline_notification: '1549488770'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/02/06/using-libpng-to-encode-spooky-eye-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17800 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/02/sclera-array-and-bitmap.png" alt="Sclera array and bitmap" width="1286" height="680"></p>
+<p><a href="https://twitter.com/mle_online">Emily</a> and I thought it would be cool to have the <a href="https://learn.adafruit.com/adafruit-hallowing/spooky-eyes">Spooky Eye</a> visualization running on platforms in addition to Teensy and Adafruit SAMD boards. The first target: a Raspberry Pi zero. <a href="https://newscrewdriver.com/2019/02/05/looking-under-the-hood-of-adafruit-spooky-eyes/">Reading through the project documentation and source code</a> gave us a good idea how the data is encoded, but the best test is always to make use of that data and see if it turns out as I expected.</p>
+<p>This would be a new coding experiment, so <a href="https://github.com/Roger-random/pi-eyeball">a new Github repository</a> was created. I added the header files for various eyeballs then I started looking for ways to use that data. Since the header files are in C, it made sense to look for a C library to do something. I decided to output data to PNG bitmap files. Verifying the output looks correct would be as simple as opening the bitmap in an image viewer.</p>
+<p>The canonical reference library for PNG image compression is <a href="http://www.libpng.org/pub/png/libpng.html">libpng</a>. Since I expect my use to be fairly mainstream, I skipped over the official documentation that covers all the corner cases a full application would need to consider. In the spirit of a quick hack prototype, I looked for sample code to modify. I <a href="http://www.labbookpages.co.uk/software/imgProc/libPNG.html">found one by Dr. Andrew Greensted</a> that looked simple and amenable to this project.</p>
+<p>I fired up my <a href="https://docs.microsoft.com/en-us/windows/wsl/about">Ubuntu 18.04 WSL</a> and installed <code>gcc</code> and <code>libpng-dev</code> as per instructions. The sample failed to compile at first with this error:</p>
+<blockquote><p>
+<code>/tmp/ccT3r4xP.o: In function `writeImage':</code><br />
+<code>makePNG.c:(.text+0x36f): undefined reference to `setRGB'</code><br />
+<code>collect2: error: ld returned 1 exit status</code>
+</p></blockquote>
+<p>Since there were a lot of references to this sample code, I thought this wouldn't be a new problem. A web search on "makePNG undefined reference to setRGB" sent me to <a href="https://stackoverflow.com/questions/52796758/undefined-reference-when-compiling-libpng-example">this page on Stackoverflow</a>, which indicated there was a problem with use of C keyword <code>inline</code>. There were two options to get around this problem: either remove <code>inline</code> or use the <code>-Ofast</code> compiler option to bypass some standards compliance. I <a href="https://github.com/Roger-random/pi-eyeball/commit/ce41cb3b9153d2e76dba28fd2ec9dd21ea206e81">chose to remove <code>inline</code></a>.</p>
+<p>That was enough to get baseline sample code up and running, and modification begins. The first act is to <code>#include "defaultEye.h"</code> and see if that even compiles... it did not.</p>
+<blockquote><p>
+<code>In file included from makePNG.c:20:0:</code><br />
+<code>defaultEye.h:4:7: error: unknown type name ‘uint16_t’</code>
+</p></blockquote>
+<p>Again this was a fairly straightforward fix to <code>#include &lt;stdint.h&gt;</code> which takes care of defining standard integer type <code>uint16_t</code>.</p>
+<p>Once everything compiled, the <code>makePNG</code> sample code for generating a fractal was removed, as was the code to translate the fractal's floating point value into color. The image data was replaced with data from Spooky Eye header files. If all works well, I should have a PNG bitmap. The first few efforts generated odd-looking images because there were bugs in my code to covert Spooky Eyes image array, encoded in 16-bit RGB565 format, to be written out in 24-bit RGB888 format. Once my bitwise manipulation errors were fixed, I had my eyeballs!</body></html></p>

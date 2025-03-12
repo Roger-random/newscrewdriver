@@ -1,0 +1,43 @@
+---
+layout: post
+title: Power Consideration for Pixelblaze LED Project
+date: 2019-06-28 12:30:06.000000000 +00:00
+type: post
+post_id: '18768'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- MP1584
+- Pixelblaze
+meta:
+  _thumbnail_id: '18773'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32291479032'
+  timeline_notification: '1561750238'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/28/power-consideration-for-pixelblaze-led-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I now have a <a href="https://newscrewdriver.com/2019/06/27/connecting-led-strip-to-pixelblaze/">SK9822 300-LED strip up and running under command of a Pixelblaze</a>, and since I configured the Pixelblaze to run the strip at 10% of maximum brightness, I was able to run everything on a USB power bank. This is fine for a quick test, but we should have a better understanding of power requirements for what lies ahead.</p>
+<p>The standard rule-of-thumb for LED power budget has been 20mA per LED, and this appears to still hold true for RGB modules like the SK9822. With three LEDs per module, the popular recommendation is to budget a maximum of 3 * 20mA = 60mA per module. I thought the integrated control chip would add to this power requirement but I found no mention of such. With a 5 meter strip of 60 modules per meter, for a total of 5 * 60 = 300 modules, my strip may draw up to a maximum of 300 * 60 mA = 18,000 mA or 18 amps. Running at 5 volts, that is 5 * 18 = 90 Watts of power.</p>
+<p>Yikes.</p>
+<p>The good news is that, for these types of LED strips, the task of supplying power can be easily parallelized. While they must share a common ground and clock+data lines must run through them all, the voltage supply lines may be separated. So I can, for example, cut the voltage supply line every 50 LED modules and put a power supply on just that segment. 50 * 60 mA = 3,000 mA or 3 amps, which matches the maximum rating for the <a href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/">MP1584 chip I have been using to power my Raspberry Pi projects</a>. I'd just need six of them in parallel to run this strip. I also recently found <a href="https://amzn.to/2mp5fyp" target="_blank" rel="noopener">voltage converters built on the XL4015E1 chip</a> (*), which can deliver up to 5 amps. This would allow driving the strip at max power with fewer modules in parallel.</p>
+<p>These are all considerations to keep in mind as the project progresses, but those are not necessarily what will end up in the final product. Mainly because those numbers are worst case scenarios with every module illuminated at maximum brightness, and that's boring and not flashy at all. In reality I expect to end with only some fraction of LEDs illuminated, and only at a fraction of their maximum power.</p>
+<p>So that covers the LEDs, but how much power does a Pixelblaze consume? Since V3 is still under development, precise specifications are not yet available. But it is built around a ESP32 module and I could research from that side. According to <a href="https://esp32.com/viewtopic.php?t=2662">this forum thread</a>, ESP32 power consumption is fairly low at roughly 100mA. However, it will occasionally spikes up to as much as 0.6A for brief periods of time. In a LED project with hundreds to thousands of modules, a Pixelblaze's power consumption is a negligible rounding error.</p>
+<p>In the immediate future, I'll proceed with the project running the strip at 10% brightness and only fraction of 300 modules illuminated. This will allow me to continue using my USB power bank to iterate on ideas and postpone finalizing power supply requirements until there's a better idea of what the LEDs will do. And an important part of that will be <a href="https://newscrewdriver.com/2019/06/29/choosing-a-shape-for-pixelblaze-led-project/">deciding their layout.</a></p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

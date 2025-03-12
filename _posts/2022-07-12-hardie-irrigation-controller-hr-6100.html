@@ -1,0 +1,86 @@
+---
+layout: post
+title: Hardie Irrigation Controller (HR-6100)
+date: 2022-07-12 12:30:00.000000000 +00:00
+type: post
+post_id: '31356'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31359'
+  _publicize_job_id: '74645612816'
+  timeline_notification: '1657654210'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/12/hardie-irrigation-controller-hr-6100/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was given this Hardie Irrigation sprinkler controller to take apart, which I'm happy to do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31358,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-panel-intact.jpg?w=1024" alt="" class="wp-image-31358"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Color scheme and general design makes it look several decades old. I found nothing that could give it a definitive age, and I've found no information about this product online. Its lack of online presence supports the "several decades old" hypothesis.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31362,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-panel-and-pcb.jpg?w=1024" alt="" class="wp-image-31362"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Flipping up the lower access door we see terminals for sprinklers and a power transformer, a fuse, and two screws. Removing those screws allowed me to remove the core of the device.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31364,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-panel-and-pcb-separated.jpg?w=1024" alt="" class="wp-image-31364"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Backside of the plastic control panel exposes the plastic ridges that give tactile detents to the selection knob. We also see the front of the circuit board, which has all through-hole components and no traces visible in the front.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31367,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-pcb-traces.jpg?w=768" alt="" class="wp-image-31367"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>All traces are on the back, where we also see the selection dial is not a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/22/honda-accord-hvac-knobs-electrical/" target="_blank">rotary encoder</a>. It makes actual electrical contact to individual functions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31369,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-biggest-chip.jpg?w=1024" alt="" class="wp-image-31369"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Returning to the front, I see this is the largest chip on the circuit board. I have no idea what it is, my online search came up empty. [UPDATE: Randy identified the COP444L as a member of the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/COP400" target="_blank">COP400 family</a> of 4-bit microcontrollers. See full comment below for a link to the datasheet. Thanks, Randy!]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31371,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-triac.jpg?w=1024" alt="" class="wp-image-31371"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The six sprinkler stations are each controlled by one of these. Online search found these to be <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/TRIAC" target="_blank">triacs</a>. I thought it was interesting how we have two of one type and four of the other.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31374,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-led.jpg?w=1024" alt="" class="wp-image-31374"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only item that interested me was the digital illuminated display. These look like old school LEDs. I understand that before manufacturing large LEDs became practical, the only cost-effective option are these tiny little guys. To make them more readable, they are accompanied by plastic bubble magnifying lenses. There appear to be provision for eight digits, but only four are populated.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I see tantalizing hint of more than seven segments in each digit. It looks like there are two center vertical segments so we can go a good "T" and other things difficult with just seven segments. Also, all of the horizontal segments appear to be split to the left and right of center vertical. This can potentially be a 12-segment digit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31376,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-led-segment-illuminated.jpg?w=1024" alt="" class="wp-image-31376"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, when I applied <a href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/" target="_blank" rel="noreferrer noopener">my LED tester</a> to various combinations of input pins, I could only illuminate each digit as a seven-segment (plus decimal point) display. I'll salvage this bubble LED in the hopes I can decipher its secrets later. For now, I see no reason to hang on to the rest of this bulky box and will dispose of them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":31359,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/hr-6100-disassembled.jpg?w=1024" alt="" class="wp-image-31359"></figure>
+<p><!-- /wp:image --><br />
+</body></html></p>

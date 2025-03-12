@@ -1,0 +1,115 @@
+---
+layout: post
+title: Philips Sonicare (HX686P) Electronics
+date: 2023-09-20 12:30:00.000000000 +00:00
+type: post
+post_id: '39144'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39127'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1695333886
+  _publicize_job_id: '87763087390'
+  timeline_notification: '1695238240'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/20/philips-sonicare-hx686p-electronics/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got inside my retired Philips Sonicare HX686P electric toothbrush and <a href="https://newscrewdriver.com/2023/09/19/philips-sonicare-hx686p/">found a few physical signs of new features</a> relative to my older <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/09/15/philips-sonicare-hx6530/" target="_blank">Sonicare HX6530</a>. Mechanically they seemed quite similar, but there's a significant upgrade in electronics between the two.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39083,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-pcb-front.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-pcb-front.jpg?w=1024" alt="" class="wp-image-39083"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the circuit board I pulled from the older HX6530, featuring a few surface-mounted components and even a few unpopulated positions, presumably to support features absent in this model.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39123,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-pcb.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-pcb.jpg?w=1024" alt="" class="wp-image-39123"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And here is the newer HX686P circuit board. They are both the same length and have the same maximum width, but the older HX6530 board is a trapezoid that tapers versus a full rectangle in the newer HX686P. As a result the newer HX686P board has more surface area. It also has more surface mount components on board, packed more densely. There were no obvious unpopulated positions, but there's at least one extraneous LED presumably to support feature absent in this model.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39154,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-cypress-semiconductor-cy8c4146azi-s433-mcu.jpg?w=1024" alt="" class="wp-image-39154"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The ringleader of the new circus is a Cypress Semiconductor (since acquired by Infineon) <a rel="noreferrer noopener" href="https://www.infineon.com/cms/en/product/microcontroller/32-bit-psoc-arm-cortex-microcontroller/psoc-4-32-bit-arm-cortex-m0-mcu/cy8c4146azi-s433/" target="_blank">CY8C4146AZI-S433</a>, an <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/ARM_Cortex-M#Cortex-M0+" target="_blank">ARM Cortex-M0+</a> microcontroller that offers a significant step up in computing power over a PIC16F726 used in the older HX6530.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39156,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-nxp-63002-mfrc630-rfid-controller.jpg?w=1024" alt="" class="wp-image-39156"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second largest chip on this board is a <a rel="noreferrer noopener" href="https://www.nxp.com/products/rfid-nfc/nfc-hf/nfc-readers/mfrc630-high-performance-frontend-for-mifare-and-ntag-products-in-access-control:MFRC63002HN" target="_blank">NXP MFRC630</a> for RFID applications. It makes sense it is positioned close to where the RFID antenna coil wires are soldered to the board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39122,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-oscilloscope-rfid.jpg?w=1024" alt="" class="wp-image-39122"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Curious about what the chip is doing, I connected my oscilloscope to the RFID antenna wires where I could confirm... yep, <em>something </em>is happening. Beyond that, I don't know what to look for or how to set my oscilloscope to be more informative.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39160,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-candidate-field-effect-transistor-fet-mosfet.jpg?w=1024" alt="" class="wp-image-39160"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Adjacent to the actuator electromagnet coil wires are these two tiny chips I inferred to be transistors controlling coil power. If so, they would be a counterpart to the Alpha &amp; Omega Semiconductor field effect transistors <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/09/16/philips-sonicare-hx6530-under-oscilloscope/" target="_blank">found in the older HX6530</a> doing the same job yet only about a quarter of the size. Chip at position Q103 is marked <code>1Z W9n</code> and chip at position Q104 is marked <code>1V W9n</code>. There's not enough room on these tiny chip to have full brand name and model number so this is an abbreviation. A web search on these designations turned up many results, but I couldn't find anything relevant.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39162,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-three-white-led.jpg?w=1024" alt="" class="wp-image-39162"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Adjacent to those are three white LEDs at position CR5, CR6, and CR7. Curiously, the external enclosure only had provision to show CR5 ("clean") and CR6 ("white") with only a smooth surface where CR7 would be. I never saw it illuminated, yet it was populated on this board during assembly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The chip at position U2 is the third largest on this circuit board and has the abbreviation <code>DEK 735</code>. Another abbreviation I couldn't find relevant information about.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The item at position F100 is in series with battery positive Vbat+ and labeled with just a single letter P. There is a very similar counterpart on the HX6530 board and I think they're safety fuses. Perhaps P stands for <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Resettable_fuse" target="_blank">polyfuse</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39165,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-dual-leds.jpg?w=1024" alt="" class="wp-image-39165"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Near the charging coil (JC1 and JC2) and battery negative Vbat- are a pair of dual LEDs, each package contains a green and an orange LED side by side. These are used to indicate battery charging status (CR1) and notification for brush replacement (CR2).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39117,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-dual-led.jpg?w=1024" alt="" class="wp-image-39117"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's difficult to focus on the LED internals, here was my best effort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39116,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-dual-led-illuminated-green.jpg?w=1024" alt="" class="wp-image-39116"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And here's the same item with the green LED illuminated. I want to get sharp pictures of these things, time will tell if that desire separates me from my money for a microscope camera.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39127,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-with-soldered-probing-wires.jpg?w=1024" alt="" class="wp-image-39127"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I soldered wires to pads labeled SPDAT, SPCLK, Rx, and Tx so I could look at their activity under the oscilloscope. Rx stayed at the ground plane, while SPDAT, SPCLK, and Tx stayed at Vbat+ voltage level. I struck out again here, Sonicare firmware engineers are clearly not in the habit of shipping chatty hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39169,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx686p-mystery-sensor.jpg?w=1024" alt="" class="wp-image-39169"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, here's a closeup shot of the chip I hypothesized was a brush actuator feedback sensor, sitting as it was over the gap between the electromagnet and permanent magnet. Perhaps it is a Hall effect sensor? Accelerometer? Audio microphone? There are many possible ways to measure actuator behavior, but again I struck out here. A search on its markings C180 1371G returned a lot of search results on Cessna 180 airplanes and Mercedes-Benz C-class automobiles, burying any information that might be relevant to a Sonicare toothbrush.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's what I've learned from poking around a disassembled Sonicare HX686P. <a href="https://newscrewdriver.com/2023/09/21/what-to-do-with-retired-sonicare/">What's next</a>?</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

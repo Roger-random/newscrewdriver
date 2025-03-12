@@ -1,0 +1,49 @@
+---
+layout: post
+title: Components of Generic L298N Motor Driver Module
+date: 2021-01-27 12:30:00.000000000 +00:00
+type: post
+post_id: '24774'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24776'
+  _publicize_job_id: '53984006728'
+  timeline_notification: '1611779409'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/27/components-of-generic-l298n-motor-driver-module/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The internet is a great resource, but sometimes I want the experience of doing something on my own. This is why after buying a batch of <a href="https://newscrewdriver.com/2021/01/26/trying-generic-l298n-driver-board/">generic L298N motor driver modules</a>, I decided to sit down and understand what I have on hand instead of just downloading someone else's documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The main attraction with the big heat sink is the L298 itself, specifically the L298N variant. Flanking it, four on each side, are small modules labelled "M7". Since the datasheet said an array of four diodes each are required for A and B sides, seeing eight of something on the board makes them candidates for those diodes. A search for "M7 Diode" <a href="https://electronics.stackexchange.com/questions/149470/what-is-is-an-m7-diode" target="_blank" rel="noreferrer noopener">indicates they are 1N4007 diodes</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A single rectangular package is etched with ST logo and designation 78M05. <a rel="noreferrer noopener" href="https://www.st.com/resource/en/datasheet/l78m.pdf" target="_blank">Its datasheet</a> describes it as a voltage regulator delivering 5V at nominal 500mA. Input voltage can be up to 35V, but must be at least 7V. Two cylindrical assemblies are likely electrolytic capacitors. The numbers indicate 220uF at up to 35V, matching the maximum limit of 78M05. L298 datasheet required a capacitor between motor voltage supply and ground, and another capacitor between logic voltage supply and ground, so that fits.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two blue screw terminal blocks on either side are motor output connections. They are labeled OUT1 and OUT2 on one side and OUT3 and OUT4 on the other, designations straight from the L298N data sheet. Also straight from the data sheet are control signals IN1, IN2, IN3, and IN4. There are jumpers on ENA and ENB. My hypothesis is that they are tied to +5V to stay in the enabled state by default, allowing motor direction control going full speed forward, full speed reverse, and brake stop. If an application wants control over enabled state, we can remove jumpers and connect the enable lines for PWM speed control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The third screw terminal block has three posts labeled  +5V, GND, and +12V. GND is obvious enough, and given the presence of 78M05, my first guess is that the +5V terminal gives the option of tapping its output to drive our microcontroller. But it is also possible it is a +5V <em>input </em>to bypass the 78M05. There is a jumper nearby to disconnect something, possibly the 78M05? A small surface mount LED and accompanying current limiting resistor probably indicate power on one of the power rails. Finally the +12V label is mysterious, since everything I see with a voltage limit can go up to +35V and I see no reason to constrain it to +12V. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking over the list of expected components, I am left with two missing: there are no candidates for current sense resistors. Time to <a href="https://newscrewdriver.com/2021/01/28/circuit-schematic-of-generic-l298n-driver-board/">trace through this circuit</a> and see if I can find them.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,43 @@
+---
+layout: post
+title: MX340 CircuitPython Key Events
+date: 2024-06-20 23:03:55.000000000 +00:00
+type: post
+post_id: '43853'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40427'
+  wordads_ufa: u:wpcom-ufa-v4:1719266197
+  _publicize_job_id: '95613983913'
+  timeline_notification: '1718949838'
+  firehose_sent: '1718949847'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 21:58:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/20/mx340-circuitpython-key-events/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My CircuitPython learning project was to communicate with the K13988 chip on board a salvaged Canon MX340 multi-function inkjet control panel. The follow-up project, currently in progress, is to convert my jumble of experimental and exploratory code into something resembling an usable library. It looks pretty good after I <a href="https://newscrewdriver.com/2024/06/19/mx340-circuitpython-internals-and-context-manager/">rearranged all the setup/cleanup into context manager syntax</a>, but then I realized I was missing a big piece: key press events. I had been printing key codes to serial terminal as they come in, but that was no way to write an API!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For precedence I looked into <a href="https://docs.circuitpython.org/en/latest/shared-bindings/keypad/">CircuitPython <code>keypad</code> class</a>. I had expected this to be an opportunity to learn about Python events and event listeners, so I was surprised (and mildly disappointed) to find an event queue that client code is expected to poll on a regular basis. Well, at least I know how to implement such a thing, and Python standard libraries should make it pretty easy to implement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could reuse their <code>Event</code> class to report my key press events, but the <code>EventQueue</code> class itself is locked away inside Adafruit implementation and not available to me. I went looking for an existing Python standard library queue and the <a href="https://docs.python.org/3/library/queue.html">first search result</a> seemed to be far more complex than I had expected. Turns out that particular <code>queue</code> was designed for coordination across threads, overkill for this purpose. I just need the <a href="https://docs.python.org/3/library/collections.html#deque-objects">basic <code>deque</code> (double-ended queue) class</a> to emulate most of Adafruit's <code>EventQueue</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my first draft I decided against implementing a separate object to expose keyboard event queue. I'll expose a <code>get_key_event()</code> method which should <a href="https://newscrewdriver.com/2024/06/22/fpc-and-breakout-boards-for-mx340-control-panel/">serve basic scenarios</a> well enough until I see justification to do more.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

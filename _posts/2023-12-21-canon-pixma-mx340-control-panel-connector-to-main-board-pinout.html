@@ -1,0 +1,116 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Connector to Main Board Pinout
+date: 2023-12-21 12:30:00.000000000 +00:00
+type: post
+post_id: '41135'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41050'
+  wordads_ufa: s:wpcom-ufa-v4:1704491460
+  _publicize_job_id: '90478474563'
+  firehose_sent: '1703190669'
+  timeline_notification: '1703190671'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>There was no shortage of surprises as I'm learning from the control panel circuit board of a Canon Pixma MX340 multi-function inkjet. I followed a wire that I thought supplied power to multiple components, <a href="https://newscrewdriver.com/2023/12/20/canon-pixma-mx340-control-panel-wifi-led/">found it powered just a single LED</a>, then realizing the LED on/off is actually controlled by a transistor further down the line. Weird! Fortunately the remaining pins on this connector (for ribbon cable to main board) were easier to understand, enough for me to generate a medium-confidence pinout chart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Connector to main board pin 11 was soldered to a trace that went under the connector and out the top side. Tracing its path through a zero-ohm jumper resistor (JP117), a few check points (CP102, CP112), an unpopulated capacitor position (C110) and a 220 ohm resistor (R101) I arrived at the "Stop" button (SW101) at the control panel's far right edge. Canon engineers decided a user trying to stop something in a panic should have a direct line to the main board bypassing the NEC K13988 intermediary.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Connector to main board pin 3 was connected to a capacitor (C116) to ground typical of a decoupling capacitor, and a 470 ohm resistor (R104) typical for LED current limiting. Upon <a href="https://newscrewdriver.com/2023/12/15/canon-pixma-mx340-control-panel-to-main-board-connector/" target="_blank" rel="noreferrer noopener">initial examination</a> I thought it might lead to one of the LEDs, but I've accounted for all LEDs by now so I know it isn't that. I traced its route through CP114 and CP126 to arrive at K13988 pin 29.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Connector to main board pin 2 and pin 1 traveled side-by-side, but received slightly different treatments. Pin 2 signal had to travel through a 100 ohm resistor (R103) while pin 1 signal did not. Pin 2 also had a capacitor (C115) to ground while the pin 1 equivalent position (C114) is unpopulated. When they reached the K13988 chip, main board connector pin 1 signal went to K13988 pin 16, and main board pin 2 went to K13988 pin 18.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pin numbering is right-to-left in the picture, as per arrow and number 1 printed adjacent to the right end of the connector. There is also a dot every 5 pins to aid in counting. After tracking down all of these traces, I repeated the exercise with <a href="https://newscrewdriver.com/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/">pins connected to the K13988 chip</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Pin Number</th>
+<th class="has-text-align-center" data-align="center">Connection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1 (arrow)</td>
+<td class="has-text-align-center" data-align="center">K13988 pin 16<br>(<a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">Main board to K13988</a> asynchronous serial 250000 8E1)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">K13988 pin 18<br>(<a href="https://newscrewdriver.com/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/" target="_blank" rel="noreferrer noopener">K13988 to main board</a> asynchronous serial 250000 8E1)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">K13988 pin 29<br>(<a href="https://newscrewdriver.com/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/" target="_blank" rel="noreferrer noopener">K13988 Chip Enable</a>)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5 (dot)</td>
+<td class="has-text-align-center" data-align="center">Alarm LED+ @ 3.3V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">6</td>
+<td class="has-text-align-center" data-align="center">Power LED+ @ 3.3V DC</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">7</td>
+<td class="has-text-align-center" data-align="center">Power button<br>(Grounded when pressed)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">8</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">3.3V DC power<br>(Always on, even in standby)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">10 (dot)</td>
+<td class="has-text-align-center" data-align="center">Ground</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">11</td>
+<td class="has-text-align-center" data-align="center">Stop button<br>(Grounded when pressed)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">12</td>
+<td class="has-text-align-center" data-align="center">WiFi LED+ @ 5.5V DC<br>(Illumination controlled via transistor Q101.)</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

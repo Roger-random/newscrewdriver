@@ -1,0 +1,82 @@
+---
+layout: post
+title: Running Home Assistant OS Under Proxmox VE
+date: 2023-11-02 12:30:00.000000000 +00:00
+type: post
+post_id: '39941'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Home Assistant
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39959'
+  wordads_ufa: s:wpcom-ufa-v4:1699065477
+  _publicize_job_id: '89024978570'
+  timeline_notification: '1698953462'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/02/running-home-assistant-os-under-proxmox-ve/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've dusted off my Dell Inspiron 7577 laptop and <a href="https://newscrewdriver.com/2023/11/01/configuring-laptop-for-proxmox-ve/">set it up as a light-duty virtualization server running Proxmox Virtual Environment</a>. My InfluxDB project and my Plex server both run on top of Ubuntu Server, and Proxmox has a very streamlined process to set up virtual machines from installation media ISO file. I got those two up and running easily.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Setting up Home Assistant OS under Proxmox took more work. Unlike Virtual Machine Manager, Proxmox doesn't have a great way to import an existing KVM virtual machine image, which is <a href="https://www.home-assistant.io/installation/linux" target="_blank" rel="noreferrer noopener">how Home Assistant OS was distributed</a>. I tried three sets of instructions without success:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<a href="https://192.168.86.206:8006/pve-docs/chapter-qm.html#_importing_virtual_machines_and_disk_images" target="_blank" rel="noreferrer noopener">Proxmox documentation</a> describes how to import an OVF file. HAOS is available as an OVA file, which is a tar archive of an OVF plus its associated files. I unpacked that file to confirm it did include an OVF file and tried using that, but the disk image reference was considered invalid by the import tool and ignored.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://getlabsdone.com/how-to-import-qcow2-into-proxmox-server-step-by-step/" target="_blank" rel="noreferrer noopener">GetLabsDone</a>: I got far enough to get a virtual machine, but it never booted. I got some sort of infinite loop, consuming 100% of one CPU while showing a blank screen.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://ostechnix.com/import-qcow2-into-proxmox/" target="_blank" rel="noreferrer noopener">OSTechNix</a>: Slightly different procedure but the same results: blank screen and 100% of one CPU.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I found a <a href="https://community.home-assistant.io/t/installing-home-assistant-os-using-proxmox-8/201835/1" target="_blank" rel="noreferrer noopener">forum thread on Home Assistant forums</a>, where I learned GitHub user <code>@tteck</code> has put together a script to automate the entire process. I downloaded the script to see what it is doing. I understood it enough to see it closely resembled the instructions on GetLabsDone and OSTechNix, but not enough to understand all the differences. I felt I at least understood it enough to be satisfied it's not doing anything malicious, so I ran the script on my Proxmox VE instance and it worked well to get Home Assistant OS up and running. Looking at the resulting machine properties in Proxmox UI, I see a few differences. The system BIOS is "OVMF" instead of default "SeaBIOS" and there's an additional 4MB "EFI disk". I could try to recreate a Home Assistant VM using these parameters, but since HAOS is already up and running so I'm not particularly motivated to perform that experiment.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A side note on auditing <code>@tteck</code>'s script <code>haos-vm.sh</code>: commands are on a single line no matter their length, so I wanted a way to line-wrap text files at the command-line and <a href="https://unix.stackexchange.com/questions/25173/how-can-i-wrap-text-at-a-certain-column-size" target="_blank" rel="noreferrer noopener">learned about the <code>fold</code> command</a>. Instead of dumping out the script with "<code>more haos-vm.sh</code>" I can line wrap it at spaces with "<code>fold -s haos-vm.sh | more</code>".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After Home Assistant OS fired up and I could access its interface in a web browser, the very first screen has an option for me to upload a backup file from my previous HAOS installation. I uploaded the file and a few minutes later the new HAOS virtual machine running under Proxmox VE took over all functions with only a few notes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>The "upload..." screen spinner kept spinning even after the system was up and running. I saw the CPU and memory usage dropped in Proxmox UI and thought things were done. I opened up a new browser tab to <code>http:/homeassistant.local:8123/</code> and saw Home Assistant was indeed up and running, but the "Uploading..." spinner never stopped. I shrugged, closed that first spinner tab, and moved on.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>The nightly backup automation carried over, but I had to <a href="https://www.home-assistant.io/common-tasks/os/#network-storage" target="_blank" rel="noreferrer noopener">manually re-add the network drive</a> used for backups and point the automation back at the just-re-added storage location target.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>All my ESPHome YAML files carried over intact, but I had to <a href="https://www.home-assistant.io/integrations/esphome/" target="_blank" rel="noreferrer noopener">manually re-add ESPHome integration</a>. Then all the YAML files were visible and associated with their respective still-running devices around the house, who seamlessly started reporting data to the new HAOS virtual machine.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have done several Home Assistant migrations by now, and it's been nearly seamless every time with only minor adjustments needed. I really appreciate how well Home Assistant handles this infrequently-used but important capability to backup and restore.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I got Home Assistant up and running under Proxmox VE on the new machine, I wondered how long it'll be before I run into my first technical problem with this setup. The answer: <a href="https://newscrewdriver.com/2023/11/03/realtek-network-r8169-woes-with-linux-kernel-6/">about 36 hours</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

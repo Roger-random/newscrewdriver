@@ -1,0 +1,88 @@
+---
+layout: post
+title: Cordless Handset LCD Power-Up in Saleae Analog Mode
+date: 2022-05-30 12:30:00.000000000 +00:00
+type: post
+post_id: '30581'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30582'
+  _publicize_job_id: '73111828653'
+  timeline_notification: '1653939049'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/30/cordless-handset-lcd-power-up-in-saleae-analog-mode/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have the remnants of a cordless handset from a AT&amp;T CL84209 landline phone system. It can still power up enough to put "CONNECTING..." on its LCD and I want to learn how to talk to that LCD myself. To do this I've <a href="https://newscrewdriver.com/2022/05/29/preparing-cordless-handset-lcd-for-logic-analysis/">attached wires to that LCD</a> so I could probe its control signals with my Saleae Logic 8 analyzer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I get to the digital signal analysis, though, I need to be sure I'm listening on the correct lines. This is why I connected all eight potential data lines (plus the one known ground I probed earlier) to watch them all at once with my Saleae running in analog mode. This is a secondary capability for the device and while <a href="https://support.saleae.com/faq/technical-faq/can-these-products-replace-an-oscilloscope" target="_blank" rel="noreferrer noopener">it cannot replace a real oscilloscope</a> it is nevertheless very useful to me as I only have a cheapo single channel oscilloscope with unreliable voltage levels. While I might buy a real multi-channel oscilloscope in the future, it is unlikely to be an eight-channel unit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is the handset power-up sequence, and roughly eight seconds after power is supplied:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30587,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-startup.jpg?w=1024" alt="" class="wp-image-30587"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I probed with a voltmeter, pin 1 (channel 0) and 5 (channel 3) were candidates for 3.3V input power. With this graph, I see square wave dips in channel 0 that indicate an enable signal, so pin 5 is +3.3V. Which makes some sense as it is adjacent to ground on pin 4.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After pin 1 enable signal stayed high, right around the 2 second mark, something significantly happens where we saw activity on channels 4-7. Here is a zoomed in view of that time period:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30595,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-ramp-all.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-ramp-all.jpg?w=1024" alt="" class="wp-image-30595"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pin 3 (channel 2) looks like data bits clocked by pin 2 (channel 1). I'll look at them more closely later in digital analysis mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We also see the beginnings of startup on remaining four pins of unknown:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Pin 6 (channel 4) had 3.3V as soon as power is applied to the system, and later it jumps up to 5.2V and stays there.</li>
+<li>Pin 7 (channel 5) likewise had ~3.3V immediately upon power up, and when pin 6 jumps up to 5.2V it oscillates between 3.3V and 5.2V.</li>
+<li>Pin 8 (channel 6) started out flat at 0V, but would oscillate between 0V and 3.3V.</li>
+<li>Pin 9 (channel 7) started out flat at 0V, but would jump up to 5.2V and stay there.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two oscillating pins are both square waves and they move in phase. (Rise and fall at the same time.) The period from one rising edge to the next is about 125us, translating to 8kHz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30598,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-in-sync-125us-period.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-in-sync-125us-period.jpg?w=1024" alt="" class="wp-image-30598"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming out on the timescale, I see no signs of data modulation on these pins:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30590,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-ramp-zoom.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/cl84209-lcd-saleae-trace-5v-squares-ramp-zoom.jpg?w=1024" alt="" class="wp-image-30590"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think these are voltages applied to LCD segments. It would be easy for me to replicate pin 8 square wave of 0V to 3.3V with a 3.3V microcontroller like ESP8266, but it's not clear how I would replicate pin 7 square wave between 3.3V and 5.2V. A headache I will set aside for later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The relationship between pins 6 and 9 is puzzling. Since pin 6 had 3.3V immediately upon powerup, and its voltage started rising before the other three pins, I thought it was the best candidate for a 5.2V power supply rail. My hypothesis was that it is connected to a boost converter external to the LCD that would pump the 3.3V up to 5.2V. The counterargument is the fact that pin 9 reached 5.2V before pin 6 did, so I'm not sure what's going on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I think over the analog voltage startup behavior puzzle, I switched my logic analyzer to digital mode (what it's designed for) for <a href="https://newscrewdriver.com/2022/05/31/cordless-handset-lcd-is-i2c-device/">a look at the digital data and clock lines</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

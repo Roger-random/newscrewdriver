@@ -1,0 +1,52 @@
+---
+layout: post
+title: 'Notes on "Tour of Heroes" Tutorial 4: Adding Services'
+date: 2020-10-20 12:30:00.000000000 +00:00
+type: post
+post_id: '22968'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+- Tour of Heroes
+meta:
+  _thumbnail_id: '22766'
+  _publicize_job_id: '50147736846'
+  timeline_notification: '1603222204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/20/notes-on-tour-of-heroes-tutorial-4-adding-services/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Splitting related functionality into <a href="https://newscrewdriver.com/2020/10/19/notes-on-tour-of-heroes-tutorial-3-feature-component/">its own Angular component</a> results in improved organization and maintenance. However, the structure of Angular components are focused on delivering a visual representation on screen. Sometimes we want to organize a set of related code into a logical unit that has no direct on-screen representation, and that is why the tutorial teaches us <a rel="noreferrer noopener" href="https://angular.io/tutorial/toh-pt4" target="_blank">how to create Angular services</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since there is nothing on screen, Angular services are a little more abstract and involve moving parts we haven't seen yet. I re-read "<a href="https://angular.io/tutorial/toh-pt4#provide-the-heroservice">Provide the HeroService</a>" section several times and I still don't feel like I have a good grasp of "service", "provider", and "injector". I don't see why "service" and "provider" are two different concepts, as the tutorial provider instantiates the service class. Perhaps a service can be provided by one of several  different providers? Or perhaps a service class can be created by multiple providers? Or is there a 1:1 relationship but they need to be kept separate for some reason I don't understand? That is an exercise left for later. As for injectors, we use a single global injector in the tutorial. Having multiple injectors -- and when it would make sense to do so -- is outside the scope of this tutorial.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It didn't help that the section started with one bear of a compound sentence:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>You must make the <code>HeroService</code> available to the dependency injection system before Angular can inject it into the <code>HeroesComponent</code> by registering a provider.</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are multiple ways to parse this sentence. My initial reading was "You must (make the <code>HeroService</code> available to the dependency injection system) before (Angular can <em>inject</em> it into the <code>HeroesComponent</code> by registering a <em>provider</em>.)" but now I think it is "You must (make the <code>HeroService</code> available to the dependency injection system) before (Angular can <em>inject</em> it into the <code>HeroesComponent</code>) by (registering a <em>provider</em>)." But either way I think this sentence should be broken up and rewritten. If I grow in my Angular knowledge to understand what's going on (which I don't at the moment) I can try my hand at rewriting that sentence and submit a pull request.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once we created the service class, we progressed to the implementation which showcased how asynchronous operations are handled in Angular applications. The concept is called "Observable Data" and it is subcontracted out to a separate project named RxJS. I read over the <a rel="noreferrer noopener" href="https://rxjs-dev.firebaseapp.com/guide/overview" target="_blank">RxJS Overview page</a> and it was clear I did not meet the prerequisites for this class. Reading things like "Think of RxJS as Lodash for events." didn't help me at all given my ignorance of JavaScript events and whatever <a href="https://lodash.com/" target="_blank" rel="noreferrer noopener">Lodash</a> is. But the examples that followed looked mildly interesting. I guess if I had more experience with JavaScript event handler oddities, I would find RxJS more compelling. But for now it's just another pattern I'll learn to use without really understanding why it came to be that way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which is a fair description of this services section of the Angular tutorial, actually. The Heroes service is followed by another service example to represent Message. And given the overlap, Message service included fewer explanations than earlier. I think I'm still mostly keeping up, but there's definitely less comprehension and understanding as I copy and paste. Thankfully I had an easier time <a href="https://newscrewdriver.com/2020/10/21/notes-on-tour-of-heroes-tutorial-5-in-app-navigation/">following the next section on in-app navigation</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

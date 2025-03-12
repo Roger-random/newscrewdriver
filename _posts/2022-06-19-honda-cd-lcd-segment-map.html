@@ -1,0 +1,45 @@
+---
+layout: post
+title: Honda CD LCD Segment Map
+date: 2022-06-19 12:30:00.000000000 +00:00
+type: post
+post_id: '30883'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+- LC75883
+- LCD Segment Map
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30819'
+  _publicize_job_id: '73827789162'
+  timeline_notification: '1655667008'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/19/honda-cd-lcd-segment-map/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I can talk to the LC75883 LCD driver chip on the faceplate of a Honda Accord CD/HVAC control panel, but I <a href="https://newscrewdriver.com/2022/06/18/honda-cd-lcd-driver-problems/">encountered problems</a> using other peripherals. I don't have the schematics for the circuit board and it would be a lot of work to generate one myself. At the moment I don't have the motivation to undertake such a project. I have control of its LCD segments and I could generate a segment map for it:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30824,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-segment-map.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-segment-map.png?w=1024" alt="" class="wp-image-30824"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Almost a quarter of the surface area on this LCD are allocated to CD icons 1 through 6, and many segments were consumed by the little circular graphic in the center. I guess that's supposed to resemble a CD? We can control each pie slice to perform a rotating animation, but I was disappointed to learn the four dashes of each pie slice could not be controlled independently. So it is not possible to do a growing/shrinking circle animation, dashing my hopes of a polar coordinate <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/VU_meter" target="_blank">VU meter</a>. The clock up top is more or less as expected, but the four digits to the left and right of the circle are bizarre. Multiple different patterns that probably allows them to display certain letters in addition to numbers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At least there weren't too many segments that mislead us into think they were distinct segments. The most expected one was segment 9, which is actually both segments of the "1" and that makes sense for a clock that only needs to show 10, 11, and 12. Segment 60 includes both left and right brackets around the center, but I couldn't think of many reasons why we'd want to control them separately anyway. The most bizarre is 134, which occupies 5 out of 7 segments of the right-most sub-sized digit. With it, that digit could only display 5, 6, 8, and 9. How is this useful? If I ever get a chance to play with the stock CD player of a 2007 Honda Accord, I want to see how this thing used to work. Right now, <a href="https://newscrewdriver.com/2022/06/20/taking-stock-of-honda-cd-investigation-progress/">I ponder my next step</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

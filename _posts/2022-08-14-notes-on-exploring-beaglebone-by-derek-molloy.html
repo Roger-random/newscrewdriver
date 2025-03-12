@@ -1,0 +1,117 @@
+---
+layout: post
+title: Notes on "Exploring BeagleBone" by Derek Molloy
+date: 2022-08-14 12:30:00.000000000 +00:00
+type: post
+post_id: '31989'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- Beaglebone
+- Books
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31983'
+  _publicize_job_id: '75753257830'
+  timeline_notification: '1660505410'
+  _oembed_8788e6c6a92493e6f511604438ca9481: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Here
+    is how to check if you are affected by a known vulnerability in your hardware
+    (CPU) when using Linux including mitigation status:<br><br>grep -r . /sys/devices/system/cpu/vulnerabilities/
+    <a href="https://t.co/ihj1kbvQwg">pic.twitter.com/ihj1kbvQwg</a></p>&mdash; nixCraft
+    (@nixcraft) <a href="https://twitter.com/nixcraft/status/1561038460328488961?ref_src=twsrc%5Etfw">August
+    20, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_96602b3e601d0d4c557d220eff899889: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here
+    is how to check if you are affected by a known vulnerability in your hardware
+    (CPU) when using Linux including mitigation status:<br><br>grep -r . /sys/devices/system/cpu/vulnerabilities/
+    <a href="https://t.co/ihj1kbvQwg">pic.twitter.com/ihj1kbvQwg</a></p>&mdash; nixCraft
+    (@nixcraft) <a href="https://twitter.com/nixcraft/status/1561038460328488961?ref_src=twsrc%5Etfw">August
+    20, 2022</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_96602b3e601d0d4c557d220eff899889: '1661040926'
+  _oembed_time_8788e6c6a92493e6f511604438ca9481: '1661040942'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667983086
+  _oembed_e829e20e37b4bf908e713a0b7e7acb46: "<div class=\"embed-twitter\"><blockquote
+    class=\"twitter-tweet\" data-width=\"550\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">Here
+    is how to check if you are affected by a known vulnerability in your hardware
+    (CPU) when using Linux including mitigation status:<br><br>grep -r . /sys/devices/system/cpu/vulnerabilities/
+    <a href=\"https://t.co/ihj1kbvQwg\">pic.twitter.com/ihj1kbvQwg</a></p>&mdash;
+    nixCraft \U0001F427 (@nixcraft) <a href=\"https://twitter.com/nixcraft/status/1561038460328488961?ref_src=twsrc%5Etfw\">August
+    20, 2022</a></blockquote><script async src=\"https://platform.twitter.com/widgets.js\"
+    charset=\"utf-8\"></script></div>"
+  _oembed_time_e829e20e37b4bf908e713a0b7e7acb46: '1708471245'
+  _oembed_be7c38ebdb9bbb5a2124f9ce67d17a89: "<div class=\"embed-twitter\"><blockquote
+    class=\"twitter-tweet\" data-width=\"500\" data-dnt=\"true\"><p lang=\"en\" dir=\"ltr\">Here
+    is how to check if you are affected by a known vulnerability in your hardware
+    (CPU) when using Linux including mitigation status:<br><br>grep -r . /sys/devices/system/cpu/vulnerabilities/
+    <a href=\"https://t.co/ihj1kbvQwg\">pic.twitter.com/ihj1kbvQwg</a></p>&mdash;
+    nixCraft \U0001F427 (@nixcraft) <a href=\"https://twitter.com/nixcraft/status/1561038460328488961?ref_src=twsrc%5Etfw\">August
+    20, 2022</a></blockquote><script async src=\"https://platform.twitter.com/widgets.js\"
+    charset=\"utf-8\"></script></div>"
+  _oembed_time_be7c38ebdb9bbb5a2124f9ce67d17a89: '1725126112'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/14/notes-on-exploring-beaglebone-by-derek-molloy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>As an electronics hobbyist I've <a href="https://newscrewdriver.com/2022/08/13/taking-another-look-at-beaglebone/">managed to collect two different BeagleBone boards</a>, but I've never done anything useful with them. In the interest of learning enough to put them to work, I bought the Kindle eBook for <em><a rel="noreferrer noopener" href="https://amzn.to/3PfaeJk" target="_blank">Exploring BeagleBone, Second Edition</a></em> by Derek Molloy. (*) I dusted off my PocketBeagle from the E-ALE hardware kit and started following along. My current level of knowledge is slightly higher than this book's minimum target audience, so some of the materials I already knew. But there were plenty I did not know!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first example came quickly. In chapter 2 I learned how to give my PocketBeagle access to the internet. This is not like a Raspberry Pi which had onboard WiFi or Ethernet. In contrast, a PocketBeagle's had to access the network over its USB connection. At E-ALE I got things up and running once, but SCaLE was a Linux conference so I only received instructions for Ubuntu. This book gave me instructions on how to set up internet sharing over USB in Windows, so my PocketBeagle could download updates for its software.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Chapter 5 <em>Practical Beagle Board Programming</em> is a whirlwind tour of many different programming languages with their advantages and disadvantages. Some important programming concepts such as object-oriented programming was also covered. My background is in software development, so few of the material was new to me. However, this chapter was an important meta-learning opportunity. Because I already knew the subject matter, as I read this chapter I frequently thought: "Wait, but the book didn't cover [some related thing]" or "the book didn't explain <em>why </em>it's done this way". This taught me a mindset for the whole book: it is a quick superficial overview of concepts that give us just enough keywords for further learning. The title is "Exploring BeagleBone", not "BeagleBone in Depth"!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On that front, I believe the most impactful thing I learned from this book is <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Sysfs" target="_blank">sysfs</a>, a mechanism to allow communication with system hardware by treating their various input/output parameters as files. This presents an interface that avoids the risks and pitfalls of going into kernel mode. Sysfs was introduced in chapter 2 and is used throughout the text, culminating in the final chapter 16 where we get a taste of implementing a sysfs interface in our own loadable kernel module. (LKM) But there are many critical bits of knowledge not covered in the book. For example, sysfs was introduced in chapter 2 where we were told the sysfs path <code>/sys/class/leds/beaglebone:green:usr3/brightness</code> will allow us to control brightness of one of BeagleBoard's onboard LEDs. That led me to ask two questions immediately:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>If I hadn't known that path, how would I find it? ("What is the sysfs path for an onboard LED?")</li>
+<li>If I look at a /sys/ path and didn't know what hardware parameter it corresponded to, how would I find out? ("What does <code>/sys/[blah]</code> control?")</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The book does not answer these questions. However, it taught me that sysfs interfaces were exposed by loadable kernel modules (LKM, chapter 16) and that LKMs are loaded for specific hardware based on device tree (chapter 6). Given this, I think I have enough background to go and find answers elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The book used sysfs for many examples, and the book also covered at least one example where sysfs was not enough. When dealing with high-bandwidth video data, there's too much overhead for sysfs so the code examples switched to using <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Ioctl" target="_blank">ioctl</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My biggest criticism of this book is a lax attitude towards network security. In chapter 11 (<em>The Internet of Things</em>) instructions casually tell readers to degrade their GMail account security and to turn off Windows firewall. No! Bad book! Bad! Even worse, there's no discussion of the risks that are opened up if a naive reader should blindly follow those instructions. And that's just the reader's email account and desktop machine. What about building secure networked embedded devices with a BeagleBone? Nothing. No discussion at all, not even a superficial overview. There's a running joke that "The S in IoT stands for security" and this book is not helping.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite its flaws, I did find the book instructive on many aspects of a BeagleBone. And thanks to the programming chapter and lack of security information, I'm also keenly aware there are many more things not covered by this book at all. After reading this book, I pondered <a href="https://newscrewdriver.com/2022/08/15/my-beaglebone-boards-returning-to-their-box/">what it meant for my own BeagleBone boards</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>UPDATE: I was impressed by this application of sysfs: show known CPU hardware vulnerabilities and status of mitigations: <code>grep -r . /sys/devices/system/cpu/vulnerabilities/</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://twitter.com/nixcraft/status/1561038460328488961","type":"rich","providerNameSlug":"twitter","responsive":true} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter">
+<div class="wp-block-embed__wrapper">
+https://twitter.com/nixcraft/status/1561038460328488961
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

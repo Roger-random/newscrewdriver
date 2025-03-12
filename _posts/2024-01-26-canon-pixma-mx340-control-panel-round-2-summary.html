@@ -1,0 +1,121 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Round 2 Summary
+date: 2024-01-26 12:30:00.000000000 +00:00
+type: post
+post_id: '41742'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '40427'
+  wordads_ufa: s:wpcom-ufa-v4:1706475737
+  _publicize_job_id: '91432949756'
+  firehose_sent: '1706301047'
+  timeline_notification: '1706301048'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/26/canon-pixma-mx340-control-panel-round-2-summary/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been poking around the control panel assembly of a Canon Pixma MX340 multi-function inkjet. <a href="https://newscrewdriver.com/2024/01/25/canon-pixma-mx340-control-panel-lcd-data-decoded/">An examination of data sent to its LCD module</a> was the final piece of information I had expected to extract when <a href="https://newscrewdriver.com/2023/12/14/canon-pixma-mx340-control-panel-round-2/" target="_blank" rel="noreferrer noopener">I started "Control Panel Round 2</a>. This post will summarize what I found, with links to specific posts for more detailed reference.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Electrical</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The control panel is connected to the main board with a long flat cable with twelve wires. Five of those wires are related to power supply: One 5.5V DC feed a single LED, a 3.3V DC supply for everything else, and three ground wires. Four wires enable direct main board control of four control panel elements: two buttons [Power] and [Stop], and two LEDs [Power] and [Alarm]. That leaves three wires for communication with the NEC K13988 chip on the control panel. See <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/" target="_blank" rel="noreferrer noopener">connector pinout post</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The NEC K13988 chip controls the remaining 2 LEDs on the control panel, has a matrix of wires to scan through the remaining 27 buttons, and passes display data onward to the LCD screen. Details at <a href="https://newscrewdriver.com/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/" target="_blank" rel="noreferrer noopener">NEC K13988 chip pinout post</a> and <a href="https://newscrewdriver.com/2023/12/16/canon-pixma-mx340-control-panel-lcd-connector/">LCD connector pinout post</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Communication</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three wires for communication between main board and NEC K13988 chip consists of a single wire for [<a href="https://newscrewdriver.com/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/" target="_blank" rel="noreferrer noopener">Chip Enable</a>] and two wires for bidirectional communication. The protocol is <a href="https://newscrewdriver.com/2023/12/27/canon-pixma-mx340-control-panel-meet-saleae-logic-8/" target="_blank" rel="noreferrer noopener">250000-8-E-1 asynchronous serial</a> for both wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Main board commands are always two-byte sequences, each command acknowledged by the NEC K13988 with a single byte 0x20.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Main board bulk data transfers are announced with 0x06 for first byte of the two-byte command and the second byte indicates length of data transfer in number of bytes. This has only been observed for <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">updating LCD screen bitmap</a>, with five transfers of 196 (0xC4) bytes. After 0x06 0xC4 is acknowledged by a 0x20, 196 bytes are sent and another 0x20 acknowledgement at its conclusion. <a href="https://newscrewdriver.com/2024/01/06/canon-pixma-mx340-control-panel-lcd-screen-data-as-excel-background-fill/" target="_blank" rel="noreferrer noopener">This post decoded a single frame using Excel</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Main board commands with 0x04 as the first byte are LCD module commands. <a href="https://newscrewdriver.com/2024/01/25/canon-pixma-mx340-control-panel-lcd-data-decoded/" target="_blank" rel="noreferrer noopener">NEC K13988 will forward the second byte</a> to the LCD.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Main board commands where 0x0E is the first byte are LED commands. NEC K13988 will update illumination of [In Use/Memory] and [WiFi] LEDs based on <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/" target="_blank" rel="noreferrer noopener">two of the bits in the second byte</a>.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to 0x20 acknowledgements, the NEC K13988 sends a single byte reporting button matrix status every ~9.2ms. 0x80 means no buttons are pressed. Any value other than 0x20 or 0x80 will be one of the <a href="https://newscrewdriver.com/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/" target="_blank" rel="noreferrer noopener">button matrix status reporting scan code listed in this post</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Commands</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lacking any reference material on these components, I don't know the full meaning of most of the commands decoded and recorded by my Saleae Logic 8 analyzer. Some were correlated with observable behavior and listed above, but the rest remain opaque unknowns.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>List of posts that go into more detail on commands associated with each machine state, along with some notes on timing pauses seen in logic analyzer captures:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Brief activity upon <a href="https://newscrewdriver.com/2023/12/31/canon-pixma-mx340-control-panel-data-communication-plug-in/" target="_blank" rel="noreferrer noopener">plugging in power cable</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://newscrewdriver.com/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/" target="_blank" rel="noreferrer noopener">Powering up</a> from standby.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">LCD screen update</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/" target="_blank" rel="noreferrer noopener">LCD sleep and wake</a>.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://newscrewdriver.com/2024/01/02/canon-pixma-mx340-control-panel-data-communication-stand-by/" target="_blank" rel="noreferrer noopener">Going into standby</a>.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Future</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sometime after this MX340 is completely torn down, I may try to repurpose this control panel assembly for a future project. I will start by playing back all of the commands recorded above and see if the control panel responds as observed. If it doesn't, then I have to go back to my Saleae Logic captures and try to replicate the pause timing between commands. If that still doesn't work, I have failed to capture something important.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If it works, I can try to gain more insight into those opaque commands. I can omit a command and look for changes in system behavior, then repeat for each opaque command. Or I may decide such investigation is not worth the trouble, and just play back those commands as-is while I focus on other aspects of the project. We'll see what the future holds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Up Next</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This concludes "Control Panel Round 2" and I'm ready to move on. My next target is the <a href="https://newscrewdriver.com/2024/01/27/canon-pixma-mx340-paper-feed-motor-round-2/">paper feed motor assembly</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

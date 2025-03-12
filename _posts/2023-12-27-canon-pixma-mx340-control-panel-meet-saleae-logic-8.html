@@ -1,0 +1,74 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Meet Saleae Logic 8
+date: 2023-12-27 12:30:00.000000000 +00:00
+type: post
+post_id: '41295'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41298'
+  wordads_ufa: s:wpcom-ufa-v4:1703804737
+  _publicize_job_id: '90619177543'
+  firehose_sent: '1703709034'
+  timeline_notification: '1703709035'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/27/canon-pixma-mx340-control-panel-meet-saleae-logic-8/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Using an oscilloscope, I looked at the communication between the main board and control panel of a Canon Pixma MX340 multi-function inkjet. I've <a href="https://newscrewdriver.com/2023/12/26/canon-pixma-mx340-control-panel-communication-appears-to-be-serial/">tentatively identified the communication protocol as asynchronous serial</a>. Manually decoding the waveform, it looks like eight data bits are followed by an even parity bit and a stop bit, a configuration represented by shorthand 8E1. The transmission speed is roughly double that of common speed 115200 baud, so in the neighborhood of 230400 baud. This is enough of a starting point for me to hand off decoding duties to my <a href="https://amzn.to/3vgzlr5" target="_blank" rel="noreferrer noopener">Saleae Logic 8</a> (*).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41300,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/preparing-to-crimp-my-own-connector-for-saleae-logic-8.jpg?w=1024" alt="" class="wp-image-41300"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The logic analyzer came with two sets of wires, four channel per set. It also came with tiny springy gripper probes designed to hook onto thin wire and/or IC legs. They work well but for this project I expect to flip the control panel over frequently. Switching between pushing buttons in the front and probing its circuit in the back. Small spring-loaded clips won't be reliable as I move the circuit board around, so I'll crimp my own connectors to wires that I will solder directly to the circuit board. This was pretty easy because Saleae designed the Logic 8 with standard 0.1" spacing connectors. Letting me use stuff I bought for earlier projects. I pulled out my <a href="https://amzn.to/3GXicoQ" target="_blank" rel="noreferrer noopener">assortment of 0.1" connectors</a> (*) that included the 2x4 type I need for this project, <a href="https://amzn.to/4awSNQu" target="_blank" rel="noreferrer noopener">a crimping tool I would recommend</a> (*) and spools of <a href="https://amzn.to/3tuTYiG" target="_blank" rel="noreferrer noopener">thin 30-gauge wire with flexible silicone insulation</a>. (*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41301,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/saleae-logic-8-with-my-custom-connector.jpg?w=1024" alt="" class="wp-image-41301"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I followed color precedence set by Saleae's wiring, because that color coding carries into their Logic 8 software and I didn't want to get confused by color mismatches. This makes for a pretty odd subset but should be fine for my purposes. I only connected a single ground wire, thinking that should be sufficient for this project. I can put in more later if I'm wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41303,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-pcb-with-wires-soldered-for-saleae-logic-8-to-monitor-main-board-communication-1.jpg?w=1024" alt="" class="wp-image-41303"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I copied the color scheme used with my oscilloscope probes, so again the color stays consistent in my brain. Yellow = main board to control panel. Red = control panel to main board. Blue = chip enable. The biggest difference is that the oscilloscope probes had an alligator clip I could attach to the metal chassis for ground. Here I had to solder the ground wire. Instead of fussing with the 1mm pitch connector, I soldered the ground wire to one of the zero ohm resistors serving as jumper. (JP109)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41306,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/saleae-logic-software-serial-data-baud-rate-mismatch.png?w=750" alt="" class="wp-image-41306"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Setting Saleae protocol analyzer to decode serial data at 230400 baud 8E1 resulted in parity and frame errors. Zooming in to one such error, I saw the analyzer helpfully plotted dots where it sampled data bits. The misalignment between those dots and data pulses told me 230400 was the wrong baud rate. These samples also provided timing information between high-low and low-high transitions, giving me a range of times from 3.9us to 4.1us. Going with 4us as the intent gives 1000000/4 = 250000 baud.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41308,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/saleae-logic-software-serial-data-baud-rate-match.png?w=750" alt="" class="wp-image-41308"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have never encountered baud rate of 250000 before, but that's what seems to makes sense to my logic analyzer. It might still be a touch off... that parity bit at the end is slightly off center of the associated bit. Maybe it's 249000 baud? I can fine-tune as I go. It's not a common baud rate but Canon engineers didn't have to use a common baud rate. Canon made both the main board and control panel, they can use whatever baud rate they want. What data is getting transmitted? Well, that's what I'm going to try to find out <a href="https://newscrewdriver.com/2023/12/28/canon-pixma-mx340-control-panel-logic-analyzer-capture-targets/">starting with a few select samples</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

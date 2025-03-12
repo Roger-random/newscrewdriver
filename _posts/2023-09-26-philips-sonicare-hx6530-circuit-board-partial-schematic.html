@@ -1,0 +1,70 @@
+---
+layout: post
+title: Philips Sonicare (HX6530) Circuit Board Partial Schematic
+date: 2023-09-26 12:30:00.000000000 +00:00
+type: post
+post_id: '39297'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39298'
+  footnotes: ''
+  _publicize_job_id: '87954232108'
+  timeline_notification: '1695756634'
+  wordads_ufa: s:wpcom-ufa-v4:1695849241
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/26/philips-sonicare-hx6530-circuit-board-partial-schematic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Armed with the <a href="https://newscrewdriver.com/2023/09/25/notes-on-getting-started-in-kicad/">knowledge granted by "Getting Started in KiCad" guide</a>, I can now take bits and pieces of information gleaned from a circuit board and compile them into a partial reverse-engineered schematic. The first (of hopefully many) subject of these exercises is the Philips Sonicare HX6530 circuit board. I looked it over earlier <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/09/17/philips-sonicare-hx6530-circuit-board-and-charging-coil/" target="_blank">taking note of components I recognized</a> but didn't dig deeper into how they are connected. For this second pass, I am armed with an electrical continuity meter to probe how they connect.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39083,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-pcb-front.jpg?w=1024" alt="" class="wp-image-39083"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"align":"center","id":39082,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-pcb-back.jpg?w=1024" alt="" class="wp-image-39082"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To trace routes across this circuit board, I started with magnifying glasses but then moved to a digital camera with a macro lens. This allowed me to put pictures of the front and back together in a slide show and rapidly go back and forth between them to trace routes across layer vias. It worked really well this time, and I expect to continue evolving that system in future explorations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The goal of these exercises is to control the salvaged brush actuator myself, so I focused on the actuator control MOSFETs to the left of the PIC16F726 microcontroller. I worked out most of the circuitry to the left of the PIC16F726 all the way up to the LED at the far left edge. I mostly ignored the other half of the circuit board, as it dealt with charging and unpopulated pads imply absent features. The only thing I worked out on that side is C1 as a decoupling capacitor between Vdd and Gnd.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39298,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/09/hx6530-pcb-kicad.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/hx6530-pcb-kicad.png?w=1024" alt="" class="wp-image-39298"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The user interface button and feedback LED turned out to be straightforward implementations, easily probed so I put them in my schematic. The focus is on the array of four MOSFETs on the right, surrounding the actuator coil.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a high level, I recognize the arrangement as <a href="https://en.wikipedia.org/wiki/H-bridge" target="_blank" rel="noreferrer noopener">an H-bridge circuit</a> popular in motor control. I guess this actuator coil is a motor in a sense. But if so, why did Philips engineers decide to implement their own with two components (each a package of dual MOSFETs) instead of using a single-chip H-bridge solution like a <a href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/">DRV</a><a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/" target="_blank">8</a><a href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/" target="_blank" rel="noreferrer noopener">833</a>? It might be cost, or it might be an important difference between this brush actuator and a generic DC motor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I notice an asymmetry in this circuit. Dual N-channel MOSFETs each got a 33k pull-down resistor (R4 and R5) on their control gates, but the dual P-channel MOSFETs went without any kind of pull-up or pull-down resistor. Why is it OK to leave them floating? I don't know.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't find any <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Flyback_diode" target="_blank">flyback diodes</a> on this circuit. My rudimentary understanding of driving inductive loads (such as an actuator coil) is that we need flyback diodes to protect the circuit against voltage spikes when the electromagnetic field in the coil collapses. A <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/27/components-of-generic-l298n-motor-driver-module/" target="_blank">generic L298N motor driver module</a> has clearly visible diodes for this purpose. Newer motor control modules like DRV8833 has such capability built-in. <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/04/window-shopping-drv8833-dc-motor-control-ic/" target="_blank">DRV8833 datasheet section 7.3.2 <em>Bridge Control and Decay Modes</em> cover this topic.</a>. MOSFETs have a "<a rel="noreferrer noopener" href="https://www.powerelectronictips.com/remember-mosfet-body-diode-faq/" target="_blank">body diode</a>" intrinsic to their design, perhaps they were sufficient for flyback protection?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was very instructive to poke around this circuit board and assemble the bits and pieces I teased out into a KiCad schematic. It is incomplete and likely inaccurate, and it raised more questions than it answered. All signs that I still have a lot to learn. And I will start by <a href="https://newscrewdriver.com/2023/09/27/philips-sonicare-hx6530-mosfet-control-under-oscilloscope/">putting the circuit board under my oscilloscope</a> to compare its measured behavior against what I expect from the schematic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">The KiCad project with this partial schematic is <a href="https://github.com/Roger-random/sonicare" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

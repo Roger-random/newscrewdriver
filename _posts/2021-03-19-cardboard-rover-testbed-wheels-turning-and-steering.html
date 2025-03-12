@@ -1,0 +1,51 @@
+---
+layout: post
+title: Cardboard Rover Testbed Wheels Turning And Steering
+date: 2021-03-19 12:30:00.000000000 +00:00
+type: post
+post_id: '25663'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25665'
+  _publicize_job_id: '56142640132'
+  timeline_notification: '1616182216'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/19/cardboard-rover-testbed-wheels-turning-and-steering/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I figured out how to <a href="https://newscrewdriver.com/2021/03/18/cardboard-box-rover-esp32-power-supply/">handle power for ESP32 on my cardboard box rover testbed</a>, I started connecting the rest of the components. Since I had motor control PWM code ready to go, I started by connecting the DRV8833 breakout boards one by one to the power rail. Which for this experiment was <a rel="noreferrer noopener" href="https://amzn.to/2QgovwL" target="_blank">a battery holder for four AA alkaline batteries that had a power switch built in</a>. (*)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to start with 4 AAs because alkaline batteries are commonplace and more importantly, tolerant of abuse compared to sensitive lithium ion batteries. I'm not squeamish about working with lithium battery packs personally, but I am squeamish about using them on a rover design I want to advertise as beginner-friendly. Four fresh AA batteries in series would deliver 6V, which is coincidentally the maximum spec voltage for both SG90 micro servos and TT gearmotors. Thus a four-pack of AA is a common power supply for <a href="https://www.sparkfun.com/products/13301" target="_blank" rel="noreferrer noopener">little robot kits</a> using similar components.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here I am thankful for the LED indicating power supply, which was not part of the DRV8833 data sheet but <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/" target="_blank">added as a bonus on the particular breakout boards I had bought</a>. Each module was powered-on to verify the power LED illuminated, then I turned it off to install one wheel. After I turned it back on to verify one wheel is working correctly, I would turn it off and connect the other wheel for verification. Testing parts one step at a time ensured that whenever something went wrong (and they did) I would know where to start looking.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As I connected more motors, I noticed that the DRV8833 power LED would visibly dim when the wheels start turning. To monitor voltage, I wired in <a rel="noreferrer noopener" href="https://amzn.to/30QQB3D" target="_blank">a compact voltmeter</a>(*) originally purchased to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/06/powering-sawppy-the-rover/" target="_blank">monitor battery voltage on Sawppy V1</a>. I saw the voltage would sag from nearly 6V to just under 5V. More of a drop than I had expected, but with all six wheel drive motors in place I thought I was in good shape. It turned out I severely underestimated the peak power draw for four corner steering SG90 micro servos. When those little servos are trying to reach a new position ASAP, they seemed to draw more than the TT gear boxes despite their physically smaller motors. During regular operation my four-pack of AA would struggle to stay above 4V, and if the steering servo encounters any obstruction, it would drop below 4V causing the ESP32 to brown out and reset. This is obviously Not Good and I will need to <a href="https://newscrewdriver.com/2021/03/20/initial-thoughts-on-micro-sawppy-rover-battery-power/">put more thinking into power supply</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

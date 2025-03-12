@@ -1,0 +1,70 @@
+---
+layout: post
+title: 'Old AMD GPU for Folding@Home: Ubuntu Struggles, Windows Win'
+date: 2020-04-09 12:30:50.000000000 +00:00
+type: post
+post_id: '21036'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Luggable PC
+- PC
+tags:
+- Folding@Home
+meta:
+  _oembed_c874e4a675e3a1af4aa1e1fef4ca195e: "{{unknown}}"
+  _oembed_030597c10f3d41bf67eda69ab3e64f45: "{{unknown}}"
+  _oembed_6ef72c2babf6f581a4d2514762134c34: "{{unknown}}"
+  _thumbnail_id: '21046'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42832880180'
+  timeline_notification: '1586460811'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/09/old-amd-gpu-for-foldinghome-ubuntu-struggles-windows-win/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The ex-Luggable Mark II is up and running Folding@Home, chewing through work units quickly mostly thanks to its RTX 2070 GPU. An old Windows 8 convertible tablet/laptop is also <a href="https://newscrewdriver.com/2020/04/08/naked-hp-split-x2-13-r010dx-sitting-in-a-breeze-runs-faster/">up and running as fast as it can</a>, though its best speed is far slower than the ex-Luggable. The next recruit for my folding army is Luggable PC Mark I, pulled out of the closet where it had been gathering dust.</p>
+<p>My old AMD Radeon HD 7950 GPU was installed in Luggable PC Mark I. It is quite old now and <a href="https://www.amd.com/en/support/graphics/amd-radeon-hd/amd-radeon-hd-7000-series/amd-radeon-hd-7950">AMD stopped releasing Ubuntu drivers after Ubuntu 14</a>. Given its age I'm not sure if it even works for GPU folding workloads. It was designed and released near the dawn of the age when GPUs started finding work beyond rendering game screens, and its GCN1 architecture probably had problems typical of first versions of any technology.</p>
+<p>Fortunately I also have an AMD Radeon R9 380 available. It was formerly in Luggable PC Mark II but during the <a href="https://newscrewdriver.com/2020/01/12/luggable-pc-mark-ii-decommissioned/">luggable chassis decommissioning</a> I retired it in favor of a NVIDIA RTX 2070. The R9 380 is a few years younger than the HD 7950, I know it supports OpenCL, and <a href="https://www.amd.com/en/support/graphics/amd-radeon-r9-series/amd-radeon-r9-300-series/amd-radeon-r9-380">AMD has drivers for Ubuntu 18</a>.</p>
+<p>A few minutes of wrenching removed the HD 7950 from Luggable Mark I, putting the R9 380 in its place, and I started working out <a href="https://www.amd.com/en/support/kb/faq/gpu-635">how to install those AMD Ubuntu drivers</a>. According to <a href="https://amdgpu-install.readthedocs.io/en/latest/install-overview.html#stack-variants">this page</a>, the "All-Open stack" is recommended for consumer products, which I mean to include my consumer-level R9 380 card. So the first pass started by running <code>amdgpu-install</code>. To verify OpenCL is up and running, I installed <a href="http://manpages.ubuntu.com/manpages/bionic/man1/clinfo.1.html"><code>clinfo</code></a> to verify GPU is visible as OpenCL device.</p>
+<blockquote><p><code>Number of platforms 0</code></p></blockquote>
+<p>Hmm. That didn't work. On advice of <a href="https://foldingforum.org/viewtopic.php?f=81&amp;t=31293">this page on Folding@Home forums</a>, I also ran <code>sudo apt install ocl-icd-opencl-dev</code> That had no effect, so I went back to reread the instructions. This time I noticed the <a href="https://amdgpu-install.readthedocs.io/en/latest/install-overview.html#stack-variants">feature breakdown chart</a> between "All-Open" and "Pro" and OpenCL is listed as a "Pro" only feature.</p>
+<p>So I uninstalled "All-Open" and installed "Pro" stack. Once installed and rebooted, <code>clinfo</code> still showed zero platforms. Returning to the manual, on <a href="https://amdgpu-install.readthedocs.io/en/latest/install-installing.html">a different page</a> I found the fine print saying OpenCL is an <em>optional</em> component of the Pro stack. So I reinstalled yet again, this time with <code>--opencl=pal,legacy</code> flag.</p>
+<p>Running <code>clinfo</code> now returns:</p>
+<blockquote><p>
+<code>Number of platforms 1</code><br />
+<code>Platform Name AMD Accelerated Parallel Processing</code><br />
+<code>Platform Vendor Advanced Micro Devices, Inc.</code><br />
+<code>Platform Version OpenCL 2.1 AMD-APP (3004.6)</code><br />
+<code>Platform Profile FULL_PROFILE</code><br />
+<code>Platform Extensions cl_khr_icd cl_amd_event_callback cl_amd_offline_devices</code><br />
+<code>Platform Host timer resolution 1ns</code><br />
+<code>Platform Extensions function suffix AMD</code></p>
+<p><code>Platform Name AMD Accelerated Parallel Processing</code><br />
+<code>Number of devices 0</code></p>
+<p><code>NULL platform behavior</code><br />
+<code>clGetPlatformInfo(NULL, CL_PLATFORM_NAME, ...) No platform</code><br />
+<code>clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, ...) No platform</code><br />
+<code>clCreateContext(NULL, ...) [default] No platform</code><br />
+<code>clCreateContext(NULL, ...) [other] &lt;error: no devices in non-default plaforms&gt;</code><br />
+<code>clCreateContextFromType(NULL, CL_DEVICE_TYPE_DEFAULT) No devices found in platform</code><br />
+<code>clCreateContextFromType(NULL, CL_DEVICE_TYPE_CPU) No devices found in platform</code><br />
+<code>clCreateContextFromType(NULL, CL_DEVICE_TYPE_GPU) No devices found in platform</code><br />
+<code>clCreateContextFromType(NULL, CL_DEVICE_TYPE_ACCELERATOR) No devices found in platform</code><br />
+<code>clCreateContextFromType(NULL, CL_DEVICE_TYPE_CUSTOM) No devices found in platform</code><br />
+<code>clCreateContextFromType(NULL, CL_DEVICE_TYPE_ALL) No devices found in platform</code>
+</p></blockquote>
+<p>Finally, some progress. This is better than before, but zero devices is not good. Back to <a href="https://amdgpu-install.readthedocs.io/en/latest/install-overview.html">the overview page</a> which says their PAL OpenCL stack supported their<a href="https://en.wikipedia.org/wiki/Radeon_RX_Vega_series"> Vega 10 and later GPUs</a>. My <a href="https://en.wikipedia.org/wiki/Graphics_Core_Next#third">R9 380 is from their Tonga GCN 3 line</a>, which is quite a bit older than Vega, which is GCN 5. So I'll reinstall with <code>--opencl=legacy</code> to see if it makes a difference.</p>
+<p>It did not. <code>clinfo</code> still reports zero OpenCL devices. AMD's GPU compute initiative is called <a href="https://github.com/RadeonOpenCompute/ROCm">ROCm or RadeonOpenCompute</a> but it is restricted to hardware newer than what I have on hand. Getting OpenCL up and running, on Ubuntu, on hardware this old, is out of scope for attention from AMD.</p>
+<p>This was the point where I decided I was tired of this Ubuntu driver dance. I wiped the system drive to replace Ubuntu with Windows 10 along with AMD Windows drivers. Folding@Home saw the R9 380 as a GPU compute slot, and I was up and running simulating protein folding. The Windows driver also claimed to support my older 7950, so one potential future project would be to put both of these AMD GPUs in a single system. See if the driver support extends to GPU compute for multi GPU folding.</p>
+<p>For today I'm content to have just my R9 380 running on Windows. Ubuntu may have struck out on this particular GPU compute project, but it works well for CPU compute, <a href="https://newscrewdriver.com/2020/04/10/inviting-my-freenas-box-to-the-folding-party/">especially virtual machines</a>.</body></html></p>

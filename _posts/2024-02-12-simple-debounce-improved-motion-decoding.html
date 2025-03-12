@@ -1,0 +1,57 @@
+---
+layout: post
+title: Simple Debounce Improved Motion Decoding
+date: 2024-02-12 12:30:00.000000000 +00:00
+type: post
+post_id: '41927'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  timeline_notification: '1707769824'
+  firehose_sent: '1707769822'
+  _publicize_job_id: '91908262259'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/12/simple-debounce-improved-motion-decoding/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My current Arduino project is to translate a quadrature encoder's positions over time into a series of movements, in the hope it would help me understand the inner workings of a Canon Pixma MX340 multi-function inkjet. Trying to keep the project simple, it was simpler to calculate "microseconds per encoder count" (shortened to us/enc below), which is the reciprocal of velocity "encoder count per unit of time". I think it'll still have all the information I need. I graphed output from my first draft sketch and <a href="https://newscrewdriver.com/2024/02/11/graphing-position-alongside-microseconds-per-encoder-count/">it looked like a promising start</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first problem I want to tackle is noise introduced by the encoder bouncing back and forth between two adjacent values. For example, 1799 then 1800 then back to 1799. This happens because the motion control system could not (or deliberately chose not to) hold the motor at a precise location, allowing it to move around a bit. Since these small bounces aren't very frequent, they work out to very large us/enc values. Without any processing, the raw plot results in lots of noise in the orange line that doesn't correspond to any actual movement on the blue line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41920,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-us_per_position-over-time.png?w=1024" alt="" class="wp-image-41920"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>To keep my code simple, I've been resisting solutions that require me to implement a long history buffer, wary of bugs as I traverse the buffer. I've been able to get away with tracking a single history point so far, but in order to recognize bounces, I need to track a second history point to know if I'm just bouncing back and forth between the two history records. As expected, maintaining double the history entries approximately doubled my code complexity, but at least it's still simpler than implementing a circular buffer or anything along those lines.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41929,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-us_per_position-over-time-with-two-entry-bounce-rejection.png?w=1024" alt="" class="wp-image-41929"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The results were worth it! A bit of debounce code eliminated all obvious noises, leaving me with a much cleaner output so I can <a href="https://newscrewdriver.com/2024/02/13/mx340-paper-feed-motor-acceleration-deceleration/">get a better understanding of this system's behavior</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,76 @@
+---
+layout: post
+title: Voltage Step-Down (Buck) Converter Module Schematic (MP1584)
+date: 2023-10-12 12:30:00.000000000 +00:00
+type: post
+post_id: '39558'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39562'
+  footnotes: ''
+  timeline_notification: '1697139070'
+  _publicize_job_id: '88448134627'
+  wordads_ufa: s:wpcom-ufa-v4:1698602695
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/12/voltage-step-down-buck-converter-module-schematic-mp1584/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Drawing a <a href="https://newscrewdriver.com/2023/10/11/single-cell-lithium-ion-battery-management-module-4056-schematic/">KiCad schematic for a 4056 battery management system (BMS) module</a> was an educational exercise. I've only recently <a href="https://newscrewdriver.com/2023/08/24/single-cell-lithium-ion-battery-management-system-module-4056/" target="_blank" rel="noreferrer noopener">added that BMS module to my repertoire of tools</a>, and now have a better understanding of what that module could and could not do. My next KiCad practice will look at an old friend. I've been using MP1584-based voltage step-down converter (a.k.a. buck converter) for years, ever since I found it worked well to <a href="https://newscrewdriver.com/2017/07/27/powering-the-raspberry-pi-3-with-mp1584-voltage-step-down-converter/" target="_blank" rel="noreferrer noopener">supply a steady 5V DC (up to 3A) to a Raspberry Pi</a> from a battery pack's varying voltage levels.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39568,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/mp1584-datasheet-typical-application-schematic.png?w=755" alt="" class="wp-image-39568"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the 4056 schematic exercise, I started on my own then checked my answer against others I found online. I'll go a different route this time, because the components on this module are not labeled. It's a minor thing but I want consistent component labels (R1, R2, etc) between my exercise and the answer key, so I'll start by comparing the module against "typical application" schematic in the datasheet and label matching components with the same name.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39561,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/mp1584-buck-converter-pcb-front.jpg?w=800" alt="" class="wp-image-39561"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I flipped the back side image so traces and vias would line up as I compare these two pictures.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39560,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/mp1584-buck-converter-pcb-back-flipped.jpg?w=800" alt="" class="wp-image-39560"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew there would be some differences between this module and the "typical application" circuit, because it has a potentiometer to adjust the output voltage whereas the datasheet sample schematic had no such adjustment provision.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":39562,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/10/mp1584-buck-converter-pcb-schematic.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/mp1584-buck-converter-pcb-schematic.png?w=1024" alt="" class="wp-image-39562"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's what I came up with. The potentiometer replaced resistor R1 in the datasheet schematic, acting as the upper half of a voltage divider that provides a feedback signal for the MP1584. Interestingly, this module preserved an option for fixed output by with open pads ready for a small surface-mount resistor. I labeled this pad R11. To convert this module to fixed output, we can unsolder the potentiometer and solder something in R11.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Resistors R5 and R6 formed another voltage divider, whose output level will dictate whether the MP1584 is enabled and running (&gt;1.5V) or go to low power sleep (&lt;1.2V) I <a href="https://newscrewdriver.com/2022/03/01/probing-mp1584-enable-pin/" target="_blank" rel="noreferrer noopener">found these earlier</a> in an attempt to raise the enable voltage level. This schematic exercise confirmed my earlier understanding was correct and provided context relative to the rest of the module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Capacitor C6 in the datasheet schematic was part of the COMP (control loop frequency compensation) circuit, but it was omitted on this module leaving just its friends C3 and R3 to do the job. I don't understand enough to know why this is OK. Or if it's not OK, what the consequences might be.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's probably not dropping capacitors for the sake of reducing component count, because the module actually added two capacitors not on the datasheet sample schematic: one each to help buffer input and output voltage. The small C11 is electrically parallel to the larger C1 buffering between VIN and GND. And a small C21 is electrically parallel to the larger C2 between VOUT and GND. It's possible these capacitors needed to be close to something. If not, using different capacitors help smooth out response across the frequency range. In the intended use where MP1584 is part of a known circuit, specific frequency response can be planned for. But since this is a module that may be connected to different circuits, compatibility across a broader range makes sense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One detail I found interesting was the BST (bootstrap) pin, which the datasheet explained is part of the power supply circuit for the high-side MOSFET driver. That seems reasonable except it is supposed to be connected to SW (switch) via a capacitor. SW is the <em>output </em>signal for the high-side switch. How is that high-side MOSFET powered by its own output? There must be something interesting going on with the startup behavior of this pin. Is it typical of buck converters? I can <a href="https://newscrewdriver.com/2023/10/13/voltage-step-down-buck-converter-module-with-mystery-aelh-chip/">look at another one to compare</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This KiCad learning project is <a href="https://github.com/Roger-random/kicad_tests/tree/main/buck-converter-mp1584" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

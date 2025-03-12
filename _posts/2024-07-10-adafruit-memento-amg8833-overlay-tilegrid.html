@@ -1,0 +1,59 @@
+---
+layout: post
+title: 'Adafruit Memento + AMG8833 Overlay: TileGrid'
+date: 2024-07-10 12:30:00.000000000 +00:00
+type: post
+post_id: '44157'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- thermal memento
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44123'
+  wordads_ufa: u:wpcom-ufa-v4:1720767777
+  _publicize_job_id: '96133590105'
+  timeline_notification: '1720639818'
+  firehose_sent: '1720639818'
+  _oembed_1149efc70117516b0b7942c541b4fab6: "{{unknown}}"
+  _oembed_0343ee4c96e192e2dff707baa07cbb8f: "{{unknown}}"
+  _oembed_343156fb98af3c88cf401534e9df1c08: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-07-12 07:04:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/10/adafruit-memento-amg8833-overlay-tilegrid/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>By overlaying data from AMG8833 thermal sensor on top of the Adafruit Memento camera viewfinder, I've <a href="https://newscrewdriver.com/2024/07/09/adafruit-memento-amg8833-overlay-alpha-blending/">successfully turned it into a thermal camera</a>. The bad news is all of my bitmap manipulation code runs very slowly, bogging the system down to roughly a single frame per second. I blame my habit or writing Python code as if I were writing C code. Running tight loops shuffling bits around is fine in C, but now the same approach is incurring a lot of Python runtime overhead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As I understand Python, the correct approach is to utilize libraries to handle performance-critical operations. My Python code is supposed to convey what I want to happen at a higher level, and the library translates it into low-level native code that runs far faster. In this context I believed I needed <a href="https://learn.adafruit.com/circuitpython-display-support-using-displayio">CircuitPython <code>displayio</code> sprite compositing engine</a> to assemble my thermal overlay instead of doing it myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The viewfinder image is pretty straightforward, loading OV5640 into a <code>Bitmap</code> which went into a <code>TileGrid</code> as a single full-screen entry. The fun part is the thermal overlay. I created a <code>TileGrid</code> of 8x8 tiles, matching thermal sensor output data points. I then created another bitmap in code corresponding to my range of thermal colors. I didn't see any option for alpha blending in <code>displayio</code> and, as I believed it to be computationally expensive, I wanted to avoid doing that anyway. My palette bitmap is again a screen door of my thermal color alternating with <a href="https://docs.circuitpython.org/en/latest/shared-bindings/displayio/index.html#displayio.Palette.make_transparent">the color marked as transparent</a> so viewfinder image can show through.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In theory, this means every thermal sensor update only requires updating tile indices for my 8x8 <code>TileGrid</code>, and <code>displayio</code> will pull in the correct 30x30 pixel bitmap tile to use as a sprite rendering my 240x240 pixel thermal overlay. The underlying native code should execute this as native code memory operation far faster than my loop in Python setting bitmap pixels one by one.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had high hopes, but I was hugely disappointed when it started running. My use of <code>TileGrid</code> did not make things faster, in fact it made things slower. What went wrong? My best hypothesis is that compositing tiles with transparent pixels incur more workload than I had assumed. I also considered whether I incurred color conversion overhead during compositing, but as <a href="https://docs.circuitpython.org/en/latest/shared-bindings/displayio/index.html#displayio.Palette">documentation for <code>displayio.Palette</code> claimed</a>: "<em>Colors are transformed to the display’s format internally to save memory.</em>" So in theory color conversion should have been done once during startup when I created the thermal color tiles, not during the performance-critical loop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The upside of Python's "offload details to libraries" approach is that I don't have to understand a library's internals to gain its benefits. But the corresponding downside is that when things go wrong, I can't figure out why. I have no idea how to get insight into <code>displayio</code> internals to see what part of the pipeline is taking far longer than I expected. Perhaps I will eventually gain an intuition of what is quick versus what is computationally expensive to do in <code>displayio</code>, but today it is a bust and <a href="https://newscrewdriver.com/2024/07/11/adafruit-memento-amg8833-overlay-performance-timers/">I have to try something else</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">https://github.com/Roger-random/circuitpython_tests/commit/650f46e64bc08de9f8c1f451a4d18ea7021e92fb</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

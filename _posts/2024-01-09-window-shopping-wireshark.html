@@ -1,0 +1,68 @@
+---
+layout: post
+title: Window Shopping Wireshark
+date: 2024-01-09 12:30:00.000000000 +00:00
+type: post
+post_id: '41491'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41492'
+  firehose_sent: '1704832203'
+  timeline_notification: '1704832204'
+  _publicize_job_id: '90951462064'
+  wordads_ufa: s:wpcom-ufa-v4:1704925839
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/09/window-shopping-wireshark/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've taken apart a Canon Pixma MX340 multi-function inkjet and I want to reverse-engineer the communication data between its main board and its control panel. After making an attempt at <a href="https://newscrewdriver.com/2024/01/08/canon-pixma-mx340-control-panel-data-filter-wish-list/">articulating characteristics of a tool I want</a>, I went online to see if such a thing existed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When searching with keywords like "reverse-engineering", "communication protocol analysis", "data filtering" and such, one name keeps coming up: <a href="https://www.wireshark.org" target="_blank" rel="noreferrer noopener">Wireshark</a>. It is a very powerful piece of analysis software and something on my to-do list as a tool I want to add to my toolbox. It certainly has some capabilities I want. One example is being able to annotate raw data to give it context. If I've determined a particular two-byte command 0x04 0x75 means "put the screen to sleep", that translation can be automated so I don't have to recognize it and transform in my head. Wireshark also has extensive filtering capability, so I could exclude common high traffic data and focus on the interesting unique parts. Though there seems to be a bit of a caveat: Wireshark has two separate filtering mechanisms. A less powerful mechanism that runs on live data during capture, and an entirely separate and more powerful filtering mechanism for analyzing data after capture. For the type of filtering I wish for, Wireshark might only be capable of post-processing captured data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Regardless of possible limitations Wireshark is not the right tool for my current project, because it is designed to analyze network traffic. Wired Ethernet, Wi-Fi, and so on. I tried to exclude Wireshark from my search by requiring "+serial" but Wireshark still comes up. It took some reading through Wireshark documentation to figure out why. It turns out Wireshark supports capturing and analyzing network traffic transmitted over asynchronous serial via <a href="https://en.wikipedia.org/wiki/Point-to-Point_Protocol" target="_blank" rel="noreferrer noopener">point-to-point protocol (PPP)</a> or its predecessor <a href="https://en.wikipedia.org/wiki/Serial_Line_Internet_Protocol" target="_blank" rel="noreferrer noopener">serial line internet protocol (SLIP)</a>. Neither of which is applicable to my MX340 project, but search engines don't know enough to understand that distinction. Oh well. I adjusted my query to explicitly exclude Wireshark from my results in order to <a href="https://newscrewdriver.com/2024/01/10/window-shopping-bus-pirate/">see what else is out there</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>As an aside, I was amused by this snippet:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><strong><em>Can you help me fill out this compliance form so that I can use Wireshark?</em></strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Please contact the Wireshark Foundation and they will be able to help you for a nominal fee.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong><em>Can you sign this legal agreement so that I can use Wireshark?</em></strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Please contact the Wireshark Foundation and they will be able to help you for a somewhat less nominal fee.</p>
+<p><!-- /wp:paragraph --><cite>-- from <a href="https://www.wireshark.org/faq.html" target="_blank" rel="noreferrer noopener">Wireshark FAQ</a></cite>
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

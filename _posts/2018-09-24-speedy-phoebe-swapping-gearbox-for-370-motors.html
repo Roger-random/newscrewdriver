@@ -1,0 +1,43 @@
+---
+layout: post
+title: 'Speedy Phoebe: Swapping Gearbox For 370 Motors'
+date: 2018-09-24 09:00:38.000000000 +00:00
+type: post
+post_id: '16830'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '22485529608'
+  timeline_notification: '1537805432'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/24/speedy-phoebe-swapping-gearbox-for-370-motors/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The first rough draft chassis for Phoebe worked well enough for me to understand some pretty serious problems with that design. Now that I have a better idea what I'm doing, it's time to start working on a new chassis incorporating lessons learned. And since all the components will be taken apart anyway, it would be a good time to address another problem: Phoebe's speed. More precisely, the lack thereof.</p>
+<p>Phoebe's motor + encoder + gearbox unit was borrowed from the retired parts bin for <a href="https://newscrewdriver.com/2018/04/15/sgvhak-rovers-first-brief-drive-session/">SGVHAK Rover</a>. Since they were originally purchased to handle steering, priority was on precision and torque rather than speed. It worked well enough for Phoebe to move around, but their slow speed meant it took quite some time to map a room.</p>
+<p>The motor mounts used for Phoebe's first draft chassis were repurposed from a self-balancing robot toy, which had a similar motor coupled with a different ratio gearbox. That motor was not suitable for ROS work because there was no encoder on the motor, but perhaps we could swap its gearbox with the motor that <strong><em>does</em> </strong>have an encoder.</p>
+<p><img class=" size-full wp-image-16831 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/identical-output-shaft-and-mount.jpg" alt="Identical output shaft and mount" width="1024" height="521"></p>
+<p>Here's the "Before" picture: Self-balancing robot motor + gearbox on the left, former SGVHAK rover steering encoder + motor + gearbox on the right. The reason I was able to use the self balancing robot's motor mount and wheel is because they both had the same output shaft diameter and mount points. While they have identical diameter, the steering gearbox is noticeably longer than the balancing robot gearbox.</p>
+<p><img class=" size-full wp-image-16832 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/both-are-370-motors.jpg" alt="Both Are 370 Motors" width="1024" height="644"></p>
+<p>Both of these motors conform to a generic commodity form factor called "370". A <a href="https://www.alibaba.com/trade/search?SearchText=370+motor">search for "370 motor" on Alibaba</a> will find many companies making different motors with different options of voltage, speed, etc. All are physically similar in size. Maybe even identical? As for what "370" means... best guess is that it originally referred to overall length of the motor at 370 millimeters. It doesn't specifically mean anything for remaining motor dimensions, but "370 motor" has probably become a de-facto standard. (Like <a href="https://newscrewdriver.com/2018/03/07/for-cheap-commodity-bearings-search-for-608/">608 bearings</a>.)</p>
+<p>After a few screws were removed, both gearboxes were easily disassembled. We can see a few neat things: the plate mounting the gearbox to the motor had multiple holes to accommodate three different patterns. Either these gearboxes were designed to fit on multiple different motors, or some 370 motors are made with different bolt patterns than others.</p>
+<p><img class=" size-full wp-image-16833 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/gearboxes-removed.jpg" alt="Gearboxes Removed" width="1024" height="582"></p>
+<p>Fortunately, both motors (one with encoder, one without) seem to have the same bolt pattern. And more importantly - the gear mounted on the motor output shaft seems to be identical as well! I don't have to pull the gear off one shaft and mount it on another, which is great because that process tends to leave the gear weaker. With identical gears already mounted on the motor output shaft, I can literally bolt on the other gearbox and complete the swap.</p>
+<p><img class=" size-full wp-image-16834 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/after-gearboxes-swapped.jpg" alt="After - Gearboxes swapped" width="1024" height="639"></p>
+<p>Voila! The motor with encoder now has a different gear ratio that should allow Phoebe to run a lot faster. The slow one was advertised to be 227:1 ratio. I don't have specification sheet for the fast gearbox, but turning one shaft and counting revolutions of the other indicates a roughly 20:1 ratio. So theoretically Phoebe's top speed has been increased ten-fold. Would that be too fast and cause Phoebe to run out of control? Would it be unable to slow to a sufficiently low crawl speed for Phoebe to cautiously explore new worlds? We won't know until we try!</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/153281-speedy-phoebe-swapping-gearbox-for-370-motors">Hackaday.io</a>)</p>
+<p></body></html></p>

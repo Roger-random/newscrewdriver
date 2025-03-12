@@ -1,0 +1,41 @@
+---
+layout: post
+title: Glow Flow Pixelblaze Performance
+date: 2019-07-13 12:30:11.000000000 +00:00
+type: post
+post_id: '18885'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18857'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32814976272'
+  timeline_notification: '1563046313'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/13/glow-flow-pixelblaze-performance/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The <a href="https://newscrewdriver.com/2019/07/12/pixelblaze-led-helix-pattern-glow-flow/">first draft of Glow Flow is up and running</a>, but response speed is sluggish. It can be argued this is an upside: it adds the illusion my glowing rainbow liquid is viscous, taking a bit of time to flow. But I want to see if faster responsiveness would feel better, so I start hunting for room for improvement. Here is a summary of top gains:</p>
+<h2><em>Only recalculate values when they change</em></h2>
+<p>The first draft were recalculating my rotation matrices for every LED. However, the accelerometer based rotation matrix values only change once per frame, so I could do it in <code>beforeRender()</code> once per frame instead of doing that work in <code>render3D()</code> 300 times per frame (once per LED.) That is 299 times too many! Fixing this mistake had a tremendous impact. Thanks to Ben for pointing this one out.</p>
+<h2><em>Skip multiplication with zero or one</em></h2>
+<p>A 3D transform matrix is a general mechanism to handle every possible 3D operation. Calculating a transform involves multiplying sixteen numbers. However, Glow Flow only requires two 3D operations: rotate about the Y axis and rotate about Z axis. The transform matrix for these operations are mostly filled with zeroes. We don't need to perform a multiplication operation when we already know the result is going to be zero. These multiplications also have elements filled with one, which we can replace with an assignment operation. This cuts down from sixteen multiplications down to four. The improvement here is almost fourfold, corresponding to the ratio of reduction in multiplication.</p>
+<h2><em>Minimize data movements</em></h2>
+<p>Avoid using global variables is good programming practice, but when trying to extract every bit of performance, it is sometimes worthwhile to put that option back in the toolbox. In the case of Glow Flow Pixelblaze program, many things that are commonly passed as parameters are instead stored as globals. Example: the two rotate transform matrices, as well as the coordinate being transformed. The improvement here is very small, only a few frames per second, but noticeable.</p>
+<p>These changes improved frame rate and responsiveness, making it more dynamic and giving me breathing room to <a href="https://newscrewdriver.com/2019/07/14/glow-flow-uses-all-the-sensors/">add more features to Glow Flow</a>.</p>
+<p>Pixelblaze pattern code for Glow Flow is <a href="https://github.com/Roger-random/glowflow/blob/master/Glow%20Flow">available on Github</a>.</body></html></p>

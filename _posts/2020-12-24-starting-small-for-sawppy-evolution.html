@@ -1,0 +1,75 @@
+---
+layout: post
+title: Starting Small For Sawppy Evolution
+date: 2020-12-24 12:30:00.000000000 +00:00
+type: post
+post_id: '24263'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Servo
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24003'
+  timeline_notification: '1608841869'
+  _publicize_job_id: '52617653341'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/12/24/starting-small-for-sawppy-evolution/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've decided to tackle the challenge of designing <a href="https://newscrewdriver.com/2020/12/23/conflicting-requirements-call-for-sawppy-variants/">two different Sawppy variants</a> in order to address the needs of different types of aspiring rover builders. However, I am optimistic it would not require twice the amount of work. Despite their different sizes, ideally they would be more alike than different.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As stated earlier, they will both be six-wheel drive, four-wheel steering robot chassis with rocker-bogie suspensions. I want to explore ways to redesign the suspension components in order to move them away from  having to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/11/26/sawppy-issue-getting-e-clip-slots-right-is-hard/" target="_blank">cut metal shafts and e-clip slots</a>, preferably in a way that can be scaled up and down to address both rover sizes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For rover articulation, I'm moving away from serial bus servos. And by doing so, the motors used for six wheel drive can be different from the motors used to perform four corner wheel steering. Building an electrical architecture that can be scaled to both rovers should also make it easier for people who are already trying to build Sawppy variants at different scales.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I expect to experiment with the following types of wheel drive motors, and possibly more to be added later:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Brushed DC gearmotors (pioneer: Marco Walther's Sawppy.)</li>
+<li>Stepper motors (multiple requests.)</li>
+<li>Serial bus servos (for those that want to reuse hardware from Sawppy V1)</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>And the following types of steering actuators, again with more potential additions later:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Commodity remote control hobby servos.</li>
+<li>Serial bus servos. (V1 compatibility.)</li>
+<li>Stepper motors (require something to sense position. Precedent: homing switches on 3D printers.)</li>
+<li>Brushed DC gearmotors (also require position sensing of some sort.)</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is not an exhaustive list, they are just the starting point I want to keep in mind as I rework the software side of the system. I want to be able to use the same code base for both rovers' control software. Hardware interfaces will be code modules that can be swapped out easily to match the type of motors and actuators used. Rover dimensions will be parameters that can be changed to match the physical chassis size. The code should preferably run on either identical microcontroller hardware or in the same family. For example, the current Sawppy running <a href="https://github.com/Roger-random/Sawppy_Rover/blob/master/docs/SGVHAK%20Rover%20Software.md" target="_blank" rel="noreferrer noopener">adapted SGVHAK rover software</a> uses a Raspberry Pi 3. Perhaps the smaller Sawppy will run the same code but on a Raspberry Pi Zero to reduce cost. These and other venues are yet to be explored.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've decided to start with the smaller rover for the following reasons:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Smaller rover's smaller parts are faster to print, so I can iterate through mechanical designs faster.</li>
+<li>If I start simpler and cheaper with the smaller rover, I expect it will be easier to scale up to something more complex and expensive for the larger rover rather than doing the reverse.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>And the first step for a small rover is to decide on <a href="https://newscrewdriver.com/2020/12/25/commodity-micro-servos-for-rover-actuator/">what actuators I will use for it</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

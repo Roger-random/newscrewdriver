@@ -1,0 +1,109 @@
+---
+layout: post
+title: Wemos D1 Mini ESP32 Derivative
+date: 2022-09-03 12:30:00.000000000 +00:00
+type: post
+post_id: '32374'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- ESP32
+- Fan Strobe LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32375'
+  _publicize_job_id: '76383247476'
+  timeline_notification: '1662233404'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667121830
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/03/wemos-d1-mini-esp32-derivative/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was fun to build a LED strobe light pulsing in sync with a cooling fan's tachometer wire. After the initial bare-bones prototype I <a href="https://newscrewdriver.com/2022/09/02/fan-strobe-led-adjustments-via-esphome/">used ESPHome to add some bells and whistles</a>. My prototype board is built around a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/01/29/hello-wemos-d1-mini-clone/" target="_blank">Wemos D1 Mini module</a>, but I think I've hit a limit of hardware timers available within its onboard ESP8266 processor. The good news is that I could upgrade to its more powerful sibling ESP32 with this dev board, and its hardware compatibility means I don't have to change anything on my prototype board to use it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most puzzling thing about this particular ESP32 dev format is that I'm not exactly sure where it came from. I found it as "Wemos D1 Mini ESP32" <a rel="noreferrer noopener" href="https://amzn.to/3q0AoWg" target="_blank">on Amazon where I bought it</a>. (*) I also see it listed by that name as well as "Wemos D1 Mini32" on its <a rel="noreferrer noopener" href="https://docs.platformio.org/en/latest/boards/espressif32/wemos_d1_mini32.html" target="_blank">Platform.IO hardware board support page</a>, which helpfully links to <a rel="noreferrer noopener" href="https://www.wemos.cc/" target="_blank">Wemos</a> as "Vendor". Except, if we follow that link, we don't see this exact board listed. The <a rel="noreferrer noopener" href="https://www.wemos.cc/en/latest/s2/s2_mini.html" target="_blank">Wemos S2 Mini</a> is very close, but I see fewer pins (32 vs. 40) and their labels indicate a different layout. Did Wemos originate this design, but since removed it for some reason? Or did someone else design this board and didn't get credit for it?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32381,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/wemos-d1-mini-esp8266-and-esp32.jpg?w=1024" alt="" class="wp-image-32381"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Whatever the history of this design, putting a unit (right) next to the Wemos D1 Mini design (left) shows it is a larger board. ESP32 has a much greater number of I/O pins, so this module has 40 through-holes versus 16.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32383,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/wemos-d1-mini-esp8266-and-esp32-back.jpg?w=1024" alt="" class="wp-image-32383"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another contributing factor for larger size is the fact all components are on a single side of the circuit board, as opposed to having components on both sides of the board. It leaves the backside open for silkscreened information for pins. Some of the pins were labeled with abbreviations I don't understand, but probing those lines found the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Pins connected to onboard flash and not recommended for GPIO use: CMD (IO11), CLK (IO6) SD0/SDD (IO7) SD1 (IO8) SD2 (IO9) and SD3 (IO10).</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>TDI is IO12, TDO is IO15, TCK is IO13, and TMS is IO34. When not used as GPIO, these can be used as <a href="https://newscrewdriver.com/2021/02/26/platformio-jtag-debug-adventure-on-esp32/" target="_blank" rel="noreferrer noopener">JTAG interface pins</a> for testing and debugging.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>SVP is IO36, and SVN is IO39. I haven't figured out what "SVP" and "SVN" might mean. These are two of four pins on an ESP32 that are input-only. "GPI" and not "GPIO", so to speak. (IO34 and IO35 are the other input-only pins.)</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Out of these 40 pins, two are labeled NC meaning not connected, leaving 38 connections. An Espressif ESP32 DevKitC has 38 pins and it appears the same 38 are present on this module, including the aforementioned onboard flash pins and three grounds. But physical arrangement has been scrambled relative to the DevKitC to arrive at this four-column format. What was the logic behind this rearrangement? The key insight for me was that a subset of 16 pins were highlighted with white. They were arranged to be physically and electrically compatible with the Wemos D1 Mini ESP8266:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Reset pin RST is in the same place.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>All power pins are at the same places: 5V/VCC, 3.3V, and one of the ground pins.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Serial communication lines up with UART TX/RX at the same places.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>ESP32 can perform I2C on most of its GPIO pins. I see many examples use the convention of pins 21 for SDA and pin 22 for SCL, and they line up here with ESP8266 D1 Mini's I2C pins D2 and D1.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Same deal with ESP32 SPI support: many pins are supported, but convention has uses four pins (5, 18, 19, and 23) so they've been lined up to their counterparts on ESP8266 D1 Mini.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>ESP8266 has only a single pin for analog-to-digital conversion. ESP32 has more flexibility and one of several ADC-supported pins was routed to the same place.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>ESP8266 supported hardware sleep/wake with a single pin. Again ESP32 is more flexible and one of the supported pins was routed to its place.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>There's a LED module hard-wired to GPIO2 onboard the ESP8266MOD. ESP-WROOM-32 has no such onboard LED, so there's an external LED wired to GPIO2 adjacent to an always-on power LED. Another difference from ESP8266: this LED illuminates when GPIO2 is high instead of ESP8266's onboard LED which shines when GPIO2 is low.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a nice piece of backwards-compatibility work. It means I can physically plug this board's white-highlighted subset of 16 pins into any hardware expecting the Wemos D1 Mini ESP8266 board, like its <a rel="noreferrer noopener" href="https://www.wemos.cc/en/latest/d1_mini_shield/index.html" target="_blank">ecosystem of compatible shields</a>. Physically it will hang out the sides, but electrically things should work. Software will still have to be adjusted and recompiled for ESP32, changing GPIO numbers to match their new places. But at least those pins are all capable of the digital and analog IO pins in those places.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only downside I see with this design? It is no longer <a href="https://newscrewdriver.com/2021/03/17/cardboard-box-rover-breadboard/" target="_blank" rel="noreferrer noopener">breadboard-friendly</a>. When all pins are soldered, all horizontally adjacent pins would be shorted together and that's not going to work. I'm specifically eyeing one corner where reset (RST) would be connected to ground (GND). I suppose we could solder pins to just the compatibility subset of 16 pins and plug that into a breadboard, but this module is too wide for a standard breadboard. A problem shared with <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/22/another-esp32-dev-kit-layout/" target="_blank">another ESP32 dev board format</a> I've used.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, like my ESP8266 Wemos D1 Mini board, these came without any pins soldered to the board. Three different types were included in the bag: pins, or sockets, or passthrough. However, the bag only included enough 20 pins of each type, which isn't enough for all 40 pins. Strange, but no matter. I have my own collection of pins and sockets and passthrough connectors if I want to use them. And my most recent ESP32 project <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/08/19/esp32-vga-signal-generator-finds-cozy-home-inside-monitor/" target="_blank">didn't need these pins at all</a>. In fact, I had to <em>unsolder </em>the pins that module came with. An extra step I wouldn't need to do again, now I have these "Wemos D1 Mini ESP32" modules on hand <a href="https://newscrewdriver.com/2022/09/04/migrating-fan-strobe-led-project-to-esp32/">for my experiments</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

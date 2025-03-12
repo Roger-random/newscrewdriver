@@ -1,0 +1,71 @@
+---
+layout: post
+title: Simultaneously Listening to Two Serial Ports
+date: 2024-01-18 12:30:00.000000000 +00:00
+type: post
+post_id: '41627'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41609'
+  timeline_notification: '1705609831'
+  firehose_sent: '1705609830'
+  wordads_ufa: s:wpcom-ufa-v4:1705698725
+  _publicize_job_id: '91208679213'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/18/simultaneously-listening-to-two-serial-ports/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm slowly understanding the data flowing between main board and control panel of a Canon Pixma MX340 multi-function inkjet. It's small enough to be tractable for my skill level, but too complex to be practical on an oscilloscope screen or logic analyzer timeline view. Going beyond those instruments, I've decided to tackle this challenge by writing a data filter program on my computer, using <a href="https://newscrewdriver.com/2024/01/17/new-usb-serial-adapter-show-minor-updates/">two USB serial adapters</a> to hear both sides of the conversation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started with a single USB serial adapter to listen to the traffic from control panel to main board, which was successful enough for me to quickly learn all <a href="https://newscrewdriver.com/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/" target="_blank" rel="noreferrer noopener">button matrix status reports (scan codes)</a>. I quickly learned adding a second serial port will more than double the complexity of my program. When I'm only listening to one port, I could make a blocking call to <code>read()</code> and let it wait for the next byte of data to arrive. But if I block waiting for data to come in on one port, data might arrive on the other port and I wouldn't know until I get around to calling <code>read()</code> on that other port.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One approach is to create another unit of execution. Whether it be another thread, process, etc. One per serial port and they can each block on their respective calls to <code>read()</code>. Whichever one gets data first gets to execute. There are a few problems with this approach. The first is Python's historically poor support for multi-threading, leaving a legacy of tricky gotchas that I don't want to spend time to learn right now. The second problem is when I have two independent units of execution it will take work to coordinate between them. For example, if I want to link main board commands with the matching 0x20 sent by control panel as acknowledgement. They're solvable problems, but not the next one: I have ambition to create a microcontroller project to reuse this control panel in the future, so I want to work on logic that can conceivably be ported to a microcontroller. While FreeRTOS running on ESP32 has concept of tasks, ATmega328 Arduino has no such counterpart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Due to those concerns, I will first try an alternate approach. Check to see if data is available before I commit to a serial read operation. If so, read only what's already available for processing. This allows my code to rapidly cycle through all my serial ports checking for available data. And if found, process only the amount available in order to avoid blocking execution any longer than I have to. This pattern is bad for modern computers because polling prevents dropping the big CPU to a low power state, but is common for microcontrollers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want to eventually port this code, though, I should at least make sure it's theoretically possible. I found good news there. The ability to check serial data availability in a non-blocking manner seems to be pretty common across different serial data APIs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Python pySerial: <a href="https://pyserial.readthedocs.io/en/latest/pyserial_api.html#serial.Serial.in_waiting" target="_blank" rel="noreferrer noopener"><code>serial.Serial.in_waiting</code></a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Arduino: <a href="https://www.arduino.cc/reference/en/language/functions/communication/serial/available/" target="_blank" rel="noreferrer noopener"><code>Serial.available()</code></a>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Espressif ESP-IDF: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/uart.html#_CPPv426uart_get_buffered_data_len11uart_port_tP6size_t"><code>uart_get_buffered_data_len()</code></a>
+</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks promising enough for <a href="https://newscrewdriver.com/2024/01/19/canon-pixma-mx340-main-board-command-versus-bulk-transfer/">a test drive</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,83 @@
+---
+layout: post
+title: High-Side Fan ESP8266 PWM Using Optocoupler
+date: 2022-07-26 12:30:00.000000000 +00:00
+type: post
+post_id: '31636'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Cooling Fan
+- ESP8266
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31645'
+  timeline_notification: '1658863815'
+  _publicize_job_id: '75141668940'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/26/high-side-fan-esp8266-pwm-using-optocoupler/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was neat that I could <a href="https://newscrewdriver.com/2022/07/25/esp8266-controlling-4-wire-cpu-cooling-fan/">control the speed of a 4-wire CPU cooling fan</a> with just software a PWM signal from an ESP8266, but 4-pin fans with built-in power switching are in the minority. Most available fans have no built-in speed control and depend on external PWM circuitry to vary their input voltage level. If I wanted to control speed of such fans with an ESP8266, I'll need to get a power transistor of some sort into the circuit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've found several tutorials online for fan speed control via PWM, but they all use a transistor on low side of the fan. They do this because it makes the circuit easier. We connect the black fan wire to collector of the transistor, connect emitter to ground, and finally connect PWM signal from our microcontroller to transistor base. This will work because the transistor and the microcontroller share a common ground. A transistor needs only a volt or so on the base pin, easily delivered from any microcontroller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The problem with this approach is that we could no longer directly read the tachometer signal of 3-pin fans, because they are open-drain to the "ground" which is no longer ground but low side of the fan. Depending on implementation details on the fan, the voltage level on that pin may rise too high for the microcontroller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are many valid ways to resolve this situation, the path I chose is to use a <a rel="noreferrer noopener" href="https://amzn.to/3P86PwH" target="_blank">PC817 optocoupler</a>. (*) Internally it is a LED pointed at a receiver. This optical system transmits a signal while electrically separating LED side from receiver side. In my case this I no longer need a common ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From here, there are two options forward: I could use the optocoupler to read the tachometer signals, or I could use the optocoupler to put the transistor on the fan's high side. I chose to switch the fan's high side so the fan has a common ground with the microcontroller, and I could directly read tachometer signal. Of course, it is valid to use optocoupler on both motor power PWM <em>and </em>for tachometer feedback. This is necessary for electrically noisy motor systems, but the brushless fan of a computer cooling fan (usually) does not require such measures.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I did have to add a capacitor to smooth out my PWM output, but that would have been necessary in any case. Having full PWM control means I can now switch the fan off completely with a 0% duty cycle, but it also means I am responsible for avoiding low PWM levels where a fan could not turn and stalls. After I proved I had PWM control via Home Assistant UI, I thought it would be fun to have the option to control fan based on temperature, so I <a href="https://newscrewdriver.com/2022/07/27/tmp36-temperature-sensor-esp8266-not-a-great-team/">added a TMP36 sensor</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://esphome.io/" target="_blank" rel="noreferrer noopener">ESPHome</a> YAML excerpt for basic PWM fan control and reading fan tachometer. Note: this simple example lacks intelligence to avoid low PWM levels that would stall a fan.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sensor:
+  - platform: pulse_counter
+    pin: 12
+    id: fan_rpm_counter
+    name: "Fan RPM"
+    unit_of_measurement: "RPM"
+    accuracy_decimals: 0
+    update_interval: 300s
+    filters:
+      - multiply: 0.5 # 2 pulses per revolution
+
+output:
+  - platform: esp8266_pwm
+    pin: 14
+    id: fan_pwm_output
+    frequency: 1000 Hz
+
+fan:
+  - platform: speed
+    output: fan_pwm_output
+    id: fan_speed
+    name: "Fan Speed Control"</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,50 @@
+---
+layout: post
+title: Notes on PEP 380 Syntax for Delegating to a Subgenerator
+date: 2024-06-15 12:30:00.000000000 +00:00
+type: post
+post_id: '43798'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  timeline_notification: '1718479825'
+  firehose_sent: '1718479824'
+  wordads_ufa: u:wpcom-ufa-v4:1719266473
+  _publicize_job_id: '95465388071'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 22:03:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/15/notes-on-pep-380-syntax-for-delegating-to-a-subgenerator/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've dipped my toes into writing Python code for asynchronous execution, and encountered a lot of new concepts that I felt I need to study up on. One of the keywords I wanted to understand better was "<code>with</code>", which <a href="https://newscrewdriver.com/2024/06/14/notes-on-pep-343-the-with-statement/">took me to context managers</a>. Another item on the list of mystery was "<code>yield from</code>". I recently learned "<code>yield</code>" <a href="https://newscrewdriver.com/2024/06/11/notes-on-pep-342-coroutines-via-enhanced-generators/">in the context of coroutines</a>, and I knew "<code>from</code>" in the context of <a href="https://docs.python.org/3/tutorial/modules.html">loading Python modules</a>, but they didn't make sense together. Thankfully I found <a href="https://peps.python.org/pep-0380/">PEP 380 <em>Syntax for Delegating to a Subgenerator</em></a>, where my confusion was explained by the fact it had nothing to do with loading modules.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I read up on coroutines, it took effort for my brain to absorb the concept of code execution interleaved between caller and callee. It was a foreign enough concept my brain didn't flag a consequence of Python's special treatment: the "<code>yield</code>" relationship is limited to one layer of interaction. What if we wanted to refactor a chunk of code, that included a "<code>yield</code>", into another coroutine? Things quickly get messy. If only there's a way to extend <code>yield</code> to multiple levels, and this is the problem PEP 380 wants to solve with "<code>yield from</code>":</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><em>The rationale behind most of the semantics presented above stems from the desire to be able to refactor generator code.</em></p>
+<p><!-- /wp:paragraph -->
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading through the PEP, I was not happy to see "<code><a href="https://docs.python.org/3/library/exceptions.html#StopIteration">StopIteration</a></code>" exception was used to convey a return value out of "<code>yield from</code>". I was taught in the school of "exceptions should be exceptional" and here it is just a normal non-exceptional code return path. My initial reaction was tempered by learning <code>StopIteration</code> is how Python iterators (which are used all the time) signal a halt. I think my instinctive negativity came from experience with languages where exception handling incurs a significant performance overhead. Judging from what I've learned here, either Python exceptions incur no significant penalty or Python designers feel it is an acceptable cost.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For what it's worth, I was not alone in my negative impression. Using <code>StopIteration</code> to convey return value was also disclosed under "Criticisms" sections of PEP 380 and dismissed as "without any concrete justification". Shrug. But I was thankful another criticism was dismissed: looks like there was a suggestion to use syntax of "<code>yield *</code>" and I'm glad it didn't go in that direction because it'd end up as another special syntax very difficult to look up. Searching on <code>*</code> would be a disaster as it is popularly used as a query wildcard character. From this perspective "<code>yield from</code>" is far superior and it only meant typing three more characters. I'm much happier with this approach and I'm glad to see it as <a href="https://newscrewdriver.com/2024/06/16/notes-on-pep-492-coroutines-with-async-and-await-syntax/">I continue my PEP study session with PEP 492</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

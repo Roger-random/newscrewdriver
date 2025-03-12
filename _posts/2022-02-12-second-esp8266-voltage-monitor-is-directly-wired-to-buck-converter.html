@@ -1,0 +1,52 @@
+---
+layout: post
+title: Second ESP8266 Voltage Monitor is Directly Wired to Buck Converter
+date: 2022-02-12 12:30:00.000000000 +00:00
+type: post
+post_id: '28559'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Python
+tags:
+- ESP8266
+- MicroPython
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28562'
+  _publicize_job_id: '68911036035'
+  timeline_notification: '1644697816'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/12/second-esp8266-voltage-monitor-is-directly-wired-to-buck-converter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I got my MicroPython ESP8266 <a href="https://newscrewdriver.com/2022/02/11/esp8266-micropython-automatically-remembers-wifi/">connected to my home network</a>, I expect to continue working with it over the network instead of an USB cable. Which meant it was time for me to take this development board and wire it to a DC voltage buck converter as I did earlier. However, this time I'm going to skip on the perforated prototype circuit board and going for direct wiring. (Sometimes called deadbug style due to folded pins and wires.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But without the prototype board, I have to handle my own spacing. I cut up an expired credit card and placed the sheet of plastic in between <a rel="noreferrer noopener" href="https://amzn.to/3tZ8VY1" target="_blank">Wemos D1 Mini clone</a> (*) and its <a rel="noreferrer noopener" href="https://amzn.to/3okudMr" target="_blank">MP1584EN DC buck converter</a> (*). Wires looped around the outside of this sheet to carry power lines 3.3V and GND, as well as the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/01/30/setting-up-esp8266-voltage-monitor/" target="_blank">pair of 1 Megaohm resistors in series</a> to ADC input pin for measuring voltage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And relative to the previous iteration, I added one more wire: connecting ESP8266 GPIO16 (labeled D0 on a Wemos D1 Mini board) to the reset (RST) pin. This is required for an ESP8266 to wake from deep sleep, and this requirement is the very first sentence on <a href="https://docs.micropython.org/en/latest/esp8266/quickref.html#deep-sleep-mode">MicroPython section for ESP8266 deep sleep</a>. I'm going to guess that it is front and center because enough people forgot to do this critical step and their ESP8266 wouldn't wake from sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once this package was tested to function over MicroPython WebREPL, I wrapped the whole thing up in <a rel="noreferrer noopener" href="https://amzn.to/3rvFV8X" target="_blank">clear heat shrink tube</a>(*) (not pictured in title image) for a nice compact package. I could now query ADC value representing input voltage over WebREPL, but that's not useful until I could <a href="https://newscrewdriver.com/2022/02/13/esp8266-micropython-simple-mqtt-client/">report that value via MQTT</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

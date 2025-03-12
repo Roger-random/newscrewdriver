@@ -1,0 +1,59 @@
+---
+layout: post
+title: MP1584 Modification Did Not Go as Planned
+date: 2022-03-03 12:30:00.000000000 +00:00
+type: post
+post_id: '28823'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- INA219
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28707'
+  _publicize_job_id: '69719660972'
+  timeline_notification: '1646339420'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/03/mp1584-modification-did-not-go-as-planned/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted a DC voltage/current monitor module to be powered by the same solar panel it is monitoring, which meant it shouldn't start running until the panel started delivering enough power to run the circuit. I <a href="https://newscrewdriver.com/2022/03/02/raising-mp1584-enable-voltage-by-replacing-resistor/">modified a MP1584 buck converter module</a> so it would not activate until the voltage rises close to 12V. I wired this MP1584 module back into a monitoring circuit with an INA219 voltage/current sensor and ESP8266 WiFi microcontroller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I powered it up, I used a meter to verify I hadn't done anything silly like shorting Vcc to GND. This circuit also had a Vin+ and Vin- plus I2C communication lines SDA and SCL. I verified none of these were shorted to any of the others.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then connected Vin+ and GND input pins to my bench power supply. I started with zero volts and slowly raised it until close to 12 volts, when I saw the blue led on my ESP8266 board blink signifying startup. I opened ESPHome dashboard so I could see the logged output from this ESP8266, and saw that it powered up and connected to WiFi successfully. However, it failed to find the INA219 as an I2C peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first hypothesis was that I made a mistake soldering I2C signal wires SDA and SCL. I probed those connections and verified I hadn't crossed those wires and there is electrical continuity. But ESP8266 still reported no response from an I2C scan.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next hypothesis was that I used too thick gauge of wire for I2C signal lines and its higher capacitance had degraded I2C signal. I replaced the 22AWG wire with 30AWG wire, verified they had continuity and I hadn't accidentally swapped SDA and SCL. But still no response on I2C scan.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While looking at the ESPHome YAML file looking for a configuration error, I smelled the distinctive scent of dying electronics. My first act upon turning back to the workbench was to turn off the power supply. Then I saw the INA219 was very obviously quite dead, a hole burned into the top and charred remains surrounding that hole.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28828,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/dead-ina219-closeup.jpg?w=800" alt="" class="wp-image-28828"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I repeated the same basic probe I performed on this circuit before I powered it up, and this time my meter said Vcc is shorted to GND. Not good! I separated the components and measured them separately. The MP1584 power module did not short Vout (a.k.a. Vcc for the other two boards) to GND. The INA219 sensor module did, which is very likely related to why it died. And mysteriously, the ESP8266 microcontroller module reported the same... how the heck did it continue running with its Vcc shorted to GND?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Dumping both the INA219 sensor board and ESP8266 microcontroller board in my box of fried electronics, I <a href="https://newscrewdriver.com/2022/03/04/putting-modified-mp1584-under-oscilloscope/">took a closer look</a> at my modified MP1584, suspected killer of electronics.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

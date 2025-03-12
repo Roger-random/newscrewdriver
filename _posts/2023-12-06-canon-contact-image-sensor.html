@@ -1,0 +1,65 @@
+---
+layout: post
+title: Canon Contact Image Sensor
+date: 2023-12-06 12:30:00.000000000 +00:00
+type: post
+post_id: '40875'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  reader_suggested_tags: '["Camera",".","Movies","Canon","Photographic Lens","Photography
+    Museum","Mat Dirjish"]'
+  _thumbnail_id: '40886'
+  wordads_ufa: s:wpcom-ufa-v4:1703391537
+  timeline_notification: '1701894609'
+  _publicize_job_id: '90052166794'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/06/canon-contact-image-sensor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I pulled the scanner image sensor bar from a partially disassembled Canon MX340 multi-function inkjet, I didn't expect to understand very much of it. However, I was able to figure out <a href="https://newscrewdriver.com/2023/12/05/canon-pixma-mx340-scanner-led/">the LED illumination</a> subset of the scan head! Encouraged by this success, I felt more positive about trying to tackle the rest of the sensor bar. Which meant investing time to do a little bit of research.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I set out to <a href="https://newscrewdriver.com/2023/11/28/canon-pixma-mx340-electronics-plan/" target="_blank" rel="noreferrer noopener">probe the electrical behavior of MX340 components</a>, I did a brief search and found this type of sensor is called a contact image sensor (CIS). When searching for information online, getting the name is a big part of the battle. The Wikipedia page is <a href="https://en.wikipedia.org/wiki/Contact_image_sensor" target="_blank" rel="noreferrer noopener">sadly just a stub</a>, and I don't have the knowledge to expand it myself. (Yet?) The only source cited on that page is a ten year old link now dead, so I have to find something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When looking for information on electronics components at a hobbyist accessible level, I found it's useful to search for the component and "Arduino". Using that keyword distinguishes product sales pages from electronics details. Sadly I found nothing more helpful than the Arduino forum page that taught me the name. Searching for the name by itself found a lot of eBay listings selling replacement parts, which isn't useful for my goal of learning about the sensors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Scrolling through search results, my attention was caught by a link to the <a href="https://compo.canon/en/product/cis/" target="_blank" rel="noreferrer noopener">CIS section on Canon Components web site for businesses</a>. This sounds like the current-day counterpart to the dead source link on Wikipedia. It is a page advertising Canon's engineering prowess and aimed at companies that may build products around Canon CIS units. So the page exists to encourage these companies to contact the Canon sales team, which isn't me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Still, the page was informative. There's a diagram breaking down the major components of Canon CIS technology, so I can get an idea of what parts I'm looking at and their names. Before seeing this diagram, I had thought the imaging sensor sits somewhere behind the clear optical lens. Now I know the clear optical lens is merely the light guide for the LED emitters I had just examined. The sensors actually look through a linear lens array adjacent to the light guide.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":40886,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-scanner-lens-array-closeup.jpg?w=1024" alt="" class="wp-image-40886"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Armed with this knowledge, I went back to look at the sensor bar and found the row of small lenses that I had never noticed before. They are tiny, each lens is roughly 0.3mm across. As a rough approximation, that's roughly 75 of them in an inch (~25.4mm). Scanners usually advertise their resolution as 300dpi or some multiple thereof (1200dpi, etc.) which means each of these lenses must correspond to more than one pixel in the resulting scan data. That process involves optical imaging magic out of scope of my current project: learn how they work electrically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Clicking on the link for "<a href="https://compo.canon/en/product/cis/list.html" target="_blank" rel="noreferrer noopener">Contact Image Sensor Product List</a>" brought me to a sample selection of current Canon CIS products. I was most interested in the "Output form" column, specifying broadly how the sensor outputs its data. Possibilities include <a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling" target="_blank" rel="noreferrer noopener">LVDS</a>, which I have little hope of reading. Camera Link is also listed, and I had to <a href="https://en.wikipedia.org/wiki/Camera_Link" target="_blank" rel="noreferrer noopener">go to Wikipedia</a> to learn it is a protocol built on top of LVDS. And finally, there's "analog output" which superficially seemed like the cheapest option. If I'm lucky, that's what a cheap multi-function inkjet would have.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't see any details on how image information is transmitted via Camera Link, LVDS, or analog. But I've learned a little more about contact image sensors today and maybe this is enough for me to recognize sensor image data when I <a href="https://newscrewdriver.com/2023/12/07/canon-pixma-mx340-contact-image-sensor-connector/">see it under an oscilloscope</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

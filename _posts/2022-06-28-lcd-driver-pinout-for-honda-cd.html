@@ -1,0 +1,203 @@
+---
+layout: post
+title: LCD Driver Pinout for Honda CD
+date: 2022-06-28 12:30:00.000000000 +00:00
+type: post
+post_id: '31035'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Honda CD
+- LC75883
+- Pinout
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31036'
+  _publicize_job_id: '74142035752'
+  timeline_notification: '1656444605'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/28/lcd-driver-pinout-for-honda-cd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2022/06/27/honda-cd-control-detours/">a few wrong turns</a>, I think I have a good grasp of the interface for talking with the audio (CD player) portion of a Honda Accord dashboard. This circuit board also includes HVAC (heating/ventilation/air conditioning) controls, though I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/21/honda-accord-hvac-knobs-mechanical/" target="_blank">investigated only their knobs</a> and ignored the electronics. This page is a summary of my investigation into interfacing with audio controls.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":30820,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-lcd-connector.jpg?w=1024" alt="" class="wp-image-30820"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":30969,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/honda-cd-mainboard-connector-silkscreen-labels.jpg?w=1024" alt="" class="wp-image-30969"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:heading --></p>
+<h2>Electrical</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are at least three independent circuits present.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Panel backlight using small incandescent (filament) bulbs with a blue cover. Draws 0.6A at14.4V DC.</li>
+<li>LCD backlight draws 0.2A at 14.4V DC.</li>
+<li>Digital communication with Sanyo LC75883 LCD driver chip, which is a 5V part.  We can send data to control LCD segment display and use it to read data for most of the button presses.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>LAMP+B</td>
+<td>Power for panel light bulbs, up to +14.4V relative to LAMP-RET.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>LAMP+B</td>
+<td>Power for panel light bulbs, up to +14.4V relative to LAMP-RET.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>LAMP-RET</td>
+<td>Return for panel light bulbs.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LAMP-RET</td>
+<td>Return for panel light bulbs.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LCDLAMP+B</td>
+<td>Power for LCD backlight, up to +14.4V relative to LCDLAMP-RET.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>LCDLAMP-RET</td>
+<td>Return for LCD backlight.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>P-GND</td>
+<td>Ground.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>P-GND</td>
+<td>Ground.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>P-GND</td>
+<td>Ground.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>IS BUS FRAME</td>
+<td>Unknown.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>IS BUS DATA</td>
+<td>Unknown.</td>
+</tr>
+<tr>
+<td>12</td>
+<td>CD-LED</td>
+<td>Unknown.</td>
+</tr>
+<tr>
+<td>13</td>
+<td>IGN-DET</td>
+<td>Unknown. (Ignition Detect?)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>SWD-VDD</td>
+<td>+5V power supply for LC75883.</td>
+</tr>
+<tr>
+<td>15</td>
+<td>D-GND</td>
+<td>(Digital?) ground.</td>
+</tr>
+<tr>
+<td>16</td>
+<td>LCD-DI</td>
+<td>Data in from LC75883 chip. (Wired to LC75883 DO pin.)</td>
+</tr>
+<tr>
+<td>17</td>
+<td>LCD-DO</td>
+<td>Data out to LC75883 chip. (Wired to LC75883 DI pin.)</td>
+</tr>
+<tr>
+<td>18</td>
+<td>LCD-CLK</td>
+<td>LC75883 Clock.</td>
+</tr>
+<tr>
+<td>19</td>
+<td>LCD-RST</td>
+<td>LC75883 Resets when pulled to 0V. Pull to 5V for normal operation, <a href="https://newscrewdriver.com/2022/06/26/honda-cd-lcd-driver-mystery-problems-solved/" target="_blank" rel="noreferrer noopener">do not leave floating</a>.</td>
+</tr>
+<tr>
+<td>20</td>
+<td>LCD-CE</td>
+<td>LC75883 Chip Enable.</td>
+</tr>
+<tr>
+<td>21</td>
+<td>ENC VOL-DN</td>
+<td>One of two quadrature encoder phases for central audio control knob.</td>
+</tr>
+<tr>
+<td>22</td>
+<td>ENC VOL-UP</td>
+<td>One of two quadrature encoder phases for central audio control knob.</td>
+</tr>
+<tr>
+<td>23</td>
+<td>EJECT</td>
+<td>Normally open, shorts to ground when "Eject" button is pressed.</td>
+</tr>
+<tr>
+<td>24</td>
+<td>PW SW</td>
+<td>Normally open, shorts to ground when "Power" button is pressed.</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:heading --></p>
+<h2>Digital</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>All control for LCD segment and key scanning for most of the buttons are handled by a Sanyo LC75883 chip. It communicates with a Sany proprietary protocol called CCB (Computer Control Bus) that has some resemblance to I<sup>2</sup>C or SPI but is neither. It listens on address 0x42 for bits indicating which LCD segments should be active, and reports on address 0x43 indicating which buttons were pressed. I have an Arduino sketch (target device: AVR ATmega328P based Arduino Nano) that demonstrates how to interact with the LC75883. Pressing the "Mode" button will cycle between the basic "turn all segments on" program, a bit pattern "drawing" program, and <a href="https://newscrewdriver.com/2022/06/29/honda-cd-spinner-demo/">an animated demo</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This Arduino sketch for this investigation is <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sanyo_LC75883" target="_blank">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

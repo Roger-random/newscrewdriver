@@ -1,0 +1,77 @@
+---
+layout: post
+title: Compact Assembly of AS7341 and ESP32 Boards
+date: 2023-01-31 12:30:00.000000000 +00:00
+type: post
+post_id: '34797'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34799'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675287765
+  _publicize_job_id: '81082556096'
+  timeline_notification: '1675197021'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/31/compact-assembly-of-as7341-and-esp32-boards/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2023/01/30/sensor-saturation-warning-as-final-v1-feature-of-my-as7341-app/">implemented a visual warning for AS7341 sensor saturation</a>, I've completed a decent baseline set of features. Enough for me to declare version 1.0 is complete. I tidied up the source code with comments and license headers, now I will tidy up the hardware side as well. During development I used what <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/14/modifying-esp32-mini-to-focus-on-as7341/" target="_blank">I built at the start of this project</a>, with my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/09/03/wemos-d1-mini-esp32-derivative/" target="_blank">ESP32 mini dev board</a> and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/03/adafruit-as7341-board-4698/" target="_blank">AS7341 breakout board</a> connected by a <a rel="noreferrer noopener" href="https://amzn.to/3Xutvvh" target="_blank">pre-crimped JST-SH cable</a>(*) mechanically compatible with Adafruit's STEMMA QT form factor. I thought the cable would give me flexibility in moving the AS7341 around, but it has just been a huge hassle with it dangling and flopping about.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34800,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-and-esp32-with-tangled-wires-and-tape.jpg?w=1024" alt="" class="wp-image-34800"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For experiments in portability, I taped both components to a USB power bank. This worked well enough and taught me I prefer having everything as a single unit. I will rebuild my sensor package into a single compact form.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34802,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-and-esp32-direct-wire-scl.jpg?w=1024" alt="" class="wp-image-34802"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I unsolder the STEMMA QT-compatible JST-PH cable because I'm going to skip the cable and put these two modules back-to-back. I cut up an expired credit card to place between them as insulation. Since I would only need short sections of wire, I dug up a short cutoff piece of wire that was probably from a resistor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34799,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-and-esp32-back-to-back.jpg?w=1024" alt="" class="wp-image-34799"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>SCL and SDA pins are connected straight through. Ground is almost as straightforward and handled with a short S-shaped length. Power has to come from the opposite side, though, so I used actual wire with insulation to connect to 3.3V power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34804,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-and-esp32-with-usb-power-bank-and-usb-adapter.jpg?w=1024" alt="" class="wp-image-34804"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once in place, I can power the ESP32 with a small adapter sold as <a rel="noreferrer noopener" href="https://amzn.to/3QXGHq3" target="_blank">an USB OTG adapter</a>(*) but it also works as a zero-length USB cable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34805,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-and-esp32-with-usb-power-bank-and-usb-adapter-connected.jpg?w=1024" alt="" class="wp-image-34805"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Plugging everything in together, I have an AS7341 sensor mounted to the back of my ESP32 dev board, which is plugged in to a USB power bank serving as a handle. A nice small compact and portable setup, with nothing flopping about.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":34807,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/01/as7341-window-cut-in-heat-shrink-tube.jpg?w=1024" alt="" class="wp-image-34807"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After a quick test run to verify everything still works correctly, I protected the circuit board assembly with <a href="https://amzn.to/3Wy4Q7U">clear heat-shrink tubing</a>. (*) Or at least, it is clear to my eyes. It seems to affect AS7341 sensors readings somewhat, so it is not completely transparent across all wavelengths. In order to remove this interference, I cut a small window to ensure sensor has unobstructed view. This completes version 1.0 of my AS7341 project, but before I move on I wanted to write down <a href="https://newscrewdriver.com/2023/02/01/as7341-project-future-enhancements/">ideas of what I might do later</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

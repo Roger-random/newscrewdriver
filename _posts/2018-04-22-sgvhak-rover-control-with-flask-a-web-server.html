@@ -1,0 +1,46 @@
+---
+layout: post
+title: SGVHAK Rover Control With Flask, a Web Server.
+date: 2018-04-22 10:34:05.000000000 +00:00
+type: post
+post_id: '15802'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1524418448'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '17069721422'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/22/sgvhak-rover-control-with-flask-a-web-server/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Recent blog posts outlined the hardware side of SGVHAK rover project, now we'll rewind and tell the software side. The first drop of information for the SGVHAK rover team included only information on hardware, the <a href="https://opensourcerover.jpl.nasa.gov">baseline rover</a> software was promised and yet to come. We didn't think too much of it until the Microsoft Windows-based Ion Studio tool failed to auto-tune the PID parameters for our rover wheel.</p>
+<p>The effort to debug rover wheel control led to the Python API <a href="http://www.ionmc.com/downloads">released by Ion Motion Control</a> to communicate with Roboclaw motion control board. As a platform-independent tool, Python was always the ultimate intent since our target platform for rover brain is a Raspberry Pi. The failure of Ion Studio just advanced the timeline.</p>
+<p>The manual PID tuning session was done entirely in the Python interactive shell calling into the Python API, from updating PID values to commanding motor motion. While flexible and effective, all the typing became very repetitive very quickly.  Now that we're past the first PID tuning work session, we have a decent idea what APIs are most useful for this project.</p>
+<p>We didn't set out to design a new rover UI, originally we just wanted to ease building the machine and tuning parameters. This nuts-and-bolts goal is why investigation started with a text-based system. An advantage of a simple command line based system is that it can be used wirelessly via SSH so that we won't have to be tethered to the robot while we tune. This is why we started by looking into <a href="https://docs.python.org/3.6/howto/curses.html">Python's curses library</a> to create text-based displays.</p>
+<p>It didn't take long, though, before ambitions grew. The ultimate UI for the rover won't be text-based, why learn a whole new text UI framework just so we'd have to learn a graphical UI framework later? That thought was just the first step. The next step looked at Qt, which is a cross-platform GUI framework we already know to work across PC, Macintosh, and Pi. But wireless networked access to a Qt GUI takes some work. Far more than it would take to put up some HTML to be accessed over the network. So... why not do that instead?</p>
+<p>That's how we arrived at today's investigation: for a simple rover UI, try using HTML. This allows us to have the exact same UI over the network as well as locally. (http://localhost) We're learning something new anyway, and learning a Python web framework is more likely to be useful for future projects than learning a text UI framework. To kick off this effort, we ask two questions:</p>
+<ol>
+<li>
+<strong><em>What framework to use?</em></strong> There are <a href="https://en.wikipedia.org/wiki/Category:Python_web_frameworks">a lot of different Python web frameworks</a> running around on the internet. While learning <a href="http://rubyonrails.org/">Ruby on Rails</a>, I came across references to its Python counterpart <a href="https://www.djangoproject.com/">Django</a>. They are both far heavier than we need for this project, though. A search for something more lightweight pointed to <a href="http://flask.pocoo.org/">Flask</a>, backed up by at least <a href="https://www.quora.com/How-do-you-use-Python-to-make-websites">one Quora discussion</a>.</li>
+<li>
+<em><strong>Does it work with Roboclaw API?</strong></em> It took a little <a href="https://unix.stackexchange.com/questions/14354/read-write-to-a-serial-port-without-root">fiddling with user groups</a> to gain access to the USB serial port, but once that was done the answer is: Yes it does.</li>
+</ol>
+<p>With a successful smoke test, we're going ahead with building a HTML-based rover UI.</p>
+<p><img class=" size-full wp-image-15803 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/helloflask-success.png" alt="HelloFlask Success" width="1005" height="226"><br />
+</body></html></p>

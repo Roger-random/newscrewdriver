@@ -1,0 +1,66 @@
+---
+layout: post
+title: Micro Sawppy Beta 3 Is Moving
+date: 2021-03-27 12:30:00.000000000 +00:00
+type: post
+post_id: '25782'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25806'
+  _publicize_job_id: '56460855714'
+  timeline_notification: '1616873473'
+  _oembed_52dbbd7ddff45925779f936fb70bbbc0: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Lack
+    of low speed torque hampers its rugged terrain ability, but can still climb an
+    obstacle roughly as tall as its wheel diameter.<br>The speed makes it feel less
+    &quot;scholarly study exploration&quot; and more &quot;curious puppy exploring&quot;
+    which I&#39;m OK with. <a href="https://t.co/vPgNy0FQYy">pic.twitter.com/vPgNy0FQYy</a></p>&mdash;
+    Sawppy (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1375229078257590272?ref_src=twsrc%5Etfw">March
+    25, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_52dbbd7ddff45925779f936fb70bbbc0: '1616920365'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/27/micro-sawppy-beta-3-is-moving/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2021/03/26/tt-gearbox-motor-wire-and-capacitor/">soldered wires and noise-reduction capacitors to all six wheel motors</a> of Micro Sawppy Beta 3 (MSB3) I plugged them in to my soldered circuit board. Given that I spent the time to test these parts incrementally as I built them, I was optimistic it would all work. But it was still quite a thrill to have MSB3 scooting along on the floor. All wheels turning and corners steering!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since it is still running on a <a href="https://newscrewdriver.com/2021/03/10/joystick-range-check-works-around-esp32-adc-mystery/" target="_blank" rel="noreferrer noopener">simple wired joystick</a> connected via jumper wires only 20cm long, running this rover around is quite a chore. I had to bend low and shuffle to keep up with the rover as it roams the house. If I wanted to build a tethered controller, I need to find a longer cable with at least five wires. If I found one immediately I might have tried it, but I couldn't find one immediately at hand so I decided that's really not my priority right now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using a <a href="https://www.astroflight.com/101-super-whattmeter-details.html" target="_blank" rel="noreferrer noopener">small power meter</a>, I monitored power consumption as the little guy ran around. Running full out on a two-cell lithium polymer battery pack, it was drawing just under ten watts dragging the battery from its nominal 7.4 volts down to about 6.5 volts. I had worried that running the wheel motors at 100% duty cycle would damage the motors, as they are officially rated for six volts max, but 6.5V seems to be close enough that nothing immediately melted. Given that steady state is a hair under ten watts, I suspect the initial startup rush likely drew notably over ten watts. This would explain why my 5V 2A USB power bank would balk at this load. (Or the power bank underperformed its specification, or both!)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was also running a lot faster than I expected from <a href="https://newscrewdriver.com/2021/03/14/exploring-tt-gear-motor-speed-range/" target="_blank" rel="noreferrer noopener">my earlier explorations of TT gearmotor speed range</a>. However, those experiments were performed on four AA batteries so running at full power would have <a href="https://newscrewdriver.com/2021/03/20/initial-thoughts-on-micro-sawppy-rover-battery-power/" target="_blank" rel="noreferrer noopener">dragged their voltage significantly lower</a> than 6.5V. I think this is another data point in favor of <a href="https://newscrewdriver.com/2021/03/25/provision-for-micro-sawppy-voltage-monitoring/">setting up voltage monitoring</a>, so the rover can be smart enough to keep these motors running in their optimal voltage ranges.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So top speed looks to be in good shape, but due to the poor proportional response of <a href="https://amzn.to/3m7RWNz">these inexpensive joysticks</a> (*) that are practically on/off switches, I couldn't really run the rover at slow speed. Whether TT gearmotors can be driven slowly enough for rock-crawling duty remains a question mark.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running MSB3 also exposed a problem I had not seen (or at least not noticed) in earlier Micro Sawppy builds: <a href="https://newscrewdriver.com/2021/03/28/micro-servo-angular-position-inconsistency/">these micro servos aren't very consistent in their angular positioning</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

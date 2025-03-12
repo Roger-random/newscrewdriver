@@ -1,0 +1,69 @@
+---
+layout: post
+title: Webpack First Look Did Not Go Well
+date: 2023-04-02 12:30:00.000000000 +00:00
+type: post
+post_id: '36035'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36036'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680464189
+  _publicize_job_id: '82859994080'
+  timeline_notification: '1680463996'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/02/webpack-first-look-did-not-go-well/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've used Three.js in two projects so far to handle 3D graphics, but I've been referencing it as a monolithic everything bundle. Three.js documentation told me there was a better way:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><em>When installing from npm, you'll almost always use some sort of bundling tool to combine all of the packages your project requires into a single JavaScript file. While any modern JavaScript bundler can be used with three.js, the most popular choice is webpack.</em></p>
+<p><!-- /wp:paragraph --><cite>-- Three.js <a href="https://threejs.org/docs/index.html#manual/en/introduction/Installation">Installation Guide</a></cite>
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my magnetometer test project, I tried to bring in webpack to optimize three.js but aborted after getting disoriented. Now I'm going to sit down and read through its documentation to get a better feel of what it's all about. Here are my notes from a first look as a beginner.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I have a minor criticism about their home page. The first link is to their "<a href="https://webpack.js.org/guides/getting-started">Getting Started</a>" guide, the second link is to their "<a href="https://webpack.js.org/concepts">Concepts</a>" section. I followed the first link to "Getting Started", which is the first page in their "Guides" section. I got to the end of that first page and saw "Next" link is about Asset Management, the next guide page. Each guide page linked to the next. I quickly got into guide pages who used acronym or terminology that had not yet been explained. Later I realized this was because the terminology was covered in the "Concepts" section. In hindsight I should not have clicked "Next" at the end of "Getting Started" guide. I should have gone back to "Concepts" to learn the lingo, before reading the rest of the guides.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading through the guides, I quickly understood that webpack is a very JavaScript-centric system built by people who think JavaScript first. I wanted to learn how to use webpack to integrate my JavaScript code and my HTML markup, but these guide pages didn't seem to cover my use scenario. Starting right off the bat with the Getting Started guide, they used code to build their markup:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>   const element = document.createElement('div');
+   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+   document.body.appendChild(element);</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Wow. Was that really necessary? What about people who wanted to, you know, write HTML <em>in HTML</em>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>    &lt;body&gt;&lt;div&gt;Hello webpack&lt;/div&gt;&lt;/body&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Is that considered quaint and old fashioned nowadays? I didn't find anything in "Guides" or "Concepts" discussing such integration. I had thought <a href="https://webpack.js.org/guides/output-management/#setting-up-htmlwebpackplugin">the section on "HtmlWebpackPlugin"</a> would have my answer, but it's actually a chunk of JavaScript code that erased my <code>index.html</code> (destroying my markup) with a bare-bones <code>index.html</code> that loads the generated JavaScript bundles and have no markup. How does my own markup figure in this picture? Perhaps the documentation authors felt it was too obvious to write down, but I certainly don't understand how to do it. I feel like an old man yelling at a cloud "tell me how to use my HTML!"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had thought putting my HTML into the output directory was a basic task, but I failed. And I was dismayed to see "Concepts" and "Guides" pages got deeper and more esoteric from there. I understand webpack is very powerful and can solve many problems with modularizing JavaScript code, but it also requires a certain mindset that I have yet to acquire. Webpack's bare bones generated <code>index.html</code> looks very similar to the <a href="https://github.com/Roger-random/angular-tour-of-heroes/blob/gh-pages/index.html">generated <code>index.html</code> of an Angular app</a> (which uses both HTML and webpack) so there must be a way to do this. I just don't know it yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Until I learn what's going on, for the near future I will use webpack only indirectly: it is already configured and running as part of Angular web app framework's command line tools suite. I plan to do a few Angular projects to become more familiar with it. And now that I've read through webpack concepts, I should recognize pieces of Angular workflow as "Aha, they used webpack to do that."</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

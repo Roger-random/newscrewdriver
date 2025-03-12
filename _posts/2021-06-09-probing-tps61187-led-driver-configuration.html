@@ -1,0 +1,79 @@
+---
+layout: post
+title: Probing TPS61187 LED Driver Configuration
+date: 2021-06-09 12:30:00.000000000 +00:00
+type: post
+post_id: '26995'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27002'
+  timeline_notification: '1623267073'
+  _publicize_job_id: '59404325137'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/09/probing-tps61187-led-driver-configuration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've read through the datasheet for a TI TPS61187 LED driver chip and I think I have a fair (if not perfect) grasp of how to use it. Specifically I want to use one I found on the integrated driver board of a LG laptop LCD panel I've taken apart, there to drive the backlight module <a href="https://newscrewdriver.com/2021/06/08/my-tps61187-led-driver-startup-plan/">I wanted to salvage as a LED light</a>. Armed with the datasheet and a multimeter, I started poking at the driver board to understand how it uses the chip. Since most of the chip's configuration are done via resistors connected to certain pins, I could use the ohmmeter to decipher configuration. I enlarged and printed out my picture of that area of the circuit board so I could scribble down notes as I went. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's what I found on this board, listed in order of their corresponding datasheet sections:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5>7.3.1 Supply Voltage</h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>For applications that are always-on, it is valid for the enable (EN) pin to be connected to the chip's internal regulator output pin VDDIO. Since a laptop would want to put a screen to sleep, I did not expect EN to be tied to VDDIO and my meter confirmed it was not. Which means I'll have to go hunting for my own connection to EN later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5>7.3.2 Boost Regulator and Programmable Switch Frequency (FSCLT)</h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The internal boost converter can operate at a range of frequencies, giving the designer an option to tradeoff between efficiency, inductor component size, etc. I probed the selection resistor on this board to be 822 kΩ. Plugging this into datasheet formula I arrive at a switching frequency of 608 kHz. Table 1 lists a few recommended values, and 833 kΩ is one of the recommendations for 600 kHz. I suspect this was indeed the intent and this 822 kΩ resistor is pretty good at less than 2% off nominal value.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5>7.3.3 LED Current Sinks</h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is arguably the core parameter of driving LEDs. I traced the circuit and found two resistors in series. ~20 kΩ and ~31 kΩ but they added up to about 58 kΩ so there's obviously something else I missed. Nevertheless, plugging 58 kΩ into datasheet formula says it'll sets the target at 20mA. Typical for driving LEDs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5>7.4.2 Adjustable PWM Dimming Frequency and Mode Selection (R_FPWM/MODE)</h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are two ways to control brightness of the backlight. Either they can be blinked directly by an external PWM signal, or they can be blinked with an internal signal generator. One advantage of using the internal signal is that the phase for each of six strings are offset, so they blink in turn instead of simultaneously, which I expect to give smoother dimming. Another advantage of separating the two signals is that the external PWM can run at a far slower frequency, even one that would otherwise cause visible flicker, but it wouldn't matter. Because once its duty cycle is read, it is copied for use by the internal generator running at a far faster flicker-free rate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Probing the configuration resistors proved this board uses the internal high speed PWM signal. The resistor is 3.9 kΩ which works out to about 46.6 kHz. This is not one of the Table 2 recommendations, in fact it is over twice the speed of the highest recommended value. at 9.09 kΩ / 20 kHz. Higher switching frequency usually mean smoother behavior but lower power efficiency, I wonder what design meeting decisions at LG led to this value. Though of course it's possible I've misread the value somehow.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading {"level":5} --></p>
+<h5>7.4.4 Overvoltage Clamp and Voltage Feedback (OVC/FB)</h5>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>These resistors configure how the boost converter works, and there's an ideal formula in the datasheet mapping input voltage to LED output voltage. I was able to measure R<sub>down</sub> as 20 kΩ, but R<sub>upper</sub> did not converge. My ohmmeter's initial reading was in the 370-400 kΩ range, but the value continued to increase as I kept the probes in place. Eventually it would read as off-scale high. I think this means there's a capacitor in parallel?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Out of all the configurations I had hoped to read, this was the one I really wanted to get because it would inform me as to the best voltage level to feed into this system. With this ambiguous reading, I'm sadly no wiser.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But at least I have some idea of how this chip has been configured to run, so I could continue probing this circuit board looking for places where I can <a href="https://newscrewdriver.com/2021/06/10/finding-tps61187-led-driver-interfaces/">interface with this LED driving circuit</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

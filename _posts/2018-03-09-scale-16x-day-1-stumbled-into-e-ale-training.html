@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'SCaLE 16X Day 1: Stumbled Into E-ALE Training'
+date: 2018-03-09 09:00:00.000000000 +00:00
+type: post
+post_id: '15890'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Events
+tags:
+- SCaLE
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15555289297'
+  timeline_notification: '1520615584'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/03/09/scale-16x-day-1-stumbled-into-e-ale-training/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>The 16th Southern California Linux Expo (<a href="https://www.socallinuxexpo.org/scale/16x">SCaLE 16X</a>) is underway. I attended SCaLE 15X last year but frankly I was too new to Linux to get very much out of it. With a year's worth of Linux fiddling under my belt, I hope to learn more this time. At the very least, I know more of the words used in the session descriptions!</p>
+<p><img class=" size-full wp-image-15891 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/03/e-ale-logo-belly2-200x.png" alt="e-ale-logo-belly2-200x" width="200" height="295">I had planned out a tentative schedule and the first session was a walk through of the PocketBeagle device. This turned out to be the start of a three-day course titled <a href="https://e-ale.org/">Embedded Apprentice Linux Engineer (E-ALE)</a> that was an additional, separate $75 charge on top of the conference fee, which I was unaware of. Most of that additional charge goes towards the included hardware:</p>
+<ul>
+<li>
+<a href="https://beagleboard.org/pocket">PocketBeagle</a> with headers already soldered to its I/O pins.</li>
+<li>
+<a href="https://github.com/e-ale/BaconBitsCapeHW">BaconBits</a> assembled and ready to plug into a PocketBeagle</li>
+<li>MicroCenter-branded 16GB microSD card flashed with <a href="https://beagleboard.org/latest-images">BeagleBone's Debian</a> distribution.</li>
+<li>Two micro-USB cables.</li>
+<li>One USB microSD card reader/writer</li>
+</ul>
+<p>The parts and labor involved doesn't quite add up to $75, but it's close enough for me to decide to register on the spot. (Taking the final available slot.) This way I learn about embedded Linux and I'll have a little pocket Linux computer to experiment and learn on.</p>
+<p>I had thought the two micro-USB cables were redundant but they actually serve different purposes. One part of BaconBits is a serial over USB capability, and plugging in one cable to this port allows low-level serial communication to the PocketBeagle. The other micro USB port is on the PocketBeagle itself, where it presents its normal high-level network and mass storage device interfaces. Some of the exercises were made much easier by having both interfaces available.</p>
+<p>PocketBeagle's high-level web and mass-storage interfaces were straightforward, but I had little prior experience with low-level serial and stumbled a bit. The first (of many potential) solution that worked for me was to use <code>minicom</code> and configure it (<code>minicom -s</code>) to talk to the serial port <code>/dev/ttyUSB0</code> at 115200 baud, 8/N/1. This was enough to read the output, but in order for my keyboard input to be acknowledged, I also had to turn OFF hardware flow control. Otherwise it would act as read-only without the ability to interact with serial prompt. Can't follow along with the exercises that way!</body></html></p>

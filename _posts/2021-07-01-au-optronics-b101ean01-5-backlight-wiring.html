@@ -1,0 +1,61 @@
+---
+layout: post
+title: AU Optronics B101EAN01.5 Backlight Wiring
+date: 2021-07-01 12:30:00.000000000 +00:00
+type: post
+post_id: '27376'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Acer
+- AU Optronics
+- B101EAN01.5
+- Backlight
+- SW5-012
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27308'
+  _publicize_job_id: '60247954223'
+  timeline_notification: '1625167807'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/07/01/au-optronics-b101ean01-5-backlight-wiring/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a broken Acer Aspire Switch 10 (SW5-012) that <a href="https://newscrewdriver.com/2021/06/30/acer-aspire-switch-10-sw5-012-backlight-removal/">I have taken apart</a>. Among the pieces I salvaged was the screen, an <a rel="noreferrer noopener" href="https://www.panelook.com/B101EAN01.5_AUO_10.1_LCM_overview_23611.html" target="_blank">AU Optronics B101EAN01.5</a> whose 1280x800 resolution is not terribly interesting in this era when even cell phones have higher resolution displays. So I decided the most interesting thing to do is to liberate its LED backlight for potential future projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27309,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-34-display-backlight-cable.jpg?w=1024" alt="" class="wp-image-27309"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The backlight connector has six visible conductors. Two conductors are wider than the rest, which imply power and ground to me. There is a test point labeled VOUT adjacent to this connector, and my meter confirms it corresponds to the topmost wide conductor. The meter also confirmed the second wide conductor has continuity to the ground plane of this circuit board, so power and ground confirmed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What does that mean for the four remaining thin conductors? Looking around the backlight control IC, I looked for a likely group of four test points and found FB1, FB2, FB3 and FB4. Meter confirms they correspond to the remaining four conductors on the backlight cable. "FB" probably doesn't mean Facebook in this context, but I'm not sure what it would represent. I'm just glad they were numbered.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27310,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-35-display-backlight-driver.jpg?w=1024" alt="" class="wp-image-27310"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>As for the backlight control IC itself, the large AUO letters say it is something AU Optronics produced for internal consumption. The earlier LG panel project found <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/06/06/investigating-ti-tps61187-wled-driver/" target="_blank">a TI TPS61187 chip</a> with publicly available documentation, but here I found no documentation for an AUO L10716 controller. Since the chip is so tiny it's pretty probable I've misread the numbers, but no search hits on the variations I could think of either: LI0718, L10216, etc. If I had found a test point labeled PWM I would be tempted to see if I can get it running with an Arduino PWM signal, but I saw test points labeled SCL and SDA telling me this is an I2C peripheral and my skill level today isn't good enough to reverse engineer it without official documentation of its I2C protocol.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27311,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-36-display-backlight-six-wires-soldered.jpg?w=1024" alt="" class="wp-image-27311"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>So instead of trying to interface with the existing backlight control chip as I did on the LG backlight, here I will interface with the backlight LEDs directly. I found test points corresponding to all six wires on the backlight connector and soldered wires to all of them. Then I used hot glue to help hold them down and relieve strain, as I don't want to lift a pad again!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the wires securely attached, I need to figure out <a href="https://newscrewdriver.com/2021/07/02/au-optronics-b101ean01-5-backlight-power/">what they actually do</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

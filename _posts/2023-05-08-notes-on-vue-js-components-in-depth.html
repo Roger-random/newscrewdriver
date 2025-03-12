@@ -1,0 +1,82 @@
+---
+layout: post
+title: Notes on Vue.js "Components In-Depth"
+date: 2023-05-08 12:30:00.000000000 +00:00
+type: post
+post_id: '36603'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- vue.js
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36516'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1683664881
+  _publicize_job_id: '83883263838'
+  timeline_notification: '1683574208'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:58'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/08/notes-on-vue-js-components-in-depth/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Vue.js <a href="https://newscrewdriver.com/2023/05/07/notes-on-vue-js-essentials/">documentation "Essentials" section</a> ended with a page on "Component Basics". That lead to the next section "Components In-Depth" covering more details on how and when to use Vue.js components and how they interact with other components in the app. After reading the section, a few items caught my attention that may or may not be significant once I start getting hands-on with Vue.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Naming</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Names for Vue.js components are PascalCase by convention but that has problems with <a href="https://www.w3schools.com/htmL/html_attributes.asp">using them in HTML attributes</a> that are liable to coerce everything to lowercase. The same problem applies to Vue.js events which are camelCase by convention. Vue.js includes magic to look at equivalent kebab-case names. I guess it solves the problem but seems like a source for future problems. What if multiple cased versions exist in code, which one runs first?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Name collisions could also happen due to a feature called "fallthrough attributes". A component with its own "click" could have another "click" fall through from above. Which one has priority? A <a href="https://vuejs.org/guide/components/events.html#declaring-emitted-events">declared emitted "click" handler</a> would override native "click". A fallthrough "click" and an emitted "click" would... <a href="https://vuejs.org/guide/components/attrs.html#v-on-listener-inheritance">both be called</a>? Wild.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I like that Vue.js works to magically fix up these kinds of problems, but I'm uncomfortable magic renaming mechanisms exist. Historically they were a high risk for bugs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Props and Events</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Props are intended to be one-way, from parent to child. But because it's valid to pass objects, a child can modify those object instance and potentially change parent state. For performance reasons, Vue doesn't try to detect or prevent such "deep change". Documentation boils down to "Don't do that" though it did <a href="https://vuejs.org/guide/components/props.html#one-way-data-flow">describe a few potential scenarios and their workarounds</a>. The right way for a child to communicate with parent is with emitted events, which are raised only on its direct parent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Props go from parent to immediate child, emitted events are raised from child to immediate parent. Going beyond that (communicating across multiple layers in the hierarchy) could get messy. I saw mention for one mechanism called <a href="https://vuejs.org/guide/scaling-up/state-management.html">State Management</a>, which will be covered in the "Scaling Up" section. There's also the <a href="https://vuejs.org/guide/components/provide-inject.html">Provide/Inject mechanism</a>, which isn't exactly the same as Angular services but has a few similarities. To make them properly reactive values require <code>computed()</code> which is normally just for Vue.js Composition API. To read more about <code>computed()</code>, we are instructed to go back and read certain documentation sections while set to Composition API and not Options API.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Props can have default values when not assigned by parent and/or marked as "required". To help keep objects well-behaved, we can <a href="https://vuejs.org/guide/components/props.html#prop-validation">validate values for props</a> to ensure information coming in to a component is within expected range. We can also <a href="https://vuejs.org/guide/components/events.html#events-validation">validate events</a>, which isn't a mechanism that shows up very often. Usually, events going out are assumed to be within expected range because it was generated within that component. Or maybe I'm misunderstanding the Vue.js mechanism.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Going Bigger</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>As mentioned earlier (in the context of state management) there's an entire section dedicated to scaling up to larger and more complex projects. But we do get a preview of several mechanisms because they rightly belong in "Components In-Depth"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One item I had wondered about upon learning v-model was how that would work across component boundaries. The short version: Either (1) bind to a native input component inside the custom component template, or (2) bind to a writable computed value with getter and setter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think I have a good grasp of slots, but not <a href="https://vuejs.org/guide/components/slots.html#scoped-slots"><em><strong>scoped </strong></em>slots</a>. It took me three readings to understand it is a (convoluted at first glance) way for information to cross parent/child component boundary. This will definitely take several rounds of hands-on practice (and painful debugging sessions) to master.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Symbols keys were brought up as a way to <a href="https://vuejs.org/guide/components/provide-inject.html#working-with-symbol-keys">avoid Provide/Inject naming ambiguity</a> in large projects because they potentially have global scope. This is the first I remember seeing symbol keys, I expect to get more information about it elsewhere in documentation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Vue.js apps that grow big enough to worry about download size can <a href="https://vuejs.org/guide/components/async.html">split components off to be loaded asynchronously</a> on demand. Vite recognizes this mechanism as a breakpoint for bundling purposes. I have yet to come across its Angular counterpart. Possibly <a href="https://angular.io/guide/lazy-loading-ngmodules)">lazy loading</a>? </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Building and using components are great, but they are not the end of <a href="https://newscrewdriver.com/2023/05/09/notes-on-vue-js-reusability/">the Vue story on code reusability</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

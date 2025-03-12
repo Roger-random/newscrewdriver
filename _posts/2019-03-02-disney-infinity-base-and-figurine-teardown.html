@@ -1,0 +1,102 @@
+---
+layout: post
+title: Disney Infinity Base and Figurine Teardown
+date: 2019-03-02 13:30:28.000000000 +00:00
+type: post
+post_id: '18009'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '28206174348'
+  timeline_notification: '1551562302'
+  _thumbnail_id: '18010'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/02/disney-infinity-base-and-figurine-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>On the one hand, I love many Disney properties. On the other, I'm very clear Disney wrings every penny out of their fans. <em>Disney Infinity</em> was a video game where new characters and capabilities are acquired via purchase of physical figurines. Advancement in the game requires a steady stream of new figurine purchases. As much as I love both video gaming and Disney properties, that was too much of a money grab for me to put up with. Apparently enough people thought the way I did, because Disney shut it down for not making enough money.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ironically, that announcement is why I now have a <em>Disney Infinity s</em>tarter pack: once the announcement was made, these kits went on the clearance rack for drastically reduced prices. I was not interested in paying their full price, but I can certainly spare $5 for a gaming peripheral with no future just so I could take it apart! It took a while for me to get around to this project, which finally happened at a <a href="https://www.meetup.com/SGVTech/events/xknvdlyzdbhc/">recent SGVTech meetup</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://www.engadget.com/2014/08/18/disney-infinity-2-0s-toy-box-pack-stars-stitch-merida/">This starter pack</a> came with the system base, Merida, and Stitch. Based on how the game worked, we expected a RFID-based system. That implies RFID chips in the bottom of these figurines, and the USB-connected base has coils to read them. Expectations on these fronts were met but there were a few surprises on the way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The plastic top of the base were held with a few clasps that were easily broken. Once removed, we could see three white PCBs each with what appears to be a surface mount LED on top, and a green PCB with connections to each of them and the USB cable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":18011} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-2-top-removed.jpg" alt="Disney Infinity 2 top removed" class="wp-image-18011"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When we flip over one of the white PCB, we could see it is a simple single layer design and its RFID coil is visible. The straight lines towards the middle are for driving the LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":18012} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-3-rfid-pad-flipped.jpg" alt="Disney Infinity 3 rfid pad flipped" class="wp-image-18012"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The control board is a more typical multi layer board. The biggest chip on board is from the STM32 family, specifically the <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32f072c8.html">STM32F072C8T6</a>. Typing the numbers printed on top of next two larger chips into a web search didn't return any useful results.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":18013} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-4-stm32-in-charge.jpg" alt="Disney Infinity 4 STM32 in charge" class="wp-image-18013"></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The LED on each white PCB appears to have four leads. When we saw four leads our first thought was an addressible LED with power, ground, data, and clock. Then we remembered this is a toy built to low cost: it's more likely a RGB LED package with a common anode and three cathodes, one per color. Either that or the reverse with a common cathode and three color anodes. The '+' labelled on its PCB hinted at a common anode design, which was confirmed with a quick test using a bench power supply putting power on some exposed pads.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":18014} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-5-pad-led-illuminated.jpg" alt="Disney Infinity 5 pad LED illuminated" class="wp-image-18014"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Aside from the RGB LED, there's not much of interest from these three white PCB I could pull off and reuse. The main green PCB was more sophisticated, and there were exposed pads on the bottom that hint at the possibility of reprogramming the STM32 for something fun, but that's beyond my current skill level. (<a href="https://hackaday.com/2019/03/02/live-hacking-and-a-midi-keytar/">This guy can probably do something with it</a>.) The part of the board with best potential for reuse is its USB connection. It gives me a USB-A connector for plugging into a computer, and the other end is a nice modular connector with 2mm pitch. This will be useful the next time I want to <a href="https://newscrewdriver.com/2019/01/22/modify-xbox-360-kinect-for-pc-use/">hack a standard USB cable onto a device</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Attention then turned to the other part of this system: the figurines. Once the clear plastic portion was removed, its RFID sticker is accessible. Sadly, Stitch's arms did not survive the process of prying apart his base.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":18015} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-6-stitch-sticker-removed.jpg" alt="Disney Infinity 6 Stitch sticker removed" class="wp-image-18015"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A closeup of RFID sticker showed most surface area is antenna, and that tiny black dot is a chip with the secret code to unlock a Stitch character in a <em>Disney Infinity</em> game. People online have <a href="https://github.com/techbelly/di-usb-library">tried to hack these bases</a> with little success. Given that the revenue stream comes from selling figurines, there was a robust security scheme to protect the game against counterfeit tags. I was not interested in exploring the digital side in any case, this was strictly a physical teardown.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":18016} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-7-rfid-sticker-closeup.jpg" alt="Disney Infinity 7 RFID sticker closeup" class="wp-image-18016"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>In her movie <em>Brave</em>, Merida was guided by little blue glowing wisps. In the figurine, a wisp floated by Merida's foot. As a ghostly entity, it was fittingly cast in translucent plastic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":18018} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-9-merida-wisp-top.jpg" alt="Disney Infinity 9 Merida wisp top" class="wp-image-18018"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>But there was an extra detail: the translucent plastic went all the way through the opaque parts of the stand, so it could pick up LED illumination from the USB base. When it glowed with a blue LED, the wisp would glow blue just like in the movie. This bonus showed the artists were thinking about how to best take advantage of this medium. Too bad such creative thoughts were infrequent (Stitch had no such attraction) and probably went unnoticed by most buyers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":18017} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-8-merida-wisp-bottom.jpg" alt="Disney Infinity 8 Merida wisp bottom" class="wp-image-18017"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final piece - hexagonal tiles for some purpose or another - were unremarkable. Once the transparent and opaque pieces were pried apart, a similar RFID tag could be removed. I didn't see any interesting possibilities for reuse.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":18019} --></p>
+<figure class="wp-block-image"><img src="https://newscrewdriver.com/wp-content/uploads/2019/03/disney-infinity-a-merida-hexagon.jpg" alt="Disney Infinity A Merida hexagon" class="wp-image-18019"></figure>
+<p><!-- /wp:image --><br />
+</body></html></p>

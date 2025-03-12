@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'Window Shopping: Universal Windows Platform Fluent Design'
+date: 2020-03-30 12:30:22.000000000 +00:00
+type: post
+post_id: '21026'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Equipment Automation
+- UWP
+meta:
+  _thumbnail_id: '21029'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42419768416'
+  timeline_notification: '1585596636'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/30/window-shopping-universal-windows-platform-fluent-design/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Looking over <a href="https://newscrewdriver.com/2020/03/29/a-quick-look-at-ni-measurement-studio/">National Instruments' Measurement Studio</a> reinforced the possibility that there really isn't anything particularly special about what I want to do for a computer front-end to control my electronics projects. I am confident that whatever I want to do in such a piece of software, I can put it in a Windows application.</p>
+<p>The only question is what kind of trade-offs are involved for different approaches, because there is certainly <a href="https://docs.microsoft.com/en-us/windows/apps/desktop/choose-your-platform">no shortage of options</a>. There have been many application frameworks over the long history of Windows. I criticised LabWindows for faithfully following the style of an older generation of Windows applications and failed to keep updated since. So if I'm so keen on the latest flashy gizmo, I might as well look over the latest in Windows application development: the Universal Windows Platform.</p>
+<p>People not familiar with Microsoft platform branding might get unduly excited about "Universal" in the name, as it would be amazing if Microsoft released a platform that worked across all operating systems. The next word dispelled that fantasy: "Universal Windows" just meant across multiple Microsoft platforms: PC, Xbox, and Hololens. UWP was also going to cover phone as well, but <a href="https://www.theverge.com/2017/10/9/16446280/microsoft-finally-admits-windows-phone-is-dead">well, you know</a>...</p>
+<p>Given the reduction in scope and the lack of adoption, some critics are <a href="https://www.thurrott.com/dev/206351/microsoft-confirms-uwp-is-not-the-future-of-windows-apps">calling UWP a dead end</a>. History will show if they are right or not. However that shakes out, I do like <a href="https://docs.microsoft.com/en-us/windows/apps/fluent-design-system">Fluent Design</a> that was <a href="https://docs.microsoft.com/en-us/windows/uwp/design/">launched alongside UWP</a>. A similar but competitive offering to Google's Material Design, I think they both have potential for <a href="https://docs.microsoft.com/en-us/windows/uwp/design/motion/connected-animation">building some really good user interactivity</a>.</p>
+<p>Given the graphical capabilities, I'm not worried about displaying my own data visualizations. But given UWP's intent to be compatible across different Windows hardware platforms, I am worried about my ability to communicate with my own custom built hardware. If something was difficult to rationalize a standard API across PC, Xbox, and Hololens, it might not be supported entirely.</p>
+<p>Fortunately that worry is unfounded. There is a UWP section of the <a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication">API for serial communication</a> which I expect to work for USB-to-serial converters. Surprisingly, it actually went beyond that: there's also an API for <a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.usb">general USB communication</a> even with devices lacking standard Windows USB support. If this is flexible enough to interface arbitrary USB hardware other than USB-to-serial converters, it has a great deal of potential.</p>
+<p>The downside, of course, is that UWP would be limited to Windows PCs and exclude Apple Macintosh and Linux computers. If the objective is to build a graphically rich and dynamically adaptable user interface across multiple desktop application platforms (not just Windows) we have to <a href="https://newscrewdriver.com/2020/03/31/window-shopping-electronjs/">use something else</a>.</p>
+<p></body></html></p>

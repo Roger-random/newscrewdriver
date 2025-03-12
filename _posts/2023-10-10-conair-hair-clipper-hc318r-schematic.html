@@ -1,0 +1,78 @@
+---
+layout: post
+title: Conair Hair Clipper (HC318R) Schematic
+date: 2023-10-10 12:30:00.000000000 +00:00
+type: post
+post_id: '39518'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39521'
+  _publicize_job_id: '88390608517'
+  timeline_notification: '1696966244'
+  wordads_ufa: s:wpcom-ufa-v4:1698602631
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/10/conair-hair-clipper-hc318r-schematic/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Deciphering the <a href="https://newscrewdriver.com/2023/10/09/remington-hair-clipper-hc-920-schematic/">circuit board from a Remington hair clipper</a> was a relatively simple exercise in understanding how a circuit worked, so I followed it up with the circuit board from a <a href="https://newscrewdriver.com/2023/09/10/conair-hair-clipper-hc318r/" target="_blank" rel="noreferrer noopener">Conair hair clipper teardown</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":38881,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/conair-hc318r-disassembled.jpg?w=1024" alt="" class="wp-image-38881"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The functional requirements would have been the same: When the switch is on, use power from a set of nickel cadmium batteries to power a motor. When the switch is off, accept power from a DC charging adapter to charge nickel cadmium batteries, plus a red LED to show charging is in progress.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":38888,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/conair-hc318r-pcb-front.jpg?w=800" alt="" class="wp-image-38888"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":38889,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/conair-hc318r-pcb-rear.jpg?w=800" alt="" class="wp-image-38889"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>The execution, though, turned out to be very different. What caught my attention about this board during the teardown earlier was the absence of diode D3, and the motor's negative terminal was connected directly to the battery negative terminal via a wire instead of the designated "M-" connection point on this circuit board. Probing component connections, I came up with this schematic:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39521,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2023/10/conair-hc318r-pcb-schematic.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/conair-hc318r-pcb-schematic.png?w=1024" alt="" class="wp-image-39521"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The absent diode D3 is directly connected to the unused M- terminal. My best guess was an intent to prevent the motor from sending reversing voltage into the battery pack, but that doesn't seem like a very likely scenario in a hair clipper. Maybe they thought it was when they designed the circuit board, and then decided it was not a problem?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>20 Ohm resistor R1 is in line with diode D2, leading to battery positive. This pair would only come into play when the device is charging. So D2 would be in charge of making sure the battery doesn't feed back into charging port terminals L+/L-, and R1 performs some sort of voltage or current regulation for charging. The Remington clipper circuit board had a provision for such a resistor, but absent from my unit. Presumably they decided it was not necessary.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While D2 is in charge of making sure the batter doesn't feed back into charging terminals while the switch is set to charge, D1 exists to do the same job when the switch is set to run motor. I found it interesting they decided against consolidating those two diodes into a single diode as Remington did. The difference between those two paths is R1, so the absence of its counterpart in Remington would be related in some way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Charging indicator LED is in series with a current-limiting resistor R2. 1k Ohm would keep that LED pretty dim, but it doesn't need to be particularly bright. The Remington clipper circuit board had a resistor in parallel with the LED whose purpose mystified me. There is no counterpart resistor here so it must not be intrinsic to hair clippers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most surprising detail was the path from battery positive to motor positive. Obviously that would be routed through the switch, but I didn't expect to find that it was routed back through the switch a second time. This series path would double the electrical resistance added by the switch. In contrast, the Remington board runs motor power through the switch in parallel, halving the switch resistance. Why did Conair do it this way? The Remington approach made more sense given my level of knowledge.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Due to the relatively simple appearance of these two hair clipper control boards, I thought it would be easy to fully understand what they do once I captured their schematic. But as it turned out, they each have their own mysteries. I hope to eventually understand such things as I continue learning electronics design by <a href="https://newscrewdriver.com/2023/10/11/single-cell-lithium-ion-battery-management-module-4056-schematic/">reverse-engineering more circuit boards</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This KiCad learning project is <a href="https://github.com/Roger-random/kicad_tests/tree/main/conair-hc318r" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

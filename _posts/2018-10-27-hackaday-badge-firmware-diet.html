@@ -1,0 +1,45 @@
+---
+layout: post
+title: Hackaday Badge Firmware Diet
+date: 2018-10-27 09:00:05.000000000 +00:00
+type: post
+post_id: '17045'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23644116452'
+  timeline_notification: '1540656025'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/27/hackaday-badge-firmware-diet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I now have a basic understanding of <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a>'s internal subsystems and how they fit together. Now it's time to start playing with the code. First to validate understanding before trying out some cool stuff.</p>
+<p>When I'm in the early stages of experimentation and understanding, it's good to make the try/learn/repeat loop as fast as possible. In the case of playing with badge firmware, flashing new builds of the firmware becomes the most time-consuming part of the loop. In order to speed up the fun I'm going to trim off parts of the project and make a lighter weight version of badge firmware.</p>
+<p>My primary interest is in writing custom user programs in C. These programs utilize the same low-level infrastructure (font display, scan keyboard, etc) as the BASIC interpreter and Z80 emulator. Since I'm less interested in BASIC or Z80 at the moment, those are the biggest parts I can trim.</p>
+<p><em>Begone, Z80</em></p>
+<p><em>Begone, BASIC</em></p>
+<p>I'm also trimming <del>Tetris</del> blocks-dropping game and the snake game. Not because they take up a great deal of room or time to compile, but just because they are well-defined chunks that I can easily remove.</p>
+<p><em>Begone, snake</em></p>
+<p><em>Begone, <del>Tetris</del> blocks.</em></p>
+<p>Once the above parts have been trimmed, compile and build times dropped noticeably and flashing a new firmware now takes a fraction of the time.</p>
+<p>I hadn't set out to free up program space and memory, but they were happy side effects. Anyone working on user programs and feeling short on elbow room might consider doing what I did to free up space. Here's what the MPLAB X dashboard shows for memory consumption after the trim:</p>
+<p><img class=" size-full wp-image-17059 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/badge-firmware-trimmed.png" alt="Badge Firmware Trimmed" width="460" height="142"></p>
+<p>It is quite lean when compared against the default badge firmware:</p>
+<p><img class=" size-full wp-image-17060 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/badge-firmware-full.png" alt="Badge Firmware Full" width="446" height="140"></p>
+<p>If anyone else wants to look at my crude hack-and-slash job, it's <a href="https://github.com/Roger-random/hackaday-belgrade-2018/commit/1b4c2f384d6a1da4ea272d1dddfdc55d97c4f453">up on Github</a>.</p>
+<p> </p>
+<p></body></html></p>

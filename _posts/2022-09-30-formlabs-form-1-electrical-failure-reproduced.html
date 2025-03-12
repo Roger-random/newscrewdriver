@@ -1,0 +1,65 @@
+---
+layout: post
+title: FormLabs Form 1+ Electrical Failure Reproduced
+date: 2022-09-30 12:30:00.000000000 +00:00
+type: post
+post_id: '32804'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32805'
+  timeline_notification: '1664566273'
+  _publicize_job_id: '77255909015'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/30/formlabs-form-1-electrical-failure-reproduced/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've taken apart a broken FormLabs Form 1+ laser resin 3D printer and <a href="https://newscrewdriver.com/2022/09/29/formlabs-form-1-internals-on-workbench/">laid out its entire electrical system on my workbench</a>. Freed of most of its mechanical parts, it is a much more compact and easily explored layout. Ideal for me to try my long shot idea, which came to me when I started closely examining the damaged galvanometer control board and <a href="https://newscrewdriver.com/2022/09/13/guesses-on-formlabs-form-1-galvanometer-control-board/">guessing at how it worked</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32472,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-x-power-plug-burned-side.jpg?w=1024" alt="" class="wp-image-32472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The hypothesis: root cause of failure may be a badly crimped connector, which is a common failure mode.  It worked well enough to pass FormLabs quality assurance, but presented higher resistance than was desirable, wasting power as heat. Functionally it was probably fine, as this wire carried -24V which was converted to -15V DC by a voltage regulator. So if the extra resistance dropped a volt or two it would not have been noticed. But as time went on, this heat would have weakened and damaged things, raising resistance and temperature. Until one day things got hot enough to reach ignition temperature and started our electrical fire.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The examination: With the system powered up, I probed the front and confirmed -24V on the purple wire. Flipping the board over (an easy task now everything is laid out on workbench) I could access pins corresponding to the connector. I confirmed +24V and ground were as expected, and also confirmed only 0.6V DC instead of -24V DC on the final pin. To double-check, I also probed the input pin of L79 negative voltage regulator, and it also showed 0.6V DC. The -24V DC plane is not receiving -24V, consistent with the burned-out connector hypothesis.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The experiment: I cut the purple wire and soldered it directly to the connector pin on the back. If the connector was the only problem, this would bypass that connection and revive the galvanometer control board. If the connector is not the only problem, I have replicated the conditions leading to that electrical fire. I turned everything on and witnessed the following sequence:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32836,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvanometer-control-board-fire.jpg?w=486" alt="" class="wp-image-32836"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>An orange glow at the base of the visibly burnt area. (Not in the connector.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Foul-smelling smoke from the new recreated fire.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Heat melted solder and released the newly connected wire, breaking the connection and preventing any further damage.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The conclusion: I successfully replicated the conditions leading up to an electrical fire. Whatever went wrong on this board, it isn't a bad connector. Or at least, not just a bad connector. This was an easy thing to try and I wanted to give it a shot. It would have been a great story if this had worked! I even had some ideas on <a href="https://newscrewdriver.com/2022/10/01/formlabs-form-1-openfl-api-connection/">what I would do with it</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

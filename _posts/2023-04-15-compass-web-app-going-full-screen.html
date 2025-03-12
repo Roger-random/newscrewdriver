@@ -1,0 +1,62 @@
+---
+layout: post
+title: Compass Web App Going Full Screen
+date: 2023-04-15 12:30:00.000000000 +00:00
+type: post
+post_id: '36248'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Angular
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36258'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681674081
+  _publicize_job_id: '83227203839'
+  timeline_notification: '1681587013'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/15/compass-web-app-going-full-screen/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>HTML started as a way to display text within a given width and whatever height is needed to accommodate that content, scrolling if necessary. My desire to create a single-page layout without scrolling <a href="https://newscrewdriver.com/2023/04/14/css-beginner-struggles-aspect-ratio-and-height/">feels like a perpetual fight to put a square peg in a round hole</a>. I've seen layouts I like out in the world, so I believe it's only a matter of practice to master all the applicable techniques. A tool I wanted to add to my toolbox is the ability to make my web app go full screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36258,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/compass-with-full-browser-interface.jpg?w=1024" alt="" class="wp-image-36258"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When my web app first loads up on Chrome browser for Android, I declared CSS layout to work within full viewport width and height. However, Chrome doesn't actually show my app on the full viewport, because it has a lot of user interfaces in the way. A bar up top has the address and other related buttons, and a bar at the bottom has my open tabs and additional controls. Together they consume more than one third of overall screen space, far too much for tasks not related to my web app. Fortunately, this situation is only temporary.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36256,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/compass-with-minimal-browser-interface.jpg?w=1024" alt="" class="wp-image-36256"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>As soon as I tap my app, both bars retreat. A small bar is left up top for the phone icons (clock, signal strength, battery) and a bar below reminding me I could drag to unveil more controls. I estimate they consume approximately one eighths of overall screen space. An improvement, but I can do even better by going full screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>MDN page on <a href="https://developer.mozilla.org/en-US/docs/web/api/fullscreen_api">fullscreen API</a> makes it seem pretty straightforward, at least for updated browsers that support the official standard. The complication comes from its history: Going full screen was such a desirable browser feature that they were available in vendor-specific ways before they were standardized. To support such browsers, MDN pointed to the <a href="https://github.com/rafgraph/fscreen">fscreen library</a> which packaged all the prefixed variations together. Fortunately, a personal project like my Compass web app doesn't need to worry about legacy browser support. Besides, they probably wouldn't have the magnetometer API anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":36261,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/compass-fullscreen-with-no-browser-interface.jpg?w=1024" alt="" class="wp-image-36261"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After adding a button for triggering fullscreen request, I can make my app full screen and free of all browser UI. It doesn't necessarily mean I have the entire screen, though. I noticed that on my phone (Pixel 7) my app was prohibited from the screen region where a hole was punched for the front-facing camera. When my app is fullscreen, that area is filled with black so at least it is not distracting even if it was unusable. Native Android apps can <a href="https://developer.android.com/develop/ui/views/layout/display-cutout">request to render into this "display cutout" area</a>, but as far as I can tell browser apps are out of luck. That's a relatively trivial detail I can ignore, but I have to <a href="https://newscrewdriver.com/2023/04/16/compass-web-app-workarounds/">devise workarounds for other problems out of my control</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

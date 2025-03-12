@@ -1,0 +1,52 @@
+---
+layout: post
+title: Notes on Arduino and sigrok
+date: 2024-01-30 12:30:00.000000000 +00:00
+type: post
+post_id: '41790'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25702'
+  firehose_sent: '1706646606'
+  wordads_ufa: s:wpcom-ufa-v4:1706746629
+  _publicize_job_id: '91541585556'
+  timeline_notification: '1706646607'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/30/notes-on-arduino-and-sigrok/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to better understand the motions made by motors in a Canon Pixma MX340 multi-function inkjet, and thought I might be able to gain insight by recording data output by a quadrature encoder attached to its paper feed motor. Finding my Saleae Logic analyzer's software isn't up for the job, I <a href="https://newscrewdriver.com/2024/01/29/logic-analyzer-quadrature-decoder/">searched for alternatives</a> and found sigrok. The open source signal analysis software.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to quadrature decoding capability, sigrok has another advantage: lack of hardware tie-in. I looked for names I recognized on the list of supported hardware and found a few. Curiously the list continues onward to "Work in progress/planned" hardware, and that list included <a href="https://sigrok.org/wiki/Arduino" target="_blank" rel="noreferrer noopener">an entry for Arduino</a>. Wow, really? A humble hobbyist-accessible microcontroller can act as data acquisition hardware for sigrok?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading that page, I believe the answer is "kinda... well, actually... no." The basic idea is that (1) sigrok supports any signal acquisition hardware that can report data via <a href="https://sump.org/projects/analyzer/protocol/" target="_blank" rel="noreferrer noopener">SUMP protocol</a> and (2) people hare written Arduino sketches that tell the ATmega328 chip to sample its IO pins and report their state that way. Unfortunately, based on information on that page, the situation is a mess. Sounds like an Arduino could work for certain scenarios but not others. A user would need to understand implementation details in order to know its limitations, and would need to understand ATmega328 to know workarounds. It's not a plug-and-play solution and the Wiki page has not been edited since September 2020. I don't think this will ever graduate to "supported" status.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Still, I was glad to see this work targeted the ATmega328. The original chip at the heart of original Arduino boards. I had half expected it to require a much newer processor with Arduino core support. Speaking of which, I searched for ESP32 + SUMP and found the <a href="https://github.com/Ebiroll/esp32_sigrok" target="_blank" rel="noreferrer noopener"><code>esp32_sigrok</code> project by GitHub user Ebiroll</a>, along with <a href="https://esp32.com/viewtopic.php?t=3995" target="_blank" rel="noreferrer noopener">a corresponding thread on ESP32 forums</a>. This project also has known problems and the last commit was over three years ago.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on these findings, I got the distinct feeling building signal acquisition system from general-purpose hardware is really hard. Fortunately, for my purpose today I do not need general purpose capability. I can focus on just quadrature decoding and it turns out ESP32 was designed with a peripheral ideally suited for the task: <a href="https://newscrewdriver.com/2024/01/31/window-shopping-esp32-pulse-counter-pcnt/">pulse counter (PCNT)</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

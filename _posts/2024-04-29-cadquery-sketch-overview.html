@@ -1,0 +1,45 @@
+---
+layout: post
+title: CadQuery Sketch Overview
+date: 2024-04-29 12:58:32.000000000 +00:00
+type: post
+post_id: '43229'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1714420714'
+  _thumbnail_id: '43206'
+  timeline_notification: '1714420715'
+  _publicize_job_id: '94098118287'
+  wordads_ufa: u:wpcom-ufa-v4:1714526655
+  _elasticsearch_data_sharing_indexed_on: '2024-05-01 01:25:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/04/29/cadquery-sketch-overview/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm getting oriented with CadQuery via the time-honored process of Reading The Fine Manual. After <a href="https://newscrewdriver.com/2024/04/28/cadquery-concepts-overview/">getting an overview of general concepts</a>, I continued onward to an overview of CadQuery's <a href="https://cadquery.readthedocs.io/en/latest/sketch.html">2D sketch process</a>. This concept is <a href="https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem">fairly limited in OpenSCAD</a> to simpler geometry primitives. If I wanted to do something more complex, my takeaway was "do it somewhere else" then bring it into OpenSCAD via SVG or DXF imports. I'm glad to see CadQuery has more sophistication in this area, hopefully suffice for my future projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Similar to OpenSCAD, I can sketch in CadQuery by specifying simple 2D primitives. They can be combined using various modes. Fuse adds new shape to an existing one, and I assume it was indeed called "add" at some point by its mode specification character "a". Similar cut mode probably started as "subtract" given it is "s". At least intersection mode is still "i". Finally there is mode "c" which is not cut but construction used to guide future operations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examples throughout this guide lets me walk through operations by typing them in step by step in CQ-editor. They illustrate the commands under discussion but they also used a few commands that went unexplained probably because they're not core to 2D sketch concepts. I saw multiple calls to <code>reset()</code> and an explanation "<em>Note that selectors are implemented, but selection has to be explicitly reset</em>" but I don't fully understand what that means yet. Nor do I yet understand the role of <code>clean()</code> which removes some visual clutter but I don't fully understand what it means from a geometry standpoint. Are these operations strictly optional tidying up that I can choose to skip for performance? Or are there times when they are critically important? Or possibly, are there times when I explicit should not call them? Things to learn for the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest attraction in this section was <a href="https://cadquery.readthedocs.io/en/latest/sketch.html#constraint-based-sketches">constraint-based sketches</a>, a feature I failed to find in any other code CAD platforms I investigated. While I'm very hopeful this will prove useful capturing design intent in my CadQuery projects, I'm aware of the fact it is still an incomplete experimental feature with a small set of constraints. The final proof will be in the using but I think it'll be fine. In the worst case I get frustrated and end up not using it, which leaves me no worse off than where I am now. I have a similar attitude going into <a href="https://newscrewdriver.com/2024/04/30/cadquery-assemblies-overview/">CadQuery assemblies</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

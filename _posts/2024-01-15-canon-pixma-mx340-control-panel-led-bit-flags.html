@@ -1,0 +1,176 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LED Bit Flags
+date: 2024-01-15 12:30:00.000000000 +00:00
+type: post
+post_id: '41576'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41534'
+  wordads_ufa: s:wpcom-ufa-v4:1705459880
+  _publicize_job_id: '91116447419'
+  firehose_sent: '1705350617'
+  timeline_notification: '1705350618'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A rudimentary Python program helped me get the <a href="https://newscrewdriver.com/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/">button matrix status report scan code</a> sent by the control panel of a Canon Pixma MX340 multi-function inkjet. While I was on the machine smashing buttons, I also figured out how to toggle the state of two LEDs ("In Use/Memory" and "WiFi") under control of the same NEC K13988 chip. (The other two LEDs "Power" and "Alarm" have been traced to <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/" target="_blank" rel="noreferrer noopener">direct main board wires</a>.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is new territory, because those two LEDs did not change during my <a href="https://newscrewdriver.com/2023/12/28/canon-pixma-mx340-control-panel-logic-analyzer-capture-targets/" target="_blank" rel="noreferrer noopener">initial six logic analyzer capture targets</a>, so I had no information on commands to toggle their state. Now I can now add two more procedures for logic analyzer captures:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Start a fax transmission. Since I don't have a landline, it will hang until timeout error. Before that happens, though, "In Use/Memory" will blink. Approximately one second illuminated, half second dark, and repeat.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>In the device settings menu, it is possible to activate/inactivate the machine's WiFi function. The WiFi LED status will update in response to user menu selection.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I recognize the pattern for LCD screen updates, I could comb through the data looking for transmissions outside of that pattern. Maybe I should have waited to analyze this until I have updated my Python data filter program to exclude LCD screen updates for me, but I was impatient. As it turned out, it wasn't very difficult to do it manually in Saleae Logic timeline view.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the "In Use/Memory" light can be set blinking without user interaction, that was easier to extract:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true} --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Main board command</th>
+<th class="has-text-align-center" data-align="center">In Use/Memory LED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0E 0xFB</td>
+<td class="has-text-align-center" data-align="center">ON</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0E 0xFF</td>
+<td class="has-text-align-center" data-align="center">OFF</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>So far so good. I then repeated the exercise for WiFi LED which was more involved because the capture included several button keypresses and LCD screen updates I had to wade through.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true} --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Main board command</th>
+<th class="has-text-align-center" data-align="center">WiFi LED</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0E 0xFF</td>
+<td class="has-text-align-center" data-align="center">ON</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">0x0E 0xFD</td>
+<td class="has-text-align-center" data-align="center">OFF</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hmm. 0x0E 0xFF is sent when I turned WiFi ON, and it's also sent when In Use/Memory is OFF. At first I thought maybe I had been looking at the wrong bytes, but then I realized 0x0E is the command to update all LED state and the second byte is a parameter. In that earlier In Use/Memory table, WiFi LED was on. And in the above WiFi LED table, In Use/Memory was off. Those tables covered three out of four possible combinations, so I turned WiFi OFF and set In Use blinking and got 0x0E 0xF9 as the fourth value. Now I can plot the four possible commands in a table:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true} --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center"></th>
+<th class="has-text-align-center" data-align="center">In Use/Memory LED<br>ON</th>
+<th class="has-text-align-center" data-align="center">In Use/Memory LED<br>OFF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>WiFi LED<br>ON</strong></td>
+<td class="has-text-align-center" data-align="center">0x0E 0xFB</td>
+<td class="has-text-align-center" data-align="center">0x0E 0xFF</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>WiFi LED<br>OFF</strong></td>
+<td class="has-text-align-center" data-align="center">0x0E 0xF9</td>
+<td class="has-text-align-center" data-align="center">0x0E 0xFD</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>These four commands differ only in the final four bits. Here's the same table, with those four bits in both hexadecimal and binary.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"hasFixedLayout":true} --></p>
+<figure class="wp-block-table">
+<table class="has-fixed-layout">
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center"></th>
+<th class="has-text-align-center" data-align="center">In Use/Memory LED<br><mark style="background-color:#fcb900" class="has-inline-color">ON</mark>
+</th>
+<th class="has-text-align-center" data-align="center">In Use/Memory LED<br><mark style="background-color:#fcb900" class="has-inline-color">OFF</mark>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>WiFi LED<br><mark style="background-color:#8ed1fc" class="has-inline-color">ON</mark></strong></td>
+<td class="has-text-align-center" data-align="center">0xB = 0b1<mark style="background-color:#fcb900" class="has-inline-color">0</mark><mark style="background-color:#8ed1fc" class="has-inline-color">1</mark>1</td>
+<td class="has-text-align-center" data-align="center">0xF = 0b1<mark style="background-color:#fcb900" class="has-inline-color">1</mark><mark style="background-color:#8ed1fc" class="has-inline-color">1</mark>1</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center"><strong>WiFi LED<br><mark style="background-color:#8ed1fc" class="has-inline-color">OFF</mark></strong></td>
+<td class="has-text-align-center" data-align="center">0x9 = 0b1<mark style="background-color:#fcb900" class="has-inline-color">0</mark><mark style="background-color:#8ed1fc" class="has-inline-color">0</mark>1</td>
+<td class="has-text-align-center" data-align="center">0xD = 0b1<mark style="background-color:#fcb900" class="has-inline-color">1</mark><mark style="background-color:#8ed1fc" class="has-inline-color">0</mark>1</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now we can see the second least significant bit (bit mask 0b0010) dictates state of pin controlling WiFi LED state, and the third least significant bit (bit mask 0b0100) for In Use/Memory LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The mapping between bit value and LED on/off is reversed between these two because those pins are connected to different circuit components. In Use/Memory <a href="https://newscrewdriver.com/2023/12/22/canon-pixma-mx340-control-panel-ic-pinout-nec-k13988/">LED- is connected directly to K13988 pin 21</a>, so setting that pin <em>low </em>illuminates the LED. In contrast, WiFi indicator is a higher power LED with its own 5.5VDC power feed, so the K13988 pin <a href="https://newscrewdriver.com/2023/12/20/canon-pixma-mx340-control-panel-wifi-led/" target="_blank" rel="noreferrer noopener">controls a transistor that grounds LED-</a>. Setting that pin <em>high </em>activates the transistor and illuminates the WiFi LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I know 0x0E is a command to control LED state, I reviewed the <a href="https://newscrewdriver.com/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/" target="_blank" rel="noreferrer noopener">power-on sequence</a> for 0x0E commands. It included parameters 0xFD and 0xFF listed above, but also 0xFC which turned off the least significant bit. I don't know what that could be... I've traced through the circuit board and there isn't anything else it could have connected to. Maybe that bit meant something in a different device, and Canon engineers carried over that code without realizing it? Whatever it might have been, it was quickly overwritten by 0x0E 0xFD roughly 250ms later, so it doesn't matter much anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Understanding the 0x0E commands for LED control filled in the last of my "known unknown" of MX340 internal serial communication. I tried to apply my lesson to my data filter program but stumbled out of the gate, tripped up by <a href="https://newscrewdriver.com/2024/01/16/time-wasted-by-faulty-usb-serial-adapter/">a USB serial adapter that was bad right out of the box</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

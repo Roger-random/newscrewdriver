@@ -1,0 +1,38 @@
+---
+layout: post
+title: Unreliable Serial Communication with UGS, Try bCNC Next
+date: 2019-09-19 12:30:13.000000000 +00:00
+type: post
+post_id: '19570'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19541'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '35463450299'
+  timeline_notification: '1568921591'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/09/19/unreliable-serial-communication-with-ugs-try-bcnc-next/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>We now have a three-axis machine: aged but still robust industrial motion control linear drives for our X and Y axis, and a <a href="https://newscrewdriver.com/2019/09/18/quick-fabrication-for-servo-z-axis/">new but <em>not at all</em> robust servo holding a Sharpie marker</a> as our Z-axis. It was enough to let us feed three-axis G-code programs and watch them in action.</p>
+<p>We started with short programs that would take less than a minute to run, then gradually increased the complexity and duration of jobs. If we wanted to turn this into a CNC mill, it will need to be reliable and dependable for long jobs. We didn't have enough experience to have a list of potential points of failure, we just ran ever longer jobs and watched to see what goes wrong. We knew it was going to be a process of finding a problem, fixing it, finding the next thing to fail, fix that too, and repeat.</p>
+<p>Our first problem: the <a href="https://newscrewdriver.com/2019/09/06/computer-running-ugs-as-cnc-control-console/">G-code sender UGS running on the control console laptop</a>. In the middle of running a job of approximately 15 minutes, UGS would drop serial connection. The machine stops moving and UI shows "OFF-LINE". This is not just annoying, it is plainly unacceptable in a machine that might be expected to run for hours.</p>
+<p>And there's another possibly related problem with UGS serial communication: it was not able to connect to Grbl ESP32 if the dev board was connected at boot. We could work around this by unplugging the USB cable to ESP32 and reconnect, but this is rather inconvenient.</p>
+<p>We could put up with the startup connection issue if that was the only problem, but randomly halting in the middle of a long job is unacceptable. So UGS is out of contention, and we return to the <a href="https://github.com/gnea/grbl/wiki/Using-Grbl">Grbl G-code sender list</a> to find a replacement.</p>
+<p>The next candidate: bCNC.</p>
+<p></body></html></p>

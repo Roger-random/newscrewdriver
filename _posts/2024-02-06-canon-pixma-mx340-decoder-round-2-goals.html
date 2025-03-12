@@ -1,0 +1,70 @@
+---
+layout: post
+title: Canon Pixma MX340 Decoder Round 2 Goals
+date: 2024-02-06 12:30:00.000000000 +00:00
+type: post
+post_id: '41868'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  firehose_sent: '1707251403'
+  wordads_ufa: s:wpcom-ufa-v4:1707382425
+  _publicize_job_id: '91743069245'
+  timeline_notification: '1707251404'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/06/canon-pixma-mx340-decoder-round-2-goals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to understand how the paper feed mechanism works in a Canon Pixma MX340 multi-function inkjet, starting with positions reported by its rotational quadrature encoder. Round 1 looked at raw position data polled every 10ms. This approach <a href="https://newscrewdriver.com/2024/02/05/quadrature-decode-mx340-print/">quickly ran into limitations</a>, but it informed what I want to accomplish for round 2.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Seeing several moves of 1800 encoder count increments hinted this system acts as a position-based system ("Go to position X") like a servo motor. This doesn't necessarily exclude the possibility of occasionally acting as a velocity based system ("turn at this speed") but I can start by focusing on the positioning aspect.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of my observations show an acceleration to a target speed, and kept spinning at that speed until it was time to decelerate to stop at a target position. If there are any velocity-based operating modes, I haven't seen any sign the velocity changes in response to any system behavior. I observed several different target speeds for different moves, but the speed seems to stay constant within a single move.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given these observations, my goal for round 2 is to process encoder position to generate a list of timestamped relative positioning. A secondary goal is to also include peak velocity. I can calculate average velocity from timestamp and position. I expect average will be somewhat lower than peak due to the accelerate/decelerate stages. If there is significant deviation, I know either something went wrong in my code, or the rotational velocity varied during the move.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's an example to illustrate my goal:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>An excerpt from the power-up sequence, this was the first three movements. It was preceded by a long series of zeros before anything moved. Then there was a move of ~1800 counts over ~140 milliseconds. Then a short period of no motion. Then another move of ~2700 counts over ~240 milliseconds, immediately followed by a reversal of -1800 counts over 140 milliseconds before another period of stillness.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41837,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-quadrature-decoded-startup-closeup-on-initial-move.png?w=1024" alt="" class="wp-image-41837"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Round 1 gave me a long list of positions every 10 milliseconds. I want round 2 to give me something like:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>millis,change,v-max-10ms<br>5151,0,0<br>140,1798,237<br>230,0,0<br>240,2700,148<br>140,-1800,-239<br>100,0,0</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>These numbers were not precisely calculated, merely to show the desired format. I want a much more concise description of motion than the position-every-10ms raw dump of round 1. This means putting more data processing logic in the Arduino. <a href="https://newscrewdriver.com/2024/02/07/motion-decoder-fail-zero-delta-between-two-samples/">I tried the easy thing first and it did not go well</a>, but I learned a lot from the failure.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

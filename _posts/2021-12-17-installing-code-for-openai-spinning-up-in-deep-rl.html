@@ -1,0 +1,78 @@
+---
+layout: post
+title: Installing Code for OpenAI "Spinning Up in Deep RL"
+date: 2021-12-17 12:30:00.000000000 +00:00
+type: post
+post_id: '27853'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- OpenAI
+- OpenAI Gym
+- Spinning Up in Deep RL
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27898'
+  _publicize_job_id: '66631953241'
+  timeline_notification: '1639773017'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/17/installing-code-for-openai-spinning-up-in-deep-rl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to start playing with training deep reinforcement learning agents, and OpenAI's "Spinning Up in Deep RL" guide seems like a good place to start. But I was a bit worried about the age of this guide, parts of which has become out of date. One example is that it still says MuJoCo requires a paid license but actually <a href="https://newscrewdriver.com/2021/12/16/today-i-learned-mujoco-is-now-free-to-use/">MuJoCo has since become free to use</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite this, I decided it's worth my time to try its <a rel="noreferrer noopener" href="https://spinningup.openai.com/en/latest/user/installation.html" target="_blank">software installation guide</a> on my computer running Ubuntu. OpenAI's recommended procedure uses <a rel="noreferrer noopener" href="https://www.anaconda.com/products/individual" target="_blank">Anaconda</a>, meaning I'll have a Python environment dedicated to this adventure and largely isolated from everything else. Starting from Python version (3.6, instead of the latest 3.10) and on down to all the dependent libraries. The good news is that all the Python-based infrastructure seemed to work without problems. But MuJoCo is not Python and thus not under Anaconda isolation, so all my problems came from trying to install <code><a href="https://github.com/openai/mujoco-py" target="_blank" rel="noreferrer noopener">mujoco_py</a></code>. (A Python library to bridge MuJoCo.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first problem was apparently expected by the project's authors, as I got a prompt to set my <code>LD_LIBRARY_PATH</code> environment variable. The script that gave me this prompt even gave me its best guess on the solution:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/roger/.mujoco/mujoco210/bin</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That looked reasonable to me, so I tried it and it successfully allowed me to see the second and third problems. Both were Ubuntu packages that were not explicitly named in the instructions, but I had to install them before things could move on. I did a web search for the first error, which returned the suggestion to run "<code>sudo apt install libosmesa6-dev libgl1-mesa-glx libglfw3</code>" and that seemed to have resolved this message:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>/home/roger/anaconda3/envs/spinningup/lib/python3.6/site-packages/mujoco_py/gl/osmesashim.c:1:10: fatal error: GL/osmesa.h: No such file or directory</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second missing package error was straightforward to fix, running "<code>sudo apt install patchelf</code>" to resolve this message:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>FileNotFoundError: [Errno 2] No such file or directory: 'patchelf': 'patchelf'</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final step was to install dependencies for MuJoCo-based Gym environments. The instruction page said to run <code>pip install gym[mujoco,robotics]</code> but when I did so, I was distressed to see my work to install <code>mujoco-py</code> was removed. (!!)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>  Attempting uninstall: mujoco-py
+    Found existing installation: mujoco-py 2.1.2.14
+    Uninstalling mujoco-py-2.1.2.14:
+      Successfully uninstalled mujoco-py-2.1.2.14</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reason pip wanted to do this was because the gym packages said they want <code>mujoco_py</code> version greater than or equal to 1.5 but less than 2.0.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Collecting mujoco-py&lt;2.0,&gt;=1.50
+Downloading mujoco-py-1.50.1.68.tar.gz (120 kB)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately(?) this attempt to install 1.50.1.68 failed and pip rolled everything back, restoring 2.1.2.14 that I had already installed. Leaving me in a limbo state.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well, when in doubt, try the easy thing first. I decided to be optimistic and moved on to "check that things are working" command to run Walker2d-v2 environment. I saw a lot of numbers and words flashed by. I only marginally understood them, but I didn't see anything I recognized as error messages. So while I see a few potential problems ahead, right now it appears this mishmash of old and new components will <a href="https://newscrewdriver.com/2021/12/18/old-pytorch-without-gpu-is-enough-to-start/">work well enough for a beginner</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

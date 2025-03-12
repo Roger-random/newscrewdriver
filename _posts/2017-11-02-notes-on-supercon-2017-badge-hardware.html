@@ -1,0 +1,39 @@
+---
+layout: post
+title: Supercon 2017 Badge - Hardware Orientation
+date: 2017-11-02 09:00:22.000000000 +00:00
+type: post
+post_id: '14644'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- Supercon
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_pending: '1'
+  _publicize_job_id: '11010206632'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/11/02/notes-on-supercon-2017-badge-hardware/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Today was spent getting orientated on the hardware components making up the <a href="https://hackaday.io/project/27427-camera-badge-for-supercon-2017">camera badge for Supercon 2017</a>. The starting point is the project documentation's "<a href="https://hackaday.io/project/27427-camera-badge-for-supercon-2017/log/68571-hardware-description">hardware description</a>" page, which gave a basic overview that helps me decide where I want to dig deeper.</p>
+<p><img class=" size-full wp-image-14703 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/11/2413581507673490011.png" alt="2413581507673490011" width="1169" height="589"></p>
+<p>The CMOS sensor at the heart of the <a href="https://cdn.hackaday.io/files/274271173436768/OV9650impguide.pdf">OV9650 camera module</a> claims to support up to 1280x1024 resolution, which isn't bad for such an inexpensive component. The sample image posted on the project file section, however, is only 128x96 resolution. It's not immediately clear where &gt;99% of the pixels disappeared to or how feasible it'd be to bring them back.</p>
+<p>Perhaps that resolution was chosen to match the OLED screen, which has 128x128 pixels of resolution controlled by a <a href="http://www.solomon-systech.com/en/product/display-ic/oled-driver-controller/ssd1351/">SSD1351</a> chip. If this is the case, and more pixels can be captured from the camera with minimal effort, that opens up project ideas such as having the little screen pan across a larger image. (a.k.a. the <a href="https://en.wikipedia.org/wiki/Ken_Burns_effect">Ken Burns effect</a>.)</p>
+<p>We have multiple tiers of storage that makes different capacity/speed trade-offs. First we have some space for data on the PIC itself, then we have a Microchip <a href="http://www.microchip.com/wwwproducts/en/23LC1024">23LC1024</a> serial RAM, and finally a microSD card.</p>
+<p>There's an <a href="http://www.st.com/content/st_com/en/products/mems-and-sensors/accelerometers/lis2hh12.html">LIS2HH12</a> accelerometer on board which might enable some cool projects, though I'm struggling to think up one that captures my fancy. Maybe in a bit.</p>
+<p>The chip that orchestrates all of this is a <a href="http://www.microchip.com/wwwproducts/en/PIC32MX170F256D">PIC32MX170F256D</a>. Fortunately for me, I already had the tools on hand to develop for it thanks to my time playing with the PIC16F18345. They're very different chips, but since they're both from Microchip I would write code to both using the same MPLAB X IDE albeit with different C compiler underneath: XC8 vs XC32. The PIC32 is set up to run a .hex file off the microSD card, so it's not necessary to have a PIC programmer. But if I need to flash at a more direct level, the board has headers to connect the same PICkit 3 programmer I use for the PIC16F18345.</p>
+<p>All in all, a decent set of hardware. Now I just need to think of a really cool project to do with it all.</p>
+<p></body></html></p>

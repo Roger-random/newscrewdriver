@@ -1,0 +1,47 @@
+---
+layout: post
+title: Second Try with FormLabs Form 1+ Display Board Signals
+date: 2022-09-18 12:30:00.000000000 +00:00
+type: post
+post_id: '32628'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32614'
+  timeline_notification: '1663529432'
+  _publicize_job_id: '76858701461'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:59'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/18/second-try-with-formlabs-form-1-display-board-signals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One lasting memory I have from the movie <em>Apollo 13</em> is the line "<em>is this an instrumentation problem or are we looking at real power loss</em>?" When an instrument tells us something is wrong, it's possible the problem is in the instrument and not in the system it is measuring. I thought of this when I looked over the <a href="https://newscrewdriver.com/2022/09/17/first-look-at-formlabs-form-1-display-board-signals/">initial set of logic analyzer traces</a> of data sent to an OLED display module. The traces superficially resembled SPI, but with many traits inconsistent with SPI. Before I dive into a rabbit hole of trying to figure out strange data, I wanted to make sure it isn't an instrumentation problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first thought was sampling rate. I gathered information for 8 channels because I had an 8-channel logic analyzer. But there's a tradeoff. Sampling frequency drops as number of channels go up. For the base model Saleae Logic 8 that I have, polling all 8 channels drops it down to 25MS/s (25 million samples per second.) This might not be fast enough, because SPI peripherals could go all the way up to a clock rate of 50MHz. My first round of probing found only three wires with interesting activity, so dropping sampling down to 3 channels let me increase sampling rate to 100MS/s. Which is the minimum requirement to capture a 50MHz signal, but I doubt this OLED is running that fast. If this is a SSD1305 controller, its datasheet (Table 13-4 <em>Serial Interface Timing Characteristics</em>) lists a clock cycle time minimum of 250ns which translates to a maximum clock speed of 4 MHz. I figured even if it isn't a SSD1305, it likely operates at similar speeds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next step was to redo all physical connections. I disconnected all eight probes and reconnected to reseat just the three channels I care about. I switched to a different USB cable for the Saleae, and I plugged it into a different computer that had two advantages: (1) it had a faster processor, and (2) I could connect to an onboard USB port. (I didn't need a USB hub.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32634,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/saleae-logic-formlabs-oled-better-spi.png?w=1024" alt="" class="wp-image-32634"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This second set of traces look more like the SPI signal I expected, so my problem was indeed instrumentation. But the white line (channel 0, display input pin 3) is still clearly not an SPI chip select signal, as data transmission occurs both at high and low levels. What might it be? Looking into the SSD1305 datasheet, I saw its SPI mode required an extra pin labeled <code>D/C#</code>. This is the Data/Command control pin telling the OLED how to interpret incoming SPI traffic. If this line is low, SPI traffic will be interpreted as commands. If this line is high, SPI traffic will be interpreted as data. This could explain what I see, but for final confirmation I will examine the data to <a href="https://newscrewdriver.com/2022/09/19/formlabs-form-1-oled-control-consistent-with-ssd1305/">see if it's consistent with SSD1305 communication</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

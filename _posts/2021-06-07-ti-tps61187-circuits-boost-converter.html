@@ -1,0 +1,50 @@
+---
+layout: post
+title: TI TPS61187 Circuit's Boost Converter
+date: 2021-06-07 12:30:00.000000000 +00:00
+type: post
+post_id: '26976'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Projects
+tags:
+- Backlight
+- LCD Panel
+- LP133WF2(SP)(A1)
+- TPS61187
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26964'
+  _publicize_job_id: '59324955706'
+  timeline_notification: '1623094206'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/06/07/ti-tps61187-circuits-boost-converter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had a broken LG laptop screen, model LP133WF2(SP)(A1), which I've disassembled and now I'm digging into its backlight module. I want to see if it I could make it work as a standalone diffuse light panel. I could probably wire up the LEDs directly with a voltage source and current-limiting resistor, but I also have its original integrated driver circuit board which still worked as far as I knew. I'm sure most of it were concerned with moving pixels which are no longer relevant, but there is also <a href="https://newscrewdriver.com/2021/06/06/investigating-ti-tps61187-wled-driver/">a TI TPS61187 chip on the board</a> to drive the backlight section.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The PWM control signal is 3.3V friendly with a logic high threshold of 2.1V, so I could use either a 5V ATmega328 Arduino or a 3.3V ESP32. The part I didn't understand was the power input. The datasheet says input voltage can range anywhere from 4.5V to 24V, and that it has a built-in boost converter to send up to 38V to the LED strings. I had expected to see a separate output pin for this higher voltage, but in the Typical Application schematic, the LED's common anode is connected to the input voltage plane via a diode and an inductor. This combined with the following quote in the datasheet confused me:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>there must be enough white LEDs in series to ensure the output voltage stays above the input voltage range</p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the common anode seemingly tied to voltage input, I didn't understand how the anode voltage could be higher than the input voltage. The next hypothesis is that instead of different voltage supply planes, perhaps there are separate ground planes at different levels. I saw there was a PGND pin for logic that is separate from AGND pin for the LED strings so the hypothesis had potential. But when I probed the circuit board, my meter said PGND and AGND pins are tied together on my board, eliminating the "separate ground levels" idea.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With a distinct sense that I have misunderstood something, I went to Wikipedia to <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Boost_converter" target="_blank">learn more about boost converters</a> and how they work. As soon as the diagrams came onscreen for that page, I realized that inductor and diode I saw earlier WAS the boost converter. I just didn't recognize it as I was only aware of a block diagram representation and didn't know it when the core components of a boost converter were staring at me in the schematic. Now it all makes sense how the LED string common anode voltage will be higher than the input voltage, and I feel confident enough to <a href="https://newscrewdriver.com/2021/06/08/my-tps61187-led-driver-startup-plan/">devise a plan</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

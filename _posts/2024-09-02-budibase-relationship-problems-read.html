@@ -1,0 +1,42 @@
+---
+layout: post
+title: 'Budibase Relationship Problems: Read'
+date: 2024-09-02 12:30:00.000000000 +00:00
+type: post
+post_id: '45021'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- budibase
+- rogmoney
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44812'
+  _elasticsearch_data_sharing_indexed_on: '2024-09-02 14:25:37'
+  firehose_sent: '1725305418'
+  _publicize_job_id: '97508829425'
+  timeline_notification: '1725305420'
+  wordads_ufa: u:wpcom-ufa-v4:1725399729
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/09/02/budibase-relationship-problems-read/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I got <a href="https://newscrewdriver.com/2024/09/01/budibase-data-binding/">a working knowledge of Budibase data binding</a>, I feel like I'm past the "I have no idea what I am doing" beginner phase and entered into the "I can probably figure out what key words to search for an answer" intermediate phase. The road from here to "I know how to do this" experienced phase is likely paved with a lot of hands-on time. I think Budibase will be able to cover 90% of what I want with very little effort on my part, fulfilling its promise. But that last 10% could motivate me to examine other tools to add to my toolbox.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One example is how Budibase handles table relationships. For every database table, we have to designate one column as a special <a href="https://docs.budibase.com/docs/budibasedb#selecting-the-display-column">display column</a>. When displaying tables with defined relationships to other tables, Budibase can automatically replace an foreign key reference with the display column from that column table. My "<code>vendors</code>" table has a "<code>name</code>" column as its display column. Each row in my "<code>transactions</code>" table has a "<code>vendor_id</code>" column that points to a row in "<code>vendors</code>" table. Budibase can combine them so when it shows a row from my "<code>transactions</code>" table, instead of showing the vendor ID (476) it queries my "<code>vendors</code>" table and shows the "<code>name</code>" for that ID instead (Target). This is great and it covers majority of what people would need.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But if I want to go deeper, I'm on my own. My example is my "<code>payments</code>" table, which was my way of implementing classic <a href="https://en.wikipedia.org/wiki/Double-entry_bookkeeping">double-entry bookkeeping</a> and each row has two transaction IDs. One is a deduction transaction from my checking account, the other a credit transaction for the same amount to my Target card account. I wanted to create Budibase dashboard showing a payment amount from "Checking" to "Target", but those names are two levels away ("<code>payments</code>" to "<code>transactions</code>" to "<code>vendors</code>") and I couldn't find a way to do it within Budibase. I ended up solving my problem with a custom PostgreSQL query that performed multiple table joins, then returned the selected results to Budibase, which then dutifully displayed it as a table. I may find a more elegant way to accomplish what I want in the future, but for today this is good enough while <a href="https://newscrewdriver.com/2024/09/03/budibase-relationship-problems-create/">I struggle with other problems</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

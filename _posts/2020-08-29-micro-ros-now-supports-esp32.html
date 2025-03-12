@@ -1,0 +1,41 @@
+---
+layout: post
+title: Micro-ROS Now Supports ESP32
+date: 2020-08-29 12:30:00.000000000 +00:00
+type: post
+post_id: '22527'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- ROS2
+meta:
+  _thumbnail_id: '19200'
+  _publicize_job_id: '48259149196'
+  timeline_notification: '1598729409'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/29/micro-ros-now-supports-esp32/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I <a href="https://newscrewdriver.com/2020/08/05/notes-on-ros2-and-rosserial/">looked wistfully at <code>rosserial</code></a> and how it doesn't seem to have a future in the world of ROS2, I mentioned <a rel="noreferrer noopener" href="https://micro-ros.github.io/" target="_blank">micro-ROS</a> appeared to be the spiritual successor but it required more powerful microcontrollers leaving the classic 8-bit chips behind. Micro-ROS doesn't quite put microcontrollers on a ROS2 system as a first-class peer to other software nodes running on the computer, as there still needs to be a corresponding "agent" node on the computer to act as proxy. But it comes closer than <code>rosserial</code> ever tried to be, and looks great on paper.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on the <a rel="noreferrer noopener" href="https://micro-ros.github.io/docs/overview/" target="_blank">micro-ROS architectural overview</a> diagram, I understand it can support multiple independent software components running in parallel on a microcontroller. This is a boost in capability from <code>rosserial</code> which can only focus on a single task. However, it's not yet clear to me whether a robot with a microcontroller running micro-ROS can function independent of a computer running full fledged ROS2. On a robot with ROS using <code>rosserial</code>, there still needs to be a computer running the ROS master among other foundational features. Are there similar requirements for a robot with micro-ROS?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I suppose I wouldn't really know until I set aside the time to dig into it, which has yet to happen. But the likelihood just increased. I knew that the official support for micro-ROS <a rel="noreferrer noopener" href="https://micro-ros.github.io/docs/overview/hardware/" target="_blank">started with various ARM Cortex boards</a>, but reading the system requirements I saw nothing that would have prevented the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/11/23/the-wide-world-of-esp32/" target="_blank">non-ARM ESP32</a> from joining the group. Especially since it is a popular piece of hardware and it already runs FreeRTOS by default. I have a few modules already on hand and I expected it was only a matter of time before someone ported micro-ROS to the ESP32. Likely before I build up the expertise and find the time to try it myself.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That expectation was correct! A few days ago<a rel="noreferrer noopener" href="https://discourse.ros.org/t/micro-ros-porting-to-esp32/16101" target="_blank"> an announcement was posted to ROS Discourse</a> that ESP32 is now officially part of the micro-ROS ecosystem. And thus another barrier against ROS2 adoption has been removed.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,88 @@
+---
+layout: post
+title: Powering Up Toyota Audio Head Unit (86120-08010)
+date: 2022-05-03 12:30:00.000000000 +00:00
+type: post
+post_id: '30029'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30032'
+  _publicize_job_id: '72115350518'
+  timeline_notification: '1651606206'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/03/powering-up-toyota-audio-head-unit-86120-08010/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It appears two of my salvaged LCDs might have come from the same product, with <a href="https://newscrewdriver.com/2022/05/02/risky-parallel-lcd-test-surprisingly-worked/">identical (or nearly so) interface and command protocol</a>. That is great, but I don't know what that protocol actually <em>is</em>. It isn't terribly promising as a starting point, so I decided to continue looking in my pile of salvaged electronics. Next candidate is the LCD embedded in the control panel of an automotive audio head unit. This was a stock tape deck from a 1998 Toyota Camry LE, which was replaced by an aftermarket deck for modern conveniences like Bluetooth audio. It was one of the retired pieces of equipment I brought to the <a rel="noreferrer noopener" href="https://twitter.com/Regorlas/status/1222722913628909568" target="_blank">January 2020 session of Disassembly Academy</a> and taken apart. All metal pieces went into recycle, all plastic pieces went to landfill, and I kept the electronic circuit boards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the metal external panels are gone, I no longer have the model number. Searching through eBay listings, I guess it was a Toyota 86210-08010. <a rel="noreferrer noopener" href="https://www.ebay.com/itm/354026512944" target="_blank">This listing</a> explicitly mentioned Toyota Camry in their description. However, I saw several other Toyota units that looked superficially similar but with different numbers, like <a rel="noreferrer noopener" href="https://www.ebay.com/itm/234162523204" target="_blank">this 86120-04090</a>. I thought maybe I'll just call it "86210" but there are "86210" units that look wildly different like <a rel="noreferrer noopener" href="https://www.ebay.com/itm/224947993641" target="_blank">this 86120-2B761</a>. Clearly there are complexities in Toyota parts numbering that I don't understand, but for now I'll go with 86210-08010.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30071,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-control-panel-front.jpg?w=1024" alt="" class="wp-image-30071"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The reason this particular LCD is interesting is because it is part of a still-intact control board. I'm optimistic that I could figure out enough of the control board to make it do my own bidding.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30073,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-control-panel-back.jpg?w=1024" alt="" class="wp-image-30073"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The backside of the board has a large identifier: 121941-4890D700. That didn't turn up anything, but there are two other features on the back that make me optimistic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30075,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-sanyo-lc75853n-7jk4.jpg?w=1024" alt="" class="wp-image-30075"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first is a clearly identified chip: Sanyo LC75853N and a search found its datasheet. It is a LCD controller with additional capability to scan for button presses, which makes sense for use in a control panel like this one. Furthermore, the datasheet should describe the control protocol.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30077,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-86120-08010-connector-labels.jpg?w=1024" alt="" class="wp-image-30077"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even better, the board has a connector to the rest of the radio, and it looks like all the pins are labeled. Some of them were cropped at the bottom and even if they weren't cropped, I don't necessarily understand what they all mean. But GND and ACC5V are clearly legible, which is a great start. What more can I ask for? Well, I can ask for it to be powered up and running so I can probe those pins in action.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I replaced this head unit, I recall going online to purchase an adapter wiring harness and a pinout guide to know which wire went where. Many Toyota head units shared the same connector and pinout, so <a href="https://pinoutguide.com/Car-Stereo-Toyota-Lexus/Toyota_57412_Head_Unit_pinout.shtml">this diagram for a slightly different model</a> was close enough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30237,"sizeSlug":"large","linkDestination":"custom"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://pinoutguide.com/Car-Stereo-Toyota-Lexus/Toyota_57412_Head_Unit_pinout.shtml"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-audio-head-unit-pinout.jpg?w=600" alt="" class="wp-image-30237"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could buy another wiring harness, <a rel="noreferrer noopener" href="http://www.metraonline.com/part/71-1761" target="_blank">possibly this unit</a>, but decided against spending more money. This is for experimentation and I could easily solder directly to the circuit board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30033,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-head-unit-power.jpg?w=1024" alt="" class="wp-image-30033"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It probably didn't matter very much in this case, but I also thought I'd follow <a href="https://en.wikipedia.org/wiki/Connectors_for_car_audio">wire color convention for automotive audio</a>. I connected the "battery" (yellow) and "accessory" (red) wires up to +12V on my bench power supply, and black wires to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":30032,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/toyota-head-unit-display-running.jpg?w=1024" alt="" class="wp-image-30032"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The screen comes alive! Very nice. From here, I started disconnecting power wires and found that for purposes of powering up the control panel I only really needed half the wires, the three on the central connector. (Visible in the back of this image.) With a screen that is alive and kicking, and a datasheet that should explain everything, I expect a high probability of success for learning how to master this control board. This could be an interesting project, and the only problem is that it veers very far from <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/04/28/inspired-by-joey-castillos-introduction-to-segmented-lcd/" target="_blank">Joey Castillo's Remoticon talk</a> which motivated me to look at LCDs. I set aside this project for later and started looking for <a href="https://newscrewdriver.com/2022/05/04/taylor-food-thermometer-lcd-first-round-fail/">simpler LCDs</a> in my pile.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[UPDATE: I have returned to this device and <a href="https://newscrewdriver.com/2022/05/12/wires-to-probe-toyota-audio-head-unit-86120-08010/">made great progress on the second try</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

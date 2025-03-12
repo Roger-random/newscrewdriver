@@ -1,0 +1,51 @@
+---
+layout: post
+title: Examining Sintech M.2 to SFF-8784 SATA Adapter (ST-NG8784)
+date: 2020-11-11 12:30:00.000000000 +00:00
+type: post
+post_id: '23444'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- 13-r010dx
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '23430'
+  _publicize_job_id: '50952249981'
+  timeline_notification: '1605126600'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/11/11/examining-sintech-m-2-to-sff-8784-sata-adapter-st-ng8784/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It took a second try before I <a href="https://newscrewdriver.com/2020/11/10/ssd-upgrade-project-delayed-by-shipping-damage/">received an adapter card that looked good enough to proceed</a>. The objective of the exercise is to put a common M.2 2280 SATA SSD into an old HP Pavilion Split X2 (13-r010dx) convertible laptop which came with an unusually thin (5mm) spinning platter hard drive in the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/23/hp-split-x2-13-r010dx-sata-but-not-as-i-know-it/" target="_blank">super rare SFF-8784 form factor</a>. The form factor foiled my first attempt at an SSD upgrade for this computer, but now I have a M.2 SATA SSD available for experimentation and now I have <a rel="noreferrer noopener" href="https://amzn.to/38oRlSK" target="_blank">the adapter card I bought</a> (*) for the project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This card is made and sold by Sintech, which has a <a rel="noreferrer noopener" href="http://www.pc-adapter.net/product/849.html" target="_blank">product page for this item</a> where I learned it is designated model ST-NG8784. I was fascinated by how simple the adapter is. There are only a few surface mount components and very few traces on the circuit board. C1 and C2 are obviously capacitors, but I'm not sure what U1 is. Searching on "84-33 2012DC" didn't result in anything enlightening, but by its general shape and arrangement of nearby capacitors I guess it is a voltage regulator.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The M.2 connector has many, many pins but the SFF-8784 plug has significantly fewer, resulting in a superficially simple layout. I guess that makes sense, after all the S in SATA stands for Serial, so it wouldn't need many pins to do its thing. I count just two differential pairs on top for data. Most of the other connections are either power or ground. But it does highlight the fact there is no active signal conversion on this adapter: this would only work for SATA M.2 SSDs and I would not expect it to work with NVMe M.2 SSDS.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Mechanically, this adapter card has provisions for several of the popular M.2 card lengths. A threaded standoff has been press-fit into the spot corresponding to the longest supported size M.2 2280. If the user has a SATA SSD in one of the shorter form factors, there is a small Ziploc bag with a screw-on standoff to be installed in the appropriate slot. Since my M.2 SATA SSD is in the 2280 format, I did not need the Ziploc bag. I installed my SSD into this adapter and <a href="https://newscrewdriver.com/2020/11/12/hp-split-x2-13-r010dx-ssd-upgrade-round-2/">turned attention to the laptop</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":23427,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/11/m.2-sata-to-sff-8784-adapter-populated.jpg?w=1024" alt="" class="wp-image-23427"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,37 @@
+---
+layout: post
+title: Combining Tutorials for Serial Communication on PIC16F18345
+date: 2017-09-12 09:00:57.000000000 +00:00
+type: post
+post_id: '11338'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9216216705'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668933227
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/12/combining-tutorials-for-serial-communication-on-pic16f18345/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>As I read through the tutorials mentioned in the previous two posts, I tried to follow along on my tool with the long name "<a href="http://www.microchip.com/DevelopmentTools/ProductDetails.aspx?PartNO=DM164141">MPLAB Xpress PIC16F18345 Evaluation Board</a>". This was a good exercise because those tutorials were written for different demonstration boards. Following along required some modifications to run on my specific evaluation board, which meant I had to have enough comprehension to know what I needed to do. I couldn't get away with just monkey-see monkey do.</p>
+<p>Case in point: the <a href="http://microchipdeveloper.com/mcu1101:project-12">serial communication project</a> in the <a href="http://microchipdeveloper.com/mcu1101:start">MCC tutorial</a>. There were a few differences to reconcile before I got it up and running on my own hardware.</p>
+<p>By this point in my PIC self-education, I knew how to resolve most of the differences. The PIC itself was different but not a hinderance. The tutorial's PIC16F1709 has the same <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">USART </a>module as my PIC16F18345 and understood the same instructions. The tutorial called for a <a href="http://microchipdeveloper.com/pickit3:start">PICkit 3 programmer/debugger</a> which is different from the programmer built into my evaluation board but I've learned how to program my board. And the tutorial used the full-featured <a href="http://microchipdeveloper.com/mplabx:start">MPLAB X IDE</a> application whereas my board was designed for the web-based <a href="http://microchipdeveloper.com/xpress:start">MPLAB Xpress</a>. For the most part it was a matter of navigating different menu structures.</p>
+<p>The serial communication lines, though, got a little trickier. The tutorial calls for a <a href="http://microchipdeveloper.com/boards:picdem-lab-2">PICDEM Lab II</a> development board equipped with a <a href="http://microchipdeveloper.com/boards:mcp2221">MCP2221 </a>breakout module to allow serial communication back to the PC. I thought I was stuck until I found a <a href="https://mplabxpress.microchip.com/mplabcloud/example/details/313">serial communication example specific to my evaluation board</a>. This is where I learned the board has a built-in serial communication module hard-wired to specific pins and routed back to the PC connected to the USB port.</p>
+<p>[caption id="attachment_11614" align="aligncenter" width="931"]<img class="alignnone size-full wp-image-11614" src="https://newscrewdriver.com/wp-content/uploads/2017/09/usart-diagram.png" alt="USART diagram" width="931" height="312"> This diagram in Microchip's tutorial labelled chips with different numbers than what's actually present in our setup, but we get the idea.[/caption]</p>
+<p>From there it was a matter of combining bits and pieces from both tutorials in order to assemble a project that implements the serial communication functionality. This project is also where I experimented with tracking MPLAB X project directories in Github, so I could <a href="https://github.com/Roger-random/BlinkRC7">share the results</a> with the world.</p>
+<p> </p>
+<p></body></html></p>

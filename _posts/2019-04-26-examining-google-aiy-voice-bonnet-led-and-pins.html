@@ -1,0 +1,37 @@
+---
+layout: post
+title: Examining Google AIY Voice Bonnet LED and Pins
+date: 2019-04-26 12:30:22.000000000 +00:00
+type: post
+post_id: '18389'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+tags:
+- AIY
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30189577490'
+  timeline_notification: '1556307064'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/26/examining-google-aiy-voice-bonnet-led-and-pins/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The default demo for a Google AIY Voice kit turns a Raspberry Pi Zero in a cardboard box into a Google Voice Assistant. I wasn't terribly interested in that at full price, but <a href="https://newscrewdriver.com/2019/04/22/hello-google-aiy-voice-kit/">at clearance discount</a> they were interesting enough to purchase. I had fun looking over its "Voice Bonnet" audio accessory board to verify it is <a href="https://newscrewdriver.com/2019/04/25/google-aiy-voice-bonnet-will-be-easy-to-repurpose/">easy to re-purpose to sound-based projects of my own choosing</a>. Once that primary goal was complete, I looked at some of the auxiliary features on that accessory board to see what's going on.</p>
+<p><img class="alignnone size-full wp-image-18380" src="https://newscrewdriver.com/wp-content/uploads/2019/04/google-aiy-voice-bonnet.jpg" alt="Google AIY Voice Bonnet" width="1600" height="801"></p>
+<p>First up is <code>aiy.board</code> which interfaces with the big plastic button. It looks like the kind of button found on an arcade console and I would expect it to be durable for many cycles. The <a href="https://github.com/google/aiyprojects-raspbian/blob/aiyprojects/src/aiy/board.py">source file</a> has all the code dealing with the messy realities of dealing with a physical button, including logic to handle debouncing.</p>
+<p>Next is <code>aiy.leds</code>. When assembling that button, I noticed it had more pins than strictly necessary for a button and it turns out the button also incorporates a RGB LED array. While <code>aiy.board</code> has code to deal with that LED array, comments indicate there's a better API available elsewhere for the RGB LED in <a href="https://github.com/google/aiyprojects-raspbian/blob/aiyprojects/src/aiy/leds.py">the <code>aiy.leds</code> source file</a>. Indeed there appears to be better support for lighting effects like blinking, pulsing, and color blending.</p>
+<p>Finally <code>aiy.pins</code> allows access to the GPIO pins exposed by Voice Bonnet. I had originally thought these were passed through from the Raspberry Pi GPIO bins, but further reading indicates I was wrong. These pins are controlled by the <a href="https://www.microchip.com/design-centers/32-bit/sam-32-bit-mcus/sam-d-mcus">SAM D microcontroller</a> on board the bonnet, and <code>aiy.pins</code> expose them for use in a way <a href="https://github.com/google/aiyprojects-raspbian/blob/aiyprojects/src/aiy/pins.py">compatible with Raspberry Pi's gpiozero library</a>.</p>
+<p>This looks like a pretty decent set of auxiliary functionality available on the Voice Bonnet, certainly enough to handle some simple projects without pulling in additional hardware. Also, the RGB button and auxiliary pins are apparently shared between the Voice and Vision bonnets so common code can drive both. This may prove useful somewhere down the line.</p>
+<p></body></html></p>

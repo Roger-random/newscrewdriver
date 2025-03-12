@@ -1,0 +1,50 @@
+---
+layout: post
+title: Another ESP32 Dev Kit Layout
+date: 2021-03-22 12:30:00.000000000 +00:00
+type: post
+post_id: '25701'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25702'
+  _publicize_job_id: '56259839284'
+  timeline_notification: '1616441408'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/22/another-esp32-dev-kit-layout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2021/03/21/aftermath-of-exceeding-sg90-micro-servo-six-volt-maximum/">destroying a few SG90 micro servos</a> and admitting I should have known better, I think the breadboard prototype circuit board has fulfilled its mission and it's time to move on. My next iteration of Micro Sawppy rover control circuit will be a perforated prototype board with soldered connections. Having soldered connections will help give me more reliable connections and also reduce loss of electrical power from thin wires, which may or may not help with my power supply problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/17/cardboard-box-rover-breadboard/" target="_blank">my breadboard prototype</a> I chose one of the ESP32 development modules that were narrow enough to fit well on a breadboard, leaving room on either side for jumper wires. (Left module on title image.) The narrow width meant there was no room left for pin labels, but I found a paper template that I could use to help with pin identification.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I am building a soldered circuit, I no longer need to use the narrow module. So I pulled out a <a href="https://amzn.to/2P5b8it">different development module I had bought</a>(*) for exploring ESP32 development. (Right module on title image.) This one is wider and longer, giving us several advantages including screw mounting holes in each corner. Even thought it was longer, we have fewer pins to worry about, because this design didn't bother to bring out the six pins corresponding to this ESP32 module's built-in flash memory. We couldn't use those pins in our design anyway so it was no huge loss. Conveniently, those flash memory pins were divided three on each side, so their removal still left the layout symmetric. A fourth pin was dropped from each side. On one side, an extraneous ground pin and on the other, pin zero was omitted. This is technically an available I/O pin but using it is tricky. It is a part of ESP32 startup process, the pin pulled to ground by the BOOT button. I had considered it a "pin of last resort" and avoided allocating it in <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/16/assigning-pins-for-sawppy-rover-esp32/" target="_blank">my allocation scheme</a>, so its subtraction from this module was fine for my use. All of the remaining IO pins are brought out on this module, and it even maintained the same relative ordering of those pins making it familiar to use. Helped by the fact that its more generous width also allowed onboard labels on these pins, eliminating the need for a paper template.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On board the module, I saw a very similar set of components. Two buttons "EN" and "BOOT" surround the micro USB port. There is a chip to handle USB serial translation, and an AMS1117-3.3 handles voltage regulation. I think I see a second LED which was absent from Espressif's reference design but present in a few other dev kits I've used. But I also see one oddball: it appears a capacitor next to the EN button is at an unusual angle. When I see a surface mount component at a non-orthogonal angle, my first thought is a pick-and-place or soldering error. But this capacitor seems to be bridging two real pads and not dangling off into space, so it's probably not an error. It might be some sort of a hack to address some problem discovered after the rest of the board was laid out, I'm not sure. As long as the module works I guess it really doesn't matter. As a test I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/28/esp32-freertos-practice-project-controls-l298/" target="_blank">flashed my ESP32 test program</a> and saw the second LED start blinking. Good enough to <a href="https://newscrewdriver.com/2021/03/23/power-distribution-complicates-first-soldered-prototype-circuit/">get to work</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25704,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/larger-esp32-dev-module-with-unorthodox-capacitor.jpg?w=1024" alt="" class="wp-image-25704"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

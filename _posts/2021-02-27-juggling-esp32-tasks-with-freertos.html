@@ -1,0 +1,47 @@
+---
+layout: post
+title: Juggling ESP32 Tasks With FreeRTOS
+date: 2021-02-27 12:30:00.000000000 +00:00
+type: post
+post_id: '24790'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25268'
+  _publicize_job_id: '55347832537'
+  timeline_notification: '1614457806'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/27/juggling-esp32-tasks-with-freertos/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The reason I was motivated to <a href="https://newscrewdriver.com/2021/02/26/platformio-jtag-debug-adventure-on-esp32/">set up better ESP32 debugging support</a> is that I expect my projects to become more complex in the near future. Sawppy V1 had two software control options: a very simple <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/05/20/sawppy-roving-with-wired-handheld-controller/" target="_blank">hard-wired joystick control</a> option running on an Arduino Nano, and a more complex wireless system <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/blob/master/docs/SGVHAK%20Rover%20Software.md" target="_blank">using a Raspberry Pi to serve web pages that display rover driving controls</a>. I had many debugging resources at my disposal working on a Raspberry Pi, but for the Arduino I was reduced to diagnostic text sent over serial and <a rel="noreferrer noopener" href="https://twitter.com/Regorlas/status/1127079594022948866" target="_blank">working through the math on paper</a>. That was primitive and I'd rather not be limited to pen &amp; paper when debugging my inevitable ESP32 problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the tools available in the toolbox of an aspiring ESP32 programmer like myself is FreeRTOS. RTOS here stands for <a href="https://hackaday.com/2021/02/24/real-time-os-basics-picking-the-right-rtos-when-you-need-one/" target="_blank" rel="noreferrer noopener">real-time operating system</a>, though it's far smaller and simpler than what we usually think of as an "operating system" nowadays. And the "real-time" guarantees would meet some needs but not others. I understand FreeRTOS is part of ESP32 runtime by default, <a rel="noreferrer noopener" href="https://www.esp32.com/viewtopic.php?t=1293" target="_blank">used by ESP-IDF to implement some of the APIs exposed to us</a>. On an Arduino the software is completely under our control, and we are directly talking to hardware peripherals in the ATmega328. In contrast running on an ESP32 is a mix, some of the peripheral APIs are implemented in software components before handing off to the underlying hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>FreeRTOS allows software projects divide up all the work in a particular product into individual FreeRTOS tasks. Then FreeRTOS will handle cycling through what needs to be done while respecting their relative priorities. This is not absolutely required to implement complex functionality. Teensy's software framework, for example, was written and optimized to run without a similar RTOS layer. It's just another tool and Espressif decided it was the right tool for this job.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESP-IDF makes use of FreeRTOS features and made it available to ESP32 developers as well. There's a <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/freertos.html" target="_blank">section of Espressif documentation talking about FreeRTOS</a>, including how it is configured to run on an ESP32 as well as the modifications Espressif have made to the base implementation. But the majority of FreeRTOS runs on ESP32 unmodified and I can learn from the source. There's a <a href="https://www.freertos.org/Documentation/RTOS_book.html">free eBook (PDF)</a> that walks through major FreeRTOS feature areas. It is several versions out of date and thus does not cover new features, but it enough to get me get up and running on fundamental concepts.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I had a passing familiarity with basic functionality of FreeRTOS, I am better informed as I comb through ESP32 documentation. Things I had previously thought were duplicate functionality (example: <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/freertos.html#event-group-api" target="_blank" rel="noreferrer noopener">FreeRTOS Event Groups</a> versus <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_event.html" target="_blank" rel="noreferrer noopener">ESP-IDF Event Library</a>) now made more sense as I understand how they are tools for solving different problems.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Certain projects aim to stay within core FreeRTOS to make things portable across different processor architectures, I believe <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/08/29/micro-ros-now-supports-esp32/" target="_blank">micro-ROS</a> is one of these projects. At the moment architectural portability is not a concern, especially since I'm focused on the ESP32-specific MCPWM peripheral, giving me freedom to use both generic FreeRTOS and platform-specific ESP-IDF functionality. I might want to separate them out to different architectural layers later, but right now it's all one big mixing bowl for <a href="https://newscrewdriver.com/2021/02/28/esp32-freertos-practice-project-controls-l298/">my first ESP32 motor control project</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

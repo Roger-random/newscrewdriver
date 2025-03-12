@@ -1,0 +1,58 @@
+---
+layout: post
+title: Investigating the Infamous Relay Bypass for Monoprice Maker Ultimate (Wanhao
+  Duplicator 6)
+date: 2017-10-24 10:32:23.000000000 +00:00
+type: post
+post_id: '14067'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+- Electronic Components
+tags:
+- Monoprice Maker Ultimate
+- Relay
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10687271046'
+  _thumbnail_id: '14097'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667899770
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/24/investigating-the-infamous-relay-of-monoprice-maker-ultimate-wanhao-duplicator-6/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>This week my 3D printer stopped working mid-print. All motor movement, heating activity, and cooling fans stopped simultaneously. However, the control panel is still responsive and so is the LED light strip. Time to hit the web and see what I can find.</p>
+<p>My printer is a <a href="https://www.monoprice.com/product?p_id=15710">Monoprice Maker Ultimate</a>, which is a rebranded <a href="https://www.google.com/search?q=wanhao+duplicator+6">Wanhao Duplicator 6</a>. Which is in turn a knock-off of the <a href="https://ultimaker.com/">Ultimaker</a> design, though not a literal clone of any specific Ultimaker model.</p>
+<p>A web search of my symptoms found a known point of failure with this product: the main 24V relay. The popular explanation is that Wanhao cloned somebody else's circuit board, removed the features that would use the relay, and used a cheap relay that's always on. So the recommended workaround is to solder a wire to bridge the legs of the relay and bypass it. "It doesn't do anything anyway."</p>
+<p>I was skeptical of this explanation because if Wanhao is really just cutting costs, they would skip the relay entirely: no relay is cheaper than any relay! There must be more to this story.</p>
+<p>But first, a check to see if the relay is indeed the fault. A quick visual inspection confirmed that there's a problem with my relay, indicated by the melted hole in the side. For additional confirmation, we temporarily bridged the pins as recommended by forum posters. When done with the power on, it brought the always-on heat break and circuit board cooling fans immediately to life. Relay failure confirmed.</p>
+<p> </p>
+<p><em><strong>What does the relay do?</strong> </em></p>
+<p>Turning off this relay cuts power to all 24V components: Motors, fans, and heaters. In normal operation, there's no situation where the 5V components (micro-controller, display, LED strip) are running without the 24V components, so the answer must be related to <em>abnormal</em> operation. Our best hypothesis: this relay is a safety switch in place to halt the system if the 5V subsystem should fail. If that happens, it makes sense we'd want to shut down all the 24V parts too. And now that we have a plausible description of the relay as a safety feature, bypassing it with a soldered wire seems like a bad idea.</p>
+<p><em><strong>Why did the relay fail? </strong></em></p>
+<p>This part was easier to figure out. When I ran my printer with my <a href="http://www.p3international.com/products/p4400.html">Kill-A-Watt meter</a>, it indicated the power draw jumps by over 300 watts when both heaters are active. So even ignoring the cooling fans and motors, the print bed and filament heaters together draw over 12.5 amps from the 24V plane.</p>
+<p>Typing in the designation on the relay "<a href="https://www.google.com/search?q=SRD-05VDC-SL-C">SRD-05VDC-SL-C</a>" found its datasheet, which says the relay can handle 10 amps. So the printer was designed such that the relay exceeded its rated capacity anytime both heaters are active. Not exactly a great design. The relay tolerated this overworked condition for many months but this week it could take no more.</p>
+<p>The correct solution, then, would be to replace this relay with a higher-rated unit that can handle 15+ amps continuously. (12.5 for heaters + motors and fans + margin.) Unfortunately relays are not standardized in their footprint so I failed to find a drop-in higher-capacity replacement. (I found the Omron G5LE series with the same footprint, but with the same 10A maximum for DC so I'd be no better off.) Hooking up a beefier relay to the circuit board via wires is a possibility but intimidating. 300 watts of electricity is very good at finding minor flaws and turning them into big problems.</p>
+<p><em><strong>What do we do?</strong></em></p>
+<p>To summarize, the candidate solutions are:</p>
+<ol>
+<li>Bypass the relay with a wire as per internet forums: Seems like a bad idea to bypass a potential safety feature.</li>
+<li>Install an exact replacement: Known to work until it doesn't.</li>
+<li>Install a higher-rated drop-in replacement: Great idea but such a replacement could not be found.</li>
+<li>Install a higher-rated unit elsewhere in the box, connect to the circuit board via wires: Adds many points of potential failure and &gt;300W of power is unforgiving of flaws.</li>
+</ol>
+<p>I'd love #3 but I couldn't find a beefier relay with identical footprint. #1 and #4 are asking for trouble. For the immediate future, I choose #2 as the least-bad solution.</p>
+<hr>
+<p><strong>UPDATE 1</strong>: After the <a href="https://newscrewdriver.com/2017/10/27/relay-replaced-instead-of-bypassed-on-monoprice-maker-ultimate-wanhao-duplicator-6/">original relay was replaced</a> with an identical unit, I <a href="https://newscrewdriver.com/2017/11/20/monoprice-maker-ultimate-wanhao-duplicator-6-failed-relay-disassembly/">cut open the original relay to see inside the failure</a>.</p>
+<p><strong>UPDATE 2</strong>: As expected, the identical unit eventually <a href="https://newscrewdriver.com/2018/07/01/monoprice-maker-ultimate-wanhao-duplicator-i6-kills-another-relay/">failed in an identical way</a>.</body></html></p>

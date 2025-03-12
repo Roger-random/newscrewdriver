@@ -1,0 +1,107 @@
+---
+layout: post
+title: 'Recording ESPHome Sensor Values: Min, Max, and Average'
+date: 2022-03-26 12:30:00.000000000 +00:00
+type: post
+post_id: '29178'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29183'
+  _publicize_job_id: '70655539886'
+  timeline_notification: '1648323022'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667810089
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/26/recording-esphome-sensor-values-min-max-and-average/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm learning more and more about ESPHome and Home Assistant, most recently I was happy to confirm that ESPHome code was <a href="https://newscrewdriver.com/2022/03/25/flash-memory-wear-effects-of-esphome-recovery-esp8266-vs-esp32/">very considerate about flash memory wear</a>. Another lesson I've learned is the use of <a rel="noreferrer noopener" href="https://esphome.io/guides/automations.html#templates-lambdas" target="_blank">"templates" (or "lambdas")</a>. It is a mechanism to insert small pieces of C code, letting me add functionality unavailable from ESPHome configuration files. Here I'm using it to do something I've wanted to do ever since <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/02/24/esphome-sensor-filters-help-manage-flood-of-data/" target="_blank">I learned about sensor filters</a>. It expands on an existing ESPHome feature to calculate an aggregate sensor value from multiple samples. We could choose from aggregation functions like "minimum" <strong><em>or</em></strong> "maximum" <strong><em>or</em></strong> "sliding window average". Now, with the template mechanism, I could track minimum <strong><em>and </em></strong>maximum <strong><em>and </em></strong>average.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First, I needed to declare two <a rel="noreferrer noopener" href="https://esphome.io/components/sensor/template.html" target="_blank">template sensors</a>. They let template code send data into the ESPHome (and therefore Home Assistant) sensor reporting mechanism. I will use this to report the highest (maximum) and lowest (minimum) power values. (Hence units of "W" or Watts.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sensor:
+  - platform: template
+    name: "Output Power (Low)"
+    id: output_power_low
+    unit_of_measurement: "W"
+    update_interval: never # updates only from code, no auto-updates
+  - platform: template
+    name: "Output Power (High)"
+    id: output_power_high
+    unit_of_measurement: "W"
+    update_interval: never # updates only from code, no auto-updates</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The power sensor is configured to report sliding window average, which will take multiple samples and report the average to Home Assistant. The reporting event is <code>on_value</code>, but there's also <code>on_raw_value </code>which is triggered on each sample. This is where I can attach a small fragment of C code to track the minimum and maximum values seen while the rest of ESPHome tracks the average.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>    power:
+      name: "Output Power"
+      filters:
+        sliding_window_moving_average:
+          window_size: 180
+          send_every: 120
+          send_first_at: 120
+      on_raw_value:
+        then:
+          lambda: |-
+            static int power_window = 0;
+            static float power_max = 0.0;
+            static float power_min = 0.0;
+            
+            if (power_window++ &gt; 120)
+            {
+              power_window = 0;
+              id(output_power_low).publish_state(power_min);
+              id(output_power_high).publish_state(power_max);
+            }
+            
+            if (power_window == 1)
+            {
+              power_max = x;
+              power_min = x;
+            }
+            else
+            {
+              if (x &gt; power_max)
+              {
+                power_max = x;
+              }
+              if (x &lt; power_min)
+              {
+                power_min = x;
+              }
+            }</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The hard-coded value of 120 represents the number of samples to take before I report. When I have the sensor configured to take a sample every half second, 120 samples translates to one minute. (If the sensor is sampling once a second, 120 samples would be two minutes, etc.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I discard the very first (zeroth) data sample to work around a quirk with ESPHome INA219 sensor support: the very first reported power value is always zero. I don't know what's going there but since zero is a valid reading (solar panel generates no power at night) I couldn't just discard a zero power reading whenever I see it. Hence I reset <code>power_max</code> and <code>power_min</code> when <code>power_window</code> is one, not zero as I tried first.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29183,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/esphome-output-power-monitor-low-high-average.jpg?w=1024" alt="" class="wp-image-29183"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is a plot of all three values. The average value in purple, the maximum in cyan, and the minimum in orange. Three devices were represented in this power consumption graph. The HP Stream 7 is always on through this period, and we can see its power consumption fluctuates throughout the day. Around midnight, the Raspberry Pi powered up to take a replication snapshot of my TrueNAS storage array and I shut it off shortly after it was done. And in the morning, after the solar monitor battery is charged (not shown on this graph) at about 10AM, the Pixel 3a started charging until just after noon.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the Raspberry Pi, power consumption average hovered around 6W, but the maximum spiked a little over 10W. Similarly, the Pixel 3a charging averaged less than 6W but would spike up to 8W. The average value is useful for calculations regarding things like battery capacity, and the maximum value is necessary to ensure all components are staying within their maximum operating limits. And for now, the minimum value is merely informatively and not used, but that might change later.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

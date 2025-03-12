@@ -1,0 +1,55 @@
+---
+layout: post
+title: My First (Tiny) KiCad Contribution
+date: 2023-09-24 12:30:00.000000000 +00:00
+type: post
+post_id: '39265'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39266'
+  timeline_notification: '1695583852'
+  wordads_ufa: s:wpcom-ufa-v4:1695681383
+  _publicize_job_id: '87885446930'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/24/my-first-tiny-kicad-contribution/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My current project goal is building a control module for a reciprocating motion actuator salvaged from a Sonicare electric toothbrush. As a side quest to that goal, <a href="https://newscrewdriver.com/2023/09/23/good-time-to-revisit-kicad/">I've decided to pick up learning KiCad again</a>. I played with KiCad 4 around six years ago, but without practice I have forgotten almost everything so I thought I would start at the beginning with KiCad's "<a rel="noreferrer noopener" href="https://docs.kicad.org/7.0/en/getting_started_in_kicad/getting_started_in_kicad.html" target="_blank">Getting Started in KiCad</a>" guide.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Towards the top of that guide is a "Feedback" section where everyone is invited to help make the project better. Fairly common for free open source projects, but here something caught my eye: a tiny typo of "sumbit" instead of "submit". Well, they did say they welcome feedback, let me see if I can bring this typo to someone's attention. I followed the link to instructions on how to "<a rel="noreferrer noopener" href="https://www.kicad.org/help/report-an-issue/" target="_blank">Report an Issue</a>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the instructions regarding filing an issue concern the software, focused as it was on version/build number and software libraries in play. That wouldn't strictly apply to reporting a typo, but towards the bottom is a link "I have a docs.kicad.org issue" and I followed that to the <code><a href="https://gitlab.com/kicad/services/kicad-doc-website">kicad-doc-website</a></code> repository on GitLab. Poking around the directory tree, I couldn't find any of the documentation information. That was because it was the documentation web site infrastructure (<a rel="noreferrer noopener" href="https://jekyllrb.com/" target="_blank">Jekyll</a> scripts, etc) and not the documentation itself. What I'm looking for is the "I have a documentation issue" link to a sibling repository <a rel="noreferrer noopener" href="https://gitlab.com/kicad/services/kicad-doc" target="_blank"><code>kicad-doc</code></a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Poking around the <code>kicad-doc</code> directory tree was more fruitful. I found <code><a href="https://gitlab.com/kicad/services/kicad-doc/-/blob/master/src/getting_started_in_kicad/getting_started_in_kicad.adoc?ref_type=heads">getting_started_in_kicad.adoc</a></code> containing the text for that page. My first objective was to see if the problem has already been fixed. I see the typo in the main branch, so the problem is still there. And since I had the source in hand, I copy/pasted it into Microsoft Word to see if the spell checker can find anything else. It highlighted a few debatable differences in convention (Word wanted "mouse wheel" versus the existing "mousewheel") and some domain-specific terminology ("opamp".) I decided they were out of scope for my first run. It did find one other clear problem: a typo "subsitution" which is "substitution" but missing the first "t".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these two problems in hand, I will now file an issue. First I had to <a rel="noreferrer noopener" href="https://gitlab.com/roger-random" target="_blank">create a GitLab account</a>, which had been on my to-do list anyway. As part of the sign-up process, GitLab forced me to <a rel="noreferrer noopener" href="https://gitlab.com/roger-random1/hellogitlab" target="_blank">create a repository</a> pre-populated with a guide to GitLab-specific features as well as general git functionality. This is great to onboard someone new to git-powered source control, but it got in my way today. It took a few minutes before I broke out of the enforced tutorial so I can get back to <code>kicad-doc</code> and file <a rel="noreferrer noopener" href="https://gitlab.com/kicad/services/kicad-doc/-/issues/864" target="_blank">issue #864: Misspellings in "Getting Started" Guide</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that was done, I figured I might as well try fixing the problem myself. Trying to edit the original source file resulted in a permission denied error, as expected. But it did launch an automated process to handle small single-file edits. It forked the repository into one I could edit, and then immediately package my edits into a merge request. ("Merge request" is GitLab's <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/23076923/what-is-a-merge-request" target="_blank">slightly different name</a> for GitHub's "Pull Request" feature.) I thought this automation handling what would otherwise have been a manual multi-step process was pretty cool! After making my two edits, I put #864 in my description so <a rel="noreferrer noopener" href="https://gitlab.com/kicad/services/kicad-doc/-/merge_requests/909" target="_blank">merge request #909</a> was automatically attached to my issue #864.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the same time I was building my GitLab merge request, one of the KiCad documentation maintainers (Graham Keeth) saw my issue #864 and fixed it immediately in the main branch, making my MR#909 superfluous. <a rel="noreferrer noopener" href="https://gitlab.com/kicad/services/kicad-doc/-/merge_requests/909#note_1571181598" target="_blank">Graham was apologetic about my wasted effort</a> but I was not offended. I wanted to learn the ropes of contributing to KiCad with reporting an issue, the merge request was a stretch goal. I received advice that I could have mentioned I'll be working on a merge request when opening the issue. I'll keep that in mind if I find something else in the future. I got feedback my issue was good, so there's that.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For today, I have the satisfaction of seeing these typo fixes <a rel="noreferrer noopener" href="https://gitlab.com/kicad/services/kicad-doc/-/commit/dd2422f459eeecae7079ecf6bb9915013d163f8a" target="_blank">back-ported to the 7.0 documentation branch</a>, and is now live on KiCad site. The <a href="https://docs.kicad.org/7.0/en/getting_started_in_kicad/getting_started_in_kicad.html">Getting Started in KiCad</a> page no longer has typos "sumbit" or "subsitution" and that's my first tiny little contribution to KiCad. Now onward to <a href="https://newscrewdriver.com/2023/09/25/notes-on-getting-started-in-kicad/">actually reading and learning from that page</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

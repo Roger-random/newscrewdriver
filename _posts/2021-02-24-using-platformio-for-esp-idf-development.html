@@ -1,0 +1,57 @@
+---
+layout: post
+title: Using PlatformIO For ESP-IDF Development
+date: 2021-02-24 12:30:00.000000000 +00:00
+type: post
+post_id: '25237'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '22308'
+  timeline_notification: '1614198619'
+  _oembed_fa4f1744c4190a41018c9bfd08c8f7d5: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '55222678260'
+  _oembed_time_fa4f1744c4190a41018c9bfd08c8f7d5: '1614210175'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/24/using-platformio-for-esp-idf-development/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Based on <a href="https://newscrewdriver.com/2021/02/23/esp-idf-up-and-running-on-ubuntu/">my limited experience</a>, the installation script for ESP-IDF (Espressif IoT Development Framework) made some assumptions about an ESP-IDF developer's computer, including the all-too-common assumption that nothing else will be on the computer. This is problematic for several reasons, but the one that made me pull back was Python. Python is infamous for its problems keeping track of different version and their associated code libraries. It's such a common problem there are tools made specifically to help developers keep Python ancillaries organized. I've had first experience with <code><a rel="noreferrer noopener" href="https://docs.python.org/3/tutorial/venv.html" target="_blank">venv</a> </code>and <code><a rel="noreferrer noopener" href="https://docs.conda.io/en/latest/" target="_blank">conda</a> </code>and I understand there are many others. In the absence of such isolation in the default installation script, I went online looking for others who have taken a stab at keeping ESP-IDF from messing up the rest of my computer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found a few blog posts and GitHub repos, but what made me happy was a reminder that I already have experience with one solution to this problem: <a rel="noreferrer noopener" href="https://platformio.org/platforms/espressif32" target="_blank">PlatformIO has support for ESP-IDF development</a>. I encountered PlatformIO earlier in the context of <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/09/06/hx711-interface-library-as-introduction-to-platformio/" target="_blank">HX711 strain gauges interface with an Arduino Nano</a>, so my computer already had PlatformIO on board configured for Arduino on classic ATmega328. I can switch it to Arduino on ESP32, but right now I'm more interested in PlatformIO's promise to make ESP-IDF easy to install, isolate, and eventually uninstall.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are a few downsides to this approach. First is the fact I'm no longer using ESP-IDF directly, and thereby adding the possibility that a problem might be caused by PlatformIO instead of Espressif or myself. I would also have to switch over to PlatformIO project structure which is not the same as the ESP-IDF application template. This had greater repercussion than I initially thought, because it's not just a matter of where the source files were placed. While those source files are still calling the ESP-IDF API I can read in Espressif documentation, the portions of documentation about project configuration may or may not apply. When working directly in ESP-IDF, a lot of <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/" target="_blank">project configuration is done by running <code>idf.py menuconfig</code></a> and that's not necessarily the case anymore. The people who work on PlatformIO ESP32 support recently added some sort of compatibility <a rel="noreferrer noopener" href="https://community.platformio.org/t/esp32-menuconfig/4047" target="_blank">in response to user requests</a>, so that's something I'll have to look into later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm willing to accept some limitations in exchange for PlatformIO's ability to keep ESP-IDF Python separate from anybody else's Python on my computer. As long as I can figure out how to do what I want to do on an ESP32... which means it's time for <a href="https://newscrewdriver.com/2021/02/25/esp32-exercise-stepper-motor-pulses-with-ledc-pwm/">more ESP32 programming exercises</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

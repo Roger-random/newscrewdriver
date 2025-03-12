@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Window Shopping Google ARCore: Design Guidelines'
+date: 2020-07-19 12:30:07.000000000 +00:00
+type: post
+post_id: '21881'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+meta:
+  _thumbnail_id: '21832'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46755524745'
+  timeline_notification: '1595187038'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/19/window-shopping-arcore-design-guidelines/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After I got up to speed on <a href="https://newscrewdriver.com/2020/07/18/window-shopping-google-arcore-tracking/">fundamental concepts of Google ARCore SDK</a>, I moved on to their design recommendations. There are two parts to their design guidelines: an <a href="https://designguidelines.withgoogle.com/ar-design/">user experience focused</a> document, and a <a href="https://developers.google.com/ar/develop/developer-guides/design-guidelines">software development focused</a> variant. They cover many of the same points, but from slightly different perspectives.</p>
+<p>Augmented reality is fascinating because it has the potential to create some very immersive interactive experiences. The downside is that an user may get so immersed in the interaction they lose track of their surroundings. Much of the design document described things to avoid in an AR app that boiled down to: please don't let the user hurt themselves. Many potential problems were illustrated by animated cartoon characters, like this one of an user walking backwards so focused on their phone they trip over an obstacle. Hence one of the recommendations is to <a href="https://designguidelines.withgoogle.com/ar-design/user/safety-comfort.html">avoid making users walk backwards</a>.</p>
+<p>[caption id="" align="aligncenter" width="1920"]<img class=" aligncenter" style="max-width:100%;" src="https://designguidelines.withgoogle.com/ar-design/assets/1A_s2WehqYzZ_HBDbldmJkONMKbWfbK6a/reduceuserfrustration.gif" width="1920" height="1080"> Image source: Google[/caption]</p>
+<p>Some of the user experience guidelines help designers avoid weaknesses in ARCore capabilities. Like an admission that <a href="https://designguidelines.withgoogle.com/ar-design/content/content-placement.html#content-placement-plane-discovery">vertical surfaces</a> can be challenging, because they usually have fewer identifiable features as compared to floors and tabletops. I found this interesting because some of the advertised capabilities, such as augmented images, are primarily targeted to vertical surfaces yet it isn't something they've really figured out yet.</p>
+<p>What I found most interesting was the <a href="https://designguidelines.withgoogle.com/ar-design/interaction/ux.html#ux-haptic-feedback">discouragement of haptic feedback in both the UX design document</a> and <a href="https://developers.google.com/ar/develop/developer-guides/runtime-considerations">the developer document</a>. Phone haptic feedback are usually implemented as a small electric motor spinning an unbalanced weight, causing vibration. This harms both parts of <a href="https://newscrewdriver.com/2020/07/15/augmented-reality-built-on-structure-from-motion/">Structure from Motion calculations at the heart of phone AR</a>: vibration adds noise to the IMU (inertial measurement unit) tracking motion, and vibration blurs the video captured by the camera.</p>
+<p>From a robotics adaption viewpoint, this is discouraging. A robot chassis will have motors and their inevitable vibrations, some of which would be passed on to a phone bolted to the chassis. The characteristics of this vibration noise would be different from shaky human hands, and given priority of the ARCore team they would work to damp out the human shakiness but robotic motions would not be a priority.</p>
+<p>These tidbits of information have been very illuminating, leading to the next step: find more details in the nitty gritty <a href="https://newscrewdriver.com/2020/07/20/window-shopping-arcore-api-documentation/">API documentation</a>.</p>
+<p></body></html></p>

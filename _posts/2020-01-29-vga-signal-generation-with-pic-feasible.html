@@ -1,0 +1,44 @@
+---
+layout: post
+title: VGA Signal Generation with PIC Feasible
+date: 2020-01-29 12:30:22.000000000 +00:00
+type: post
+post_id: '20365'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- PIC Microcontrollers
+tags:
+- VGA
+meta:
+  _thumbnail_id: '20379'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1580329849'
+  _publicize_job_id: '40100012199'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/29/vga-signal-generation-with-pic-feasible/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Trying to turn a flawed computer monitor into an adjustable color lighting panel, I started investigating ways to generate a VGA signal. I've experimented with Arduino and tried to build a Teensy solution, without success so far. If I wanted full white maybe augmented by a fixed set of patterns, Emily suggested the solution of <a href="https://superuser.com/questions/404955/how-to-make-a-vga-monitor-display-a-white-screen-at-all-time">getting a VGA monitor tester</a>.</p>
+<p>They are available <a href="https://amzn.to/3AwtPk8">really cheaply on Amazon</a>. (*) And <a href="https://www.ebay.com/sch/i.html?_nkw=VGA+tester">even cheaper on eBay</a>. If I just wanted full white this would be easy, fast, and cheap. But I am enchanted with the idea of adjustable color, and I also want to learn, so this whole concept is going to stay on the project to-do list somewhere. Probably not the top, but I wanted to do a bit more research before I set it aside.</p>
+<p style="text-align:left;">One thing Emily and I noticed was that when we zoomed in on some of these VGA monitor testers, we can tell they are built around a PIC microcontroller. My first thought was "How can they do that? a PIC doesn't have enough memory for a frame buffer." But then i remembered that these test patterns don't need a full frame buffer, and furthermore, neither do I for my needs. This is why I thought I could chop out the DMA code in the Teensy uVGA library to make it run on a LC, keeping only the HSYNC &amp; VSYNC signal generation.</p>
+<p>But if I can get the same kind of thing on a PIC, that might be even simpler. Looking up VGA timing signal requirements, I found that the official source is a specification called <a href="https://en.wikipedia.org/wiki/Generalized_Timing_Formula">Generalized Timing Formula</a> (GTF) which is available from the Video Electronics Standards Association (VESA) for $350 USD.</p>
+<p>I didn't want to spend that kind of money, so I turned to less official sources. I found a web site dedicated to VGA microcontroller projects and it has tables listing timing for popular VGA resolutions. I thought I should focus first on the lowest common denominator, <a href="http://tinyvga.com/vga-timing/640x480@60Hz">640x480 @ 60Hz</a>.</p>
+<p>The PIC16F18345 I've been playing with has an internal oscillator that can be configured to run at up to 32 MHz. This translates to 0.03125 microseconds per clock, which should be capable of meeting timing requirements for 640x480.</p>
+<p>I thought about leaving the PIC out of the color signal generation entirely, have a separate circuit generate the RGB values constantly. But I learned <a href="https://electronics.stackexchange.com/a/134981">this would confuse some computer monitors</a> who try not to lose data. So we need to pull RGB values down to zero (black) when not actively transmitting screen data. It would be more complex than just focusing on HSYNC/VSYNC but not a deal breaker.</p>
+<p>[UPDATE: I continued this project <a href="https://newscrewdriver.com/2022/08/17/full-screen-white-vga-signal-with-bitluni-esp32-library/">with an ESP32</a>.]</p>
+<hr>
+<p style="text-align:center;">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p></body></html></p>

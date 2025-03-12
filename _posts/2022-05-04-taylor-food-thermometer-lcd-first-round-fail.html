@@ -1,0 +1,75 @@
+---
+layout: post
+title: Taylor Food Thermometer LCD First Round Fail
+date: 2022-05-04 12:30:00.000000000 +00:00
+type: post
+post_id: '30083'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30091'
+  timeline_notification: '1651692615'
+  _publicize_job_id: '72151969515'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/04/taylor-food-thermometer-lcd-first-round-fail/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>When I salvaged LCD for play later, I didn't know enough about them to make sure I salvaged them with known controllers in working condition. Fortunately, by sheer luck I managed to do that with <a href="https://newscrewdriver.com/2022/05/03/powering-up-toyota-audio-head-unit-86120-08010/">a car audio head unit</a>. But this adventure started with a talk on direct control of simple LCDs and I wanted to get back to that initial motivation. My most recent LCD salvage was <a href="https://newscrewdriver.com/2022/04/08/taylor-food-thermometer/" target="_blank" rel="noreferrer noopener">from a Taylor food thermometer</a>, but it didn't look easy to work with. Due to the fact its electrical contact is in the form of elastomeric "zebra strip" and I didn't want to build my own circuit board to make contact with it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29446,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/taylor-food-thermometer-lcd-contacts.jpg?w=1024" alt="" class="wp-image-29446"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I saved the original circuit board thinking that I could use it as reference when I get around to making my own board. These are just flat rectangles of copper, each one millimeter wide and spaced one millimeter apart. Thanks to Joey Castillo's Remoticon talk, I learned that bare LCD require very little current so I think the surface area of these contact patches are generous. Perhaps I could get away with using only part of it?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30092,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-pcb-with-soldered-wires.jpg?w=1024" alt="" class="wp-image-30092"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started soldering wires to these pads, trying to keep my soldered area to less than 25% of the surface area leaving remainder clear for the elastomeric strip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30093,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-pcb-original-traces-severed.jpg?w=1024" alt="" class="wp-image-30093"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then severed all of the original traces to make sure my experimental signals won't route through the original chip.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30095,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-segment-leakage-1.jpg?w=1024" alt="" class="wp-image-30095"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started probing with alternating signals from an ESP8266 at 3.3V. This is what I see when I put them on the left-most and right-most wires: five segments darken, but one more clearly than the rest. "But wait, I see more than five segments" explanation: the three horizontal lines on that 3 are actually all a single segment, apparently this digit only needs to show a subset of numbers. For example, 2, 3, 5, 6, 8, and 9 can be shown with all three horizontal lines active, and 1 can be shown with all three inactive. There are four other dark segments but they are blurry. A horizontal segment in the upper left, two of the vertical segments on that digit, and a fixed text "Alert". </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Further probing found that the left-most five lines and the right-most five lines multiplex against each other, together letting me control 25 segments. Whenever I light one up, four others are blurry. After some experimentation I understand this is due to my voltage too high. Adding a voltage dividing resistor ladder (1 kilo-ohm and 470 ohm) brought it down to 2-ish Volts. Once at that level, individual segments activate cleanly without crosstalk activation of their multiplexing neighbors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30098,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-wires-popped-loose.jpg?w=1024" alt="" class="wp-image-30098"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I tried to get a picture of a single cleanly activated segment, I failed because a wire popped loose. Since this experiment required that I solder these wires to tiny fraction of the pad, these were very bad solder joints with small contact area. They began to fail one by one. Some would pop off cleanly so I knew it failed, others would seem to be physically connected but electrically discontinuous.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><s>I got far enough to determine the multiplex scheme is different from the "common"/"segment" split mentioned in the Remoticon talk and common in multiple other LCD controllers.</s> [Update: I was wrong. See link to update at the bottom of this post.] Figuring out the novel multiplex scheme might be interesting, but not while fighting bad electrical connections at the same time. After a few rounds of "multiplex or bad connection?" guessing game, I got frustrated and decided to postpone this puzzle until I can create better contact with the elastomeric zebra strip. I went <a href="https://newscrewdriver.com/2022/05/05/electric-blanket-control-sunbeam-pac-215/">looking elsewhere</a> for a simple LCD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">UPDATE: I took another swing at this task and <a href="https://newscrewdriver.com/2022/05/11/segmented-lcd-from-taylor-food-thermometer/">was successful on the second try</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

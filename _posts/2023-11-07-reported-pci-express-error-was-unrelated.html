@@ -1,0 +1,80 @@
+---
+layout: post
+title: Reported PCI Express Error was Unrelated
+date: 2023-11-07 12:30:00.000000000 +00:00
+type: post
+post_id: '40160'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- '7577'
+- Dell
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39972'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1699487521
+  _publicize_job_id: '89162686817'
+  timeline_notification: '1699389029'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/07/reported-pci-express-error-was-unrelated/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a Dell Inspiron 7577 laptop whose Ethernet hardware is unhappy with Proxmox VE 8, dropping off the network at unpredictable times. [UPDATE: Network connectivity stabilized after installing Proxmox VE kernel update from 6.2.16-15-pve to 6.2.16-18-pve. The PCI Express AER messages described in this post also stopped.] Trying to dig deeper, I found there was an error message dump indicating <a href="https://newscrewdriver.com/2023/11/06/ethernet-failure-triggers-network-stack-timeout/">a watchdog timer went off while waiting to transmit data over the network</a>. Searching online, I find bug reports that match the symptoms but that's not necessarily the cause. A watchdog timer can be triggered by anything that gum up the works, so what resolves the network issue on one machine wouldn't necessarily work on mine. I went back to <code>dmesg</code> to look for other clues.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before the watchdog timer triggered, I found several lines of this message at irregular intervals:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>[36805.253317] pcieport 0000:00:1c.4: AER: Corrected error received: 0000:3b:00.0</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Sometimes only seconds apart, other times hours apart, and sometimes it never happens at all before the watchdog timer barks. This is some sort of error on the PCIe bus from device <code>0x3b:00.0</code>, which is the Realtek Ethernet controller as per this <code>lspci</code> excerpt:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>3b:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though the debug message said the error was corrected, maybe it triggered side effects causing my problem? Searching on this error message, I found several possibly relevant kernel flags. <a href="https://www.reddit.com/r/linuxquestions/comments/g8pbku/any_undesirable_side_effects_of_pcinommconf/?rdt=45098" target="_blank" rel="noreferrer noopener">This Reddit thread</a> has a good summary of them all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<code>pci=noaer</code> disables <a href="https://www.kernel.org/doc/html/latest/PCI/pcieaer-howto.html" target="_blank" rel="noreferrer noopener">PCI Express Advanced Error Reporting</a> which sent this message. This is literally shooting the messenger. It'll silence those messages but won't do anything to address underlying problems.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>pci=nomsi</code> disables a PCI Express signaling mechanism that might cause these correctable errors, forcing all devices to fall back to a different mechanism. Some people reported losing peripherals (like USB) when they use this flag, I guess that hardware couldn't fall back to something else? I tried it and while it didn't cause any obvious problems (I still had USB) it also didn't help keep my Ethernet alive either.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<code>pci=nommconf</code> disables PCI Express memory-mapped configuration. (I don't know what those words mean, I just copied them out of kernel documentation.) The good news is adding this flag did eliminate those "Corrected error received" messages. The bad news it didn't help keep my Ethernet alive, either.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Up until I tried <code>pci=nommconf</code> I had wondered if I've been doing kernel flags wrong. I was editing <code>/etc/default/grub</code> then running <code>update-grub</code>. After boot, I checked they showed up on <code>cat /proc/cmdline</code> but I didn't really know if the kernel actually changed behavior. After <code>pci=nommconf</code>, my confidence was boosted by the lack of "Corrected error received" messages, though that might still be a false sense of confidence because "Corrected error received" messages don't always happen. It's an imperfect world, I work with what I have.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And sadly, there is something I need but don't have today: ability to dig deeper into Linux kernel to find out what has frozen up, leading to the watchdog timer expiring. But I'm out of ideas for now and I still have a computer that drops off the network at irregular times. I don't want to keep pulling the laptop off the shelf to log in locally and type "reboot" several times a day. I concede I must settle for <a href="https://newscrewdriver.com/2023/11/08/reboot-after-network-watchdog-timer-fires/">a hideously ugly hack</a> to do that for me.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Featured image created by <em><a href="https://www.bing.com/images/create" target="_blank" rel="noreferrer noopener">Microsoft Bing Image Creator powered by DALL-E 3</a></em> with prompt "<em>Cartoon drawing of a black laptop computer showing a crying face on screen and holding a network cable</em>"</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

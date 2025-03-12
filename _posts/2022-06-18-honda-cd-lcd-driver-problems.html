@@ -1,0 +1,51 @@
+---
+layout: post
+title: Honda CD LCD Driver Problems
+date: 2022-06-18 12:30:00.000000000 +00:00
+type: post
+post_id: '30895'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Arduino
+- Honda CD
+- LC75883
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30826'
+  _publicize_job_id: '73797927214'
+  timeline_notification: '1655580610'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/18/honda-cd-lcd-driver-problems/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got the control panel for a Honda Accord's CD/HVAC and I think I've <a href="https://newscrewdriver.com/2022/06/17/preliminary-pinout-for-honda-cd/">found the electrical connections</a> to talk to the LC75883 LCD driver. The software side was based on my LC75853 test program, which needed a few modifications to fit this LC75883 chip. It can control more segments, so I have to send three CCB messages of 9 bytes each instead of three messages of 7 bytes. Other than that, these two chips both respond to the same CCB addresses: 0x42 to send LCD control bits, 0x43 to read button presses. And they read the same number of buttons so there's no change necessary there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I launched the program and... nothing, the screen stayed blank while the Arduino ran. I turned the knob one step to see if my quadrature decoder routine worked, and I saw confirmation on the Arduino serial monitor but I also saw the screen came to life. What's going on?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I quickly determined that the screen would go blank if one of the quadrature encoder phases are held to ground. The screen also blanks out if I press the button, which grounds a different pin. There's something wrong with the electrical side, but it wasn't as simple as a short circuit connecting +5V rail to ground. For one thing, the meter found no continuity between V<sub>DD</sub> and V<sub>SS</sub>. And for another, the +5V line stayed up when these events happen, allowing the Arduino serial output to continue running. I suspect I would learn more if I could see the behavior of the LCD partial voltage supplies V<sub>DD1</sub> and V<sub>DD2</sub> perhaps those voltages collapsed for some reason? But the chip pins were too small for me to get to them, and those pins weren't brought out to the data connector for me to connect that way.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can work around this grounding mystery by not pressing the power button and turning the knob two detents at a time. But even then, I have another problem: I could not read buttons with the LC75883 chip. Every time I pushed a button on the circuit board, the LC75883 signals that there's a key activity to report. My code would go through all the motions to read the 32-bit report, but all bits would be zero. Could the "always low" data line be related to the knob/button grounding problem? Possibly, but at the moment I don't know how to find it. I just worked around it the best I could to <a href="https://newscrewdriver.com/2022/06/19/honda-cd-lcd-segment-map/">generate a segment map</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">It's not great, but my <a href="https://github.com/Roger-random/Sanyo_LC75883" target="_blank" rel="noreferrer noopener">code to play with a LC75883</a> is on GitHub.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

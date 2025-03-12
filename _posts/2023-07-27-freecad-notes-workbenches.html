@@ -1,0 +1,72 @@
+---
+layout: post
+title: 'FreeCAD Notes: Workbenches'
+date: 2023-07-27 12:30:00.000000000 +00:00
+type: post
+post_id: '38093'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags:
+- freecad
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '38096'
+  timeline_notification: '1690486212'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1690577742
+  _publicize_job_id: '86121616143'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/27/freecad-notes-workbenches/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After deciding I've had enough of a distraction from <a href="https://newscrewdriver.com/2023/07/26/freecad-0-21-is-coming-soon/">learning FreeCAD</a>, I started watching a <a href="https://www.youtube.com/playlist?list=PLWuyJLVUNtc0UszswD0oD5q4VeWTrK7JC">YouTube tutorial playlist by MangoJelly</a>. Watching someone else use FreeCAD is instructive because it is a difficult piece of software to use without some guidance. When I dove to play on my own, I got far enough to create a new FreeCAD document then figuring out I need to launch a workbench. But a default FreeCAD installation has over twenty workbenches to choose from, and no guidance on where to start or even what a workbench is.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After about 4-5 videos into the MangoJelly playlist, I learned a workbench in FreeCAD is a mini CAD package inside FreeCAD designed for a particular task. A workbench generate data for the underlying FreeCAD infrastructure that could be consumed by another workbench, or be useful directly. To use an imperfect analogy: if Microsoft Office were FreeCAD, its workbenches would be Word, Excel, PowerPoint, Outlook, etc. Except unlike Office, we can install additional FreeCAD workbenches in addition to the default list and we can even write our own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Workbenches make sense as a software architectural approach for a large open-source project like FreeCAD. People with interesting CAD ideas can prototype them as a FreeCAD workbench without writing a CAD system from scratch. As a demonstration of the power of workbenches, I was impressed by the fact entire code-cad packages can interface with FreeCAD in the form of a workbench.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>There is an <a href="https://wiki.freecad.org/OpenSCAD_Workbench">OpenSCAD workbench</a> which bridges FreeCAD with OpenSCAD (which must be installed separately) to consume OpenSCAD script and converts the result into an OCCT mesh that can be used by other FreeCAD workbenches.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>There is also a <a href="https://github.com/jpmlt/freecad-cadquery2-workbench">CadQuery 2 workbench</a> that can be used in a similar way. With the advantage that since CadQuery is also built on OCCT, in theory its output data can be used by other FreeCAD workbenches more easily as OCCT primitives instead of converting into a mesh.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Such flexibility makes FreeCAD workbenches a very powerful mechanism to interoperate across different CAD-related domains. On the downside, such flexibility also means the workbench ecosystem can be confusing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>MangoJelly started the tutorial by using the "Part Design" workbench, and a few episodes later we are shown the "Part" workbench. Both build 3D geometries from 2D sketches and have similar operations like extrude and revolve. MangoJelly struggled to explain when to use one versus the other, leaving me confused. I wonder if FreeCAD would ever choose one and discard the other or would it just continue down the path of having two largely overlapping workbenches.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A cleaner situation exists with the "Raytracing" workbench which has not been maintained for some time. There now exists a "Render" workbench with most of the same features. Thus, the unmaintained "Raytracing" will no longer be a part of default FreeCAD installation after 0.20. This is perhaps the best-case scenario of FreeCAD workbench evolution.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>But "Part" vs. "Part Design" is not the only competition between similar FreeCAD workbenches. There's no single recommended way to build multipart assemblies, something I would want to do with a Sawppy rover. As of this writing the <a href="https://wiki.freecad.org/Assembly#Notes">FreeCAD wiki describes three viable approaches</a> each represented by a workbench: "A2plus", "Assembly3" and "Assembly4". I guess evolution is still ongoing with no clear victor.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Learning about workbenches gave me a potential future project idea: If I build a future version of Sawppy rover in FreeCAD, would it make sense to also create an optional Sawppy workbench? That might be the best way to let rover builders change Sawppy-specific settings (heat-set insert diameter) without making them wade through the entire CAD file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's an idea to investigate later. In the meantime, I should at least <a href="https://newscrewdriver.com/2023/07/28/freecad-notes-part-design-first-impressions/">learn how to work with the Part Design workbench</a> that's used a lot as in MangoJelly's YouTube tutorials.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

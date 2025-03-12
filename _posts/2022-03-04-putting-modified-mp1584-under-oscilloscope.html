@@ -1,0 +1,57 @@
+---
+layout: post
+title: Putting Modified MP1584 Under Oscilloscope
+date: 2022-03-04 12:30:00.000000000 +00:00
+type: post
+post_id: '28831'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28841'
+  _publicize_job_id: '69764157211'
+  timeline_notification: '1646425838'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/04/putting-modified-mp1584-under-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Something didn't go according to plan with my latest project and <a href="https://newscrewdriver.com/2022/03/03/mp1584-modification-did-not-go-as-planned/">destroyed a few components</a>. The prime suspect is my recent modification to a MP1584 buck converter modules I bought on Amazon. By default, it would activate if input voltage is over 3V. This is far too low to deliver 3.3V output, so I modified it to defer activation until input voltage is nearly 12 Volts. A simple test with volt meter and simple LED was successful, but when I connected the ESP8266 microcontroller and INA219 sensor I released the magic smoke.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I connected those components I had checked the voltage output and it looked fine on a volt meter so I suspect there's something with a transition behavior. This calls for an oscilloscope and I have a cheap DSO 138 that is better than nothing. Since the time <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/01/22/dso-138-oscilloscope-kit-by-jye-tech/" target="_blank">I bought the kit and put it together</a>, something has gone wrong with its voltage reference and now absolute voltage readings are unreliable. However, I think the relative shape of the waveform still resembled reality.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I first checked typical startup behavior: what does the 3.3V output look like when I connect this modified buck converter to 13V input? I set the oscilloscope to hold data upon rising edge trigger, and captured this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":28841,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/dso138-oscilloscope-modified-mp1584-startup.jpg?w=1024" alt="" class="wp-image-28841"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The shape looks reasonable. It corresponds to graph in the MP1584 datasheet and shows the advertised soft-start capability to avoid a voltage overshoot on startup, which was my first suspect. I then turned the oscilloscope to continuous scan mode and adjusted my power supply voltage up and down. When I stay well above the input enable voltage of ~11.8V everything looks good, the buck converter maintained a steady 3.3V output. (It reads 5.27V on the display due to the voltage reference weirdness I spoke of.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But things started looking dicey as I dropped close to 12V. I started seeing a sawtooth pattern to the output voltage. Instead of holding at 3.3V, I started seeing the voltage drop then jump upwards, with the magnitude growing wider and wider as I dropped input voltage. The worst was when I dropped into range below the 11.8V activation voltage, but still staying above the shutdown voltage...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28840,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/dso138-oscilloscope-modified-mp1584-near-enable.jpg?w=1024" alt="" class="wp-image-28840"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>"<a href="https://www.youtube.com/watch?v=D_yHttkfWCA" target="_blank" rel="noreferrer noopener">Well, there's your problem.</a>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Without accurate voltage reference I don't know exactly how many volts it whipped through, but at a guess it looks like it dips just below 2V before overshooting above 4V. This would definitely destroy components designed for 3.3V. It's great that I see <em>what</em> is happening, now I need to think about <em>why</em> it happens and <a href="https://newscrewdriver.com/2022/03/05/potential-explanations-for-mp1584-behavior/">decide what I will do about it</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'Update on ARM64: ROS2 on Pi'
+date: 2020-08-03 12:30:12.000000000 +00:00
+type: post
+post_id: '21781'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+- ROS
+- Window Shopping
+tags:
+- ROS2
+meta:
+  _thumbnail_id: '21999'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '47309987074'
+  timeline_notification: '1596483031'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:24'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/03/update-on-arm64-ros2-on-pi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>When I <a href="https://newscrewdriver.com/2020/05/10/ubuntu-and-ros-on-raspberry-pi/">last looked at running ROS on a Raspberry Pi</a> robot brain, I noticed Ubuntu now releases images for Raspberry Pi in <a href="https://ubuntu.com/download/raspberry-pi">both 32-bit and 64-bit flavors</a> but I didn't know of any compelling reason to move to 64-bit. The situation has now changed, especially if considering a move to the future of ROS2.</p>
+<p>The update came courtesy of <a href="https://discourse.ros.org/t/potential-downgrade-of-arm32-support-to-tier-3/14136">an announcement on ROS Discourse</a> notifying the community that supporting 32-bit ARM builds have become troublesome, and furthermore, telemetry indicated that very few ROS2 robot builders were using 32-bit anyway. Thus the support for that platform is demoted to tier 3 for the current release Foxy Fitzroy.</p>
+<p>This was made official on <a href="https://www.ros.org/reps/rep-2000.html">REP 2000 <em>ROS 2 Releases and Target Platforms</em></a> showing <code>arm32</code> as a Tier 3 platform. As per that document, tier 3 means:</p>
+<blockquote><p><em>Tier 3 platforms are those for which community reports indicate that the release is functional. The development team does not run the unit test suite or perform any other tests on platforms in Tier 3. Installation instructions should be available and up-to-date in order for a platform to be listed in this category. Community members may provide assistance with these platforms.</em></p></blockquote>
+<p>Looking at the history of ROS 2 releases, we can see 64-bit has always been the focus. The first release <em>Ardent Apalone</em> (December 2017) only supported <code>amd64</code> and <code>arm64</code>. Support for <code>arm32</code> was only added a year ago for <em>Dashing Diademata</em> (May 2019) and only at tier 2. They kept it at tier 2 for another release <em>Eloquent Elusor</em> (November 2019) but now it is getting dropped to tier 3.</p>
+<p>Another contributing factor is the <a href="https://www.raspberrypi.org/blog/8gb-raspberry-pi-4-on-sale-now-at-75/">release of Raspberry Pi 4 with 8GB of memory</a>. It exceeded the 4GB limit of 32-bit addressing. This was accompanied by an update to the official Raspberry Pi operating system, renamed from Raspbian to Raspberry Pi OS, is still 32-bit but with mechanisms to allow addressing 8GB of RAM across the operating system even though individual processes are limited to 3GB. The real way forward is to move to a 64-bit operating system, and there's a beta 64-bit build of Raspberry Pi OS.</p>
+<p>Or we can go straight to Ubuntu's release of 64-bit operating system for Raspberry Pi.</p>
+<p>And the final note on ROS2: <a href="https://index.ros.org/doc/ros2/Tutorials/">a bunch of new tutorials have been posted</a>! The barrier for transitioning to ROS2 is continually getting dismantled, one brick at a time. And it's even getting some new attention in long problematic areas like <a href="https://newscrewdriver.com/2020/08/04/ros2-receives-cross-compile-love/">cross-compilation</a>.</body></html></p>

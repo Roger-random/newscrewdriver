@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Window Shopping Google ARCore: Tracking'
+date: 2020-07-18 12:30:29.000000000 +00:00
+type: post
+post_id: '21877'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ARCore
+meta:
+  _thumbnail_id: '21832'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '46722382808'
+  timeline_notification: '1595100635'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/18/window-shopping-google-arcore-tracking/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I <a href="https://newscrewdriver.com/2020/07/17/window-shopping-google-arcore-concepts/">started learning about Google ARCore SDK</a> by reading the "Fundamental Concepts" document. I'm not in it for augmented reality, but to see if I can adapt machine vision capabilities for robotics. So while there are some interesting things ARCore could tell me about a particular point in time, the real power is when things start moving and ARCore works to track them.</p>
+<p>The <code><a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Trackable">Trackable</a></code> object types in the SDK represent data points in three dimension space that ARCore, well, tracks. I'm inferring these are visible features that are unique enough in the visible scene to be picked out across multiple video frames, and whose movement across those frames were sufficient for ARCore to calculate its position. Since those conditions won't always hold, individual points of interest will come and go as the user moves around in the environment.</p>
+<p>From there we can infer such an ephemeral nature would require a fair amount of work to make such data useful for augmented reality apps. We'd need to follow multiple feature points so that we can tolerate individual disappearances without losing our reference. And when new interesting features comes on to the scene, we'd need to decide if they should be added to the set of information followed. Thankfully, the SDK offers the <a href="https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Anchor"><code>Anchor</code></a> object to encapsulate this type of work in a form usable by app authors, letting us designate a particular trackable point as important, and telling ARCore it needs to put in extra effort to make sure that point does not disappear. This anchor designation apparently brings in a lot of extra processing, because ARCore can only support a limited number of simultaneous anchors and there are repeated reminders to release anchors if they are no longer necessary.</p>
+<p>So anchors are a limited but valuable resource for tracking specific points of interest within an environment, and that led to the even more interesting possibilities opened up by ARCore Cloud Anchor API. This is one of Google's cloud services, remembering an anchor in general enough terms that another user on another phone can recognize the same point in real world space. In robot navigation terms, it means multiple different robots can share a set of navigation landmarks, which would be a fascinating feature if it can be adapted to serve as such.</p>
+<p>In the meantime, I move on to the <a href="https://newscrewdriver.com/2020/07/19/window-shopping-arcore-design-guidelines/">ARCore Design Guidelines document</a>.</p>
+<p></body></html></p>

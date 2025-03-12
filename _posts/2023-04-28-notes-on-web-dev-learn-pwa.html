@@ -1,0 +1,51 @@
+---
+layout: post
+title: Notes on web.dev "Learn PWA!"
+date: 2023-04-28 12:30:00.000000000 +00:00
+type: post
+post_id: '36286'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36425'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682797858
+  _publicize_job_id: '83617606932'
+  timeline_notification: '1682710207'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/28/notes-on-web-dev-learn-pwa/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Every browser imposes their own user interface cluttering up the screen, a fact of life for all web apps. This clutter motivated me to <a href="https://newscrewdriver.com/2023/04/15/compass-web-app-going-full-screen/">give my Compass web app a full screen option</a> to get rid of those browser interface elements. It's pretty good, but it requires the user to press that "Go Fullscreen" button. What if a web app can launch in full screen state, just like native apps? That's one of many "native app like" upsides to a PWA (Progress Web App) so I started reading "<a href="https://web.dev/learn/pwa/">Learn PWA!</a>" published by the Google Chrome developer relations team at web.dev. The technology has promise but today's landscape has a lot of differences across browser support that make a developer's life difficult.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A core component of PWA is the "service worker", a chunk of JavaScript associated with a web app but runs behind the scenes separately from the rest of web app code. It has the ability to intercept all network requests of a web app, acting like a web server to the rest of the web app but running without a server. This makes it possible for a PWA to run without a network connection, just like native apps could. Making server-like behavior possible are a series of technologies, most of which are usable independent of PWAs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The service most surprising to me was <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB API</a>, a structured storage database available to web apps <a href="https://caniuse.com/?search=IndexedDB">across most modern browsers</a>. It is a NoSQL database along the lines of <a href="https://newscrewdriver.com/2022/11/25/notes-on-introduction-to-mongodb-on-mongodb-university/">MongoDB</a>, except running entirely within the browser. Wow! And here I thought web apps were still limited to <a href="https://en.wikipedia.org/wiki/HTTP_cookie">cookies</a> for data storage. However, like cookies, data stored in IndexedDB can be discarded by the user at any time. Therefore it is necessarily limited to short-term storage scenarios. Like a PWA running offline, tracking data to be uploaded to the server once connectivity is restored.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since service workers run behind the scenes, outside the life cycle and scope of standard web app code, it can get tricky to debug problems. An entire section <em><a href="https://web.dev/learn/pwa/tools-and-debug/">Tools and Debug</a></em> is dedicated to discussion about it. Some of the tips are useful beyond PWAs, like <a href="https://developer.chrome.com/docs/devtools/remote-debugging/local-server/">port forwarding</a> from development desktop to Android physical devices. I think this would have helped me with my Compass web app, with its device-specific hardware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of device-specific behavior, PWA offers the promise of a single codebase that can run across multiple devices, but this course is realistic about the fact that current browser implementations vary widely and require platform-specific knowledge. This gets worse the further we get away from core behavior. In the <a href="https://web.dev/learn/pwa/enhancements/">Enhancements section</a>, there were more about how iOS Safari differs from Android Chrome than there were about behavior they had in common. What a mess.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From this "Learn PWA!" guide I've learned that PWAs start with a relatively simple core set of features (caching and network call interception) but can get very complex very quickly for ambitious developers who want to advanced features. Going hand-in-hand with that power is the potential for things to go very, very wrong. The one that made me grimace is the fact a misbehaving service worker could intercept F5 (refresh) preventing us from loading updated code. Aack! There's a lot to learn beyond this guide. The web.dev team offers a <a href="https://web.dev/new-pwa-training/">six-part hands-on PWA training course</a> to supplement this guide, and of course there are other websites out there with additional resources.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It seems to me that PWA &amp; related API were designed to offer maximum flexibility. Which is why a web app author is responsible for their own service worker so they can do exactly what they need in the context of their web app. However, in practice most web apps will be very similar. In order to minimize people copying and pasting code from random StackOverflow pages, the Chrome team has built <a href="https://developer.chrome.com/docs/workbox/">the Workbox library</a> to deliver code implementing popular behavior in a single library. This is useful. Furthermore, many web application frameworks have their own libraries for turning their applications into PWAs. Given my brief exposure to Angular, my next stop is to <a href="https://newscrewdriver.com/2023/04/29/notes-on-angular-service-workers-pwa-guide/">read up on Angular's PWA library</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

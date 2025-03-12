@@ -1,0 +1,75 @@
+---
+layout: post
+title: KMK Firmware Revives Acer Aspire Switch 10 Keyboard Module
+date: 2024-06-30 12:30:00.000000000 +00:00
+type: post
+post_id: '43993'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43920'
+  firehose_sent: '1719775848'
+  _publicize_job_id: '95864652539'
+  timeline_notification: '1719775850'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-01 19:51:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/30/kmk-firmware-revives-acer-aspire-switch-10-keyboard-module/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Right now I'm playing with the keyboard module salvaged from a dead Acer Aspire Switch 10. A CircuitPython program running on a Raspberry Pi Pico <a href="https://newscrewdriver.com/2024/06/29/acer-aspire-switch-10-keyboard-matrix/">helped decipher its matrix layout</a>, much more quickly than it would have been for me to figure it out manually with my multi-meter. To test this information, the obvious next step is to turn this into an actual USB HID keyboard. Since I'm already in the realm of CircuitPython, I followed Adafruit's link to <a href="https://kmkfw.io/">KMK firmware</a>. KMK was written in CircuitPython which means I don't even have to re-flash the runtime on my Raspberry Pi Pico, I could just change my code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are several ways to declare my keyboard matrix, most of the predefined KMK configuration files used <a href="https://kmkfw.io/porting_to_kmk/#coord-mapping">the <code>coord_mapping</code> capability</a> to give the keyboard layout in source code a rough resemblance to its physical layout. It's nice for user-friendliness and ease of customization, but I'm going to skip that step for my initial test. I decided to go with the straightforward <code>keymap</code> list which is strictly in electrical matrix layout, paying no attention to its physical layout. This was easy for me because I had already built the table earlier so I just need to translate it into KMK CircuitPython code:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px"><code>keyboard.col_pins = (board.GP12,board.GP13,board.GP14,board.GP15,board.GP16,board.GP17,board.GP18,board.GP19)
+keyboard.row_pins = (board.GP1,board.GP2,board.GP3,board.GP4,board.GP5,board.GP6,board.GP7,board.GP8,board.GP9,
+    board.GP10,board.GP11,board.GP20,board.GP21,board.GP22,board.A0,board.A1)
+
+keyboard.keymap = [
+    #12         13          14          15          16          17          18          19          Keyboard pins
+    [KC.NO,     KC.UP,      KC.NO,      KC.NO,      KC.NO,      KC.DOWN,    KC.ESCAPE,  KC.NO,      # 1
+     KC.BSPACE, KC.DELETE,  KC.RBRACKET,KC.QUOTE,   KC.NO,      KC.NO,      KC.NO,      KC.ENTER,   # 2
+     KC.PGUP,   KC.NO,      KC.BSLASH,  KC.PGDOWN,  KC.NO,      KC.NO,      KC.NO,      KC.NO,      # 3
+     KC.PSCREEN,KC.INSERT,  KC.EQUAL,   KC.LBRACKET,KC.NO,      KC.DOT,     KC.C,       KC.NO,      # 4
+     KC.MINUS,  KC.PAUSE,   KC.NO,      KC.L,       KC.M,       KC.COMMA,   KC.SPACE,   KC.LEFT,    # 5
+     KC.F12,    KC.F11,     KC.NO,      KC.N9,      KC.K,       KC.J,       KC.N,       KC.O,       # 6
+     KC.F10,    KC.F9,      KC.N8,      KC.N7,      KC.I,       KC.H,       KC.B,       KC.U,       # 7
+     KC.F8,     KC.F7,      KC.N6,      KC.T,       KC.G,       KC.V,       KC.NO,      KC.Y,       # 8
+     KC.F6,     KC.F5,      KC.N5,      KC.E,       KC.D,       KC.F,       KC.NO,      KC.R,       # 9
+     KC.F4,     KC.F3,      KC.N3,      KC.N4,      KC.S,       KC.RIGHT,   KC.NO,      KC.W,       # 10
+     KC.F2,     KC.F1,      KC.N1,      KC.N2,      KC.A,       KC.Z,       KC.X,       KC.Q,       # 11
+     KC.NO,     KC.NO,      KC.LSHIFT,  KC.SLASH,   KC.NO,      KC.RSHIFT,  KC.NO,      KC.NO,      # 20
+     KC.NO,     KC.LCTRL,   KC.NO,      KC.N0,      KC.NO,      KC.NO,      KC.NO,      KC.NO,      # 21
+     KC.LWIN,   KC.NO,      KC.NO,      KC.P,       KC.NO,      KC.NO,      KC.NO,      KC.NO,      # 22
+     KC.NO,     KC.NO,      KC.NO,      KC.SCOLON,  KC.RALT,    KC.NO,      KC.LALT,    KC.NO,      # 23
+     KC.GRAVE,  KC.NO,      KC.TAB,     KC.CAPSLOCK,KC.WINMENU, KC.NO,      KC.NO,      KC.NO,      # 24
+     #                                       Special handling required for 19+24 = "Fn" ^^^^^
+     ]
+]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>With this key map, I have a functional USB HID keyboard. (I typed part of this blog entry on it!) This is pretty cool, but it only scratches the surface of what KMK could do. I haven't fully implemented this keyboard, either. There's a "Fn" key that activates additional functionality. Fn+F4 has a "Zz" printed on it, and I interpret that to mean putting the computer into sleep mode. I think <a href="https://kmkfw.io/layers/">KMK's "layer" functionality</a> is how I would go about implementing it, but I went looking for a way to signal sleep key and didn't find a <code>KC.SLEEP</code> or equivalent. Without that, I don't have much motivation to figure out layers. A related problem was if I put the computer to sleep, this KMK keyboard does not wake the computer from sleep. I would have to investigate and address that behavior before I can use KMK to help build, for example, a Luggable PC Mark III.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll leave that for the future. I've accomplished today's goal of proving I could turn this salvaged keyboard module into an USB HID keyboard, and I'm satisfied with my answer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43979,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/jumper-wire-bundle-connecting-proto-advantage-fpc080p030-to-raspberry-pi-pico.jpg?w=800" alt="" class="wp-image-43979"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For this hypothetical future project, I assume I will need to build a more compact circuit to replace my jumper wire monstrosity. Maybe even a custom PCB to host both my keyboard connector and my RP2040? Its actual form factor will need be dictated by project needs, which I don't know right now so I'll leave things be. While there's no guarantee I'll stick with KMK firmware, either, it's pretty likely as <a href="https://newscrewdriver.com/2024/07/01/good-initial-impressions-of-circuitpython/">I've decided I like CircuitPython a lot</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

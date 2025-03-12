@@ -1,0 +1,61 @@
+---
+layout: post
+title: Direct DC Power on HP Stream 7 Renders Windows Unbootable
+date: 2022-01-14 12:30:00.000000000 +00:00
+type: post
+post_id: '28170'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- HP Stream 7
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28171'
+  _publicize_job_id: '67689354379'
+  timeline_notification: '1642192203'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1671647365
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/14/direct-dc-power-on-hp-stream-7-renders-windows-unbootable/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While spending way too much time <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/01/13/notes-on-hardspace-shipbreaker-0-7/" target="_blank">enjoying the game <em>Hardspace: Shipbreaker</em></a>, I was actually reminded of a project. In the game, safely depowering a ship's computers involve learning which power systems are on board and disconnecting them without electrocuting yourself. It got me thinking about my old HP Stream 7 tablet that couldn't run indefinitely on USB power and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/03/hp-stream-7-refuses-to-believe-in-free-energy/" target="_blank">refused to believe an illusion of free energy</a> when I supplied power on the lithium-ion battery cell. I thought it might be interesting to see what would happen if I disconnected the battery and supplied DC power directly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My hypothesis is that the earlier experiment was foiled by the battery management PCB, it was too smart for its own good and realized the tablet had consumed far more capacity than its attached battery cell had any business providing and shutting the computer down. By disconnecting that PCB, perhaps the doubting voice would be silenced.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To test this idea, I would need to find the power supply and ground planes on the circuit board. I could solder directly to the empty battery connector, but that would make it impossible to plug the battery back in and was too drastic for my experiment. I could see pads underneath the connector clearly labeled VBAT + and - but I couldn't realistically solder to them without damaging the connector either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Taking my multi-meter, I started probing components near that battery connector for promising candidates. The search didn't take long -- the closest component had pads that connected to the voltage planes I wanted. I had hoped to find a decoupling capacitor nearby, but this doesn't look like a capacitor. With a visible line on one side, it looks like a diode connected the "wrong" way. Perhaps this protects the tablet from reverse voltage: if VBAT +/- were reversed, this diode would happily short and burn out the battery in the interest of protecting the tablet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Whatever its actual purpose, it serves my need providing a place to solder wires where I can put 3.7V (nominal voltage for single lithium-polymer battery cell) to power the tablet while its original battery is unplugged.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Good news: The machine powers up!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Bad news: Windows doesn't boot anymore!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could see the machine boot screen with the HP logo, and I could see the swirling dots of Windows starting up. But a few seconds later, the screen goes blank. We return to the HP logo, and the process repeats. Time to <a href="https://newscrewdriver.com/2022/01/15/hp-stream-7-reboot-loop-linked-to-intel-chipset-windows-driver/">diagnose this reboot cycle</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>UPDATE: Comment by Craig pointed to this project, which directly soldered 5V supply not to the mainboard but to the battery management circuit board (without battery.) https://www.instructables.com/Run-HP-Stream-7-Tablet-Without-a-Battery/</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

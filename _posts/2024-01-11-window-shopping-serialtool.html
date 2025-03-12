@@ -1,0 +1,69 @@
+---
+layout: post
+title: Window Shopping SerialTool
+date: 2024-01-11 12:30:00.000000000 +00:00
+type: post
+post_id: '41513'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41522'
+  wordads_ufa: s:wpcom-ufa-v4:1710823847
+  firehose_sent: '1705005057'
+  _publicize_job_id: '91008756929'
+  timeline_notification: '1705005059'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-03-19 04:44:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/11/window-shopping-serialtool/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I seek tools to help me understand the communication between the main board and control panel of a Canon Pixma MX340 multi-function inkjet. The data is asynchronous serial 250000-8-E-1 which is something <a href="https://newscrewdriver.com/2024/01/10/window-shopping-bus-pirate/">a Bus Pirate</a> can interface with, but only as one end of the communication with a transmit/receive pair. I want to listening in on communication between two existing endpoints, which meant I would need to set up something with two receive and no transmit wires. Continuing my search, I found <a href="https://serialtool.com">SerialTool</a> which is very close to what I want for this purpose, but not exactly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>SerialTool's web site claims it came from engineers for embedded devices, which puts it in the right ballpark audience for this task. Like WireShark, it is an application that can run on Windows, MacOS, or Linux PCs. The hardware side of SerialTool is any serial port device recognized by the operating system of choice. In my case, it will be USB to serial adapters like <a href="https://amzn.to/3vzRZKQ" target="_blank" rel="noreferrer noopener">the trusty unit</a> (*) I've been using for many projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, a standard USB to serial adapter has the same limitation as a Bus Pirate: a single transmit wire and a single receive wire. For two receive wires, I would need to use two adapters. Which gets into one of the headline features of SerialTool: its ability to work across <a href="https://serialtool.com/_en/serial-port-multiple-serials" target="_blank" rel="noreferrer noopener">multiple serial devices</a> simultaneously. Two ports are possible on the free version, the Professional edition raises the limit to 4 simultaneous serial ports.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>SerialTool's "<a href="https://serialtool.com/_en/serial-port-auto-answer" target="_blank" rel="noreferrer noopener">Auto Answer</a>" feature looks interesting. It is a mechanism to quickly set up "if (receive thing) then (send answer)" which is helpful to stub out one placeholder end of a serial communication link. In my current example, I could potentially set it up to a dummy control panel and acknowledge "0x20" to every command sent by the main board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that's not what I need right now. I want something to examine incoming data for expected patterns and alert me if something unexpected comes through. I thought SerialTool's "<a href="https://serialtool.com/_en/serial-port-alarm-trigger-on-buffer" target="_blank" rel="noreferrer noopener">Trigger Alarm</a>" feature was promising, but as I read the document I realized it compares incoming data and an alert fires if a match is found. This is the opposite of what I wanted: an alert in case of no match.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the advertised uses for SerialTool is for testing and verification of embedded devices, so I was curious my wish is absent. For testing and verification purposes, I thought it would be natural to have a mechanism to raise an alert in case of unexpected anomalous data. But if SerialTool could do such a thing, I failed to find it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found references to a few other pieces of software that appear to be competitors to SerialTool, but they all target professional embedded systems engineers and not hobbyists. Or more specifically, their price tags say "business expense" and there is no free version. Whether they do what I want or not is irrelevant if I can't justify that kind of expense.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oh well, I guess <a href="https://newscrewdriver.com/2024/01/12/going-diy-route-for-serial-data-filter-tool/">I'm going to create my own tool</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Header image: <a href="https://serialtool.com/_en/serial-port-serial-tool-screenshots">screen shot from SerialTool web site</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

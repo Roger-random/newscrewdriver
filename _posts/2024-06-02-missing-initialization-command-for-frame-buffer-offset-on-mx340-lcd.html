@@ -1,0 +1,51 @@
+---
+layout: post
+title: Missing Initialization Command For Frame Buffer Offset On MX340 LCD
+date: 2024-06-02 12:30:00.000000000 +00:00
+type: post
+post_id: '43609'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43612'
+  _publicize_job_id: '95115303688'
+  firehose_sent: '1717356633'
+  timeline_notification: '1717356633'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-04 01:20:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/02/missing-initialization-command-for-frame-buffer-offset-on-mx340-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had incorrectly configured asynchronous serial communication parameters between my KB2040 microcontroller running CircuitPython and NEC K13988 chip on a control board salvaged from a Canon MX340 multi-function inkjet. But once I sorted that out (<a href="https://newscrewdriver.com/2024/06/01/i-needed-two-stop-bits-to-talk-to-nec-k13988/">two stop bits, not just one</a>) I could successfully send a full set of frame buffer data to the LCD with minimal transmission failures. This allowed me to follow up on an observation I had from my first test: the vertical frame buffer byte offsets are not as expected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43599,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-displaying-flawed-horizontal-line.jpg?w=800" alt="" class="wp-image-43599"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/">pattern I saw via logic analyzer</a> indicated the top 8 pixels of the screen were dictated by sending pixel data with the offset <code>0x4D</code> to start the sequence. But when I tried doing the same thing with my KB2040, the stripe rendered two pixels lower than expected. This pattern continued for the rest of the screen, with successively lower rows corresponding to <code>0xCD</code>, <code>0x2D</code>, and <code>0xAD</code>. When I decoded frame buffer data captured by logic analyzer, offset <code>0x6D</code> dictated the bottom-most two rows of pixels. (The least significant six bits are not visible.) However, now data sent to <code>0x6D</code> is not visible at all. Experimenting with other offsets, I stumbled on the fact I could transmit data to 0x8D and that data would help me fill in the top two rows of pixels. (The most significant six bits are not visible.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43612,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-displaying-increasing-byte-values.jpg?w=1024" alt="" class="wp-image-43612"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though it was unexpected, that was good enough for my next experiment: I changed the program so instead of a fixed value, each byte counts up one. This gave me get a precise delineation and count for all horizontal and vertical pixels. Thanks to this test pattern I am now confident this LCD has 196 pixels horizontally and 34 pixels vertically.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But what about that unexpected offset? The most likely suspect is a mistake in my initialization sequence, and a double-check found the culprit. There was a two-byte sequence <code>0x04 0x42</code> <a href="https://newscrewdriver.com/2024/01/01/canon-pixma-mx340-control-panel-data-communication-powering-on/">in my decoded notes</a>, but I forgot to put that in my KB2040 initialization sequence. Once I <a href="https://github.com/Roger-random/pipico_tests/commit/2ba823a9e2bb8747f6472e9fba86059ca2d3af5c">put that back in</a>, my LCD frame buffer renders at the expected location. On my to-do list is to play with my initialization sequence, selectively skipping them to see what effect they have on behavior. Looks like I inadvertently started that experiment early! This little side trip also suggested an interesting possibility: that the LCD controller has extra frame buffer memory available, possibly allowing vertical scrolling without re-sending the entire frame buffer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Without the datasheet, though, that's mostly an empty thought. It's more productive to try to <a href="https://newscrewdriver.com/2024/06/03/reverse-bits-to-draw-with-adafruit_framebuf/">pair this display with a graphics library</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

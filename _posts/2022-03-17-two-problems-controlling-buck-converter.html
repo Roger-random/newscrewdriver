@@ -1,0 +1,46 @@
+---
+layout: post
+title: Two Problems Controlling Buck Converter
+date: 2022-03-17 12:30:00.000000000 +00:00
+type: post
+post_id: '29028'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- DU7169
+- ESP8266
+- ESPHome
+- Home Assistant
+- INA219
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29019'
+  _publicize_job_id: '70304808559'
+  timeline_notification: '1647545401'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/17/two-problems-controlling-buck-converter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My solar power monitor project runs on a ESP8266 microcontroller and an INA219 sensor powered by an old USB power bank. In order to charge it during the day from solar power, I'm <a href="https://newscrewdriver.com/2022/03/16/buck-converter-module-with-enable-pin/">trying out a new-to-me buck converter module</a> because it exposed an "Enable" pin that was absent from my usual MP1584 buck converter module. I connected it (via a 1k resistor) to the closest available GPIO pin on my ESP8266 module, which happened to be GPIO0. Configuring ESPHome to use that pin as a switch, I could turn charging on or off from Home Assistant UI. I declared victory but it was premature.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I realized there was a problem when I put the ESP8266 to sleep and noticed charging resumed. This was a surprise. Probing the circuit I found my first problem: there is a pull-up resistor or a voltage divider on board my new buck converter module so that if its enable pin is left floating, it will activate itself as my usual MP1584 module would. This was mildly disappointing, because it meant I might have to unsolder a few resistors to get the behavior I originally wanted, and one of the reasons to buy this module was because I didn't want to unsolder resisters from my MP1584 buck converter boards. As a short-term hack, I fought the existing circuit by adding a pull-down resistor external to the module. Experimentally it looks like a 10k resistor to ground was enough to do the trick, disabling the buck converter when enable input line is left floating.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I wasn't done yet, there's a second problem to address: When ESP8266 was put back in the circuit, the charging would still resume when I put it into deep sleep. Probing the pin, I saw GPIO0 was at 3.3V while asleep. Reading online resources like <a rel="noreferrer noopener" href="https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/" target="_blank">this page on <em>Random Nerd Tutorials</em></a>, I learned the pin needs to be high for ESP8266 to boot. Presumably this means the Wemos D1 Mini module has a pull-up resistor on board for the boot process. Therefore I can't use GPIO0 for charging control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I went down the list of still-unused pins by distance to the buck converter on my circuit board. The next closest pin is GPIO2, which I can't use as I'm already using the blue status LED. After that is GPIO14. It is usually used for SPI communication but I have no SPI peripherals for this project. Looking on the reference chart, it doesn't seem to get pulled up or down while ESP8266 was asleep. After confirming that behavior with a voltmeter, I switched buck converter enable pin over to GPIO14. It allowed me to control charging from ESPHome and, when the ESP8266 is asleep, the buck converter stays disabled. Finally, the hardware is working as intended! Now I need to <a href="https://newscrewdriver.com/2022/03/18/initial-logic-for-solar-monitor-project/">figure out the software</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

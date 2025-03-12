@@ -1,0 +1,36 @@
+---
+layout: post
+title: Hackaday Badge Nyan Cat Claws Back Final Bytes Before Wrapping Up
+date: 2018-11-09 09:00:21.000000000 +00:00
+type: post
+post_id: '17121'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '24090986488'
+  timeline_notification: '1541783137'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/09/hackaday-badge-nyan-cat-claws-back-a-few-more-bytes-before-wrapping-up/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17086 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/poptartcat320240.gif" alt="poptartcat320240" width="320" height="240">There are just a few more touches before the finish line for getting my Nyan Cat project ready for consideration for the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>. The final space savings came from realizing I only used two out of three voices in music playback, but my song structure carried three values so the unused voice takes up space holding zeroes. Maybe it's only a few hundred bytes, but that's still <a href="https://github.com/Roger-random/2018-Supercon-Badge/commit/f761ab1651f125fb6188c6253baf992fa8837386">waste I could trim</a>.</p>
+<p>Once trimmed, I reviewed my code and realized I was still reading key-presses by reading the raw IO lines instead of using the existing <code>stdio_get()</code> API. This was a mistake made early on, when I thought it would block my animation/music until a key is pressed. Functionally speaking, neglecting to use the API not a terribly huge deal, but if I want the program to serve as example code it should do the right thing.</p>
+<p>And finally, code comments. I want this to be something people can read through and understand how to write code for the badge in C using some techniques that are absent from other examples on the badge. This is an important part of the pitch for putting Nyan Cat on the badge - it should be educational in its construction in addition to being entertaining to launch.</p>
+<p>After I <a href="https://github.com/Roger-random/2018-Supercon-Badge/commit/890c1f33a480d4b71b61ca32d5d3601c29d2962c">committed the final code updates and comments</a>, I realized I forgot to update the memory footprint listed by the flag to turn Nyan Cat on/off in a build. <a href="https://github.com/Roger-random/2018-Supercon-Badge/commit/cc05caefd74928fa36c268e7145e8c5d1305a9ff">Final tally</a>: 84 bytes of data memory, 8468 bytes of program memory. This is over the 8 kilobyte goal I was shooting for, but certainly a tremendous reduction from the original 30+ kilobytes.</p>
+<p>I packaged my Nyan Cat <a href="https://github.com/Hack-a-Day/2018-Supercon-Badge/pull/18">into a pull request</a> against the upstream depot, <a href="https://github.com/Roger-random/2018-Supercon-Badge/commit/51e96bba8501207dabf8207d784b6d378636c7b0">and it was accepted</a>. Now my sample project will be a part of the default firmware on every Supercon badge.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</body></html></p>

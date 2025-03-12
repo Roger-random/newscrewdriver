@@ -1,0 +1,48 @@
+---
+layout: post
+title: Death Clock Display States
+date: 2019-06-15 12:30:37.000000000 +00:00
+type: post
+post_id: '18650'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Death Clock
+- VFD
+meta:
+  _thumbnail_id: '18383'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31861401390'
+  timeline_notification: '1560627111'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/15/death-clock-display-states/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>At this point we have decided on <a href="https://newscrewdriver.com/2019/06/12/vfd-project-the-death-clock/">what the Death Clock project will do</a>, established <a href="https://newscrewdriver.com/2019/06/13/death-clock-project-priorities/">priorities of how we'll go about it</a>, and the <a href="https://newscrewdriver.com/2019/06/14/death-clock-raspberry-pi/">hardware we'll use for our first iteration</a>. Now it is time to sit down and get into the details of what code we'll write. This will be more sophisticated than just <a href="https://github.com/Roger-random/vfd_on_pic/blob/master/pi_test/abstrnya.py">looping a single list of animation frames</a>. Here are the candidate states in the sequence they are likely to run:</p>
+<ul>
+<li>
+<strong>Initial power-on</strong>: As soon as the Python script starts running, we want to send a VFD pattern to establish the Pi is communicating with the PIC. This pattern doesn't have to be fancy, its main purpose is to visually show our Python code has at least started running. So all it really needs to be is to be different from the PIC's power-on default pattern.</li>
+<li>
+<strong>Waiting to start</strong>: We might want a pattern to be displayed after the Python script has started running, but before we can act like a Death Clock. At the moment we don't know of anything that require such a delay, so we'll skip over this one for now.</li>
+<li>
+<strong>Attraction loop</strong>: An animation sequence inviting people to touch the capacitive sensor button. Any text will have to be shown as a scrolling marquee of text using the four 7-segment digit displays. Might want to superimpose animations using remaining segments. This can start simple and get fancier as we go.</li>
+<li>
+<strong>Thinking and processing loop</strong>: Once touched, we might want to do a little show for the sake of presentation. There's no practical reason to need this as a Pi can generate a random time effectively instantaneously. But where's the suspense in that? We don't have to do this in the first test run, this can be added later.</li>
+<li>
+<strong>Oracle speaks</strong>: Present the randomly chosen day of week and time of day. May or may not do anything with the remaining segments. This is the core functionality so we'll need to look at this one first.</li>
+<li>
+<strong>Thank you come again</strong>: Animation sequence transitioning from "Oracle speaks" display to "attraction loop". This is again for presentation and can be skipped for the first test run and added later.</li>
+</ul>
+<p></body></html></p>

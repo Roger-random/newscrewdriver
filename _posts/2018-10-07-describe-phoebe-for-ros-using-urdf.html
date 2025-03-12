@@ -1,0 +1,41 @@
+---
+layout: post
+title: Describe Phoebe For ROS Using URDF
+date: 2018-10-07 09:00:25.000000000 +00:00
+type: post
+post_id: '16939'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1538928120'
+  _publicize_job_id: '22936105123'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/07/describe-phoebe-for-ros-using-urdf/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that I've decided to bring up the ROS navigation stack for Phoebe, where do I start? Well, the <a href="http://wiki.ros.org/navigation">ROS Wiki page for the subject</a> is always a good place to start, as they tend to have a tutorial for the subject. ROS navigation is no exception.</p>
+<p>The first recommended page is actually a familiar sight - the <a href="http://wiki.ros.org/navigation/Tutorials/RobotSetup/TF">brief overview on tf</a> was required reading back when I first assembled the chassis. At the time, I could get away with a very simple static publisher, because I just had to tell ROS how and where my Neato LIDAR is mounted on my robot chassis. But now I guess I need to advanced to the next step and <a href="http://wiki.ros.org/robot_state_publisher/Tutorials/Using%20the%20robot%20state%20publisher%20on%20your%20own%20robot">publish robot state</a>. And this means describing Phoebe in more detail for ROS using a XML syntax called URDF (Unified Robot Descriptor Format).</p>
+<p>So in order to bring up ROS navigation on Phoebe, the navigation wiki page has pointed me to <a href="http://wiki.ros.org/robot_state_publisher">robot state publisher</a> and also the <a href="http://wiki.ros.org/urdf/Tutorials">ROS URDF Tutorial</a>. To learn one thing I had to learn another, the typical bootstrap process when learning something new.</p>
+<p>For the purposes of robot physics simulation, the robot should be described using very basic geometry: a combination of rectangular solids, cylinders, and spheres. This keeps the computation workload for collision detection simple. While the visual representation can be more complex than the collision detection representation, it doesn't have to be. So for this first draft, I'll just do a super simple Phoebe for visual representation, suitable for use in collision calculations if I get into that later.</p>
+<p>I started with Phoebe's Onshape CAD file.</p>
+<p><img class=" size-full wp-image-16940 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-cad-full.png" alt="Phoebe CAD Full" width="1102" height="763"></p>
+<p>Taking the critical dimensions, I created a simplified version in Onshape CAD using just rectangular boxes and cylinders. This exercise makes it a fairly straightforward exercise to translate into URDF.</p>
+<p><img class=" size-full wp-image-16941 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-cad-simplified.png" alt="Phoebe CAD Simplified" width="1223" height="870"></p>
+<p>By measuring the dimensions in CAD, I could <a href="https://github.com/Roger-random/phoebe/blob/master/urdf/phoebe.urdf.xacro">declare a few primitives with URDF</a> and see what it looks like in RViz for comparison against CAD. Once the visual appearance is roughly correct, it's time to tune the details and make sure they work for ROS functional purposes.</p>
+<p><img class=" size-full wp-image-16942 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/10/phoebe-rviz-simplified.png" alt="Phoebe RViz Simplified" width="772" height="612"></p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/154187-describe-phoebe-for-ros-using-urdf">Hackaday.io</a>)</p>
+<p></body></html></p>

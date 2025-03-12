@@ -1,0 +1,95 @@
+---
+layout: post
+title: Logitech Wireless Trackball (M570)
+date: 2022-08-20 12:30:00.000000000 +00:00
+type: post
+post_id: '32070'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32071'
+  _publicize_job_id: '75943376522'
+  timeline_notification: '1661023870'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/20/logitech-wireless-trackball-m570/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have always preferred trackballs over mice for my desktop pointing device. A preference very much related to the fact that I've always had a cluttered desk and a trackball requires less desk space than a mouse. Trackballs also come in varying layouts. I prefer those that put the trackball under my fingers, and I click buttons with my thumb. (Like <a rel="noreferrer noopener" href="https://amzn.to/3SJ7cjI" target="_blank">this design I'm currently using</a>. *) Others put the trackball under the thumb instead and leave buttons to be pressed like a mouse.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32075,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-intact.jpg?w=1024" alt="" class="wp-image-32075"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This Logitech M570 trackball used the latter layout. I tried it for a few weeks and decided I didn't like it, so it's been gathering dust ever since. Now I'll take it apart to look inside, evaluating it for a project idea.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32076,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-bottom-feet-removed.jpg?w=1024" alt="" class="wp-image-32076"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There was one visible fastener on the bottom, which is curious because it was adjacent to a rubber foot. There are three other rubber feet on this trackpad, each of which hid a fastener. Why was the fourth foot unable to hide a fastener?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32078,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-fastener-under-sticker.jpg?w=1024" alt="" class="wp-image-32078"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After removing those four fasteners, I had expected the trackball to come apart easily. It did not, acting as if there were at least one more screw holding things together. Applying lesson learned from my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/10/microsoft-arc-touch-mouse-surface-edition-model-1592/" target="_blank">Microsoft Arc Mouse teardown</a>, I peeled back the battery tray sticker. Aha! Gotcha, you little sneak.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32080,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-lid-removed.jpg?w=1024" alt="" class="wp-image-32080"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once that final fastener was removed, the top and bottom halves came apart easily. There was only a very small circuit board inside. Two if you count the tiny raiser board hosting SW4 and SW5. The trackball position sensor is at an angle relative to the main circuit board, and engineers solved that challenge with a short length of flex cable.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32087,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-top-ic-closeup-atmel-mega168pa.jpg?w=317" alt="" class="wp-image-32087"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most significant chip on the top of the circuit board is an <a rel="noreferrer noopener" href="https://www.microchip.com/en-us/product/ATmega168PA" target="_blank">ATmega168PA</a>, a close relative of the ATmega328P made popular by Arduino.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32071,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-buttons-removed.jpg?w=1024" alt="" class="wp-image-32071"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The two main buttons were large pieces of plastic that could be unclipped. Their motion actuates two long black Omron tactile switches. Between them lies an optical emitter and receiver to read scroll wheel motion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32084,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-scroll-wheel-closeup.jpg?w=1024" alt="" class="wp-image-32084"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at the scroll wheel we can see slits for the optical encoder. A short length of spring pushes against the interior surface of this wheel, which has a wavy texture. Combination of spring and texture results in scroll "step" tactile feedback.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32089,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-pcb-bottom.jpg?w=1024" alt="" class="wp-image-32089"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A few components are visible on the bottom of the circuit board including the power switch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32090,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/08/logitech-m570-bottom-ic-closeup-nrf24l01.jpg?w=240" alt="" class="wp-image-32090"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most significant looking chip on the bottom is a nRF24L01+, a popular 2.4GHz wireless transceiver chip that we can get in <a href="https://amzn.to/3bN3lkT" target="_blank" rel="noreferrer noopener">cheap breakout boards</a> (*) for hobbyist wireless projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Between the ATmega168PA up top and the nRF24L01+ on the bottom, it is tempting to see if I can reprogram this trackball for complete firmware control. We even see an array of eight potential test and diagnostics pads on the bottom of this board. That might be a fun project, but I had something <a href="https://newscrewdriver.com/2022/08/21/chair-mounted-mouse-buttons/">much more straightforward in mind</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

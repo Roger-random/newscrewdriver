@@ -1,0 +1,35 @@
+---
+layout: post
+title: 'ROS Notes: Hector SLAM Creates 2D Map From 3D Motion'
+date: 2018-10-14 09:00:39.000000000 +00:00
+type: post
+post_id: '16960'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1539533440'
+  _publicize_job_id: '23183190966'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/14/ros-notes-hector-slam-creates-2d-map-from-3d-motion/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-7463 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/07/rosorg-logo1.png" alt="rosorg-logo1" width="254" height="73">While I was trying to figure out how to best declare <a href="https://newscrewdriver.com/2018/10/08/phoebe-urdf-fixing-functional-problems/">ROS coordinate transform frames</a> of reference for Phoebe, I came across a chart on <code>hector_slam</code> page <a href="http://wiki.ros.org/hector_slam/Tutorials/SettingUpForYourRobot">detailing multiple frames of reference</a> for a robot base. It turned out to be unnecessary for the <a href="http://wiki.ros.org/gmapping">GMapping</a> algorithm I'm currently using for Phoebe, but it made me curious enough to take a closer look.</p>
+<p>I have yet to try using <code>hector_slam</code> on Phoebe. I'm only aware of it as an alternative SLAM algorithm to <code>gmapping</code>. The two systems make different trade-offs and one might work better than the other under different circumstances. I knew <code>hector_slam</code> was the answer when some people asked if it's possible to perform SLAM without wheel odometry data, but I knew there had to be more to it. The requirements for multiple frames is my entry point to understand what's going on.</p>
+<p>My key takeaway after <a href="http://www.sim.tu-darmstadt.de/publ/download/2011_SSRR_KohlbrecherMeyerStrykKlingauf_Flexible_SLAM_System.pdf">reading the paper</a>: <code>gmapping</code> is designed for a robot working strictly in flat 2D. In contrast, <code>hector_slam</code> is designed for platforms that may move about in 3 dimensions. Not just flat 2D, but also ground vehicles traversing rough terrain (accounting for pitch and roll motions) and even robotic aircraft. Not requiring wheel odometry data is obvious a big part of supporting air vehicles!</p>
+<p>But if <code>hector_slam</code> is so much more capable, why isn't everyone using it? That's when we get to the flip side: for good results it requires a LIDAR with high scan rate and high accuracy. Locating robot position without wheel odometry is made possible by frequent distance data refreshes (40 Hz was mentioned in the paper). Unfortunately, this also dims prospect for use aboard Phoebe as the <a href="https://newscrewdriver.com/tag/neato/">Neato LIDAR</a> is neither fast (4 Hz) or accurate.</p>
+<p>And despite its capability to process 3D data from robotic platforms that have 3D motion, <code>hector_slam</code> generates a 2D map. This implies the mapping navigation algorithms will not have access to captured 3D data. Plotting a path with this data, a short and rough route would look better than a longer smooth flat route. This makes me skeptical <code>hector_slam</code> will be interesting for <a href="http://sawppy.com">Sawppy</a>, but that's to be determined later.</p>
+<p> </body></html></p>

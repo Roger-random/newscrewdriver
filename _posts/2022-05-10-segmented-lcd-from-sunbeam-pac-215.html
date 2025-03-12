@@ -1,0 +1,56 @@
+---
+layout: post
+title: Segmented LCD From Sunbeam PAC-215
+date: 2022-05-10 12:30:00.000000000 +00:00
+type: post
+post_id: '30203'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- LCD Segment Map
+- PAC-215
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30205'
+  _publicize_job_id: '72373318109'
+  timeline_notification: '1652211003'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/10/segmented-lcd-from-sunbeam-pac-215/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I now have <a href="https://newscrewdriver.com/2022/05/09/esp32-as-driver-for-simple-segmented-lcd/">imperfect but working control</a> of a 2-digit 7-segment LCD module salvaged from a Sunbeam PAC-215 electric blanket controller. I used an ESP32 for this initial run because I thought I needed voltage control over all ten pins. After a little bit of experimentation, I've found that I could probably get away with using 0V and 3.3V directly on each of the segment pins. For the common pins I need an additional option of the midway point 1.65V, but if it is true that an LCD uses very little current, perhaps I could supply that voltage with merely a voltage divider built from resistors? If true, I might be able to control this with something far simpler and less powerful than an ESP32. Perhaps an ATmega328 (Arduino)? Or a PIC16F18345, which has a DAC peripheral and already on hand. (If I'm going to buy a chip, I'll take Joey Castillo's suggestion and buy one with LCD control peripheral built in.) These are potential experiments for the future. For now, I want to wrap up work with this particular pair of salvaged LCDs which means leaving good notes for my future self.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30144,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sunbeam-pac-215-lcd-mapped.jpg?w=1024" alt="" class="wp-image-30144"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I scribbled down this diagram when probing the pins. The pins were numbered before I knew what they did. Now that I know which are segment and which are common, I could label them differently.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30204,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/pac-215-segment-map.jpg?w=1024" alt="" class="wp-image-30204"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also moved to a zero-based counting system thinking it might be easier to match up to code. Color-coding the different common pins is an idea I picked up from Joey Castillo's slides, but I wonder if that's the best way to go. I can't claim to be an expert on how to use color in a way that's still accessible to the color blind, and coding common pin information in color risks losing data for scenarios like printing on a black-and-white laser printer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30209,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/pac-215-segment-map-monochrome.jpg?w=1024" alt="" class="wp-image-30209"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Moving to letters for segments and numbers for common allows me to put them together as labels on each segment while reducing ambiguity. This is also friendlier to black-and-white printing, but it loses the visual delineation of color coding. Is this better? I don't know as I see strengths in each. I couldn't make up my mind on which to keep so I'll keep both of these diagrams here as references for later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With this successful milestone of working with LCD modules, I <a href="https://newscrewdriver.com/2022/05/11/segmented-lcd-from-taylor-food-thermometer/">revisited a module</a> that frustrated me earlier.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

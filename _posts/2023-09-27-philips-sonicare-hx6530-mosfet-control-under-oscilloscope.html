@@ -1,0 +1,64 @@
+---
+layout: post
+title: Philips Sonicare (HX6530) MOSFET Control Under Oscilloscope
+date: 2023-09-27 12:30:00.000000000 +00:00
+type: post
+post_id: '39318'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39322'
+  timeline_notification: '1695843142'
+  wordads_ufa: s:wpcom-ufa-v4:1695843340
+  _publicize_job_id: '87987847142'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/27/philips-sonicare-hx6530-mosfet-control-under-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I probed the circuit board salvaged from a retired Philips Sonicare HX6530 electric toothbrush, trying to understand how it controls the brushing actuator. I compiled my findings into <a href="https://newscrewdriver.com/2023/09/26/philips-sonicare-hx6530-circuit-board-partial-schematic/">a partially reconstructed schematic</a> of this circuit board, and it looks like a H-bridge or at least a similar arrangement of components.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39323,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-wires-connected.jpg?w=1024" alt="" class="wp-image-39323"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I made effort to figure out which test points corresponded to which locations on this schematic, because that's my next step: solder wires so I could connect them to my oscilloscope and watch them run. These test points were intended to mesh with a specially designed test harness with pogo pins corresponding to those locations, but I decided that was too much effort for the sake of curiosity and went with direct soldering.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39328,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-probes.png?w=1024" alt="" class="wp-image-39328"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Color coding will help me keep from getting my wires mixed up. Yellow, blue, and green wires were soldered to test points so I could connect them to oscilloscope channels that use similar colors. This idea occurred to me just after I soldered a white wire to TP4. I briefly contemplated unsoldering the white wire and replacing it with a red one for the sake of consistency, but decided three out of four was good enough to avoid ambiguity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39331,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-and-coil-idle.png?w=1024" alt="" class="wp-image-39331"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I powered up the control board with my bench power supply set to 4V, here's what things looked like in an idle state. TP3 and TP4 corresponding to the two P-channel MOSFET gates float at Vcc. TP9 and TP10 correspond to the two N-channel MOSFET gates with pull-down resistors are at ground. This was as expected.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39023,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-brush-coil-ends-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39023"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's an oscilloscope plot <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/09/16/philips-sonicare-hx6530-under-oscilloscope/" target="_blank">I captured earlier</a>, measuring two ends of the coil relative to the ground plane of the control board. We see the coil is driven in one direction for roughly 1.25ms, then not powered for about 0.75ms. Then it is driven in the other direction for roughly 1.25ms, followed by another 0.75ms of rest time. Given this plot, I would expect to see MOSFET gate voltages go to a pattern consistent with driving the coil one way for 1.25ms, followed by 0.75ms of idle state, then flip the other way for 1.25ms, and then another 0.75ms of idle, and repeat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":39336,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-running-all.png?w=1024" alt="" class="wp-image-39336"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My expectation did not match what I saw on the oscilloscope screen. All four MOSFET gates were raised high for ~1.25ms, followed by 0.75ms of activity in an alternating pattern. I expected an alternating pattern, but that was supposed to run for 1.25ms, not 0.75ms. Furthermore, there were fewer colors visible on screen than I had expected. What happened to cyan and magenta (channel 2 and 3)? I have to dig deeper to understand what I'm seeing.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

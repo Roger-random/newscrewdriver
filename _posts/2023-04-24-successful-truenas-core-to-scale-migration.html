@@ -1,0 +1,51 @@
+---
+layout: post
+title: Successful TrueNAS CORE to SCALE Migration
+date: 2023-04-24 12:30:00.000000000 +00:00
+type: post
+post_id: '36384'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36386'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682455612
+  _publicize_job_id: '83491733169'
+  timeline_notification: '1682364606'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/24/successful-truenas-core-to-scale-migration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I took a quick test drive of Proxmox VE and <a href="https://newscrewdriver.com/2023/04/23/my-first-proxmox-vm/">first impressions looked good</a>. Including a feature that I considered important: USB passthrough (also known as USB device redirection) for virtual machines. It was something <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/">I had a chance to try earlier and really liked</a>. Thinking back to that experiment, I remembered my motivation for investigating KVM hypervisor was because <a href="https://newscrewdriver.com/2022/05/26/home-assistant-os-in-truenas-core-virtual-machine/">I had problems with the bhyve hypervisor</a> of TrueNAS CORE and wanted to try something else.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I had TrueNAS already up and running, I looked into switching from TrueNAS CORE to TrueNAS SCALE. The difference between sibling products is that CORE was built on FreeBSD and SCALE was built on Linux. Moving to Linux also meant a change from bhyve hypervisor I've had problems with to KVM hypervisor that has worked well. However, when I last looked at TrueNAS SCALE, it was at version 22.02 ("Angelfish") and it didn't support USB passthrough. Checking the <a href="https://ixsystems.atlassian.net/browse/NAS-111020">issues database</a> after my Proxmox test drive, I saw that USB passthrough is now in 22.12 ("Bluefin"). This feature made it compelling enough for me to migrate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>TrueNAS documentation includes a page dedicated to this process: <em><a href="https://www.truenas.com/docs/scale/gettingstarted/migrate/migratingfromcore/">Migrating from TrueNAS CORE to SCALE</a></em>. I found it interesting that the migration is only supported one-way: CORE to SCALE and not the reverse. This strongly hints that TrueNAS CORE is on its way out, so it is good that I have motivation to move now instead of being forced to later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I only had a few minor tasks to prepare for the migration, as I hadn't been using any of the TrueNAS features that would make migration challenging. The upgrade process itself was impressively seamless. The documentation page has paragraphs of information about upgrading using an ISO file or using a "Manual Update" file, but the easiest method was given only a single sentence: "<em>The easiest method is to upgrade from the CORE system UI, but your system must have the CORE 13.0 major release installed to use this method.</em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I am running CORE 13 and this meant I go to the software updates page where I usually pick up system updates. There is a drop-down box where I can select an update train, and one of the options is to migrate to SCALE. I selected that option, confirmed, and within half an hour I was running TrueNAS SCALE. No fuss, no muss. All of my ZFS data volumes carried over, as did my network shares. That's all I could ask for in a NAS migration. I was very impressed at how smooth it was.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I confirmed all of my network shares were working as expected, I created a new virtual machine to test USB passthrough. Results were mixed. The good news is that USB passthrough exists and works. The bad news is that USB device configuration for virtual machines don't seem to take place immediately. I needed to reboot the virtual machine before that USB device is visible and accessible by the VM.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is fine for mainstream scenarios like USB license keys that stay plugged in. It doesn't work so well for ESPHome where I want to plug in an ESP8266/ESP32 microcontroller and update it. Still, it's better than nothing. Since I rarely perform the USB initial firmware flash, I guess having to reboot the VM isn't a huge deal. But it does mean I'm going to hold off migrating my Home Assistant OS VM, I'll <a href="https://newscrewdriver.com/2023/04/25/truenas-and-plex-media-server/">migrate something else first</a> to test the waters.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

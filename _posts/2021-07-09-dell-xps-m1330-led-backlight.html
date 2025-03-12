@@ -1,0 +1,59 @@
+---
+layout: post
+title: Dell XPS M1330 LED Backlight
+date: 2021-07-09 12:30:00.000000000 +00:00
+type: post
+post_id: '27536'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Backlight
+- Dell
+- LTD133EWDD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27541'
+  timeline_notification: '1625859041'
+  _publicize_job_id: '60548548485'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/07/09/dell-xps-m1330-led-backlight/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My <a href="https://newscrewdriver.com/2021/07/08/maytag-dryer-mdg9206awa-motor-replacement/">detour into laundry machine repair</a> pushed back my LED backlight adventures for a bit, but I'm back on the topic now armed with <a href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/" target="_blank" rel="noreferrer noopener">my new dedicated backlight tester</a>. The next backlight I shall attempt to salvage came from a <a href="https://www.dell.com/support/home/en-us/product-support/product/xps-m1330/overview" target="_blank" rel="noreferrer noopener">Dell XPS M1330</a>. This particular Dell product line offered an optional NVIDIA GPU packed into its lightweight chassis. Some engineering tradeoffs had to be made and history has deemed those tradeoffs to be poor as these laptops had a short life expectancy. In the absence of an official story from Dell, the internet consensus is that heat management was insufficient and these laptops cooked themselves after a few years. I was given one such failed unit which I tore down some years ago. I kept its screen and the laptop's metal lid in case I wanted a rigid metal framework to go with the screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27543,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/xps-m1330-lid.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/xps-m1330-lid.jpg?w=1024" alt="" class="wp-image-27543"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The display module itself was a Toshiba LTD133EWDD which had a native resolution of 1280x800 pixels. Not terribly interesting in today's 1080p world. Certainly not enough motivation for me to <a rel="noreferrer noopener" href="https://www.ebay.com/itm/234036184674" target="_blank">buy an adapter</a> to turn it into an external monitor, and hence a good candidate for backlight extraction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27545,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd.jpg?w=1024" alt="" class="wp-image-27545"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unlike the previous LCD modules I've taken apart, this one doesn't cover its integrated control board in opaque black tape. Clear plastic is used instead, and I could immediately pick out the characteristic connection to the rest of the display. At the bottom are two of those high density data connections for the LCD pixel array, and towards the right is an 8-conductor connector for the LED backlight. The IC in closest proximity is my candidate for LED backlight controller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27547,"sizeSlug":"large","linkDestination":"media"} --></p>
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-led-backlight-controller-toko-61224-a33x.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2021/07/toshiba-ltd133ewdd-led-backlight-controller-toko-61224-a33x.jpg?w=1024" alt="" class="wp-image-27547"></a></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite being clear plastic, it was still a little difficult to read the fine print on that chip. But after the plastic was removed I could clearly read "TOKO 61224 A33X" which failed to return any relevant results in a web search. [UPDATE: Randy has better search Kung Fu than I do, and <a rel="noreferrer noopener" href="http://pdf5.datasheet.su/toko-inc-tk61224bq5_6f2153da90.pdf" target="_blank">found a datasheet</a>.] Absent documentation I'm not optimistic I could drive the chip as I could a <a rel="noreferrer noopener" href="https://newscrewdriver.com/tag/tps61187/" target="_blank">Texas Instruments TPS 61187</a>. So I'll probably end up trying to <a href="https://newscrewdriver.com/2021/07/10/toshiba-ltd133ewdd-backlight/">power the LEDs in the backlight directly</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

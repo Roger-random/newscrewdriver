@@ -1,0 +1,67 @@
+---
+layout: post
+title: Replacement Power Panel for Geeetech A10
+date: 2020-07-31 12:30:40.000000000 +00:00
+type: post
+post_id: '21961'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Geeetech A10
+meta:
+  _thumbnail_id: '21959'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_a3de8e6e28b3ce7e1ae1495f97eeaf28: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Baby
+    <a href="https://twitter.com/hashtag/Sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#Sawppy</a>
+    rover takes first steps! This is an early prototype to make sure wheel and suspension
+    parts work together as designed. Real rovers <a href="https://twitter.com/MarsCuriosity?ref_src=twsrc%5Etfw">@MarsCuriosity</a>
+    and <a href="https://twitter.com/NASAPersevere?ref_src=twsrc%5Etfw">@NASAPersevere</a>
+    had a similar test, read more about <a href="https://twitter.com/NASAJPL?ref_src=twsrc%5Etfw">@NASAJPL</a>
+    &quot;Scarecrow&quot; here: <a href="https://t.co/thAfoPwnC3">https://t.co/thAfoPwnC3</a>
+    <a href="https://t.co/QmX7xKyqcK">pic.twitter.com/QmX7xKyqcK</a></p>&mdash; Sawppy
+    (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1279565059262304258?ref_src=twsrc%5Etfw">July
+    4, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '47206240400'
+  timeline_notification: '1596223854'
+  _oembed_84d6bf5f67b37ce3f7503083bf222bc9: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">I
+    had hoped to be up and running by launch day, but there are other demands on workshop
+    time. I&#39;ll be celebrating as I am, dangling wires and all.</p>&mdash; Sawppy
+    (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1285283191813595136?ref_src=twsrc%5Etfw">July
+    20, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_dad5602bf8dc5881d779744700411b8a: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">We
+    put out the call, and you answered. Thanks to everyone, all over the world, who
+    sent in their well-wishes and helped <a href="https://twitter.com/hashtag/CountdownToMars?src=hash&amp;ref_src=twsrc%5Etfw">#CountdownToMars</a>.
+    <a href="https://t.co/mobLaXvxxD">pic.twitter.com/mobLaXvxxD</a></p>&mdash; NASA&#39;s
+    Perseverance Mars Rover (@NASAPersevere) <a href="https://twitter.com/NASAPersevere/status/1288870838935068672?ref_src=twsrc%5Etfw">July
+    30, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_a3de8e6e28b3ce7e1ae1495f97eeaf28: '1596224517'
+  _oembed_time_84d6bf5f67b37ce3f7503083bf222bc9: '1596224517'
+  _oembed_time_dad5602bf8dc5881d779744700411b8a: '1596224517'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:37'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/07/31/replacement-power-panel-for-geeetech-a10/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A <a href="https://newscrewdriver.com/2020/07/29/crude-z-axis-end-stop-for-geeetech-a10/">very crude Z-axis end stop switch</a> allowed me to verify this partial chassis of an old Geeetech A10 could still move in the X, Y, and Z axis. Once proven, I went back to refine the hacks done in the interest of expediency for those tests. First task is the power adapter, which had been <a href="https://newscrewdriver.com/2020/07/27/power-input-replacement-for-geeetech-a10/">a cheap barrel jack</a> not quite the correct dimensions for reliable electrical contact with the 12V DC power adapter I've been using.</p>
+<p>The 12V supply itself was a hack, as the Geeetech A10 printer is actually designed as a 24V printer but I didn't have a 24V power brick handy. Since this printer has been deprived of its print nozzle and heated bed, the majority of power draw are absent leaving only the motors. I understand the stepper motor current chopper drivers would still keep the current within limits and give me nearly equivalent holding torque. However, halving the voltage meant it couldn't sustain as high of a maximum speed and I saw this on the Z-axis. The X axis is super light (as there is no print head) and had no problem running quickly on 12V. The Y axis has to move the print bed carriage (minus heated print bed) and had a little more difficulty, but still plenty quick. So it was the Z-axis that ran into limitations first, as it had to push the entire carriage upwards and it would lose steps at higher speeds well before reaching firmware speed limits that are presumably achievable if given 24V.</p>
+<p><img class=" size-medium wp-image-21962 alignright" src="https://newscrewdriver.com/wp-content/uploads/2020/07/geeetech-a10-power-panel-cad.jpg?w=430" alt="Geeetech A10 power panel CAD" width="215" height="300">A reduced top speed was still good enough for me to proceed so I drew up a quick 3D printable power panel for the printer. Since the 12V DC power supply was from my <a href="https://newscrewdriver.com/2019/09/27/repurposing-broken-3d-printer-x-axis-to-use-as-z-axis/">disassembled Monoprice Mini printer</a>, I decided to reuse the jack and the power switch as well. Two protrusions in the printed plastic fit into extrusion rails, though it took a few prints to dial in the best size to fit within the rails.</p>
+<p>With this power panel I could use the 12V DC power adapter and the connection is reliable. No more power resets from jiggled power cables! It also allows me to turn the printer off and on without unplugging the power jack.</p>
+<p>With this little power panel in place, I moved on to build a better Z-axis end stop.</p>
+<p></body></html></p>

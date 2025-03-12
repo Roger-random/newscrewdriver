@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'Hackaday Badge Nyan Cat: GIF or Not?'
+date: 2018-11-01 09:00:19.000000000 +00:00
+type: post
+post_id: '17090'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1541088145'
+  _publicize_job_id: '23815545498'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668414891
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/01/hackaday-badge-nyan-cat-gif-or-not/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>With the decision to adapt Nyan Cat to the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> (as preparation for the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>) it's time to get down to some implementation details. Obviously we start with the cat - the original animated GIF is widely available. Can we use the file as-is?</p>
+<p><img class=" size-full wp-image-17086 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/poptartcat320240.gif" alt="poptartcat320240" width="320" height="240">Looking at the GIF, it was drawn at 400x400 resolution. The badge LCD has a native resolution of 320x240, so the aspect ratio is wrong and the resolution is lower. In Photoshop I tried cropping the animation to see how that looked. I didn't miss the cropped starry sky but I do miss the cropped rainbow trail. So let's scale instead of crop.</p>
+<p>The next question is: what file format? Do we stick with original GIF or something else? Raw bitmaps are out of the question. They would consume far too much valuable real estate on the badge. Rendering GIF would require porting a GIF decode library. When I was looking around for projects that decode GIF on a PIC32, I found the <a href="https://hackaday.io/project/5507-xorya-extremely-low-cost-game-console-on-pic32">XORYA project</a> which used <a href="http://www.netsurf-browser.org/projects/libnsgif/">libnsgif</a>.</p>
+<p>Looking over libnsgif dependencies, at first glance everything looks doable on the badge. This library was built to be part of the larger <a href="http://www.netsurf-browser.org/">NetSurf project</a> but it has abstraction layers that helps make badge adaptation easier. It looks like work, but a manageable amount of work.</p>
+<p>But while it would be instructive to port an existing library for use, I lean towards doing something simpler to keep the demo approachable. So before I tackle the task of porting a GIF library, I wanted to evaluate <a href="https://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a>. It is is the easiest compression algorithm available, making for code that is easy to read and understand. And this particular animation - with large horizontal streaks of the same color - seems ideally suited to the approach.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</p>
+<p></body></html></p>

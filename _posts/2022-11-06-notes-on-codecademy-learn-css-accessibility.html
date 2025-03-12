@@ -1,0 +1,75 @@
+---
+layout: post
+title: 'Notes on Codecademy "Learn CSS: Accessibility"'
+date: 2022-11-06 12:30:00.000000000 +00:00
+type: post
+post_id: '33471'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33489'
+  _publicize_job_id: '78467868384'
+  timeline_notification: '1667766606'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/06/notes-on-codecademy-learn-css-accessibility/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>During Codecademy's "<em>Learn CSS: Variables and Functions</em>" course, I was <a href="https://newscrewdriver.com/2022/11/05/notes-on-codecademy-learn-css-variables-and-functions/">mildly disappointed to learn</a> that CSS custom properties and fixed calculation functions were far less powerful than I had mistakenly thought from the course title. No matter, they are sufficient for their intended purpose, and they are valuable tools for building pages that are inclusive to all users. Which is why the next class in Codecademy's CSS curriculum is "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/courses/learn-css-accessibility" target="_blank">Learn CSS: Accessibility.</a></em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First up is the size of text, the most significant factor in typographical design. This is a deep field with centuries of research from the print world, Codecademy can't cover them all and correctly doesn't try. We do get a bit of coverage on font-size, line-height, and letter-spacing. One oddity: a conversation on paragraph width introduces the CSS unit "ch" with 1ch being width of the zero character. ("0") This allows specifying lengths in a way that scales with the font, but that sounds like what "em" does as well. A quick search didn't find why we would use "ch" vs. "em".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another topic was color and contrast. The expected color wheel discussion talks about selecting different colors with high contrast, but it didn't talk about color blindness. The course linked to a <a rel="noreferrer noopener" href="https://webaim.org/resources/contrastchecker/" target="_blank">contrast checker tool</a> by WebAIM, but it didn't mention color blindness, either. A quick search on WebAIM site found <a rel="noreferrer noopener" href="https://webaim.org/articles/visual/colorblind" target="_blank">a page for color blindness</a>, but it is incomplete. The page ends with an example: a train map where routes are represented by colors. The page tells us that the different routes would be difficult to tell apart for the color-blind, but it doesn't give us a solution to the problem! My guess? Maybe we can use different line styles?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This section also taught me there is a semantic HTML tag for denoting abbreviations.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>&lt;abbr title='Cascading Style Sheets'&gt;CSS&lt;/abbr&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't think this should be classified as an accessibility measure because it would be helpful for all audiences. This information is certainly available to screen readers, but there is some visual indication on a normal rendering. My browser renders it as dotted underlined text by default. ("user agent stylesheet")</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>abbr[title] {
+    text-decoration: underline dotted;
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another topic I didn't think should be classified as accessibility is a discussion on changing rendering for print media. This should have been part of the media queries course, but at least the concepts make sense. When the user is printing out a web page, we can do things like hiding a navigation bar that wouldn't have done anything on a sheet of paper. This course also talks about printing the URL of a link, because you can't click on a sheet of paper.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>@media print {
+  a[href^='http']:after {
+    content:  ' (' attr(href) ')';
+  }
+}</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, this would only work for short URLS that can be reasonably typed in by hand. Many links of the modern web have long URLS that are impossible to accurately type in by hand. But on this vein, I think it would be worthwhile to print out the content of <code>&lt;abbr&gt;</code> tags as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, back to accessibility and screen readers. A section asserts that there are frequently items that are not useful for a screen reader and should be hidden. I think I understand the concept, but I thought the example was poor: In case of duplicate text, one of them could be hidden from screen readers with the <code>aria-hidden='true'</code> attribute. But it seems like the real fix is to remove duplicate text for all audiences! Another problem is this introduction of <code>aria-hidden</code> without saying anything more about it. A quick web search found this is just the tip of an iceberg called the <a rel="noreferrer noopener" href="https://w3c.github.io/aria/" target="_blank">Accessible Rich Internet Applications</a> specification. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the lecture, we are encouraged to read "<em><a rel="noreferrer noopener" href="https://a11y.coffee/start-testing/" target="_blank">Start Testing for Accessibility</a></em>." A short overview of several accessibility testing tools: Lighthouse, WAVE, Axe, and Accessibility Insights.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know I have a lot to learn about web accessibility, not the least of which is learning about other ARIA properties. But there's another side to the "not everyone sees the same web page as you do" problem: <a href="https://newscrewdriver.com/2022/11/07/notes-on-codecademy-learn-css-browser-compatibility/">browser compatibility</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

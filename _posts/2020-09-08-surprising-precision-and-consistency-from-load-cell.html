@@ -1,0 +1,49 @@
+---
+layout: post
+title: Surprising Precision and Consistency from Load Cell
+date: 2020-09-08 12:30:00.000000000 +00:00
+type: post
+post_id: '22364'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _thumbnail_id: '22270'
+  _publicize_job_id: '48605070419'
+  timeline_notification: '1599593438'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/08/surprising-precision-and-consistency-from-load-cell/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got far enough with my low cost load cell project to <a href="https://newscrewdriver.com/2020/09/07/hx711-library-on-arduino-nano-via-platformio/">start receiving readings</a>. Advertised to measure up to 200kg, I doubted it would be very precise when measuring the light weights I expect to be placed on my former 3D printer. I would have not been surprised if it consistently returned "less than 1kg" and no further. Every measurement instrument has an optimal range where it works best. Grossly exceeding that range can sometimes result in irreparable damage, but the situation usually isn't as dire for going under. However, we shouldn't expect very useful answers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The test setup was far from helpful for this. I 3D-printed four rectangular blocks of plastic to hold the four strain gauges, and a thin sheet of acrylic is placed on top of them to act as surface. It was crude, but like everything else in the setup, it was just to get an idea of feasibility.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't even worry very much about accuracy. The HX711 library has various capabilities for calibration and scaling, but I skipped all of that and just dumped the raw value without conversion to any actual units. This is all I need to start characterizing behavior of this load cell. Plotting those values out on a graph, I was not surprised to see the value was pretty noisy measuring analog values within a very narrow range. However, for the most part it does stay within a certain range.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I placed the small PCB ruler I used earlier on the surface, wondering if its addition would be lost in the noise. I was surprised to see its presence was clearly visible. This item was only several grams and I did not expect it to be so clearly visible on a 200kg scale! Bringing my kitchen scale into the picture, I tried various household items to get a better feel of its sensitivity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Empirically, values must be at least 5 grams before it would stand out from the noise, and differences should be at least 15 grams before they are reliable. This is not bad at all. However, I foresee a lot of challenges with trying to correlate raw ADC values to real units because of its sensitivity to other factors. Strain gauge readings are affected by temperature and this is especially noticeable in the middle of a heat wave. As my home heats up in the afternoon and cools down in the evening, the strain gauge average value moves in sync.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That problem might be solvable, but it's only the first of many problem with this low cost load cell. I also observed that, at unpredictable times, the reading would be wildly (several orders of magnitude) out of range. I don't have a good explanation, but I'm willing to tolerate it given the low price point. This is helped by how extreme those values are, making it a simple matter to ignore them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Happy with the performance of the load cell, and satisfied that the problems I see up front is manageable, I proceeded to move the circuit off of a prototyping breadboard and onto <a href="https://newscrewdriver.com/2020/09/09/compacting-load-cell-electronics/">something smaller and more permanent</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

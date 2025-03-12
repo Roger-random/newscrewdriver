@@ -1,0 +1,105 @@
+---
+layout: post
+title: ESP8266 Controlling 4-Wire CPU Cooling Fan
+date: 2022-07-25 12:30:00.000000000 +00:00
+type: post
+post_id: '31612'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- PC
+tags:
+- Cooling Fan
+- ESP8266
+- ESPHome
+- Home Assistant
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31622'
+  _publicize_job_id: '75104955530'
+  timeline_notification: '1658777404'
+  wordads_ufa: u:wpcom-ufa-v3-beta:1666864351
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/25/esp8266-controlling-4-wire-cpu-cooling-fan/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got curious about how the 4 wires of a CPU cooling fan interfaced with a PC motherboard. After <a href="https://newscrewdriver.com/2022/07/24/cpu-cooling-4-wire-fan/">reading the specification</a>, I decided to get hands-on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31623,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/three-intel-cpu-cooling-fans-delta-nidec-foxconn.jpg?w=1024" alt="" class="wp-image-31623"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I dug up several retired 4-wire CPU fans I had kept. All of these were in-box coolers bundled with various Intel CPUs. And despite the common shape and Intel brand sticker, they were made by three different companies listed at the bottom line of each label: Nidec, Delta, and Foxconn.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will use an ESP8266 to control these fans running ESPHome, because all relevant code has already been built and ready to go:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>Tachometer output can be read with the <a rel="noreferrer noopener" href="https://esphome.io/components/sensor/pulse_counter.html" target="_blank">pulse counter peripheral</a>. Though I do have to divide by two (multiply by 0.5) because the spec said there are two pulses per fan revolution.</li>
+<li>The <a rel="noreferrer noopener" href="https://esphome.io/components/output/esp8266_pwm.html" target="_blank">ESP8266 PWM peripheral</a> is a software implementation with a maximum usable frequency of roughly 1kHz, slower than specified requirement. If this is insufficient, I can upgrade to an ESP32 which has hardware PWM peripheral capable of running 25kHz.</li>
+<li>Finally, a <a rel="noreferrer noopener" href="https://esphome.io/components/fan/speed.html" target="_blank">PWM fan speed control</a> component, so I can change PWM duty cycle from HomeAssistant web UI.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>One upside of the PWM MOSFET built into the fan is that I don't have to wire one up in my test circuit. The fan header pins were wired as follows:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Black wire to circuit ground.</li>
+<li>Yellow wire to +12V power supply.</li>
+<li>Green wire is tachometer output. Connected to a 1kΩ pull-up resistor and GPIO12. (D6 on a Wemos D1 Mini.)</li>
+<li>Blue wire is PWM control input. Connected to a 1kΩ current-limiting resistor and GPIO14. (D5 on Wemos D1 Mini.)</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>ESPHome YAML excerpt:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>sensor:
+  - platform: pulse_counter
+    pin: 12
+    id: fan_rpm_counter
+    name: "Fan RPM"
+    update_interval: 5s
+    filters:
+      - multiply: 0.5 # 2 pulses per revolution
+
+output:
+  - platform: esp8266_pwm
+    pin: 14
+    id: fan_pwm_output
+    frequency: 1000 Hz
+
+fan:
+  - platform: speed
+    output: fan_pwm_output
+    id: fan_speed
+    name: "Fan Speed Control"</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Experimental observations:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>I was not able to turn off any of these fans with a 0% duty cycle. (Emulating pulling PWM pin low.) All three kept spinning.</li>
+<li>The Nidec fan ignored my PWM signal, presumably because 1 kHz PWM was well outside the specified 25kHz. It acted the same as when the PWM line was left floating.</li>
+<li>The Delta fan spun slowed linearly down to roughly 35% duty cycle and was roughly 30% of full speed. Below that duty cycle, it remained at 30% of full speed.</li>
+<li>The Foxconn fan spun down to roughly 25% duty cycle and was roughly 50% of the speed. I thought it was interesting that this fan responded to a wider range of PWM duty cycles but translated that to a narrower range of actual fan speeds. Furthermore, 100% duty cycle was not actually the maximum speed of this fan. Upon initial power up, this fan would spin up to a very high speed (judged by its sound) before settling down to a significantly slower speed that it treated as "100% duty cycle" speed. Was this intended as some sort of "blow out dust" cleaning cycle?</li>
+<li>These are not closed-loop feedback devices trying to maintain a target speed. If I set 50% duty cycle and started reducing power supply voltage below 12V, the fan controller will not compensate. Fan speed will drop alongside voltage.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Playing with these 4-pin fans were fun, but majority of cooling fans in this market do not have built-in power transistors for PWM control. I went back to <a href="https://newscrewdriver.com/2022/07/26/high-side-fan-esp8266-pwm-using-optocoupler/">learn how to control those fans</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

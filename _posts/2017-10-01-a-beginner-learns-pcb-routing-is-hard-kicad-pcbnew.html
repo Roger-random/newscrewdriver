@@ -1,0 +1,43 @@
+---
+layout: post
+title: A Beginner Learns PCB Routing is Hard
+date: 2017-10-01 09:00:43.000000000 +00:00
+type: post
+post_id: '13121'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- KiCad
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9860434520'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/01/a-beginner-learns-pcb-routing-is-hard-kicad-pcbnew/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Drawing up the circuit diagram/schematic was a new thing, but I got through it with minimal headaches and was feeling pretty good about using KiCad. After I was done with the first draft, I moved on to route all the connections to be placed on the printed circuit board (PCB). Doing this, I get firsthand experience that wire routing <a href="https://en.wikipedia.org/wiki/Routing_(electronic_design_automation)">is a hard problem</a>.</p>
+<p>The first few connections were easy, but then it got progressively more difficult as I struggled to find a route for the later connections. The center of the board inevitably became a traffic jam and I started having to go around the jam. Every track that go around the outside perimeter of the PCB is a surrender that I couldn't find a better way.</p>
+<p>In addition to the traces going around the outside perimeter, another way to quantify my frustration with my circuit is the number of tracks in the KiCad PCB file. This is a number easily readable in the text format save file.</p>
+<p>Fortunately, it doesn't cost anything to learn by doing, redoing, and repeat.</p>
+<p>The first attempt was a hopeless mess and I had to abort before I could connect everything. Here is version 2, where everything is actually connected with almost 200 tracks and multiple traces that go around the perimeter in a last-ditch effort.</p>
+<p><img class=" size-full wp-image-13129 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/ltc-4627jr-i2c-pcb-v2.png" alt="LTC-4627JR I2C PCB v2" width="1135" height="1264"></p>
+<p>Version 3 changed the layout of the components in an attempt to make routing simpler. Moved the LEDs to the top, etc. It felt cleaner but is still quite a mess. I managed to avoid long traces that went around the left and right perimeters, but I still needed several at the bottom perimeter. And the track count didn't improve by much - still just under 200.</p>
+<p><img class=" size-full wp-image-13130 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/pcb-route-v3.png" alt="PCB Route v3" width="787" height="911"></p>
+<p>Version 4 had the same basic layout as version 3 but I've learned to recognize a few signs of upcoming problems and could work to avoid them. The result had a further reduction in tracks, almost a 10% cut down to under 180. Plus I needed even fewer perimeter rescue paths.</p>
+<p><img class="alignnone size-full wp-image-13132" src="https://newscrewdriver.com/wp-content/uploads/2017/09/pcb-4.png" alt="PCB 4" width="1067" height="1522"></p>
+<p>The English language has the colloquialism "Paint yourself into a corner" and this is a very similar thing - it's very easy to route yourself into a situation with no way out. I wish I could condense the lessons I learned into a summary here, but so far it's just a lot of trial-and-error. Try something until I run into an obstacle, then try to figure out how to get out of this mess.</p>
+<p>At this point the only words of wisdom I could offer is - dive in and try. It won't work, but you'll learn. Try and try again until you get good enough to get to a point where everything is connected, however inelegant it might be, and keep iterating to improve from there.</p>
+<p>(The work described in this blog post are <a href="https://github.com/Roger-random/I2C_LTC-4627JR">publicly available on Github</a>.)</p>
+<p></body></html></p>

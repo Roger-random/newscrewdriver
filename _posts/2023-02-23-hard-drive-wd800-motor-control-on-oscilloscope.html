@@ -1,0 +1,152 @@
+---
+layout: post
+title: Hard Drive (WD800) Motor Control on Oscilloscope
+date: 2023-02-23 12:30:00.000000000 +00:00
+type: post
+post_id: '35334'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Brushless Motor
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35340'
+  _publicize_job_id: '81769750500'
+  timeline_notification: '1677184215'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677274998
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/23/hard-drive-wd800-motor-control-on-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2023/02/22/fantom-drives-usb-storage-fdu80-teardown/">took apart a Fantom Drives FDU80</a> and found within a Western Digital WD800 3.5" hard disk drive with 80GB capacity. I'm sure that was a lot of space in its day, but it's quite small by current standards. Combined with the fact that it used now-outdated PATA interface, there's no point trying to put this drive back into service storing data. However, it is still a marvel of engineering and manufacturing and I want to poke around to learn what I can.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35321,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/fantom-drives-fdu80-hdd-motor-4-wire.jpg?w=1024" alt="" class="wp-image-35321"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing that caught my attention was the motor power interface, showing four contact points. My <a href="https://newscrewdriver.com/2022/04/27/hard-drive-brushless-motor-as-generator/">past hard drive adventures</a> always found three contact points on the brushless motor, why is this different? My experience with four-conductor motors are stepper motors used in 3D printers. Is this an electrical cousin?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35343,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-pcb-removed.jpg?w=1024" alt="" class="wp-image-35343"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Removing four Torx screws allowed circuit board removal, which was easy because electrical connection between the board and mechanical drive bits are done with springy metal fingers. Now I can probe electrical resistance between these four points, named via their label on the circuit board E50 through E53.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th>Resistance (Ohms)</th>
+<th>E50</th>
+<th>E51</th>
+<th>E52</th>
+<th>E53</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E50</td>
+<td>0</td>
+<td>1.1</td>
+<td>1.1</td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>E51</td>
+<td>1.1</td>
+<td>0</td>
+<td>1.9</td>
+<td>1.9</td>
+</tr>
+<tr>
+<td>E52</td>
+<td>1.1</td>
+<td>1.9</td>
+<td>0</td>
+<td>1.9</td>
+</tr>
+<tr>
+<td>E53</td>
+<td>1.1</td>
+<td>1.9</td>
+<td>1.9</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Measuring small resistance values is a little tricky, we're getting into margins of errors. But it is clear this is not an electrical cousin of a stepper motor. A 4-wire stepper would have two pairs of wires that are electrically independent from each other, but these wires all have connections to each other. It appears E50 has the same resistance to the remaining three, and the resistance between any of those three are roughly double the resistance to E50. This is consistent with a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Brushless_DC_electric_motor#Variations_in_construction" target="_blank">brushless DC motor with "Wye" winding style</a> with E50 as the center.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35340,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-wired-up-to-oscilloscope-probes.jpg?w=1024" alt="" class="wp-image-35340"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I wanted to see what the motor control signals look like under an oscilloscope, so I soldered wires to each motor point and connected them to my <a href="https://newscrewdriver.com/2022/08/24/finally-bought-a-real-oscilloscope/" target="_blank" rel="noreferrer noopener">Siglent four-channel oscilloscope</a>. I also soldered a wire to the ground wire of power input and connected all four probes' ground reference alligator clip to that ground wire.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>E50 center of the Wye is connected to yellow channel 1</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>E51 to magenta channel 2</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>E52 to cyan channel 3</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>E53 to green channel 4</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>With everything hooked up, I powered up the hard drive and the oscilloscope. Siglent has an "Auto Setup" button that can quickly configure the scope for simple tasks. If this were easy, I expect to see three sinusoidal waves 120 degrees out of phase.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35346,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-hdd-motor-oscilloscope-auto-setup.jpg?w=1024" alt="" class="wp-image-35346"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The jumble told me Auto Setup couldn't handle this task. There's enough pattern for me to see It's not random noise but I don't know how to interpret what I see. Trying to make sense of this plot, I started by giving all four channels identical vertical scale. A repeating pattern emerged, and I zoomed in a little bit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35349,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-hdd-motor-oscilloscope-5us-5v-0v-run.jpg?w=1024" alt="" class="wp-image-35349"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>From here I can see E50 (channel 1 yellow) spends most of its time either at 0V or 6V, and when it is at 0V all the other channels are usually at 0V as well. Beyond that, this trace is still quite noisy with other channels anywhere from 0V to 12V. There's a lot happening and, trying to decipher things one at a time, I pressed "Run/Stop" to see individual snapshots. I mostly get a trace I don't understand, but occasionally I see a simple picture consistent with a state I do:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35356,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-hdd-motor-six-coil-states.jpg?w=1024" alt="" class="wp-image-35356"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The motor control board energizes coils in a sequence to keep the rotor spinning. Sometimes this means peak voltage difference across two of the coils while the third is close to same voltage as center of the wye winding. (Yellow channel 1.) This could happen in one of two directions. Three coils * two directions = six possibilities, after pressing "Run/Stop" enough times I could catch examples of all six.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35358,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-hdd-motor-oscilloscope-intermediate-state.jpg?w=1024" alt="" class="wp-image-35358"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the time, though, it doesn't look that obvious. as we're in some intermediate state transitioning between those six endpoints. I couldn't see any pattern at this timescale, I had to zoom out from 5us to 500us.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":35360,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-hdd-motor-oscilloscope-coil-cycles-all.jpg?w=1024" alt="" class="wp-image-35360"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at which coil spends time at 12V, I can see them cycling through a repeating pattern magenta-cyan-green (or channel 2/3/4). This is a cycle, but not a sinusoidal one like I had expected. The key here is noticing what matters here is not voltage relative to power supply ground, but the voltage relative to yellow center 1: the center of the wye. It spends a lot of time near 6V but doesn't stay at exactly 6V. Looking at how yellow voltage level varies we can see how that would approximate a sine wave relative to each of the coils. It may not be a perfect sine wave, but I guess it's close enough to drive this brushless motor. I had expected the wye center to be connected to ground and each of the coils given positive or negative sinusoidal voltage. But this controller connects the coils to either ground or 12V and vary voltage of Wye center. I'm sure the engineering team decided on this approach for good reasons, but I don't understand motors well enough (yet) to see them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Where might I learn more about these oscilloscope traces? I went looking for datasheets corresponding to <a href="https://newscrewdriver.com/2023/02/24/hard-drive-wd800-control-board/">microchips used on the control board</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,52 @@
+---
+layout: post
+title: Neato Robot ROS Package Runs After Adding Serial Communication Timeout
+date: 2019-03-27 13:18:55.000000000 +00:00
+type: post
+post_id: '18174'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- ROS
+tags:
+- Neato
+meta:
+  timeline_notification: '1553717939'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29110351629'
+  _oembed_784e0f7983f91bbad43ba71070527efd: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">It&#39;s
+    alive! The latest addition to our flock of rovers at <a href="https://twitter.com/hashtag/SGVHAK?src=hash&amp;ref_src=twsrc%5Etfw">#SGVHAK</a>
+    is Dave&#39;s Mr. Blue. Control systems now successfully running from bench power
+    supply while sitting on blocks, it should receive a battery system and roll on
+    its own wheels within the week. <a href="https://t.co/JVsGAQwy12">pic.twitter.com/JVsGAQwy12</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1111055602699034624?ref_src=twsrc%5Etfw">March
+    28, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_784e0f7983f91bbad43ba71070527efd: '1553735215'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/27/neato-robot-ros-package-runs-after-adding-serial-communication-timeout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17966 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-mini-usb-cable-connection-to-laptop.jpg" alt="Neato mini USB cable connection to laptop" width="1600" height="813"></p>
+<p>The great thing about <a href="http://www.ros.org/">ROS</a> is that it is a popular and open platform for everyone to work with, resulting in a large ecosystem of modules that cover a majority of robot hardware. But being so open to everyone does have a few downsides, because not everyone has the same resources to develop and maintain their ROS modules. This means some modules fall out of date faster than others, or works with its author's version of hardware but not another version.</p>
+<p>Such turned out to be the case for the existing <a href="http://wiki.ros.org/neato_robot"><code>neato_robot</code></a> ROS package, which was created years ago and while the author kept updated it through four ROS releases, that maintenance effort stopped and so this code is now five releases behind latest ROS. That in itself is not necessarily a problem - Open Source Robotics Foundation tries to keep ROS backwards compatible as much as they can - but it does mean potential for hidden gotchas.</p>
+<p>When I <a href="http://wiki.ros.org/neato_node?distro=hydro">followed instructions</a> for installation and running, the first error message was about configuring the serial port which was fine. But after that... nothing. No information published to <code>/odom</code> or <code>/base_scan</code>, and no response to command sent to <code>/cmd_vel</code>.</p>
+<p>Digging into the source code, the first <span style="color:var(--color-neutral-600);">thing to catch my attention was that the code opened a serial port for communication but did not set provision for timeout. Any problem in serial communication will cause it to hang, which is exactly what it is doing now. Adding a timeout is a quick and easy way to test if this is actually related.</span></p>
+<p>Existing:</p>
+<blockquote><p><code>self.port = serial.Serial(port,115200)</code></p></blockquote>
+<p>Modified:</p>
+<blockquote><p><code>self.port = serial.Serial(port,115200,timeout=0.01)</code></p></blockquote>
+<p>And that was indeed helpful, restoring nominal functionality to the ROS node. I could now drive the robot vacuum by sending commands to <code>/cmd_vel</code> and I can see a stream of data published to <code>/odom</code> and <code>/base_scan</code>.</p>
+<p>I briefly contemplated being lazy and stopping there, but I thought I should try to better understand the failure. Onward to debugging!</body></html></p>

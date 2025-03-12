@@ -1,0 +1,93 @@
+---
+layout: post
+title: AltoEdge Infinity USB Foot Pedal Dates Back Before Windows 7
+date: 2019-03-18 13:30:15.000000000 +00:00
+type: post
+post_id: '18042'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- SGVHAK
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '28784739175'
+  timeline_notification: '1552941213'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/18/altoedge-infinity-usb-foot-pedal-dates-back-before-windows-7/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>This SGVHAK teardown project came courtesy of an electronics waste bin. A nondescript box with a USB cable, it has three moving parts on top of a heavy base. The center piece takes up majority of width, and two far smaller pieces sitting on either side. Each piece can be pressed down and we can feel a tactile click of a switch. It has a respectable heft and doesn't look damaged or even worn. It feels rather beefy and unlikely to physically break.</p>
+<p><img class=" size-full wp-image-18055 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/infinity-foot-pedal-in-usb-2.jpg" alt="Infinity Foot Pedal IN-USB-2" width="1600" height="933"></p>
+<p>A label on the bottom of the device lets us know it is version 14 of the <a href="http://www.altoedge.com/pedals/vec-infinity-foot-pedals.html">Infinity IN-USB-2 foot pedal</a>. Which explains its mass and durability: this box was designed to sit under a desk and be stepped on. A box sitting out of sight explained its raised side pedals allowing its user to find them by feel.</p>
+<p><img class=" size-full wp-image-18054 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/infinity-foot-pedal-in-usb-2-v14-label.jpg" alt="Infinity Foot Pedal IN-USB-2 v14 label" width="1600" height="714"></p>
+<p>A few screws on the bottom held a plate in place, easily removed. We see a few springs for the pedals, and two pieces of metal that gave the device its heft.</p>
+<p><img class=" size-full wp-image-18053 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/infinity-foot-pedal-in-usb-2-bottom-panel-removed.jpg" alt="Infinity Foot Pedal IN-USB-2 bottom panel removed" width="1600" height="1043"></p>
+<p>There were a few visible plastic clips holding individual pedals in place, but they were only the first line of defense - unclipping them allowed individual pedal to move a little further but did not release them. There were also a few hinge pins that could be removed, but again it allowed additional movement but did not release.</p>
+<p>The two shiny metal weights were held by tenacious stretchy glue. We could pry them up far enough to see they weren't obviously hiding screws, but we were wary to apply addition force as it threatened to break apart the plastic housing.</p>
+<p>Without an obvious way forward for nondestructive disassembly, we decided to pause and reassemble the pedal to see if it can be useful intact before we risk destroying it. My computer was running Ubuntu at the time, which gave us a starting point with the <code>dmesg</code> tool to see what kind of greeting it has to say to my computer.</p>
+<blockquote><p>
+<code>[ 459.086214] usb 1-4.4.3: new low-speed USB device number 17 using xhci_hcd</code><br />
+<code>[ 459.192673] usb 1-4.4.3: New USB device found, idVendor=05f3, idProduct=00ff</code><br />
+<code>[ 459.192679] usb 1-4.4.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0</code><br />
+<code>[ 459.192683] usb 1-4.4.3: Product: VEC USB Footpedal</code><br />
+<code>[ 459.192687] usb 1-4.4.3: Manufacturer: VEC </code><br />
+<code>[ 459.196360] input: VEC VEC USB Footpedal as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.4/1-4.4.3/1-4.4.3:1.0/0003:05F3:00FF.0012/input/input28</code><br />
+<code>[ 459.196980] hid-generic 0003:05F3:00FF.0012: input,hiddev1,hidraw9: USB HID v1.00 Device [VEC VEC USB Footpedal] on usb-0000:00:14.0-4.4.3/input0</code>
+</p></blockquote>
+<p>So far everything looks in line with the manufacturer's name we found earlier. It also tells us the device conforms to USB HID (Universal Serial Bus Human Interface Device) specification. The final line also hinted us to a newly visible device under the path<code>/dev/hidraw9</code>.</p>
+<blockquote><p>
+<code>$ ls -l /dev/hidraw9</code><br />
+<code>crw------- 1 root root 240, 9 Mar 17 13:32 /dev/hidraw9</code>
+</p></blockquote>
+<p>This path is owned by root, so further experimentation requires taking ownership of that path to see what we can do with it.</p>
+<blockquote><p><code>$ sudo chown $USER /dev/hidraw9</code></p></blockquote>
+<p>Now we can try treating it as a file with the <code>cat</code> command. Every time we press or release a pedal we get some kind of visual feedback but we don't understand it.</p>
+<p><img class=" size-full wp-image-18150 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/cat-dev-hidraw9.png" alt="cat dev hidraw9" width="167" height="33"></p>
+<p>We then tried treating it as a serial port using <code>minicom</code> but that didn't get us much further. It vaguely resembles the garbage that might occur if a baud rate setting is incorrect, but changing baud rate in minicom didn't do anything. Probably because it's not a serial port!</p>
+<p>Since the device was classified as a USB HID v1.00 Device, the next thought was to try communicating with it via some sort of <a href="https://github.com/signal11/hidapi">HID API for developers</a>. But USB HID is not a trivial thing and after a half hour of following and reading links to documentation I was no closer to talking to the pedal in a "proper" way. So I tabled that approach and returned to treating it as a file. It's pretty trivial using <a href="https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files">Python's file APIs</a> to open it up for reading.</p>
+<blockquote><p><code>&gt;&gt;&gt; hr9 = open('/dev/hidraw9','r')</code></p></blockquote>
+<p>Reading a few bytes at a time, we figured out the device sends two bytes upon every action. First byte is a bitfield indicating pedal status, and the second is always zero. The leftmost pedal corresponds to the least significant bit <code>0x1</code>, then center pedal <code>0x2</code> and right pedal <code>0x4</code>. So if both right and center pedals were both pressed, it would give <code>0x6</code>. Here's a simple Python loop that reads two bytes at a time and outputs to command line.</p>
+<blockquote><p>
+<code>&gt;&gt;&gt; while True:</code><br />
+<code>... hr9.read(2)</code>
+</p></blockquote>
+<p>The output if I press and release the left, then repeat for center and right pedal.</p>
+<blockquote><p>
+<code>'\x01\x00'</code><br />
+<code>'\x00\x00'</code><br />
+<code>'\x02\x00'</code><br />
+<code>'\x00\x00'</code><br />
+<code>'\x04\x00'</code><br />
+<code>'\x00\x00'</code>
+</p></blockquote>
+<p>Not every action will trigger data events. There's a small time window where separate events are collapsed together for a single notification. If I'm quick enough on the press and on release, I can push the right and left pedals simultaneously for a single 0x05 report, then release simultaneously for a 0x00 report, without any intermedia reports of 0x04 or 0x01.</p>
+<blockquote><p>
+<code>'\x05\x00'</code><br />
+<code>'\x00\x00'</code>
+</p></blockquote>
+<p>This is a very promising set of experiments indicating that, if it should be necessary, we can write code to make use of this pedal in Linux without digging through all of HID API.</p>
+<p>With that knowledge under our belts, experimentation then moved to Windows 10, which immediately recognized it as a USB HID and even shows us the name. However, it doesn't do much without further help.</p>
+<p><img class=" size-full wp-image-18046 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/vec-usb-footpedal-device-is-ready.jpg" alt="VEC USB Footpedal device is ready" width="384" height="121"></p>
+<p>Searching for answers on the web, we learned this device was designed for people transcribing audio recordings into text. The pedals allow them to control sound playback (pause, play, rewind, etc.) without taking their typing hands off the keyboard. I'm sure this is a productivity boon for its target audience, but that wasn't us. Fortunately, the manufacturer has also released a piece of software call <a href="http://www.altoedge.com/pedalware/index.html">Pedalware</a> which will allow this pedal to be <a href="http://www.altoedge.com/pedalware/faq.html">used outside its designed scenario</a>, like emulating keyboard keys or mouse buttons. I thought it sounded interesting enough to try.</p>
+<p>And this is where we started getting a hint why this device has been retired... this piece of hardware's associated software is old. Pedalware's installer demands Windows 7 or earlier and refused to run under Windows 10.</p>
+<p><img class=" size-full wp-image-18043 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/pedalware-needs-windows-7-or-earlier.jpg" alt="Pedalware needs Windows 7 or earlier" width="433" height="184"></p>
+<p>At this point, Windows 10 backwards compatibility module kicked in and offered the option of running in compatibility mode. I accepted.</p>
+<p><img class=" size-full wp-image-18044 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/pedalware-needs-windows-vista-compatibility-mode.jpg" alt="Pedalware needs Windows Vista compatibility mode" width="616" height="479"></p>
+<p>That was enough to get Pedalware up and running on my Windows 10 computer. Now I can assign an arbitrary keyboard or mouse action to each of three pedals.</p>
+<p><img class=" size-full wp-image-18045 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/03/pedalware-up-and-running.jpg" alt="Pedalware up and running" width="505" height="292"></p>
+<p>This worked fine in everyday web browsing and productivity applications. It is, however, too slow for gaming purposes. The aforementioned time window seen under Linux, which collapsed multiple events into a single event, manifests here as well resulting in foot click actions getting lost in high-speed gaming action.</p>
+<p>But that's fine, the device was never intended to be a gaming peripheral. The real problem comes from its driver software becoming unreliable as a computer goes into low-power standby. When the computer resumes, the pedal doesn't always come back into action. And once it gets stuck, the only way to get it back is a full reboot.</p>
+<p>This was a sign of the times when this device was designed. I remember when many peripherals would not gracefully handle a computer going to sleep, which meant I typically leave my computer running in the Windows XP/Vista/7 days. Computers have gotten more power efficient over these years but it's still better to put them to sleep. Also, modern USB peripherals are much better about resuming from sleep.</p>
+<p>But this pedal does not, and that's probably why it was retired. Fortunately, my work does not require a predictably functional foot pedal, so I'll keep it around and try using it on the occasions when it works.</body></html></p>

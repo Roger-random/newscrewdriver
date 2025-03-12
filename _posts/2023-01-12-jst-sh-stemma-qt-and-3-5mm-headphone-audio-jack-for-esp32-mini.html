@@ -1,0 +1,77 @@
+---
+layout: post
+title: JST-SH (STEMMA QT) and 3.5mm (Headphone Audio) Jack for ESP32 Mini
+date: 2023-01-12 12:30:00.000000000 +00:00
+type: post
+post_id: '34543'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- ESP32
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34544'
+  timeline_notification: '1673555450'
+  _publicize_job_id: '80491229134'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673645591
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/12/jst-sh-stemma-qt-and-3-5mm-headphone-audio-jack-for-esp32-mini/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>It was an interesting challenge to write code which <a href="https://newscrewdriver.com/2023/01/10/as7341-spectral-color-sensor-with-mozzi-on-avr-arduino/">talked to an AS7341 spectral color sensor using Mozzi's <code>twi_nonblock</code> API for I2C communication</a>. I referenced Adafruit's AS7341 library heavily, but I couldn't copy much (any?) code directly on account of the differences between Arduino Wire I2C and <code>twi_nonblock</code>. But <code>twi_nonblock</code> is only supported for AVR chips, and Mozzi runs on additional architectures <a rel="noreferrer noopener" href="https://github.com/sensorium/Mozzi#esp32" target="_blank">such as ESP32</a>. Can I get AS7341 to play nice with Mozzi on those platforms?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my earlier AVR adventures, I laid out my hardware components on a breadboard. This time, with a bit more confidence, I'm going to wire the components point-to-point without a breadboard. Which means I am free to use my breadboard unfriendly <a href="https://newscrewdriver.com/2022/09/03/wemos-d1-mini-esp32-derivative/">ESP32 Mini board</a> and equip it for integrating Mozzi with AS7341.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For Mozzi audio output on AVR ATmega328 Arduino Nano, I wired an earbud headphone directly to pin D9. I was comfortable doing this as the ATmega328 is a fairly robust chip tolerant of simple direct designs like this. However, the ESP32 is not designed for similar scenarios, and I should take a bit of effort to make sure I don't kill my chip. Thankfully Mozzi <a rel="noreferrer noopener" href="https://sensorium.github.io/Mozzi/learn/output/" target="_blank">has a guide on how to connect audio</a> with an RC (resistor+capacitor) filter which should be better than nothing to protect the ESP32 pin used for audio output. According to Mozzi documentation, <a rel="noreferrer noopener" href="https://github.com/sensorium/Mozzi#esp32" target="_blank">both GPIO25 and GPIO26 are used</a>. I soldered my resistor to GPIO26.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For audio hardware interface, I used a 3.5mm jack salvaged from a cheap digital photo frame I tore down long ago. (Before I started documenting my teardowns on this blog.) This was technically the video output port with <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Phone_connector_(audio)#TRRS_standards" target="_blank">four conductors inside the 3.5mm TRRS jack</a> for composite video, audio left, audio right, and ground. But I only need two of the wires: ground plus one audio signal. The other two wires were left unused here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For AS7341 interface, I dug up my <a rel="noreferrer noopener" href="https://amzn.to/3QcGq2l" target="_blank">pack of JST-SH connectors</a> (*) originally bought <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/08/15/my-beaglebone-boards-returning-to-their-box/" target="_blank">for a BeagleBone Blue</a> but went unused. This is mechanically compatible with Adafruit's STEMMA QT connectors on <a rel="noreferrer noopener" href="https://www.adafruit.com/product/4698" target="_blank">their AS7341 breakout board #4698</a>. However, the wire colors in my pack of pre-crimped connectors do not match convention for how they are used in a STEMMA QT. Testing for continuity, I found the following:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>White = Ground (GND) should be black</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Yellow = Power (VIN) should be red</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Black = Data (SDA)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Red = Clock (SCL)</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I briefly contemplated popping individual pre-crimped wires out of the connector and rearranging them, then I decided this was a quick hack prototype and I didn't care enough to spend time fiddling with tiny fussy connectors. (This is why I bought them pre-crimped!) Hopefully this decision wouldn't come back to bite me later. I soldered I2C data wire (black) to GPIO21 and I2C clock wire (red) to GPIO22. Power and ground went to their respective pins on the ESP32 Mini.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This should be enough hardware for me to <a href="https://newscrewdriver.com/2023/01/13/performing-as7341-sensor-integration-in-parallel-resolved-mozzi-glitches/">start investigating the software side</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

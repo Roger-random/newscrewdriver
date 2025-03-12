@@ -1,0 +1,68 @@
+---
+layout: post
+title: Realtek r8168 Driver Is Not r8169 Driver Predecessor
+date: 2023-11-09 12:30:00.000000000 +00:00
+type: post
+post_id: '40193'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- '7577'
+- Dell
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39972'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1699659087
+  _publicize_job_id: '89224200736'
+  timeline_notification: '1699561915'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/11/09/realtek-r8168-driver-is-not-r8169-driver-predecessor/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a Dell Inspiron 7577 whose onboard Realtek Ethernet hardware would randomly quit under Proxmox VE. [UPDATE: After installing Proxmox VE kernel update from 6.2.16-15-pve to 6.2.16-18-pve, this problem no longer occurs, allowing the machine to stay connected to the network.] After trying some kernel flags that didn't help, I put in place an ugly hack to <a href="https://newscrewdriver.com/2023/11/08/reboot-after-network-watchdog-timer-fires/">reboot the computer every time the network watchdog went off</a>. This would at least keep the machine accessible from the network most of the time while I learn more about this problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In my <a href="https://newscrewdriver.com/2023/11/03/realtek-network-r8169-woes-with-linux-kernel-6/" target="_blank" rel="noreferrer noopener">initial research</a>, I found some people who claimed switching to the r8168 driver kept their machines online. Judging by their names, I thought the r8168 driver was the immediate predecessor to the r8169 driver currently part of the system causing me headaches. But after reading a bit more, I've learned this was not the case. While both r8168 and r8169 refer to Linux drivers for Realtek Ethernet hardware, they exist in parallel reflecting two different development teams.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p>
+<!-- wp:paragraph --></p>
+<p><code>r8169</code> is an in-tree kernel driver that supports a few Ethernet adapters including R8168.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><code>r8168</code> module built from source provided by Realtek.</p>
+<p><!-- /wp:paragraph --><cite>-- Excerpt from "<em><a href="https://askubuntu.com/questions/1279644/r8168-r8169-which-one-should-i-use" target="_blank" rel="noreferrer noopener">r8168/r8169 - which one should I use?</a></em>" on AskUbuntu.com:</cite>
+</p></blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is a lot more complicated than "previous version". As an in-tree kernel driver, r8169 will be updated in lock step with Linux updates largely independent of Realtek product cycle. As a vendor-provided module, r8168 will be updated to support Realtek hardware, but won't necessarily stay in sync with Linux updates.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This explains why when someone has a new computer that doesn't have networking under Linux, the suggestion is to try the r8168 driver: Realtek would add support for new hardware before Linux developers would get around to it. It also explains why people running r8168 driver run into problems later: they updated their Linux kernel and could no longer run their r8168 driver targeted to an earlier kernel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given this knowledge, I'm very skeptical running r8168 would help me. Some Proxmox users report that it's the opposite of helpful, <a href="https://forum.proxmox.com/threads/r8168-9-disconnect-after-pve8-upgrade.132785/" target="_blank" rel="noreferrer noopener">killing their network connection entirely</a>. D'oh! Another interesting data point from that forum thread was the anecdotal observation that Proxmox clusters accelerate faults with the Realtek driver. This matches with my observation. Before I set up a Proxmox cluster, the network fault would occur roughly once or twice a day. After my cluster was up and running, it would occur many times a day with uptime as short as an hour and a half.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even if switching to r8168 would help, it would only be a temporary solution. The next Linux update in this area would break the driver until Realtek catches up with an update. The best I can hope from r8168 is a data point informing an investigation of what triggers this fault condition, which seems like a lot of work for little gain. I decided against trying the r8168 driver. There are <a href="https://newscrewdriver.com/2023/11/10/bug-hunt-could-cross-three-or-more-levels-of-indirection/">many other pieces in this puzzle</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Featured image created by <em><a href="https://www.bing.com/images/create" target="_blank" rel="noreferrer noopener">Microsoft Bing Image Creator powered by DALL-E 3</a></em> with prompt "<em>Cartoon drawing of a black laptop computer showing a crying face on screen and holding a network cable</em>"</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

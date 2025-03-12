@@ -1,0 +1,65 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Updates Under Oscilloscope
+date: 2023-12-24 12:30:00.000000000 +00:00
+type: post
+post_id: '41209'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41186'
+  wordads_ufa: s:wpcom-ufa-v4:1703536754
+  _publicize_job_id: '90549555933'
+  firehose_sent: '1703449805'
+  timeline_notification: '1703449808'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/24/canon-pixma-mx340-control-panel-lcd-updates-under-oscilloscope/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been looking at the control panel circuit board from a Canon Pixma MX340 multi-function inkjet. I have found the pins used for communication between the main board and control panel, and connected them to my oscilloscope. The first discovery was the line used by the control board to <a href="https://newscrewdriver.com/2023/12/23/canon-pixma-mx340-control-panel-button-presses-under-oscilloscope/">report button status back to the main board</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41211,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-5us-ok-button-1.png?w=826" alt="" class="wp-image-41211"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is a sample of communication activity on that line, reporting the user has pressed the "OK" button. (Rightmost of four buttons below the LCD screen.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I press a button that is not valid for the current menu, I hear an error beep. In this error case, information on the LCD does not change and nothing happens on pin 1 (yellow line). But if I press a valid button causing a change on screen, I see a digital serial communication wave form on the oscilloscope screen. A <em><strong>lot more</strong></em> of it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41203,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-screen-update.png?w=826" alt="" class="wp-image-41203"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had to zoom out to get an idea of how much more. Whatever it is, it takes around 72ms to complete. Notably, it takes the same amount of time no matter what changed on screen. It doesn't matter if I change only a single digit or navigate to an entirely different menu. If there's any change, there will be ~72ms of activity on pin 1. This puts an upper limit on screen refresh rate of (1000/72) = 13.89 frames per second. Too slow for video games (no Doom for this screen) but perfectly fine for an inkjet control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Transmission time of ~72ms would cover multiple cycles of pin 2 keyboard update data. This means keyboard status could change in the middle of a screen update, though again this lack of responsiveness is not a concern for an inkjet control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To try to get some context as to the magnitude of data involved here, I went back to looking at data on pin 2. It looks like each bit takes roughly 4us to transmit. A millisecond would allow 1000/4=250 bits to be transmitted. 250 bits * 72 milliseconds = 18,000 bits. I look at the LCD and it looks like each character is represented by 8x16 pixels and there's room for two lines of 28 characters each. 8*16*2*28 = 7168 which is less than half of that wild guess.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That was only a rough estimate. Screen update data isn't necessarily transmitted at the same rate as keyboard data. Some of that data will be transmission overhead, so on and so forth. But getting the rough magnitude is informative for some broad strokes. If refreshing the entire screen took very little data, I could infer the mainboard is probably <a href="https://newscrewdriver.com/2022/05/31/cordless-handset-lcd-is-i2c-device/" target="_blank" rel="noreferrer noopener">sending ASCII character values</a>. But the quantity involved here meant the main board is probably not doing that. There's more than enough to be transmitting the entire LCD screen frame buffer as a raw bitmap. It also meant manually decoding this data on my oscilloscope is a hopeless task. Thankfully, I now have tools to help tackle such things. Before I do, though, there's still <a href="https://newscrewdriver.com/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/">one more wire to examine under the oscilloscope</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,64 @@
+---
+layout: post
+title: My First Proxmox VM
+date: 2023-04-23 12:30:00.000000000 +00:00
+type: post
+post_id: '36313'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Proxmox
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36299'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682374507
+  _publicize_job_id: '83460049571'
+  timeline_notification: '1682278255'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/23/my-first-proxmox-vm/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After using an old laptop to dabble with running virtual machines under KVM hypervisor, I've decided to <a href="https://newscrewdriver.com/2023/04/22/hello-proxmox-virtual-environment/">dedicate a computer to virtual machine hosting</a>. The heart of the machine are the CPU, memory, and a M.2 SSD all mounted to a small Mini-ITX mainboard. On these pages, they were formerly the core of <a href="https://newscrewdriver.com/2017/09/03/rev-b-hackaday-la-august-meetup/">Luggable PC Mark II</a>, which was <a href="https://newscrewdriver.com/2020/01/12/luggable-pc-mark-ii-decommissioned/">decommissioned and disassembled</a> two years ago. Now it will run Proxmox VE (Virtual Environment) which offers both virtual machine and container hosting managed with a browser-based interface. Built on top of a Debian Linux distribution, Proxmox uses KVM as its virtual machine hypervisor which <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/">I've used successfully before</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Enterprise Subscription</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I downloaded Proxmox VE 7.4, latest as of this writing, and its installation was uneventful. Its setup procedure no more complex than an Ubuntu installation. Once up and running, the first dialog box to greet me was a "You haven't paid for an Enterprise subscription!" reminder. This warning dialog box would repeat every time I log on to the administration dashboard. Strictly speaking, a subscription is optional for running core features of Proxmox. A fraction of the Enterprise repository features are available by <a href="https://pve.proxmox.com/wiki/Package_Repositories#sysadmin_no_subscription_repo">switching to the no-subscription repository</a>, which has a far less comprehensive service level agreement. If I end up loving Proxmox and using it on an ongoing basis, I may choose to subscribe in the future. In the meantime, I have to dismiss this dialog every time I log on, even when I'm on the no-subscription repository. I understand the subscription is what pays the bills for this project so I don't begrudge them for promoting it. A single dialog box per logon isn't overly pushy by my standards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ISO Images for Operating System Installation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:image {"align":"center","id":36299,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/04/proxmox-storage-iso-images.jpg?w=1024" alt="" class="wp-image-36299"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first impression of the administration interface is that it is very tightly packed with information. A big blue "Create VM" button in the upper right corner made it obvious how to create a new virtual machine, but it took some time before I figured out how to install an operating system on it. During VM creation there's a dialog box for installation media, but I couldn't upload Ubuntu Server 22.04 ISO on that screen. It took some poking around before I found I need to click on the Proxmox node representing my computer, click on its local storage, and at that point I could upload an ISO. Or, conveniently, I could download from an URL if I didn't have an ISO to upload. I could even enter the SHA256 checksum to verify integrity of the download! That's pretty slick. (Once I've found it.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Helpful Help</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>After an installation ISO was on my Proxmox host, everything else went smoothly. This was helped tremendously by the fact every Proxmox user interface has a link to its corresponding section in <a href="https://pve.proxmox.com/pve-docs/pve-admin-guide.html">online HTML documentation</a>. I've learned to like this approach, because it lets me see that information in context of other related information in the same section. In contrast, clicking help in TrueNAS would give me just a short description. If that's not enough, I've got to hit the web and search on my own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">USB Passthrough: Success</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once my virtual machine was up and running, I tested my must-have feature: USB passthrough. While the virtual machine is up and running, I can go into Proxmox interface and add a USB passthrough device. It immediately showed up in the virtual machine as if I had just hot-plugged the USB hardware into a port. Excellent! This brings it to parity with my existing Home Assistant VM setup using Ubuntu + Virtual Machine Manager and ahead of TrueNAS SCALE 22.02 ("Angelfish") which lacked USB passthrough.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/">looked at TrueNAS SCALE earlier</a> with an eye to running my Home Assistant VM, I found the TrueNAS bug database entry tracking the USB passthrough feature request. <a href="https://ixsystems.atlassian.net/browse/NAS-111020">Revisiting that item</a>, I saw USB passthrough has since been added to TrueNAS SCALE 22.12 ("Bluefin"). Well, now. That means it's time for <a href="https://newscrewdriver.com/2023/04/24/successful-truenas-core-to-scale-migration/">another look at TrueNAS SCALE</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

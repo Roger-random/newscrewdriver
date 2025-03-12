@@ -1,0 +1,49 @@
+---
+layout: post
+title: Quick Notes on UWP Layout
+date: 2020-08-25 12:30:00.000000000 +00:00
+type: post
+post_id: '22220'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _thumbnail_id: '21761'
+  _publicize_job_id: '48112666691'
+  timeline_notification: '1598383846'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/25/quick-notes-on-uwp-layout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Layout is another big can of worms in UWP application development, but having spent far too much time on keyboard navigation I'm postponing the big lessons until later. Today I'm going to learn just enough to get what I want on screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first is controlling that <a href="https://newscrewdriver.com/2020/08/24/quick-notes-on-uwp-drawing/">shape I drew earlier</a>. By default simple shapes (Ellipse, Rectangle, etc) dynamically adjusts to layout size, but there doesn't seem to be a way to specify complex shapes that would be similarly dynamic. They are specified via X,Y coordinates and I didn't find a way to specify "X is 25% of ActualWidth" in markup.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The fallback is to listen to <code><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.frameworkelement.sizechanged" target="_blank">SizeChanged</a> </code>event and recalculate coordinates based on <code>ActualHeight</code> and <code>ActualWidth</code>. I get my little camera preview overlay graphics on screen, but that's only the start. I wanted to draw other on screen directional controls to augment the arrow keys.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While working to position the shape and on screen controls, I ran into a frustrating problem: there are two different ways to specify an on screen color for rendering. We have <code>Windows.UI.Color</code> and then we have an entirely different <code>System.Drawing.Color</code>. I'm sure there's a good explanation on the history here, but right now it's just annoying to have the "Color" class be ambiguous.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Rendering the user controls outside of camera got a tiny bit tricker, because now I have to track what happens when, including when an element is loaded for me to kick off other events relating to serial communication. Thanks to <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/34340134/how-to-know-when-a-frameworkelement-has-been-totally-rendered" target="_blank">this Stack Overflow thread</a>, I learned there are three different candidates depending on need. There's <code>Loaded</code>, or <code>LayoutUpdated</code>, or <code>SizeChanged</code>. And people are constantly surprised when one of them does something unexpected, it seems like none of the three does exactly what people would want. This is just one of many parts making UWP layout confusing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I added controls by hand, they were fully adjacent to each other with no space in between them. I knew I needed to specify either a margin, or a padding, but couldn't figure out which is which. I still don't... they do slightly different things under different circumstances. To ensure elements inside a grid don't butt up against each other, I have to use Padding. To ensure the video preview doesn't butt up against edge of the window frame, I have to use Margin. I have yet to build an intuition on which is the right tool for the job, which I hope will come with practice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But never mind little layout details... I have my G-code controlled camera, and <a href="https://newscrewdriver.com/2020/08/26/first-project-prototype-has-poor-precision/">I want to know if it works like I wanted</a>. (Spoiler: it didn't.)</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

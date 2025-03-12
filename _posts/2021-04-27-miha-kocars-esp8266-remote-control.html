@@ -1,0 +1,54 @@
+---
+layout: post
+title: Miha Kocar's ESP8266 Remote Control
+date: 2021-04-27 12:30:00.000000000 +00:00
+type: post
+post_id: '25885'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- ESP8266
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26271'
+  _publicize_job_id: '57685731521'
+  timeline_notification: '1619551823'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/27/miha-kocars-esp8266-remote-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Getting <a href="https://newscrewdriver.com/2021/04/26/sawppy-rover-battery-voltage-monitor/">basic voltage monitoring up and running</a> on my Sawppy Rover ESP32 controller was a good milestone for me to take a break from rover work. My code <a rel="noreferrer noopener" href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy" target="_blank">is publicly available up on GitHub</a> and it is even moderately well organized and commented if anybody else wants to take it for a spin. Either for their own Sawppy rover, or for another vehicle. But if someone just wants basic remote control, they don't have to deal with my code. There's a simpler and cheaper option: <a rel="noreferrer noopener" href="https://github.com/miharix/miharix-wifi-rc" target="_blank">Miha Kocar's browser-based WiFi remote control built from an ESP8266</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I learned of this project <a href="https://hackaday.com/2020/10/30/esp8266-does-rc-without-the-transmitter/" target="_blank" rel="noreferrer noopener">via Hackaday</a> and I consulted it briefly before starting my own Sawppy rover control project. I thought it was admirably minimalist. The entire baseline 2-channel implementation <a rel="noreferrer noopener" href="https://github.com/miharix/miharix-wifi-rc/blob/master/Arduino/socket/socket-2servo-nice/socket-2servo-nice.ino" target="_blank">fits in a single file</a>. The browser HTML, CSS, and JavaScript are all encapsulated into a single C string inside that file. Compared to my sprawling project, that is amazingly compact!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the ways this could be so simple were the input controls: this project used the existing HTML <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range" target="_blank">&lt;input type="range"&gt;</a></code> control for controlling each axis, which meant it inherited all the code dealing with pointer events. Creative CSS styling made it look very different from a boring HTML form input. The downside is that each of these controls can only manage a single axis, there's no good way to do a two-axis control pad as I wanted. Having two separate single-axis controls meant two-finger operation, my two-axis control pad allows single-finger operation. This feature was important enough for me to take on the extra complexity, something <a href="https://newscrewdriver.com/2021/04/25/windows-phone-debug-tools-rode-into-sunset/" target="_blank" rel="noreferrer noopener">I occasionally regretted</a> but I think it's worth the extra work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Kocar's project uses websocket for client-server communication, and the code looked super simple and easy. Seeing it removed a lot intimidation for me when I <a href="https://newscrewdriver.com/2021/04/13/sawppy-html-canvas-and-websocket/">started using websocket for myself</a>. Like my code, it has a "failsafe" mode for when communication is lost, but I didn't see any code <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/04/20/sawppy-rover-driver-max-occupancy-one/" target="_blank">enforcing a single driver</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest reason I didn't use this project as a direct precedent was that ESP8266 didn't have a hardware PWM peripheral. These servo control PWM signals are all generated in software. This is fine for one or two channels like we see here, but Micro Sawppy required upwards of 16 PWM channels and that's too much to expect from an ESP8266, which didn't have enough IO pins anyway. I needed <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/19/notes-on-esp32-pwm-peripherals/" target="_blank">the PWM hardware</a> -- <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/20/notes-on-esp32-input-output-pins/" target="_blank">and GPIO pins</a>-- of an ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next reason was that I much preferred FreeRTOS and how it allowed me to organize individual functionality into tasks. Instead of managing it all myself in a single Arduino <code>loop()</code>, I have the FreeRTOS task scheduler handle things. Information flow between components are managed with FreeRTOS queues. From a personal preference point, I liked having this level or organization.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But I admit all the overhead I added to handle a six-wheel-drive, four-wheel-steering micro Mars rover would be sheer overkill for many other projects. Sometimes a project just need a simple straightforward two-channel remote control, and Miha Kocar's project is a better tool for that job.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And as a change of pace from my little micro Mars rover, I started looking at a tool for an entirely different job: <a href="https://newscrewdriver.com/2021/04/28/ntsc-color-composite-video-from-esp_8_bit-by-rossumur/">putting a color picture on an old analog television</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

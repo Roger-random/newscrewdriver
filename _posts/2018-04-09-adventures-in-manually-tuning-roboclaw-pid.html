@@ -1,0 +1,40 @@
+---
+layout: post
+title: Adventures in Manually Tuning RoboClaw PID
+date: 2018-04-09 14:47:12.000000000 +00:00
+type: post
+post_id: '15846'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1523310434'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '16632203233'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/09/adventures-in-manually-tuning-roboclaw-pid/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-15848 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/02/encoder-wheel-upgrade.jpg" alt="Encoder Wheel Upgrade" width="1024" height="480">Increasing the gear lash improved performance tremendously, but still a little short of where we need to be. In an effort to improve motor control, the 3D-printed encoder wheel in our planetary gear wheel hub <a href="https://github.com/DavidMFlynn/RoverWheel/blob/master/SCAD/STL/SunGear30.stl">had its resolution tripled</a>. This triples the number of quadrature pulses sent to our RoboClaw motor controller board, and we hoped that will enable smoother behavior. The hypothesis: with triple the pulse frequency, RoboClaw can detect changes in one-third the time and start responding faster to changes. The hypothesis was proven correct but it took a bit of work to get there.</p>
+<p>We had to figure out how to configure the RoboClaw to correspond to the change. The most obvious parameter to update was to triple QPPS (quadrature pulses per second) to match the triple resolution. Tripling the encoder resolution unfortunately hasn't solved our inability to use Ion Studio's auto PID tuning algorithm (it still freezes up) so we had to return to manual tuning.</p>
+<p>Armed with theory of PID but not details of Ion Motion Control's implementation, we started adjusting the Position PID values and sending motor positioning commands to see their effects. First we tried tripling them, then cutting them by two-thirds, neither resulted in good response. Eventually we remembered some earlier indications that the Velocity PID seemed to have some involvement in position commands, even if we weren't using the motor velocity commands. The Position PID values were restored to what worked before, and we start playing with the Velocity PID.</p>
+<p>Tripling all the Velocity PID values were not fruitful, but cutting them by two-thirds felt like we were on the right track. We ended up with velocity P roughly 25% of what it was before, the I at 10% of its previous value, and D remained the same. There's still a lot of tuning work ahead of us but this got us in the ballpark with a motor that behaves close enough to what we want.</p>
+<p>Lessons learned:</p>
+<ul>
+<li>The Velocity PID values are not used only for motor <em>velocity</em> commands. They affect the behavior of motor <em>position</em> commands as well.</li>
+<li>When increasing resolution for an encoder attached to a RoboClaw, leave the position PID alone and start with decreasing velocity PID values by corresponding ratio.</li>
+</ul>
+<p></body></html></p>

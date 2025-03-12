@@ -1,0 +1,37 @@
+---
+layout: post
+title: Examining Adafruit AT42QT1070 Capacitive Touch Sensor Breakout
+date: 2019-06-23 12:30:42.000000000 +00:00
+type: post
+post_id: '18721'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Death Clock
+meta:
+  _thumbnail_id: '18722'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1561318247'
+  _publicize_job_id: '32120374855'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/23/examining-adafruit-at42qt1070-capacitive-touch-sensor-breakout/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The <a href="https://newscrewdriver.com/2019/06/12/vfd-project-the-death-clock/">Death Clock</a> logic is built around user action to trigger its little show for amusement. While we could easily incorporate a micro switch or some such simple mechanical input, Emily felt it would make more sense to have a capacitive touch sensor. This fits into the theme of the clock, sensing and reading a person's body instead of merely detecting a mechanical movement. So we'll need something to perform this touch sensing and she procured an <a href="https://www.adafruit.com/product/1362">Adafruit #1362, AT42QT1070 5-Pad Capacitive Touch Sensor Breakout Board</a> for use. Inside the package was a set of leads for breadboard experimentation, so we soldered them on, put the works on a breadboard, and started playing with it.</p>
+<p>Initially the board worked mostly as advertised on Adafruit product page, but it is a lot more finicky than we had anticipated. We encountered frequent false positives (signaled touch when we haven't touched the contact) and false negatives (did not signal touch when we have touched the contact.) Generally the unpredictability got worse as we used larger pieces of conductive material. Either in the form of longer wires, or in the form of large metal blocks we could touch.</p>
+<p>Digging into the datasheet linked from Adafruit's site, we learned that the sensor runs through a self calibration routine upon powerup, and about a "guard" that can be connected to something not intended as touch contact in order to form a reference for intended touch contacts. The calibration routine explains why we got wild readings as we experimented with different touch pads - we should have power cycled the chip with each new arrangement to let it recalibrate.</p>
+<p>After we started power-cycling the chip, we got slightly better results, but we still needed to keep conductive material to a minimum for reliable operation. We played with the guard key and failed to discern noticeable improvement in touch sense reliability, perhaps we're not using it right?</p>
+<p>For Death Clock implementation we will try to keep the sensor board as close to the touch point as we can, and minimize wire length and electrical connections. Hopefully that'll give us enough reliability.</p>
+<p></body></html></p>

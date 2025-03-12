@@ -1,0 +1,35 @@
+---
+layout: post
+title: 'Building with Acrylic: Thickness Variation'
+date: 2017-06-18 09:00:32.000000000 +00:00
+type: post
+post_id: '6424'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Acrylic
+- Fusion 360
+- Laser Cutting
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '6242058080'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/06/18/building-with-acrylic-thickness-variation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-6490 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/06/thickness-fail.jpg" alt="Thickness fail" width="1024" height="784">In the previous post, the laser cutter kerf was successfully compensated, admittedly in a way that left plenty of room for improvement in the future. This post will look at a different challenge of building with acrylic: variation in thickness of acrylic sheets. So far experience showed different sheets of "6 mm" acrylic can actually be anywhere from 5.31 mm to 6.03 mm.</p>
+<p>Since most laser-cut acrylic projects are 2D in nature, any variation in acrylic sheet thickness usually goes completely unnoticed. But when building 3D structures out of multiple interlocking pieces, the thickness dimension has a significant impact.</p>
+<p>Fortunately for us, while thickness can vary across different sheets, the thickness is relatively consistent within a single sheet. There may be some variation from one corner of a 4' x 8' sheet of acrylic to another, but once cut into smaller pieces that can fit in a laser cutter, the thickness can be reasonably treated as constant.</p>
+<p>This allows us to treat thickness as a parameter in a Fusion 360 CAD file. Any slots cut for acrylic pieces will need to reference the parameter. So that when it comes time to generate the cutting profile, the thickness parameter can be updated with the thickness of the actual sheet of acrylic, and Fusion 360 will automatically recompute all the slot widths to match.</p>
+<p>Which brings us to the attached picture illustrating human error: the assembly on the left is built up to the proper dimensions. In contrast the assembly on the right was too thin. I made the mistake of measuring on one sheet and cutting on a different sheet that turned out to be 0.29 mm thinner. 0.29 mm is a small difference, but when the assembly is built by stacking seven pieces together, it results in a significant dimensional error of over 2 mm.</body></html></p>

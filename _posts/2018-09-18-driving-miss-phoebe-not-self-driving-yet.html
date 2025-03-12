@@ -1,0 +1,39 @@
+---
+layout: post
+title: Driving Miss Phoebe (Not Self-Driving... Yet)
+date: 2018-09-18 09:00:16.000000000 +00:00
+type: post
+post_id: '16801'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1537286424'
+  _publicize_job_id: '22278642156'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:18'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/18/driving-miss-phoebe-not-self-driving-yet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that the Roboclaw ROS node is configured for Phoebe TurtleBot's physical layout, and the code is running reliably instead of crashing, I can drive it around as a remote control car. This isn't the end goal, of course. If all I wanted was a remote control car there were far cheaper and easier ways to get here. Right now the goal is just to verify functionality of the drive system and that it is properly integrated into the ROS infrastructure.</p>
+<p>In order to send driving commands to Phoebe, I need something that publishes to the command &amp; velocity topic <code>/cmd_vel</code>. On an autonomous robot, the navigation code would be in charge of sending these commands. But since it's a pretty common task to move a robot around manually, there are standard ROS packages to drive a robot via human commands. The most basic is <a href="http://wiki.ros.org/teleop_twist_keyboard"><code>teleop_twist_keyboard</code></a> which allows driving by pressing keys on a keyboard. Alternatively there is <a href="http://wiki.ros.org/teleop_twist_joy"><code>teleop_twist_joy</code></a> for driving via a joystick.</p>
+<p>Those remote control (or 'tele operation' in ROS parlance) nodes worked right off the bat, which is great. But I quickly got bored with driving Phoebe around on the carpet in front of me. First I launched RViz to <a href="https://newscrewdriver.com/2018/08/23/observations-from-a-neato-lidar-on-the-move/">visualize scanning LIDAR data as I did before</a>. This was enough for me to drive Phoebe beyond my line of sight, watching surroundings in the form of the laser scan dots. After I verified that still worked, I stepped up the difficulty: I wanted RViz to plot laser data on top of odometry data in order to verify that Roboclaw ROS node is generating odometry data correctly.</p>
+<p>To do this, I needed to participate in the ROS coordinate transform stack, the infrastructure to track all the frames of reference for relating robot components to each other in physical space. The Roboclaw ROS node publishes a transform to relate a robot's position reference frame <code>base_link</code> to the odometry origin reference frame <code>odom</code>. The LIDAR ROS node publishes its data relative to its own <code>neato_laser</code> reference frame. As the robot builder, it was my job to write a transform to relate <code>neato_laser frame</code> to Phoebe's <code>base_link</code> frame. Fortunately, ROS transform tutorials covered <a href="http://wiki.ros.org/navigation/Tutorials/RobotSetup/TF">this exact task</a> and I quickly got my desired RViz plot.</p>
+<p><img class=" size-full wp-image-16792 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/rviz-with-laserscan-and-odometry.png" alt="RViz with LaserScan and Odometry" width="999" height="961"></p>
+<p>It looks like the <a href="https://newscrewdriver.com/2018/08/18/neato-vacuum-laser-scanner-works-in-rviz/">LIDAR scan plot from earlier</a>, but now there's an arrow indicating Phoebe's position and direction. The bigger change not visible in this screen shot is that RViz is now plotting in the odometry frame. This means we no longer watch strictly from Phoebe's viewpoint  where robot stays in the center of screen. The plot is now in odometry frame, and Phoebe should be moving relative to the map.</p>
+<p>I drove Phoebe forward, and was happy to see the laser scan stayed still relative to the map and the red arrow representing Phoebe moved forward. But when I started turning Phoebe, the red arrow turned one way and the LIDAR plot moved the opposite way.</p>
+<p>Something is wrong in the coordinate transform data, time for some debugging...</p>
+<p></body></html></p>

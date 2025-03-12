@@ -1,0 +1,37 @@
+---
+layout: post
+title: Digging Further Into LabWindows/CVI
+date: 2020-03-28 12:30:06.000000000 +00:00
+type: post
+post_id: '21004'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '20987'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1585423811'
+  _publicize_job_id: '42340845741'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/28/digging-further-into-labwindows-cvi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Following <a href="https://newscrewdriver.com/2020/03/27/labwindows-cvi-serial-communication-test/">initial success of RS-232 serial communication</a> in a LabWindows/CVI sample program, I dived deeper into the documentation. This RS-232 library accesses the serial port at a very low level. On the good side, it allows me to communicate with non-VISA peripherals like a consumer 3D printer. On the bad side, it means I'll be responsible for all the overhead of running a serial port.</p>
+<p>The textbook solution is to leave the main program thread to maintain responsive UI, and spin up another thread to keep an eye on the serial port so we know when data comes in. The good news here is that LabWindows/CVI help files say RS-232 library code is thread safe, the bad news here is that I'm responsible for thread management myself. I failed to find much in the help files, but I did find something online for <a href="https://www.ni.com/en-us/support/documentation/supplemental/06/multithreading-in-labwindows--cvi.html">LabWindows/CVI multi-threading</a>. Not super easy to use, but powerful enough to handle the scenario. I can probably make this work.</p>
+<p>Earlier I noted that LabWindows/CVI design seems to reflect the state of the art about ten years ago and not advanced since. This was most apparent in the visual appearance of both the tool itself and of the programs it generated. Perhaps the target paying audience won't put much emphasis on visual design, but I like to put in some effort in my own projects.</p>
+<p>Which is why it really pained me when I realized the layout in a LabWindows/CVI program is fixed. Once they are laid out in the drag-and-drop tool, that's it, forever. Maximizing the window will only make the window larger, all the controls stay the same and we just get more blank space. I searched for an option to scale windows and <a href="https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z0000019OeqSAE">found this article in National Instruments support</a>, but it only meant scaling in the literal sense. When this option is used, and I maximize a window, all the controls still keep the same layout but they just get proportionally larger. There's no easy way to take advantage of additional screen real estate in a productive way.</p>
+<p>This means a default LabWindows/CVI program will be unable to adapt to a screen with different aspect ratio, or be stacked side-by-side with another window, or any of the dynamic layout capabilities I've come to expect of applications today. This makes me sad, because the low-level capabilities are quite promising. But due to the age of the design and the high cost, I'm likely to look elsewhere for my own projects. But before I go, a quick look at one other National Instruments product: Measurement Studio.</p>
+<p></body></html></p>

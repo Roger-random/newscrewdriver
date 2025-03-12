@@ -1,0 +1,130 @@
+---
+layout: post
+title: Roku Streaming Stick (3500X "Sugarland") Teardown
+date: 2022-03-28 12:30:00.000000000 +00:00
+type: post
+post_id: '29206'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- Roku
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29240'
+  _publicize_job_id: '70731752794'
+  timeline_notification: '1648495839'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669106072
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/28/roku-streaming-stick-3500x-sugarland-teardown/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A friend gave me this retired Roku streaming stick to take apart. Before I did, I looked to see if I could do something fun in the software realm and <a href="https://newscrewdriver.com/2022/03/27/window-shopping-roku-idk-independent-developer-kit/">found the Roku IDK</a>. Sadly this device lacks IDK support so it is getting taken apart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29241,"width":840,"height":472,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-streaming-stick-3500x-sugarland-front.jpg?w=1024" alt="" class="wp-image-29241" width="840" height="472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A streaming stick is pretty simple piece of hardware. The device itself has two connections: an HDMI plug to go into your TV, and a micro-USB port for power. A reset button is the lone user input, and a LED the lone user output. The power supply looks like a standard AC powered USB power supply advertised to deliver up to 1A at 5V, but it has Roku branding which is more than what some other devices ship with. This device should also have a radio frequency (RF) remote control instead of the usual infrared, since infrared requires line-of-sight and that won't work for a streaming stick behind the TV. But I was not given the remote, or I have lost it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29239,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-streaming-stick-3500x-sugarland-back.jpg?w=1024" alt="" class="wp-image-29239"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the back I see a model number of 3500X. Roku's <a rel="noreferrer noopener" href="https://developer.roku.com/docs/specs/hardware.md" target="_blank">hardware reference chart</a> lists the following information for 3500X:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<tbody>
+<tr>
+<td>Device Name</td>
+<td>Roku Streaming Stick</td>
+</tr>
+<tr>
+<td>Code Name</td>
+<td>Sugarland</td>
+</tr>
+<tr>
+<td>roDeviceInfo.GetModel()</td>
+<td>3500X</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>ARM11 600 MHz</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>512 MB</td>
+</tr>
+<tr>
+<td>Accelerated Graphics API</td>
+<td>OpenGL ES 2.0</td>
+</tr>
+<tr>
+<td>Max UI Resolution</td>
+<td>1280X720</td>
+</tr>
+<tr>
+<td>Max Playback Resolution</td>
+<td>1280X720</td>
+</tr>
+<tr>
+<td>HDR Support</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>IDK Support</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on these specifications, the hardware within is less powerful than a <a rel="noreferrer noopener" href="https://www.raspberrypi.com/products/raspberry-pi-zero/" target="_blank">Raspberry Pi Zero</a>. The latter has a CPU running at a higher speed, double the RAM, and could output 1080p resolution UI. However, video playback on the Pi is not its greatest suit. In contrast, video playback is a Roku's main purpose, so I assume it has access to video acceleration that Broadcom has limited access to Pi.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29240,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-streaming-stick-3500x-sugarland-exploded.jpg?w=1024" alt="" class="wp-image-29240"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using an <a rel="noreferrer noopener" href="https://www.ifixit.com/Store/Tools/iFixit-Opening-Tool/IF145-335?o=2" target="_blank">iFixit opening tool</a>, I pried against a visible seam on the back and quickly unsnapped six clips holding the enclosure together. The circuit board was removed without fuss.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29242,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-streaming-stick-3500x-sugarland-pcb-back.jpg?w=1024" alt="" class="wp-image-29242"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There's not a whole lot to see on the back. There is a large IC under the sticker, and an array of test points in the upper left. Probably a debug header for the onboard processor, but that's beyond my hardware skill today.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29244,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-streaming-stick-3500x-sugarland-pcb-front-with-rf-shield.jpg?w=1024" alt="" class="wp-image-29244"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A thin metal shield covers most of the front side. Visibly outside the shield is the LED, the reset button, and antenna 1 and 2. Once the thin metal shield was removed, we could see the main processor with the following markings:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Broadcom
+BCM43236BKMLG
+HE1537 P21
+5383606 3 W</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>To its right are two smaller chips, and to its left, a chip by Samsung whose markings were tall and narrow and very difficult to read.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29243,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/roku-streaming-stick-3500x-sugarland-pcb-front-with-raspberry-pi-zero.jpg?w=1024" alt="" class="wp-image-29243"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is a Raspberry Pi Zero WH (Wireless Header) next to the streaming stick, a fun comparison as these two share some similarities in functionality. Even if this Roku streaming stick supported their IDK, for projects that do not involve video playback I would probably choose to use a Raspberry Pi instead. Since IDK is not supported, this circuit board is going to electronic waste. This was a quick teardown, as appetizer for the more interesting <a href="https://newscrewdriver.com/2022/03/29/roku-premiere-4620x-cooper-teardown/">Roku Premiere teardown</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

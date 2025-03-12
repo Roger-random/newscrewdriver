@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Learning Timers: Qt QTimer and Python threading.Timer'
+date: 2017-10-08 09:00:21.000000000 +00:00
+type: post
+post_id: '13404'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- Raspberry Pi
+- Thermoforming Machine Rebuild
+tags:
+- Qt
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '10102822918'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/10/08/learning-timers-qt-qtimer-and-python-threading-timer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-13341 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/10/qtlogo.png" alt="QtLogo" width="87" height="70">When I interfaced my PyQt application to the Raspberry Pi GPIO pins, I ran into a classic problem: the need to perform input <a href="https://en.wikipedia.org/wiki/Switch#Contact_bounce">debouncing</a>. The classic solution is to have the software wait a bit before deciding whether the input change is noise to be ignored or not. A simple concept, but "wait a bit" can get complicated in the world of GUI programming. When writing simple programs, we can probably get away with a literal wait by "<a href="https://docs.python.org/3/library/time.html#time.sleep">going to sleep</a>" for a little bit. But we don't have that luxury in the world of GUI programming - going to sleep would freeze everything in the program. In general, users do not appreciate their UI becoming frozen and unresponsive.</p>
+<p><img class="alignright size-medium wp-image-9999" src="https://newscrewdriver.com/wp-content/uploads/2017/08/python-logo.png?w=300" alt="Python Logo" width="300" height="95">The solution: a timer. In a Windows application, the programmer can use the operating system timer and do their "after waiting a bit" tasks in response to the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms644902(v=vs.85).aspx">WM_TIMER</a> message. I went looking for the Qt equivalent and found several timer-related features. <a href="http://doc.qt.io/qt-5/qtimer.html">QTimer</a>, <a href="http://doc.qt.io/qt-5/qbasictimer.html">QBasicTimer</a>, and <a href="http://doc.qt.io/qt-5/qobject.html#startTimer">QObject::startTimer()</a>. Thankfully, the documentation also <a href="http://doc.qt.io/qt-5/timers.html">provided an overview</a> describing how they differ. For debounce purposes, the most fitting mechanism is a <a href="http://doc.qt.io/qt-5/qtimer.html#singleShot">single-shot timer</a>.</p>
+<p>Unfortunately, when I tried to use it, I received an error message telling me I could only use Qt timer objects from code launched with <a href="http://doc.qt.io/qt-5/qthread.html">QThread</a>. Which apparently wasn't the case with code running under the context of a QWidget within a QApplication.</p>
+<p>I had hoped the Qt timers, working off of the QApplication event queue, would stay on the UI thread. But it appears they have to have their own QThread. I could put in more time to figure out how to get Qt timers to work, but I decided to turn to Python library instead. If I have to deal with multi-threading issues anyway, there's no reason to avoid Python's <a href="https://docs.python.org/3/library/threading.html#timer-objects">Timer object in the threading library</a>.</p>
+<p>It does mean I had to review my code to make sure it would be correct even if called from multiple threads. Since the important state are the status of the GPIO pins, they are handled by the <a href="http://abyz.co.uk/rpi/pigpio/">pigpio</a> library and the code in my app should be fairly safe. I do set a flag to avoid creating multiple Timer objects in the case of input bounce. If I cared about making sure I only ever create a single Timer, this flag should be protected against cross-thread access. But reviewing the code I decided it was OK if a few Timer ends up being created - the final result of reading the GPIO pin should still be the same even in the case of multiple Timers doing duplicate work.</p>
+<p>(The project discussed in this blog post is <a href="https://github.com/Roger-random/tux_lab_thermoformer">publicly available on Github</a>.)</body></html></p>

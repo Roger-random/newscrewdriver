@@ -1,0 +1,55 @@
+---
+layout: post
+title: Android Chrome Device Log Strangely Empty
+date: 2024-08-14 12:30:00.000000000 +00:00
+type: post
+post_id: '44749'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- USB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '44750'
+  firehose_sent: '1723663855'
+  _publicize_job_id: '97032597886'
+  _elasticsearch_data_sharing_indexed_on: '2024-08-13 20:36:32'
+  timeline_notification: '1723663857'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/08/14/android-chrome-device-log-strangely-empty/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Learning about <a href="https://newscrewdriver.com/2024/08/13/looking-under-a-browsers-hood/">Chrome's index of special URLs</a> was very interesting. Aside from satisfying curiosity, it also gave me the tools to investigate an idea: can I write a web app to use an Android phone as interface to an electronics project that communicates over USB?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I want to repurpose my old retired Android phones as project UI, and have been making small incremental steps. My <a href="https://newscrewdriver.com/2023/02/01/as7341-project-future-enhancements/">AS7341 spectral color sensor project</a> presented its data as a web page served by the ESP32 on board, and my <a href="https://newscrewdriver.com/2023/06/03/compass-project-updated-with-angular-signals/">Android compass app for magnetometer exploration</a> was also a web app to visualize data from my phone's onboard sensors. But I haven't been able to combine a phone's onboard capability with external offboard capability. The barrier is a security measure: only web apps served from public TLC-secured <code>https</code> address is allowed to access extended capabilities like magnetometer. Web apps served locally over unencrypted <code>http</code>, like those served by my ESP32, is not allowed to access such things.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At one point in the past, web apps served via secured <code>https</code> was allowed to retrieve data from non-secure <code>http</code> sources, but I found that has been locked down in modern browsers. Now they require <code>https</code> all the way. I found this restriction during research for an earlier iteration of my AMG8833 thermal camera idea: I thought I could pair AMG8833 data with a phone's onboard camera, but the <code>https</code>/<code>http</code> barrier sunk that plan. I had to wait for <a href="https://newscrewdriver.com/2024/07/14/adafruit-memento-amg8833-upgrade-scotch-tape-to-servo-tape/">my Adafruit Memento to revisit that idea</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>WebUSB is another one of these <code>https</code>-only features. If I can communicate with external peripherals over WebUSB, I can serve a web app from a <code>https</code> source (like GitHub pages) and talk to my hardware over USB instead of forbidden insecure <code>http</code>. To test this hypothesis, I took a USB keyboard and plugged it into my desktop PC running Google Chrome. I brought up <code>chrome://device-log</code> to verify that a USB keyboard shows up as a newly attached HID peripheral.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44750,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/08/android-chrome-device-log-is-always-empty.jpg?w=1024" alt="" class="wp-image-44750"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then plugged the same keyboard into my Google Pixel 7. The keyboard is recognized and functional: I brought up Google Chrome and could type <code>chrome://device-log</code>. But unlike Chrome on my desktop, Chrome on my phone does not show a newly attached USB keyboard as HID peripheral. It just shows a completely empty device log. I know that even if a device shows up here it is not a guarantee that it supports WebUSB. But it's not very promising when the log shows nothing at all. Does this necessarily mean Android Chrome doesn't even see the hardware? That would be discouraging.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":44757,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/08/android-control-panel-usb-preferences.jpg?w=461" alt="" class="wp-image-44757"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know USB doesn't work the same way on an Android phone as it does on a PC. For one thing, Android control panel has this "USB Preferences" screen to control how my Android phone uses its USB port. This screen represents a mechanism unique to Android USB behavior. There may be others, and I'll have to learn to work with them. I checked https://caniuse.com and it says <a href="https://caniuse.com/?search=webusb">WebUSB is supported on Chrome for Android</a>. That encouraged me enough to keep searching for more information on how this might work and <a href="https://newscrewdriver.com/2024/08/15/adafruit-webusb-arduino-example/">found a WebUSB example from Adafruit</a> which managed to make my Android device log less empty.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

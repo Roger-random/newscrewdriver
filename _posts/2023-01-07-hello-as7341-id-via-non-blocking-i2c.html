@@ -1,0 +1,65 @@
+---
+layout: post
+title: Hello AS7341 ID via Non-Blocking I2C
+date: 2023-01-07 12:30:00.000000000 +00:00
+type: post
+post_id: '34467'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- AVR
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34514'
+  timeline_notification: '1673123423'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673222494
+  _publicize_job_id: '80337871336'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/07/hello-as7341-id-via-non-blocking-i2c/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've <a href="https://newscrewdriver.com/2023/01/06/refresher-on-mozzi-timing-before-tackling-as7341/">refreshed my memory of Mozzi</a> and its <code>twi_nonblock</code> API for non-blocking I2C operations, the next step is to write a relatively simple Hello World to verify I can communicate with an AS7341 with that API. While reading AS7341 datasheet I noted a great candidate for this operation: product ID and revision ID registers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In order to use <code>twi_nonblock</code> we need to break a blocking <code>read()</code> up to at least three non-blocking steps in order to avoid glitching Mozzi sound:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>We start with an I2C write to tell the chip which register we want to start from. Once we set parameters, I2C hardware peripheral can do the rest. In the meantime, we return control to the rest of the sketch so Mozzi can do things like <code>updateAudio()</code>.  During each execution of <code>updateControl()</code> we check I2C hardware status to see if the write had completed. If it's still running, we resume doing other work in our sketch and will check again later.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>If step 1 is complete and address had been sent, we configure I2C hardware peripheral to receive data from A7341. Once that has been kicked off, we return control to the rest of the sketch for <code>updateAudio()</code> and such. During each execution of <code>updateControl()</code> we check I2C hardware status to see if data transfer had completed. If it's not done yet, we resume running other code and will check again later.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>If data transfer from AS7341 is complete, we copy the transferred data into our sketch and our application logic can take it from there.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>My <a rel="noreferrer noopener" href="https://github.com/Roger-random/Mozzi_MMA7660" target="_blank">MMA_7660 sketch</a> tracked above states #1-3 within <code>updateControl()</code>, following precedence set by Mozzi's ADXL354 example. But that was a simple sensor to use, we just had to read three registers in a single operation. AS7341 is a lot more complex with multiple different read operations, so I pulled that state machine out of <code>updateControl()</code> and into its own method <code>async_read()</code>. The caller can keep calling <code>async_read()</code> on every <code>updateControl()</code> until the state reaches <code>ASYNC_COMPLETE</code>, at which point the process stops waiting for data to be copied and processed. Whenever the caller is ready to make another asynchronous read, they can set the state to <code>ASYNC_IDLE</code> and the next <code>async_read()</code> will start the process again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a test of this revamped system, I used it to read two bytes from AS7341 starting at register 0x91. 0x91 is for revision ID and the following byte 0x92 is the product ID. I wasn't sure what to expect for revision ID, I got zero. But according to the datasheet product ID is supposed to be 0x09, and that matches what I retrieved. A great start! Now I can dig deeper and figure out <a href="https://newscrewdriver.com/2023/01/08/unrolling-adafruit-as7341-readallchannels/">how to read its sensors</a> with nonblocking I2C.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/color_organ/blob/main/nonblock_example/nonblock_example.ino" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,62 @@
+---
+layout: post
+title: Wish List For Future Micro Sawppy Control Board
+date: 2021-03-31 12:30:00.000000000 +00:00
+type: post
+post_id: '25796'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- MP1584
+- Rover
+- Sawppy
+meta:
+  _oembed_time_52dbbd7ddff45925779f936fb70bbbc0: '1617253849'
+  _oembed_52dbbd7ddff45925779f936fb70bbbc0: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Lack
+    of low speed torque hampers its rugged terrain ability, but can still climb an
+    obstacle roughly as tall as its wheel diameter.<br>The speed makes it feel less
+    &quot;scholarly study exploration&quot; and more &quot;curious puppy exploring&quot;
+    which I&#39;m OK with. <a href="https://t.co/vPgNy0FQYy">pic.twitter.com/vPgNy0FQYy</a></p>&mdash;
+    Sawppy (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1375229078257590272?ref_src=twsrc%5Etfw">March
+    25, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1617219018'
+  _publicize_job_id: '56621398416'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25743'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/31/wish-list-for-future-micro-sawppy-control-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2021/03/30/micro-sawppy-beta-3-usb-access-port/">cut an access port for the micro-USB connector</a> on my Micro Sawppy Beta 3 (MSB3) control board, I think I have enough for continue developing my ESP32-based rover software. That's not to say the control board is in good shape, far from it! It was only the second iteration of my control board design, transition from <a href="https://newscrewdriver.com/2021/03/19/cardboard-rover-testbed-wheels-turning-and-steering/" target="_blank" rel="noreferrer noopener">a breadboard-tested layout</a> to soldered connections. I have many more improvements I want to incorporate for future revisions. All of them are problems on the power delivery side that I want to solve before I work more on the data transmission side.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest and most obvious problem that needs solving is making <a href="https://newscrewdriver.com/2021/03/23/power-distribution-complicates-first-soldered-prototype-circuit/" target="_blank" rel="noreferrer noopener">power distribution less chaotic</a>. I used many thick 22AWG wire for this board wired as closely to the battery plug as I could, in the hopes that I will reduce power losses enough to let me run on four AA batteries. Now that <a href="https://newscrewdriver.com/2021/03/24/configurable-micro-sawppy-servo-power-supply/" target="_blank" rel="noreferrer noopener">I've conceded I have to give up on that desire</a> and move to some other power source, there's less of a motivation for such large wires performing direct delivery. Future versions won't be as efficient and direct at power distribution, but they wouldn't need to! I expect they'll be carrying higher voltage, lower amperage, and tolerate more losses. In exchange, I can make the layout more sane.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By making the layout more sane, I hope to find room to install a fuse. Right now this control board is running without a fuse, and I think it's only a matter of time before a wiring accident destroys a component. In fact, I expect that an accidental short will be the reason I retire this board and move on to the next one. With power meter readings indicate steady state of 10W, I have enough data to make a first guess: I think a 2.5A fuse would be appropriate for running batteries anywhere from 7.4V (nominal voltage of two-cell LiPo) to 9V (six AA alkalines.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Making room for the fuse should also hopefully make room for a voltmeter to the rover. This will let me <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/06/powering-sawppy-the-rover/" target="_blank">visually monitor voltage sag</a> as it occurs. Adding another data point to correlate <a href="https://newscrewdriver.com/2021/03/25/provision-for-micro-sawppy-voltage-monitoring/" target="_blank" rel="noreferrer noopener">what the ESP32 would sense in software</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, I think an emergency stop button would be a good safety measure. I don't think I need it to cut power to the whole rover, just disable the motors should be enough. The DRV8833 DC motor control ICs have an "ENABLE" line and <a href="https://newscrewdriver.com/2021/03/06/notes-on-commodity-drv8833-breakout-board/">the breakout board I have on hand</a> pulls it up to VCC by default. But it also had provision for me to cut a trace to gain control over that line. The MP1584 buck converter for servo power also has an enable line, although the module I'm using doesn't seem to have exposed that line. A future control board revision could move to a different breakout module, one which exposes a way for me to control its enable state.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of those things would be nice to have, but I don't need them right now to start exploring <a href="https://newscrewdriver.com/2021/04/01/micro-sawppy-rover-and-spektrum-dx6i-radio-controller/">the first of many ways to control a Sawppy rover wirelessly</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

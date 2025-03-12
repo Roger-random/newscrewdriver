@@ -1,0 +1,75 @@
+---
+layout: post
+title: MX340 Paper Feed Motor Acceleration/Deceleration
+date: 2024-02-13 12:30:00.000000000 +00:00
+type: post
+post_id: '41939'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  firehose_sent: '1707856208'
+  _publicize_job_id: '91938652645'
+  timeline_notification: '1707856210'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:48'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/13/mx340-paper-feed-motor-acceleration-deceleration/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm working to interpret quadrature decoder positions reported for the paper feed motor of a Canon Pixma MX340 multi-function inkjet. I was happy <a href="https://newscrewdriver.com/2024/02/12/simple-debounce-improved-motion-decoding/">a relatively simple debounce filter cleaned up a lot of the noise</a> introduced by small encoder movements, but I was still having a hard time interpreting the results. I knew this would be a problem when <a href="https://newscrewdriver.com/2024/02/10/motion-decoder-trying-microseconds-per-count/" target="_blank" rel="noreferrer noopener">I chose to log "microseconds per encoder count"</a>. It was the reciprocal of the more obvious "encoder count per microsecond" velocity. I chose it to keep computation in the integer realm, avoiding floating point math. It should help keep the ATmega328 microcontroller in my Arduino Nano fast and responsive, with the tradeoff of causing me headaches now in analysis.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41929,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-us_per_position-over-time-with-two-entry-bounce-rejection.png?w=1024" alt="" class="wp-image-41929"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After squinting at this for a while, I realized I was being silly. I'm looking at the data after the fact, I no longer have to concern myself with keeping code fast and responsive. Furthermore, I'm now on a desktop computer whose CPU had floating point capabilities the ATmega328 lacked. I added a new column in Excel, with the simple formula of 1 divided by us/enc, and graphed resulting enc/us as my orange line.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41946,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-position_per_us-over-time-with-two-entry-bounce-rejection.png?w=1024" alt="" class="wp-image-41946"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beautiful! Now the graph is a lot easier for me to grasp at an intuitive level. It's easy to see motions for this startup sequence occur at several different peak velocities, and it even showed an artifact I wanted to investigate further: little velocity spikes book-ended some of these movements. (Might not be visible at blog resolution here. There's a zoomed-in version below.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When skimming through the raw us/enc data, I noticed the change in velocity was not uniform.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[...]<br>2963072,4484,1,992<br>2964064,4485,1,980<br><mark style="background-color:#fcb900" class="has-inline-color">2965044,4486,28,1448<br>2966492,4487,27,1428</mark><br>2967920,4488,1,1052<br>2968972,4489,1,1076<br>2970048,4490,1,1024<br>2971072,4491,1,1024<br>2972096,4492,14,1248<br>2973344,4493,130,3148<br><mark style="background-color:#fcb900" class="has-inline-color">2976492,4494,324,6376</mark><br>2982868,4495,88,2564<br>2985432,4496,18,1408<br>2986840,4497,5,1132<br>2987972,4498,3,1108<br>2989080,4499,1,1016<br>2990096,4500,952,[...]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This excerpt was from second movement decelerating towards its final position of 4500. From a peak speed where only about 65 microseconds were spent at each encoder position, this excerpt started when we're slowed enough to spend almost 1000 microseconds (1 millisecond) at each position. Position 4486-4487 each got around 1400us, then the system sped up. Then it slowed down towards position 4494. Over 6 milliseconds were spent there, then we see a final kick to bring it to position 4500.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41951,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/02/canon-pixma-mx340-paper-feed-encoder-position-and-position_per_us-over-time-with-two-entry-bounce-rejection-first-three-movements.png?w=1024" alt="" class="wp-image-41951"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming in to the velocity plot of first three movements, I can see this "not quite there... little more power... not quite there... more power" as a bit of saw tooth shape at the end of each deceleration curve. This graph also showed me something I hadn't noticed earlier: a similar saw tooth at the beginning of the second and third movements. They started moving with a sharp acceleration that was then dialed back before reaching their target velocity.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What might this mean? I speculate movements started with extra power in order to overcome static friction in the system. Once things started turning, the closed-loop motor control algorithm reevaluated power levels to maintain target acceleration on its way to target velocity. Then for deceleration, the control algorithm might deliberately aim for a slight undershoot, adding little bursts of power towards the end to reach target position. Aiming for a slight undershoot makes sense to me. If it had overshot, correction would have had to deal with <a href="https://en.wikipedia.org/wiki/Backlash_(engineering)">gear backlash</a> and reversing the inertia of the entire system, a much bigger can of worms.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Whatever the reason, the fact is acceleration/deceleration rates varied within a single movement, something easily visible once I actually plotted velocity vs. position. It's a pretty cool discovery even though <a href="https://newscrewdriver.com/2024/02/14/trying-dwell-time-to-delineate-one-motion-from-another/">it invalidated a plan I had</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

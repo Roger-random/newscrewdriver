@@ -1,0 +1,41 @@
+---
+layout: post
+title: Arduino Nano Forms Core Of Sawppy Wired Controller
+date: 2019-05-17 12:30:41.000000000 +00:00
+type: post
+post_id: '18496'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Sawppy the Rover
+tags: []
+meta:
+  _thumbnail_id: '18486'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1558121473'
+  _publicize_job_id: '30913153706'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1666773471
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/05/17/arduino-nano-forms-core-of-sawppy-wired-controller/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>At this point in the project, I have an Arduino sketch that <a href="https://newscrewdriver.com/2019/05/16/prototype-arduino-wired-controller-for-sawppy/">reads an analog joystick's position and calculates speed and position for Sawppy's ten serial bus servos to execute that command</a>. Now I turn my attention back to the hardware, which up until this point is a collection of parts connected by jumper wires. Good for experimental prototyping, not good for actually using in the field.</p>
+<p>The biggest switch is from using an <a href="https://newscrewdriver.com/2019/04/29/finally-opening-my-arduino-compatible-osepp-uno-r3-plus/">Arduino Uno clone</a> to an <a href="https://amzn.to/2nlaeQI" target="_blank" rel="noopener">Arduino Nano clone</a> (*). The latter is far smaller and would allow me to package everything inside a single hand-held assembly. Both Arduino are based on the same ATmega328 chip and offers all the input and output I need for this project. Typically, beginners like to start with an Uno because of its selection of compatible <a href="https://playground.arduino.cc/Main/SimilarBoards/#goShie">Arduino Shields</a>, but that is not a concern here.</p>
+<p>This specific Arduino Nano will be mounted on a prototype perforated and plated circuit board. It is placed on one end of the board in order to keep its USB port accessible. Two other components were soldered to the same prototype board: a 4-pin JST-XH connector for power and serial communications, and an analog joystick module.</p>
+<p>My mess of jumper wires were then replaced by short segments of wire that are soldered in place for greater reliability. This is a relatively simple project so there aren't very many wire connections, and they all easily fit on the back.</p>
+<p><img class=" size-full wp-image-18485 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/05/arduino-nano-with-joystick-on-pcb-back.jpg" alt="Arduino nano with joystick on PCB back" width="1600" height="900"></p>
+<p>In theory the Arduino sketch can be seamlessly switched over to this board. In practice I saw bootloader errors when I plugged in this board. It turns out, for this particular clone, I needed to select the "Tools" / "Processor" / "ATmega328P (Old Bootloader)" option in Arduino IDE. As a beginner I'm not completely sure what this meant, but I noticed sketch upload speed is significantly slower relative to the Uno. My source code was unchanged and it all still worked. A few test drive sessions verified this little hand held assembly could drive Sawppy as designed.</p>
+<p>Next step: <a href="https://newscrewdriver.com/2019/05/18/sawppy-wired-controller-enclosure/">an enclosure</a>.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

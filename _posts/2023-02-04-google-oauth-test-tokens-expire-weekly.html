@@ -1,0 +1,70 @@
+---
+layout: post
+title: Google OAuth Test Tokens Expire Weekly
+date: 2023-02-04 12:30:00.000000000 +00:00
+type: post
+post_id: '34886'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Cloud Services
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34888'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675542964
+  _publicize_job_id: '81207810658'
+  timeline_notification: '1675542722'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:04'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/04/google-oauth-test-tokens-expire-weekly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I know I have a lot to learn about network security, <a href="https://newscrewdriver.com/2023/02/03/web-dev-alphabet-soup-cors-and-csrf/">acronyms like CORS and CSRF are just a start</a>. Another name I've come across is <a rel="noreferrer noopener" href="https://oauth.net/2/" target="_blank">OAuth</a>, which looked <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/OAuth" target="_blank">very complicated</a>. Some critics say its complexity was by design, cynically describing OAuth as a system designed by enterprise security consultants to sell more consulting services. I don't know how true that is, but just from touching its edge I can confirm it is even more complicated than it looked.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My introduction was via Home Assistant, which was primarily designed to keep everything in my home and would have no need for OAuth. Pragmatically, though, it also makes effort to connect to cloud-based services, even though that is no longer keeping everything in my home. In order to connect to Google/Amazon/etc. there needs to be an internet-accessible entry point to a Home Assistant instance. It's possible to do everything ourselves, but the easier way is to <a href="https://www.nabucasa.com/pricing/">pay Nabu Casa for a Home Assistant Cloud account</a> to bridge between public internet and private home network. Such payment also supports development of Home Assistant, which I'm happy to do.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first test for Home Assistant Cloud was to connect to my Nest thermostat. Home Assistant has <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/nest" target="_blank">an integration for Google Nest</a>, and it was implemented in a way to leave a lot of control in the user's hands. Instead of something that suspiciously sucks up our Google credentials, we get instructions on how to use our own Google credentials to grant very specific and narrow access to Home Assistant Cloud. The upside is that Nabu Casa doesn't get to say how that access is granted. The downside is that we have to deal with everything ourselves, and that meant dealing with OAuth.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Following instructions for integration setup means setting up a Google developer account and logging into our Google Cloud services console to set up a new project to communicate with Home Assistant. This is not very user-friendly but reflects the developer-oriented origins of Home Assistant. One of the steps told us to "Publish App" because if we don't, the project status will stay "Testing". "<em>Make sure the status is not Testing, or you will get logged out every 7 days.</em>"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I click "Publish App" I was told my app requires verification which requires:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>An official link to your app's Privacy Policy</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A YouTube video showing how you plan to use the Google user data you get from scopes</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A written explanation telling Google why you need access to sensitive and/or restricted user data</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>All your domains verified in Google Search Console</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>A privacy policy? A YouTube video? <em>A written explanation for Google?</em> I didn't want to do all that just to access my Nest thermostat from Home Assistant! Google OAuth API Verification is a whole bag of worms, even <a rel="noreferrer noopener" href="https://support.google.com/cloud/answer/9110914" target="_blank">their FAQ page</a> is a long slog of a read.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So, I bailed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But this meant my Home Assistant OAuth token expires after a week. ("<em><a rel="noreferrer noopener" href="https://developers.google.com/identity/protocols/oauth2#expiration" target="_blank">A Google Cloud Platform project with an OAuth consent screen configured for an external user type and a publishing status of "Testing" is issued a refresh token expiring in 7 days.</a></em>") After that, I would have to manually renew it. This is <em>far </em>from ideal, and a poor first impression for working with OAuth. Maybe I'll be less hostile to OAuth once I get some experience with it, but this first impression certainly doesn't motivate me to do that anytime soon.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

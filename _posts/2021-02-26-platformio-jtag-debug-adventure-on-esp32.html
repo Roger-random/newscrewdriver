@@ -1,0 +1,95 @@
+---
+layout: post
+title: PlatformIO JTAG Debug Adventure on ESP32
+date: 2021-02-26 12:30:00.000000000 +00:00
+type: post
+post_id: '25267'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- ESP32
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25268'
+  timeline_notification: '1614371433'
+  _oembed_fa4f1744c4190a41018c9bfd08c8f7d5: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Reading
+    about <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>
+    optical audio decoder motivated me to work on one of my own to-do practice exercises:
+    Use <a href="https://twitter.com/hashtag/espressif?src=hash&amp;ref_src=twsrc%5Etfw">#espressif</a>
+    <a href="https://twitter.com/hashtag/ESP32?src=hash&amp;ref_src=twsrc%5Etfw">#ESP32</a>
+    LED PWM peripheral to generate step pulses for a <a href="https://twitter.com/hashtag/Trinamic?src=hash&amp;ref_src=twsrc%5Etfw">#Trinamic</a>
+    <a href="https://twitter.com/hashtag/TMC2208?src=hash&amp;ref_src=twsrc%5Etfw">#TMC2208</a>
+    stepper motor driver.<br><br>Code available at:<a href="https://t.co/A7b7lePu5y">https://t.co/A7b7lePu5y</a>
+    <a href="https://t.co/XDJsfUBUlX">pic.twitter.com/XDJsfUBUlX</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1335428897928740867?ref_src=twsrc%5Etfw">December
+    6, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _publicize_job_id: '55310157772'
+  _oembed_time_fa4f1744c4190a41018c9bfd08c8f7d5: '1614373559'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668587658
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/26/platformio-jtag-debug-adventure-on-esp32/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After I established that I can <a href="https://newscrewdriver.com/2021/02/25/esp32-exercise-stepper-motor-pulses-with-ledc-pwm/">create a simple project for ESP32 using PlatformIO's modified version of ESP-IDF</a>, I wanted to see if I can get PlatformIO's source code level debugging up and running. This is a luxury I lacked in my previous microcontroller development adventures. For Arduino and a few other bits of hardware, my only debugging tool was printing diagnostic text to serial terminal. For other hardware like PIC16F18345, I didn't even have that much. In theory my PICkit 3 had some limited debugging support but I never managed to get MPLAB X debugging running.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So the promise of debugging support on the ESP32 was pretty enticing. The debugger communication protocol is built on <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/JTAG" target="_blank">an industry standard called JTAG</a>, and I need to have an <a rel="noreferrer noopener" href="http://openocd.org/doc/html/Debug-Adapter-Hardware.html" target="_blank">adapter supported by OpenOCD</a> to talk JTAG on behalf of PlatformIO. There are quite a few options, but looking over the list I realized I already had one of them: JTAG was also used to debug the <a rel="noreferrer noopener" href="https://hackaday.com/2019/11/04/gigantic-fpga-in-a-game-boy-form-factor-2019-supercon-badge-is-a-hardware-siren-song/" target="_blank">Hackaday Supercon 2019 FPGA badge</a>, and as a member of the pre-conference development team, I had bought a Segger J-Link. Since I was not doing any commercial work, I qualified for the licensing terms for the EDU edition. (<a rel="noreferrer noopener" href="https://www.adafruit.com/product/1369" target="_blank">Item #1369 from Adafruit</a>.) So I went back to my box of Superconference stuff and dug out the J-Link I had bought.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The hardware connections were fairly straightforward, using some jumper wires to connect my J-Link to my ESP32 plugged in to a breadboard. Espressif <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/jtag-debugging/configure-other-jtag.html" target="_blank">has documentation on setting up JTAG debugging</a> for an ESP32, and PlatformIO <a rel="noreferrer noopener" href="https://docs.platformio.org/en/latest/tutorials/espressif32/arduino_debugging_unit_testing.html#debugging-the-firmware" target="_blank">has their own page</a> on the topic. I was sad to see that JTAG debugging would consume several of the <a href="https://newscrewdriver.com/2021/02/20/notes-on-esp32-input-output-pins/" target="_blank" rel="noreferrer noopener">already-precious pins</a> that could otherwise be used for GPIO. Cross-referencing with the <a rel="noreferrer noopener" href="https://randomnerdtutorials.com/esp32-pinout-reference-gpios" target="_blank">GPIO pin chart compiled by Random Nerd Tutorials</a>, we see the price we have to pay for debugger support are three "OK with caveat" pins and one unencumbered "OK" pin.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The software connection side proved to be more challenging than the hardware. I didn't expect it to work right off the bat but I didn't expect to run into this many problems, either. My first obstacle was an error message <code>LIBUSB_ERROR_NOT_SUPPORTED</code>. A little web searching found that this is the message if there are no drivers installed for the JTAG adapter. I went to Segger's web site to <a rel="noreferrer noopener" href="https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack" target="_blank">download and install their software suite</a>, but that made no difference. <a rel="noreferrer noopener" href="https://community.platformio.org/t/esp32-j-link-debugger-does-not-start/7716" target="_blank">Further web searching</a> found that it actually wanted the more generic WinUSB driver, which I could install using <a rel="noreferrer noopener" href="https://zadig.akeo.ie/" target="_blank">the Zadig utility</a>. Once installed, OpenOCD could communicate to J-Link, but J-Link could not talk to ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>More reading of various forum posts followed, where I learned a common diagnostics step is to try connecting at a lower speed. This mitigates problems caused by poor connections, which is highly likely in my case as I'm connected using jumper wires and breadboards. I would not be a surprised if it couldn't sustain the 20MHz connection speed. Looking in the debug output, I see the applicable configuration file is <code>boards/esp-wroom-32.cfg</code> and I found the <code>adapter_khz</code> parameter to reduce the default speed down to 5MHz. But when I ran that configuration, I saw the output was set to 5MHz (yay!) and immediately overridden to 20MHz again (Boo!)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Open On-Chip Debugger  v0.10.0-esp32-20201202 (2020-12-02-17:38)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+WARNING: boards/esp-wroom-32.cfg is deprecated, and may be removed in a future release.
+2
+Info : FreeRTOS creation
+<strong>adapter speed: 5000 kHz
+
+adapter speed: 20000 kHz</strong>
+
+Info : tcl server disabled
+Info : telnet server disabled
+Info : J-Link V10 compiled Jan  4 2021 16:15:44
+Info : Hardware version: 10.10
+Info : VTarget = 3.241 V
+2
+Info : Reduced speed from 20000 kHz to 15000 kHz (maximum).
+Info : clock speed 20000 kHz
+Info : JTAG tap: esp32.cpu0 tap/device found: 0x120034e5 (mfg: 0x272 (Tensilica), part: 0x2003, ver: 0x1)
+Info : JTAG tap: esp32.cpu1 tap/device found: 0x120034e5 (mfg: 0x272 (Tensilica), part: 0x2003, ver: 0x1)
+Info : accepting 'gdb' connection from pipe
+Warn : No symbols for FreeRTOS!
+Error: Target not examined yet
+Error executing event gdb-attach on target esp32.cpu0:
+
+Error: Target not halted
+Error: auto_probe failed</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining all the debugger configuration files I could find applicable to ESP32, I eventually found the culprit in the PlatformIO configuration file <code>platform.py</code> for espressif32 platform. It would override speed to 20MHz no matter what the specified <code>adapter_khz</code> value is. Editing that file directly on my computer, reducing to 5 MHz, allowed PlatformIO debugger to connect to my ESP32 running my code. I could set breakpoints! I could see variable values! I could walk the call stack! I could step through source code! This is amazing. I went back to PlatformIO to file a bug, but found that <a rel="noreferrer noopener" href="https://github.com/platformio/platform-espressif32/issues/459" target="_blank">someone had already filed issue #459 and a fix is on its way</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing this debugger doesn't seem to do is to catch fatal issues. I had hoped it would automatically break into debugger if one is attached, but the chip just resets. I was mildly disappointed but I'm happy with what I already have. Besides, it looks like a <a rel="noreferrer noopener" href="https://github.com/platformio/platform-espressif32/pull/286" target="_blank">fatal crash stack decoder is on its way as well</a>. At the moment I'm content because this is far better than debugging from serial port. Or worse, doing it blind. I'm going to need good debugging tools as I <a href="https://newscrewdriver.com/2021/02/27/juggling-esp32-tasks-with-freertos/">start increasing project complexity</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

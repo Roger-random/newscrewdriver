@@ -1,0 +1,48 @@
+---
+layout: post
+title: Notes on "Your first WebGPU app" Code Lab
+date: 2023-05-20 14:04:13.000000000 +00:00
+type: post
+post_id: '36760'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36773'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1684701524
+  _publicize_job_id: '84220803014'
+  timeline_notification: '1684616657'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/05/20/notes-on-your-first-webgpu-app-code-lab/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I watched through a small set of the presentations Google released for their I/O 2023 event, <a href="https://newscrewdriver.com/2023/05/19/notes-on-google-i-o-2023-angular-signals/">some more immediately applicable to my potential projects</a> than others. Since this is a developer conference, we get more than just talk: we get code to play with! Going back to <a href="https://newscrewdriver.com/2023/05/17/notes-on-google-i-o-2023-advanced-web-browser-capabilities/">my notes</a>, I decided to start with the curiosity (versus applicable) end of the spectrum with "<em><a href="https://codelabs.developers.google.com/your-first-webgpu-app">Your First WebGPU App</a></em>" code lab to get a look at what GPU programming looks like.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though I have no intention of writing GPU code in the near future, I chose WebGPU as a starting point for learning because it was designed to run on all GPU hardware. And therefore, a lowest-common denominator design that has all of the modern GPU concepts and none of the proprietary details. Plus, now that it is a part of Chrome 113, the runtime is already installed on my machine. The <a href="https://glitch.com/edit/#!/your-first-webgpu-app">code lab development environment is Glitch</a>, running entirely within Chrome. While the code lab example is in JavaScript, it's easy to do the same work with TypeScript by <a href="https://www.npmjs.com/package/@webgpu/types">adding definitions</a>. The biggest challenge to WebGPU development is that, because of how GPUs work, runtime errors would not throw a JavaScript exception with crash stacks. However, the WebGPU runtime will do its best to emit verbose information to the developer console, so we're not totally left in the dark.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This code lab advertised no prior GPU programming experience is required, so it starts at the beginning introducing GPU programming concepts. Here I learn that "shaders" are functions that we write for GPU hardware to execute in parallel. Written in WebGPU Shading Language (WGSL) which has superficial resemblance (but is not) programming language Rust. In this code lab, WGSL snippets are opaque strings embedded in JavaScript. Looking at <a href="https://webgpu.github.io/webgpu-samples">WebGPU samples</a> outside of this code lab, I see WGSL can be standalone <code>*.wgsl</code> files. This enables development-time tools like <a href="https://marketplace.visualstudio.com/search?term=wgsl&amp;target=VSCode">Visual Studio Code extensions</a> to help find mistakes early.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>We learn about three types of shaders, who differ by the kind of data they are required to generate as outputs. Vertex shaders must return a point in 3D space. Fragment shaders must return a pixel color. Compute shaders are freed from specific return value requirements. I expect some WGSL commands are limited to certain shaders, but that was out of scope of this code lab. They did cover the fact different shaders have access to different kind of data inputs.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Shaders can read and write to GPU memory, but not all GPU memory are equal. Memory specifically designated for vertex data, for example, have advantages over more general types of "uniform" or "buffer" memory. Another GPU hardware concept is dividing work among multiple workgroups. Certain WGSL operations require shaders to be in the same workgroup. Which makes it tempting to put everything in a single workgroup, but doing so would hinder ability to run in parallel. Finding the best division of workgroups is out of scope of this course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the end of the code lab we have an implementation of Conway's Game of Life, with vertex and fragment shaders that handle visual rendering and a compute shader to run the game algorithm. As a demo, it is not the most efficient implementation but it gives us a taste of GPU programming. A huge amount of setup work is required before any GPU processing takes place but, once running, it runs very quickly and in parallel. I think I've learned enough to keep in the back of my mind, so if an appropriate project comes to mind, I know to come back for more depth. For now I'm moving on to another code lab, one with lessons I expect to be more immediately relevant: <a href="https://newscrewdriver.com/2023/05/21/notes-on-getting-started-with-angular-signals-code-lab/">Angular Signals</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

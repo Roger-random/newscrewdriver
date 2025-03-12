@@ -1,0 +1,66 @@
+---
+layout: post
+title: MX340 Print Carriage Encoder Delivers 600 Counts Per Inch
+date: 2024-03-12 12:30:00.000000000 +00:00
+type: post
+post_id: '42382'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '42387'
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  timeline_notification: '1710271803'
+  firehose_sent: '1710271802'
+  _publicize_job_id: '92674505252'
+  wordads_ufa: s:wpcom-ufa-v4:1710373266
+  _elasticsearch_data_sharing_indexed_on: '2024-03-13 23:43:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/03/12/mx340-print-carriage-encoder-delivers-600-counts-per-inch/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After taking apart the print carriage of my old Canon Pixma MX340 multi-function inkjet, I figured out <a href="https://newscrewdriver.com/2024/03/11/mx340-print-carriage-encoder-pinout/">the pinout for its quadrature encoder</a>. Sadly, it didn't look very easy to tap into those signals on the printer mainboard.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42387,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-quadrature-encoder-sensor-with-soldered-wires.jpg?w=1024" alt="" class="wp-image-42387"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I soldered wires to the print carriage instead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42388,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-trailing-quadrature-encoder-sensor-wires.jpg?w=800" alt="" class="wp-image-42388"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I routed these wires through the front with nice long flexible wires, to my Arduino Nano running a quadrature decoding library. Providing 3.3V power and manually moving the carriage back and forth across its entire range, I saw ~7637 counts. I divided it by centimeters but didn't get a very nice number. I tried Imperial measurements, and it worked out to 600 counts per inch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Earlier I decided the paper feed encoder delivered 8640 counts per revolution. Trying to correlate the two measurements, I went back to measure the diameter of the paper feed shaft at 9.75mm. That works out to a circumference of 30.615mm or roughly 1.2 inch. 8640/1.2 = 7200 counts per inch. That's 12 times the horizontal axis resolution!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Such a huge discrepancy in resolution between horizontal and vertical axes can be explained by how this print engine moves. The paper feed motor needs to <a href="https://newscrewdriver.com/2024/02/13/mx340-paper-feed-motor-acceleration-deceleration/">advance paper with high accuracy</a> to make sure one print head pass lines up exactly against the next pass with no gaps or overlaps in between. The print carriage motor then moves the print head across the page at a controlled rate, which is the key here: the steady rate of motion means the printer control system can interpolate between those 600 counts per inch to synthesize virtual steps in between real hardware steps. Doubling to 1200 or quadrupling to 2400 (or more) are valid options when print carriage motor moves at a known controlled speed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":42390,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/03/canon-pixma-mx340-print-carriage-quadrature-encoder-soldered-wires-cut-short-after-experiment.jpg?w=800" alt="" class="wp-image-42390"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I have my answer, I no longer need these wire taps. At first I was ready to disassemble the print carriage again so I could unsolder these wires, and I wasn't trilled about the risk of damage and losing springs when I take it apart again. Then I decided to not take that risk, save myself the time of disassembly, and just cut off those wires today. I'll unsolder the remaining stump later, if ever. Right now I would rather spend my time <a href="https://newscrewdriver.com/2024/03/13/mx340-automatic-document-feeder-adf-disassembled/">disassembling the ADF gearbox</a> instead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

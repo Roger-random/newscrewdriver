@@ -1,0 +1,48 @@
+---
+layout: post
+title: Investigating Time Series Data
+date: 2022-01-25 12:30:00.000000000 +00:00
+type: post
+post_id: '21937'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Solar Power
+tags:
+- InfluxDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28326'
+  timeline_notification: '1643142624'
+  _publicize_job_id: '68148571282'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/25/investigating-time-series-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've had a little solar power system running for a while, based on an inexpensive Harbor Freight photovoltaic array. It's nowhere near big enough to run a house, but I can do smaller things like charge my cell phone on solar power. It's for novelty more than anything else. Now I turn my attention to the array again, because I want to start playing with <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Time_series" target="_blank">time series data</a> and this little solar array is a good test subject.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The motivation came from <a rel="noreferrer noopener" href="https://hackaday.com/2020/07/24/a-complete-raspberry-pi-power-monitoring-system/" target="_blank">reading about a home energy monitoring project</a> on Hackaday. I don't intend to deploy that specific project, though. The first reason is that particular project isn't a perfect fit for my little toy solar array, but the real reason is that I wanted to learn the underlying technologies hands-on. Specifically, <a rel="noreferrer noopener" href="https://www.influxdata.com/" target="_blank">InfluxDB</a> for storing time-series data and <a rel="noreferrer noopener" href="https://grafana.com/" target="_blank">Grafana</a> to graph said data for visualization.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I go down the same path, I thought I would do a little reading. Here's an informative StackExchange thread on <a rel="noreferrer noopener" href="https://softwareengineering.stackexchange.com/questions/269590/how-to-efficiently-store-big-time-series-data" target="_blank">storing large time series data</a>. InfluxDB was one of the suggestions and I'm sure the right database for the project would depend on specific requirements. Other tools in the path would affect throughput as well. I expect to use Node-RED for some intermediary processing, and that would <a rel="noreferrer noopener" href="https://discourse.nodered.org/t/how-fast-is-node-red/19014" target="_blank">introduce bottlenecks of its own</a>. I don't expect to be anywhere near hundreds of sampling points per second, though, so I should be fine to start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The original poster of that thread ended up going with <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Hierarchical_Data_Format" target="_blank">HDF5</a>. This is something developed &amp; supported by people who work with supercomputer applications, and again had very different performance requirements than what I need right now. HDF5 came up <a rel="noreferrer noopener" href="https://github.com/ros2/design/pull/160" target="_blank">in a discussion on a revamped ROS logging format (rosbag)</a> and it linked to some people <a rel="noreferrer noopener" href="https://cyrille.rossant.net/moving-away-hdf5/" target="_blank">unhappy with HDF5</a>. So there are definitely <a href="https://news.ycombinator.com/item?id=10858189" target="_blank" rel="noreferrer noopener">upsides and downsides</a> to that format. Speaking of ROS2... I don't know where they eventually landed on the rosbag format. <a href="https://github.com/ros2/design/blob/f69fbbd11848e3dd6866b71a158a1902e31e92f1/articles/rosbags.md" target="_blank" rel="noreferrer noopener">Here is an old design spec</a> absent from the latest main branch, but I don't know what eventually happened to that information.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I'm on the subject, out of curiosity I went to look up what CERN scientists use for their data. This led me to <a href="https://en.wikipedia.org/wiki/ROOT" target="_blank" rel="noreferrer noopener">something called R</a><a href="https://root.cern/" target="_blank" rel="noreferrer noopener">O</a><a href="https://en.wikipedia.org/wiki/ROOT" target="_blank" rel="noreferrer noopener">OT</a>, a system with its own file format. Astronomers are another group of scientists who need to track a lot of data, and <a href="https://asdf-standard.readthedocs.io/" target="_blank" rel="noreferrer noopener">ASDF exists to serve their needs</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was fun to poke around at these high-end worlds, but it would be sheer overkill to use tools that support petabytes of data with high detail and precision. I'm pretty sure InfluxDB will be fine for my project, so I will <a href="https://newscrewdriver.com/2022/01/26/learning-influxdb-basics/">get up to speed on it</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

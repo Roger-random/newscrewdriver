@@ -1,0 +1,41 @@
+---
+layout: post
+title: NodeSchool "How to npm" notes
+date: 2016-03-23 18:30:22.000000000 +00:00
+type: post
+post_id: '887'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+- Node.js
+- NodeSchool
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21068553225'
+  _edit_last: '98499281'
+  geo_public: '0'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/03/23/nodeschool-how-to-npm-notes/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The lesson of the day is "You get what you pay for."</p>
+<p>NodeSchool.io's <a href="http://nodeschool.io/#workshoppers">workshop</a> to teach NPM (Node.js Package Manager) is titled "How to npm."  It has the intention of letting students create a package, set up the proper dependency links, publish it, then publish it again to practice sending out updates. Since it would be bad to pollute the global package registry with a bunch of dummy student test packages, the workshop steps publish against a practice registry running locally instead of the real thing.</p>
+<p>As of today, there's a problem with the practice registry. It can accept updates to packages and track the version numbers, but the portion that tracks labels for these versions ("dist-tag" in NPM lingo) is broken and halts the lesson flow with a HTTP 404 error.</p>
+<p>The symptoms <a href="https://github.com/npm/how-to-npm/issues/21">match a bug</a> in the workshop that was acknowledged, analyzed, and purportedly fixed. However, the fix is incomplete because some people are <a href="https://github.com/npm/how-to-npm/issues/52">still seeing the same error</a> in the updated version of the workshop.</p>
+<p>Including myself!</p>
+<p>I tried to look at the code behind the lesson and try to see if I can come up with a fix for the bug, maybe this can be my first open source contribution! But alas, I'm not yet good enough with Node.js programming to understand what's going wrong.</p>
+<p>Fortunately I've already learned a few useful things before I hit this roadblock. I believe all the material useful to somebody <em><strong>consuming</strong> </em>packages has been covered. And I don't expect to <em><strong>publish</strong> </em>any packages myself soon.</p>
+<p>But if I do, I'll come back to this workshop again before I commit. Maybe it'll be fixed by then.</p>
+<p></body></html></p>

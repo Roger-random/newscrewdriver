@@ -1,0 +1,52 @@
+---
+layout: post
+title: 'New Project: Mozzi + AS7341'
+date: 2023-01-05 12:30:00.000000000 +00:00
+type: post
+post_id: '34442'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Arduino
+- AS7341
+- AVR
+- Mozzi
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34514'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673042187
+  _publicize_job_id: '80279966857'
+  timeline_notification: '1672950610'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/05/new-project-mozzi-as7341/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After looking at Adafruit's AS7341 library <a href="https://newscrewdriver.com/2023/01/04/notes-on-adafruit-as7341-arduino-library-example-code/">and its collection of example sketches</a>, I will now embark on a new project: make Mozzi play nice with AMS AS7341 sensor. If successful, it would solve a problem for my friend Emily Velasco who got me interested in the AS7341 to begin with. Her project uses <a rel="noreferrer noopener" href="https://sensorium.github.io/Mozzi/" target="_blank">Mozzi library</a> to generate sounds but calls into AS7341 API would <a rel="noreferrer noopener" href="https://social.afront.org/@MLE_online/109521889573457303" target="_blank">cause audible pops</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The problem is that AS7341 libraries from Adafruit and DFRobot both use <a href="https://www.arduino.cc/reference/en/language/functions/communication/wire/">Arduino's Wire library</a> for I2C communication. (Adafruit actually goes to their BusIO library which then calls into Wire.) These are blocking calls meaning the microcontroller can't do anything else until the operation completes. This is especially problematic for I2C reads: We have to perform a write to send the register address we want to read from, then start a read operation, and wait for the data to come in. This operation is usually faster than an eyeblink, but that's still long enough to cause a pop in Mozzi audio.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To help solve this problem, Mozzi includes a library called <code>twi_nonblock</code>. It allows us to perform I2C operations in a non-blocking manner so Mozzi audio can continue without interruption. Unfortunately, it is a lot more complicated to write code in this way, and it only supports AVR-based Arduino boards, so people usually don't bother with it. Mozzi includes <a rel="noreferrer noopener" href="https://github.com/sensorium/Mozzi/tree/master/examples/11.Communication/TwoWire_Read_ADXL345" target="_blank">an example sketch</a>, altering sounds based on orientation of an ADXL345 accelerometer. A few years ago, I took that example and converted it to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/07/30/second-attempt-success-mozzi-mma7660/" target="_blank">run with a MMA7660 accelerometer</a> instead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I could interface with an AS7341 using Mozzi's <code>twi_nonblock</code>, it would allow color-reactive Mozzi sketches like Emily's to run on AVR-based Arduino boards without audio glitches. But the AS7341 is far more complex than a MMA7660 accelerometer. I've got my work cut out for me but if it works, I will gain a great deal of confidence and experience on the AS7341 as well as <a href="https://newscrewdriver.com/2023/01/06/refresher-on-mozzi-timing-before-tackling-as7341/">a refresher on working with Mozzi</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/color_organ/blob/main/nonblock_example/nonblock_example.ino" target="_blank">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

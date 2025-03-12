@@ -1,0 +1,67 @@
+---
+layout: post
+title: Dell Latitude E6230 Getting Benched
+date: 2023-10-30 12:30:00.000000000 +00:00
+type: post
+post_id: '39892'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- Dell
+- E6230
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39890'
+  wordads_ufa: s:wpcom-ufa-v4:1698781440
+  _publicize_job_id: '88937493937'
+  timeline_notification: '1698694219'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/30/dell-latitude-e6230-getting-benched/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got one set of dead batteries <a href="https://newscrewdriver.com/2023/10/29/first-lithium-iron-phosphate-battery-runtime-test/">upgraded and tested</a> and now attention turns to a different set of expired batteries. <a href="https://newscrewdriver.com/2020/02/15/refurbished-dell-latitude-e6230-first-impressions/" target="_blank" rel="noreferrer noopener">I bought this refurbished Dell Latitude E6230 several years ago</a> intending to take apart and use as a robot brain. I changed my mind when it turned out to be a pretty nifty little laptop to take on the go, much smaller and lighter than my <a href="https://newscrewdriver.com/2018/06/03/in-a-distorted-computer-component-market-buying-is-better-than-building/" target="_blank" rel="noreferrer noopener">Dell Inspiron 7577</a>. With lower specs than the 7577, it also had longer battery run time and its performance didn't throttle as much while on battery. It has helped me field-program many microcontrollers and performed other mobile computing duties admirably.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I retired it from laptop duty when I got an Apple Silicon MacBook Air, but I brought it back out to serve as my introduction to <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/" target="_blank" rel="noreferrer noopener">running virtual machines under KVM hypervisor</a>. Retired laptops work well as low-power machines for exploratory server duty. Running things like Home Assistant haven't required much in the way of raw processing power, it was more important for a machine to run reliably around the clock while stashed unobtrusively in a corner somewhere. Laptops are built to be compact, energy-efficient, and already have a built-in battery backup. Though the battery usage pattern will be different from normal laptop use, which caused problems long term.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":39889,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/latitude-e6230-light-hdd.jpg?w=800" alt="" class="wp-image-39889"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":39888,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/latitude-e6230-light-hdd-battery.jpg?w=800" alt="" class="wp-image-39888"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before that happened though, this Latitude E6230 developed a problem starting up when warm. If I select "restart" it'll reboot just fine, but if I select "shut down" and press the power button immediately to turn it back on, it'll give me an error light pattern instead of starting up: The power LED is off, the hard drive LED is on, and the battery LED blinks. Given the blinking battery LED I thought it indicated a problem with the battery, but if I pull out the battery to run strictly on AC, I still see the same lights. The workaround is to leave the machine alone for 20-30 minutes to cool down, after which it is happy to start up either with or without battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But if the blinking battery LED doesn't mean a problem with the battery, what did it mean? I looked for the Dell troubleshooting procedure that would explain this particular pattern. I didn't get very far and, once I found the workaround, I didn't invest any more time looking. Acting as a mini-server meant it was running most of the time and rarely powered off. And if it does power off for any reason, this mini-server isn't running anything critical so waiting 20 minutes isn't a huge deal. I decided to just live with this annoyance for a long time, until the second problem cropped up recently:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none","align":"center"} --></p>
+<figure class="wp-block-gallery aligncenter has-nested-images columns-default is-cropped"><!-- wp:image {"id":39891,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/latitude-e6230-light-power.jpg?w=800" alt="" class="wp-image-39891"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":39890,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/10/latitude-e6230-light-power-battery.jpg?w=1024" alt="" class="wp-image-39890"></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now when the machine is running, the battery LED blinks yellow. This time it <em>does </em>indicate a problem with the battery. The BIOS screen says "Battery needs to be replaced". The Ubuntu desktop gives me a red battery icon with an exclamation mark. And if I unplug the machine, there's zero battery runtime: the machine powers off immediately. (Which has to be followed by that 20 minute wait for it to cool down before I can start it up again.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I knew keeping lithium-ion batteries at 100% full charge is bad for their longevity, so this was somewhat expected. I would have preferred the ability to limit state of charge at 80% or so. Newer Dell laptops like my 7577 have such an option in BIOS but this older E6230 did not. Given its weird warm startup issue and dead battery, low-power mini-server duty will now <a href="https://newscrewdriver.com/2023/10/31/dell-inspiron-7577-laptop-as-light-duty-server/">migrate to my Inspiron 7577</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

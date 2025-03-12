@@ -1,0 +1,59 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel WiFi LED
+date: 2023-12-20 12:30:00.000000000 +00:00
+type: post
+post_id: '41118'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41123'
+  firehose_sent: '1703104232'
+  wordads_ufa: s:wpcom-ufa-v4:1703391328
+  _publicize_job_id: '90449120207'
+  timeline_notification: '1703104233'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/20/canon-pixma-mx340-control-panel-wifi-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm examining the control panel of a Canon Pixma MX340 multi-function inkjet, and I found an interesting mix. Most of the buttons and such are managed by a NEC K13988 chip on the circuit board, but a few select items like <a href="https://newscrewdriver.com/2023/12/19/canon-pixma-mx340-control-panel-power-button-and-led/">the power button and nearby LEDs</a> have direct connections to the main board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41050,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-to-mainboard-cable-connector-closeup.jpg?w=1024" alt="" class="wp-image-41050"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>That discovery meant I've got most of the main board connector pins identified, and I thought I'd finish the job. Starting with pin 12, furthest away from the K13988 chip. On my first pass I identified it as a 5.5V DC power supply, and I was curious what needed the burly power of a nice thick copper trace. I followed it down and left to a bright blue LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41123,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-panel-pcb-wifi-led.jpg?w=1024" alt="" class="wp-image-41123"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well, technically it went to a 510 ohm resistor (R109) and check point (CP171) before reaching LED104. This LED shines into a clear plastic light guide to illuminate the "WiFi" sign on the front panel. Since I've established the WiFi module is connected to the main board, I thought it made sense the main board would control whether this WiFi sign is lit. But that's not what's going on here! The circuit continues through another check point (CP172) to a transistor (Q101) that controls whether or not to connect the other end of the LED to ground. The control signal voltage travels through a check point (CP170), buffered with a capacitor (C134) and circles back into the heart of the circuit board. I followed it all the way back to pin 2 of K13988.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This is very curious, because it implies the K13988 is responsible for turning this LED on or off by controlling the transistor. If that's the whole picture, it wouldn't have been terribly difficult to replace R109 with a lower resistance value and connect it to the 3.3V DC power plane that already existed on this board. I found no other branches for the 5.5V line, so there must have been a reason why they ran a separate 5.5V DC wire on the ribbon cable just for this LED. Does this LED draw too much power for the existing 3.3V DC power plane? Maybe the main board reserves the ability to turn it off by cutting power?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This project to trace main board connector pin 12 actually raised more questions than it answered. Fortunately there weren't too many other mysteries attached to <a href="https://newscrewdriver.com/2023/12/21/canon-pixma-mx340-control-panel-connector-to-main-board-pinout/">remaining main board connector pins</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

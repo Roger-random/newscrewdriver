@@ -1,0 +1,43 @@
+---
+layout: post
+title: Diagnosing Periodic Artifact in 3D Print Due To Inconsistent Extrusion
+date: 2018-07-06 09:00:10.000000000 +00:00
+type: post
+post_id: '16054'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+- TIL
+tags:
+- Azteeg X5 Mini
+- Monoprice Maker Select
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1530893067'
+  _publicize_job_id: '19734285899'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667464541
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:21'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/07/06/diagnosing-periodic-artifact-in-3d-print-due-to-inconsistent-extrusion/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>A common error when setting up a 3D printer is putting motor control parameters that don't actually match the installed physical hardware. Sometimes this is glaringly obvious: maybe the X-axis moves 5mm when it should move 10mm. Big errors are easy to find and fix, but the little "off by 0.5%" errors are tough to track down.</p>
+<p>In this category, a specific class of errors are specific to the Z-axis. When X- and Y-axis are moving around printing a layer, the Z-axis needs to hold still for a consistent print. And when it's time to print another layer, the Z-axis needs to move a precise and consistent amount for every layer. This is usually not a problem for stepper motors typical of hobby level 3D printer Z-axis control, as long as the layers correspond to an even number of steps.</p>
+<p>When the layers don't map cleanly to a number of steps, the Z-axis motor might attempt to hold position in between steps. This is fundamentally a difficult task for a stepper motor and its controller, rarely successful, so most control boards round off to the nearest step instead. This rounding tends to cause periodic errors in the print as the Z-axis rounds a tiny bit higher or lower than the desired position, and failing to meet the "precise and consistent" requirement for a proper print.</p>
+<p>With a freshly configured <a href="https://newscrewdriver.com/2018/07/02/smell-of-smoke-prompts-monoprice-maker-select-wanhao-duplicator-i3-upgrade-to-panucatt-azteeg-x5-mini/">Azteeg X5 Mini WiFi</a> control board in my <a href="https://newscrewdriver.com/2018/06/24/monoprice-maker-select-wanhao-duplicator-i3-as-rover-workhorse/">open-box Monoprice Maker Select printer</a>, seeing a periodic error along the Z-axis when <a href="https://newscrewdriver.com/2018/05/26/sawppy-the-rover-emulates-wheel-of-mars-2020/">printing Sawppy's wheels</a> immediately placed suspicion on Z-axis motor configuration.</p>
+<p><img class=" size-full wp-image-16055 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/04/debug-periodic-print-layer-artifact.jpg" alt="Debug Periodic Print Layer Artifact" width="670" height="1024"></p>
+<p>Back to hardware measurement I go, and reviewing motor control parameters. After over an hour of looking for problems in Z-axis configuration I came up empty-handed.</p>
+<p>Then a key observation when looking at details under magnification: the error is occurring every 6 layers, and not at a consistent location all around the print. This little bump is actually in a spiral shape around the wheel, which would not be the case when rounding off Z-axis steps.</p>
+<p>Following this insight, I went to review the 3D priner G-Code file and saw the print path is on a regular cycle printing the six spokes of the wheel. It printed the same way between 5 of those spokes, but the sixth is slightly different and that slightly different behavior cycles through the six spokes as the print rises through each layer.</p>
+<p>It turns out this print artifact is not a Z-axis configuration issue at all, but the result of inconsistent extrusion. When moving in one pattern (5 of the spokes) it extrudes a certain amount, when moving in another (the final spoke) it ends up putting a tiny bit of extra plastic on the print, causing the artifact.</p>
+<p></body></html></p>

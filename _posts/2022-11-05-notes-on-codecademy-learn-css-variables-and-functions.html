@@ -1,0 +1,54 @@
+---
+layout: post
+title: 'Notes on Codecademy "Learn CSS: Variables and Functions"'
+date: 2022-11-05 12:30:00.000000000 +00:00
+type: post
+post_id: '33458'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+tags:
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33464'
+  timeline_notification: '1667676612'
+  _publicize_job_id: '78438822132'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:22'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/05/notes-on-codecademy-learn-css-variables-and-functions/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Following <a href="https://newscrewdriver.com/2022/11/04/notes-on-codecademy-learn-css-responsive-design/">responsive design</a> in Codecademy's CSS curriculum is "<em><a rel="noreferrer noopener" href="https://www.codecademy.com/courses/learn-css-variables-and-functions" target="_blank">Learn CSS: Variables and Functions</a></em>". I was intrigued by the title of this course, as "variables" and "functions" were features unexpected in a visual appearance style description syntax. I associate them with programming languages! Does their presence mean CSS has evolved to become a programming language in its own right? After this class, I now know the answer is a definite "no".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>First of all, CSS "variables" are far less capable than their programming language counterparts. The name isn't even really accurate, as a value does not vary (hence not variable) after it is set. A value declared by one CSS rule can be overridden by a more specific CSS rule declaring something with the same name, but that's more analogous to variable scope than actually <em>varying</em> its value. This mechanism is also known as <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" target="_blank">CSS custom properties</a>, and I think that is a much more accurate name than "variable" which oversells its capabilities.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That said, CSS custom properties have their uses. This course showed several cases where custom properties can be overridden by CSS rules to good effect. The first example I found very powerful is combining custom properties and media queries. It makes for a far cleaner and more maintainable way to adjust a stylesheet based on screen size changes. The second significant example is in the exercise project, where we could create multiple themes on a web page (Light Mode/Dark Mode/Custom Mode) using custom properties.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Moving on to "CSS functions", I was disappointed to learn that we're talking about <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Functions" target="_blank">a fixed set of data processing/calculation functions</a> implemented by the runtime environment. We can't actually <em>declare</em> our own functions in CSS. CSS functions are nowhere as powerful as C++ functions. They're not even as powerful as Microsoft Excel functions, as CSS style sheets are not spreadsheets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Like almost every standard associated with HTML, we see a specification that tried to rationalize a lot of ad-hoc evolution and failing to hide all of the seams. The one inconsistency that annoys me is the fact some function parameters must be separated by commas, and other functions require parameters to be separated by spaces. It is especially jarring when the two styles are used together, as in this example used in the course:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>filter: drop-shadow(10px 5px 0.2rem rgba(236, 217, 203, 0.7));</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The <code>drop-shadow()</code> parameters are separated by spaces, while the <code>rgba()</code> parameters are separated by commas. What a mess! How can we be expected to keep this straight? Still, these functions should suffice to cover most of the intelligence we'd want to put in a style sheet. I was most impressed that <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/calc" target="_blank">calc()</a></code> tries to handle so much, including the capability to mix and match CSS units. I know the intent is to allow things like subtracting a pixel count from a percentage of width, but I see a debugging nightmare. The course covered only a subset of the set of functions, but of those that were covered my favorite is <code><a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp" target="_blank">clamp()</a></code>. I expect to use that a lot.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One unanswered mystery is the class recommends that we set global custom properties using <code>:root</code> pseudo-class as the specifier. The instruction said this is usually the <code>&lt;html&gt;</code> tag, without explaining exceptions to that rule. When is <code>:root</code> not <code>&lt;html&gt;</code>? The <a rel="noreferrer noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/:root" target="_blank">MDN documentation</a> unfortunately doesn't answer that question either. I'll have to leave it as a mystery as I proceed to <a href="https://newscrewdriver.com/2022/11/06/notes-on-codecademy-learn-css-accessibility/">learn about web accessibility</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

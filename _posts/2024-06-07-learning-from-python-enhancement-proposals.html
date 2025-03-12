@@ -1,0 +1,48 @@
+---
+layout: post
+title: Learning From Python Enhancement Proposals
+date: 2024-06-07 12:30:00.000000000 +00:00
+type: post
+post_id: '43673'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  firehose_sent: '1717788610'
+  _publicize_job_id: '95254428594'
+  timeline_notification: '1717788612'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-09 08:02:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/07/learning-from-python-enhancement-proposals/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been playing with CircuitPython for my latest microcontroller project, and so far I've been impressed by how well it brings Python benefits (like <a href="https://newscrewdriver.com/2024/06/06/circuitpython-asyncio-lock-prevents-interleaving-data-transmission/">managing asynchronous execution</a>) to modest hardware. But taking full advantage requires person writing the code to know how to leverage those Python benefits. I've had experienced Python developers say my Python code reads like C code, failing to take advantage of what Python has to offer. I think it's a valid observation! But I don't learn well reading a long spec end to end. I need to write some code in between reading documentation to give context for the concepts I'm reading. Some code, some documentation, back to code, repeat.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And I think my CircuitPython adventures have reached a good stopping point. My motivation is to better understand what I've been using to deal with asynchronous serial data transmission and reception between my microcontroller and the NEC K13988 chip in charge of a salvaged Canon Pixma MX340 multi-function inkjet control panel. I got as far as creating an instance of <code>asyncio.lock</code> and calling "<code>async with</code>" that lock. I copied that straight from sample code and it was an opaque magical incantation to me. While I understood the high level concepts of synchronization, I have no idea how Python language syntax used those keywords. So, time to pause coding and hit the books!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of the great things about Python is that its evolution takes place out in the open. Many features can be traced back to a corresponding design document called a Python Enhancement Proposal. A PEP distills information from many sources. Discussions on mailing lists, forums, etc. While design of a Python feature is usually summarized in a PEP, not all PEP intend to add Python features. PEPs are used for other things including best practice procedure recommendations for Python contributors. For example, I was amused by the fact that <a href="https://peps.python.org/pep-0001/">PEP #1</a> is for PEP itself, <em>PEP Purpose and Guidelines</em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A PEP for a feature will typically refer to precedence and possibly alternate proposals for that feature. This ancestry tree of PEPs is great for learning how a feature came to be. Sometimes a feature directly builds upon another, sometimes a feature has no direct technical relationship to another but the syntax is designed so existing Python developers will find it familiar. It also tends to mean I have to at least skim those earlier PEPs to understand what the current PEP is talking about. It will take effort to not get too distracted.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will try to stay focused on my objective: understand what "<code>async with</code>" does. <a href="https://docs.python.org/3/reference/compound_stmts.html#async-with">Documentation search</a> pointed to <a href="https://peps.python.org/pep-0492/">PEP 492 <em>Coroutines with async and await syntax</em></a>. Which mostly focused on the "<code>async</code>" part, assuming I was already familiar with "<code>with</code>". My understanding is still shaky so I will also need <a href="https://peps.python.org/pep-0343">PEP 343 <em>The “with” Statement</em></a>. Both PEP 492 and 343 pointed to <a href="https://peps.python.org/pep-0342/">PEP 342 <em>Coroutines via Enhanced Generators</em></a> as highly relevant.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think getting through this trio will give me a good start. A single step in the long journey to make my Python code look like Python and not just C code translated to Python syntax. Unfortunately, <a href="https://newscrewdriver.com/2024/06/08/toyota-sienna-denso-coil-on-plug-module/">I have a hard time staying focused on study time</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: Hackaday Badge Power Source
+date: 2018-10-23 09:00:40.000000000 +00:00
+type: post
+post_id: '17033'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23502117662'
+  timeline_notification: '1540310503'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/23/hackaday-badge-power-source/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When I got the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> playing music, I noticed the LCD screen brightness would visibly pulse when a note is playing. I thought it might be an intentional visual effect to go with the beat of the music, but I didn't see any sign of code to do so intentionally. The next most obvious explanation, then, would be a dip in screen supply voltage when the <a href="https://newscrewdriver.com/2018/10/21/hackaday-badge-audio/">speaker amplifier</a> is drawing power.</p>
+<p><img class=" size-full wp-image-17034 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/hackaday-badge-power.png" alt="Hackaday Badge Power" width="282" height="110"></p>
+<p>If this is the case, then the problem should be related to voltage regulation on the badge. Can we improve on this situation? I looked on the schematic for the voltage regulator and... hmm... there doesn't seem to be one.</p>
+<p>It looks like the badge is running directly on the pair of AA batteries. The positive terminal is the voltage supply rail, and the negative terminal is the ground plane. So there isn't anything working to keep the supply voltage constant when the battery level dips, and users see a change in LCD screen backlight brightness.</p>
+<p>The lack of voltage regulation also means the most obvious power upgrade carries some risk. <a href="https://hackaday.io/project/27427-camera-badge-for-supercon-2017">Last year's Hackaday camera badge</a> saw several upgrades from its pair of AA batteries to a single lithium ion battery cell. We were cautioned against doing it, but some people went ahead anyway and seemed successful.</p>
+<p>With the microcontroller knowledge I learned over the past year, I understand the warning: The PIC32 chips at the heart of both badges are 3.3V parts and according to their datasheet, they are only officially rated for operation at up to 3.8V. A lithium ion battery cell's nominal voltage is 3.7V which would be fine. But (and this is a <strong>BIG BUT</strong>) a fully charged lithium ion battery cell delivers 4.2V directly. This is well into "At Your Own Risk" territory.</p>
+<p>So yeah - last year some people connected a lithium cell and that seemed OK, but it's going beyond spec. I expect that some people will again perform the same upgrade to their badge this year. Personally? I'm not going to do it.</p>
+<p>If I need to power my badge with anything other than AA batteries, I'll remove the AA pair and power the badge through its expansion header. The +V pin connects directly to the supply rail, and GND connects directly to the ground plane. Putting a 3.0-3.3V <em><strong>regulated</strong></em> voltage on those pins should power the badge nicely.</p>
+<p>Note that in this case, when I disconnect the external power supply the AA pair will still need to be reinstalled for a firmware upgrade, as the programmer (PICkit 3 or similar) is not able to supply enough power to run the badge.</p>
+<p></body></html></p>

@@ -1,0 +1,149 @@
+---
+layout: post
+title: Polling ESP32 Timer Shows Wobble
+date: 2022-09-06 12:30:00.000000000 +00:00
+type: post
+post_id: '32425'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- Fan Strobe LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32415'
+  _publicize_job_id: '76476030180'
+  timeline_notification: '1662492621'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/06/polling-esp32-timer-shows-wobble/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I wanted to use my fan strobe LED as a learning project to work with ESP32 hardware timers, but my original idea required modifying timer configuration from inside a timer alarm ISR. <a href="https://newscrewdriver.com/2022/09/05/esp32-timer-isr-not-allowed-to-call-timer-api/">I have learned that is not allowed</a>, and I have the crash stacks to prove it. The ESP32 Arduino Core timer API is geared towards timer alarm interrupts firing at regular intervals to run the same code repeatedly, so I should change my code structure to match.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since the tachometer signal timing, strobe delay, and strobe duration could all change at runtime, I couldn't use any of those factors as my hardware timer interval. Switching to a regular timing interval meant I would have to poll current status to determine what to do about state of LED illumination.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the first draft, I kept a counter of how many times my ISR has executed. This variable is only updated by the ISR. Based on this counter value, each tachometer ISR calculates the time for LED to be turned on and back off in terms of timer ISR counter. Timer ISR compares those values to turn the LED on, then back off. When a particular pulse is complete, the timer ISR resets all counters to zero and waits for the next tachometer pulse to occur.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I tried a timer ISR duration of polling once every 20 microseconds. This meant a worst-case scenario of LED pulse starting as much as 20 microseconds later than specified, and a pulse duration as much as 20 microseconds longer than specified. When the ideal duration is around 200-250 microseconds, this is nearly 10% variation and resulted in visible flickering. I then tried 10 microseconds, and the flickering became less bothersome. On an ESP32 running at 240MHz, it meant I demand my ISR run once every 2400 clock cycles. I'm worried this is too demanding, but I don't have a better idea at the moment. At least it hasn't crashed my ESP32 after several minutes of running.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This new mechanism also allowed me to increase my LED strobe delay beyond a millisecond, but I noticed an irregular wobbling for longer delays. Those strobes of light are not happening at my calculated location. They vary by only a few degrees but very definitely noticeable. Is this a sign that my ISR is too demanding? For a multi-millisecond LED strobe delay, a 10-microsecond timer ISR would execute hundreds of times. If there's a tiny but unpredictable amount of delay on each, they might add up to cause a visible wobble. Perhaps I should <a href="https://newscrewdriver.com/2022/09/07/switching-to-cpu-ticks-did-not-eliminate-wobble-because-fan-itself-was-wobbling/">use a different counter with better consistency</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Custom component code with timer counter:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>#include "esphome.h"
+#include "esp_system.h"
+
+volatile int evenOdd;
+volatile int strobeDuration;
+volatile int strobeDelay;
+volatile int timerCount;
+volatile int timerLEDOn;
+volatile int timerLEDOff;
+
+const int gpio_led = 23;
+const int gpio_tach = 19;
+
+hw_timer_t* pulse_timer = NULL;
+
+IRAM_ATTR void timerCountersReset() {
+  timerCount = 0;
+  timerLEDOn = 0;
+  timerLEDOff = 0;
+}
+
+IRAM_ATTR void pulse_timer_handler() {
+  if (timerCount &gt;= timerLEDOn) {
+    digitalWrite(gpio_led, HIGH);
+  }
+
+  if (timerCount &gt;= timerLEDOff) {
+    digitalWrite(gpio_led, LOW);
+    timerCountersReset();
+  } else {
+    timerCount++;
+  }
+}
+
+IRAM_ATTR void tach_pulse_handler() {
+  if (0 == evenOdd) {
+    evenOdd = 1;
+  } else {
+    if (timerLEDOn == 0 &amp;&amp; strobeDuration &gt; 0) {
+      // Calculate time for turning LED on and off
+      timerLEDOn = timerCount + strobeDelay;
+      timerLEDOff = timerLEDOn + strobeDuration;
+    }
+    evenOdd = 0;
+  }
+}
+
+class FanStrobeLEDSetupComponent : public Component {
+  public:
+    void setup() override {
+      // Initialize variables
+      strobeDelay = 10;
+      strobeDuration = 20;
+      timerCountersReset();
+
+      // LED power transistor starts OFF, which is LOW
+      pinMode(gpio_led, OUTPUT);
+      digitalWrite(gpio_led, LOW);
+
+      // Attach interrupt to tachometer wire
+      pinMode(gpio_tach, INPUT_PULLUP);
+      evenOdd = 0;
+      attachInterrupt(digitalPinToInterrupt(gpio_tach), tach_pulse_handler, RISING);
+
+      // Configure hardware timer
+      pulse_timer = timerBegin(0, 80, true);
+      timerAttachInterrupt(pulse_timer, &amp;pulse_timer_handler, true);
+      timerAlarmWrite(pulse_timer, 10, true /* == autoreload */);
+      timerAlarmEnable(pulse_timer);
+    }
+};
+
+class FanStrobeLEDEvenOddToggleComponent: public Component, public Switch {
+  public:
+    void write_state(bool state) override {
+      evenOdd = !evenOdd;
+      publish_state(state);
+    }
+};
+
+class FanStrobeLEDDelayComponent: public Component, public FloatOutput {
+  public:
+    void write_state(float state) override {
+      strobeDelay = 1100*state;
+    }
+};
+
+class FanStrobeLEDDurationComponent: public Component, public FloatOutput {
+  public:
+    void write_state(float state) override {
+      strobeDuration = 100*state;
+    }
+};
+</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

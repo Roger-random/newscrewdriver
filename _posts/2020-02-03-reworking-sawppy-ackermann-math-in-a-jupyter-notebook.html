@@ -1,0 +1,40 @@
+---
+layout: post
+title: Reworking Sawppy Ackermann Math in a Jupyter Notebook
+date: 2020-02-03 12:30:32.000000000 +00:00
+type: post
+post_id: '20412'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Python
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40280077051'
+  timeline_notification: '1580761901'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/03/reworking-sawppy-ackermann-math-in-a-jupyter-notebook/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The biggest difference between driving Sawppy and most other robotic platforms is the calculation behind operating the six-wheel-drive, four-wheel-steering chassis. Making tight turns in such a platform demands proper handling of <a href="https://en.wikipedia.org/wiki/Ackermann_steering_geometry">Ackermann steering geometry calculations</a>. While Sawppy's original code (<a href="https://github.com/Roger-random/Sawppy_Rover/blob/master/docs/SGVHAK%20Rover%20Software.md">adapted from SGVHAK rover</a>) was functional, I thought it was more complex than necessary.</p>
+<p>So when I decided to <a href="https://newscrewdriver.com/2020/02/01/original-goals-for-sawppy-ros-melodic-project/">rewrite Sawppy code for ROS Melodic (since abandoned)</a> I also wanted to rework the math involved. I've done this a few times, most recently to make the calculations in C for an <a href="https://newscrewdriver.com/2019/04/28/i-found-my-motivation-to-enter-world-of-arduino-make-sawppy-easier/">Arduino implementation of Sawppy control code</a>, and it always starts with a sketch on paper so I can visualize the problem and keep critical components in mind.</p>
+<p>Once satisfied with the layout on paper, I translate them into code. And as typically happens, that code would not work properly on the first try. The test/debug/repeat loop is a lot more pleasant in Python than it was in C, so I was happy to work with the tools I knew. But if the iterative process was even faster, I was convinced I could write even better code.</p>
+<p>Thus I had my first <a href="https://github.com/Roger-random/sawppy_ros/blob/master/jupyter/Sawppy%20Ackermann%20Math.ipynb" target="_blank" rel="noopener">real world use of a Jupyter notebook</a>: my Sawppy Python Ackermann code. I could document my thinking in Markdown right alongside the code, and I could test ideas for simplification right in the notebook and see their results in numerical form.</p>
+<p>But I'm not limited to numerical form: Jupyter notebooks can access a tremendous library of data visualization tools. It was quite overwhelming to wade through all of my options, I ended up using <a href="https://matplotlib.org/">matplotlib</a>'s <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.quiver.html">quiver plot</a>. It plots a 2D field of arrows, and I used arrow direction to represent steering angle and arrow length to represent rolling speed. This plot gave a quick visual confirmation those numbers made sense.</p>
+<p>In the Jupyter notebook I could work freely without worrying about whether I was adhering properly to style guides. It made the iterative work faster, but that did mean spending time to rework the code to <a href="https://newscrewdriver.com/2020/02/02/inviting-wemake-to-nitpick-my-python-code-style/">satisfy wemake style guides</a>. The basic logic remains identical between the two implementations.</p>
+<p>I think this calculation is better than what I had used on SGVHAK rover, but it feels like there's still room for improvement. I don't know exactly how to improve just yet, but when I have ideas, I know I can bring up the Jupyter notebook for some quick experiments.</p>
+<p></body></html></p>

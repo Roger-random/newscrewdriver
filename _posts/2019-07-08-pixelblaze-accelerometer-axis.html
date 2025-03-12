@@ -1,0 +1,50 @@
+---
+layout: post
+title: Pixelblaze Sensor Expansion Board Accelerometer Direction
+date: 2019-07-08 12:30:38.000000000 +00:00
+type: post
+post_id: '18845'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18846'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1562614288'
+  _publicize_job_id: '32625761078'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/08/pixelblaze-accelerometer-axis/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>To me, the most interesting peripheral on the <a href="https://newscrewdriver.com/2019/07/07/examining-pixelblaze-sensor-expansion-board/">Pixelblaze Sensor Expansion Board</a> was its accelerometer module. Its microphone seems to be a decently well-explored space, with multiple examples available on the <a href="https://electromage.com/patterns">pattern database</a>, and I haven't figured out how I would use the light sensor creatively. But there weren't as many examples of using the accelerometer and I have a few potential ideas there.</p>
+<p>The first task of playing with an accelerometer is to determine direction. From <a href="https://github.com/simap/pixelblaze/blob/master/README.expressions.md#toc_7">Pixelblaze documentation</a> I know it will populate an array <code>accelerometer</code> of three elements for acceleration in X, Y, and Z axis. But which direction do each of these point?</p>
+<p>Pixelblaze IDE makes exploration easy. Variables that are <code>export</code>-ed (like the variables to hold sensor values) can be watched live. This simple test program is enough to get started:</p>
+<blockquote><p>
+<code>export var accelerometer = array(3)</code></p>
+<p><code>export function render() {</code><br />
+<code>}</code>
+</p></blockquote>
+<p>Once entered, look for the "Vars Watch" window on the right hand side and a green "Enable" button.</p>
+<p><img class=" size-full wp-image-18870 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/07/pixelblaze-vars-watch-accelerometer-disabled.jpg" alt="Pixelblaze vars watch accelerometer disabled" width="1164" height="368"></p>
+<p>Once enabled, Pixelblaze will display values of all exported variables and update them as the pattern is running.</p>
+<p><img class="alignnone size-full wp-image-18871" src="https://newscrewdriver.com/wp-content/uploads/2019/07/pixelblaze-vars-watch-accelerometer-enabled.jpg" alt="Pixelblaze vars watch accelerometer enabled.jpg" width="1159" height="333"></p>
+<p>Gravity is a constant acceleration towards the center of the earth, so we could tilt the Pixelblaze around and see which orientation shows the maximum positive number. The downward direction will be aligned with the axis showing the largest number while the other two are nearly zero. Once determined, jot them down in a notebook:</p>
+<p><img class="alignnone size-full wp-image-18865" src="https://newscrewdriver.com/wp-content/uploads/2019/07/pixelblaze-accelerometer-axis-handwritten-note.jpg" alt="Pixelblaze accelerometer axis handwritten note" width="1291" height="727"></p>
+<p>To double-check this answer, I went to look up the datasheet for the accelerometer chip itself. Looking on my expansion board, I saw the top was labeled with "*2815 C3H BCSHN" and a web search was inconclusive. Looking into <a href="https://github.com/simap/pixelblaze_sensor_board/blob/master/src/main.c">Pixelblaze sensor expansion source code</a>, I found comments marking code to talk with <a href="https://www.st.com/resource/en/datasheet/cd00274221.pdf">a LIS3DH accelerometer</a> whose data sheet had the following diagram:</p>
+<p><img class="alignnone size-full wp-image-18847" src="https://newscrewdriver.com/wp-content/uploads/2019/07/lis3dh-pin-descriptions-from-data-sheet.jpg" alt="LIS3DH pin descriptions from data sheet" width="1106" height="612"></p>
+<p>All three axis line up as my notes indicated, but their arrows point in opposite direction from mine. Perhaps there's a convention I'm violating and the arrow actually points opposite of acceleration? This would allow the convenience of a Z pointing up when sitting flat where gravity is accelerating downwards.</p>
+<p>Either way, this is enough information to continue. My earlier <a href="https://newscrewdriver.com/2019/07/05/pixelblaze-pattern-rgb-xyz-3d-octants/">RGB-XYZ 3D Octants</a> sample program was <a href="https://github.com/Roger-random/glowflow/blob/master/rgbxyz%20accelerometer">rewritten to add an accelerometer component</a>. This way the colored blocks move around in response to physical movements of the LED helix. But the visual motion was not intuitive to a human, because my LED pixel mapper matrix does not align with my accelerometer axis. One way to solve that problem is with <a href="https://newscrewdriver.com/2019/07/09/align-axis-of-pixelblaze-accelerometer-and-led-array/">a new top end piece for my LED helix</a>.</body></html></p>

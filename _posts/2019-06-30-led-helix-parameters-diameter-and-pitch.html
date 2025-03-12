@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'LED Helix Parameters: Diameter and Pitch'
+date: 2019-06-30 12:30:06.000000000 +00:00
+type: post
+post_id: '18771'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Projects
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18789'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '32351272460'
+  timeline_notification: '1561923021'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/30/led-helix-parameters-diameter-and-pitch/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>A <a href="https://newscrewdriver.com/2019/06/29/choosing-a-shape-for-pixelblaze-led-project/">helix has been chosen</a> as the geometry of my Pixelblaze LED project due to its straightforward simplicity: it turns a single line (the LED strip) into a three-dimensional cylindrical space. No cutting or soldering of LED strip pieces required.</p>
+<p>The next step in the design process is to decide exactly what shape this helix will be. A helix has two parameters: the diameter of the cylinder it circles around, and the pitch or distance between each loop in the helix. I wanted my LEDs to be evenly distributed on my cylinder, so there were two options to build this grid: Make LEDs align vertically as they wind around the cylinder, or turn that grid 45 degrees for an alternating-winds alignment. The each have merits, I decided on vertical alignment. If I play with displaying marquee text on this cylinder, I thought it will give us crisper edges to individual letters. Horizontal alignment won't be as crisp, due to helical shape, but we'll see what happens when we get there. (In contrast: 45 degree alignment would be better at masking the overall helical shape, at sacrifice of inability to make a clean edge horizontally or vertically. That might be preferable in certain future projects.)</p>
+<p><img class=" size-full wp-image-18790 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/06/vertical-grid-alignment-for-led-helix.jpg" alt="Vertical grid alignment for LED helix" width="1600" height="900"></p>
+<p>With that decision made, we could calculate helical diameter and pitch based around space between each LED on my strip. 60 LEDs per meter is 1/60 = 0.0167 meter or 1.67 cm between each pair of LEDs on this strip. Maintaining an even grid means 1.67cm will also be the pitch of my helix. The desire to align LEDs vertically mean the cylinder circumference must be a multiple of 1.67cm.</p>
+<p><img class=" size-full wp-image-18788 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/06/led-cylinder-parameters-in-excel-spreadsheet.jpg" alt="LED cylinder parameters in Excel spreadsheet" width="737" height="794"></p>
+<p>I want to use the entirety of my 5 meter LED strip. So a smaller circumference would result in a longer cylinder, and a larger circumference a squat cylinder. I decided to find the size where the cylinder length is closest to its diameter, making it a cylinder that would fit well within a cube. A little math in Excel determined the closest match is to use 31 LEDs around the circumference, which results in a diameter of 16.4cm and length of 16.1cm. But for the sake of dealing with nice even numbers, I chose the adjacent solution of 30 LEDs around the circumference. resulting in the following:</p>
+<ul>
+<li>5 meter LED strip @ 60 LEDs per meter = 1.67 cm pitch both horizontally and vertically.</li>
+<li>30 LEDs around circumference = 15.9 cm diameter</li>
+<li>10 helical revolutions = 16.7 cm length</li>
+</ul>
+<p>Next step: <a href="https://newscrewdriver.com/2019/07/01/3d-printed-led-helix-cylinder/">turn these calculations into 3D printable geometry</a>.</body></html></p>

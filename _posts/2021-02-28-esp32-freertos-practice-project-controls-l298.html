@@ -1,0 +1,78 @@
+---
+layout: post
+title: ESP32 FreeRTOS Practice Project Controls L298
+date: 2021-02-28 12:30:00.000000000 +00:00
+type: post
+post_id: '25289'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25464'
+  _oembed_5799de2cb26165bf80df902c8162a1a8: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">One
+    of these gearboxes sound... grouchy. <a href="https://t.co/qDIJ0mbNLT">pic.twitter.com/qDIJ0mbNLT</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1350972987407814659?ref_src=twsrc%5Etfw">January
+    18, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '55384751650'
+  timeline_notification: '1614544222'
+  _oembed_time_5799de2cb26165bf80df902c8162a1a8: '1614548767'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/28/esp32-freertos-practice-project-controls-l298/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After deciding <a href="https://newscrewdriver.com/2021/02/27/juggling-esp32-tasks-with-freertos/">I should learn to use FreeRTOS as part of my ESP32 projects toolbox</a>, I read through the free e-Book PDF. I don't understand all of it yet, but it built a foundation. Enough for me to start a practice project using some basic FreeRTOS features. What's the first thing I did? What we always do in embedded hardware: blink a LED!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've used this particular ESP32, mounted on this pink breadboard, for several projects. I had a few external LEDs configured on this pink breadboard for experimentation, and that was because I somehow never noticed that there was a second LED available for direct use on my ESP32 dev module. I knew there was a red one to indicate power, but I didn't notice the blue one until this project. Apparently <a rel="noreferrer noopener" href="https://amzn.to/2LI2EMU" target="_blank">this particular ESP32 development board</a> (*) is not a direct clone of Espressif's official ESP32 DevKitC, because <a rel="noreferrer noopener" href="https://dl.espressif.com/dl/schematics/esp32_devkitc_v4-sch.pdf" target="_blank">that had only one red LED</a> to indicate power. I have no idea how popular this particular two-LED layout is among ESP32 development boards, I'll have to keep an eye out as I buy more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Anyway, this board has a blue LED wired to GPIO2, who still got routed to the same pin as the Espressif module. The LED is wired in parallel and should not interfere with using that pin as output. Though it might affect the signal if I use it as input. I spun up a FreeRTOS task purely for the task of blinking the LED at regular intervals, just to verify I could. My first effort put the ESP32 in an infinite reset loop, and I eventually figured out it was caused by insufficient memory allocated to task stack. I was very surprised that a simple LED blinker needed more than one kilobyte of stack, but it's not the most important thing right now so I'll look into it later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After I successfully created a FreeRTOS task and see it running blinking the onboard blue LED, I proceeded to set up my first message queue. Queues are the simplest way for FreeRTOS tasks to pass data to each other. I copied code from my earlier ADC experiment to read position of an analog joystick, and queued the joystick position message for retrieval by another task. First run of the reader task simply dequeued the joystick position and printed to serial terminal, but that was enough to verify I had the queue running correctly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With those basic pieces established, I then wrote two more tasks. One reads the joystick position and puts motor control commands into yet another queue, and finally a task that reads motor control commands and adjusts MCPWM control signal for the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/01/26/trying-generic-l298n-driver-board/" target="_blank">L298N motor driver</a> accordingly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This exercise was a good test run to verify I could get the advantages I hoped to get by adopting FreeRTOS.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>By writing individual subareas as tasks, I could test them individually. In this case, I could smoke test the ADC task by writing another task to read the data it queued.</li>
+<li>Each task could be in charge of its own ESP32 configuration. ADC configuration is handled by the joystick reading task, separate from the other tasks. And likewise MCPWM configuration is handled by the L298N output task.</li>
+<li>Tasks are run independently from each other, and more importantly, can be modified independently. I found the blue LED was obnoxiously bright and went into my LED blinking task to reduce the on time to a brief flash and extend the time between flashes, and doing so did not affect timing of other tasks. Reading the joystick and sending motor control signals do not necessarily have to run in sync, I could update motor speed more often than reading the joystick, which would be useful if I wanted to add motor acceleration logic.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>That last item is especially important. If I learn enough to design my interfaces (FreeRTOS queues) right, I could swap out FreeRTOS tasks without worrying that I would interfere with other tasks. I want this design to scale from micro Sawppy to regular size Sawppy V2 by swapping out different modules written for different motor controllers. By similar token, it should be easier to do quick hacks like <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/04/17/sgvhak-rover-steering-restored-with-servo-hack/" target="_blank">swap out a single steering motor as SGVHAK rover had to do</a>. I also want different control input options, from simple wired joystick to web UI to ROS messages, each of which would be a different task module but they could all use the same message queue format to communicate with the rest of the rover.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Knowing how to set up FreeRTOS tasks and queues aren't nearly the whole picture of using FreeRTOS, but it gave me a good introduction and built confidence for continuing forward. And as a side effect of this software project, I also made a valuable non-software discovery: <a href="https://newscrewdriver.com/2021/03/01/jumper-wire-headaches-try-cardboard/">cardboard backing for electronics prototypes</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Source code for this project is <a href="https://github.com/Roger-random/ESP32Tests/tree/main/FreeRTOS_Play">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

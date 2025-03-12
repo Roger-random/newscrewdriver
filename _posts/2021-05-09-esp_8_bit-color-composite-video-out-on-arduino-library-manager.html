@@ -1,0 +1,50 @@
+---
+layout: post
+title: ESP_8_BIT Color Composite Video Out On Arduino Library Manager
+date: 2021-05-09 12:30:00.000000000 +00:00
+type: post
+post_id: '26389'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26457'
+  _publicize_job_id: '58165252538'
+  timeline_notification: '1620588620'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/09/esp_8_bit-color-composite-video-out-on-arduino-library-manager/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was really happy to have <a href="https://newscrewdriver.com/2021/05/08/adapting-adafruit-gfx-library-to-esp_8_bit-composite-video-output/">successfully combined two cool things</a>: (1) the color composite video out code from rossumur's ESP_8_BIT project, and (2) the Adafruit GFX graphics library for Arduino projects. As far as my research has found, this is a unique combination. Every other composite video reference I've found are <a rel="noreferrer noopener" href="https://learn.adafruit.com/circuit-playground-express-dac-hacks/composite-video" target="_blank">either lower resolution and/or grayscale only</a>. So this project could be an interesting complement to the <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/libraries/tvout/" target="_blank">venerable TVout library</a>. Like all of my recent coding projects they're publicly available on GitHub, but I thought it would have even better reach if I can package it as an Arduino library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Creating an Arduino library was a challenge that's been on my radar, but I never had anything I thought would be an unique contribution to the ecosystem. But now I do! I started with the tutorial for <a rel="noreferrer noopener" href="https://www.arduino.cc/en/Hacking/LibraryTutorial" target="_blank">building an Arduino library with a morse code example</a>. It set the foundation for me to understand the much more detailed <a rel="noreferrer noopener" href="https://arduino.github.io/arduino-cli/latest/library-specification/" target="_blank">Arduino library specification</a>. Once I had the required files in place, my Arduino IDE recognized my code as an installed library on the system and I could create new sketches that pull in the library with a single <code>#include</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One of my worries is the fact that this was a very hardware-specific library. It would run only on ESP32 running the Arduino Core and not any other hardware. Not the Teensy, not the SAMD, and definitely not the ATmega328. There are two layers to this protection: first, I add <code>architectures=esp32</code> to my <code>library.properties</code> file. This will inform Arduino IDE to disable this library as "incompatible" when another architecture is selected. But I knew it was possible for someone to include the library and switch hardware target, and they would be mystified by the error messages that would follow. So the second layer of protection is this <code>#ifdef</code> I added that would cause a compiler error with a human-readable explanation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>#ifndef ARDUINO_ARCH_ESP32
+#error This library requires ESP32 as it uses ESP32-specific hardware peripheral
+#endif</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was pretty pleased by that library and set my eyes on the next level: What if this can be in the Arduino IDE Library Manager? This way people don't have to find it on GitHub and download into their Arduino library directory, they can download directly from within the Arduino IDE. There is <a rel="noreferrer noopener" href="https://support.arduino.cc/hc/en-us/articles/360012175419-How-can-I-add-my-library-to-the-Library-Manager-" target="_blank">a documented procedure</a> for submission to the Library Manager, but before I submitted, I made the changes to ensure my library conforms to the <a rel="noreferrer noopener" href="https://www.arduino.cc/en/Reference/APIStyleGuide" target="_blank">Arduino API style guide</a>. Once everything looks like they're lined up, I <a rel="noreferrer noopener" href="https://github.com/arduino/Arduino/issues/11456" target="_blank">submitted my request </a>to see what happens. I expected to receive feedback on problems I need to fix before my submission would be accepted, but it was accepted on the first try! This was a pleasant surprise, but I'll be the first to admit <a href="https://newscrewdriver.com/2021/05/10/initial-issues-with-esp_8_bit-color-composite-video-out-library/">there is still more work to be done</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

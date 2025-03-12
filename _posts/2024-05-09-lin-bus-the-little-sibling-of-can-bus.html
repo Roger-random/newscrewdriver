@@ -1,0 +1,76 @@
+---
+layout: post
+title: LIN Bus The Little Sibling Of CAN Bus
+date: 2024-05-09 12:30:00.000000000 +00:00
+type: post
+post_id: '43345'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags: []
+meta:
+  _jetpack_memberships_contains_paywalled_content: ''
+  _jetpack_memberships_contains_paid_content: ''
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43346'
+  timeline_notification: '1715283041'
+  firehose_sent: '1715283039'
+  wordads_ufa: u:wpcom-ufa-v4:1715297907
+  _publicize_job_id: '94411658515'
+  _elasticsearch_data_sharing_indexed_on: '2024-05-09 23:40:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/09/lin-bus-the-little-sibling-of-can-bus/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Today I learned about existence of <a href="https://en.wikipedia.org/wiki/Local_Interconnect_Network">Local Interconnect Network</a> or LIN bus. It is a set of specifications defining a network communication system describing everything from raw voltage levels up to logical communication data protocol. A LIN network has up to sixteen devices: one controller and up to fifteen peripherals, and they communicate via asynchronous serial over a shared wire. At a high level, there's a lot of resemblance to how <a href="https://hackaday.com/2018/07/05/wrangling-rc-servos-becoming-a-hassle-try-serial-bus-servos/">serial bus servos</a> work, but LIN came from the automotive field.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As car components got more sophisticated, basic on/off or analog voltage was no longer enough to convey status. They needed an actual data network protocol, and the industry has settled on <a href="https://en.wikipedia.org/wiki/CAN_bus">CAN bus</a>. While capable and robust, CAN bus is overkill for basic functions. LIN bus is a simpler protocol that trades capability for less expensive implementation hardware. A focus on simplicity meant the LIN steering group decided <a href="http://lin-subbus.org/">their job here was done</a> and is now a mature standard also known as <a href="https://www.iso.org/standard/61229.html">ISO 17987</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Based on my limited reading, I understand the division of labor for an illustrative modern car driver's door would be something like this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>A host controller connected to the car's CAN bus communicating with the rest of the car, and connected to other devices inside the door via LIN bus.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A microcontroller monitors all the power window switches and report their status to the door host via LIN.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>A microcontroller manages the power window motor based on commands received from door host via LIN.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Repeat for power door locks, and power mirrors.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Other sensor inputs like whether door latch is closed.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Other control outputs like illuminating puddle lights.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Given the close proximity of these devices to each other inside the door, full signal integrity robustness of CAN bus was not strictly necessary. LIN bus modularity means fewer wires. For example, wires that would otherwise be necessary if the host controller had to monitor each power window switch individually could now be replaced by a single LIN data wire. It also simplifies adding/removing functionality for higher/lower trim levels in a product line, and reduce cost of adapting to regional differences like left- or right-hand drive.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's all great for automobile manufacturers. But since LIN bus is simpler than CAN bus, it also lowers the barrier to repurposing automotive components for hobbyist projects. A quick look on Arduino forums found several threads discussion LIN bus devices, and there exists <a href="https://amzn.to/44DCSx9">affordable breakout boards</a> (*) to interface with microcontrollers. This could be an entryway into a lot of fun.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

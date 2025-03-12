@@ -1,0 +1,152 @@
+---
+layout: post
+title: Disable Sleep on a Laptop Acting as Server
+date: 2022-08-08 12:30:00.000000000 +00:00
+type: post
+post_id: '31699'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PC
+tags:
+- Dell
+- E6230
+- Home Assistant
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '20547'
+  timeline_notification: '1659987042'
+  _publicize_job_id: '75567682657'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/08/08/disable-sleep-on-a-laptop-acting-as-server/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've played with different ways to install and run Home Assistant. At the moment my home instance is running as <a href="https://newscrewdriver.com/2022/05/27/home-assistant-os-in-kvm-hypervisor/">a virtual machine inside KVM hypervisor</a>. The physical machine is a refurbished Dell Latitude E6230 running Ubuntu Desktop 22.04. Even though it will be running as a server, I installed the desktop edition for access to tools like Virtual Machine Manager. But there's a downside to installing the desktop edition for server use: I did not want battery-saving features like suspend and sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I chose to use an old laptop like a server, I had thought its built-in battery would be useful in case of power failure. But I hadn't tested that hypothesis until now. Roughly twenty minutes after I unplugged the laptop, it went to sleep. D'oh! The machine still reported 95% of battery capacity, but I couldn't use that capacity as backup power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":31702,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/07/ubuntu-desktop-22.04-power-settings.png?w=845" alt="" class="wp-image-31702"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Ubuntu "Settings" user interface was disappointingly useless for this purpose, with no obvious ability to disable sleep when on battery power. Generally speaking, the revamped "Settings" of Ubuntu 22 has been cleaned up and now has fewer settings cluttering up all those menus. I could see this as a well-meaning effort to make Ubuntu less intimidating to beginners, but right now it's annoying because I can't do what I want. To the web search engines!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking for command-line tools to change Ubuntu power saving settings brought me to many pages with outdated information that no longer applied to Ubuntu 22. My path to success started with <a rel="noreferrer noopener" href="https://www.linux.org/threads/preventing-ubuntu20-04-from-sleeping.36035/" target="_blank">this forum thread on Linux.org</a>. It pointed to <a rel="noreferrer noopener" href="https://linux-tips.us/how-to-disable-sleep-and-hibernation-on-ubuntu-server/" target="_blank">this page on linux-tips.us</a>. It has a lot of ads, but it also had applicable information: <code>systemd</code> targets. The page listed four potentially applicable targets:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li><code>suspend.target</code></li>
+<li><code>sleep.target</code></li>
+<li><code>hibernate.target</code></li>
+<li><code>hybrid-sleep.target</code></li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using "<code>systemctl status</code>" I could check which of those were triggered when my laptop went to sleep.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>$ systemctl status suspend.target
+○ suspend.target - Suspend
+     Loaded: loaded (/lib/systemd/system/suspend.target; static)
+     Active: inactive (dead)
+       Docs: man:systemd.special(7)
+
+Jul 21 22:58:32 dellhost systemd[1]: Reached target Suspend.
+Jul 21 22:58:32 dellhost systemd[1]: Stopped target Suspend.
+$ systemctl status sleep.target
+○ sleep.target
+     Loaded: masked (Reason: Unit sleep.target is masked.)
+     Active: inactive (dead) since Thu 2022-07-21 22:58:32 PDT; 11h ago
+
+Jul 21 22:54:41 dellhost systemd[1]: Reached target Sleep.
+Jul 21 22:58:32 dellhost systemd[1]: Stopped target Sleep.
+$ systemctl status hibernate.target
+○ hibernate.target - System Hibernation
+     Loaded: loaded (/lib/systemd/system/hibernate.target; static)
+     Active: inactive (dead)
+       Docs: man:systemd.special(7)
+$ systemctl status hybrid-sleep.target
+○ hybrid-sleep.target - Hybrid Suspend+Hibernate
+     Loaded: loaded (/lib/systemd/system/hybrid-sleep.target; static)
+     Active: inactive (dead)
+       Docs: man:systemd.special(7)
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looks like my laptop reached the "Sleep" then "Suspend" targets, so I'll disable those two.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>$ sudo systemctl mask sleep.target
+Created symlink /etc/systemd/system/sleep.target → /dev/null.
+$ sudo systemctl mask suspend.target
+Created symlink /etc/systemd/system/suspend.target → /dev/null.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>After they were masked, the laptop was willing to use most of its battery capacity instead of just a tiny sliver. This should be good for several hours, but what happens after that? When the battery is almost empty, I want the computer to go into hibernation instead of dying unpredictably and possibly in a bad state. This is why I left <code>hibernation.target</code> alone, but I wanted to do more for battery health. I didn't want to drain the battery all the way to near-empty, and <a rel="noreferrer noopener" href="https://askubuntu.com/questions/92794/how-to-change-critically-low-battery-value" target="_blank">this thread on AskUbuntu</a> led me to <code>/etc/UPower/UPower.conf</code> which dictates what battery levels will trigger hibernation. I raised the levels so the battery shouldn't be drained much past 15%.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code># Defaults:
+# PercentageLow=20
+# PercentageCritical=5
+# PercentageAction=2
+PercentageLow=25
+PercentageCritical=20
+PercentageAction=15</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The UPower service needs to be restarted to pick up those changes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>$ sudo systemctl restart upower.service</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Alas, that did not have the effect I hoped it would. Leaving the cord unplugged, the battery dropped straight past 15% and did not go into hibernation. The percentage dropped faster and faster as it went lower, too. Indication that the battery is not in great shape, or at least mismatched with what its management system thought it should be doing.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>$ upower -i /org/freedesktop/UPower/devices/battery_BAT0
+  native-path:          BAT0
+  vendor:               DP-SDI56
+  model:                DELL YJNKK18
+  serial:               1
+  power supply:         yes
+  updated:              Fri 22 Jul 2022 03:31:00 PM PDT (9 seconds ago)
+  has history:          yes
+  has statistics:       yes
+  battery
+    present:             yes
+    rechargeable:        yes
+    state:               discharging
+    warning-level:       action
+    energy:              3.2079 Wh
+    energy-empty:        0 Wh
+    energy-full:         59.607 Wh
+    energy-full-design:  57.72 Wh
+    energy-rate:         10.1565 W
+    voltage:             9.826 V
+    charge-cycles:       N/A
+    time to empty:       19.0 minutes
+    percentage:          5%
+    capacity:            100%
+    technology:          lithium-ion
+    icon-name:          'battery-caution-symbolic'
+</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I kept it unplugged until it dropped to 2%, at which point the default <code>PercentageAction</code> behavior of <code>PowerOff</code> should have occurred. It did not, so I gave up on this round of testing and plugged the laptop back into its power cord. I'll have to come back later to figure out why this didn't work but, hey, at least this old thing was able to run 5 hours and 15 minutes on battery.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally: this laptop will be left plugged in most of the time, so it would be nice to limit charging to no more than 80% of capacity to reduce battery wear. I'm OK with 20% reduction in battery runtime. I'm mostly concerned about brief blinks of power of a few minutes. A power failure of 4 hours instead of 5 makes little difference. I have seen "battery charge limit" as an option in the BIOS settings of my newer Dell laptops, but not this old laptop. And unfortunately, <a rel="noreferrer noopener" href="https://askubuntu.com/questions/34452/how-can-i-limit-battery-charging-to-80-capacity" target="_blank">it does not appear possible to accomplish this strictly in Ubuntu software without hardware support</a>. That thread did describe an intriguing option, however: dig into the cable to pull out Dell power supply communication wire and hook it up to a switch. When that wire is connected, everything should work as it does today. But when disconnected, some Dell laptops will run on AC power but not charge its battery. I could rig up some sort of external hardware to keep battery level around 75-80%. That would also be a project for another day.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

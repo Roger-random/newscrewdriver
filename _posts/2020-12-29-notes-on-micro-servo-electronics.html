@@ -1,0 +1,70 @@
+---
+layout: post
+title: Notes on Micro Servo Electronics
+date: 2020-12-29 12:30:00.000000000 +00:00
+type: post
+post_id: '24301'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Servo
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '23996'
+  _publicize_job_id: '52794560090'
+  timeline_notification: '1609273922'
+  _oembed_a3de8e6e28b3ce7e1ae1495f97eeaf28: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Baby
+    <a href="https://twitter.com/hashtag/Sawppy?src=hash&amp;ref_src=twsrc%5Etfw">#Sawppy</a>
+    rover takes first steps! This is an early prototype to make sure wheel and suspension
+    parts work together as designed. Real rovers <a href="https://twitter.com/MarsCuriosity?ref_src=twsrc%5Etfw">@MarsCuriosity</a>
+    and <a href="https://twitter.com/NASAPersevere?ref_src=twsrc%5Etfw">@NASAPersevere</a>
+    had a similar test, read more about <a href="https://twitter.com/NASAJPL?ref_src=twsrc%5Etfw">@NASAJPL</a>
+    &quot;Scarecrow&quot; here: <a href="https://t.co/thAfoPwnC3">https://t.co/thAfoPwnC3</a>
+    <a href="https://t.co/QmX7xKyqcK">pic.twitter.com/QmX7xKyqcK</a></p>&mdash; Sawppy
+    (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1279565059262304258?ref_src=twsrc%5Etfw">July
+    4, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_a3de8e6e28b3ce7e1ae1495f97eeaf28: '1609289490'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/12/29/notes-on-micro-servo-electronics/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Examining my batches of micro servos unveiled a lot <a href="https://newscrewdriver.com/2020/12/28/notes-on-micro-servo-horn/">more mechanical variation than I had initially expected</a>, even before we get into fine details like plastic injecting molding draft angles. But I got enough of an understanding to start pondering how I'd mechanically accommodate designs across the generic spectrum, so I started looking at the electrical side of things. Given the mechanical variations, I now know to expect their electronics to be different, and that was the correct attitude.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24324,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/sg90-mg90s-micro-servo-pcbs.jpg?w=1024" alt="" class="wp-image-24324"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Three micro-servos from three different batches, and a casual glance is enough to tell there are three distinctly different control boards. (Plus examples from a fourth batch, in other pictures of this blog post.) Two of them have the motor soldered directly to their PCB, the third example here has a smaller circuit board but then must take the extra cost and assembly processing of motor wires. The three potentiometers are slightly different, but all of the motors are externally identical. Implying a commodity form factor that I am currently ignorant about, but can set aside to investigate later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In their product listings, all of these micro servos were listed with an operating voltage range from 4.8V to 6.0V. This traces back to the days of hobby remote control receivers, which can operate from 4 Nickel-Cadmium rechargeable battery cells in series. Each cell has a nominal operating voltage of 1.2, so 4 * 1.2 = 4.8V. However, the voltage of a fully charged cell is 1.5V, so servos must be able to tolerate up to 6V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To explore the low end, I connected a servo tester to these servos and drove them at 4.8V. While all of the SG90 seem to operate well at that voltage, there was a surprising outlier in the MG90S. One batch could work at 4.8V, but just barely. If the voltage drops below 4.8V <em>at all</em> it stops responding. This could happen when the battery cells get low. This could also happen when connected to a servo extension cable, or by the jumper wires I had used.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found this curious. Does it mean this particular servo design expected higher voltage? For full size servos, it is now fairly common to accept nominal power of 7.4V, which is two lithium chemistry battery cells in series. Perhaps this particular micro servo was designed for lithium batteries? I increased the supply voltage up to 7.4V and it continued to function. But that is nominal voltage -- fully charged lithium rechargeable batteries deliver 4.2V per cell or 8.4V for two cells in series.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Supplying this micro servo with 8.4V resulted in an audible pop and a visible flash. This gave me an answer: no, this micro-servo is not designed for lithium rechargeable batteries. Taking a closer look at the control board, I see a hole in the control chip right next to the power supply wire that delivered the killing 8.4V. In this picture a red arrow points to the hole, and I held up another control board from the same batch (without hole) for comparison.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24292,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-unhappy-with-8.4v-arrow.jpg?w=1024" alt="" class="wp-image-24292"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I've established 4.8V is too low for reliable operation with certain generic servos, and 8.4V is definitely too high, I'll aim to supply somewhere in the 5V-6V range. With that electronics baseline established, I switch focus to <a href="https://newscrewdriver.com/2020/12/30/type-623-ball-bearing-for-small-rover/">the bearings I will use</a> for this micro servo Sawppy rover.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,165 @@
+---
+layout: post
+title: Switching to CPU Ticks Did Not Eliminate Wobble Because Fan Itself Was Wobbling
+date: 2022-09-07 12:30:00.000000000 +00:00
+type: post
+post_id: '32445'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- Fan Strobe LED
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32415'
+  timeline_notification: '1662579028'
+  _publicize_job_id: '76509141683'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/07/switching-to-cpu-ticks-did-not-eliminate-wobble-because-fan-itself-was-wobbling/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>In order to obey constraints imposed by ESP32 hardware timer peripheral, I switched my fan strobe LED code to <a href="https://newscrewdriver.com/2022/09/06/polling-esp32-timer-shows-wobble/">use a regularly polling interrupt service routine (ISR)</a>. I worried that I would be overly demanding to schedule it once every 10 microseconds, but I saw no obvious problems from that front. What I did see, though, is an irregular wobble at longer LED pulse delays indicating my LED strobe timing is drifting in and out of sync with fan blade position.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Because I had calculated timing for LED pulses by counting number of times my ISR is executed, I thought this wobble might be caused by unpredictable delays in ISR overhead. A multi-millisecond strobe delay (where I notice the wobble) would require my ISR to count several hundred times, allowing tiny errors to add up. To test this hypothesis, I switched my code to use a more consistent timing mechanism: the ESP32 CPU tick counter. It is a highly precise (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Accuracy_and_precision" target="_blank">though not necessarily accurate</a>) source of timing information, one that I <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP_8_BIT_composite/issues/4" target="_blank">used for performance metrics in ESP_8_BIT_Composoite</a>. But it comes with limitations including:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Tick counter value is only valid on the same core it is queried from, it is not valid to compare tick count across the two cores of an ESP32. Not a problem here because Arduino subsystem is pinned to a single core, so I am guaranteed to always be on the same core.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>It goes up by one for each clock cycle of the CPU core. At 240MHz, an unsigned 32-bit value would overflow two or three times every minute. For this quick experiment I'm ignoring overflows, resulting in a brief dark pulse two or three times per minute. (This limitation was why I didn't use it in my first draft.)</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Switching my timer counter to CPU ticks did not eliminate the wobble, disproving my hypothesis. What else could it be? Thinking through possible explanations, I wished I could see exact time relationship between tachometer signal and my LED strobe pulses. Then I remembered I could do exactly that because <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/08/24/finally-bought-a-real-oscilloscope/" target="_blank">I have a real oscilloscope now</a>! In fact, I should have put it on scope <em>before </em>embarking on my CPU clock tick counter experiment. I guess I'm still not used to having this powerful tool at hand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I set up the oscilloscope so I could see the fan tachometer pulse that would trigger my tachometer interrupt handler, where I calculate the ticks for turning LED on and off. I set up the oscilloscope to trigger on my resulting LED output pulse. I increased the LED pulse delay to roughly 6 milliseconds, which is a roughly 180 degree rotation. Placing that pulse close to the next fan tachometer pulse allowed me to easily compare their timing on oscilloscope screen.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32448,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/fan-led-strobe-marked.jpg?w=1024" alt="" class="wp-image-32448"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>As it turned out, my ESP32 code is completely blameless. The timing held steady between tachometer signal triggering pulse and LED output pulse. What changed are timing between consecutive fan tachometer pulses. In other words: my strobe light visual is wobbling because fan speed is wobbling. This is <em>exactly </em>why strobe lights are useful to diagnose certain problems with high-speed machinery: it makes subtle problems visible to the human eye.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Conclusion: the wobble is not a bug, it is a feature!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Custom component code using CPU tick counter. (Does not account for 32-bit tick overflow):</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>#include "esphome.h"
+#include "esp_system.h"
+
+volatile int evenOdd;
+volatile int strobeDuration;
+volatile int strobeDelay;
+volatile uint32_t ccountTachometer;
+volatile uint32_t ccountLEDOn;
+volatile uint32_t ccountLEDOff;
+
+const int gpio_led = 23;
+const int gpio_tach = 19;
+
+// How many cycles per microsecond. 240 for typical ESP32 speed of 240MHz.
+const int clockSpeed = 240;
+
+hw_timer_t* pulse_timer = NULL;
+
+IRAM_ATTR void pulse_timer_handler() {
+  uint32_t ccountNow = xthal_get_ccount();
+
+  if (ccountNow &gt;= ccountLEDOn) {
+    digitalWrite(gpio_led, HIGH);
+    ccountLEDOn = 0;
+  }
+
+  if (ccountNow &gt;= ccountLEDOff) {
+    digitalWrite(gpio_led, LOW);
+    ccountLEDOff = 0;
+  }
+}
+
+IRAM_ATTR void tach_pulse_handler() {
+  if (0 == evenOdd) {
+    evenOdd = 1;
+  } else {
+    if (strobeDuration &gt; 0 &amp;&amp; ccountLEDOn == 0 &amp;&amp; ccountLEDOff == 0) {
+      ccountTachometer = xthal_get_ccount();
+
+      // Calculate time for turning LED on and off
+      ccountLEDOn = ccountTachometer + strobeDelay * clockSpeed;
+      ccountLEDOff = ccountLEDOn + strobeDuration * clockSpeed;
+    }
+    evenOdd = 0;
+  }
+}
+
+class FanStrobeLEDSetupComponent : public Component {
+  public:
+    void setup() override {
+      // Initialize variables
+      strobeDelay = 10;
+      strobeDuration = 20;
+      ccountLEDOn = 0;
+      ccountLEDOff = 0;
+
+      // LED power transistor starts OFF, which is LOW
+      pinMode(gpio_led, OUTPUT);
+      digitalWrite(gpio_led, LOW);
+
+      // Attach interrupt to tachometer wire
+      pinMode(gpio_tach, INPUT_PULLUP);
+      evenOdd = 0;
+      attachInterrupt(digitalPinToInterrupt(gpio_tach), tach_pulse_handler, RISING);
+
+      // Configure hardware timer
+      pulse_timer = timerBegin(0, 80, true);
+      timerAttachInterrupt(pulse_timer, &amp;pulse_timer_handler, true);
+      timerAlarmWrite(pulse_timer, 10, true /* == autoreload */);
+      timerAlarmEnable(pulse_timer);
+    }
+};
+
+class FanStrobeLEDEvenOddToggleComponent: public Component, public Switch {
+  public:
+    void write_state(bool state) override {
+      evenOdd = !evenOdd;
+      publish_state(state);
+    }
+};
+
+class FanStrobeLEDDelayComponent: public Component, public FloatOutput {
+  public:
+    void write_state(float state) override {
+      strobeDelay = 11000*state;
+    }
+};
+
+class FanStrobeLEDDurationComponent: public Component, public FloatOutput {
+  public:
+    void write_state(float state) override {
+      strobeDuration = 1000*state;
+    }
+};
+</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

@@ -1,0 +1,58 @@
+---
+layout: post
+title: Packaging ESP_8_BIT Video Code Into Arduino Library
+date: 2021-05-05 12:30:00.000000000 +00:00
+type: post
+post_id: '26416'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- Arduino
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26469'
+  _publicize_job_id: '58007945580'
+  timeline_notification: '1620243024'
+  _oembed_66285521ef37dba78420fb59c9f854cd: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    interactive RGB332 8-bit color picker can now be toggled between HSV cylinder
+    and RGB cube modes. Half of the cubes (green-yellow) aren&#39;t doing what I want
+    because I clearly don&#39;t understand quaternions. Still a nifty animation, though.
+    <a href="https://t.co/jtRMMVNboP">pic.twitter.com/jtRMMVNboP</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1388265529228480512?ref_src=twsrc%5Etfw">April
+    30, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_66285521ef37dba78420fb59c9f854cd: '1620295413'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/05/packaging-esp_8_bit-video-code-into-arduino-library/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I learned a lot about programming an ESP32 by poking around the ESP_8_BIT project. Some lessons were learned by hands-on doing, others by <a href="https://wordpress.com/post/newscrewdriver.com/26370">researching into documentation afterwards</a>. And now I want to make something useful out of my time spent, cleaning up my experiments and making it easy for others to reuse. My original intent is to make it into a file people can drop into the <code>\lib</code> subdirectory of an PlatformIO ESP-IDF project, but I decided it could have far wider reach if I can turn it into an Arduino library.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since users far outnumber those building Arduino libraries, majority of my web searches pointed to documentation on <a rel="noreferrer noopener" href="https://www.arduino.cc/en/Guide/Libraries" target="_blank">how to <em><strong>consume</strong></em> an Arduino library</a>. I wanted the other end and it took a bit of digging to find documentation on how to <em><strong>produce</strong></em> an Arduino library, starting with <a href="https://www.arduino.cc/en/Hacking/LibraryTutorial">this Morse Code example</a>. This gave me a starting point on the proper directory structure, and what a wrapper class would look like.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I left behind a few ESP_8_BIT features during the translation to an Arduino library. The performance metric code was fairly specific to how ESP_8_BIT worked. I could bring it over wholesale but it wouldn't be very applicable. The answer was to generalize it, but I couldn't think of a good way to do that so I'll leave perf metrics as a future to-do item. The other feature I left behind was the structure to run video generation on one core and the emulator on the other core. I consider ESP32 multicore programming on Arduino IDE to be an advanced topic and not my primary target audience. If someone wants to fiddle with running on another core, they're going to need to learn about <code>vTaskCreatePinnedToCore().</code> And if they've learned that, they know enough to launch my library wrapper class on the core of their choosing. I don't need to do anything in my library to explicit to support it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By working in the Arduino environment, I thought I lost access to ESP-IDF tools <a href="https://newscrewdriver.com/2021/04/24/cleaning-up-and-commenting-sawppy-rover-esp32-code/">I grew fond of while working on Sawppy ESP32 brain</a>. I learned I was wrong when I put in some <code>ESP_LOGI()</code> statements out of habit and noticed no compiler errors resulted. Cool! Looks like <code>esp_log.h</code> was already on the include list. That's the good news, the bad news was that I didn't get that log output in Arduino Serial Monitor, either. Fortunately this was easily fixed by changing an option Espressif added to the Arduino IDE "Tools" menu called "<a rel="noreferrer noopener" href="https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/ArduinoBLE.md#switching-on-debugging" target="_blank">Core Debug Level</a>". This defaults to "None" but I can select the log level of my choosing, all the way up to maximum verbosity. If I wanted to see <code>ESP_LOGI()</code>, I could select level of "Info" or higher.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With this work, I built a wrapper class around the video code I extracted from ESP_8_BIT. Enough to let me manipulate the frame buffer from an Arduino sketch to put stuff on screen. But if I want to make this friendly to all Arduino developers regardless of skill level, frame buffer isn't going to cut it. I'll need to have a real graphics API on top of my frame buffer. And thankfully I don't need to create one of my own from scratch, I just need to choose from <a href="https://newscrewdriver.com/2021/05/06/window-shopping-fabgl/">the multitudes of graphics libraries already available</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

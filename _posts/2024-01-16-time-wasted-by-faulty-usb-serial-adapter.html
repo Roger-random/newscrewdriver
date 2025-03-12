@@ -1,0 +1,55 @@
+---
+layout: post
+title: Time Wasted By Faulty USB Serial Adapter
+date: 2024-01-16 12:30:00.000000000 +00:00
+type: post
+post_id: '41600'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41602'
+  wordads_ufa: s:wpcom-ufa-v4:1705547080
+  _publicize_job_id: '91148199370'
+  firehose_sent: '1705437022'
+  timeline_notification: '1705437023'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/16/time-wasted-by-faulty-usb-serial-adapter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have deciphered how the main board of a Canon Pixma MX340 multi-function inkjet commands its control panel to <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/">toggle two onboard LEDs</a>, one more step towards understanding how those two components work together. Now I want to incorporate that new knowledge to my serial data filter program and add a second channel of serial data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To sit alongside my trusty and proven USB serial adapter, I dug up an inexpensive USB serial adapter I bought years ago. It was still unopened in its package. I don't remember what I originally bought it for, but apparently I didn't end up using it. The device is a blue USB plug with four wires coming out of it, a very generic form factor that still comes up for searches on "TTL Serial USB adapter".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I plugged it into the USB hub and it was recognized as a USB serial device. I wired it to receive MX340 main board commands in parallel with the control panel. I wrote a few lines of Python to read from this adapter and it was a mess. A LCD screen update -- which I had established to be <a href="https://newscrewdriver.com/2024/01/05/canon-pixma-mx340-control-panel-lcd-data-back-to-basics-with-excel-and-calc/" target="_blank" rel="noreferrer noopener">1020 bytes long</a> -- was received as 65 bytes. Not only did the majority of data go missing, the bytes that came through didn't resemble the expected data at all.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I first thought I made a wiring error and doubled checked my connections. Then I thought there was a coding error. When neither turned up a plausible explanation, I flipped the channels connected to my two serial adapters. Now my trusty USB serial adapter reported the expected 1020 bytes of data in a LCD screen update, and this new-from-package adapter reported gibberish instead of proper control panel button scan codes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This USB serial adapter sucked straight out of the box. Searching on my Amazon order history, I found my order for this adapter in September 2019. I was curious to see if this adapter caused problems for other people so I clicked on the product link, and that went to an error page. This product was so excellent its listing had been pulled! It was probably filled with negative reviews. I would have written one if I had opened the package as soon as I got it and realized it was junk. It had cost $7. Less than $12 I paid for my working adapter (purchased June 2018) but $7 is obviously too much for garbage. Since it's far too late for me to return this device for a refund, I shrugged and chalked it up to lesson learned. I went back to my order history, found the invoice for <a href="https://amzn.to/3tL8bIB" target="_blank" rel="noreferrer noopener">the USB serial adapter</a> (*) with a proven history and <a href="https://newscrewdriver.com/2024/01/17/new-usb-serial-adapter-show-minor-updates/">ordered another unit</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

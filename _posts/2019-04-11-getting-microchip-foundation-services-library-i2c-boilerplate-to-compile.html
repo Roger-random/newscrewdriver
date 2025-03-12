@@ -1,0 +1,78 @@
+---
+layout: post
+title: Getting Microchip Foundation Services Library I2C Boilerplate To Compile
+date: 2019-04-11 13:53:44.000000000 +00:00
+type: post
+post_id: '18327'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  timeline_notification: '1555016029'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29659939256'
+  _oembed_deb398f7c094a1f5accde7e869cd706f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_deb398f7c094a1f5accde7e869cd706f: '1555016109'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/11/getting-microchip-foundation-services-library-i2c-boilerplate-to-compile/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-18326 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/pic16f18345-vfd-driver-pcb.jpg" alt="PIC16F18345 VFD driver PCB" width="1600" height="900">Motivated by the desire to <a href="https://newscrewdriver.com/2019/04/05/dusting-off-past-pic-led-driver-projects-for-potential-vfd-driver/">get an old VFD up and running for fun</a>, I set up my PIC16F18345 to act as an I²C peripheral. I could write my own code from scratch, or I could build on top of boilerplate code published by Microchip for implementing an I²C slave device. My problem is that I had two choices - <a href="https://newscrewdriver.com/2019/04/06/i2c-on-pic-microchip-foundation-services-library-is-less-beginner-friendly/">the new thing that doesn't compile, or the old thing that is deprecated</a>.</p>
+<p>I've since figured out how to resolve the two error messages to compile the new thing, formally called Foundation Services Library.</p>
+<p>The first compiler error message was this:</p>
+<blockquote><p>
+<code>In file included from mcc_generated_files/USBI2C_app.c:25:</code><br />
+<code>mcc_generated_files/drivers/i2c_slave.h:55:34: error: unknown type name 'interruptHandler'</code><br />
+<code>void i2c_slave_setReadIntHandler(interruptHandler handler);</code><br />
+<code>^</code>
+</p></blockquote>
+<p>Searching elsewhere in the generated boilerplate, I found a declaration for <code>interruptHandler</code> in another different header file. Copying it into <code>i2c_slave.h</code> addressed the "unknown type name" error.</p>
+<blockquote><p><code>typedef void (*interruptHandler)(void);</code></p></blockquote>
+<p>However, that error was replaced by a warning that there are now duplicate declarations of <code>interruptHandler</code>. This seems silly - if there were a declaration to collide with, it should not have thrown an unknown type name error signifying the declaration's absence.</p>
+<p>MPLAB should either not throw the error, or not raise the warning, but it is doing both. I have yet to figure out if the toolchain is busted or if the boilerplate code is. For now, though, I could proceed to the next problem.</p>
+<p>The second compiler error message was this:</p>
+<blockquote><p>
+<code>mcc_generated_files/USBI2C_app.c:30:14: error: no member named 'SSP1IE' in 'PIE3bits_t'</code><br />
+<code>PIE3bits.SSP1IE = 1;</code><br />
+<code>~~~~~~~~ ^</code><br />
+<code>1 error generated.</code>
+</p></blockquote>
+<p>This one was easier to figure out - go into the header files for this chip and look for SSP1IE. I found it declared on PIE1bits instead of PIE3bits. So to get this code to compile, I changed the boilerplate code from this:</p>
+<blockquote><p>
+<code>void USBI2C_Initialize(void){</code><br />
+<code>PIE3bits.SSP1IE = 1;</code><br />
+<code>i2c_slave_open();</code><br />
+<code>}</code>
+</p></blockquote>
+<p>To this:</p>
+<blockquote><p>
+<code>void USBI2C_Initialize(void){</code><br />
+<code>PIE1bits.SSP1IE = 1;</code><br />
+<code>i2c_slave_open();</code><br />
+<code>}</code>
+</p></blockquote>
+<p>What does <code>PIE1bits.SSP1IE</code> actually do? I'm not sure so I'm not positive this is actually the correct fix. But at least all of the foundation boilerplate compiles, and I start browsing through sample code for MikroElektronika <a href="https://www.mikroe.com/usb-i2c-click">USB-I2C Click module</a> to figure out what it does and what I can do with it. Reading through code and comments, I saw this comment block.</p>
+<blockquote><p>
+<code>- This module only supports byte operations. Block read and write operations is </code><br />
+<code>not yet supported by MCC Foundation I2C Slave Drivers.</code>
+</p></blockquote>
+<p>This comment implies Microchip has decided to deprecate their previous I²C library even though the new library is unable to duplicate important functionality. If true, this is... unsatisfactory. I want block read and write operations for my project.</p>
+<p>Now I'm even more motivated to stay with the old code, but unfortunately there were <a href="https://newscrewdriver.com/2019/04/12/old-microchip-mcc-boilerplate-for-mssp-requires-c90-compatibility-mode/">some complications with that</a>, too...</body></html></p>

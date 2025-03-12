@@ -1,0 +1,34 @@
+---
+layout: post
+title: EXIF fun with CarrierWave uploader
+date: 2016-12-16 20:42:52.000000000 +00:00
+type: post
+post_id: '3118'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Rails
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30081410722'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/12/16/exif-fun-with-carrierwave-uploader/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>To play with the <a href="https://github.com/carrierwaveuploader/carrierwave">CarrierWave uploader</a> gem I created a <a href="https://github.com/Roger-random/cw_play">new Rails project</a> just for the purpose of experimentation. I had thought about doing this as part of the Hartl <em>Rails Tutorial</em> sample app but ultimately decided to keep things as bare-bones as I can.</p>
+<p>When trying to understand a new system, a debugger is a developer's best friend. Part of this exercise is to get my feet wet using a debugger to poke around a running Rails app. The Hartl <em>Rails Tutorial</em> text introduced the <strong>byebug</strong> gem but only minimally covered usage. The official Rails Guides had <a href="http://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-byebug-gem">more information</a> which helped me get going, in addition to various users <a href="http://fleeblewidget.co.uk/2014/05/byebug-cheatsheet/">writing up their own cheat sheets</a>.</p>
+<p>I decided to dig into image metadata. Basic information such as width and height were made available as <strong>img[:width]</strong> and <strong>img[:height]</strong> but where are the others? With the help of byebug I found that they were available in the <strong>img.data</strong> hash. Most of the photography-specific <a href="https://en.wikipedia.org/wiki/Exif">EXIF metadata</a> are in there as well, though somebody interested only in that subset can access it via the <strong>img.exif</strong> hash.</p>
+<p>As an exercise I decided to try to pull out the original date. Time stamp on digital photography files have always been a headache. Most computer OS track "Created Date" and "Modified Date" but they are relative to the computer and not reliable for photo organization purposes. Photo editing introduces another twist: if an image is created from a photograph, the time stamp would be the day the edit operation was made and not when the original photo was taken.</p>
+<p>Which is how I ended up looking at EXIF "DateTime", "DateTimeOriginal", and "DateTimeDigitized" to take the earliest date of the three (when present).  Then I ran into another can of worms: time zones. The EXIF time stamp have no time zone information, but the Ruby DateTime object type does. Now my time stamps are interpreted as UTC when it isn't. Since EXIF doesn't carry time zone data (that I can find) I decided to leave that problem to be tackled another day.</p>
+<p></body></html></p>

@@ -1,0 +1,99 @@
+---
+layout: post
+title: FormLabs Form 1+ Serial Console Disappointingly Uninformative
+date: 2022-09-25 12:30:00.000000000 +00:00
+type: post
+post_id: '32729'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _publicize_job_id: '77088662004'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32736'
+  timeline_notification: '1664134204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/25/formlabs-form-1-serial-console-disappointingly-uninformative/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I had a lot of fun with the OLED dot matrix display from a broken FormLabs Form 1+ laser resin 3D printer. It <a href="https://newscrewdriver.com/2022/09/24/formlabs-form-1-oled-burn-in/">exhibits a slight bit of burn-in</a> from its career as printer status display, but after my exploration I'm confident I can put it to use. Now I wrap up my exploration of Form 1+ mainboard with the 6-pin header in the corner labeled <code>CONSOLE</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Out of 6 pins, three were labeled G, T, and R. G was a good candidate for ground, and my meter confirmed it had continuity to the ground plane. T and R would be good candidates for "Transmit" and "Receive" wires of a serial port. I first connected it to my oscilloscope to confirm these are 3.3V signals, then I connected it to my FTDI USB to serial bridge to see what's shown on that console. I received legible data when configured serial port as follows:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>115200 baud</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>8 data bits</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>1 stop bit</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>No party</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>No flow control</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had hoped I would see low level information on this serial link, starting with perhaps the firmware version number. Since it is labeled <code>CONSOLE</code> I had also hoped for an interactive command prompt to query status and maybe diagnostics commands. Sadly, that did not seem to be the case. Or if it is, it required magic keypresses that I don't know. There was no response to anything I tried. (Escape, Control+C, the usual suspects.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's what I saw upon power-up, with the unique items highlighted.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code><mark style="background-color:#fcb900;" class="has-inline-color">Starting setup...</mark>
+<mark style="background-color:#fcb900;" class="has-inline-color">initializing USB</mark>
+setting up user interface
+setting up ui spi port
+starting UI timer
+powering up SD card
+setting up laser...
+initializing temperature sensor...
+setting up motors
+setting up SD card
+setting up print block processor
+setting up odometer
+...setup complete.</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>After powerup I pressed front panel button for printer startup. I saw a very similar but slightly different set of text. The differences are highlighted:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code><mark style="background-color:#fcb900;" class="has-inline-color">Starting initialize.</mark>
+setting up user interface
+setting up ui spi port
+starting UI timer
+powering up SD card
+setting up laser...
+initializing temperature sensor...
+setting up motors
+setting up SD card
+setting up print block processor
+setting up odometer
+...setup complete.
+<mark style="background-color:#fcb900;" class="has-inline-color">turning on power.
+initialization done</mark></code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond that... nothing. Nothing while downloading a print job, nothing while it is printing. I had hoped this serial console would display a superset of status information shown on front panel OLED display, but this is more likely a development feature that's severely limited when running customer facing firmware. Oh well, at least I looked. And now it's time to <a href="https://newscrewdriver.com/2022/09/26/formlabs-form-1-resin-tank-tilt-mechanism-damaged/">take apart some mechanical bits</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

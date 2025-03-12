@@ -1,0 +1,50 @@
+---
+layout: post
+title: Hackaday Badge Nyan Cat Needs A Diet
+date: 2018-11-07 18:02:49.000000000 +00:00
+type: post
+post_id: '17111'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '24033805408'
+  timeline_notification: '1541642574'
+  _oembed_1fe1d6fb6b4558943c91e6e6c1f44b37: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here’s
+    a closeup of my Supercon Super Speaker Badge Hack for the <a href="https://twitter.com/hackaday?ref_src=twsrc%5Etfw">@hackaday</a>
+    badge hacking competition! This 5-watt puppy blasted its way into winning the
+    Music Hack competition category. <a href="https://t.co/SQB49elqDH">pic.twitter.com/SQB49elqDH</a></p>&mdash;
+    Edje Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1059485849996292097?ref_src=twsrc%5Etfw">November
+    5, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_1fe1d6fb6b4558943c91e6e6c1f44b37: '1541662115'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/07/hackaday-badge-nyan-cat-needs-a-diet/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now I've got Nyan Cat animation running while playing a simplified adaptation of the Nyan Cat music on my <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a>. I started writing run-length encoding on Friday, had a crash course in reading sheet music on Saturday, and by end of Sunday I had music and animation loop running together. This is roughly the same timespan that will be available to people putting their own projects on <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a>, I just had the opportunity to do it a week ahead of time.</p>
+<p>The original intent was twofold: One, to give myself some hands-on familiarity with the badge code base and two, have Nyan Cat project code available for other badge hackers as reference. I originally planned to have Nyan Cat <a href="https://github.com/Roger-random/hackaday-belgrade-2018/tree/exploration">up on Github for people to look at</a>, but with this success my ambition grew: can this musical pop tart cat be part of the default badge firmware?</p>
+<p>The greatest constraint on badge firmware is available space. Before I started this exploration, I <a href="https://newscrewdriver.com/2018/10/27/hackaday-badge-firmware-diet/">hacked and slashed a bunch of features</a> to make things lightweight, but if Nyan Cat is to be on the basic badge, it must coexist with all those features I had cut. And there isn't enough free space for &gt;30 kilobytes of Nyan Cat.</p>
+<p>The majority of that space were consumed by run-length encoded animation frames, so that's an obvious place to start. Code - both on encoding and decoding - most easily accommodates even power-of-two reductions. Nyan Cat is a blocky little kitty and should preserve well in downscaling from full resolution (320x240) to half (160x120), quarter (80x60), and eighth (40x30.) Here they are displayed in their pixel dimensions.</p>
+<p><img class=" size-full wp-image-17113 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/11/poptartcatpixel.png" alt="PoptartcatPixel" width="800" height="300"></p>
+<p>And here they are with pixels scaled up to fill a 320x240 screen, as it would on the badge.</p>
+<p><img class=" size-full wp-image-17114 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/11/poptartcatscaled.png" alt="PoptartcatScaled" width="800" height="600"></p>
+<p>There is visible degradation from full to half resolution, but not terrible. Nyan Cat starts getting pretty blocky at quarter resolution, but still recognizable. Eighth resolution is not usable.</p>
+<p>So it looks like quarter scale is the sweet spot to target. This reduces the animation data from over 32 kilobytes to a little over 8 kilobytes. The music data and the program to bring it all together adds roughly another 2 kilobytes. It's a good start but there is still room for improvement.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253">Hackaday.io</a>)</p>
+<p></body></html></p>

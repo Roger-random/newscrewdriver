@@ -1,0 +1,37 @@
+---
+layout: post
+title: Why And How Of Simpler PIC Display Driver
+date: 2019-04-13 14:29:10.000000000 +00:00
+type: post
+post_id: '18333'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  timeline_notification: '1555210303'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29737241028'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/13/why-and-how-of-simpler-pic-display-driver/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Earlier in my outline for starting a new <a href="https://newscrewdriver.com/2019/04/05/dusting-off-past-pic-led-driver-projects-for-potential-vfd-driver/">PIC display driver project for a vacuum fluorescent display</a> (VFD), I mentioned one objective was to "<em>keep the PIC side very simple and move more display-specific logic into driving code</em>". Let's go into more detail on that part of the plan.</p>
+<p>In my previous PIC display projects, the code was written for a specific multi-segment display unit as part of the overall project. This meant the source code reflected whether the LED was a common-anode or common-cathode design, it also knew about which segment represented which parts of a particular digit. This knowledge was required because I put priority on making control communication interface easy. For the temperature demo, making my display unit show "72.3F" was a matter of sending the actual UTF-8 text string "72.3F" as bytes. The PIC then parsed that string and determined which segment to illuminate.</p>
+<p>But there's a good chance we have several other matrix display projects in the future, and I didn't want to invest the time to hard code intricacies of each unit into the PIC. It would be much easier to adapt and experiment if such logic was moved to a more developer-friendly environment like Python on a Raspberry Pi. In the case of the current NEC VFD under consideration, there are segments corresponding to days of the week and other function specific segments like an "On and "Off" text, "OTR", little clock icon, etc. Most of which won't necessarily be present on another VFD unit, why spend the time to embed such knowledge in my PIC driver?</p>
+<p><img class="alignnone size-full wp-image-18241" src="https://newscrewdriver.com/wp-content/uploads/2019/04/nec-vsl0010-a-vfd-annotated-1.jpg" alt="NEC VSL0010-A VFD Annotated" width="1600" height="652"></p>
+<p>We also want the flexibility to explore using the display in ways that are far afield of its original intent. For starters, that seven-segment display in the center doesn't have to be constrained to display numbers for a clock. All these desires meant moving away from performing data interpretation on the PIC.</p>
+<p>Instead, the PIC will accept a raw data stream where each bit corresponds to whether a segment is on or off. Each byte will correspond to 8 segments in a grid, and so forth. This means the task of mapping a desired digit to a set of segments will be the responsibility of driver code on host device rather than PIC peripheral. PIC will only concern itself with rapidly cycling through the matrix of digits keeping them all illuminated.</p>
+<p></body></html></p>

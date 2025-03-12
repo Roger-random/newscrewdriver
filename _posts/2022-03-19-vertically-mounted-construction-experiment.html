@@ -1,0 +1,75 @@
+---
+layout: post
+title: Vertically Mounted Construction Experiment
+date: 2022-03-19 12:30:00.000000000 +00:00
+type: post
+post_id: '29033'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- INA219
+- MP1584
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29036'
+  _publicize_job_id: '70383359764'
+  timeline_notification: '1647718204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/19/vertically-mounted-construction-experiment/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My experiments with IN219 DC voltage/current sensor started by monitoring the DC output of my solar storage battery, where I can count on a constant source of power and didn't need to worry about going to sleep to conserve power. After I gained some confidence using ESPHome I tackled the challenges of running on solar panel power with an independent battery (salvaged from a broken USB power bank) and now the <a href="https://newscrewdriver.com/2022/03/18/initial-logic-for-solar-monitor-project/">first version is up and running</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that meant I was no longer monitoring the DC output and solar battery consumption... and I liked collecting that data. So I created another ESPHome node with its own INA219 sensor to continue monitoring power output, with a few changes this time around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The biggest hardware change is switching from ESP8266 to ESP32. I have ambition for this node to do more than monitor power consumption, I want it to control a few things as well. The ESP8266 has very few available GPIO for these tasks so I wanted the pins and peripherals (like hardware PWM) of an ESP32. Thanks to the abstraction offered by ESPHome, it is a minor switch in terms of software.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Side note: I found that (as of today) <a href="https://web.esphome.io">https://web.esphome.io</a> fails to flash an ESP32 image correctly, leaving the flash partition table in a state that prevents an ESP32 from booting. Connecting to the USB port with a serial monitor shows an endless stream repeating this error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>rst:0x10 (RTCWDT_RTC_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+flash read err, 1000
+ets_main.c 371 
+ets Jun  8 2016 00:22:57</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My workaround was to <a rel="noreferrer noopener" href="https://esphome.io/guides/getting_started_command_line.html" target="_blank">fire up ESPHome Docker container</a> on an Ubuntu laptop for direct USB port access. This allowed an ESP32 image to be flashed in a way that boots up successfully. After the initial flash, I no longer needed the laptop as I was able to refine my ESPHome configuration via wireless updates.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My ESP8266 flashed correctly with <a href="https://web.esphome.io">https://web.esphome.io</a>, no problems there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to the hardware: another experiment is trying to mount my various electronics modules on their edge to pack items closer together. This is pretty easy for things like my INA219 module and my new experimental buck converter board, which has their connectors all on one side of their circuit board. I did mount an INA219 on its edge as planned, but just before I soldered a buck converter, I changed my mind and went with a known quantity MP1584 module instead. It's still mounted vertically, though, using legs of 220uF capacitors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I expect to add various experimental peripherals for this ESP32 to control, I also added a fuse in case something goes wrong. (Generally speaking, I really should be incorporating more fuses in my projects anyway.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first experimental peripheral output on this board is a USB Type-A port connected to the 5V output of my MP1584. I'm starting out with a direct tap to verify everything worked as expected before I start adding ESP32 control. Thanks to vertical mounting, I have plenty of room left on this prototype board for future experiments like <a href="https://newscrewdriver.com/2022/03/20/power-for-usb-c-is-more-complicated-than-red-wire-black-wire/">an aborted attempt to hack a USB Type-C cable</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":29068,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/esp32-vertical-mount-board-top-view.jpg?w=1024" alt="" class="wp-image-29068"></figure>
+<p><!-- /wp:image --><br />
+</body></html></p>

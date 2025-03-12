@@ -1,0 +1,61 @@
+---
+layout: post
+title: ESP8266 MicroPython Automatically Remembers WiFi
+date: 2022-02-11 12:30:00.000000000 +00:00
+type: post
+post_id: '28543'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+- Python
+tags:
+- ESP8266
+- MicroPython
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28376'
+  _publicize_job_id: '68871454561'
+  timeline_notification: '1644611401'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:52'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/11/esp8266-micropython-automatically-remembers-wifi/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>There were <a href="https://newscrewdriver.com/2022/02/10/a-few-speed-bumps-on-the-road-to-esp8266-micropython/">a few speed bumps</a> on my way to a MicroPython interactive prompt, also known as REPL the read, evaluate, print loop. But once I got there, I was pretty impressed. It was much friendlier to iterative experimentation than Arduino on an ESP8266, because I don't have to reflash and reboot every time. And since the ESP8266 has WiFi capabilities, <a rel="noreferrer noopener" href="https://docs.micropython.org/en/latest/esp8266/tutorial/repl.html" target="_blank">getting REPL over the network (WebREPL)</a> is even cooler. Now I can experiment while it runs on another power source, completely <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/02/01/making-a-usb-data-only-cable/" target="_blank">independent of USB</a> for either power of data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I got there, though, I needed to get this ESP8266 on my home WiFi network. By default, MicroPython sets up an access point for its own network so I need to turn "AP mode" off. Then I turn on "station mode" which allows connection to my WiFi router given its SSID and password.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>import network
+
+ap = network.WLAN(network.AP_IF)
+ap.active(False)
+
+sta = network.WLAN(network.STA_IF)
+sta.active(True)
+sta.config(dhcp_hostname='my hostname')
+sta.connect('my wifi ssid','my wifi password')</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I added one optional element: the <code>dhcp_hostname</code> parameter. This is the name shown to my router and probably other devices on my home network. If I don't set this, the default name is "ESP-" followed by six hexadecimal digits of the ESP8266's MAC address. That's not a particularly memorable name so I wanted something I could remember and recognize.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And then, to my surprise, MicroPython remembered the network settings upon restart. I wrote a piece of Python code to perform this routine that I could run whenever I rebooted the board. But when I set out to test it by rebooting the board, it automatically reconnected to WiFi. This tells me a successful WiFi connection would cause a write to flash memory, which implies I should not run my WiFi connection code upon every startup. I expect to make this board go to deep sleep frequently and, if it writes WiFi information to flash every time it wakes up, I will quickly wear out the flash. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But that is just a hypothesis. As MicroPython is an open source project, it should be possible for me to <a href="https://github.com/micropython/micropython" target="_blank" rel="noreferrer noopener">dig into the code</a> and figure out exactly when MicroPython writes WiFi connection information to flash. Perhaps it isn't as bad as I feared it would be. Until then, however, I will hold off running my WiFi connection script.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A downside of not running my script is the DHCP hostname, which is not remembered upon reboot and this board reverted back to the default ESP-prefix name. But I can live with that for now, the next step is to <a href="https://newscrewdriver.com/2022/02/12/second-esp8266-voltage-monitor-is-directly-wired-to-buck-converter/">set up my hardware</a> for playing with deep sleep under battery power.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

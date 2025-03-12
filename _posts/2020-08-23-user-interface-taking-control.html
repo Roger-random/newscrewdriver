@@ -1,0 +1,47 @@
+---
+layout: post
+title: User Interface Taking Control
+date: 2020-08-23 12:30:00.000000000 +00:00
+type: post
+post_id: '22186'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- UWP
+meta:
+  _thumbnail_id: '22069'
+  _publicize_job_id: '48040140496'
+  timeline_notification: '1598211018'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/08/23/user-interface-taking-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I finally figured out that keyboard events <a href="https://newscrewdriver.com/2020/08/22/my-problem-was-one-of-control/">require objects derived from UWP's <code>Control </code>class</a>, the rest was pretty easy. UWP has <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/" target="_blank">a large library of common controls</a> to draw from, but none really fit what I'm trying to present to the user.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What came closest is a <code><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/scroll-controls" target="_blank">ScrollViewer</a></code>, designed to present information that does not fit on screen and allows the user to scroll around the full extents much as my camera on a 3D printer carriage can move around the XY extents of the 3D printer. However, the rendering mechanism is different. <code>ScrollViewer </code>is designed to let me drop a large piece of content (example: a very large or high resolution image) into the application and let <code>ScrollViewer</code> handle the rest independently. But that's not what I have here - in order for scrolling to be mirrored to physical motion of 3D printer carriage, I need to be involved in the process.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Lacking a suitable fit in the list of stock controls, I proceeded to build a simple custom control (based on the <code><a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.usercontrol" target="_blank">UserControl</a></code> class) that is a composite of other existing elements, starting with the <code>CaptureElement </code>displaying the webcam preview. And unlike on <code>CaptureElement</code>, the <code>OnKeyDown </code>and <code>OnKeyUp </code>event handlers do get called when defined on a <code>UserControl</code>. We are in business!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once called, I have the option to handle it, in this case translating directional desire into G-code to be sent to the 3D printer. My code behavior fits under the umbrella of "inner navigation", where a control can take over keyboard navigation semantics inside its scope.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I also have the ability to define special keys inside my scope, called <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/input/keyboard-accelerators" target="_blank">accelerators</a> ([Control] + [some key]) or <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/input/access-keys" target="_blank">access</a> ([Alt] + [some key]) keys. I won't worry about it for this first pass, but they can be very powerful when well designed and a huge productivity booster for power users. They also have a big role in making an application <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/uwp/design/accessibility/keyboard-accessibility" target="_blank">keyboard accessible</a>. Again while it is a very important topic for retail software, it's one of the details I can afford to push aside for a quick prototype. But it'll be interesting to dive in sometime in the future, it's a whole topic in and of itself. There's <a rel="noreferrer noopener" href="https://www.microsoft.com/en-us/download/details.aspx?id=19262" target="_blank">literally a book on it</a>!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the meantime, I have a custom <code>UserControl</code> and I want to <a href="https://newscrewdriver.com/2020/08/24/quick-notes-on-uwp-drawing/">draw some of my own graphics</a> on screen.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: Resolving Plex Update Failure in FreeNAS Jail "repository FreeBSD contains
+  packages for wrong OS version"
+date: 2018-03-14 09:00:07.000000000 +00:00
+type: post
+post_id: '15908'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1521044127'
+  _publicize_job_id: '15723172328'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/03/14/resolving-plex-update-failure-in-freenas-jail-repository-freebsd-contains-packages-for-wrong-os-version/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-8410 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/07/plex-logo-e1446990678679.png" alt="plex-logo-e1446990678679" width="1176" height="459">I've been happily running <a href="https://www.plex.tv/">Plex</a> in a FreeNAS <a href="https://en.wikipedia.org/wiki/FreeBSD_jail">(FreeBSD) Jail</a> for a while, picking up the periodic updates via "pkg update". But now there's a snag. Apparently a breaking change was introduced in a recent FreeNAS update and now binaries in the old jail are out of sync with the underlying operating system. The visible symptom is the following error message trying to run <code>pkg update</code>.</p>
+<p><code>pkg: repository FreeBSD contains packages for wrong OS version: FreeBSD:11:amd64</code><br />
+<code>Processing entries: 100% </code><br />
+<code>Unable to update repository FreeBSD  </code><br />
+<code>Error updating repositories! </code></p>
+<p>Thankfully we get a detailed and specific error message. A web search using that error output found this discussion thread on <a href="https://forums.freenas.org/index.php?threads/updated-to-11-1-u1-and-pkg-broken-again-in-jails-again.60936/">FreeNAS user forums</a>, which points to <a href="https://redmine.ixsystems.com/issues/27904">ixsystems issue tracker #27904</a>. Reading the information, this break is not considered a bug in FreeNAS that will be fixed. Instead, the onus is on the user to manually update the jail (<a href="https://www.cyberciti.biz/faq/how-to-upgrade-freebsd-jail-vps/">pointing to this page on how to do so</a>) or to create a new jail.</p>
+<p>After reading over the instructions on updating a jail, it seems easier to create a new jail and migrate my Plex server over to the new instance. None of the media need to be moved because they were a read-only mapping between directories on NAS volume and jail running Plex. It is simple to recreate the mapping after <a href="http://doc.freenas.org/11/jails.html#adding-jails">following FreeNAS manual</a> for creating a new jail.</p>
+<p>The only parts that needed moving were Plex server's internal data, which <a href="https://support.plex.tv/articles/201539237-backing-up-plex-media-server-data/">Plex has documented here</a>. Thankfully there are no tricky database operations involved - it is a straightforward copy operation to transfer from the old jail to the new one.</p>
+<p>Once the new jail completed running <code>pkg install plexmediaserver</code>, a quick browse through Plex library seems to show everything is in order. The old Plex jail will be kept around in a non-running state for a while, just in case there's something left behind in the move that we might want retrieve later.</body></html></p>

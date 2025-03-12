@@ -1,0 +1,64 @@
+---
+layout: post
+title: Old Microchip MCC Boilerplate for MSSP Requires C90 Compatibility Mode
+date: 2019-04-12 12:30:28.000000000 +00:00
+type: post
+post_id: '18320'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_client_id: "-1"
+  _rest_api_published: '1'
+  _publicize_job_id: '29695625167'
+  timeline_notification: '1555097439'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:14'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/12/old-microchip-mcc-boilerplate-for-mssp-requires-c90-compatibility-mode/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-18326 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/pic16f18345-vfd-driver-pcb.jpg" alt="PIC16F18345 VFD driver PCB" width="1600" height="900"></p>
+<p>I've figured out how to compile the new Microchip Foundation Services Library boilerplate code for implement I²C peripheral, <a href="https://newscrewdriver.com/2019/04/11/getting-microchip-foundation-services-library-i2c-boilerplate-to-compile/">only to learn it doesn't do what I wanted it to do</a>. Well darn, it's time to go back to the tried-and-true I²C boilerplate code I've used in earlier projects. It's still there, it compiles with only the "this is outdated" warning, and I knew it <a href="https://newscrewdriver.com/2017/09/18/i2c-on-pic-microchip-mcc-boilerplate-is-a-pretty-good-tutorial-in-itself/">worked well enough to be a good starting point for my projects</a>. It was the tried-and-true known quantity that shouldn't give me any trouble at all.</p>
+<p>Except it did.</p>
+<p>The code compiled fine, but it didn't actually work. It would give a response to the first I²C query but then it would stop responding. Here's the default boilerplate code, which responds to address 0x08, as probed by a Raspberry Pi using <code>i2cdetect</code> tool.</p>
+<blockquote><p>
+<code>pi@raspberry:~ $ i2cdetect -y 1</code><br />
+<code>     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f</code><br />
+<code>00:          -- -- -- -- -- 08 -- -- -- -- -- -- -- </code><br />
+<code>10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>70: -- -- -- -- -- -- -- -- </code>
+</p></blockquote>
+<p>That part looks good, the problem comes when we run the same tool again.</p>
+<blockquote><p>
+<code>pi@raspberry:~ $ i2cdetect -y 1</code><br />
+<code>     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f</code><br />
+<code>00:          -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- </code><br />
+<code>70: -- -- -- -- -- -- -- --</code>
+</p></blockquote>
+<p>It has disappeared from scan, as it no longer responds to I²C commands sent to its address.</p>
+<p>Comparing the I²C boilerplate code with my old LED project, I saw no differences worth mentioning. It should be the exact same code but it no longer does the exact same thing. What has changed between my old LED project and now?</p>
+<p>Eventually I found the answer: Microchip has updated the XC8 compiler to C99, and this compiler update causes problems with existing code. I <a href="https://newscrewdriver.com/2018/07/21/microchips-new-xc8-compiler-appears-incompatible-with-mcc-boilerplate/">previously saw this in the form of compiler errors on an empty MCC-generated project</a>. I no longer see compiler errors on an empty project template but arguably this is worse: no compiler errors but silent changes in behavior.</p>
+<p>The solution is the same as before: change project properties so XC8 compiler uses its old C90 compatible mode. Once I switched over, the I²C boilerplate code functioned as expected.</p>
+<p><img class=" size-full wp-image-16512 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/07/project-properties.png" alt="Project Properties" width="914" height="579"></p>
+<p>Since Microchip has marked this old I²C boilerplate code as deprecated, I don't expect them to bring it up to date with the new compiler. And given its history of causing me headaches, I guess I'll plan on using C90 mode for all my projects for the foreseeable future.</body></html></p>

@@ -1,0 +1,40 @@
+---
+layout: post
+title: Glow Flow Now Use All Sensors
+date: 2019-07-14 12:30:34.000000000 +00:00
+type: post
+post_id: '18887'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18857'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1563132643'
+  _publicize_job_id: '32850498231'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/14/glow-flow-uses-all-the-sensors/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Changing some things around in my Pixelblaze pattern for Glow Flow <a href="https://newscrewdriver.com/2019/07/13/glow-flow-pixelblaze-performance/">improved performance and responsiveness</a>, which are good things in their own right. The primary focus and most of processing workload of Glow Flow will remain dedicated to the accelerometer. But with those performance improvements, now Glow Flow can spare a bit of time to incorporate remaining sensors available on the <a href="https://newscrewdriver.com/2019/07/07/examining-pixelblaze-sensor-expansion-board/">Pixelblaze Sensor Expansion Board</a>.</p>
+<h2><em>Microphone</em></h2>
+<p>The collection of Pixelblaze sample code includes <code>blinkfade</code>, a sound-reactive pattern that brightens a random subset of pixels based on average energy level reported by the microphone. I copied most of the code, skipping the color selection portions as Glow Flow already has its own. I reduced the range of brightness and the count of bright LEDs because sound-reactive change is not the focus of Glow Flow. The goal for integrating microphone code is to make my rainbow liquid look like it is fizzing and popping in reaction to noise.</p>
+<p>The core of code copied from <code>blinkfade</code> is a PI (proportional integral) controller, two thirds of the <a href="https://en.wikipedia.org/wiki/PID_controller">classic PID algorithm</a>. Here the controller's mission is to dynamically adjust microphone sensitivity so we have roughly a specified amount of reactive LEDs, expressed as a fractional <code>targetFill</code> value between 0 and 1. If the sensitivity is too high, more than <code>targetFill</code> fraction of LEDs will be illuminated, and the controller reduces sensitivity. Same for the other direction: if the sensitivity is too low, less than <code>targetFill</code> fraction of LEDs would illuminate leaving possibly nothing to see. In this case, the controller will increase sensitivity. When all goes well, this process ensures that the microphone is exactly as sensitive as needed to keep the light show interesting.</p>
+<h2><em>Ambient Light Sensor</em></h2>
+<p>The ambient light level sensor was designed to allow Pixelblaze LED installations to dynamically adjust their overall brightness based on ambient light. In direct sunlight? Crank up the power to make sure LEDs remain visible. Sitting in the dark? Turn them down to avoid blinding people. I had the ambition to devise something creative to do with this sensor, but I failed to think of something interesting over the past few days. So now there's a straightforward implementation of the original intent, adjusting brightness based on ambient light.</p>
+<p>These additions make Glow Flow a pretty good demonstration of using all three major sensors on the expansion board. The only things I haven't used yet are its five channels of analog input. I have some ideas for that, but will postpone until later. The next step is to <a href="https://newscrewdriver.com/2019/07/15/glow-flow-tripod-base/">turn my attention back to hardware</a>.</p>
+<p>Pixelblaze pattern code for Glow Flow is <a href="https://github.com/Roger-random/glowflow/blob/master/Glow%20Flow">available on Github</a>.</body></html></p>

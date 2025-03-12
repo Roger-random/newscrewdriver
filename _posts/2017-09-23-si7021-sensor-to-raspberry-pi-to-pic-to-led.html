@@ -1,0 +1,38 @@
+---
+layout: post
+title: Si7021 Sensor to Raspberry Pi to PIC to LED
+date: 2017-09-23 09:00:39.000000000 +00:00
+type: post
+post_id: '12232'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+- Raspberry Pi
+- Tux-Lab
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9588602301'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/23/si7021-sensor-to-raspberry-pi-to-pic-to-led/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I started this I²C project by creating a simple I²C-controlled LED display using a PIC micro controller. Then I found an I²C Python Raspberry Pi library to communicate with my PIC. The next addition to the mix should be an I²C device I did <em><strong>not</strong></em> create, to verify my code plays well with others.</p>
+<p>While talking about I²C at Tux-Lab, one of the past projects came up: a breakout board for the Si7021 temperature and humidity sensor. A unit was brought out for show during this conversation. This particular unit was built a few years ago and has yet to be incorporated into a project.</p>
+<p>A web search confirmed this is quite a popular sensor. Lots of sample code and projects. Both <a href="https://www.adafruit.com/product/3251">Adafruit</a> and <a href="https://www.sparkfun.com/products/13763">Sparkfun</a> sell breakout boards similar to the one Tux-Lab created. And the sensor is also part of the popular <a href="https://www.raspberrypi.org/products/sense-hat/">Sense HAT</a>. I looked at the <a href="https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf">data sheet</a> and thought it looked like a good place to start. Best of all, a search for existing code <a href="http://abyz.co.uk/rpi/pigpio/code/Si7021_py.zip">found one</a> in the "<a href="http://abyz.co.uk/rpi/pigpio/examples.html">Examples</a>" section of the <a href="http://abyz.co.uk/rpi/pigpio">Pi GPIO</a> library I wanted to learn anyway.</p>
+<p>I asked to borrow that unused breakout board and added it to my bread board. (Visible in the lower-left of the attached picture.) The additional wiring was trivial, most of the work was on the software side learning Python basics. It didn't take terribly long to create a rudimentary thermometer. <a href="https://github.com/Roger-random/python_tutorials/blob/master/PIC7Seg01/displaytemp.py">My Python code</a> running on the Pi uses I²C to query the Si7021 for temperature, converted that data for display, and sent that data out the same I²C bus to the PIC.</p>
+<p>With the work and learning I've put in, I now have an overly complicated contraption that tells me my work space temperature is 75.18 degrees Fahrenheit.</p>
+<p>[caption id="attachment_12264" align="alignnone" width="1024"]<img class=" size-full wp-image-12264 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2017/09/temperatureled.jpg" alt="TemperatureLED" width="1024" height="437"> No decimal point on the LED because I ran out of pins on the 18-pin PIC16F1847 chip.[/caption]</p>
+<p> </p>
+<p></body></html></p>

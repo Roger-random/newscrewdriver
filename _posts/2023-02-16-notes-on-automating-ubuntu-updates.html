@@ -1,0 +1,68 @@
+---
+layout: post
+title: Notes on Automating Ubuntu Updates
+date: 2023-02-16 12:30:00.000000000 +00:00
+type: post
+post_id: '35242'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Linux
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35071'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676707703
+  _publicize_job_id: '81568643795'
+  timeline_notification: '1676579432'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/16/notes-on-automating-ubuntu-updates/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I grew up when computers were major purchases with four digits in the dollar sign. As technology advanced, perfectly capable laptops can be found for three digits. That was a major psychological barrier in my mind, and now I have another adjustment to make: today we can get <a href="https://newscrewdriver.com/2023/02/15/potential-small-pc-explorations/">a full-fledged PC (new/used) for well under a hundred bucks</a>. Affordable enough that we can set up these general-purpose machines for a single specialized role and left alone.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've had a few Raspberry Pi around the house running specialized tasks like <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/06/27/using-octopi-to-avoid-monoprice-maker-select-wanhao-duplicator-i3-usability-issues/" target="_blank">OctoPi</a> and TrueNAS replication target, and I've always known that I've been slacking off on keeping those systems updated. Security researchers and malicious actors are in a never-ending game to one-up each other and it's important to keep up with security updates. The good news is that Ubuntu distributions come with an automated update mechanism called <code>unattended-upgrades</code>, so many security patches are automatically applied. However, its default settings only cover critical security updates, and sometimes they need a system reboot before taking effect. This is because Ubuntu chose default behavior to ensure they are least disruptive to actively used computers.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But what about task-specific machines that sees infrequent user logins? We can configure <code>unattended-upgrades</code> to be more aggressive. I went searching for more information and found a lot of coverage on this topic. I chose to start with this very old and frequently viewed AskUbuntu thread "<a rel="noreferrer noopener" href="https://askubuntu.com/questions/9/how-do-i-enable-automatic-updates" target="_blank">How do I enable automatic updates?</a>" The top two answer links lead to "<a rel="noreferrer noopener" href="https://help.ubuntu.com/community/AutomaticSecurityUpdates" target="_blank">AutomaticSecurityUpdates</a>" page on help.ubuntu.com, and to "<a rel="noreferrer noopener" href="https://ubuntu.com/server/docs/package-management#heading--automatic-updates" target="_blank">Automatic updates</a>" on Ubuntu Server package management documentation. Browsing beyond official Ubuntu resources, I found "<a rel="noreferrer noopener" href="https://www.linuxcapable.com/how-to-setup-configure-unattended-upgrades-on-ubuntu-20-04/" target="_blank">How to Install &amp; Configure Unattended-Upgrades on Ubuntu 20.04</a>" on LinuxCapable.com to be a pretty good overview.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my specific situation, the highlights are:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Configuration file is at <code>/etc/apt/apt.conf.d/50unattended-upgrades</code>
+</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Look at the Allowed-Origins entry up top. The line that ends with "-security" is active (as expected) and the line that ends with "-updates" is not. Uncomment that line to automatically pick up all updates, not just critical security fixes.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>In order to pick up fixes that require a reboot, let <code>unattended-upgrades</code> reboot the machine as needed via "<code>Unattended-Upgrade::Automatic-Reboot</code>" to "<code>true</code>".</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(Optional) For computers that <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/02/12/linux-shell-control-of-sleep-and-wake/" target="_blank">sleep most of the day</a>, we may need to add an entry in root cron job table (<code>sudo crontab -e</code>) to run <code>/usr/bin/unattended-upgrade</code> at a specified time within the machine's waking time window.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>(Optional) There are several lines about automatically cleaning up unused packages and dependencies.  Setting them to "true" will reduce chances of filling our disk.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Log files are written to directory <code>/var/log/unattended-upgrades</code>
+</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --><br />
+</body></html></p>

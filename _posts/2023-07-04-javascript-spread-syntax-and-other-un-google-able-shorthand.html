@@ -1,0 +1,65 @@
+---
+layout: post
+title: JavaScript Spread Syntax and Other Un-Google-Able Shorthand
+date: 2023-07-04 12:30:00.000000000 +00:00
+type: post
+post_id: '37783'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+tags:
+- Rant
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '37793'
+  _publicize_job_id: '85456482893'
+  timeline_notification: '1688499161'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1688593775
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/07/04/javascript-spread-syntax-and-other-un-google-able-shorthand/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've had the opportunity to look at a lot of sample JavaScript code snippets as part of learning web development. For the most part I could follow along, even if I lacked the skill to create something new on my own. Due to its rather haphazard evolution, though, JavaScript does have an annoying habit of having many different ways to do the same thing. Part of this is past-looking historical: as browsers tried to merge different implementations into one globally compatible whole, everyone's slightly different approaches had to remain valid for backwards compatibility. Part of this is future-looking cultural: well-meaning people try solving old problems by inventing something new intended to do everything the old stuff does "but better". When combined with the need for backwards compatibility, such efforts meant we end up with <a href="https://xkcd.com/927/">the legendary XKCD "Standards"</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Particularly annoying to me are JavaScript syntax additions that are just about impossible to put through a search engine. They're usually scattered around but I found a Medium post <em><a href="https://levelup.gitconnected.com/javascripts-shorthand-syntax-that-every-developer-should-know-50d9d4549065">JavaScript’s Shorthand Syntax That Every Developer Should Know</a></em> that was a pretty good roundup of every single one that had annoyed me. The author pitches these shorthand as enabling "<em>futuristic, minimal, highly-readable, and clean source code!</em>" And as a beginner, I disagree. They are opaque and unreadable to those that didn't already know them and, due to their nature, it is very hard for newbies to figure out what they mean.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Take the first example: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">the spread syntax</a>. When I first came across it, what I saw in the source code were three periods. That is not self-explanatory as to its function. This Medium post had a comparison example and touted spread syntax as much cleaner than <code>Array.from(arguments)</code> but I could search for "<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from">Array.from()</a></code>" and "<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">arguments</a></code>" to learn what that does. Trying to search for "..." was a fruitless exercise in frustration that ended in tears because search engines just ignore "..." as their input. I did not know what the spread syntax was (or even that's what it was called) thus I was up a creek without a paddle.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The rest of this Medium post covered:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Inline short-circuits and nullish coalescing. This uses "<code>||</code>" but any search hits would be buried under information about logical OR operation.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Exponential operator and assignment. This is "<code>**</code>" and "<code>**=</code>" which usually gets treated as accidental duplicate characters leading to information about "<code>*</code>" and "<code>*=</code>".</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Optional chaining via "<code>?.</code>" a series of punctuation marks who also get ignored by search engines just like "<code>...</code>".</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Non-decimal number representation is the least bad of this bunch, at least beginners have something to search with like "What does 0x10 mean in JavaScript".</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>De-structuring and multiple assignment are the worst. There is <em>literally nothing</em> to put into a search engine. Not even an "<code>...</code>" or "<code>?.</code>" (which gets ignored anyway.) There's no way for a beginner to tell the syntax would extract selected member values from a JavaScript object.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I can see the value of these JavaScript shorthand for creating terse code, but <em><strong>terse code is not the same as readable code</strong></em>. Even though I'm aware of these concepts now, every time I come across such shorthand I have to stop and think before I could understand the code. It becomes a big speed bump in my thought process, and I don't like it. I certainly don't feel it is more readable. However, I have to grudgingly agree the author's title is true, just not in the way they meant it. They are <em>JavaScript’s Shorthand Syntax That Every Developer Should Know</em> because such code already exists, and every JavaScript developer need to know them well enough to <a href="https://newscrewdriver.com/2023/07/05/window-shopping-arwes-framework/">understand code they come across</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

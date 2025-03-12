@@ -1,0 +1,59 @@
+---
+layout: post
+title: Node-RED Recommended Best Practices
+date: 2020-09-14 12:30:00.000000000 +00:00
+type: post
+post_id: '22430'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Node-RED
+meta:
+  _thumbnail_id: '22459'
+  timeline_notification: '1600111827'
+  _publicize_job_id: '48819700360'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/14/node-red-recommended-best-practices/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Learning a new programming language, especially one with an entirely different paradigm, is confusing enough without having to worry about best practices. But after <a href="https://newscrewdriver.com/2020/09/13/node-red-cookbook-was-more-useful-after-some-experience/">climbing enough of the learning curve</a>, things quickly start getting chaotic and a little structure would help. I found this to be even more true for flow-based programming in Node-RED because a growing collection of nodes and wires connecting them can quickly grow into spaghetti code in a more literal sense than what I've been used to. A blank and pristine Node-RED flow doesn't stay neat and pristine for long.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":22267,"sizeSlug":"large"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/07/node-red-blank-flow-canvas.jpg?w=1024" alt="" class="wp-image-22267"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Fortunately, Node-RED documentation has a section called <a rel="noreferrer noopener" href="https://nodered.org/docs/developing-flows/" target="_blank">Developing Flows</a> to help poor lost souls like me. It collects some basic recommendations for keeping flows manageable. And just like the Cookbook, it made more sense for me to read them after getting some hands-on experience building a bird's nest of crossed wires and scattered nodes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I felt sheepish to learn that I can have multiple tabs in the editor workspace.  I should have noticed up top with a shape surrounding the name "Flow 1" and the plus sign to its right, but I had missed it completely. Each tab is a flow and when the project is deployed, all tabs (flows) execute simultaneously in parallel in response to their respective messages. This inherent parallelism does indeed remind me of LabVIEW.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Obviously multiple tabs make it easy to have unrelated features running in parallel, but what if they need to communicate with each other? That's where I can use the link-in and link-out nodes. The set of link-in and link-out nodes with matching names act as wires connecting those nodes together.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>They can also be used to declutter wires within a single flow. They still act the same way, but when one of the nodes is clicked, a dotted line representing the wire is visible on screen to make it easy to trace flow. Once unselected, the dotted line disappears.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A set of nodes can be combined together into a single "<a rel="noreferrer noopener" href="https://nodered.org/docs/user-guide/editor/workspace/subflows" target="_blank">subflow</a>". In addition to decluttering, a subflow also aids in code reusability because a single subflow can be used multiple times in other flows and they all execute independently.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And finally, multiple adjacent nodes within a flow can be associated together as a <a href="https://nodered.org/docs/user-guide/editor/workspace/groups">group</a>. The most obvious result is visually identifying the group as related. The editor also allows moving all the nodes in the group as a single unit. Beyond that, I don't know if there are functional effects to a group, but if so I'm sure I'll find them soon.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As an ignorant beginner, my first thought to flow organization most closely resembled groups. Which is why I was a little surprised to read it was added only very recently in 1.1.0. But once I read through the best practices recommendation in this Developing Flows section, I learned of all the other aspects of keeping flows organized, and I can see why groups hadn't been as critical as I originally thought.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the other side of the coin, as I explored Node-RED I found several other software modules that are deeply ingrained in many Node-RED projects, but aren't technically a part of Node-RED. <a href="https://newscrewdriver.com/2020/09/15/jsonata-reduces-need-for-node-red-function-nodes/">JSONata is one of these modules</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

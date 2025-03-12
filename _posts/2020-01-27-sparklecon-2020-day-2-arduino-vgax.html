@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'Sparklecon 2020 Day 2: Arduino VGAX'
+date: 2020-01-27 01:36:29.000000000 +00:00
+type: post
+post_id: '20343'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+- Events
+- Investigations
+tags:
+- NUCC
+- Sparklecon
+- VGA
+meta:
+  _thumbnail_id: '20357'
+  timeline_notification: '1580117792'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40002479019'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/27/sparklecon-2020-day-2-arduino-vgax/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Unlike the <a href="https://newscrewdriver.com/2020/01/26/sparklecon-2020-sawppys-first-day/">first day of Sparklecon 2020</a>, I had no obligations on the second day so I was a lot more relaxed and took advantage of the opportunity to chat and socialize with others. I brought Sawppy back for day two and the cute little rover made more friends. I hope that even if they don't decide to build their own rover, Sawppy's new friends might pass along information to someone who would.</p>
+<p>I also brought some stuff to tinker at the facilities made available by <a href="https://www.nuccinc.org/">NUCC</a>. Give me a table, a power strip, and WiFi and I can get a lot of work done. And having projects in progress is always a great icebreaker for fellow hardware hackers to come up and ask what I'm doing.</p>
+<p>Last night I was surprised to learn that one of the lighting panels at NUCC is actually the backlight of an old computer LCD monitor. The LCD is gone, leaving the brilliant white background illuminating part of the room. That motivated me to dust off the <a href="https://newscrewdriver.com/2019/01/17/strange-failure-of-monoprice-monitor-10734/">giant 30-inch monitor I had with a bizarre failure mode making it useless as a computer monitor</a>. I wasn't quite willing to modify it destructively just yet, but I did want to explore the idea of using the monitor as a lighting panel. Preserving the LCD layer, I can illuminate things selectively without overly worrying about the pixel accuracy problems that made it useless as a monitor.</p>
+<p>The next decision was the hardest: what hardware platform to use? I brought two flavors of Arduino Nano, two flavors of Teensy, and a Raspberry Pi. There were solutions for ESP32 as well, but I didn't bring my dev board. I decided to start at the bottom of the ladder and started searching for Arduino libraries that generate VGA signals.</p>
+<p>I found <a href="https://github.com/smaffer/vgax">VGAX</a>, which can pump out a very low resolution VGA signal of 160 x 80 pixels. The color capability is also constrained, limited to a few solid colors that reminded me of old PC CGA graphics. Perhaps they share similar root causes!</p>
+<p>To connect my Arduino Nano to my monitor, I needed to sacrifice a VGA cable and cut it in half to expose its wires. Fortunately NUCC had a literal bucketful of them and I put one to use on this project. An electrical testing meter helped me find the right wires to use, and we were in business.</p>
+<p><img class=" size-full wp-image-20356 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2020/01/arduino-vgax-breadboard.jpg" alt="Arduino VGAX breadboard" width="1920" height="1080"></p>
+<p>The results were impressive in that a humble 8-bit microcontroller could produce color VGA signals. But they were not very useful in the fact that this particular library is not capable of generating full screen video, only part of the screen was filled. I thought I might have done something wrong, but the FAQ covered "How do I center the picture" so this was completely expected.</p>
+<p>I would prefer to use the whole screen in my project, so my search for signal generation must continue elsewhere. But seeing VGAX up and running started gears turning in Emily's brain. She had a few project ideas that might involved VGA. Today's work gave a few more data points on technical feasibility, so some of those ideas might get dusted off in the near future. Stay tuned. In the meantime, I'll continue my <a href="https://newscrewdriver.com/2020/01/28/vga-investigation-continues-with-teensy/">VGA exploration with a Teensy microcontroller</a>.</p>
+<p></body></html></p>

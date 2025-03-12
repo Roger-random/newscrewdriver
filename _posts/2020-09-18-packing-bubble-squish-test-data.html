@@ -1,0 +1,48 @@
+---
+layout: post
+title: Packing Bubble Squish Test Data
+date: 2020-09-18 12:30:00.000000000 +00:00
+type: post
+post_id: '22540'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Geeetech A10
+- Node-RED
+meta:
+  _thumbnail_id: '22275'
+  _publicize_job_id: '48971079105'
+  timeline_notification: '1600457429'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/18/packing-bubble-squish-test-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I didn't expect much out of a silly "Hello World" test of <a href="https://newscrewdriver.com/2020/09/17/packing-bubble-squish-test/">a machine that squishes packing material</a>, but I underestimated how much of a geek I am for data. Raw numbers out of the load cell didn't mean much, partly because it was so noisy. But since it was trivial to send raw HX711 readings to a Node-RED chart for visualization, I plotted load cell pressure data over time and was surprised at what I could see in that graph!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most obvious thing is that we can definitely see each downward stroke of the machine represented as a sharp downward spike in the graph. After that initial shock, though, the air bubble started to relax and we can see a reduction in pressure transferred to the plate. This is a trend that I couldn't see just looking at raw numbers flying by, and a good visual (numerical?) representation of what happens with "items may have settled in shipping".</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What I did not expect ahead of time, but was pretty obvious in hindsight, is the visible trend from one stroke to the next. The bubble bounced back incompletely when the machine released. Therefore each stroke resulted in a lower transmitted force than the last, with a degradation curve <em>across multiple strokes</em> that echoes the pressure reduction visible <em>within each stroke</em>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So this packing bubble squish data actually turned out to be far more interesting than I initially expected, all from the happy accident of sending noisy load cell data to a Node-RED graph just because it was easily available. If I had to write my own code to graph the data, I probably would not have done it, and missed that interesting insight into the pressures of life as a packing bubble. This is a win for Node-RED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next challenge is to figure out how I could have captured, analyzed, and extracted that data programmatically. Human visual insight is very useful, but it requires that we think of the right way to graph data in a way that is useful. This is hard when we don't necessarily know what we are looking for. I stumbled across this happy accident today, how might I make sure I don't miss interesting insights tomorrow? Something to ponder...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the meantime I have a more mundane question to answer: how do I <a href="https://newscrewdriver.com/2020/09/19/tracking-history-of-a-node-red-project/">maintain a record of work I've done in a Node-RED program</a>?</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

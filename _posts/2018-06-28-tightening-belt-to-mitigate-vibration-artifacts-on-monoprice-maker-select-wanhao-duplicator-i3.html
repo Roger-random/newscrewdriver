@@ -1,0 +1,57 @@
+---
+layout: post
+title: Tightening Belt To Mitigate Vibration Artifacts on Monoprice Maker Select (Wanhao
+  Duplicator i3)
+date: 2018-06-28 09:15:09.000000000 +00:00
+type: post
+post_id: '15992'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Monoprice Maker Select
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1530202747'
+  _publicize_job_id: '19454068812'
+  _oembed_5feabb4f5dfde9871d240408681fa7de: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Tonight
+    at <a href="https://twitter.com/hashtag/HackadayLA?src=hash&amp;ref_src=twsrc%5Etfw">#HackadayLA</a>
+    I presented Sawppy the Rover in a two minute talk. Happy the <a href="https://twitter.com/hackaday?ref_src=twsrc%5Etfw">@hackaday</a>
+    audience was appreciative! <a href="https://t.co/tU92TWoFF2">https://t.co/tU92TWoFF2</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1012581212961902592?ref_src=twsrc%5Etfw">June
+    29, 2018</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_5feabb4f5dfde9871d240408681fa7de: '1530263675'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:15'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/06/28/tightening-belt-to-mitigate-vibration-artifacts-on-monoprice-maker-select-wanhao-duplicator-i3/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that my open-box Monoprice Maker Select (Wanhao Duplicator i3) is up and running, it's time to take a closer look at the less than perfect print output. This was totally expected at this terrifically low price point, and part of the point of this exercise was to learn how to analyze 3D printer problems and how to address them. This printer is not just a tool - it is a project in and of itself!</p>
+<p>The first (and as it turns out, a recurring) issue is a vibration artifact in the print after a sharp movement. After some web searches, I've learned this was called "ringing" because it's the after effect of a sharp impulse, like ringing a bell. Looking at the printer, I thought the obvious culprit would be the Y-axis movement. It has to move the build platform so it would have more inertia to overcome and cause problems.</p>
+<p>To confirm this hypothesis, I wanted a test object to print in perimeter-only "vase mode". I <a href="https://cad.onshape.com/documents/982b8547e88883166aece92c/w/6a3ee2768e9bbd0801ba3409/e/190d0e78e109385e000cbda5">created one in Onshape</a> that would cause the printer to take a lot of sharp right turns, which should expose ringing effects.</p>
+<p>Here's the part of the object where the print head moved in X, holding Y steady. The ripple on the left is the Y-axis ringing after making the sharp turn.</p>
+<p><img class="alignnone size-full wp-image-15994" src="https://newscrewdriver.com/wp-content/uploads/2018/04/y-ringing-visible-but-less-bad.jpg" alt="Y ringing visible but less bad" width="1024" height="967"></p>
+<p>And here is the counterpart, where print head was travelling in Y and holding X steady. The ripple on the left is the X-axis ringing after making the sharp turn.</p>
+<p><img class="alignnone size-full wp-image-15993" src="https://newscrewdriver.com/wp-content/uploads/2018/04/x-ringing-is-bad.jpg" alt="X ringing is bad" width="1024" height="1039"></p>
+<p>And this is why we do a test before blindly going in to fix a problem that might not actually be there. Despite the original expectation for Y to exhibit large ringing effects, it was actually the X-axis!</p>
+<p>Now that we know, we'll try the easy thing first: tighten X-axis belt. A glance behind the machine showed the belt is currently very loose despite effort of spring tensioner.</p>
+<p><img class="alignnone size-full wp-image-16089" src="https://newscrewdriver.com/wp-content/uploads/2018/04/mms-x-assembly.jpg" alt="MMS X Assembly" width="1024" height="604"></p>
+<p>The low-cost method of holding the belt, using a M3 bolt and zip-ties, also makes it easy to modify. In this case, we just need to cut the zip-ties, pull the belt tighter, and put on new zip-ties. A silver sharpie was used to mark the starting point.</p>
+<p><img class="alignnone size-full wp-image-16090" src="https://newscrewdriver.com/wp-content/uploads/2018/04/silver-sharpie-marks-starting-position.jpg" alt="Silver Sharpie Marks Starting Position" width="1024" height="512"></p>
+<p>The marker is so we could clearly tell that we're tightening it by three teeth (for overall length reduction of 1.5 teeth.) Now if we need to tweak this in the future, we know how the changes relate to the original out-of-the-box condition.</p>
+<p><img class="alignnone size-full wp-image-16091" src="https://newscrewdriver.com/wp-content/uploads/2018/04/x-axis-belt-tightened-by-3-teeth.jpg" alt="X Axis Belt Tightened by 3 teeth" width="1024" height="474"></p>
+<p>This change didn't completely eliminate ringing, but situation is a lot better than before. It's good enough to move on to the next problem.</p>
+<p><img class="alignnone size-full wp-image-16092" src="https://newscrewdriver.com/wp-content/uploads/2018/04/sharphash.jpg" alt="SharpHash" width="2111" height="1266"></p>
+<p></body></html></p>

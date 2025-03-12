@@ -1,0 +1,84 @@
+---
+layout: post
+title: Western Digital SFF-8784 Hybrid HDD/SSD Teardown (WD5000M21K)
+date: 2023-02-28 12:30:00.000000000 +00:00
+type: post
+post_id: '35431'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35434'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677704103
+  _publicize_job_id: '81910766855'
+  timeline_notification: '1677616292'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/28/western-digital-sff-8784-hybrid-hdd-ssd-teardown-wd5000m21k/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>For contrast with the old Toshiba laptop hard drive <a href="https://newscrewdriver.com/2023/02/27/toshiba-2-5-250gb-sata-hdd-mechanicals-hdd2d90/">I just took apart</a>, I decided to follow up with this Western Digital WD5000M21K. This is a hybrid device with both a spinning magnetic platter and flash memory solid-state storage. In theory it is the best of both worlds offering large-capacity (500GB) storage and solid-state drive performance for cached data, all packed in <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/23/hp-split-x2-13-r010dx-sata-but-not-as-i-know-it/" target="_blank">an impressively compact SFF-8784 form factor</a>. It is only 5mm thick! The mechanical engineers must have been fighting for fractions of millimeters designing its innards.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In practice, its performance was abysmal. It was nowhere near SSD level and felt even worse than contemporary HDDs. Its performance was utterly <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/11/13/hp-split-x2-13-r010dx-transformed-with-ssd-upgrade/" target="_blank">blown away by a M.2 SATA SSD (in an SFF-8784 adapter card)</a> which, because they were just small circuit boards, were effortlessly more compact on top of better performance. Dropping SSD prices have eliminated the niche of compact mechanical hybrid drives. Ending this line of evolution to sit alongside VHS+DVD players in history as transitionary products with a limited shelf life.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35438,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-top-label.jpg?w=1024" alt="" class="wp-image-35438"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>One thing that caught my attention was a sticker covering the entire top surface of this device, and it wasn't even very densely printed with information. As I would learn later, this sticker is not merely cosmetic.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35433,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-control-board-removed.jpg?w=1024" alt="" class="wp-image-35433"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most product information was actually printed on a sticker on the other side of the device, surrounding the motor where we can see three wires implying a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Brushless_DC_electric_motor#Variations_in_construction" target="_blank">delta style winding</a>. This drive's control board is much smaller than the older Toshiba drive, even though it had to include a SanDisk-branded chip providing its 8GB of flash memory ("SSD") cache. Its size was helped by the compact SFF-8784 style connector. A standard SATA connector would have required almost half of the volume of this entire control board.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35437,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-top-label-removed.jpg?w=1024" alt="" class="wp-image-35437"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Returning to the top side, I removed the sticker and saw why it covered everything: it's a part of this drive's airtight seal. WIth top sticker gone, an ~1mm gap surrounding the voice coil magnet assembly is now open to outside air.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35436,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-tiny-center-screw.jpg?w=1024" alt="" class="wp-image-35436"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the Torx fasteners were T2, except for the one at the center of the platter which is even smaller. I assume it is a T1, but I don't know for sure as I don't have a driver. I'm using <a rel="noreferrer noopener" href="https://www.ifixit.com/products/mako-driver-kit-64-precision-bits" target="_blank">iFixit's Mako Driver Kit</a> and the smallest Torx bit is a T2. Not even their <a href="https://www.ifixit.com/Store/Tools/Manta-Driver-Kit--112-Bit-Driver-Kit/IF145-392" target="_blank" rel="noreferrer noopener">larger Manta kit</a> has a T1.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35435,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-tiny-center-screw-drilled-out.jpg?w=1024" alt="" class="wp-image-35435"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Of course, that's not going to stop me. As I'm not worried about putting it back together, or metal particle contamination, I have the option of drilling off the tiny screw head today. I might not always have that option, though, so to be prepared <a rel="noreferrer noopener" href="https://amzn.to/41qf8L7" target="_blank">I found and ordered a driver set</a> (*) because it claimed to include T1.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35434,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd500m21k-disassembled.jpg?w=1024" alt="" class="wp-image-35434"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once drilled out, I could remove the thin metal top lid and saw a single platter within. (I would have been astounded if they could pack multiple platters in here.) It has a an off-platter parking spot very similar to the Toshiba laptop drive, but it doesn't have the mystery latch mechanism. After that point I was pretty stuck. I could not figure out how to free the bearing from the voice coil arm. I could not find a way to disassemble that stack. And I could not figure out how to free the platters. For the platters, it appears I need a special wrench that engages with the eight dimples on the spindle and use it as leverage to turn against the four surrounding slots.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35444,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd5000m12k-platter-next-to-wd800-spindle-motor.jpg?w=1024" alt="" class="wp-image-35444"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>As an amusing size comparison, here's the compact WD5000M21K next to the spindle motor assembly from a 3.5" sized WD800 hard drive. It's an impressive feat of engineering, packing all these mechanical components within 5mm of thickness. But technology moves on, <a href="https://newscrewdriver.com/2023/03/01/intel-ssd-320-series-teardown/">and SSDs are far thinner by nature</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

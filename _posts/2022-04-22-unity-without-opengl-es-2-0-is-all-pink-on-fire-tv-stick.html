@@ -1,0 +1,70 @@
+---
+layout: post
+title: Unity Without OpenGL ES 2.0 Is All Pink on Fire TV Stick
+date: 2022-04-22 12:30:00.000000000 +00:00
+type: post
+post_id: '29845'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- Unity
+tags:
+- Amazon Fire
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29846'
+  _publicize_job_id: '71705579179'
+  timeline_notification: '1650655832'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:34'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/04/22/unity-without-opengl-es-2-0-is-all-pink-on-fire-tv-stick/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I dug up my disassembled Fire TV Stick (second generation) and it is <a href="https://newscrewdriver.com/2022/04/21/reviving-previously-disassembled-fire-tv-stick/">now back up and running again</a>. This was an entertaining diversion in its own right, but during the update and Android Studio onboarding process, I kept thinking: <strong><em>why </em></strong>might I want to do this beyond "to see if I could"? This was the same question I asked myself when I investigated the <a href="https://newscrewdriver.com/2022/03/27/window-shopping-roku-idk-independent-developer-kit/">Roku Independent Developer's Kit</a> just before taking apart some Roku devices. For a home tinkerer, what advantage did they have over a roughly comparable Raspberry Pi Zero? I didn't have a good answer for Roku, but I have a good answer for Fire TV: because it is an Android device, and <a href="https://unity.com/solutions/mobile/android-game-development">Android is a target platform for Unity</a>. Raspberry Pi and Roku IDK, in comparison, are not.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I don't know if this will be useful for me personally, but at the very least I could try installing <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/12/bouncy-bouncy-lights/" target="_blank">my existing Unity project <em>Bouncy Bouncy Lights</em></a> on the device. Loading up Unity Hub, I saw that Unity <a rel="noreferrer noopener" href="https://unity.com/releases/2021-lts" target="_blank">had recently released 2021 LTS</a> so I thought I might as well upgrade my project before installing Unity Android target platform tools. Since <em>Bouncy Bouncy Lights</em> was a very simple Unity project, there were no problems upgrading. Then I could build my *.apk file which I could install on my Fire TV just like introductory Android Studio projects. There were no error messages upon installation, but upon launch I got a warning: "<em>Your device does not match the hardware requirements of this application</em>." What's the requirement? I didn't know yet, but I got a hint when I chose to continue anyway: everything on screen rendered a uniform shade of pink.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29846,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/unity-bouncy-fire-tv-everything-is-pink.jpg?w=1024" alt="" class="wp-image-29846"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Going online for answers, I found many different problems and solutions for Unity rendering all pink. I understand pink-ness is a symptom of <strong><em>something </em></strong>going wrong in the Unity graphics rendering pipeline, and it is a symptom that can have many different causes. Without a single solution, further experiment and diagnosis is required.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Most of the problems (and solutions) are in the Unity "Edit"/"Project Settings..."/"Player"/"Other Settings" menu. This <a rel="noreferrer noopener" href="https://answers.unity.com/questions/1402133/android-your-device-does-not-match-the-hardware-re.html" target="_blank">Unity forum thread with the same "hardware requirements" error message</a> suggests checking to ensure "Auto Graphics API" is checked (it was) and "Rendering Path" to Linear (no effect). <a rel="noreferrer noopener" href="http://markcastle.com/running-a-unity-app-on-amazon-firetv/" target="_blank">This person's blog post</a> was also dealing with a Fire TV and their solution was checking "Auto Graphics API" which I am already doing. But what if I <em>uncheck </em>that box? What does <a rel="noreferrer noopener" href="https://docs.unity3d.com/2021.3/Documentation/Manual/GraphicsAPIs.html" target="_blank">this menu option</a> do (or not do?)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29855,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/unity-player-manual-graphics-api.png?w=953" alt="" class="wp-image-29855"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unchecking that box unveils a list of two Graphics APIs: Vulkan and OpenGLES3. Hmm, I think I see the problem here. <a rel="noreferrer noopener" href="https://developer.amazon.com/docs/fire-tv/device-specifications-fire-tv-streaming-media-player.html?v=ftvstickgen2" target="_blank">Fire TV Stick second generation hardware specification</a> page says it only supported OpenGL ES 2.0. Digging further into Unity documentation found that <a rel="noreferrer noopener" href="https://docs.unity.cn/2021.3/Documentation/Manual/android-requirements-and-compatibility.html#opengl-es-20" target="_blank">OpenGL ES 2.0 support is deprecated and not included by default</a>, but we could add it to a project if we need it. Clicking the plus sign allowed us to add it as a graphics API for use in our Unity app:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29858,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/unity-player-add-opengles2.png?w=1024" alt="" class="wp-image-29858"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once OpenGL ES 2.0 is included in the project as a fallback graphics API, I could rebuild the *.apk file and install the updated version.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29860,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/04/unity-bouncy-fire-tv-floor-illumination-missing.jpg?w=1024" alt="" class="wp-image-29860"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I got colors back! It is no longer all pink, and cubes that <em>are </em>pink look like they're <em>supposed </em>to be pink. So the cubes look fine, but all color has disappeared from the platform. It was supposed to have splotches of color cast by randomly colored lights attached to each block.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25146,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/02/bouncy-bouncy-lights.jpg?w=1024" alt="" class="wp-image-25146"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instead of showing different colors, it has apparently averaged to a uniform gray. I guess this is where an older graphics API gets tripped up and why we want newer APIs for best results. But at least it is better than a screen full of pink, even if the solution in my case was to uncheck "Auto Graphics API". The <em>opposite </em>of what other people have said online! Ah well.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

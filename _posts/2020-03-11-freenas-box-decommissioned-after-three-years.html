@@ -1,0 +1,38 @@
+---
+layout: post
+title: FreeNAS Box Decommissioned After Three Years
+date: 2020-03-11 12:30:22.000000000 +00:00
+type: post
+post_id: '20849'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _thumbnail_id: '20855'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1583955395'
+  _publicize_job_id: '41680397438'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/11/freenas-box-decommissioned-after-three-years/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I've decided to retire my current home server running FreeNAS. It has worked well for three trouble-free years and will likely continue working for a few more. But I have enough motivations for an upgrade beyond its current capabilities.</p>
+<p>First, I learned that FreeNAS has been making more and more use of its boot drive in its recent releases. At one point all the SATA ports on a FreeNAS box could be dedicated to storage devices, because FreeNAS itself is happy to boot from a USB flash drive, load to RAM, and run from there. Thus the boot drive is touched very little, minimizing wear on flash memory. However, FreeNAS documentation explained <a href="https://www.ixsystems.com/documentation/freenas/11.3-U1/intro.html#the-operating-system-device">this has not been the case</a> for several years. I have yet to run into any problems with the USB flash drives I've been using as mirrored boot volumes, but after three years of service I decided not to wait until problems crop up.</p>
+<p>When looking at a boot drive for a modern operating system, my default choice is to use a solid state drive. SSDs were still an expensive luxury when I first started playing with FreeNAS, but they are now quite affordable and there's been enough hardware churn for a few of my own SSDs to drop out of circulation and thus available for use. My first two <a href="https://en.wikipedia.org/wiki/X25-M">Intel X25-M SSDs</a> still report over 85% of wear life remaining. Their modest 80GB capacity is pretty cramped for modern desktop use, but quite spacious for a FreeNAS system drive. That capacity also means a lot of elbow room for flash wear-leveling.</p>
+<p>The downside, of course, is that I need a SATA port on the motherboard to connect to my old but still functional X-25M. In order to have a X-25M as my FreeNAS system drive, I had to upgrade beyond this <a href="https://us.msi.com/Motherboard/AM1I.html">MSI AM1I</a> motherboard with only two SATA ports.</p>
+<p>Another motivation was an interest in hosting more functionality on the home server. While code with FreeBSD support can <a href="https://www.ixsystems.com/documentation/freenas/11.3-U1/jails.html">run in a jail</a>, I needed virtual machines to run non-FreeBSD code such as ROS. When I started looking at FreeNAS, virtual machine support via bhyve was an experimental new feature. It has since grown to be a <a href="https://www.ixsystems.com/documentation/freenas/11.3-U1/virtualmachines.html">mature part of the feature set</a>. With virtualization I can use the same physical box to host other software projects.</p>
+<p>But a virtual machine also locks out a portion of system memory as any RAM allocated to the virtual machine is not available to the rest of FreeNAS. I have many 8GB DDR3 memory modules, but there were only two memory slots on an AM1I motherboard for 16GB. Moving to a motherboard with 4 memory slots will double the available memory to 32GB, plenty of room for playing with VMs.</p>
+<p>With these points in mind, I powered off my homebuilt FreeNAS box built of laser-cut acrylic. The two storage drives will be moved to a commodity PC tower case. But before I take it all apart, I wanted to <a href="https://newscrewdriver.com/2020/03/12/learning-about-airflow-from-three-years-of-dust/">make note of a few observations from this computer's three years</a> of sitting on a shelf quietly running FreeNAS.</p>
+<p></body></html></p>

@@ -1,0 +1,53 @@
+---
+layout: post
+title: Original Goals For Sawppy ROS Melodic Project
+date: 2020-02-01 19:00:56.000000000 +00:00
+type: post
+post_id: '20398'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags: []
+meta:
+  timeline_notification: '1580612460'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '40217503624'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25578'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/02/01/original-goals-for-sawppy-ros-melodic-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Since a member of the Sawppy builder community has stepped up to <a href="https://newscrewdriver.com/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/">deliver a ROS Melodic software stack</a>, I've decided to <a href="https://github.com/Roger-random/sawppy_ros">abandon my own effort</a> because it would mean duplicating a lot of effort for no good reason. I will write down some thoughts about the project before I leave it behind. It's not exactly a decent burial, but it'll be something to review if I ever want to revisit the topic.</p>
+<h2>Move to ROS Melodic</h2>
+<p>My previous ROS adventures were building the Phoebe Turtlebot project, which was based on ROS Kinetic. I wanted to move up to the latest long term service release, ROS Melodic, something Rhys has done as well in the Curio project.</p>
+<h2>Move to Python 3</h2>
+<p>I had also wanted to move all of my Python code to Python 3. ROS Kinetic was very much tied to Python 2, which reached end-of-life at the beginning of 2020. It was not possible to move the entire ROS community to Python 3 overnight, but a lot of work for this transition was done for ROS Melodic. <a href="https://www.ros.org/reps/rep-0003.html#melodic-morenia-may-2018-may-2023">Python 2 is still the official release for Melodic</a>, but they encourage all Python modules to be tested against Python 3 and supposedly all of the core infrastructure has been made to be compatible with Python 3. Looking over the Curio project, I saw nothing offhand indicating a dependency on either Python version, so I'm cautious optimistic it is Python 3 compatible.</p>
+<h2>Conform to ROS Project Structure</h2>
+<p>I originally thought I could create a Sawppy ROS subdirectory under Sawppy's <a href="https://github.com/Roger-random/Sawppy_Rover">main Github repository</a>, but decided to create a new repository for two reasons:</p>
+<ol>
+<li>ROS build system Catkin imposes its own directory structure, and</li>
+<li>Existing name "Sawppy_Rover" does not conform to ROS package naming recommendations. Name must be all lowercase to avoid ambiguity between case-sensitive and case-insensitive file systems. https://www.ros.org/reps/rep-0144.html</li>
+</ol>
+<p>Rhy's Curio project solves all of these concerns.</p>
+<h2>Conform to ROS Conventions</h2>
+<p>Another motivation for a rewrite of my Sawppy code was to change things to fit <a href="https://www.ros.org/reps/rep-0103.html">ROS conventions for axis orientation and units</a>:</p>
+<ul>
+<li>Sawppy had been using +Y as forward, ROS uses +X as forward.</li>
+<li>Sawppy had been using turn angle of positive degrees as clockwise, ROS uses right hand rule along +Z axis meaning counter-clockwise.</li>
+<li>Math functions prefer to work in radians, but older code had been written in terms of degrees. Going with ROS convention of radians would skip a lot of unnecessary conversion math.</li>
+<li>One potential source of confusion: "angular velocity" flips direction from "turn direction" when velocity is negative, old Sawppy code didn't do that.</li>
+</ul>
+<p>Rhy's Curio project appears to adhere to ROS conventions.</p>
+<p>All of that looks great! Up next on this set of notes, my original intent to <a href="https://newscrewdriver.com/2020/02/02/inviting-wemake-to-nitpick-my-python-code-style/">practice better Python coding style with my project</a>.</body></html></p>

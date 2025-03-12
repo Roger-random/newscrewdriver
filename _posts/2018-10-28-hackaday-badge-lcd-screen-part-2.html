@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'Hackaday Badge LCD Screen 2: Documented Limitations'
+date: 2018-10-28 09:00:36.000000000 +00:00
+type: post
+post_id: '17069'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+- TIL
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '23674166675'
+  timeline_notification: '1540742482'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/10/28/hackaday-badge-lcd-screen-part-2/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Now that I've completed my overview of the <a href="https://hackaday.io/project/80627-badge-for-hackaday-conference-2018-in-belgrade">Hackaday Belgrade 2018 badge</a> (which the upcoming <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">Hackaday Superconference 2018 badge</a> is very close to) it's time to dig deeper. First topic for a deep dive: that LCD screen. In my <a href="https://newscrewdriver.com/2018/10/22/hackaday-badge-lcd-screen/">earlier brief look</a>, I only established that the screen is fully graphics capable and not restricted to text only. What kind of graphics can we do with this?</p>
+<h2>18-bit panel, accepts 24-bit color</h2>
+<p>First topic: color depth. The default badge firmware's BASIC programming interface seems to allow only 16 colors which the documentation called "EGA colors", see <code>color_table[16]</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/disp.c">disp.c</a>. I was confident a modern LCD module has more than 4-bit color, and page 2 of the LCD module datasheet called itself a "262K color display." That works out to 18 bits, so the panel native color depth is likely 6 bits red, 6 bits green, 6 bits blue. However, it is not limited to taking information in 18-bit color, the display can be configured to communicate at a wide range of bit depths. Looking in <code>tft_fill_area()</code> in <a href="https://github.com/Hack-a-Day/basic-badge/blob/master/firmware/badge1.X/src/disp.c">disp.c</a>, we can see the existing firmware is communicating in 24-bit color. 8 bits each for red, green, and blue.</p>
+<h2>Not enough memory for full 24-bit off-screen buffer</h2>
+<p>If we don't want to change modes around on the fly, then, we'll need to work with the panel in 24-bit color. Standard operating procedure is to draw using an off-screen buffer and, when the result is ready for display, send the buffer to screen in a single fast operation. A 24-bit off screen buffer is usually done with a 32-bit value representing each pixel with ARGB, even if we're not using A(lpha) channel. 320 wide * 240 high * 32 bits = 300 kilobytes. Unfortunately, the datasheet for our PIC32 processor shows it only has a total of 128 kilobytes of memory, so the easy straightforward full screen buffer is out of the question. We'll have to be more creative about this.</p>
+<h2>
+<img class=" size-full wp-image-17070 alignright" src="https://newscrewdriver.com/wp-content/uploads/2018/10/nhd-2-4-240320cf-ctxi-lcd-module-wiring-diagram.png" alt="NHD-2.4-240320CF-CTXI LCD module wiring diagram" width="375" height="475">No VSYNC</h2>
+<p>But we wouldn't have been able to make full use of an off screen buffer anyway. We need to send buffer data to screen at the right time. If we send while the screen is in the midst of drawing, there will be a visible tear as the old content is partially mixed with the new. The typical way to avoid this is to listen to a vertical synchronization signal (VSYNC) to know when to perform the update. And while the ST7789 controller on board the LCD module has provision to signal VSYNC, the LCD module does not expose VSYNC information. There may be some other way to avoid visual tearing, but it ain't VSYNC.</p>
+<p>These limitations, which are relatively typical of embedded electronics projects, are part of the fun of writing software for this class of hardware. Sure, it is a limitation, but it is also a challenge to be overcome, a puzzle to solve, and a change of pace from the luxury of desktop computers where such limitations are absent.</p>
+<p> </p>
+<p> </body></html></p>

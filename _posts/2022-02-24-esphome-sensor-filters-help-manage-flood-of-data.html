@@ -1,0 +1,53 @@
+---
+layout: post
+title: ESPHome Sensor Filters Help Manage Flood of Data
+date: 2022-02-24 12:30:00.000000000 +00:00
+type: post
+post_id: '28722'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP8266
+- ESPHome
+- INA219
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28733'
+  _publicize_job_id: '69428941874'
+  timeline_notification: '1645734618'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:56'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/24/esphome-sensor-filters-help-manage-flood-of-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I was happy to find that <a href="https://newscrewdriver.com/2022/02/23/using-ina219-was-super-easy-with-esphome/">ESPHome made building a sensor node super easy</a>. Once my hardware was soldered together, it took less than ten minutes of software work before I was looking at a flood of voltage and current values coming in from my ESP8266-based power sensor.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It was a flood of data by my decision. Sample code from <a rel="noreferrer noopener" href="https://esphome.io/components/sensor/ina219.html" target="_blank">ESPHome INA219 documentation</a> set data refresh rate at once every sixty seconds. I was hungry for more so I reduced that to a single second. This allowed me to see constantly updating numbers in my Home Assistant dashboard, which is satisfying in a statistics nerd kind of way, but doing so highlighted a few problems. Home Assistant was not designed for this kind of (ab)use. When I click on a chart, it queries from SQLite and took several seconds to plot every single data point on the graph. And since there are far more points than there are pixels on screen, what I get is a crowded mess of lines.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28733,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/hp-stream-7-power-consumption-unfiltered.jpg?w=1024" alt="" class="wp-image-28733"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>For comparison, InfluxDB and Grafana were designed to handle larger volumes of data and gives us tools for aggregating data. Working with aggregates for analysis and visualization avoids bogging the system down. I'm not sure how to do the same in Home Assistant, or if it's possible at all, but I do know there are data aggregation tools in ESPHome to filter data before it gets into Home Assistant. These are described in the <em><a href="https://esphome.io/components/sensor/index.html#sensor-filters">Sensor Filters</a></em> documentation. I could still take a reading every second, but I could choose to send just the average value once a minute. <strong><em>Or </em></strong>the maximum value, <strong><em>or </em></strong>the minimum value. Showing average value once a minute, my Home Assistant UI is responsive again. The graph above was for the day I invoked this once-a-minute averaging, and the effect is immediately visible roughly around 10:45PM.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The graph below was from a later day when once-a-minute average was active the entire day:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":28732,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/02/hp-stream-7-power-consumption-filtered.jpg?w=1024" alt="" class="wp-image-28732"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It is a cleaner graph, but it does not tell the whole story. I had used this INA219 sensor node to measure power consumption of my HP Stream 7 tablet. Measuring once a second, I could see that power use was highly variable with minimum of less than two and a half watts but spikes up to four and a half watts. When showing the average, this information was lost. The average never dropped below 2.4 or rose above 3.2. If I had been planning power capacity for a power supply, this would have been misleading about what I would need. Ideally, I would like to know the minimum <strong><em>and</em></strong> the maximum <strong><em>and </em></strong>the average over a filtered period. If I had been writing my system from scratch, I know roughly what kind of code I would write to accomplish it. Hence the downside of using somebody else's code: it's not obvious to me how to do the same thing within this sensor filter framework. I may have to insert my own C code using ESPHome's <a rel="noreferrer noopener" href="https://esphome.io/guides/automations.html#config-lambda" target="_blank">Lambda mechanism</a>, something to learn later. [UPDATE: I learned it later and <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/03/26/recording-esphome-sensor-values-min-max-and-average/" target="_blank">here's the lambda/template code</a>.] In the meantime I wanted to start <a href="https://newscrewdriver.com/2022/02/25/adding-up-power-in-esphome-and-home-assistant/">adding up instantaneous power figures</a> to calculate energy over time.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

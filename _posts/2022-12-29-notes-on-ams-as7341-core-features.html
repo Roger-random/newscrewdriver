@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on AMS AS7341 Core Features
+date: 2022-12-29 12:30:00.000000000 +00:00
+type: post
+post_id: '34176'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34288'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1672534107
+  _publicize_job_id: '80077476103'
+  timeline_notification: '1672345989'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/12/29/notes-on-ams-as7341-core-features/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph {"placeholder":"What's your favorite cartoon?"} --><html><body></p>
+<p>I have some grand dreams about what I might do with an AS7341 spectral color sensor, but things are always easier in the fantasy world than in the real world. To turn ideas into reality (or to see if it's realistic at all) I need to learn the nuts and bolts of the sensor. Which means starting with its datasheet downloadable from <a rel="noreferrer noopener" href="https://ams.com/as7341" target="_blank">AS7341 product page on AMS website</a>. It answered some questions but opened many more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"placeholder":"What's your favorite cartoon?"} --></p>
+<p>The first and most important data point is its I2C address: 0x39 and I found no way to change it. (Datasheet section 9.1) It means this sensor is not designed to work in conjunction with others of its kind on the same I2C bus, there can be only one. The sensor is still responsive to I2C traffic when in sleep mode, which might be useful. (Datasheet 8) Also useful is a device identification register to verify I2C communication is working properly. (Datasheet 10.2.4)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next important note was the chip's internal architecture (Datasheet 8.1): there are 11 different sensors that could be read, but onboard ADC (analog-to-digital converter) has only 6 channels and a sensor multiplexor (SMUX) which controls which sensor is connected to which ADC and which are left disconnected. In order to read all 11 sensors, we need to make one read operation with 6 sensors then reconfigure SMUX to read the remaining 5. This architecture hints at the challenges ahead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Each of these ADC channels have 16-bit resolution, and some configuration parameters are 16-bit values as well. This chip organized its registers such that the low order byte comes first, immediately followed by the high order byte. Read operations latch these registers, so the value does not change between reading the low byte and reading the high byte. (Datasheet 9)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With this information, I think I have enough basics to understand <a href="https://newscrewdriver.com/2022/12/30/ams-as7341-smux-configuration-is-critical-yet-absent-from-datasheet/">how to take a reading with AS7341</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

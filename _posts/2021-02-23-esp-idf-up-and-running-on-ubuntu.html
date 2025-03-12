@@ -1,0 +1,59 @@
+---
+layout: post
+title: ESP-IDF Up And Running on Ubuntu
+date: 2021-02-23 12:30:00.000000000 +00:00
+type: post
+post_id: '25218'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '19200'
+  _publicize_job_id: '55178918270'
+  timeline_notification: '1614112228'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/02/23/esp-idf-up-and-running-on-ubuntu/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Since I decided to learn to write code for ESP32 using Espressif's own tool ESP-IDF <a href="https://newscrewdriver.com/2021/02/22/evaluating-my-options-for-esp32-development/">for the sake of following official instructions</a>, I went straight to the <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html" target="_blank">official directions for installing ESP-IDF</a> and saw it was the "run this one script to install everything" type of instruction. This is not itself a problem, but when I saw that ESP-IDF had a lot of Python scripts, that made me suck air through my teeth. Automated scripts doing unknown things to Python (without mentioning any kind of environment isolation like <code><a rel="noreferrer noopener" href="https://docs.python.org/3/library/venv.html" target="_blank">venv</a></code> or <code><a rel="noreferrer noopener" href="https://docs.conda.io/en/latest/" target="_blank">conda</a></code>) sets off many alarms. Hesitant to run ESP-IDF installation script on my main computer, I tentatively dipped in my toes by <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/02/15/refurbished-dell-latitude-e6230-first-impressions/" target="_blank">using a computer running Ubuntu</a> I could dedicate to this experiment. A long but uneventful installation process enabled me to compile the <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf-template" target="_blank">ESP-IDF project template</a> and I proceeded to do a few introductory projects on this test machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the trivial blinking light exercise, I moved on to the <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html" target="_blank">ADC (analog-to-digital converter) peripheral</a>. When I built a <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/05/20/sawppy-roving-with-wired-handheld-controller/" target="_blank">wired handheld controller for Sawppy V1</a> with an Arduino Nano, its joystick position was read using an ADC and I expect I'll need something similar again for micro Sawppy running on ESP32. The unexpected twist I had to learn was the attenuation parameter for ESP32 ADC input. Most microcontrollers ADC can read the range from zero volts to input voltage level. (For an Arduino Nano, 0V to 5V.) So I expected the ESP32 to read from 0V to 3.3V. But by default it only reads up to a much lower level and, even with maximum configurable attenuation, it only reads from 0V to roughly 2.6V. Meaning the joystick potentiometer's center point will not map to the middle of the allowable range of values. But I was able to take Espressif's sample ADC project and <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/knob" target="_blank">simplifying it for my needs</a>. I removed all the parts that dealt with calibration and conversion to an accurate voltage reading. Such efforts are largely wasted on a low-quality joystick anyway, they drift far more than the ESP32 will.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next exercise was to take that ADC data and do something with it. I expect to use ESP32 MCPWM peripheral to control micro Sawppy's six rolling wheels, so I started learning how to use the LEDC peripheral to generate control signals for micro Sawppy's four corner steering servos. When an Arduino ESP32 project implements <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/libraries/servo/" target="_blank">the <code>servo()</code> command</a>, they usually turn to LEDC and I decided to follow suit. Generating a one-to-two millisecond signal every twenty milliseconds is well within the capabilities of the LEDC peripheral, and at the end I had a <a rel="noreferrer noopener" href="https://github.com/Roger-random/ESP32Tests/tree/main/servo" target="_blank">simple ESP32 servo tester</a> generating servo control signals based on the position of a potentiometer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So far so good. Out of all operating systems at my disposal, Ubuntu was the least problematic one and I'm glad it passed the first few tests. But this was a test computer, with nothing else on it to break. Certainly no other critical Python dependencies. In contrast, Apple Mac OS X is infamously temperamental about its integrated Python and <a rel="noreferrer noopener" href="https://www.instagram.com/p/CFPiPQcle_K" target="_blank">woe to anyone who messes with it</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25227,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><a href="https://www.instagram.com/p/CFPiPQcle_K"><img src="https://newscrewdriver.com/wp-content/uploads/2021/02/system-python-on-osx.jpg?w=1024" alt="" class="wp-image-25227"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Windows lies somewhere in between, with no hard system dependencies to fatally break, but still a complicated relationship with Python. Still wary, I whipped up <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/08/31/dell-inspiron-11-3000-3180-as-robot-brain-candidate/" target="_blank">a Windows test computer</a> and ran the ESP-IDF installer. According to <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html" target="_blank">ESP-IDF Windows setup page</a>, it was supposed to install associated dependencies including Python 3.7. But when I launched <code>idf.py</code> I got a Python 2.7 error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:quote --></p>
+<blockquote class="wp-block-quote"><p><code>error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory</code></p>
+</blockquote>
+<p><!-- /wp:quote --></p>
+<p><!-- wp:paragraph --></p>
+<p>Ugh, what a mess. Now I'm very glad I had used test computers for these experiments. I shall proceed to wipe them clean and <a href="https://newscrewdriver.com/2021/02/24/using-platformio-for-esp-idf-development/">consider alternate options</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">[Practice projects described in this post are <a href="https://github.com/Roger-random/ESP32Tests">publicly available on GitHub</a>]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,49 @@
+---
+layout: post
+title: Rhys Mainwaring's ROS Melodic Software and Simulator for Curio
+date: 2020-01-31 14:34:59.000000000 +00:00
+type: post
+post_id: '20390'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Curio
+- ROS
+meta:
+  _thumbnail_id: '20391'
+  _oembed_231236d5592e88017e365ff71109dab3: "{{unknown}}"
+  _rest_api_published: '1'
+  _oembed_5621c7b8b4304440b3c3227196e0f221: "{{unknown}}"
+  _rest_api_client_id: "-1"
+  timeline_notification: '1580510103'
+  _publicize_job_id: '40178228796'
+  _oembed_4471713b7bcbcfde81894084b5eff715: "{{unknown}}"
+  _oembed_805f6b71d07e6f246705ac7a9dd74a4c: "{{unknown}}"
+  _oembed_1641db6e632ab3c38f6ffb6ae9fa192d: "{{unknown}}"
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/31/rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>When I created Sawppy, my first goal was to deliver something that could be fun for robotics enthusiasts to play with. The target demographics were high school students and up, which meant creating a software stack that is self-contained and focused enough to be easy to learn and modify.</p>
+<p>To cater to Sawppy builders with ambition for more, one of the future to-do list was to write the necessary modules to drive Sawppy via open source <a href="https://www.ros.org/">Robot Operating System. (ROS)</a> It is a platform with far more capability, with access to modules created by robotics researchers, but not easy for robotics beginners to pick up. I've played with ROS on-and-off since then, never quite reaching the level of proficiency I needed to make it happen.</p>
+<p>So I was very excited to learn of Rhys Mainwaring's Curio rover. Curio is a Sawppy sibling with largely the same body but running a <a href="https://github.com/srmainwaring/curio">completely different software stack built on ROS Melodic</a>. Browsing the Curio code repository, I saw far more than just a set of nodes to run a the physical rover, it includes two significant contributions towards a smarter rover.</p>
+<h2>Curio Rover in Simulation</h2>
+<p>There's a common problem with intelligent robotics research today: evolving machine learning algorithms require many iterations and it would take far too long to run them on physical robots. Even more so here because, true to their real-life counterparts, Sawppy and siblings are slow. Rhys has taken Sawppy's CAD data and translated physical forms and all joint kinematics to the Gazebo robot simulator used by ROS researchers. Now it is possible to work on intelligent rovers in the virtual world before adapting lessons to the real world.</p>
+<h2>Rover Odometry</h2>
+<p>One of the challenges I recognized (but didn't know how to solve) was calculating rover wheel odometry. The LX-16A servos used on Sawppy could return wheel position, but only within an approximately 240 degree arc out of the entire 360 degrees circle. Outside of that range, the position data is noisy and unreliable.</p>
+<p>Rhys has managed to overcome this problem with an encoder filter that learned to recognize when the servo position data is unreliable. This forms the basis of a system to calculate odometry that works well with existing hardware and can be even faster with an additional Arduino.</p>
+<h2>ROS Software Stack For Sawppy</h2>
+<p>Several people have asked me for ROS software for Sawppy, and I'm glad Rhys stepped up to the challenge and contributed this work back to the community. I encourage all the Sawppy builders who wanted ROS to look over Rhys' work and contribute if it is within your skills to do so. As a ROS beginner myself, I will be alongside you, learning from this project and trying to run it on my own rover.</p>
+<p>https://github.com/srmainwaring/curio</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/158208-sawppy-the-rover/log/173487-rhys-mainwarings-ros-melodic-software-and-simulator-for-sawppy">Sawppy's Hackaday.io page</a>)</body></html></p>

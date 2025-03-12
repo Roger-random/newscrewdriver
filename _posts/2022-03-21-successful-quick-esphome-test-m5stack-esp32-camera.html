@@ -1,0 +1,83 @@
+---
+layout: post
+title: 'Successful Quick ESPHome Test: M5Stack ESP32 Camera'
+date: 2022-03-21 12:30:00.000000000 +00:00
+type: post
+post_id: '29074'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESP32
+- ESPHome
+- Home Assistant
+- OV2640
+- USB-C
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '29109'
+  timeline_notification: '1647891004'
+  _publicize_job_id: '70455795684'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667550954
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:11'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/03/21/successful-quick-esphome-test-m5stack-esp32-camera/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I don't really have the proper gear to test and verify my <a href="https://newscrewdriver.com/2022/03/20/power-for-usb-c-is-more-complicated-than-red-wire-black-wire/">modifications to an USB cable with type C connectors</a>. Flying blind, I knew there was a good chance I would fry something. I dug through my pile of electronics for the cheapest thing I have with an USB-C socket, which turned out to be <a rel="noreferrer noopener" href="https://shop.m5stack.com/collections/m5-cameras/products/esp32-camera" target="_blank">a M5Stack ESP32 Camera</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I got this particular module as an add-on to the conference badge for Layer One 2019 <a rel="noreferrer noopener" href="https://hackaday.com/2019/06/04/hunting-replicants-with-the-2019-layerone-badge/" target="_blank">as documented on Hackaday</a>. It's been gathering dust ever since, waiting for a project that needed a little camera driven by an ESP32. For conference badge purposes it ran <a rel="noreferrer noopener" href="https://github.com/charlie-x/layerOne2019" target="_blank">code from this repository</a>, which also pointed to resources that helped me find the <a rel="noreferrer noopener" href="https://docs.m5stack.com/en/unit/esp32cam" target="_blank">M5Stack ESP32Cam product documentation page</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The camera module is an OV2640, which is a very popular for electronics hobbyists and found in various boards like <a href="https://www.arducam.com/product/arducam-2mp-spi-camera-b0067-arduino/" target="_blank" rel="noreferrer noopener">this one from ArduCam</a>. If I want to do more work with ESP32+OV2640 I can find variations on this concept for less than $10 each. But M5Stack is at least a relatively name-brand item here, enough for this module to be <a rel="noreferrer noopener" href="https://esphome.io/components/esp32_camera.html?highlight=camera#configuration-for-m5stack-camera" target="_blank">explicitly described in ESPHome documentation</a>. (Along with a warning about insufficient cooling in this design!)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":29108,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/03/m5stack-esp32-cam-back.jpg?w=1024" alt="" class="wp-image-29108"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Two notes about this ESP32Cam module that might not be present on other ESP32+OV2640 modules:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>There is a battery power management IC (IP5306) on board, making this an interesting candidate for projects if I want to <a href="https://newscrewdriver.com/2022/03/14/running-wemos-d1-mini-esp8266-on-single-lithium-ion-18650-cell/">run on a single lithium-ion battery cell</a> and if I don't want to tear apart another USB power bank. I think it handles both charge safety and boost conversion for higher voltage. I don't know for sure because the only datasheets I've found so far are in Simplified Chinese and my reading comprehension isn't great.</li>
+<li>The circuit board included footprints for a few other optional IC components. (BMP280 temperature/pressure/humidity environmental sensor, MPU6050 3-axis accelerometer + 3-axis gyroscope, SPQ2410 microphone.) They are all absent from my particular module, but worth considering if they are ICs that would be useful for a particular project.</li>
+<li>There is a red LED next to the camera connected to pin 16. I used it as an <a href="https://esphome.io/components/status_led.html" target="_blank" rel="noreferrer noopener">ESPHome status light</a>.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>status_led:
+  pin:
+    number: 16</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>My first attempt to put ESPHome on this module was to compile a *.bin file for installation via https://web.esphome.io. Unfortunately, it doesn't seem to properly set up the flash memory for booting as the module gets stuck in an endless loop repeating this error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>rst:0x10 (RTCWDT_RTC_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+flash read err, 1000
+ets_main.c 371 
+ets Jun  8 2016 00:22:57</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>To work around this problem, I fired up an Ubuntu laptop and ran ESPHome docker container to access a hardware USB port for flashing. This method flashed successfully and the ESP32 was able to get online where I could make future updates over wireless.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A web search indicates an OV2640 has a native sensor resolution of 1632x1232. But the ESPHome camera component running on this module could only handle a maximum of 800x600 resolution. The picture quality was acceptable, but only about 2-3 frames per second gets pushed to Home Assistant. As expected, it is possible to trade resolution for framerate. The lowest resolution of 160x120 is very blurry but at least motion is smooth. If I try resolutions higher than 800x600, at bootup time I would see this error message in debug log:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>[E][esp32_camera:095]:   Setup Failed: ESP_ERR_NO_MEM</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This isn't great. But considering its price point of roughly ten bucks for a WiFi-enabled camera module, it's not terrible. This experiment was a fun detour before I return to my <a href="https://newscrewdriver.com/2022/03/22/dedicated-buck-converter-for-usb-charging-port/">project of automated charging</a> for a Pixel 3a phone.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

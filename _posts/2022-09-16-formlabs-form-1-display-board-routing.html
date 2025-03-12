@@ -1,0 +1,142 @@
+---
+layout: post
+title: FormLabs Form 1+ Display Board Routing
+date: 2022-09-16 12:30:00.000000000 +00:00
+type: post
+post_id: '32582'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32600'
+  _publicize_job_id: '76799954866'
+  timeline_notification: '1663356611'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/16/formlabs-form-1-display-board-routing/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm working to understand the OLED dot matrix display from a broken FormLabs Form 1+ laser resin printer. Thanks to FormLabs user forums <a href="https://newscrewdriver.com/2022/09/15/formlabs-form-1-display-board-rev-01/">I have a lead</a> on an OLED module that might be using the same OLED display. However, the OLED is hosted on a different circuit board. Publicly downloadable information exists for that board, so I will use it as a guide in my exploration.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32506,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-mainboard-left-installed-top-view.jpg?w=1024" alt="" class="wp-image-32506"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the printer mainboard, next to the DISPLAY label for this connector is a number 1. The closest pin appears to be system ground and the red wire in the ribbon cable. I will use that as the starting point for display input pin numbering.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32601,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-board-front-pins-labeled.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-board-front-pins-labeled.jpg?w=1024" alt="" class="wp-image-32601"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Examining the front, I could see there's a connection between pin 1 and majority of copper on this side of the circuit board, giving us a generous ground plane. The copper trace connecting to pin 2 is wider than any other on this board. It measures 3.26V DC when the system is powered up, making it the best candidate for power input. It feeds into the network of components mounted on this circuit board, which then has its own traces to the OLED. This is strongly suggestive of a power-related circuit. I measured those traces and found a few different higher voltages. Conclusion: these components implement a voltage boost converter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:gallery {"linkTo":"none"} --></p>
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image {"id":32588,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-board-removed-back.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-board-removed-back.jpg?w=1024" alt="" class="wp-image-32588"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:image {"id":32584,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-oled-backside.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-oled-backside.jpg?w=1024" alt="" class="wp-image-32584"></a></figure>
+<p><!-- /wp:image --></figure>
+<p><!-- /wp:gallery --></p>
+<p><!-- wp:paragraph --></p>
+<p>Out of remaining eight wires in the ribbon cable, it seems like only five are used. Those five signals were routed together towards the OLED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":32605,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-oled-connector-trace-routing.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-display-oled-connector-trace-routing.jpg?w=1024" alt="" class="wp-image-32605"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This diagram captures what I could determine by visually following traces of copper. On the other end of these traces is the sheet of <a rel="noreferrer noopener" href="https://docs.oshpark.com/services/flex/" target="_blank">yellow FPC</a>. It has "1" printed on the right and "24" on the left, so I'll happily use them as pin numbers. Using that system, I have a first draft for the OLED wires on that yellow FPC. Right to left in the above picture, they are: [UPDATE: added information from <a href="https://newscrewdriver.com/2022/09/23/formlabs-form-1-oled-pinout/" target="_blank" rel="noreferrer noopener">deciphered pinout</a>.]</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>NC (Not Connected)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND (Ground -- connected to display input pin 1)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>NC (Only wire to visibly end inside the FPC.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>3.3V -- connected to display input pin 2</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Display input pin 7 [UPDATE: SPI Chip Select (Active Low)]</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Display input pin 5 [UPDATE: Reset (Active Low)]</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Display input pin 3 [UPDATE: Command/Data Select]</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Display input pin 4 [UPDATE: SPI Clock]</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Display input pin 6 [UPDATE: SPI Data In (there is no SPI Data Out)]</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>NC</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>GND</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>9.0V supplied by boost converter</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>8.1V supplied by boost converter</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>12.6V supplied by boost converter</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>NC</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>This explains the majority of wires going into this OLED module, leaving five unknowns that connected input IDC ribbon cable directly to OLED FPC. Those five wires will be the focus for further exploration and my Saleae logic analyzer will <a href="https://newscrewdriver.com/2022/09/17/first-look-at-formlabs-form-1-display-board-signals/">give me some insight as to what's going on</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

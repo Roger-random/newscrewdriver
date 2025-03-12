@@ -1,0 +1,123 @@
+---
+layout: post
+title: Converting MG90S Metal Gear Micro Servo to Continuous Rotation
+date: 2021-01-04 12:30:00.000000000 +00:00
+type: post
+post_id: '24018'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Micro Servo
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '24022'
+  _oembed_82a8bdbb7d4f4209c0da5e22b7a0e65d: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">I
+    got stuck trying to replicate the final movement in this animation. <a href="https://t.co/rkcOirg9RZ">https://t.co/rkcOirg9RZ</a></p>&mdash;
+    Sawppy (@SawppyRover) <a href="https://twitter.com/SawppyRover/status/1288536443858583552?ref_src=twsrc%5Etfw">July
+    29, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _publicize_job_id: '53021243163'
+  timeline_notification: '1609792230'
+  _oembed_time_82a8bdbb7d4f4209c0da5e22b7a0e65d: '1609802175'
+  _oembed_17f79ff7d8128f4fba79a628fd01618f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">My
+    rovers robot arm running its first two commands <a href="https://twitter.com/SawppyRover?ref_src=twsrc%5Etfw">@SawppyRover</a>
+    <a href="https://twitter.com/hashtag/NASA?src=hash&amp;ref_src=twsrc%5Etfw">#NASA</a>
+    <a href="https://twitter.com/hashtag/marsrover?src=hash&amp;ref_src=twsrc%5Etfw">#marsrover</a>
+    <a href="https://t.co/NvpiCoHqjy">pic.twitter.com/NvpiCoHqjy</a></p>&mdash; SelfMadeElcEngineer
+    (@MadeEngineer) <a href="https://twitter.com/MadeEngineer/status/1344297958465015816?ref_src=twsrc%5Etfw">December
+    30, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_17f79ff7d8128f4fba79a628fd01618f: '1609802547'
+  _oembed_d4924a30c8242d4dc008c637bb93df31: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Mechanically
+    loose play + simplistic control algorithm = tendency for self-perpetuating oscillations.
+    Ah, the joys of working with inexpensive micro servos. <a href="https://t.co/2q6Y3DYuey">pic.twitter.com/2q6Y3DYuey</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1341888336764358656?ref_src=twsrc%5Etfw">December
+    23, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_d4924a30c8242d4dc008c637bb93df31: '1609805923'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667205389
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/01/04/converting-mg90s-metal-gear-micro-servo-to-continuous-rotation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>By default, remote control hobby servos are tasked to hold a particular rotational angle specified by its given control signal. However, a common modification is to turn them into "continuous rotation servo" where the control signal commands the motor forward or backwards without regard for position. This is useful for tasks like driving <a href="https://newscrewdriver.com/2021/01/03/micro-sawppy-beta-1-wheels/">a little rover's wheels</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Performing this modification is done by disconnecting the potentiometer from the output shaft, and replace it with resistors that will result in an unchanging resistance value. Such a servo will think the control shaft is always at center. So when given the command to move to a position off center, its control circuit will fruitlessly spin the motor trying to get to a position it will never reach, giving us our forward/back motor control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Studying a few micro servos batches sold by different vendors, I've established there's a fair amount of variety among generic micro servos. So these pictures will probably not exactly match whatever might be on hand for your project, but the general concepts should still hold.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24020,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-01-servo-with-resistors.jpg?w=1024" alt="" class="wp-image-24020"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This conversion starts with a standard servo with two resistors. The precise value isn't very important, but they do need to be at least a few hundred ohms (so very little current flows through them) and they need to be as close to identical to each other as practical. I used two 1 kΩ resistors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In reality, the two resistances will not be equal, and servos at this price range wouldn't be very precise about voltage measurement anyway. So this conversion method should only be used when we have means to adjust throttle trim (a.k.a. defining the center point) in the control system. If our control system doesn't have such adjustments, then the potentiometer needs to be preserved to allow physical adjustment. In the case of <a href="https://newscrewdriver.com/2021/01/02/micro-sawppy-beta-1/" target="_blank" rel="noreferrer noopener">this project</a>, I have software adjustment, so I could proceed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24021,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-02-open-case.jpg?w=1024" alt="" class="wp-image-24021"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hopefully your micro servos are not glued shut and can be opened up by removing a few screws. In this particular type, removing two screws allow access to both the gearbox and control electronics.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24022,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-03-extract-gears.jpg?w=1024" alt="" class="wp-image-24022"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though MG90S micro servos are commonly called metal gear servos, I've found that some of them don't actually have all metal gears. They might have metal gear only on the final output shaft or maybe one or two intermediate stages behind that. This particular one is actually all metal, but of course there's no guarantee on how strong the metal might be. What's important right now is whether the final output gear has something that prevents continuous rotation. Not all of these servos have one. But if present, it needs to be removed. Hold that output gear securely...</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24024,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-04-secure-output-gear.jpg?w=1024" alt="" class="wp-image-24024"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>And remove the stop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24025,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-05-remove-rotation-stop.jpg?w=1024" alt="" class="wp-image-24025"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now the servo is mechanically able to rotate continuously, and we can proceed to electronics modification to the position-sensing potentiometer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24027,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-06-secure-control-pcb.jpg?w=1024" alt="" class="wp-image-24027"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hold the control circuit board securely.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24028,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-07-unsolder-potentiometer.jpg?w=1024" alt="" class="wp-image-24028"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unsolder the three legs of the potentiometer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24029,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-08-solder-resistors.jpg?w=1024" alt="" class="wp-image-24029"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Use the two resistors to build a voltage divider that evenly divides the voltage across either side into an average value on the center pin. This is what the potentiometer used to do at its center position, and now it will read as that position forever.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":24030,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/12/mg90s-micro-servo-continuous-rotation-conversion-09-continuous-rotation-servo-with-rotation-stop-and-potentiometer.jpg?w=1024" alt="" class="wp-image-24030"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reassembling all parts completes the conversion. We are left with a extraneous piece of mechanical stop, and a potentiometer that is no longer used to sense position. Now this motor can be controlled like a small gearmotor assembly with built-in H-bridge, perfect for mounting inside a micro rover <a href="https://newscrewdriver.com/2021/01/05/micro-sawppy-beta-1-steering/">wheel steering knuckle</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

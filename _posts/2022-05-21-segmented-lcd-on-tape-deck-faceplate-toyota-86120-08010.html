@@ -1,0 +1,86 @@
+---
+layout: post
+title: Segmented LCD on Tape Deck Faceplate (Toyota 86120-08010)
+date: 2022-05-21 12:30:00.000000000 +00:00
+type: post
+post_id: '30413'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- Arduino
+- LC75853N
+- LCD Segment Map
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30415'
+  _publicize_job_id: '72783670805'
+  timeline_notification: '1653161433'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/21/segmented-lcd-on-tape-deck-faceplate-toyota-86120-08010/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Thanks to well-labeled connectors and an online datasheet, I can write Arduino code to control faceplate LCD of the stock tape deck audio unit from a 1998 Toyota Camry LE. (86120-08010). However, knowledge of the digital wiring doesn't tell me anything about the physical location and shape of each segment in the LCD. I will build a segment map with the help of <a href="https://newscrewdriver.com/2022/05/20/reading-faceplate-audio-mode-knob/">a knob already on the faceplate</a>. The Sanyo LC75853N chip could control up to 126 segments. I edited my Arduino program to turn on all of them, so I could take this picture to see where segments even existed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30415,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-lcd-all-segments-on.jpg?w=1024" alt="" class="wp-image-30415"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>It reflected the custom nature of a segmented LCD. Some of these digits would only ever display numbers, so they had the standard 7 segments for numeric display. Others have a secondary use to display letters for a few audio settings, and those digits had more than 7 segments. But they can't display arbitrary letters, only exactly what was needed and no more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the full set of available segments in hand, I changed the program to turn on just one segment at a time interactively selected via the "Audio Mode" knob. Since each segment is a single bit, I could print out my control bits to Arduino serial monitor to see current active segment's programmatic address.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30431,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-lcd-segment-serial-data.jpg?w=822" alt="" class="wp-image-30431"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm using the same numbering system as used in the datasheet, D1 to D126. From there, I generated this segment map:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30369,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-segment-display-map.jpg"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-segment-display-map.jpg?w=1024" alt="" class="wp-image-30369"></a><br />
+<figcaption>LCD segment map for 86120-08010. Click to view full size.</figcaption>
+</figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I first started my Arduino program, I saw nothing for the first few turns of the dial. I thought perhaps my program was faulty, but a few turns later I saw my first result for D13. From there on it was relatively straightforward, working from bottom-to-top and right-to-left. Some notes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>D24 is missing, a mysterious gap.</li>
+<li>There were a few segments that I had thought were separate but were actually the same segment. For example, two visually distinct segments were actually just D54. This was disappointing, because it restricted the number of letters we could show. (Example: a good looking "M" would be possible, but a good looking "N" wouldn't.)</li>
+<li>Along the same lines, some numeric segments looked like separate segments purely for the sake of preserving the 7-segment aesthetic. The three segments D101, D102, and D105 together could display either "1" or "2" but visually looked like 6 segments instead of 3.</li>
+<li>The leftmost large numeric digit puzzled me. It could only display 1, which is fine. But given that, why are the two segments D91 and D92 individually addressable? I can't think of a reason why we'd want to display only the top or bottom half of a "1".</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:image {"align":"center","id":30427,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-lcd-segment-wires-used.jpg?w=954" alt="" class="wp-image-30427"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is a table from the LC75853N datasheet mapping segment numbers to pins. I colored in the segments that were seen and a clear pattern emerged: This LCD allocation avoided using the first four pins (S1-S4) leaving the option of using them as general-purpose output wires. (P1-P4) At the end, stopping at D105 meant they didn't have to wire up the final seven output pins. (The final two S41 and S42 would have had to been reallocated from key scan duty KS1 and KS2, if used.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>None of this explains why D24 is missing. The answer to this mystery must lie elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now that I know what is on this LCD available to display, maybe I can think of a creative way to reuse it. While I think that over, I'll proceed to work through how to <a href="https://newscrewdriver.com/2022/05/22/button-presses-on-tape-deck-faceplate-toyota-86120-08010/">read input from this faceplate</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this investigation is <a href="https://github.com/Roger-random/Sanyo_LC75853N">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

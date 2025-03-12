@@ -1,0 +1,48 @@
+---
+layout: post
+title: Manual Control Square Peg in a ROS Round Hole
+date: 2021-03-11 12:30:00.000000000 +00:00
+type: post
+post_id: '25566'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25564'
+  _publicize_job_id: '55824610693'
+  timeline_notification: '1615494612'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/11/manual-control-square-peg-in-a-ros-round-hole/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have converted my test code reading a joystick via ESP32 ADC peripheral to generate ROS-like data messages as output. There were <a href="https://newscrewdriver.com/2021/03/10/joystick-range-check-works-around-esp32-adc-mystery/">some hiccups along the way</a> but it's good enough to proceed. The next step in the pipeline is to interpret those joystick commands in a little Sawppy rover context and generate ROS-like robot chassis velocity command (<code>cmd_vel</code>) as output. And as I start tackling the math I realized I'm going to face a recurring theme. I have some specific concepts around manual control of a little Sawppy rover, but those concepts aren't a good fit for <a rel="noreferrer noopener" href="https://www.ros.org/reps/rep-0103.html" target="_blank">ROS conventions like REP103</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first concept is velocity. ROS command for linear velocity is specified in meters per second. There's no good way to say "go as fast as you can go". Specifying meters per second will never be accurate on an open-loop DC motor system like micro Sawppy for multiple reasons. The first and most obvious one is battery power: full speed will be faster on a fully charged battery. The next problem is robot geometry. When traveling in an arc, Sawppy's top speed will be constrained by the top speed of the outer-most wheel. As the arc tightens, that outer-most wheel running as fast as it could would still constrain the rover to a lower top speed. So Sawppy's top speed will vary based on other conditions in the system.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The second concept is rotation. ROS command for angular velocity is specified in radians per second. There's no good way to say "pivot about the rover's inner wheel" because the center of the turn is dictated by the combination of linear and angular velocity. Thus the center of the turn is a result of (instead of a part of) the command. In my experience I've found that people have a hard time working with Sawppy turning radius when the center of turn is inside the rover's footprint. People have an easy time with turns that resemble the cars we see on the roads everyday. People also had no problem with Sawppy pirouetting around the center axis. But in between those realms, people get confused pretty quickly. When I created the wired controller for Sawppy, I divided up the control space into two regimes: One mode where Sawppy pivots in place, and another mode where Sawppy's turning radius is constrained to be no tighter than pivoting on one of the middle wheels. Deliberately constraining Sawppy's maneuverability to be a subset of its capabilities was a worthwhile tradeoff to reduce user confusion .</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But the whole reason of ROS is autonomy, and autonomous robots have no problem dealing with all degrees of freedom in robot movement, so there's no reason to block off a subset of capability. However, that also meant if I'm structuring the manual joystick control system to follow ROS conventions, I have no easy way to block off that subset for human friendliness. It is certainly possible to do so with lots of trigonometry, but it always makes my head hurt. ROS works in radians and I have yet to develop a good intuitive sense for thinking about angles in radians. All of my mental geometry have been working in degrees.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These are but two of the problems on the road ahead for Sawppy, in its first draft as a manual remote-controlled vehicle. I hold out hope that this up front pain will make Sawppy software work easier in the future as I adapt ROS nodes to give Sawppy autonomy. But it does mean making today's manual control Sawppy a square peg trying to fit in a round hole, with lots of imprecision that will fall to "best effort" basis instead of rigidly complying with expectations of ROS. But I'll stay with it to the best of my abilities, which means <a href="https://newscrewdriver.com/2021/03/12/revisiting-sawppy-geometry-jupyter-notebook/">revisiting rover geometry math</a> in this new context.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

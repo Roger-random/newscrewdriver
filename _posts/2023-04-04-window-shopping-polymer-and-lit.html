@@ -1,0 +1,46 @@
+---
+layout: post
+title: Window Shopping Polymer and Lit
+date: 2023-04-04 12:30:00.000000000 +00:00
+type: post
+post_id: '35931'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JavaScript
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36062'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680636866
+  _publicize_job_id: '82919515983'
+  timeline_notification: '1680636614'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:35'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/04/window-shopping-polymer-and-lit/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>While <a href="https://newscrewdriver.com/2023/03/28/magnetometer-api-in-android-chrome-browser/">poking around with browser magnetometer API</a> on Chrome for Android, one of my references was a "Sensor Info" app published by Intel. I was focused on the magnetometer API itself at first, but I mentally noted to come back later to look at the rest of the web app. Now I'm returning for another look, because "Sensor Info" has the visual style of Google's <a href="https://material.io/">Material Design</a> and it was far smaller than <a href="https://newscrewdriver.com/2023/03/07/angular-material-impact-on-download-size/">an Angular project with Angular Material</a>. I wanted to know how it was done.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The easier part of the answer is <a href="https://github.com/material-components/material-web">Material Web</a>, a collection of web components released by Google for web developers to bring Material Design into their applications. "Sensor Info" imported just <a href="https://www.npmjs.com/package/@material/mwc-button">Button</a> and <a href="https://www.npmjs.com/package/@material/mwc-icon">Icon</a>, unpacked size weighing in at several tens of kilobytes each. Reading the repository README is not terribly confidence inspiring... technically Material Web has yet to reach version 1.0 maturity even though Material Design has moved on to their third iteration. Not sure what's going on there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond visual glitz, the "Sensor Info" application was built with both Polymer and Lit. (<code><a href="https://github.com/intel/generic-sensor-demos/blob/main/sensor-info/src/sensors-app.js">sensors-app.js</a></code> declares a <code>SensorsApp</code> class which derives from <code>LitElement</code>, and <code>import</code> a lot of stuff from <code>@polymer</code>) This confused me because I had thought Lit was a successor to Polymer. As I understand it, the Polymer team <a href="https://www.polymer-project.org/blog/2018-05-02-roadmap-faq">plans no further work after version 3</a> and has taken the lessons learned to start from scratch with Lit. Here's somebody's <a href="https://43081j.com/2018/08/future-of-polymer">compare-and-contrast writeup</a> I got <a href="https://www.reddit.com/r/PolymerJS/comments/9huq7f/understanding_the_difference_between_polymer_2_3/">via Reddit</a>. Now I see "Sensor Info" has references to both projects and, not knowing either Polymor or Lit, I don't think I'll have much luck deciphering where one ends and another begins. Not a good place for a beginner to start.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I know both are built on the evolving (stabilizing?) <a href="https://developer.mozilla.org/en-US/docs/web/web_components">web components standard</a>, and both promise to be far simpler and lightweight than frameworks like Angular or React. I like that premise, but such lightweight "non-opinionated" design also means a beginner is left without guidance. "Do whatever you want" is a great freedom but not helpful when a beginner has no idea what they want yet.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One example is the process of taking the set of web components in use and packaging them together for web app publishing. They expect the developer to use a tool like webpack, but there is no affinity to webpack. A developer can choose to use any other tool. Great, but I hadn't figured out webpack myself nor any alternatives, so this particular freedom was not useful. I got briefly excited when I saw that there are "Starter Kits" already packaged with tooling that are <em>not required</em> (remember, non-opiniated!) but are convenient for starting out. Maybe there's a sample <code><a href="https://webpack.js.org/configuration/">webpack.config.js</a></code>! Sadly, I looked over the <a href="https://github.com/lit/lit-element-starter-ts">TypeScript starter kit</a> and found no mention of webpack or similar tool. Darn. I guess I'll have to revisit this topic sometime after I learn webpack.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

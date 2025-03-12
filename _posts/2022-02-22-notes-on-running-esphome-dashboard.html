@@ -1,0 +1,80 @@
+---
+layout: post
+title: Notes on Running ESPHome Dashboard
+date: 2022-02-22 17:27:32.000000000 +00:00
+type: post
+post_id: '28684'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+meta:
+  timeline_notification: '1645579655'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28640'
+  _publicize_job_id: '69352731416'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667036606
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/22/notes-on-running-esphome-dashboard/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I got Home Assistant <a href="https://newscrewdriver.com/2022/02/21/hello-home-assistant/">running on my home server</a>, I launched an ESPHome container to run alongside and pointed Home Assistant to that container via <a rel="noreferrer noopener" href="https://www.home-assistant.io/integrations/esphome" target="_blank">ESPHome integration</a>. After running it for a while, here are some notes. </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="initial-setup-required-usb">Initial Setup Required USB</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The primary advantage of this approach is that I have an always-on dashboard for my ESPHome devices, from which I could edit and upload new firmware wirelessly. The primary downside of this approach is that I couldn't route USB port to this docker instance, so I needed another computer to perform initial firmware flash with USB cable. There are a few options: (1) select "Manual Install" to download a binary file that I would then <a href="https://github.com/espressif/esptool">flash with <code>esptool.py</code></a>. Advantage: esptool is easy to install. Disadvantage: I have to remember all of the other parameters for flashing. Option (2) copy the configuration YAML file and run a separate instance of ESPHome on the computer with USB port. Advantage: ESPHome took care of all flashing parameters, no need to remember them. Disadvantage: ESPHome not as easy to install. Option (3) select "Manual Install" to download a binary, then use <a href="https://web.esphome.io/" target="_blank" rel="noreferrer noopener">https://web.esphome.io/</a> to flash. Advantage: zero setup!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="esphome-cache-directory">ESPHome <code>/cache</code> Directory</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to the required <code>/config</code> directory, we could optionally mount a <code>/cache</code> directory to ESPHome container instance. When present, the directory is used for items that are easily replaceable. For example downloading PlatformIO binaries and intermediate files during compilation. My <code>/config</code> directory is mapped to a ZFS hard drive array. It is regularly backed up so I have a history of my configuration YAML files, but it is not fast. So I mapped <code>/cache</code> to a SSD volume which is fast but not regularly backed up. It also gets quite large, after a few experiments I approached a gigabyte under <code>/cache</code> versus only a few megabytes in <code>/config</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="not-actually-required-for-home-assistant">Not Actually Required for Home Assistant</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had thought ESPHome dashboard served as communication node for all my ESP32/ESP8266 boards to talk to Home Assistant. I was wrong! The boards actually get all the code to talk to Home Assistant directly. This meant I don't strictly need to have Home Assistant Core and ESPHome Dashboard launch together in a common <code>docker-compose.yml</code> file. Home Assistant Core needs to be running, but ESPHome Dashboard could be launched just when I want to wirelessly modify a node.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 id="add-dashboard-password">Add Dashboard Password</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>But if ESPHome will always be left running as a standalone container, it would be a very good idea to install a minimum bar of security protection. By default, ESPHome dashboard is openly accessible, and I didn't think it was the best idea. It left open access of all my ESPHome nodes to any port sniffers that might get on my home network. Whether I leave ESPHome running or not, I should at least add a username and password to ESPHome dashboard. This can be done by modifying the container launch commands as per <a rel="noreferrer noopener" href="https://esphome.io/guides/cli.html#dashboard-command" target="_blank">parameters in ESPHome documentation</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>version: '3'
+
+services:
+  esphome:
+    image: esphome/esphome:latest
+    command: dashboard --username [my username] --password [my password] /config
+    restart: unless-stopped
+    volumes:
+      - [path to regularly backed-up volume]:/config
+      - [path to speedy SSD that isn't backed-up]:/cache
+    network_mode: host</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This would not be necessary if running as an add-in with Home Assistant Operating System. When installed and managed by the supervisor, access to the ESPHome dashboard becomes part of Home Assistant user control.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph --></p>
+<p>All this effort to learn Home Assistant and ESPHome was kicked off when I decided not to write my own code to work with an INA219 voltage+current sensor, hoping it would be easier to use ESPHome instead. And I'm happy to report it <a href="https://newscrewdriver.com/2022/02/23/using-ina219-was-super-easy-with-esphome/">absolutely paid off</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

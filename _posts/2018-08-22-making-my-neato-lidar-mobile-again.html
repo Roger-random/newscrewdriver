@@ -1,0 +1,38 @@
+---
+layout: post
+title: Making My Neato LIDAR Mobile Again
+date: 2018-08-22 09:35:22.000000000 +00:00
+type: post
+post_id: '16673'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags:
+- LIDAR
+- Neato
+meta:
+  timeline_notification: '1534955724'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21352235279'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:06'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/08/22/making-my-neato-lidar-mobile-again/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The <a href="http://www.ebay.com/itm/283094400379">laser distance sensor I bought off eBay</a> successfully managed to send data to my desktop computer, and the data looks vaguely reasonable. However, I'm not interested in a static scanner - I'm interested in using this on a robot that moves. Since I don't have the rest of the robot vacuum, what's the quickest way I can hack up something to see how this LIDAR unit from a Neato XV-11 works in motion?</p>
+<p>Obviously something on the move needs to run off battery, and there's already a motor voltage regulator working to keep motor speed correct. So that part's easy, and attention turns to the data connection. I needed something that can talk to a serial device and send that data wirelessly to my computer. There are many ways to do this in the ROS ecosystem, but in the interest of time I thought I'd just do it in the way I already know how. A Raspberry Pi is a ROS-capable battery-powered computer and everything I just did on my computer would work on a Pi. (The one in the picture here has the <a href="https://www.adafruit.com/product/2327">Adafruit servo control PWM HAT on board</a>, though the HAT is unused in this test.)</p>
+<p><img class=" size-full wp-image-16674 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/mobile-scanning-module.jpg" alt="Mobile Scanning Module" width="1024" height="609"></p>
+<p>The Raspberry Pi is powered by its own battery voltage regulator I <a href="https://newscrewdriver.com/2018/06/07/distributing-power-inside-sawppy-the-rover/">created for Sawppy</a>, supplying 5 volts and running in parallel with an identical unit tuned for 3 volts supplying power to spin the motor. As always, the tedious part is getting a Pi on the wireless network. But once I could SSH into the Pi wirelessly, I could run <a href="http://wiki.ros.org/xv_11_laser_driver/Tutorials/Running%20the%20XV-11%20Node">all the ROS commands I used on my desktop</a> to turn this into a mobile distance data station. Reading in data via FTDI serial port adapter, sends data out as ROS topic <code>/scan</code> over WiFi.</p>
+<p>Using a Raspberry Pi 3 in this capacity is complete overkill - the Pi 3 can easily shuttle 115200 bps serial data over the network. But it was quick to get up and running. Also - the FTDI is technically unnecessary because a Pi has <a href="https://www.raspberrypi.org/documentation/configuration/uart.md">3.3V serial capability on board that we could use</a>. It's not worth the time to fuss with right now but something to keep in mind for later.</p>
+<p>Now that the laser is mobile, it's time to explore its behavior on the move...</p>
+<p></body></html></p>

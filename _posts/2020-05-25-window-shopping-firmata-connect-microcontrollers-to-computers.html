@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'Window Shopping Firmata: Connect Microcontrollers To Computers'
+date: 2020-05-25 12:30:46.000000000 +00:00
+type: post
+post_id: '21145'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- Firmata
+meta:
+  _thumbnail_id: '18964'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44685070887'
+  timeline_notification: '1590435064'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/25/window-shopping-firmata-connect-microcontrollers-to-computers/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Reading about <a href="https://newscrewdriver.com/2020/05/24/windows-shopping-linx-connecting-labview-to-maker-hardware/">LabVIEW LINX</a> stirred up memory of something with a similar premise. I had forgotten its name and it took a bit of research to re-discover <a href="https://github.com/firmata/protocol">Firmata</a>. Like LINX, Firmata is a protocol for communicating between microcontrollers and desktop computers. Like LINX, there are a few prebuilt implementations available for direct download, such as their <a href="https://github.com/firmata/arduino">standard Arduino implementation of Firmata</a>.</p>
+<p>There's one aspect of the Firmata protocol I found interesting: its relationship to MIDI messages. I had originally thought it was merely inspired by MIDI messages, but the <a href="https://github.com/firmata/protocol/blob/master/protocol.md">Firmata protocol documentation</a> says it is actually a proper subset of MIDI. This means Firmata messages have to option to coexist with MIDI messages on the same channel, conveying data that is mysterious to MIDI instruments but well-formed to not cause problems. This was an interesting assertion, even with the disclaimer that in practice Firmata typically runs at a higher serial speed on its own bus.</p>
+<p>Like LINX, Firmata is intended to be easily implemented by simple hardware. The standard Arduino implementation can be customized for specific projects, and anything else that can communicate over a serial port is a candidate hardware endpoint for Firmata.</p>
+<p>But on the computer side, Firmata is very much unlike LINX in its wide range of potential software interfaces. LINX is a part of LabVIEW, and that's the end of the LINX story. Firmata can be implemented by anything that can communicate over a serial port, which should cover almost anything.</p>
+<p>Firmata's own Github <a href="https://github.com/firmata/pyduino">hosts some Python sample code</a>, and it is but one of five options for Python client libraries listed on the protocol web site and they carry along some useful tips like using Python's <code><a href="https://docs.python.org/3/library/functions.html#ord">ord()</a>/chr()</code> to convert hexadecimal data to/from Firmata packets. Beyond Python, every programming language I know of are invited to the Firmata party: Processing, Ruby, JavaScript, etc.</p>
+<p>Since I had been playing with C# and .NET recently, I took a quick glance at their section of Firmata. These are older than UWP and use older non-async APIs. The <a href="https://github.com/SolidSoils/Arduino">first one</a> on the list used <code><a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport">System.IO.Ports.SerialPort</a></code>, and needed some <a href="https://solidsoils.github.io/Arduino/html/48a1f3a8-4ebd-f887-9042-461476ec06e1.htm">workaround for Mono</a>. The second one isn't even C#: It's <a href="http://www.acraigie.com/programming/firmatavb/default.html">aimed at Visual Basic</a>. I haven't looked at the third one on the list.</p>
+<p>If I wanted to write an UWP application that controls hardware via Firmata, writing a client library with the newer async <code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication.serialdevice">Windows.Devices.SerialCommunication.SerialDevice</a></code> API might be a fun project.</p>
+<p></body></html></p>

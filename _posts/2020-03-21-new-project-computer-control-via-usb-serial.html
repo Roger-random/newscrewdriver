@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'New Project: Computer Control via USB Serial'
+date: 2020-03-21 12:30:11.000000000 +00:00
+type: post
+post_id: '20949'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '20952'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42059435046'
+  timeline_notification: '1584819045'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/21/new-project-computer-control-via-usb-serial/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Since I've started this blog I've explored several problem domains with a common thread: equipment automation by computer control. Most recently my CNC project running GRBL needed a computer G-code sender. 3D printers are similar, though most modern printers can run independently using G-code stored on a memory card. And finally the aborted <a href="https://newscrewdriver.com/category/projects/thermoforming-machine-rebuild/">thermoforming machine project</a> that had ambition to use a Raspberry Pi as its brain.</p>
+<p>In all of these cases, we had a piece of equipment that could communicate with a PC via a USB serial adapter, so we can let the hardware focus on low level tasks and the PC could perform higher level tasks. It would be useful to dig deeper into this world and get a better feel of the tools available for solving problems.</p>
+<p>For this initial pass my focus will be on PC software that interfaces with arbitrary pieces of equipment that communicate via USB serial, and the primary motivation for PC involvement would be its ability to display data on a full sized computer monitor. These two considerations will be my "North Star" for prioritization.</p>
+<p>As a starting point, I thought I'd look over a few examples from an existing ecosystem: that of computer controlled hardware for electronics measurement and testing automation. I didn't think they would be directly applicable, but I didn't know how to articulate why until I learned a little more.</p>
+<p>As of this writing, my understanding is that such software's value to professional engineers are in two areas that are near, but not quite, my own priorities for this investigation:</p>
+<ul>
+<li>They are built around the <a href="https://en.wikipedia.org/wiki/IEEE-488">IEEE-488 standard</a>, a formalized version of GPIB interface that started as a proprietary solution (HP-IB) for Hewlett-Packard equipment but has grown into a de facto standard in this industry. This standard encompasses the physical connector, electrical interface, and software protocol. Recently, the popularity of USB meant USB has taken over the physical and electrical portions. But the GPIB communication protocol lives on as USB488, which I understand to be a part of <a href="https://www.usb.org/document-library/test-measurement-class-specification">USB TMC</a>. This is different from USB serial adapters, which usually identify as <a href="https://www.usb.org/document-library/class-definitions-communication-devices-12">USB CDC and/or ACM</a>.</li>
+<li>They offer an extensive collection of data analysis and visualization tools specialized to the field of electronics test and measurement. This does not necessarily mean they support custom rendering of arbitrarily large data sets.</li>
+</ul>
+<p>As a first example of how those differences manifest in practice, let's do a quick <a href="https://newscrewdriver.com/2020/03/22/window-shopping-keysight-vee-serial-communication/">window-shopping pass of Keysight VEE</a>.</body></html></p>

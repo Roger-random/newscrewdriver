@@ -1,0 +1,58 @@
+---
+layout: post
+title: FormLabs Form 1+ Laser Control Circuit (Partial)
+date: 2022-10-04 12:30:00.000000000 +00:00
+type: post
+post_id: '32895'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32896'
+  timeline_notification: '1664911817'
+  _publicize_job_id: '77382038323'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/04/formlabs-form-1-laser-control-circuit-partial/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>So far, I've had only limited success deciphering operations of laser module in a FormLabs Form 1+ laser resin 3D printer. I knew it was a laser diode, but instead of just two wires for power+ground there are four wires snaking out the end of this module. My oscilloscope can show me how voltage varies <a href="https://newscrewdriver.com/2022/10/03/formlabs-form-1-laser-power-during-print/">during a print job</a> and also during API programmatic control, but I didn't know how to interpret those voltage values.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's time to move on to the next resource at my disposal. Beyond preserving the ability to run print jobs and programmatic access API, I also have the functioning printer mainboard itself I can examine. I'm only a beginner at electronics, but I can follow copper traces on a circuit board for a little bit before I get lost. As far as I can tell, the printer mainboard is a two-layer circuit board, meaning there aren't hidden layers of copper that I could not trace. However, it makes copious use of vias to tunnel things from one layer to the other, and it's hard for me to pick out the right via to follow when a copper path switches sides. And it doesn't help that many traces run underneath components so I could not trace them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32902,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-laser-control-transistor-tip122.jpg?w=1024" alt="" class="wp-image-32902"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My complaints aside, I was able to get far enough for some insights. The black wire is connected to the collector of a <a href="https://www.onsemi.com/products/discrete-power-modules/darlington-transistors/tip122" target="_blank" rel="noreferrer noopener">Fairchild Semiconductor (now onsemi) TIP122</a> power transistor, whose emitter is connected to the ground plane. Aha! Laser power is switched on the low side, explaining why I didn't recognize voltage of red &amp; black wires as power &amp; ground wires.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So, what controls this TIP122 transistor? And what about the other two wires coming out of the laser module? Here I could uncover only part of the picture, but I know it centers around component U7, marked with Texas Instruments logo and labeled L358. The closest thing I found on TI website has an additional letter M: <a rel="noreferrer noopener" href="https://www.ti.com/product/LM358" target="_blank">LM358 dual op-amp chip</a>. It seems to fit, though. The V+ input pin is connected to 11.18V power like the laser module red wire, and the V- pin is connected to system ground. OUT1 connects to base of TIP122, so one op-amp on this chip is in charge of driving the laser power transistor. Laser module blue wire is connected to the other op-amp on this chip, pin IN2-. And this is where I got stuck. I couldn't figure out the rest of this circuit, lost in the maze of traces.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32905,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-laser-control-circuit-sketch.jpg?w=1024" alt="" class="wp-image-32905"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My hypothesis is that L(M)358 is the heart an analog voltage control circuit utilizing closed-loop feedback provided by laser module blue wire to modulate laser power via TIP122 transistor. My comprehension isn't enough to get further. Analog circuits using op-amps are still voodoo magic to me today. I hope I'll learn enough in the future to return and decipher this circuit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Though incomplete, this is enough understanding for me to know that I could ignore the blue and yellow wires if I don't care about precise laser control. Putting power across red and black wires is enough to get a violet-blue laser dot. 3.7V will draw 20mA, values similar to non-laser LEDs. According to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/10/02/formlabs-form-1-laser-power-via-openfl/" target="_blank">my OpenFL API experiment</a> this would be slightly lower than 1mW of beam power. Which is generally regarded as relatively safe, low enough power that normal blink reflex is enough to prevent serious eye damage. 4.5V corresponds to the recommended maximum of 64mW, and 4.61V will push us all the way up to the not-recommended level of 80mW. I assume that ventures significantly into eye damage territory so if I must be careful with laser power levels if I should use it elsewhere.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Final step on my Form 1+ hardware tour: <a href="https://newscrewdriver.com/2022/10/05/formlabs-form-1-stepper-motor-control/">stepper motor controller</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

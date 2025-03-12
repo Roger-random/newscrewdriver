@@ -1,0 +1,64 @@
+---
+layout: post
+title: 'New Project: AS7341 Interactive Web UI'
+date: 2023-01-15 14:00:27.000000000 +00:00
+type: post
+post_id: '34600'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+- ESP32
+- HTML
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34583'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1673902503
+  timeline_notification: '1673820031'
+  _publicize_job_id: '80579967531'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/15/new-project-as7341-interactive-web-ui/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've modified my ESP32 development board to help me better understand the AS7341 spectral color sensor. I've removed provision for Mozzi audio output, added heat-shrink tubing to reduce damage from handling, and covered a worryingly bright power LED on Adafruit's AS7341 board. That <a href="https://newscrewdriver.com/2023/01/14/modifying-esp32-mini-to-focus-on-as7341/">takes care of the hardware</a>, but what about the software?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here are my goals:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Allow interactive adjustments to AS7341 parameters. Right now, I have to edit parameters in code, compile the Arduino sketch, and upload to my ESP32 before I can see how changes in parameters affect output. I want to streamline this process.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Better visualize AS7341 sensor data. Right now, I just receive a list of numbers. While sufficient for some fun experiments like Emily's color organ, they are not the most intuitive presentation of vision-based data.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Rapid experimentation for sensor normalization. Every light source has a different spectrum, and every individual filter on the AS7341 has a different response curve. How do I compensate for those variations in a "good enough" way? AMS has an <a href="https://newscrewdriver.com/2023/01/01/ams-as7341-calibration-application-note/" target="_blank" rel="noreferrer noopener">Application Note on precisely calibrating AS7341</a> results, but that requires domain specific expertise such as CIE color spaces. I want to be able to play with ideas and hope to find something that's 80% as good for 10% of the effort.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>For an ESP32, adding interactive adjustments should be easy. I can solder in a few potentiometers, and an ESP32 has plenty of ADC channels to let me pipe that through. I also have a lot of options for ESP32 display. My most recent Adafruit order (which included my AS7341 breakout board) included <a rel="noreferrer noopener" href="https://www.adafruit.com/product/358" target="_blank">a small 1.8" color LCD</a> which would work well. Where this idea might fall apart is my wish for rapid experimentation. It only takes about thirty seconds for me to compile an ESP32 Arduino Core sketch and upload it to my ESP32 board, but that time adds up if I'm trying a lot of small changes in rapid succession. Wouldn't it be nice if I could iterate as quickly as web development? In that world, I can make a small change and hit F5 to refresh my browser and see immediate results.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I realized: hey, I could totally do that! In fact, it would line up with my desire to practice working with web related technologies. Using HTML controls, I could quickly add points of interactivity. There would be no shortage of display options to visualize AS7341 data on screen, and I get that rapid edit/F5/result loop I wish for. Would this be the best way to interactively visualize AS7341 data? Probably not! But it's a way for me to build my hardware and software skills simultaneously, making it a great learning project for my purposes. I will start by <a href="https://newscrewdriver.com/2023/01/16/esp32-webserver-made-as7341-accessible-via-http-get/">writing a thin stub running on my ESP32 to interact with AS7341</a>, then I can get my feet wet with browser-side development.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a href="https://github.com/Roger-random/as7341_webui" target="_blank" rel="noreferrer noopener">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

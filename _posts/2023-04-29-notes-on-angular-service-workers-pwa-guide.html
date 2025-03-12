@@ -1,0 +1,46 @@
+---
+layout: post
+title: Notes on Angular "Service Workers &amp; PWA" Guide
+date: 2023-04-29 12:30:00.000000000 +00:00
+type: post
+post_id: '36434'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36435'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1682883250
+  _publicize_job_id: '83642994818'
+  timeline_notification: '1682796619'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/29/notes-on-angular-service-workers-pwa-guide/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Reading through web.dev's "Learn PWA!" guide was <a href="https://newscrewdriver.com/2023/04/28/notes-on-web-dev-learn-pwa/">quite a lot of information to absorb</a>, much of which has already leaked out of my brain. I'd need a lot more practice at designing and building web applications before I can understand and retain the full range of PWA capabilities. Fortunately, we don't need to understand everything. We can start small, leveraging libraries that expose commonly desired functionality. There are general PWA libraries like <a href="https://developer.chrome.com/docs/workbox/">Workbox</a>, and most popular web app frameworks also have an optional PWA library. Angular's take is introduced in "<a href="https://angular.io/guide/service-worker-intro"><em>Service Workers and PWA</em></a>", one of Angular's Developer Guides.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was relieved to learn that Angular 15's <a href="https://www.npmjs.com/package/@angular/pwa">@angular/pwa</a> library was exactly the "start small" option I had hoped for. Installing the library adds a service worker implementation of fundamental service worker tasks: cache the bundles and assets of an Angular app, serves them as needed while running as PWA, and updates those files if newer versions are found on the server. This is a small subset of all the features I saw covered in "Learn PWA!" but it's enough to turn an Angular app into a PWA!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Underscoring the potential complexity of PWAs, the longest page in this Angular PWA developer guide is "<em>Service worker in production</em>" which talks about all the ways PWAs can go wrong and how an Angular developer can fix it. It's possible the author of this guide just wants to be through, and I certainly appreciate honesty and detail. Much better than optimistically assuming nothing will go wrong. Still, seeing all the ways things can go wrong isn't terribly confidence inspiring for a beginner.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If an Angular web app author wants to go beyond this basic service worker, I'm not sure if it's built to be extensible or if said author is expected to write their own service worker from scratch. The developer guide didn't say anything either way. Also unknown to me is whether trying to use a library like Workbox would risk collisions with the default service worker implementation. I saw no warnings about that, either.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm just going to start small and use this library to <a href="https://newscrewdriver.com/2023/04/30/compass-project-now-a-pwa/">turn my Compass web app into a basic PWA</a> without worrying about extra features.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

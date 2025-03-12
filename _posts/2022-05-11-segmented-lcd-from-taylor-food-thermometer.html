@@ -1,0 +1,79 @@
+---
+layout: post
+title: Segmented LCD From Taylor Food Thermometer
+date: 2022-05-11 12:30:00.000000000 +00:00
+type: post
+post_id: '30216'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- LCD Segment Map
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30217'
+  _publicize_job_id: '72409658297'
+  timeline_notification: '1652297425'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:45'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/11/segmented-lcd-from-taylor-food-thermometer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After figuring out the <a href="https://newscrewdriver.com/2022/05/10/segmented-lcd-from-sunbeam-pac-215/">segmented LCD module salvaged from an electric blanket controller</a>, I revisited the food thermometer LCD that <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/04/taylor-food-thermometer-lcd-first-round-fail/" target="_blank">foiled my first attempt</a> at deciphering its multiplex encoding. This time I have a smaller solder tip to maneuver in limited space. I also have finer wires with softer insulation to reduce stress on these solder joints. And finally, instead of individual pins I will solder all of these wires to a perforated prototype board with pin headers, so that they all share physical stress together. The perforated board also had letters across the top, so I had convenient labels for each of the wires: A through W.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30221,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-wires-soldered.jpg?w=1024" alt="" class="wp-image-30221"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These changes solved the wiring continuity problem, but I hadn't addressed the problem of applying pressure on the elastomeric "zebra strip" to keep it in contact with copper pads on the circuit board. Or at least, not elegantly.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30218,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-clamp-and-tape.jpg?w=1024" alt="" class="wp-image-30218"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>"Not elegantly" meant there are two different types of tape involved, numerous spacers in various locations, and a small clamp all working together to keep that elastomeric strip in contact with the circuit board. If I am to reuse this LCD, I definitely need a better solution than this jury-rigged setup.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30220,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-segments-scribble.jpg?w=1024" alt="" class="wp-image-30220"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph {"align":"left"} --></p>
+<p class="has-text-align-left">But it was good enough for me to obtain this mapping, scribbling things down as I went. In my earlier effort, I decided this screen didn't use a typical segment/common pin split. I was wrong! Misled by poor electrical connections. This screen used 18 segments that ended up on my perforated prototype board as A through R. The five common pins ended up on S through W.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30217,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-all-segments-active.jpg?w=1024" alt="" class="wp-image-30217"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the segment and common pins were identified, I could wire up my test circuit to activate all segments on this LCD. And from this picture, I can translate my scribbled notes into a more legible segment map.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30219,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-segments-map.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/taylor-food-thermometer-lcd-segments-map.jpg?w=1024" alt="" class="wp-image-30219"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Some notes on this imperfect segment map:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>There was crosstalk between pins C and D on my test setup, so they both activate if either is powered. Usually, one is blurrier than the other, but sometimes they look roughly equal and I had to guess which was which. So some of the C/D segments on this map may be reversed.  (For example, C3 might actually be D3, and vice versa.)</li>
+<li>I had intermittent connection on pin N. N0, specifically, was not seen (It was missing from the hand drawn map above) and was filled in, inferred, via a process of elimination.</li>
+<li>The hundreds digit for the two temperatures can only show 1, 2, or 3. The three horizontal elements are all a single segment, and it is missing the segment to show 4. This makes sense for a food thermometer: while an oven can be set to be 400 degrees or higher, our food would be a charred hulk by the time it reaches that temperature so it's not really relevant for a food thermometer.</li>
+<li>The units for temperatures can be "C" or "F" and they only differ by one segment. All the remaining segments are fixed together along with a text label and the degree symbol. (B3 and Q3.)</li>
+<li>R behaved strangely. It is associated with the "Timer" text in the upper right and the middle horizontal segment of "F" in the lower right. They seem to both illuminate regardless of which common pin is active, but that doesn't make sense because there's no reason for "Timer" text to be mutually exclusive with using Celsius units. Additional investigation is needed here but that requires individual segment control that I currently lack.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want to play with this LCD further, the first requirement is to get a better mounting system to send signal through that elastomeric strip. No tapes, spacers, or clamps. And in order to have individual control over segments, I'll need either a dedicated LCD driver chip or a microcontroller with at least 18+5 = 23 GPIO pins. This is far beyond the number of pins <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/20/notes-on-esp32-input-output-pins/" target="_blank">available on an ESP32</a> so I'll need to get up to speed on some other microcontroller if I want to tackle such a project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For now, this LCD will not go back to the "I don't know if I can use it" pile of salvaged electronics. It has been upgraded to the "I know I can use it and I'm waiting for a project idea" collection. I love making such an upgrade, and I want to see if I can do the same for <a href="https://newscrewdriver.com/2022/05/12/wires-to-probe-toyota-audio-head-unit-86120-08010/">a salvaged automotive tape deck faceplate</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

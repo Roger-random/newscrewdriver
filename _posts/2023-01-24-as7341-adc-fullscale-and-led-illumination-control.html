@@ -1,0 +1,49 @@
+---
+layout: post
+title: AS7341 ADC Fullscale and LED Illumination Control
+date: 2023-01-24 12:30:00.000000000 +00:00
+type: post
+post_id: '34738'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _publicize_job_id: '80860997008'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1674683223
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34739'
+  timeline_notification: '1674592204'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:00'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/01/24/as7341-adc-fullscale-and-led-illumination-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Getting interactive control over AS7341 sensor parameters helped me better understand their effect on resulting data. <a href="https://newscrewdriver.com/2023/01/23/notes-on-as7341-integration-time/">Interactive control over sensor integration time</a> (photography analogy: exposure time) made it easy for me to see how the data reacted mostly linearly until they reach their limit. I had known the AS7341 ADCs were 16-bit, so I thought the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/65,535" target="_blank">limit is always 65535</a>. This is wrong: it is actually 65535 <em><strong>OR</strong></em> ADC<sub>fullscale</sub>, whichever is lower.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I came across ADC<sub>fullscale</sub> in the datasheet but I didn't understand what that information meant at the time. I had mistakenly thought it placed a limit on integration time, as it is calculated from integration time parameters "atime" and "astep" with the formula (atime+1)*(astep+1). Now I know it does not limit integration time but is actually a cap on ADC values if that formula results in less than 65535. For example, right now I'm running with a fixed "astep" of 3596 which corresponded roughly to 10 milliseconds per "atime". If I configure "atime" to 9, (atime+1)*(astep+1) = (10)*(3597) = 35970 is the sensor saturation limit ADC<sub>fullscale</sub>. Not 65535.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another thing I learned was that my original plan for "LED stay on" parameter wouldn't work. I had designed it to be a parameter sent alongside atime, astep, and gain at the beginning of sensor read. It seemed reasonable enough until I tried to design a control to toggle whether we are going to read the sensor continuously. When will the user toggle that to be "OFF"? Odds are, such toggle would happen while we are in the middle of sensor integration. By that time, it was too late to communicate LED should be turned off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Oh well, mistakes like this happen. That <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui/commit/3b27a2a63b45f6d10c1afc3a83997c3cfc5502f4" target="_blank">useless "led_stay_on" parameter was removed</a>, and I added code so "led_ma" could be a valid operation by itself without triggering a sensor read. This lets me adjust the LED illumination (usually turning it off) without performing a sensor read. Just another instance where iterative development is useful, <a href="https://newscrewdriver.com/2023/01/25/overkill-options-a-frame-three-js-and-d3-js/">updating my design as I go</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Code for this project is <a rel="noreferrer noopener" href="https://github.com/Roger-random/as7341_webui" target="_blank">publicly available on GitHub</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

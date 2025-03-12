@@ -1,0 +1,52 @@
+---
+layout: post
+title: HP Inkjet Printer Power Supply For NEC VSL0010-A VFD
+date: 2019-04-03 13:46:25.000000000 +00:00
+type: post
+post_id: '18242'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- Teardown
+tags:
+- SGVHAK
+- VFD
+meta:
+  _oembed_deb398f7c094a1f5accde7e869cd706f: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">We
+    figured out the pinout! <a href="https://t.co/1m7fDtdLOR">pic.twitter.com/1m7fDtdLOR</a></p>&mdash;
+    Emily Velasco (@MLE_Online) <a href="https://twitter.com/MLE_Online/status/1112915301870391297?ref_src=twsrc%5Etfw">April
+    2, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  timeline_notification: '1554324388'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29365190725'
+  _oembed_time_deb398f7c094a1f5accde7e869cd706f: '1554324415'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/03/hp-inkjet-printer-power-supply-for-nec-vsl0010-a-vfd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>One of the reasons LED has overtaken VFD in electronics is reduced power requirements. Not just in raw wattage of power consumed, but also the varying voltage levels required to drive a VFD. The <a href="https://newscrewdriver.com/2019/04/02/sleuthing-nec-vsl0010-a-vfd-control-pinout/">NEC VSL0010-A VFD whose pinout we just probed</a> ran on 2.5V AC and ~30V DC. In contrast, most LED can run at the same 5V or 3.3V DC power plane as their digital drive logic, vastly simplifying design.</p>
+<p>We didn't have a low voltage AC source handy for probing, so we used 2.5V DC. We expected this to have only cosmetic effects. One side of our VFD will be brighter than the other, since one side will have a filament-to-grid/element voltage difference of 30V but the other will only have 27.5V.</p>
+<p>But putting 2.5V DC on the filament occupied our only bench power supply available at the time. What will we use for our 30V DC power source? The answer came from our parts pile of previously disassembled electronics, in this case a retired HP inkjet printer's power supply module labeled with the number CM751-60190.</p>
+<p><img class=" size-full wp-image-18229 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/hp-cm751-60190-ac-power-adapter.jpg" alt="HP CM751-60190 AC Power Adapter" width="900" height="1600"></p>
+<p>According to the label, this module could deliver DC at 32V and 12V. Looking at its three-conductor output plug, it was easy to come to the conclusion we have one wire for ground, one wire for 32V, and one wire for 12V. But that easy conclusion would be wrong. Look closer at the label...</p>
+<p><img class=" size-full wp-image-18227 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/hp-cm751-60190-ac-power-adapter-pinout.jpg" alt="HP CM751-60190 AC Power Adapter pinout" width="1200" height="675"></p>
+<p>We do indeed have a ground wire in the center, but there is only one power supply wire labelled <code>+32V/+12V</code>. It actually delivers "32 or 12" volts, not "32 and 12" volts. That last pin on the left has an icon. What did that mean? Our hint comes from power output specifications: +32V 1095mA or +12V 170mA. We deduced this meant the icon is a moon, indicating a way to toggle low-power sleep mode where the power supply only delivers 12V * 170mA = 2 watts vs. full 32V * 1095mA = 35 W.</p>
+<p>With that hypothesis in hand, it's time to hook up some wires and test its behavior.</p>
+<p><img class=" size-full wp-image-18228 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/hp-cm751-60190-ac-power-adapter-test.jpg" alt="HP CM751-60190 AC Power Adapter test" width="1600" height="900"></p>
+<p>When "sleep mode" pin is left floating, voltage output is 32VDC. When that pin is grounded, voltage output drops to 12VDC. Since we're looking for 32VDC to drive our VFD grid and elements, it's easy enough to leave sleep wire unconnected and solder wires to the remaining two wires to obtain 32V DC for our VFD adventures.</p>
+<p><img class=" size-full wp-image-18226 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/hp-cm751-60190-ac-power-adapter-new-wires.jpg" alt="HP CM751-60190 AC Power Adapter new wires" width="1600" height="900"></p>
+<p></body></html></p>

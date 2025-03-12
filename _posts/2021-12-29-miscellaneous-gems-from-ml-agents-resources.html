@@ -1,0 +1,49 @@
+---
+layout: post
+title: Miscellaneous Gems from ML-Agents Resources
+date: 2021-12-29 12:30:00.000000000 +00:00
+type: post
+post_id: '28087'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Unity
+tags:
+- ML-Agents
+- Reinforcement Learning
+meta:
+  _publicize_job_id: '67069387186'
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27869'
+  timeline_notification: '1640809841'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/29/miscellaneous-gems-from-ml-agents-resources/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I <a href="https://newscrewdriver.com/2021/12/28/browsing-ml-agents-resources-github-and-forums/">browsed through ML-Agents GitHub issues and forums</a> looking for an explanation why there hasn't been a release in half a year, I came up empty handed on an answer. But the time is not all wasted since I found a few other scattered tidbits that might be useful for the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The simulation time scale used in most examples is 20, and is the default used by the <code>mlagents-learn</code> script. If the script is not used, the simulation runs in real time and <a href="https://github.com/Unity-Technologies/ml-agents/issues/5466">will feel very slow</a>. The tradeoff here is accuracy of physics simulation, as per the comment "If you go too fast, the physics gets kind of wonky, and sometimes objects/agents will go through each other."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The official "Hummingbird" tutorial on Unity Learn targets the LTS build of Unity with ML-Agents version 1. Looks like the goal is to update it to work with a new release of ML-Agents, and <a href="https://forum.unity.com/threads/hummingbird-tutorial-in-ml-agents-version-2-and-unity-2020-3.1165873/" target="_blank" rel="noreferrer noopener">instructions to get a preview has been posted</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Issue #4129 is pretty old but there is <a rel="noreferrer noopener" href="https://github.com/Unity-Technologies/ml-agents/issues/4129" target="_blank">a lot of detail here</a> about why Unity ML-Agents doesn't necessarily benefit from GPU accelerated neural network training. Since then, ML-Agents has switched from TensorFlow to PyTorch but many of the points might still apply.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But never mind the GPU, ML-Agents can't even make full use of multicore CPUs like <a rel="noreferrer noopener" href="https://forum.unity.com/threads/why-ml-agents-dont-use-all-my-system-resources.1151201/" target="_blank">this person's 16-core Threadripper</a>. The Unity person who responded explained this is on the list of things to improve but there's nothing to show yet. In the meantime, there are workarounds.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Also on the subject of utilizing parallel hardware, here's <a rel="noreferrer noopener" href="https://forum.unity.com/threads/google-brax-physics-engine.1141984/" target="_blank">a request for Unity to use Google's Brax physics engine</a>. Based on my experience I was certain the answer was "No" (the physics engine isn't something that can "just" be switched around) but this question was valuable for two reasons. One, it led me to look up and learn about <a rel="noreferrer noopener" href="https://github.com/google/brax" target="_blank">Google Brax</a>, a physics engine for reinforcement learning that runs on Google TPUs and CUDA GPUs. And second, Unity actually is investing in the work towards a <a rel="noreferrer noopener" href="https://unity.com/unity/physics" target="_blank">faster physics engine</a> "for the DOTS platform." Um... what's DOTS? <a href="https://newscrewdriver.com/2021/12/30/unity-dots-data-oriented-technology-stack/">Time for some reading</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

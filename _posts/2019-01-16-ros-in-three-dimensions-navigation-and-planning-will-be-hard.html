@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'ROS In Three Dimensions: Navigation and Planning Will Be Hard'
+date: 2019-01-16 13:30:52.000000000 +00:00
+type: post
+post_id: '17639'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+- Sawppy the Rover
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1547674279'
+  _publicize_job_id: '26610554143'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/16/ros-in-three-dimensions-navigation-and-planning-will-be-hard/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class="alignnone size-full wp-image-17641" src="https://newscrewdriver.com/wp-content/uploads/2019/01/backyard-sawppy-1600.jpg" alt="backyard sawppy 1600" width="1600" height="901">At this point my research has led me to ROS modules <a href="http://wiki.ros.org/rtabmap_ros">RTAB-Map</a> which will create a three dimensional representation of a robot's environment. It seems very promising... but building such a representation is only half the battle. How would a robot make good use of this data? My research has not yet uncovered applicable solutions.</p>
+<p>The easy thing to do is to fall back to two dimensions, which will allow the use of standard <a href="http://wiki.ros.org/navigation">ROS navigation</a> stack. The RTAB-Map ROS module appears to make the super easy, with the option to output a two dimension occupancy grid just like what navigation wants. It is a baseline for handling indoor environments, navigating from room to room and such.</p>
+<p>But where's the fun in that? I could already do that with a strictly two-dimensional Phoebe. <a href="http://sawppy.com">Sawppy</a> is a six wheel rover for handling rougher terrain and it would be far preferable to make Sawppy autonomous with ROS modules that can understand and navigate outdoor environments. But doing so successfully will require solving a lot of related problems that I don't have answers yet.</p>
+<p>We can see a few challenges in the picture of Sawppy in a back yard environment:</p>
+<ul>
+<li>Grass is a rough surface that would be very noisy to robot sensors due to individual blades of grass. With its six wheel drivetrain, Sawppy can almost treat grassy terrain as flat ground. But not quite! There are hidden dangers - like sprinkler heads - which could hamper movement and should be considered in path planning.</li>
+<li>In the lower right corner we can see transition from grass to flat red brick. This would show as a transition to robot sensors as well, but deciding whether that transition is important will need to be part of path planning. It even introduces a new consideration in the form of direction: Sawppy has no problem dropping from grass to brick, but it takes effort to climb from brick back on to grass. This asymmetry in cost would need to be accounted for.</li>
+<li>In the upper left corner we see a row of short bricks. An autonomous Sawppy would need to evaluate those short bricks and decide if they could be climbed, or if they are obstacles to be avoided. Experimentally I have found that they are obstacles, but how would Sawppy know that? Or more interestingly: how would Sawppy perform its own experiment autonomously?</li>
+</ul>
+<p>So many interesting problems, so little time!</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/158208-sawppy-the-rover/log/158324-ros-in-three-dimensions-navigation-and-planning-will-be-hard">Hackaday.io</a>)</body></html></p>

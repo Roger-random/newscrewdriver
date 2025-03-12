@@ -1,0 +1,51 @@
+---
+layout: post
+title: 'Window Shopping: LVGL'
+date: 2021-05-07 12:30:00.000000000 +00:00
+type: post
+post_id: '26429'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+- NTSC
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26468'
+  timeline_notification: '1620415804'
+  _publicize_job_id: '58090198490'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:47'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/05/07/window-shopping-lvgl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have the color composite video generation code of ESP_8_BIT repackaged into an Arduino display library, but right now the only interface is a pointer to raw frame buffer memory and that's not going to cut it on developer-friendliness grounds. At the minimum I want to match the existing Arduino TVout library precedent, and I think Adafruit's GFX Library is my best call, but I wanted to look around at a few other options before I commit.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I <a href="https://newscrewdriver.com/2021/05/06/window-shopping-fabgl/">took a quick look at FabGL</a> and decided it would not serve for my purpose, because it seemed to lack the provision for using an external output device like my code. The next candidate is <a rel="noreferrer noopener" href="https://lvgl.io/" target="_blank">LVGL</a>, the self-proclaimed Light and Versatile Graphics Library. It is designed to run on embedded platforms therefore I was confident I could port it to the ESP32. And that was even before I found out there was <a rel="noreferrer noopener" href="https://docs.lvgl.io/latest/en/html/get-started/espressif.html" target="_blank">an existing ESP32 port of LVGL</a> so that's pretty concrete proof right there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Researching how I might adapt that to ESP_8_BIT code, I poked around the LVGL documentation and I was pleased it was organized well enough for me to quickly find what I was looking for: <a rel="noreferrer noopener" href="https://docs.lvgl.io/latest/en/html/porting/display.html" target="_blank">Display Interface section</a> in the LVGL Porting Guide. We are already well ahead of where I was with FabGL. The documentation suggested allocating at least one working buffer for LVGL with a size at least 1/10th that of the frame buffer. The porting developer is then expected to register a <code>flush</code> callback to copy data from that LVGL working buffer to the actual frame buffer. I understand LVGL adopted this pattern because it needs RAM on board the microcontroller core to do its work. And since the frame buffer is usually attached to the display device, off the microcontroller memory bus, this pattern makes sense. I had hoped LVGL would be willing to work directly with the ESP_8_BIT buffer, but it doesn't seem to be quite <em><strong>that </strong></em>friendly. Still, I can see a path to putting LVGL on top of my ESP_8_BIT code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a side bonus, I found an utility that could be useful even if I don't use LVGL. The web site offers an <a href="https://lvgl.io/tools/imageconverter">online image converter</a> to translate images to various formats. One format is byte arrays in multiple pixel formats, downloadable as C source code file. One of the pixel formats is the same 8-bit RGB332 color format used by ESP_8_BIT. I could use that utility to convert images and cut out the RGB332 section for pasting into my own source code. This converter is more elegant than that crude JavaScript script I wrote for <a href="https://newscrewdriver.com/2021/05/02/extracting-esp_8_bit-sega-color-video/" target="_blank" rel="noreferrer noopener">my earlier cat picture test</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>LVGL offers a lot of functionality to craft user interfaces for embedded devices, with a sizable library of control elements beyond the usual set of buttons and lists. If sophisticated UI were my target, LVGL would be an excellent choice. But I don't really expect people to be building serious UI for display on an old TV via composite video, I expect people using my library to create projects that exploit the novelty of a CRT in this flat panel age. Simple drawing primitives like draw line and fill rectangle is available as part of LVGL, but they are not the focus. In fact <a rel="noreferrer noopener" href="https://docs.lvgl.io/v7/en/html/overview/drawing.html" target="_blank">the Drawing section of the documentation</a> opens by telling people they don't need to draw anything. I think the target audience of LVGL is not a good match for my intended audience.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Having taken these quick looks, I believe I will come back to FabGL if I wanted to build an ESP32 device that outputs to VGA. If I wanted to build an embedded brain for a device with a modern-looking user interface, LVGL will be something I re-evaluate seriously. However, when my goal is to put together something that will be quick and easy to play with throwing something colorful on screen over composite video, neither are a compelling choice over <a href="https://newscrewdriver.com/2021/05/08/adapting-adafruit-gfx-library-to-esp_8_bit-composite-video-output/">Adafruit GFX Library</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

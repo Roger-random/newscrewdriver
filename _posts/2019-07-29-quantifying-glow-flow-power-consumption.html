@@ -1,0 +1,50 @@
+---
+layout: post
+title: Quantifying Glow Flow Power Consumption
+date: 2019-07-29 12:30:49.000000000 +00:00
+type: post
+post_id: '19009'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Glow Flow
+- Pixelblaze
+meta:
+  _thumbnail_id: '18987'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '33410985799'
+  timeline_notification: '1564428681'
+  _oembed_48c75ba46e193a6676f373de26d89594: '<div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Update:
+    Round 2 was successful! All I had to do was suppress my perfectionist tendencies.
+    Thanks(?) to <a href="https://twitter.com/MLE_Online?ref_src=twsrc%5Etfw">@MLE_Online</a>  encouragement:
+    &quot;Roger, don&#39;t worry, you&#39;ve seen the quality of Arduino code other
+    people put out there.&quot; <a href="https://t.co/yeRWG5G6eQ">https://t.co/yeRWG5G6eQ</a>
+    <a href="https://t.co/uqjil8IDdF">pic.twitter.com/uqjil8IDdF</a></p>&mdash; Roger
+    Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1156100288941449217?ref_src=twsrc%5Etfw">July
+    30, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>'
+  _oembed_time_48c75ba46e193a6676f373de26d89594: '1564482743'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/07/29/quantifying-glow-flow-power-consumption/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Glow Flow's <a href="https://newscrewdriver.com/2019/07/28/glow-flow-diffuser-assembly-complete/">LED diffuser panels</a> completed work on its external appearance, now it is time to upgrade innards. For testing Glow Flow concept and developing associated <a href="https://github.com/Roger-random/glowflow/blob/master/Glow%20Flow">Pixelblaze pattern code</a>, it ran from a USB power bank.  Which had always intended to be a placeholder because it was not powerful enough to run LEDs at full brightness. The 3D-printed pieces holding that USB power bank were <a href="https://newscrewdriver.com/2019/07/25/glow-flow-core-grooved-end-pieces/">discarded when I moved to tool-less construction</a>, and now I need to build a replacement portable power system for Glow Flow.</p>
+<p>It won't need <a href="https://newscrewdriver.com/2019/06/28/power-consideration-for-pixelblaze-led-project/">worst case scenario</a> amount of 90 Watts of power, as that only <span style="color:var(--color-text);">occurs when every LED (red, green, and blue) in every one of 300 SK9822 LED module is running at full brightness drawing 20mA each. Glow Flow would only ever demand a subset of that, because a colorful display uses less power than full white and the "upper half" of pixels are always partially illuminated to show a fade to black. But how big is the subset? With the code now running I could get some real world numbers.</span></p>
+<p>The USB power bank is advertised to deliver 2A on one port and 1A on the second. This combined to 5 volts * 3 amps = 15 watts. I used Pixelblaze's LED strip settings menu to limit maximum power to 40%. This was experimentally determined by pushing it gradually higher until the USB power bank shut itself down at around 45%.</p>
+<p>To get a better idea of where the maximum is, Glow Flow was connected to a bench power supply set to 5V and up to the power supply unit's maximum of 4A. When the amperage limit is reached is reached, it will reduce voltage instead of cutting out entirely like the USB power bank did.</p>
+<p>Once connected, I returned to the Pixelblaze UI. I first edited my program to act as if the ambient light sensor is at its brightest. Then I went to the "Strip Setttings" menu and gradually increased the cap from 40% while observing power supply display. Glow Flow reached that 4A maximum (and voltage started dropping) at roughly 80% of full brightness.</p>
+<p>I don't have a precision instrument capable of more power, but this is enough to imply a <em><strong>minimum</strong> </em>power requirement of 5A @ 5V = 25W to drive Glow Flow. And to be safe, some margin on top of that to handle brief bursts of additional power draw. I already batteries which can easily deliver the required amount of power, they <a href="https://newscrewdriver.com/2019/07/31/glow-flow-battery-tray/">just need a bracket</a> to be mounted on board Glow Flow.</p>
+<p></body></html></p>

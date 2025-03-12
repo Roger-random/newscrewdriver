@@ -1,0 +1,60 @@
+---
+layout: post
+title: Laptop Backlight External Power and Optional Polarizer
+date: 2023-10-08 12:30:00.000000000 +00:00
+type: post
+post_id: '39502'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39450'
+  _publicize_job_id: '88327189184'
+  timeline_notification: '1696793403'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/08/laptop-backlight-external-power-and-optional-polarizer/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have a salvaged LED backlight module that I <a href="https://newscrewdriver.com/2023/10/07/laptop-backlight-for-workbench-lighting/">intend to turn into my workbench light</a>. The LCD pixel array itself is gone, I'm working with the backlight LED strip, associated light diffuser, the polarization film, and metal frame. I have the display circuit board as well, but I've chosen against interfacing with its onboard backlight LED controller and voltage boost converter in favor of the simpler solution of providing external power for the LEDs. My <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/07/04/backlight-led-tester/" target="_blank">LED tester</a> says I need to find about 32.2V DC to drive these LEDs at 20mA.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39455,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/salvaged-hp-inkjet-power-supply-32vdc.jpg?w=1024" alt="" class="wp-image-39455"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I rummaged through my bin of salvaged power supplies. I found this HP inkjet printer power supply CM751-60190 <a rel="noreferrer noopener" href="https://newscrewdriver.com/2019/04/03/hp-inkjet-printer-power-supply-for-nec-vsl0010-a-vfd/" target="_blank">who previously helped with vacuum fluorescent display adventures</a>. I measured its open-circuit output voltage at 31.8V DC. Perfect! This eliminates the need for a boost/buck voltage converter, and would drive the LEDs at a little under 20mA. Giving me a bit of safety margin because I'm not monitoring current draw as the real backlight controller does, and hopefully driving these LEDs at slightly under 20mA would extend their service life as well.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39450,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/led-power-wires-under-clear-packing-tape-with-polarized-filter.jpg?w=1024" alt="" class="wp-image-39450"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>All six strings are wired in parallel to this power source, and it lights up quite nicely. Despite being a smaller panel drawing a tiny fraction of the power, it illuminates my workbench almost as brightly as the large Monoprice monitor thanks to the fact it isn't working through multiple layers of LCD infrastructure: this was just the backlight.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I considered the effect of applying power directly to these pads. What would that do to the rest of the circuit board? The 31.8V DC would be applied to the output of the onboard <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Boost_converter" target="_blank">boost converter circuit</a>. It would definitely power up the output buffer capacitor of the boost converter, which is fine and possibly even helpful. Beyond that capacitor would be a diode blocking the 31.8V from going any further, leaving the rest of this circuit board alone. This setup suits my purpose just fine so no further modifications are required.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39492,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/corner-magnet-to-mount-polarization-filter.jpg?w=1024" alt="" class="wp-image-39492"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>After the power situation was settled, I want the polarization layer available for optional use.  To each corner I taped <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/11/extracted-magnets-from-broken-ipad-case/" target="_blank">small magnets extracted from an iPad case</a>. I did the same for each corner of the <a href="https://newscrewdriver.com/2021/07/17/start-with-polarizer-film-transfer/" target="_blank" rel="noreferrer noopener">polarization filter acrylic</a>. Once done, I can attach the filter magnetically when I want to take photos with polarized light. The rest of the time, I could remove that filter for brighter illumination. I also taped four magnets under the table so I have someplace to store the polarization filter when I don't need it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Later I realized this used 12 magnets when I only really needed 4 on the filter. The backlight corner and storage locations could have been plain steel for those 4 filter magnets to stick to. But I already had plenty of little magnets available, and using them saved me the effort of trying to find and cut small steel pieces. If I ever run short on small magnets I can come back. In the meantime I'll leave it as-is.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So far this workbench lighting solution is better than using the big Monoprice monitor. No obvious problems surfaced within the first hour of use, so I'll keep using it until I find a reason to tinker with it again. I've got <a href="https://newscrewdriver.com/2023/10/09/remington-hair-clipper-hc-920-schematic/">more electronics learning to do</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

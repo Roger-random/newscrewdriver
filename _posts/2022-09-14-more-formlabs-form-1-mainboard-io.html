@@ -1,0 +1,123 @@
+---
+layout: post
+title: More FormLabs Form 1+ Mainboard IO
+date: 2022-09-14 12:30:00.000000000 +00:00
+type: post
+post_id: '32522'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32506'
+  _publicize_job_id: '76732455022'
+  timeline_notification: '1663183810'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/14/more-formlabs-form-1-mainboard-io/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I turned on a broken FormLabs Form 1+ resin laser printer without its rear panel so I could poke around. I started with cables (<code>POWER, X SIGNAL, Y SIGNAL</code>) between its mainboard and galvanometer control board, because that's where things broke. But now I have <a href="https://newscrewdriver.com/2022/09/13/guesses-on-formlabs-form-1-galvanometer-control-board/">a better understanding</a> (and even a long-shot idea to try) I came back to measure voltages of wires on the remaining mainboard connectors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The Z-axis linear motion actuator (<code>Z MOTOR</code>) is driven by a <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Stepper_motor#Bipolar_motors" target="_blank">bipolar stepper motor</a> with two phases and two wires for each phase, the four wires labeled A+/A-/B+/B-. The resin tray peeling actuator (<code>TILT MOTOR</code>) is physically a very different motor but driven in the same style. Z-axis limit switch appears to be an optical interrupter which can be more accurate than the physical contact microswitch typically used for limit switch duty in FDM printers. It has three wires. One end has continuity to ground, the other end measured +5V while the printer is powered up. Middle wire measured 0.06V when Z-axis is positioned at top, and 3.7V when Z-axis is lowered.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As part of laser eye protection, the printer stops printing if we open the lid. Detecting this condition is the job of a (<a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Hall_effect_sensor" target="_blank">likely Hall effect</a>) sensor just under the lid along with a magnet embedded in the lid. The magnet sensor plugs into the connector labeled <code>INTERLOCK</code> on the mainboard, with three wires colored black, blue, and red.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th>Wire Color</th>
+<th>Volts DC (No magnet)</th>
+<th>Volts DC (Magnet nearby)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Black</td>
+<td>0V (Ground)</td>
+<td>0V (Ground)</td>
+</tr>
+<tr>
+<td>Blue</td>
+<td>11.18V DC</td>
+<td>0.02V DC</td>
+</tr>
+<tr>
+<td>Red</td>
+<td>11.18V DC</td>
+<td>11.18V DC</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Speaking of that laser, I had hoped to see a diode module with two wires positive and ground. (<a href="https://amzn.to/3QyEeR5">Example</a>*) But <code>LASER </code>connector actually had four wires: red, black, blue, and yellow.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th>Wire Color</th>
+<th>Laser Standby</th>
+<th>Laser Illuminated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Red</td>
+<td>11.18V DC</td>
+<td>11.18V DC</td>
+</tr>
+<tr>
+<td>Black</td>
+<td>8.55V DC</td>
+<td>6.6V DC</td>
+</tr>
+<tr>
+<td>Blue</td>
+<td>5V DC</td>
+<td>3.3V DC</td>
+</tr>
+<tr>
+<td>Yellow</td>
+<td>0V (Ground)</td>
+<td>0V (Ground)</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'm sure those voltages aren't the whole picture so if I have the ambition to drive this laser module myself, I have more investigation ahead.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next connector is <code>BUTTON </code>for a gorgeous illuminated metal button on the front panel. Four wires support this button, two for the LED and two for the switch. Red wire is LED+, gray wire is LED- (wired to ground on this circuit board.) Yellow is pulled up to 3.3V on this board and when pressed, yellow wire shorts to black which is wired to ground.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The final connector is a little more complex. It is a 10-pin (2x5) <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Insulation-displacement_connector" target="_blank">IDC ribbon cable</a> for the front panel display. Probing that display will be <a href="https://newscrewdriver.com/2022/09/15/formlabs-form-1-display-board-rev-01/">a project all by itself</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

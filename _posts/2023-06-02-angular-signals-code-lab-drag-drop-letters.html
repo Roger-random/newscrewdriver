@@ -1,0 +1,83 @@
+---
+layout: post
+title: Angular Signals Code Lab Drag &amp; Drop Letters
+date: 2023-06-02 12:30:00.000000000 +00:00
+type: post
+post_id: '37001'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- Angular
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36986'
+  wordads_ufa: s:wpcom-ufa-v4:1705957807
+  _publicize_job_id: '84585626507'
+  timeline_notification: '1685734247'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:35:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/06/02/angular-signals-code-lab-drag-drop-letters/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After <a href="https://newscrewdriver.com/2023/06/01/angular-signals-code-lab-decorative-css/">looking over some purely decorative CSS</a> in the Angular Signals code lab sample application, I dug around elsewhere in the source code for interesting things to learn. The next item that caught my attention was the "keyboard" where we drag-and-dropped letters to create our decoder. How was this done?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Inside the HTML template code, I found an attribute <code>cdkDropListGroup</code> on the keyboard container. A web search pointed me to the <a href="https://material.angular.io/cdk/categories">Angular CDK</a> (Control Development Kit.) Angular CDK is a library that packages many common web app behaviors we can use in our own custom controls, one of them being <a href="https://material.angular.io/cdk/drag-drop/overview">drag-and-drop</a> as used in the Angular Signals sample app. The CDK is apparently under the umbrella of Angular Material, which has a set of <a href="https://material.angular.io/components/categories">fully implemented app controls</a> implemented to the Material Design specification. Many of them use the CDK for their own implementation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Drag-and-drop behavior in Angular CDK is very flexible and has many options for configuring behavior. Such flexibility and options unfortunately also meant it's easy for a beginner to get lost. I'm thankful I have the Angular Signals code lab cipher app. It lets me look over a very specific simple use of CDK drag-and-drop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's an excerpt of the HTML template for the cipher keyboard in file <code>cipher.ts</code>, stripped of everything unrelated to drag-and-drop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>&lt;div class="cipher-wrapper" cdkDropListGroup&gt;
+    &lt;div class="key-container"&gt;
+      &lt;letter-key
+        *ngFor="let l of this.cipher.alphabet"
+        cdkDropList
+        cdkDropListSortingDisabled
+        [cdkDropListData]="l"/&gt;
+    &lt;/div&gt;
+    &lt;div class="guess-container"
+      cdkDropList
+      cdkDropListSortingDisabled&gt;
+      &lt;letter-guess
+        *ngFor="let l of this.cipher.unsolvedAlphabet()"
+        cdkDrag
+        [cdkDragData]="l"
+        (cdkDragDropped)="drop($event)"&gt;
+        &lt;div class="placeholder" *cdkDragPlaceholder&gt;&lt;/div&gt;
+      &lt;/letter-guess&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>It has two containers, one for a list of custom control <code>letter-key</code> and and another for a list of <code>letter-guess</code>. Drag-and-drop is all encapsulated here in <code>cipher.ts</code>, there's nothing in either of those two controls concerning drag-and-drop.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Uniting these two containers is a div with <code><a href="https://material.angular.io/cdk/drag-drop/api#CdkDropListGroup">cdkDropListGroup</a></code> which associates all child <code><a href="https://material.angular.io/cdk/drag-drop/api#CdkDropList">cdkDropList</a></code> elements together. This allows us to drag individual <code>letter-guess</code> (tagged with <a href="https://material.angular.io/cdk/drag-drop/api#CdkDrag"><code>cdkDrag</code></a>) from one <code>cdkDropList</code> onto the sibling <code>cdkDropList</code> of <code>letter-key</code>. These properties are enough to let Angular CDK know how to respond to pointer input events to manipulate these elements. All the app has to do is register a <code>cdkDragDropped </code>listener for when a <code>cdkDrag</code> element is dropped into a <code>cdkDropList</code>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I poked around the code looking for how a <code>letter-guess</code> sits in the <code>key-container</code> after it has been dropped into the right location. The answer is: it doesn't, that's just an illusion. When a letter is dropped into the correct location, it is removed from the list returned by <code>this.cipher.unsolvedalphabet()</code>. Meaning that particular <code>letter-guess</code> I had been dragging disappears. The <code>letter-key</code> I had dragged it onto, however, will pick up a new CSS class and change its appearance to <em>look</em> as if the <code>letter-guess</code> stayed in that location.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had to spend some time flipping between looking at source code and looking at <a href="https://material.angular.io/cdk/drag-drop/api">CDK drag-and-drop API</a> documentation. But once I made that time investment, I could understand how this app utilized the library. Once understood, I'm impressed at how little work is required in an Angular app to pick up very complex behavior from Angular CDK.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":37019,"sizeSlug":"large","linkDestination":"custom","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://knowyourmeme.com/memes/not-bad-obama-face"><img src="https://newscrewdriver.com/wp-content/uploads/2023/05/obama-not-bad.jpg?w=288" alt="" class="wp-image-37019"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I look forward to leveraging this capability in my own projects in the future. Before that, though, I can try <a href="https://newscrewdriver.com/2023/06/03/compass-project-updated-with-angular-signals/">using Angular signals in my Compass practice app</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

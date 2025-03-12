@@ -1,0 +1,43 @@
+---
+layout: post
+title: Debian with Raspberry Pi Desktop on HP Mini (110-1134CL) and Dell Latitude
+  X1
+date: 2020-05-09 12:30:13.000000000 +00:00
+type: post
+post_id: '21439'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 110-1134CL
+- Latitude X1
+- Raspbian
+meta:
+  _thumbnail_id: '21426'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '44042476431'
+  timeline_notification: '1589052632'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:08'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/09/debian-with-raspberry-pi-desktop-on-hp-mini-110-1134cl-and-dell-latitude-x1/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>I went hunting for a lightweight Linux distribution for old computers. With a CPU running at about 1 GHz and 1GB of RAM, the HP Mini (110-1134CL) I had on hand was the approximate league of a modern Raspberry Pi. I wished for something like Debian-based Raspbian and was delighted to find that the Raspberry Pi foundation does release a <a href="https://newscrewdriver.com/2020/05/08/debian-with-raspberry-pi-desktop-promising-for-old-computers/">Debian distribution for x86 that is a counterpart to Raspbian</a>. This meant much of my knowledge about working with Raspbian on a Raspberry Pi could be applied.</p>
+<p>Obviously all the work specific to Pi hardware are absent, such as video playback hardware acceleration and the GPIO pins. Still, I think I'm in better shape here than in many other lightweight Linux distributions, because I believe the Debian roots meant I can draw from the extensive library of drivers.</p>
+<p>Installing on the HP Mini (110-1134CL) the installer reminded me of this fact by informing me <a href="https://newscrewdriver.com/2020/04/24/ubuntu-core-wifi-woes-on-hp-mini-110-1134cl/">I would need <code>ucode15.fw</code></a>. I thought I would have to install it manually but by the time installation completed and I got to Raspberry Pi desktop, WiFi was working. I guess installation was taken care of for me! A huge plus in favor of beginner friendliness of this distribution.</p>
+<p>Generally speaking, it worked well on this HP Mini, feeling more responsive than Ubuntu Mate on the same machine. It is still no speed demon, but at least it is no longer an exercise in frustration. My general impression of user experience is on par with a Raspberry Pi 3 but with the notable exception of video playback: lacking the specially tailored hardware accelerated video engine, it can only consistently play YouTube videos at 480p. Trying to run 720p (most closely matching the screen resolution) dropped a lot of frames. This is a downside as so many instructional videos are online now, but 480p should still be enough to get the point across.</p>
+<p>Encouraged by this result, I prepared to install on my Dell Latitude X1. Before I erased Ubuntu Mate, though, I wanted to get some objective numbers. I measured Ubuntu Mate boot on the Latitude X1, and the time from power button to desktop ready for user interaction was 2 minutes 37 seconds.</p>
+<p>Installing on the Latitude X1 encountered similar driver issues, this time with <a href="https://wiki.debian.org/ipw2200"><code>ipw2200-bss.fw</code></a>. Again, after informing me, the installer took care of installing it and setting it up without requiring any action from me. And once it was up and running I measured it took only 1 minute 26 seconds. This operating system is ready for user input in almost half the time of Ubuntu Mate.</p>
+<p>Repeating the measurement, I found that the younger HP Mini had the performance edge, taking just 58 seconds to go from power button to desktop ready. Both of these numbers are impressive considering both are running mechanical hard drives and not modern flash storage.</p>
+<p>With these impressive results, Debian with Raspberry Pi desktop has now become my go-to operating system for computers with old 32-bit Intel CPUs.</p>
+<p></body></html></p>

@@ -1,0 +1,36 @@
+---
+layout: post
+title: 'SCaLE 16X Day 2: More Fun With BaconBits Cape for PocketBeagle'
+date: 2018-03-10 09:00:27.000000000 +00:00
+type: post
+post_id: '15893'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Events
+tags:
+- SCaLE
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15586733693'
+  timeline_notification: '1520701730'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:07'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/03/10/scale-16x-day-2-more-fun-with-baconbits-cape-for-pocketbeagle/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The hardware component for Embedded Apprentice Linux Engineer (E-ALE) program is a <a href="http://beagleboard.org/pocket">PocketBeagle</a> board paired with an accessory board named <a href="https://github.com/e-ale/BaconBitsCapeHW">BaconBits</a>. The PocketBeagle was released a few months ago and is now available for purchase from the usual retailers that cater to the electronic hobbyist &amp; engineer market. BaconBits is more rare - this project was only recently completed to turn the PocketBeagle (which does very little by itself) into a development board for easy experimentation.</p>
+<p>When we power up the PocketBeagle for this course, we are presented with an introductory screen offering to take us through a few tutorials that serve as an introduction to the world of physical world programming. In the interest of size and cost, the PocketBeagle  itself has very few physical peripherals, so interaction with the physical world requires wiring up external components.</p>
+<p>BaconBits consolidates components required for many examples into a single circuit board so we won't have to worry about breadboard wiring for the relevant exercises. From simple LED and potentiometer to peripherals beyond the basics. There's an accelerometer available to practice I2C communication, and a 2-digit 7-segment LED to practice SPI communication.</p>
+<p><img class=" size-full wp-image-15894 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/03/pocketbeagle-with-baconbits.jpg" alt="PocketBeagle with BaconBits" width="1024" height="836"></p>
+<p>What turned out to be the most important, at least in several E-ALE sessions, is the FTDI serial to USB bridge on board the cape. Serial console to the PocketBeagle is a lower-level interface and absolutely required when we got into the <a href="https://www.kernel.org/doc/html/v4.13/driver-api/usb/gadget.html">USB Gadget</a> unit of the training. Configuring PocketBeagle's USB behavior requires taking the existing USB functionality (network connection and mass storage) offline and replacing them with the interfaces in the labs. This means PocketBeagle's HTTP-based Cloud9 IDE and other network-dependent connections like SSH won't work. Low level serial is all we have left to communicate with PocketBeagle and work through exercises.</p>
+<p></body></html></p>

@@ -1,0 +1,43 @@
+---
+layout: post
+title: 3D Printed Planetary Gear
+date: 2016-08-03 11:49:57.000000000 +00:00
+type: post
+post_id: '2007'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing
+- 3D Printing Projects
+- 3D Printing Software
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '25438642776'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:18:42'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2016/08/03/3d-printed-planetary-gear/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-2063 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2016/07/planetary-gear-toy.png" alt="Planetary Gear Toy" width="300" height="170">After getting the 3D printer settings dialed in, successfully printing small test objects, I decided to tackle a real project. Move beyond printing static shapes and make a multi-part machine.</p>
+<p>In hindsight, that was too big of a step, but I didn't know until I tried it.</p>
+<p>The project of choice was to make a simple <a href="https://en.wikipedia.org/wiki/Epicyclic_gearing">planetary gear</a> toy. Such objects are in <a href="http://www.thingiverse.com/search/prolific/things?q=planetary%20gear">no short supply on Thingiverse</a>, of course, with a huge spectrum of size and complexity. But I wanted to practice making my own end-to-end.</p>
+<p>Why planetary gear? Because of all the basic mechanical machines out there, I was never able to build a planetary gear in LEGO. There was never a LEGO Technic inside-out gear for the annular ring in a planetary gear set.</p>
+<p>The first obstacle was actually a surprise - I couldn't find the gear tool in Onshape. I had expected the basic <a href="https://en.wikipedia.org/wiki/Involute_gear">involute gear</a> to be somewhere in the standard toolbox and found nothing in the documentation.</p>
+<p>A search on Onshape forums determined that I was not blind - the feature is absent from the basic set. It was, however, available as a "custom feature" published as a public document by an Onshape staffer. Onshape has its own internal programming language called FeatureScript and a spur gear generator was available as a demo of the language. I'll have to look at FeatureScript in more depth later, but for now I have my gear tool.</p>
+<p>The first print didn't work, as expected. The parts didn't fit together at all. This is the point where I had to face the fact consumer 3D printers are still far short of professional machining tools in terms of precision. In my specific case, the extruded plastic "squished out" sideways so every dimension along the horizontal (X&amp;Y) axis are too big.</p>
+<p>I assumed this wasn't a new problem so started researching. Eventually I found that some slicer software have the ability to compensate for this particular trait of FDM printers. Cura called theirs the "Horizontal Expansion" parameter. Unfortunately, I had to abandon the Cura 15.04.2 I had been using and restart with Cura 2.1.2 in order to gain that capability.</p>
+<p>With some tweaking of the horizontal expansion parameter, I got my printed planetary gear to mesh and turn like I wanted. At least I found success! But that still took way more time and effort than I had originally bargained for.</p>
+<p>Moral of the story: Building small scale precision machinery is beyond easy reach of consumer 3D printers. I might come back to this again, but in the immediate future, I'll stick with simpler shapes and build 3D printing experience that way.</p>
+<p>In the meantime, my project is a public document on Onshape. Search for its title "Planetary Gear Toy."</p>
+<p><img class=" size-full wp-image-2640 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2016/08/planetaryruler.jpg" alt="planetaryruler" width="800" height="600"><br />
+</body></html></p>

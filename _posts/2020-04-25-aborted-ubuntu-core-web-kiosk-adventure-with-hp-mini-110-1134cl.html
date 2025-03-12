@@ -1,0 +1,54 @@
+---
+layout: post
+title: Aborted Ubuntu Core Web Kiosk Adventure with HP Mini (110-1134CL)
+date: 2020-04-25 12:30:10.000000000 +00:00
+type: post
+post_id: '21202'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 110-1134CL
+- NUCC
+meta:
+  _thumbnail_id: '21222'
+  _oembed_91ac7ff2a43fb42b9e3488eab52e3f0b: "{{unknown}}"
+  _oembed_4e686e67dfba5f38b36c145e868874c4: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1587843041'
+  _publicize_job_id: '43476004778'
+  _oembed_f63f5c176939f8fac256242960102003: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Here&#39;s
+    an awesome collection of well-written material for learning TONS of computer vision
+    topics and methods from <a href="https://twitter.com/PyImageSearch?ref_src=twsrc%5Etfw">@PyImageSearch</a>!
+    <a href="https://t.co/4suRYheiaD">https://t.co/4suRYheiaD</a></p>&mdash; Edje
+    Electronics (@EdjeElectronics) <a href="https://twitter.com/EdjeElectronics/status/1181928508723011584?ref_src=twsrc%5Etfw">October
+    9, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_f63f5c176939f8fac256242960102003: '1587864304'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/04/25/aborted-ubuntu-core-web-kiosk-adventure-with-hp-mini-110-1134cl/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I haven't figured out how to <a href="https://newscrewdriver.com/2020/04/24/ubuntu-core-wifi-woes-on-hp-mini-110-1134cl/">get WiFi working on this HP Mini (110-1134CL) under Ubuntu Core 18</a>, but that's not the main objective of my current investigation so I'm moving on with wired Ethernet. What I wanted to do was to build an Ubuntu Core powered web kiosk appliance to show the ESA Live ISS Tracker web page. I thought this would be a pretty easy exercise, all I had to do is follow the steps I did earlier to <a href="https://newscrewdriver.com/2019/08/09/ubuntu-core-18-web-kiosk-on-dell-inspiron-11-3180/">build an kiosk appliance running on a Dell Inspiron 11 3180</a>.</p>
+<p>Nope! The tutorial I followed earlier is gone, its URL <code><a href="https://tutorials.ubuntu.com/tutorial/ubuntu-web-kiosk">https://tutorials.ubuntu.com/tutorial/ubuntu-web-kiosk</a></code> now forwards to <code><a href="https://ubuntu.com/tutorials/electron-kiosk">https://ubuntu.com/tutorials/electron-kiosk</a></code> which is a tutorial to build an ElectronJS application into a snap. I don't have the ESA ISS Tracker in an ElectronJS app (yet) so I poked around trying to figure out what happened to the tutorial.</p>
+<p>Both the earlier Chromium tutorial and the current Electron tutorial are built on top of the <a href="https://snapcraft.io/mir-kiosk">Mir Kiosk</a> shell. I found a good collection of information on this page proclaiming itself "<a href="https://discourse.ubuntu.com/t/configuring-mir-kiosk-a-masterclass/8150">Configuring Mir Kiosk, a Masterclass</a>." That thread did mention the <code>chromium-mir-kiosk</code> snap used in the now-gone tutorial, but that no longer seems to run. I only get a blank screen instead of the earlier basic web kiosk.</p>
+<p>Apparently that snap was <a href="https://discourse.ubuntu.com/t/install-mir-kiosk-and-chromium-mir-kiosk-under-ubuntu-18-04-server/13108">always intended to be a short term tech demo</a> and there was no effort to maintain it to keep it updated with latest versions of systems. <a href="https://discourse.ubuntu.com/t/snaps-to-develop-a-web-kiosk-on-ubuntu-core-using-wayland/6424/108">This thread</a> claimed replacement is <a href="https://snapcraft.io/wpe-webkit-mir-kiosk"><code>wpe-webkit-mir-kiosk</code></a>, but there's a problem for my situation: there's no 32-bit (i386) snap that would run on this old HP Mini's CPU. They only had pre-built binaries for 64-bit (amd64) processors</p>
+<p>It appears if I want to put the ESA ISS Tracker on this HP Mini as an Ubuntu Core appliance, I will need to <a href="https://newscrewdriver.com/2020/03/31/window-shopping-electronjs/">learn how to build it into an ElectronJS application</a> and compile a binary that would run on i386 architecture. I'm not sure how much work that will be yet, but if I put it up on Snap store I'm sure there are people who would appreciate it.</p>
+<p>Which occurred to me... what if it is up there already? I had forgotten to check the easy thing first. I searched on the store and unfortunately didn't see anyone who has done the work I specifically had in mind. I did find a snap <a href="https://snapcraft.io/termtrack"><code>termtrack</code></a> that tracks ISS as well as other satellites, but there were two problems: First, it is a terminal (text mode) application so isn't as graphically interesting. And second, it doesn't have an i386 binary available, either. Darn.</p>
+<blockquote><p>
+<code>$ snap install termtrack</code><br />
+<code>error: snap "termtrack" is not available on stable for this architecture (i386) but exists on other architectures (amd64).</code>
+</p></blockquote>
+<p>Oh well, so much for a low effort ESA HTML ISS tracker built on Ubuntu Core. Which reminded me to look at how it works on my other Ubuntu Core kiosk failure: the <a href="https://newscrewdriver.com/2020/04/26/esa-iss-tracker-on-dell-latitude-x1/">Dell Latitude X1</a>.</body></html></p>

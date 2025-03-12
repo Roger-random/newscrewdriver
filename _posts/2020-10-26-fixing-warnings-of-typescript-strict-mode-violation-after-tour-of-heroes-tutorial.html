@@ -1,0 +1,55 @@
+---
+layout: post
+title: Fixing Warnings of TypeScript Strict Mode Violation After "Tour of Heroes"
+  Tutorial
+date: 2020-10-26 12:30:00.000000000 +00:00
+type: post
+post_id: '23131'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+meta:
+  _thumbnail_id: '22766'
+  timeline_notification: '1603740642'
+  _publicize_job_id: '50365807999'
+  _last_editor_used_jetpack: block-editor
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:13'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/26/fixing-warnings-of-typescript-strict-mode-violation-after-tour-of-heroes-tutorial/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I've <a href="https://newscrewdriver.com/2020/10/25/notes-on-tour-of-heroes-tutorial-other-web-server-interactions/">reached the end</a> of the Angular "Tour of Heroes" tutorial, I went back to address something from the beginning. When I created my Angular project, I added the <code>--strict</code> flag for the optional "<a rel="noreferrer noopener" href="https://angular.io/guide/strict-mode" target="_blank">Strict Mode</a>". My motivation was the belief that, since I'm starting from scratch, I might as well learn it under enforcement of best practices. I soon realized this was also adding an extra burden on myself for following the tutorial, because the example code does not always follow strict mode. This means when something goes wrong, I might have copied the tutorial code incorrectly, but it's also possible I copied correctly but it's just doesn't conform to strict mode.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a beginner, I really didn't need this extra work, since I had enough problems with basics on my own. But I decided to forge onward and figure it out as I went. During the tutorial, I fixed strict mode errors in two categories:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<li>Something so trivial that I could fix quickly and move on.</li>
+<li>Something so serious that compilation failed and I had to fix it before I could move on.</li>
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>In between those two extremes were errors that were not trivial, but only resulted in compilation warnings that I could ignore and address later. They are visible in <a rel="noreferrer noopener" href="https://github.com/Roger-random/angular-tour-of-heroes/commit/ab4238e327405a5494a15dece482d6fca78ff8ac" target="_blank">this GitHub commit</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I first had to understand what the code was doing, which was why I imported <code>MessageService</code> to gain access to logging. The compiler warnings were both about uninitialized variables, but the correct solution was different for the two cases.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the hero input field, the tutorial code logic treats <code>undefined</code> as a valid case. It is in fact <em>dependent</em> on <code>undefined</code> hero to know when not to display the detail panel. Once I understood this behavior, I felt declaring the variable type as a Hero OR undefined was the correct path forward.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For the Observable collection of Heroes, the correct answer is different. The code never counts on undefined being a valid value, so I did not need to do the if/else checks to handle it as an "OR undefined" value. What I needed instead was an initial value of a degenerate Observable that does nothing until we can get a real Observable. Combing through RxJS documentation I saw this was recognized as a need and was actually done in a few different ways that have <a rel="noreferrer noopener" href="https://rxjs.dev/api/index/function/empty" target="_blank">since been deprecated</a>. The current recommendation is to use the constant defined as <a rel="noreferrer noopener" href="https://rxjs.dev/api/index/const/EMPTY" target="_blank">EMPTY</a>, which is what I used to resolve the strict mode errors.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,84 @@
+---
+layout: post
+title: Problems with Monoprice Monitor (10734) as Workbench Light
+date: 2023-10-06 12:30:00.000000000 +00:00
+type: post
+post_id: '39474'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- photography
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39463'
+  footnotes: ''
+  wordads_ufa: s:wpcom-ufa-v4:1696708305
+  _publicize_job_id: '88270836271'
+  timeline_notification: '1696620667'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/10/06/problems-with-monoprice-monitor-10734-as-workbench-light/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I mounted a somewhat broken Monoprice 30" monitor (10734) <a href="https://newscrewdriver.com/2023/10/05/monoprice-monitor-10734-mounted-under-ikea-lack/">under an IKEA LACK coffee table</a> so it would face downwards. Combined with an <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/08/17/full-screen-white-vga-signal-with-bitluni-esp32-library/" target="_blank">ESP32 perpetually generating an all-white VGA signal</a>, it would shine polarized light on my workbench so I can <a href="https://newscrewdriver.com/2023/10/04/polarizing-filter-photography-is-magic/" target="_blank" rel="noreferrer noopener">take cool pictures</a> of my projects. After proving the concept basically worked with those pictures, this first-hand experience also quickly exposed some problems with this idea.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">It Makes Other LCD Hard to Read</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using polarized light to illuminate my workbench caused the unexpected (but hilarious in hindsight) problem of making other LCD panels hard to read. LCD with their own light sources (backlights) are OK, like cell phone screens and digital camera displays. But LCD without their own lights, such as that on a multimeter, are only readable at certain angles. This is the same reason why I have to tilt my head at a specific angle when trying to read my car's LCD information while wearing polarized sunglasses, and it's just as annoying.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">It Is Pretty Dim</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Despite the shiny effects we see in movies, computer monitors aren't designed to be light sources and are pretty bad when drafted into the role. Screen backlights are quite bright when shining alone, but this one is still shining through <a href="https://newscrewdriver.com/2021/06/03/layers-of-glass-in-lg-laptop-lcd/">many layers necessary to make a computer monitor function</a>. Here's a picture <a href="https://newscrewdriver.com/2021/06/13/a-closer-look-at-led-backlight-panel/">I took earlier</a> of a different panel, showing the brightness difference between a backlight by itself versus when one is still part of a functioning display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":27074,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/lg-lcd-lp133wf2spa1-33-backlight-far-brighter-than-intact-display.jpg?w=1024" alt="" class="wp-image-27074"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A lot of light energy is lost between those functional layers, and that lost energy is eventually dissipated as heat, leading to the next problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">It Gets Really Hot</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This thing runs hot and being mounted horizontally under a coffee table made the problem worse. The convection cooling vents are now oriented the wrong way. And even worse, an IKEA LACK coffee table is mostly empty space inside, acting as a layer of insulating blanket preventing the monitor from shedding its heat buildup. With the closest edge sitting only about 10cm from my forehead when I'm sitting at my workbench, I can easily feel heat radiating from this thing. Not a pleasant thing in my face in the already warm environment of Southern California. After 15-20 minutes of use, the metal enclosure becomes uncomfortably hot to the touch, leading to the next problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">It is Glitchy</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once the system is uncomfortably hot, the screen begins blinking at irregular intervals. I interpret it as an indication of an overheating system. When the outside enclosure is too hot to touch, the electronics inside has likely gone beyond its normal operating temperature envelope. A flicking workbench light is worse than useless.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Now What?</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think the heat dissipation problem is fixable, with two ideas immediately and probably more if I think about it longer:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Mount it on something other than an IKEA LACK, something that allows heat to rise away from the hot metal enclosure. This may be an official monitor mounting solution or another hacked-up stand.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Add one or more cooling fans for active cooling.</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>But improving heat dissipation would not address the original inefficiency that generated all that heat to begin with, it would not make the illumination any brighter, and it would not make my multimeter screen more readable. Given these serious problems, I declared the "monitor as lamp" experiment a failure. I'll <a href="https://newscrewdriver.com/2023/10/07/laptop-backlight-for-workbench-lighting/">try a different approach to workbench lighting</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,41 @@
+---
+layout: post
+title: Taking First Step Into Reinforcement Learning with OpenAI Gym
+date: 2019-06-02 12:30:41.000000000 +00:00
+type: post
+post_id: '18568'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- TIL
+tags:
+- OpenAI Gym
+- Reinforcement Learning
+meta:
+  _thumbnail_id: '18569'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '31435861804'
+  timeline_notification: '1559503895'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/06/02/taking-first-step-into-reinforcement-learning-with-openai-gym/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>The best part about learning a new technology today is the fact that, once armed with a few key terminology, a web search can unlock endless resources online. Some of which are even free! Such was the case after <a href="https://newscrewdriver.com/2019/06/01/quick-overview-openai-gym/">I looked over OpenAI Gym</a> on its own: I searched for an introductory reinforcement learning project online and found several to choose from. I started with <a href="https://www.oreilly.com/learning/introduction-to-reinforcement-learning-and-openai-gym">this page</a> which uses the "<a href="https://gym.openai.com/envs/Taxi-v2/">Taxi</a>" environment of OpenAI Gym and, within a few lines of Python code, implemented basic Q-Learning agent that can complete the task within 1000 episodes.</p>
+<p>I had previously read the <a href="https://en.wikipedia.org/wiki/Q-learning">Wikipedia page on Q-Learning</a>, but a description suitable for an encyclopedia entry is not always straightforward to put into code. For example, Wikipedia described learning rate is a value from 0 to 1 plus what it means when it is at the extremes of 0 or 1. But it doesn't give any guidance on what kind of values are useful in real world examples. The tutorial used 0.618 and while there isn't enough information on why that value was chosen, it served as a good enough starting point. For this and more related reasons, it was good to have a simple implementation.</p>
+<p>After I got it running, it was time to start poking around to learn more. The first question was how fast the algorithm learned to solve the problem, and for that I wanted to plot the cumulative evaluation function reward against iterations. This was trivial with help of <a href="https://matplotlib.org/api/pyplot_api.html">PyPlot</a> and I obtained the graph at the top of this post. We can see a lot of learning progress within the first 100 episodes. There's a mysterious degradation in capability around 175th episode, but the system mostly recovered by 200. After that, there were diminishing returns until about 400 and the agent made no significant improvements after that point.</p>
+<p>This simple algorithm used an array that could represent all 500 states of the environment. With six possible actions, it was an array with 3000 entries initially filled with zero. I was curious how long it took for the entire problem space to be explored, and the answer seems to be roughly 50 episodes before there were 2400 nonzero entries and it never exceeded 2400. This was far faster than I had expected to take to explore 2400 states, and it was also a surprise that 600 entries in the array were never used.</p>
+<p>What did those 600 entries represent? With six possible actions, it implies there are 100 unreachable states of the environment. I thought I'd throw that array into PyPlot and see if anything jumped out at me:</p>
+<p><img class="alignnone size-full wp-image-18570" src="https://newscrewdriver.com/wp-content/uploads/2019/06/taxi-q-plotted-raw.png" alt="Taxi Q plotted raw" width="1440" height="864"></p>
+<p>My mind is at a loss as to how to interpret this data. But I don't know how important it is to understand right now - this is an environment whose entire problem space can be represented in memory, using discrete values, and these are luxuries that quickly disappear as problems get more complex. The real world is not so easily classified into discrete states, and we haven't even involved neural networks yet. The latter is referred to as DQN (Deep Q-learning Network?) and is still yet to come.</p>
+<p>The code I wrote for this exercise is <a href="https://gist.github.com/Roger-random/f6c77b2b9d37a39999fd434de50d624c">available here</a>.</p>
+<p></body></html></p>

@@ -1,0 +1,52 @@
+---
+layout: post
+title: Windows 10 WSL Can Run ROS, With Firewall Caveat
+date: 2018-09-02 09:00:45.000000000 +00:00
+type: post
+post_id: '16711'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ROS
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1535904419'
+  _publicize_job_id: '21720475571'
+  _oembed_4bc43791e9eb64b9aba3024e4d88cb06: <a href="https://flic.kr/p/dVQ6YA"><img
+    src="https://farm9.staticflickr.com/8104/8485440982_df731c6ce3.jpg" alt="Bob vs.
+    J1772" width="500" height="375" /></a>
+  _oembed_time_4bc43791e9eb64b9aba3024e4d88cb06: '1535916091'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/02/windows-10-wsl-can-run-ros-with-firewall-caveat/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>To win developer acceptance, Microsoft added WSL (<a href="https://newscrewdriver.com/2017/11/29/windows-subsystem-returns-for-linux/">Windows Subsystem for Linux</a>) to 64-bit editions of Windows 10. The original iteration was only advertised to support common command-line utilities like '<code>git</code>' that perform relatively simple operations. However, the product has been evolving since its initial release and has become increasingly more functional to run more complex Linux software.</p>
+<p>Could Windows 10 WSL run ROS? According to this thread on <a href="https://answers.ros.org/question/238646/installing-ros-on-ubuntu-bash-in-windows-10/">ROS Answers</a>, it didn't start out that way. But blocking bugs were found and fixed over past months, and now it's possible to <a href="https://janbernloehr.de/2017/06/10/ros-windows">run ROS inside WSL</a>. I tried this and found this to mostly work, with a minor caveat on networking.</p>
+<p>When bringing a ROS software stack online, there is the concept of a "ROS Master". This process listens on TCP port 11311 and serves to orchestrate communication with other ROS Nodes. Every ROS Node needs to talk to ROS Master at least once on startup. Which meant port 11311 is the one <a href="https://newscrewdriver.com/2018/08/25/ros-is-not-secure-this-is-not-news/">probed by researchers</a> looking for unsecured ROS robots that were inadvertently connected to public internet.</p>
+<p>The default network firewall on a Windows 10 computer is Microsoft's own Windows Defender Firewall. It has a good default of ignoring all incoming traffic, unless an application explicitly asks to open up ports. At the moment <a href="https://github.com/Microsoft/WSL/issues/3033">this integration does not exist</a>, so software inside WSL opening ports wouldn't open up those same ports on Windows firewall. When running ROS in WSL, this means incoming traffic on port 11311 are blocked which results in the following:</p>
+<ul>
+<li>ROS Master running in WSL <strong>is accessible</strong> to ROS Nodes running on the same computer, because traffic on the same computer is unaffected by firewall.</li>
+<li>ROS Master running on another computer <strong>is accessible</strong> to ROS Nodes running in WSL, because outbound traffic is not blocked by firewall.</li>
+<li>ROS Master running in WSL <strong>is NOT accessible</strong> to ROS Nodes running on another computer, because inbound traffic is blocked by firewall.</li>
+</ul>
+<blockquote><p><code>ERROR: Unable to communicate with master!</code></p></blockquote>
+<p>If a developer wishes to run networking-aware software inside WSL, we'd have to go into Windows Defender Firewall and manually add a permission for network access. Ideally we can set up a rule to allow port 11311 only when we're running a ROS Master within WSL. But such fine-grained control is not available. For now, the only option is to open a port with no limitation. It sounds like <a href="https://github.com/Microsoft/WSL/issues/1852#issuecomment-371605730">some improvements are on the way</a>, but even then it will still require explicit developer action.</p>
+<p>To open port 11311, we need to first get to Windows Defender section within control panel and select "Advanced Settings"</p>
+<p><img class=" size-full wp-image-16712 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/windows-defender-security-center.png" alt="Windows Defender security center" width="598" height="815"></p>
+<p>Then we can create a new "Inbound Rule" to allow traffic on 11311.</p>
+<p><img class=" size-full wp-image-16713 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/08/windows-defender-firewall-control-panel.png" alt="Windows Defender Firewall control panel" width="950" height="659"></p>
+<p>Since this is not a fine-grained control over port 11311 access, it's not a good idea to leave this rule active at all times. For best practice, enable this rule only when running a ROS Master in WSL <em><strong>and</strong> </em>only when that master needs to work with ROS Nodes running on other computers.</p>
+<p> </p>
+<p> </p>
+<p> </body></html></p>

@@ -1,0 +1,70 @@
+---
+layout: post
+title: Angular CLI as WSL 2.0 Test Case
+date: 2020-10-28 12:30:00.000000000 +00:00
+type: post
+post_id: '22743'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Angular
+- WSL
+meta:
+  _thumbnail_id: '22766'
+  _last_editor_used_jetpack: block-editor
+  _publicize_job_id: '50441257055'
+  timeline_notification: '1603913444'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:28:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/10/28/angular-cli-as-wsl-2-0-test-case/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been fascinated by the existence of Windows Subsystem for Linux (WSL) <a rel="noreferrer noopener" href="https://newscrewdriver.com/2017/11/29/windows-subsystem-returns-for-linux/" target="_blank">ever since its introduction</a>. I've played with it occasionally, such as <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/09/02/windows-10-wsl-can-run-ros-with-firewall-caveat/" target="_blank">trying to run ROS on it</a>. And this time I thought I'd try installing the Angular CLI on a WSL instance. But this time with a twist: this is now WSL 2.0, a <a href="https://docs.microsoft.com/en-us/windows/wsl/compare-versions" target="_blank" rel="noreferrer noopener">big revamp of the concept</a>. Architecturally, there's now much more of an actual Linux distribution running inside the environment, which promises even better Linux compatibility and performance in Linux-native scenarios. The tradeoff is a reduction in performance of Windows-Linux interoperations, but apparently the team decided it was worthwhile.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But first, I have to run through the <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank" rel="noreferrer noopener">installation instructions</a> which, on my 2004 build, encountered the error that <a href="https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel" target="_blank" rel="noreferrer noopener">required a Linux kernel update</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>WSL 2 requires an update to its kernel component. For information please visit https://aka.ms/wsl2kernel</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Then I can install it <a rel="noreferrer noopener" href="https://aka.ms/wslstore" target="_blank">from Microsoft store</a> followed by <a rel="noreferrer noopener" href="https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6" target="_blank">an installation of Ubuntu</a>. Then I installed <a href="https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions-enterprise-linux-fedora-and-snap-packages">Node.JS for Ubuntu</a> followed by <a rel="noreferrer noopener" href="https://angular.io/guide/setup-local" target="_blank">Angular CLI tools</a>. The last step ran into the same permissions issue I saw on MacOS X with node-modules ownership. Once I took ownership, I got an entirely new error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Error: EACCES: permission denied, symlink '../lib/node_modules/@angular/cli/bin/ng' -&gt; '/usr/bin/ng'</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only <a href="https://github.com/angular/angular-cli/issues/7556">resolution I found for this was "Run as root"</a>. Unsatisfying, and I would be very hesitant if this was a full machine but I'm willing to tolerate it for a small virtual machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I installed Angular CLI, I cloned by "Tour of Heroes" tutorial repository into this WSL instance and tried <code>ng serve</code>. This triggered the error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Cannot find module '@angular-devkit/build-angular/package.json'</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which turned out to be a Node.JS beginner mistake. Looking up the error I <a rel="noreferrer noopener" href="https://stackoverflow.com/questions/50401665/can-not-find-module-angular-devkit-build-angular" target="_blank">found this StackOverflow thread</a> where I learned that cloning the repository was not enough. I also need to run "npm install" in that directory to set up Node dependencies.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once those issues were resolved, I was able to run the application where I found two oddities. (1) I somehow didn't completely remove the mock HEROES reference on my Mac? And (2) package.json and package-lock.json had lots of changes I did not understand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But neither of those issues were as important as my hopes for more transparent networking support in WSL 2. Networking code running in WSL was not visible from elsewhere in my local network unless I <a rel="noreferrer noopener" href="https://newscrewdriver.com/2018/09/02/windows-10-wsl-can-run-ros-with-firewall-caveat/" target="_blank">jumped through some hoops with Windows Firewall</a>, which was what made ROS largely uninteresting earlier for multi-node robots. <a rel="noreferrer noopener" href="https://docs.microsoft.com/en-us/windows/wsl/compare-versions#accessing-network-applications" target="_blank">WSL 2 claimed to have better networking support</a>, but alas my Angular application's "ng serve" was similarly unreachable from another computer on my local network.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Even though this test was a failure, judging by the evolution of WSL to WSL2 I'm hopeful that work will continue to make this more seamless in the future. At the very least I hope I wouldn't have to use the "run as root" last resort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Until the next experiment!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

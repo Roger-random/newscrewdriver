@@ -1,0 +1,58 @@
+---
+layout: post
+title: Guesses on FormLabs Form 1+ Galvanometer Control Board
+date: 2022-09-13 12:30:00.000000000 +00:00
+type: post
+post_id: '32557'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32489'
+  _publicize_job_id: '76698323278'
+  timeline_notification: '1663097432'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/13/guesses-on-formlabs-form-1-galvanometer-control-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>The laser galvanometers on this FormLabs Form 1+ resin laser printer no longer move, which rendered the printer useless. <a href="https://newscrewdriver.com/2022/09/12/formlabs-form-1-laser-galvanometer-voltages/">Probing voltage of wires leading to those galvanometers</a> weren't as enlightening as I had hoped but hinted that actuator position sensors were analog. Earlier probing of wires between printer mainboard and galvanometer control board, I also found <a href="https://newscrewdriver.com/2022/09/11/formlabs-form-1-laser-galvanometer-control/" target="_blank" rel="noreferrer noopener">mainboard commands were analog voltages</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With these analog inputs, I was confused by the fact I found no analog-to-digital converters among the list of ICs. The STM32 microcontroller has but a single ADC channel. And even if it had enough channels, I doubt they'd be fast or accurate enough. (Built-in ADC peripheral proved to be limited when <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/02/27/a-tale-of-two-adcs-esp32-versus-ina219/" target="_blank">I used a ESP32 to measure voltage</a>, and when I used <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/27/tmp36-temperature-sensor-esp8266-not-a-great-team/" target="_blank">an ESP8266 to measure temperature</a>.) I found many digital potentiometers and a two-channel SPI-controlled DAC for converting digital commands to analog voltage, but not the other way around.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I went online to look at other galvanometer control boards. Looking at <a rel="noreferrer noopener" href="https://amzn.to/3Ldmud5" target="_blank">this unit</a> (*) and <a href="https://amzn.to/3xhRSl3">this unit</a> (*) found a few commonalities. They have six wires leading to their galvanometers as well, hinting at a standardized system or at least a convention. I see they also want positive and negative supply voltages, which matches what I've seen. I also noticed they want different input voltage ranges, and their galvanometers don't operate with the same mechanical ranges. (Movement in terms of degrees of rotation.) Dashing any hope of a direct replacement.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>They also have 6 or 7 potentiometers on board for tuning, and this was my "A-ha!" moment. I saw similar potentiometers <a href="https://www.bunniestudios.com/blog/?p=3110">on the teardown of a Form 1</a>, but such manual tuning potentiometers are missing here. This is what the STM32 and those digital potentiometers/SPI DAC are for: instead of manual tuning control with potentiometers, the upgraded Form 1+ galvanometer control board uses a STM32 to manage those parameters using those SPI-controlled digital potentiometers. The high-speed control loop is still an entirely analog process built out of those quad-pack op-amp chips.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":32472,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/09/form-1-galvo-x-power-plug-burned-side.jpg?w=1024" alt="" class="wp-image-32472"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at this system with new knowledge, I see a tempting possibility. When I turn on the printer, I see a few brief LED flashes on the galvanometer control board as if STM32 booted up. Probing the 3.3V regulator (component U5) I saw it received +24VDC input and output the expected +3.3V DC for digital logic. Looking at the burned-out power connector, I saw the drama happened with the purple wire which I now know carried -24VDC. Perhaps this damage meant the board no longer has negative voltage and that's why analog control system stopped working. What if I soldered the purple wire to some other location on the -24VDC plane? Say the input leg on one of two L79 negative voltage regulators? There's a good chance it'll only recreate the electrical fire, because I have not fixed the root cause of whatever caused that fire. But I see a slim chance rerouting -24VDC will get the galvanometers running again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While I contemplate this potentially destructive experiment, I will look at other parts of this printer starting with <a href="https://newscrewdriver.com/2022/09/14/more-formlabs-form-1-mainboard-io/">the rest of those mainboard connectors</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

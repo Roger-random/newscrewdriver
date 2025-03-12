@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'FreeNAS File Sharing: Trust the Wizard'
+date: 2017-07-19 09:00:44.000000000 +00:00
+type: post
+post_id: '8360'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '7257470422'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/19/freenas-file-sharing-trust-the-wizard/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-5610 alignleft" src="https://newscrewdriver.com/wp-content/uploads/2017/06/freenas-logo.png" alt="FreeNAS Logo" width="260" height="73">The authors of FreeNAS tries to make things easy for the user by providing automation tools ("Wizards") that take care of the fine administrative details without requiring the user to learn all the underlying nuts and bolts of FreeNAS, or FreeBSD, or Linux kernel, etc.</p>
+<p>This is especially true for creating network file shares in FreeNAS. It supports many network file sharing protocols. Including the Apple-specific AFP (Apple File Protocol), the Microsoft Windows-based SMB (Server Message Block), the Unix-based NFS (Network File System), plus three others I don't even understand.</p>
+<p>Each of these have their own setup requirements that a casual user like myself is unlikely to get right on our own. So the <a href="http://doc.freenas.org/11/sharing.html">manual </a>encourages the use of Wizards. (Bold emphasis mine, but I think it should be in the manual!)</p>
+<blockquote>
+<p style="text-align:left;"><em>FreeNAS® provides a Wizard for creating shares. The Wizard automatically creates the correct type of dataset and permissions for the type of share, sets the default permissions for the share type, and starts the service needed by the share. <strong>It is recommended to use the Wizard to create shares</strong>.</em></p>
+</blockquote>
+<p>Windows has a file sharing wizard as well: In Windows file explorer, I would create the folder I want to share, then right-click on that folder to select "Sharing..." This launches the wizard who will then take care of everything else.</p>
+<p>Since I was used to the above workflow, I did the same thing in FreeNAS. Create a directory, then run the wizard to share that directory. Unfortunately this results in network shares that were not accessible. ("Access Denied")</p>
+<p>I eventually debugged the problem to my "create a directory" step. Since I had created as an administrator, the permissions on that directory were not set for use by other users. And the FreeNAS wizard did not (or could not) update the permissions properly.</p>
+<p>What I needed to do was to launch the FreeNAS network sharing wizard, and tell it to create the directory as part of the network share creation process. This way the directory would be created by the wizard who will properly set the permissions for file sharing.</p>
+<p>I did too much and that became unhelpful.</p>
+<p>Trust the Wizard.</body></html></p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: Improve Drawing Via MVMSB For adafruit_framebuf
+date: 2024-06-04 12:30:00.000000000 +00:00
+type: post
+post_id: '43637'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43612'
+  timeline_notification: '1717529453'
+  firehose_sent: '1717529452'
+  _publicize_job_id: '95169895167'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-05 20:29:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/04/improve-drawing-via-mvmsb-for-adafruit_framebuf/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm playing with a LCD screen built inside the control panel I salvaged from a Canon Pixma MX340 multi-function inkjet. I tried using CircuitPython's <code>adafruit_framebuf</code> library for drawing operations. Out of all supported frame buffer formats, the closest is <code>MVLSB</code> but those bits are in reversed order. I <a href="https://newscrewdriver.com/2024/06/03/reverse-bits-to-draw-with-adafruit_framebuf/">added code to reverse bits</a>, which put a picture on screen but the real solution is to add proper buffer format support.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I was encouraged by <code>adafruit_framebuf</code>'s description in <a href="https://docs.circuitpython.org/projects/framebuf/en/latest/api.html">its documentation</a>: "<em>CircuitPython pure-python <code>framebuf</code> module, based on the micropython <code>framebuf</code> module.</em>" If this library was itself implemented in Python, I should be able to figure something out. Clicking "Edit on GitHub" link on the upper right, I was brought to the GitHub repository for <code>adafruit_framebuf</code> and I quickly <a href="https://github.com/adafruit/Adafruit_CircuitPython_framebuf/blob/main/adafruit_framebuf.py">found source code file</a> for the module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At the top of <code>adafruit_framebuf.py</code> are a series of classes, each representing one of the supported buffer formats and implements four static methods: <code>set_pixel()</code>, <code>get_pixel()</code>, <code>fill()</code>, and <code>fill_rect()</code>. I found the implementation for <code>MVLSBFormat</code> and it looks like it's within my skill level to copy it and reverse its bit manipulation operators to create a <code>MVMSBFormat</code> counterpart. The next problem is: how do I use my custom <code>MVMSBFormat</code> class with the <code>FrameBuffer</code> class? <code>FrameBuffer</code>'s <code>__init__()</code> assigns a format class in response to initialization parameter, and it raises a <code>ValueError()</code> if it doesn't recognize the parameter.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That's when I remembered I am still thinking like a C/C++ programmer and Python doesn't have a concept of private properties. I could create an instance of <code>FrameBuffer</code> for <code>MVLSB</code> format, and then immediately replace the <code>.format</code> property to point to my <code>MVMSBFormat</code> class. As a C/C++ programmer, this feels extremely icky. Is this the correct Python-ic approach? I doubt it, but I don't know the right way. So right or wrong this is what I have now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With my <code>FrameBuffer.format</code> pointing to my <code>MVMSBFormat</code> class, <code>adafruit_framebuf</code> drawing operations render correctly on screen without the need for bit reversal utilities. As a bonus, eliminating bit reversal overhead also meant I could draw text again without encountering "<code>RuntimeError: pystack exhausted</code>". I think that's good enough to declare victory with basic bitmap operations and <a href="https://newscrewdriver.com/2024/06/05/these-arent-the-frame-buffers-youre-looking-for/">move on to a sprite compositing engine</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: Projects Using Brushless Motors Must Account For Controller Start Up Behavior
+date: 2020-01-11 12:30:13.000000000 +00:00
+type: post
+post_id: '20215'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+- TIL
+tags:
+- Brushless Motor
+meta:
+  _thumbnail_id: '20214'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '39432853980'
+  timeline_notification: '1578774632'
+  _last_editor_used_jetpack: block-editor
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676839469
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/01/11/projects-using-brushless-motors-must-account-for-controller-start-up-behavior/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>Today I learned <a href="https://en.wikipedia.org/wiki/Brushless_DC_electric_motor">brushless DC (BLDC) motor</a> controllers might tailor their motor start up procedure for their designed use case. This is notable because depending on the specialization, it might make them unsuitable for repurposing to other projects. This is not something I had experienced as my own projects have used either stepper motors, brushed DC motors, or self-contained modules like RC hobby servo motors. But another local maker tried to repurpose some brushless motors for a project, and made a discovery worthy of writing down for future reference.</p>
+<p>The motors were sold as electric skateboard motors, similar but not identical to <a href="https://amzn.to/39RRNXT">this Amazon item</a>. (*) The rubber wheel was removed, and the motor mounted inside a 3D printed gearbox in a similar manner to the brushed DC motors inside <a href="https://newscrewdriver.com/2018/04/02/rover-begins-with-wheel-assembly/">SGVHAK rover wheels</a>. The resulting assembly worked well enough on a workbench when driven by the controller module that came with the motor. But when placed under load, the motor was unable able to start from standstill. It was stuck in an endless loop of try, fail, wait, repeat. We had to give the mechanism a push and start it moving before the skateboard motor controller could take over.</p>
+<p>Unsatisfied with this behavior, the project moved on to a dedicated brushless motor control chip purchased from Digi-Key and a circuit board was designed around it. This custom BLDC controller module replaced the default unit. When starting under load, it would twitch for a few seconds, then give up and stop. It was only able to run the motor in open air or after a push. So while the actual behavior was different, for practical purposes the two controllers were equally useless for the project.</p>
+<p>If it was just one controller, we can blame a faulty unit. But two completely different controllers exhibiting similar behavior in different ways tell us something else is going on. After some investigation, the conclusion is that both controllers are behaving by design. Neither controller were capable of starting a loaded brushless motor from standstill because neither were intended to.</p>
+<p>The first controller was tailored for electric skateboards. It does not need to be able to start moving a heavy load from standstill, because skateboard riders usually start off with a kick as they engage their electric throttle. In fact, its inability to move until the skateboard is already moving can be argued as a safety measure to ensure a board can't take off unexpectedly.</p>
+<p>The second controller, after some digging, was discovered to be designed for fans. Unsurprising, then, that it was able to start the motor spinning in air. And again the inability to start under load might even be a safety measure: an air moving fan encountering resistance on startup indicates an obstruction that must be removed.</p>
+<p>While instructive, learning this lesson has put <span style="color:var(--color-text)">the project no closer to a solution. Motor start up behavior isn't something typically stated up front when shopping for BLDC controllers, as seen in </span><a href="https://amzn.to/37GozJE">this Amazon "brushless motor controller" query result</a><span style="color:var(--color-text)">. (*) More research is required.</span></p>
+<p>But at least we now know it is a factor.</p>
+<hr>
+<p>(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</body></html></p>

@@ -1,0 +1,96 @@
+---
+layout: post
+title: Angular on Window Phone 8.1
+date: 2022-10-31 15:50:19.000000000 +00:00
+type: post
+post_id: '26524'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Angular
+- CSS
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26657'
+  timeline_notification: '1667256622'
+  _publicize_job_id: '78279362727'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:50'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/31/angular-on-window-phone-8-1/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>One of the reasons learning CSS was on my to-do list was because I didn't know enough to bring an earlier investigation to conclusion. Two years ago, I <a rel="noreferrer noopener" href="https://newscrewdriver.com/tag/angular/" target="_blank">ran through tutorials for Angular</a> web application framework. The experience taught me I needed to learn more about JavaScript before using Angular, which uses TypeScript which is a derivative(?) of JavaScript. I also needed to learn more about CSS in order to productively utilize the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/10/09/siren-call-of-angular-material/" target="_blank">Material style component libraries</a> that I had wanted to use.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>One side experiment of my Angular adventure was to test the backwards compatibility claims for the framework. By default, Angular does not build support for older browsers, but it could be <a rel="noreferrer noopener" href="https://angular.io/guide/build#configuring-browser-compatibility" target="_blank">configured to do so</a>. Looking through the referenced <code><a rel="noreferrer noopener" href="https://github.com/browserslist/browserslist" target="_blank">browserlist</a></code> project, I see an option of "ie_mob" for Microsoft Internet Explorer on "Other Mobile" devices a.k.a. the stock web browser for Windows Phone.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I <a rel="noreferrer noopener" href="https://github.com/Roger-random/angular-tour-of-heroes/commit/93eacd95776b9aa408582acee8116a9cc20203fd" target="_blank">added <code>ie_mob 11</code> to the list of browser targets</a> in an Angular project. This backwards compatibility mode is not handled by the Angular development server (<code>ng serve</code>) so I had to run a full build (<code>ng build</code>) and spin up <a rel="noreferrer noopener" href="https://hub.docker.com/_/nginx/" target="_blank">an nginx container</a> to serve the entire <code>/dist</code> project subdirectory.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26657,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/angular-with-ie_mob-11-1.jpg?w=1024" alt="" class="wp-image-26657"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Well now, it appeared to work! Or at least, more of this test app showed up on screen than if I hadn't listed ie_mob on the list of browser targets.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26658,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/angular-with-ie_mob-11-2.jpg?w=1024" alt="" class="wp-image-26658"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>However, scrolling down unveiled some problems with elements that did not get rendered, below the "Next Steps" section. Examing the generated HTML, it didn't look very different from the rest of the page. However, these elements did use different CSS rules not used by the rest of the page.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hypothesis: The HTML is fine, the TypeScript has been transpiled to Windows Phone friendly dialects, but the page used CSS rules that were not supported by Windows Phone. Lacking CSS knowledge, that's where my investigation had to stop. Microsoft has long since removed debugging tools for Windows Phone so I couldn't diagnose it further except by code review or trial and error.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Another interesting observation on this backwards-compatible build is <code>vendor-es5.js</code>. This polyfill performing JavaScript compatibility magic is over 2.5 MB all by itself (2,679,414 bytes) and it has to sit parallel with the newer and slightly smaller <code>vendor-es2015.js</code> (2,202,719 bytes). While a few megabytes are fairly trivial for modern computers, this combination of the two would not fit in the 4MB flash on an ESP32.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>
+Initial Chunk Files | Names                |      Size
+vendor-es5.js       | vendor               |   2.56 MB
+vendor-es2015.js    | vendor               |   2.10 MB
+polyfills-es5.js    | polyfills-es5        | 632.14 kB
+polyfills-es2015.js | polyfills            | 128.75 kB
+main-es5.js         | main                 |  57.17 kB
+main-es2015.js      | main                 |  53.70 kB
+runtime-es2015.js   | runtime              |   6.16 kB
+runtime-es5.js      | runtime              |   6.16 kB
+styles.css          | styles               | 116 bytes
+
+                    | Initial ES5 Total    |   3.23 MB
+                    | Initial ES2015 Total |   2.28 MB</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>For such limited scenarios, we have to run the production build. After doing so (<code>ng build --prod</code>) we see much smaller file sizes:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px;"><code>node ➜ /workspaces/pie11/pie11test (master ✗) $ ng build --prod
+✔ Browser application bundle generation complete.
+✔ ES5 bundle generation complete.
+✔ Copying assets complete.
+✔ Index html generation complete.
+
+Initial Chunk Files                      | Names                |      Size
+main-es5.19cb3571e14c54f33bbf.js         | main                 | 152.89 kB
+main-es2015.19cb3571e14c54f33bbf.js      | main                 | 134.28 kB
+polyfills-es5.ea28eaaa5a4162f498ba.js    | polyfills-es5        | 131.97 kB
+polyfills-es2015.1ca0a42e128600892efa.js | polyfills            |  36.11 kB
+runtime-es2015.a4dadbc03350107420a4.js   | runtime              |   1.45 kB
+runtime-es5.a4dadbc03350107420a4.js      | runtime              |   1.45 kB
+styles.163db93c04f59a1ed41f.css          | styles               |   0 bytes
+
+                                         | Initial ES5 Total    | 286.31 kB
+                                         | Initial ES2015 Total | 171.84 kB</code></pre>
+<p><!-- /wp:code --><br />
+</body></html></p>

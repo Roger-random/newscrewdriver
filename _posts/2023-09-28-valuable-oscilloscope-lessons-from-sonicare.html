@@ -1,0 +1,95 @@
+---
+layout: post
+title: Valuable Oscilloscope Lessons from Sonicare
+date: 2023-09-28 12:30:00.000000000 +00:00
+type: post
+post_id: '39340'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  footnotes: ''
+  _thumbnail_id: '39342'
+  wordads_ufa: s:wpcom-ufa-v4:1696016997
+  _publicize_job_id: '88019723804'
+  timeline_notification: '1695929433'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:36:29'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/09/28/valuable-oscilloscope-lessons-from-sonicare/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have <a href="https://newscrewdriver.com/2023/09/27/philips-sonicare-hx6530-mosfet-control-under-oscilloscope/">connected my oscilloscope to a circuit board salvaged Philips Sonicare HX6530 electric toothbrush</a>, curious to learn how it controlled the brush actuator coil.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39023,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-oscilloscope-brush-coil-ends-relative-to-ground.jpg?w=1024" alt="" class="wp-image-39023"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I <a href="https://newscrewdriver.com/2023/09/16/philips-sonicare-hx6530-under-oscilloscope/">previously observed</a> the actuator coil ends are alternately energized to battery voltage with the other end at ground for about 1.25ms. Then both ends sat at ground level for around 0.75ms before repeating with the coil energized in the opposite direction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39328,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-probes.png?w=1024" alt="" class="wp-image-39328"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>This time I connected the four channels of my oscilloscope to four test pads each associated with a MOSFET control gate. I started a brush cycle and got this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39336,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-running-all.png?w=1024" alt="" class="wp-image-39336"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There were two mysteries with this plot:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list {"ordered":true} --></p>
+<ol>
+<!-- wp:list-item --></p>
+<li>Why are there only two colors visible when four channels are active?</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Why is the alternating pattern occurring for 0.75ms (duration of the rest period) at a time, instead of the 1.25ms (duration of the actively energized time)?</li>
+<p><!-- /wp:list-item -->
+</ol>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I figured out the first one by pushing each of the four channel select buttons in turn, which brings their color to the foreground. It turns out that two of the MOSFETs corresponding to the same end of the coil always receive the same control voltages, so they overlap on the plot and only one of those two colors is visible. The yellow line corresponds to TP3, P-channel MOSFET for coil output 2. It is always in sync and thus plots over the cyan line, which is TP9 and N-channel MOSFET for coil output 2. If I push the channel 3 button (cyan) it would completely obscure the yellow line. Likewise, the green line here is TP10 (N1) masking the magenta line for TP4 (P1). If I press channel 2 (magenta) select, it draws exactly where the green is and mask all green.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>It makes some sense for both MOSFETs corresponding to one end of the coil to stay in sync. We want only one of those to be conducting from source to drain at any given time. If they are both active, that would cause a short circuit between the battery power and ground rails. Since one is a P-channel MOSFET and the other a N-channel, both receiving the same signal means one turns on and the other turns off.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But if they are in sync, why bother using two separate control pins from the microcontroller? Why not just have a single signal that goes to both MOSFETs? I learned this was a difference between the ideal world and the real world. In the real world, MOSFETs take a tiny bit of time to ramp up and down. If we use a common signal wire, one MOSFET will start to turn on while the other one is still ramping off within this narrow time window and cause a short circuit. Having two separate control signals allow the microcontroller to turn one off, wait a bit for it to ramp down, before turning the other one on.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39351,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-p-and-n-signal-difference.png?w=1024" alt="" class="wp-image-39351"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If that's the case, though, it's not visible in my oscilloscope plot at 1ms/grid resolution. I selected channel 2 (magenta TP4 P1) and 4 (green TP10 N1) and started increasing the time resolution until I saw a clear difference in timing, around 3us apart, between those two signals. I love it when I can see real-world necessities confirmed in an actual implementation like this.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39353,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-and-coil-probes.png?w=1024" alt="" class="wp-image-39353"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next challenge is figuring out why MOSFETs look like they're energizing the coil for 0.75ms out of the cycle, instead of 1.25ms like I expected. It didn't make sense, so I started questioning my "known facts" until I got to cycle time. I have an oscilloscope plot on hand showing 1.25ms ON time and 0.75ms OFF time, but that wasn't captured at the same time as the MOSFET signal plots. To verify this "known fact" I moved one of the oscilloscope probes over to coil terminal 1.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":39355,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/09/sonicare-hx6530-mosfet-and-coil-just-cyan-coil.png?w=1024" alt="" class="wp-image-39355"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The coil is ON for 0.75ms! The "known fact" of 1.25ms ON time was wrong. I had assumed the cycle time would have stayed consistent, but something changed between the previous oscilloscope session and this session to change those cycle times. If it didn't happen to land inversed from before (say 1.5ms and 0.5ms) I would have realized my assumption was wrong, but it just happened to end up inversed and confused me until I identified my incorrect assumption.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Valuable lesson learned: given the luxury of a multichannel oscilloscope, use those channels to capture related data at the same time. Comparing plots across different instrumentation sessions risks outdated information leading to bad conclusions.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With that, I believe my investigation of Philips Sonicare HX6530 circuit board is complete. I want to apply these lessons and build my own brush actuator control circuit, but that will be a future project. Some unrelated things worth noting happened while I had my nose in this circuit board, starting with how <a href="https://newscrewdriver.com/2023/09/29/no-further-unity-projects/">Unity corporation's management alienated users</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

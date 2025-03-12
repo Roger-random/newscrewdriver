@@ -1,0 +1,62 @@
+---
+layout: post
+title: 'AS7341 Project Postscript: SMUX Mystery Solved'
+date: 2023-02-02 12:30:00.000000000 +00:00
+type: post
+post_id: '34851'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _publicize_job_id: '81148259735'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675471681
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34853'
+  timeline_notification: '1675369811'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:03'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/02/as7341-project-postscript-smux-mystery-solved/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've wrapped up version 1.0 of my AS7341 interaction web app project with <a href="https://newscrewdriver.com/2023/02/01/as7341-project-future-enhancements/">some ideas for future improvements</a>, but I learned of a big one after I wrote up my project. When an earlier post in my AS7341 series "<em><a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/09/sample-code-gave-incomplete-picture-of-as7341-smux-configuration/" target="_blank">Sample Code Gave Incomplete Picture of AS7341 SMUX Configuration</a></em>" was published, there was a comment by [Sebastian] telling me that I've overlooked the <a rel="noreferrer noopener" href="https://ams.com/as7341#tab/tools" target="_blank">"Tools &amp; Resources" tab of AMS AS7341 product page</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[Sebastian] is correct! There were several large ZIP file downloads under "Resources" of type "Evaluation Software". Their descriptions line up with several AMS demos for this sensor. I probably dismissed them as irrelevant as I don't have the corresponding AMS concept demonstration hardware. But [Sebastian] didn't make the same mistake. Thanks to his investigation, I've been prompted to look inside and found that, in additional to demo-specific resources, there are subdirectories with reference resources including everything <a rel="noreferrer noopener" href="https://ams.com/as7341#tab/tools" target="_blank">I complained was missing</a>:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Windows application installer, likely for AMS AS7341 GUI software mentioned in calibration Application Note. (I didn't install on my own computer.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Excel spreadsheet also mentioned in calibration Application Note.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Calibration Application Note along with a few other Application Notes.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Most importantly: an Application Note on SMUX configuration details!</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The gold nugget found within the ZIP file is AMS Application Note AN000666. "<em>SMUX Configuration: How to Configure SMUX for Reading Out Results</em>." The precise location probably varies from file to file, but for the file I examined (AS7341_EvalSW_ALS_v1-26-3) it was under subdirectory "Documents"/"application notes"/"SMUX"</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The key piece of information I had been missing earlier is the concept of mapping AS7341 sensor array to pixel IDs. These pixel IDs are not sequential or regular in any pattern I can decipher, and many pixel IDs are unused. I suspect these ID assignments made sense for reasons important to the engineering team that laid out this implementation on silicon wafers. Between their seemingly random order and the fact roughly half of the IDs were just unused, it was no wonder I failed to reverse-engineer this information from sample code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But with this Application Note as reference, we now have information in hand to create SMUX configurations to best suit future projects. This is wonderful. Thanks, [Sebastian]! It's a weight off my shoulders as I proceeded to <a href="https://newscrewdriver.com/2023/02/03/web-dev-alphabet-soup-cors-and-csrf/">learn about other mysteries</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

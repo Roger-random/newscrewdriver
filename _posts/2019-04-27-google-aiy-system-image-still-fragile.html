@@ -1,0 +1,43 @@
+---
+layout: post
+title: Google AIY System Image Still Fragile
+date: 2019-04-27 12:30:44.000000000 +00:00
+type: post
+post_id: '18384'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Raspberry Pi
+tags:
+- AIY
+meta:
+  _oembed_1cc26101539e5cf656352420f38cc54a: "{{unknown}}"
+  _oembed_588773fa72a65621b6d50199eb8f116a: "{{unknown}}"
+  _oembed_2838fbcf2cff704e312c76205364ab50: "{{unknown}}"
+  _oembed_3012c5b3cec4d8b2ae2935b93dcdae96: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30222796002'
+  timeline_notification: '1556393481'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:19'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/27/google-aiy-system-image-still-fragile/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>After exploring a Google AIY Voice kit's capabilities and found it <a href="https://newscrewdriver.com/2019/04/25/google-aiy-voice-bonnet-will-be-easy-to-repurpose/">promising for future projects</a>, I thought it was a pretty good deal at the clearance price of $15. Sadly for Google and Target, I still think its original price of $50 is high for what we get in the box. And that's before I ran into what appears to be a recurring problem with the Google AIY kits: their customized build of Raspbian is very fragile and has <a href="https://github.com/google/aiyprojects-raspbian/issues/527">a history of failing after system updates</a>.</p>
+<p><img class="alignnone size-full wp-image-18380" src="https://newscrewdriver.com/wp-content/uploads/2019/04/google-aiy-voice-bonnet.jpg" alt="Google AIY Voice Bonnet" width="1600" height="801"></p>
+<p>Of course, I didn't realize the root cause immediately. When I initially booted up my box, with USB keyboard+mouse and HDMI cable attached, I ran through its initial setup procedure which helped me log on to my local network, change the default password to something other than 'raspberry', tasks of those nature. One of these steps was whether I wanted to download and install updates. Even though I <a href="https://aiyprojects.withgoogle.com/voice/#assembly-guide--get-the-latest-system-image">followed instructions to download the latest system image</a>, as of right now the "<a href="https://github.com/google/aiyprojects-raspbian/releases">latest</a>" is still from this past November and missing quite a few security patches since. I had continued playing with the hardware while updates installed, fiddling with things as I went. Eventually I had to reboot the box and when it came back up, everything has fallen apart.</p>
+<p>I was in the middle of playing with <a href="https://manpages.debian.org/stretch/alsa-utils/aplay.1.en.html"><code>aplay</code> and <code>arecord</code></a> so my first symptom was a complaint of missing sound hardware. Since by then I had already established that they are standard Linux sound devices under ALSA (Advanced Linux Sound Architecture) I started looking up resources online to debug ALSA sound hardware running on a Raspberry Pi. This, I have since found out, is a huge bag of hurt best summarized by the following passage from <a href="https://raspberrypi.stackexchange.com/questions/80072/how-can-i-use-an-external-usb-sound-card-and-set-it-as-default">this StackExchange thread</a>:</p>
+<blockquote><p><em>However, at no time in history has mankind produced such an amount of useless and dysfunctional diagrams, as for trying to explain ALSA.</em></p></blockquote>
+<p>That's just one man's opinion, of course, but after several hours of banging my head against ALSA brick walls I saw nothing to contradict that opinion. Even Adafruit, typically the benchmark of clear concise tutorials, could only offer <a href="https://learn.adafruit.com/usb-audio-cards-with-a-raspberry-pi?view=all">this mess</a> which falls far short of their typical standards.</p>
+<p>I was almost ready to give up on the whole works when I remembered to run a LED test and found that also failed with an error message <code>Leds are not available on this board</code>. That's when I finally realized it's not just the sound hardware, everything on board Voice Bonnet has gone offline. I'm not enough of a Linux expert to understand the details of what went wrong, but apparently certain types of system upgrades would wipe out all the customization required to support Voice Bonnet hardware.</p>
+<p><a href="https://github.com/google/aiyprojects-raspbian/issues/527#issuecomment-455791055">This comment</a> on a Github issues discussion thread suggested running a whole bunch of <code>sudo dpkg-reconfigure</code> commands to bring them all back. This might be worth trying some point later. But for today's experimentation I re-imaged my microSD card and set up the box again - this time declining to download and install all updates. It's a very insecure workaround, but today I only need to continue experimenting with the hardware. I'll have to see if this problem is updated when I want to use this hardware for an actual project.</p>
+<p>Bottom line: it's very disappointing to have Google's custom AIY version of Raspbian stop working on Google AIY hardware after certain system updates. I'm sure some number of these incidents resulted in the product getting returned to Target under their generous refund policy, which wouldn't be very helpful to retail success at all.</body></html></p>

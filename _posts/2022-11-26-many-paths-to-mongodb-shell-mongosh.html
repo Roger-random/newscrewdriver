@@ -1,0 +1,91 @@
+---
+layout: post
+title: Many Paths to MongoDB Shell (mongosh)
+date: 2022-11-26 12:30:00.000000000 +00:00
+type: post
+post_id: '33764'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Online Schools
+tags:
+- MongoDB
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33765'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669584555
+  _publicize_job_id: '79095662123'
+  timeline_notification: '1669494614'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:32'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/26/many-paths-to-mongodb-shell-mongosh/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>To promote their product, MongoDB has setup their own online learning resource MongoDB University. I was curious to learn more about a database that offers something different from a standard SQL relational database, so <a href="https://newscrewdriver.com/2022/11/25/notes-on-introduction-to-mongodb-on-mongodb-university/">I started with their "<em>Introduction to MongoDB</em>" course</a>. Since it was at least partially a marketing tool, I was not surprised the course wanted to take us through a grand tour through all MongoDB products from their cloud-hosted MongoDB Atlas data platform to all the tools we can download and install. I was ready to just ignore and skip over those sales pitches, but then the course would quiz me to make sure I've actually installed them on my computer. This annoyed me, especially for the MongoDB Shell (mongosh). It's how Codecademy introduces us to MongoDB, and it's what we use in MongoDB University's Instruqt hands-on labs. There are so many ways to get mongosh I refuse to download and run <a href="https://www.mongodb.com/try/download/shell">a full blown application installer package</a> just for a command line tool.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>At a minimum, this duplicates work. MongoDB Compass is another item the course wants us to download and install. Compass is a separate application that offers GUI-based methods for interacting with a MongoDB database and/or Atlas cluster. GUI are nice but rarely cover 100% of all scenarios, so developers like the option of dropping to a command line. Which is why clicking at the bottom of MongoDB Compass would bring up an integrated mongosh.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I've been using Docker as a tool to avoid installing software directly on my computer. I couldn't escape installing MongoDB Compass because of its graphics interface, but as a command line tool mongosh is easy to run through Docker. The easiest way is to use the official MongoDB Docker image, which includes mongosh alongside the core database engine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>docker run --rm -it mongo:latest mongosh [connection string]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Doing this means we're pulling down the entire MongoDB database just for the little mongosh tool. That's like ordering an entire seven-course meal to eat just the little cherry on top of ice cream dessert. Even in this age of broadband internet, that seems rather excessive. I thought it'd be neat to try setting up a container just for mongosh, see if that's any smaller.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found instructions for <a href="https://www.mongodb.com/docs/mongodb-shell/install/#std-label-mdb-shell-install" target="_blank" rel="noreferrer noopener">installing mongosh on an Ubuntu instance</a>. Ubuntu Focal is one of the supported versions so I'll start there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt; docker run --name mymongosh -it ubuntu:focal</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>I'll need some tools not found in this basic Ubuntu container, so I need to populate the package index followed by their installation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt; apt update
+
+&gt; apt install wget gnupg</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>After that I could follow MongoDB instructions. Slightly modified by removing "sudo" as it was unnecessary: we are running as root in this little world.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"fontSize":"small"} --></p>
+<pre class="wp-block-code has-small-font-size"><code>&gt; wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
+
+&gt; echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+&gt; apt update
+
+&gt; apt install mongodb-mongosh</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And voila! I have a docker container "mymongosh" based on the Ubuntu Focal container. Let me see how big it is:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px;"><code>&gt; docker ps --size
+CONTAINER ID   IMAGE          COMMAND   CREATED          STATUS          PORTS     NAMES       SIZE
+757519a645f8   ubuntu:focal   "bash"    19 minutes ago   Up 19 minutes             mymongosh   278MB (virtual 351MB)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Wow, getting this far meant pulling 278MB on top of 73MB of Ubuntu Focal. This was far larger than I had hoped. While this size still compared favorably with MongoDB image size of almost 700MB, I don't think my little experiment was worth the effort.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"8px"}}} --></p>
+<pre class="wp-block-code" style="font-size:8px;"><code>PS C:\Users\roger\coding\PostgreSQL&gt; docker image ls
+REPOSITORY                                                        TAG              IMAGE ID       CREATED         SIZE
+mongo                                                             latest           2dd27bb6d3e6   7 days ago      695MB</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I want small size, I'd have to learn how to build a minimal Docker image based on Alpine, which isn't what I want to focus on right now. My next objective is to learn how to <a href="https://newscrewdriver.com/2022/11/27/notes-on-using-mongodb-with-node-js-from-mongodb-university/">use MongoDB from Node.js code</a> instead of mongosh.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

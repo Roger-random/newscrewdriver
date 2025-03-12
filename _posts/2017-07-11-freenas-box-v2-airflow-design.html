@@ -1,0 +1,38 @@
+---
+layout: post
+title: 'FreeNAS Box v2: Airflow Design'
+date: 2017-07-11 09:00:51.000000000 +00:00
+type: post
+post_id: '7805'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Design
+- FreeNAS Box
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '6990090195'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:19:33'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/07/11/freenas-box-v2-airflow-design/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Designing the system airflow for thermal management is a huge consideration for the FreeNAS box design. The two fans in the system have been oriented for easy inspection first and then the airflow was designed second to work with natural convection flow. Lacking skills to use sophisticated thermal modeling and analysis tools, this design is mostly based on intuition.</p>
+<p>Working as a network attached storage device is not a very computationally intensive task. Plus the CPU has its own fan, so thermal control of the processor is not a primary concern. The power supply also has its own fan, which I assume can take care of itself.</p>
+<p>That leaves the hard drives as the primary thermal concern. Lacking their own cooling fans, the airflow design of the case will put them first in line to receive the coolest air. This meant placing them right at the intake. The v1 intake was on the bottom, so that's where the drives were. The v2 intake air from the side, and again that's where the drives were placed.</p>
+<p>After the intake air has met the hard drive, the warmer bits should flow up and over the top of the hard drive, carried by convection towards exhaust. The cooler bits should head towards the rest of the case, helping to cool the motherboard and the CPU.</p>
+<p>The motherboard and the CPU is in its own chamber. Cold air comes in the bottom and sides of this chamber and the top of this chamber has holes to send its warmest air into the power supply fan for exhaust.</p>
+<p>If this proves to be inadequate cooling for the motherboard, we have the option of cutting an air intake hole directly in the front door panel of the case.  The CPU fan can then pull in cool air from the outside. This will reduce the amount of air drawn in past the hard drives, though, so I wanted to see how well it works before I start cutting holes.</p>
+<p> </p>
+<p><img class=" size-full wp-image-8059 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/07/freenasv2-thermal-flow-2.jpg" alt="FreeNASv2 Thermal Flow 2" width="1196" height="1352"></p>
+<p></body></html></p>

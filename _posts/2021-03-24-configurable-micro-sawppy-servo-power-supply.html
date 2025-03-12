@@ -1,0 +1,60 @@
+---
+layout: post
+title: Configurable Micro Sawppy Servo Power Supply
+date: 2021-03-24 12:30:00.000000000 +00:00
+type: post
+post_id: '25748'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- ESP32
+- Micro Sawppy
+- Micro Servo
+- MP1584
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25742'
+  _publicize_job_id: '56341040132'
+  timeline_notification: '1616614221'
+  _edit_last: '98499281'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:28'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/24/configurable-micro-sawppy-servo-power-supply/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My first soldered control board for Micro Sawppy <a href="https://newscrewdriver.com/2021/03/23/power-distribution-complicates-first-soldered-prototype-circuit/">was a huge mess of wires</a>, most of which were related to power distribution. I am confident future revisions will improve, partly from experience and partly from features that I won't need anymore. One of them is visible in the center of the title picture: a jumper by a MP1584 buck converter voltage regulator. It allowed me to switch between powering the servo with that buck converter and powering the servo directly from battery input power.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Earlier I had determined that four AA alkaline batteries had the right voltage for SG90 micro servos, but that voltage would <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/20/initial-thoughts-on-micro-sawppy-rover-battery-power/" target="_blank">sag significantly</a> under the load of TT gearmotors driving six wheels. Adding another battery would <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/03/21/aftermath-of-exceeding-sg90-micro-servo-six-volt-maximum/" target="_blank">destroy the servo</a> when the system is unloaded. I knew there were a lot of power losses on my earlier breadboard-based prototype. I thought a soldered board would be a more accurate test. But while it may have made some difference, it was not enough to help Micro Sawppy run reliably on four AA batteries.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If Micro Sawppy is to be powered by alkaline batteries and still avoid using a voltage regulator for servos, I would have to move upscale to higher amperage C or D batteries. I also contemplated the idea of trying one of those large rectangular 6V lantern batteries but they all share the problem of availability. Alkaline C, D, and lantern batteries were once commonplace, but they aren't very common anymore. I had a few NiMH (nickel-metal hydride) rechargeable batteries in AA form factor, who have the ambition to replace C and D batteries with a few adapter sleeves. I tested them and also found they could not sustain the required amperage under heavy draw.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could also have multiple four-AA banks in parallel, or have separate power sources: one bank of four AA batteries just for steering servos, driving the remainder of the rover on some other power source. This complexity feels extremely inelegant and I can't yet think of any reason why this path would be better than conceding that I will need a voltage regulator for steering servos.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>So I moved the jumper to the other position, and started using a MP1584 buck converter breakout board set to produce 5.4V. This is between the valid range of 4.8V and 6V, and it is two volts under the nominal 7.4V of 2-cell LiPo I'm using to test this circuit. This two volt margin should be enough for MP1584 buck converter to work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I used a MP1584 breakout board here because I had leftovers from <a rel="noreferrer noopener" href="https://amzn.to/394VCKp" target="_blank">a multipack</a> (*) I bought for earlier projects, but I'm not confident they are the right device for the job. The datasheet claims it can sustain two amps of output with occasional spikes to maximum of 3 amps. Four SG90 micro servos would usually stay well under that limit, but their power consumption can spike occasionally making capacity planning unpredictable. At the very minimum I should put an electrolytic capacitor to buffer its output, and experimentation will tell me if I need more than that. I might also try to <a href="https://newscrewdriver.com/2021/03/25/provision-for-micro-sawppy-voltage-monitoring/">monitor the input voltage level</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

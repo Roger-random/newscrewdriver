@@ -1,0 +1,46 @@
+---
+layout: post
+title: Xbox 360 Kinect Depth Sensor Data via OpenKinect (freenect)
+date: 2019-01-24 13:30:32.000000000 +00:00
+type: post
+post_id: '17687'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Electronic Components
+tags:
+- Kinect
+- OpenKinect
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1548365472'
+  _publicize_job_id: '26894167134'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:23:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/01/24/xbox-360-kinect-depth-sensor-data-via-openkinect-freenect/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I want to try <a href="https://newscrewdriver.com/2019/01/21/ros-in-three-dimensions-starting-with-xbox-360-kinect/">using my Xbox 360 Kinect as a robot sensor</a>. After I've made the necessary <a href="https://newscrewdriver.com/2019/01/22/modify-xbox-360-kinect-for-pc-use/">electrical modifications</a>, I decided to try to <a href="https://newscrewdriver.com/2019/01/23/xbox-360-kinect-driver-openni-or-openkinect-freenect/">talk to my sensor bar via OpenKinect</a> (a.k.a. <code>freenect</code> a.k.a. <code>libfreenect</code>) driver software. Getting it up and running on my Ubuntu 16.04 installation <a href="https://openkinect.org/wiki/Getting_Started#Official_packages">was surprisingly easy</a>: someone has put in the work to make it a part of standard Ubuntu software repository. Whoever it was, thank you!</p>
+<p>Once installed, though, I wasn't sure what to do next. I found documentation telling me to launch a test/demonstration viewer application called <code>glview</code>. That turned out to be old information, the test app is actually called <code>freenect-glview</code>. Also, it is no longer added to the default user search path. I have to launch it with the full path <code>/usr/bin/freenect-glview</code>.</p>
+<p>Once I got past that minor hurdle, I have on my screen a window that showed two video feeds from my Kinect sensor: on the left, depth information represented by colors. And on the right, normal human vision color video. Here's my Kinect pointed at its intended home: on board my rover <a href="https://newscrewdriver.com/category/projects/sawppy-the-rover/">Sawppy</a>.</p>
+<p><img class="alignnone size-full wp-image-17688" src="https://newscrewdriver.com/wp-content/uploads/2019/01/freenect-glview-with-sawppy.jpg" alt="freenect-glview with sawppy" width="1280" height="508"></p>
+<p>This gave me a good close look at Kinect depth data. What's visible and represented by color is pretty good, but the black areas worry me. They represent places where the Kinect was not able to extract depth information. I didn't expect it to be able to pick out fine surface details of Sawppy components, but I did expect it to see the whole chassis in some form. This was not the case, with areas of black all over Sawppy's chassis.</p>
+<p>Some observations of what a Xbox 360 Kinect could <em><strong>not</strong></em> see:</p>
+<ul>
+<li>The top of Sawppy's <a href="https://newscrewdriver.com/2018/06/18/sawppy-the-rovers-mast-cameras/">camera mast</a>. Neither the webcam nor the 3D-printed mount for that camera. This part is the most concerning one because I have no hypothesis why.</li>
+<li>The bottom of Sawppy's <a href="https://newscrewdriver.com/2018/06/15/laser-cut-acrylic-for-sawppy-the-rovers-equipment-bay/">payload bay</a>. This is unfortunate but understandable: it is a piece of laser cut acrylic which would reflect Kinect's projected pattern away from the receiving IR camera.</li>
+<li>The <a href="https://newscrewdriver.com/2018/06/06/powering-sawppy-the-rover/">battery pack in rear</a> has a smooth clear plastic package and would also not reflect much back to the camera.</li>
+<li>Wiring bundles are <a href="https://newscrewdriver.com/2018/06/14/expandable-braided-sleeves-neaten-sawppy-the-rovers-wiring/">enclosed in a braided sleeve</a>. It would scatter the majority of IR pattern and those that make it to the receiving camera would probably be jumbled.</li>
+</ul>
+<p>None of these are deal-breakers on their own, they're part of the challenges of building a robot that functions outside of a controlled environment. In addition to those, I'm also concerned about the frame-to-frame inconsistency of depth data. Problematic areas are sometimes visible for a frame and disappear in the next. The noisiness of this information might confuse a robot trying to make sense of its environment with this data. It's not visible in the screenshot above, but here's an animated GIF showing a short snippet for illustration:</p>
+<p><img class="alignnone size-full wp-image-17689" src="https://newscrewdriver.com/wp-content/uploads/2019/01/kinect-looking-at-sawppy-inconsistencies.gif" alt="kinect-looking-at-sawppy-inconsistencies" width="1280" height="480"><br />
+</body></html></p>

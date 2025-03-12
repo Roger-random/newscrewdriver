@@ -1,0 +1,41 @@
+---
+layout: post
+title: Trying MicroPython Again This Time On Raspberry Pi Pico W
+date: 2024-05-17 12:30:00.000000000 +00:00
+type: post
+post_id: '43426'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- rp2040
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43411'
+  firehose_sent: '1715974201'
+  _publicize_job_id: '94656106545'
+  timeline_notification: '1715974202'
+  wordads_ufa: u:wpcom-ufa-v4:1716101908
+  _elasticsearch_data_sharing_indexed_on: '2024-05-19 07:00:26'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/05/17/trying-micropython-again-this-time-on-raspberry-pi-pico-w/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've borrowed a Raspberry Pi Pico W for experimentation. I've verified <a href="https://newscrewdriver.com/2024/05/16/easy-to-get-esphome-on-pi-pico-w/">it could easily integrate into Home Assistant via ESPHome</a>. (Which is now somewhat misnamed as it works for more than just Espressif ESP chips...) For my next set of Pico W experiments I decided to give MicroPython another try. I tried <a href="https://newscrewdriver.com/2022/02/09/next-practice-round-micropython-on-esp8266/">MicroPython earlier on an ESP8266</a> and it was not all smooth sailing. Looking for an existing solution to my problem was actually the reason I stopped my MicroPython experiment and found Home Assistant and ESPHome! So this is sort of coming full circle.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The main reason I wanted to give MicroPython another try was the fact Raspberry Pi foundation listed C and MicroPython SDKs side by side as <a href="https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#software-development">software development platforms</a> for Pico and Pico W boards. This implies MicroPython is treated as a first-class citizen and supported directly from the source. Will actual reality live up to this implication? I don't know yet but I'm willing to find out. This is also why I'm trying MicroPython before investigating Adafruit's CircuitPython for the board. As much as I love Adafruit, direct manufacturer support is very compelling.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The obvious criticism of MicroPython is runtime performance. I will have to see how much of a problem it would actually cause for my projects. I'm cautiously optimistic runtime performance will not be a hindrance for two reasons. One, hardware peripherals can handle most performance-critical tasks asked of a microcontroller, and that will largely be the same whether overarching high level application code is in C or in MicroPython. What if there isn't an applicable hardware peripheral on the RP2040 chip? That leads to the second reason: RP2040's programmable input-output (PIO) capability. Proven to be adept handling tasks that would otherwise need to be written in low-level interrupt handler code, if it can be implemented that way at all. Sounds like a potentially fun playground to see if reality lives up to theory. I'll start with the PDF published by Raspberry Pi to <a href="https://newscrewdriver.com/2024/05/18/notes-on-raspberry-pi-pico-python-sdk-ebook/">guide curious Python developers to Pico W</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

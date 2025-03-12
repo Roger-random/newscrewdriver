@@ -1,0 +1,38 @@
+---
+layout: post
+title: Wiring up a PIC to control a 4-digit 7-segment LED (Lite-On LTC-5723HR)
+date: 2017-09-19 09:00:19.000000000 +00:00
+type: post
+post_id: '11744'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9451364554'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:12'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/09/19/wiring-up-a-pic-to-control-a-4-digit-7-segment-led-lite-on-ltc-5723hr/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Now that I have my PIC micro controller successfully communicating via serial port and via I2C, it's time to make it do something a little more interesting and practical than just lighting up a single LED. Which means... more LEDs! I could do a RGB triplet and try my hand at colors, or a string of lights, but there's an existing open project at Tux-Lab that would need to drive some 7-segment LEDs. I borrowed the LED module from that project and got to work.</p>
+<p>I could see that the module had 12 pins, but it wasn't obvious to me how 12 pins would control the display (4 digits * 7 segments+period = 32 individual LEDs.) Fortunately this part was purchased from Digi-Key and still in its shipping bag with the part number, which made it trivial to find the <a href="https://www.digikey.com/products/en?keywords=160-1879-ND">product page</a> and download the data sheet.</p>
+<p>Reading the schematic on the data sheet revealed that 8 of those pins are anode (+) connected in parallel across all 4 digits, each of them corresponding to a location on a digit. (7 segments plus a period.) The remaining four pins are cathode (-) for each of the four digits, connected to all 8 segments of the corresponding digit.</p>
+<p>It's immediately obvious we can only have one digit active at any given time, since different digits would probably display different numbers and would need different anode pins active.</p>
+<p>Less obvious is the fact we can't have all the segments on that digit active at the same time, either. The cathode is common across all 7+1 segments of a digit. If all 8 segments light up, that poor cathode pin will have 8*20 = 160mA crashing through all at once. This greatly exceeds the 50mA per-pin current handling limit.</p>
+<p>I could probably solve this problem by using the PIC to control transistors that can handle that 160mA, but I don't have any on hand. So to start with, I'll cycle through all the segments lighting up only one at a time so there's only 20mA flowing through the cathode pin. This will result in a display only 1/8th as bright as it could be, but if that's already bright enough, I won't have to hassle with transistors.</p>
+<p>After wiring work was complete on the breadboard, I wrote a simple PIC program to cycle through all 32 LEDs. The first revision had the cycle running slowly enough for me to follow as it went from one segment to the next. This allowed me to visually verify all the wiring is correct. Then I let the cycle run at full speed to see the brightness level.</p>
+<p>It is fairly dim, so I will have to add those transistors later. For now it is visible enough for me to proceed.</p>
+<p><img class=" size-full wp-image-11815 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/09/led8888.jpg" alt="LED8888" width="1024" height="464"></p>
+<p></body></html></p>

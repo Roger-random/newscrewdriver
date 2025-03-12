@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'Window Shopping: Keysight VEE Serial Communication'
+date: 2020-03-22 12:30:36.000000000 +00:00
+type: post
+post_id: '20945'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+- Window Shopping
+tags:
+- Equipment Automation
+meta:
+  _thumbnail_id: '20960'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '42094774799'
+  timeline_notification: '1584905529'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:44'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/03/22/window-shopping-keysight-vee-serial-communication/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>When I was <a href="https://newscrewdriver.com/2020/03/21/new-project-computer-control-via-usb-serial/">learning about industry standards for electronics test and measurement equipment automation</a>, I quickly came across <a href="https://en.wikipedia.org/wiki/IEEE-488">GPIB</a> which has its roots in something Hewlett-Packard developed for their equipment. It made sense, then, that they would have a software suite to run on a PC and talk to these instruments via GPIB. This turned out to be something called <a href="https://www.keysight.com/en/pd-1476554-pn-W4000D/vee-pro-932">VEE</a>, but it is no longer a HP product. It has had multiple custodians. From HP it moved to Agilent, and now it is in the hands of Keysight Technologies.</p>
+<p>So it was no surprise the focus would be on professional equipment with GPIB or the closely related USB-based successor <a href="https://www.usb.org/document-library/test-measurement-class-specification">USBTMC</a>. There is also built-in support for a few other instrument standards, all packaged together in the <em><a href="https://www.keysight.com/en/pd-1985909/io-libraries-suite">IO Libraries Suite</a></em> of a full VEE installation. However, I had a hard time finding any mention of how to communicate with custom-built equipment outside of supported protocols. It certainly wasn't covered in their <a href="https://literature.cdn.keysight.com/litweb/pdf/W4000-90045.pdf"><em>Quick Start Guide</em></a> (PDF), so I moved on to <a href="https://literature.cdn.keysight.com/litweb/pdf/E2120-90002.pdf"><em>Advanced Techniques</em></a> (PDF).</p>
+<p>I thought perhaps I would have to create what they call a "panel driver" for installation into VEE in order to support custom equipment, but a search for "How to write a VEE Panel Driver" failed to retrieve useful links. How do instrument manufacturers create and release VEE Panel Driver for their equipment? So far that is still a mystery.</p>
+<p>In the absence of a custom panel driver, the next option is to specify a custom communication protocol directly in VEE, and such a thing can be built from their Transaction I/O mechanism. Suitable at least for query/response types of interaction. The exact commands being sent out and expected to be received are crafted step by step using VEE GUI. This seems very labor intensive but has the advantage of avoiding annoying and common byte processing bugs typical when such serial byte stream processing are written in C.</p>
+<p>It's not obvious from reading the document what happens if the VEE transaction specification is wrong and incoming serial data doesn't match. This is not encouraging, neither were there any mechanisms to help support development of transaction I/O. There's just trial and error. Seriously. This is a direct quote from the manual:</p>
+<blockquote><p>Many times the best way to develop the transactions you need is by using trial and error</p></blockquote>
+<p><span style="color:var(--color-text);">(Chapter 4: Using Transaction I/O / Creating and Reading Transactions / Editing the Data Field / Suggestions for Developing Transactions)</span></p>
+<p>I didn't find any mention of how to deal with continuous data stream from devices that do not perform transaction-based communication. For example a thermometer that continuously reports temperature without prompting, or the <a href="https://newscrewdriver.com/2018/09/14/lidar-completes-first-draft-of-phoebe-turtlebot/">Neato LIDAR</a>. VEE does have a data polling feature, but that seems to be restricted to devices on specific subset of supported protocols and not arbitrary serial communication.</p>
+<p>From this brief survey, it appears VEE support for arbitrary USB serial communication is quite limited. The next step is to look at how <a href="https://newscrewdriver.com/2020/03/23/window-shopping-keysight-vee-custom-data-display/">VEE support displaying arbitrary data</a>.</body></html></p>

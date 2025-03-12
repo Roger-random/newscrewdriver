@@ -1,0 +1,52 @@
+---
+layout: post
+title: TrueNAS and Plex Media Server
+date: 2023-04-25 12:30:00.000000000 +00:00
+type: post
+post_id: '36392'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36395'
+  wordads_ufa: s:wpcom-ufa-v4:1696614568
+  _publicize_job_id: '83524047677'
+  timeline_notification: '1682451049'
+  footnotes: ''
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:53'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/25/truenas-and-plex-media-server/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>A painless and uneventful TrueNAS migration <a href="https://newscrewdriver.com/2023/04/24/successful-truenas-core-to-scale-migration/">from FreeBSD-based CORE to their newer Linux-based SCALE</a> is the latest in a long series of successful operations with this line of software. I <a href="https://newscrewdriver.com/2017/06/06/my-freenas-project-begins/" target="_blank" rel="noreferrer noopener">decided to build a machine for home storage</a> about six years ago and chose TrueNAS (called FreeNAS at the time) and it has worked flawlessly as a storage appliance ever since. There has been no loss of data from software failures, and it has <a href="https://newscrewdriver.com/2018/01/14/freenas-failed-drive-recovery/" target="_blank" rel="noreferrer noopener">successfully recovered from multiple hard drive failures</a>. Based on my experience, I can heartily recommend TrueNAS for reliable data storage.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In addition to simple and reliable data storage capabilities, FreeNAS/TrueNAS also has an application services side. I've had a bumpier relationship with those features. Among the data stored on my TrueNAS box is my personal music collection, and I've been using Plex as one of several ways I consume my media. Plex Media Server has thus been my guinea pig for TrueNAS application hosting and finding problems with each. I've tried using it as a <a href="https://newscrewdriver.com/2017/07/20/freenas-plugin-plex-media-server/" target="_blank" rel="noreferrer noopener">FreeNAS Plugin</a> (stale and infrequently updated), as a <a href="https://newscrewdriver.com/2017/08/28/installing-and-updating-plex-media-server-in-freebsd-jail-freenas-via-freshports/" target="_blank" rel="noreferrer noopener">self-managed application inside a FreeBSD jail</a> (less stale but still a significant delay), to a Docker container running inside an Ubuntu virtual machine (timely updates but bhyve hypervisor has problems with Ubuntu) and now that I've migrated to TrueNAS SCALE I have new options to try.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Plex Media Server is one of the options under TrueNAS SCALE's "Apps" menu representing <a href="https://github.com/truenas/charts" target="_blank" rel="noreferrer noopener">a collection of Helm charts</a>. I have some vague idea this mechanism is related to Kubernetes, but I haven't invested time into learning the details as I just wanted to use it as a point-and-click user. I tried to create an instance with "Enable Host Path for Plex Data Volume" option pointing to my existing media share. My attempt failed with the following error:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code {"style":{"typography":{"fontSize":"10px"}}} --></p>
+<pre class="wp-block-code" style="font-size:10px"><code>Error: [EINVAL]
+chart_release_create.app
+VolumeMounts.data.hostPathEnabled.hostPath: Invalid mount path. 
+Following service(s) use this path: SMB Share, NFS Share</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>A bit of web searching found this is expected behavior: in order to avoid any potential problems with conflicting operations, helm charts will verify that each app has exclusive control to all volumes before proceeding. This is a reasonable thing to do for most applications, but unnecessarily cautious for media data on a read-only network share. And furthermore, it is not compatible with my media consumption pattern which requires leaving SMB and NFS sharing running. Thus, I add "Plex Helm Chart" to the running list of TrueNAS application service I've tried and failed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I will now try a different approach: <a href="https://newscrewdriver.com/2023/04/26/plex-media-server-in-truenas-scale-virtual-machine/">create a virtual machine for running Plex</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

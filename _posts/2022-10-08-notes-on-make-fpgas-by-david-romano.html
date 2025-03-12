@@ -1,0 +1,80 @@
+---
+layout: post
+title: 'Notes on "Make: FPGAs" by David Romano'
+date: 2022-10-08 12:30:00.000000000 +00:00
+type: post
+post_id: '32999'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- Books
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33010'
+  _publicize_job_id: '77514714880'
+  timeline_notification: '1665257421'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667896530
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:10'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/10/08/notes-on-make-fpgas-by-david-romano/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>After skimming through a Maker Media book on CNC routing wood furniture, I wanted to see what I could learn from their <em><a rel="noreferrer noopener" href="https://amzn.to/3SlwljH" target="_blank">FPGAs: Turning Software into Hardware with Eight Fun &amp; Easy DIY Projects</a></em> (*) by David Romano. I was motivated by the <a rel="noreferrer noopener" href="https://hackaday.com/2019/11/04/gigantic-fpga-in-a-game-boy-form-factor-2019-supercon-badge-is-a-hardware-siren-song/" target="_blank">FPGA-based badge</a> of Superconference 2019, which had (I was told) a relatively powerful FPGA at its core. But <a rel="noreferrer noopener" href="https://twitter.com/Regorlas/status/1191432912538783744" target="_blank">all my badge work</a> were at the software level, I never picked up enough to make gateware changes. Perhaps this book can help me?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My expectations dropped when I saw it was published in February 2016. The book is very honest that things are evolving quickly in the realm of FPGAs and things would be outdated quickly, but I was surprised at how little of the information in the book could be transferred to other FPGA projects.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the preface, the author explained they had worked with FPGAs in a professional context since the early days (1980s) of the field. Seeing the technology evolve over the years and drop in price into hobbyist-accessible range, this book was written to share excitement with everyone. This is an admirable goal! But there is a downside to a book written by someone who has been with the technology for so long. They are so familiar with concepts and jargons that it's difficult to get in the right frame of mind to explain things in a way that novices in the field can understand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As an example of this problem, we only got up to page 15 before we are hit with this quote: "<em>Behavioral models and bus functional models are used as generators and monitors in the test bench. A behavioral model is HDL code that mimics the operation of a device, like a CPU, but is not gate-level accurate. In other words, it is not synthesizable.</em>" That sound is the &lt;WOOSH&gt; of indecipherable words flying over my head.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The hardware examples used in this book are development boards built around various FPGAs from Xilinx. To use those boards, we have a long list of proprietary software. It starts with Xilinx software for the FPGA itself, followed by tools from each development board vendor to integrate with their hardware. This introduces a long list of headaches, starting from the fact Xilinx's "<a rel="noreferrer noopener" href="https://www.xilinx.com/products/design-tools/ise-design-suite/ise-webpack.html" target="_blank">ISE WebPack</a>" was already a discontinued product at the time of writing, with known problems working under 64-bit Windows. And things went downhill from there.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For reference, the hardware corresponding to projects in the book are:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>
+<a href="https://opalkelly.com/products/xem6002/" target="_blank" rel="noreferrer noopener">Opal Kelly XEM6002</a> (Xilinx Spartan 6)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="https://numato.com/product/elbert-v2-spartan-3a-fpga-development-board/" target="_blank" rel="noreferrer noopener">Numato Labs Elbert V2</a> (Xilinx Spartan 3A)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>
+<a href="http://papilio.cc/index.php?n=Papilio.PapilioDUOHardwareGuide" target="_blank" rel="noreferrer noopener">Papilio DUO</a> (Xilinx Spartan 6 LX9)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li><a href="https://redpitaya.com/" target="_blank" rel="noreferrer noopener">Red Pitaya</a></li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>The project instructions do not get into very much depth on how to create FPGA gateware. After an overly superficial overview (I think the most valuable thing I learned is that <code>$display</code> is the <code>printf()</code> of Verilog) the book marches into using blocks of code published by other people on <a rel="noreferrer noopener" href="https://opencores.org/" target="_blank">OpenCores</a>, and then loading code written by others onto FPGA. I guess it's fine if everything works. But if anything goes wrong in this process, a reader lacks knowledge to debug the problem.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I think the projects in this book have the most value for someone who already has one of the above pieces of hardware, giving them instructions to run some prebuilt gateware on it. The value decreases for other boards with Xilinx FPGA, and drops to nearly nothing for non-Xilinx FPGA. This book has little relevance to the Lattice ECP5 on board Superconference 2019 badge, so I will have to look elsewhere for my FPGA introduction.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,56 @@
+---
+layout: post
+title: Notes on Codecademy "Learn Express"
+date: 2022-11-16 12:30:00.000000000 +00:00
+type: post
+post_id: '33614'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Codecademy
+- Node.js
+tags:
+- JavaScript
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33621'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1668757956
+  _publicize_job_id: '78787903188'
+  timeline_notification: '1668630633'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:33:27'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/11/16/notes-on-codecademy-learn-express/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I may <a href="https://newscrewdriver.com/2022/11/13/notes-on-codecademy-learn-node-js/">have my quibbles</a> with Codecademy's <em>Learn Node.js</em> course, but it at least gave me a better understanding to supplement what I had learned bumping around on my own. But the power of Node isn't just the runtime, it's the software ecosystem which has grown up around it. I have many <em>many </em>choices of what to learn from this point, and I decided to try the <em><a rel="noreferrer noopener" href="https://www.codecademy.com/learn/learn-express" target="_blank">Learn Express</a></em> course.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before I started the course, I understood Express was one of the earlier Node.js frameworks for building back end of websites in JavaScript. And while there have been many others that have come online since, with more features and capabilities, Express is still popular because it set out <em><strong>not </strong></em>to pack itself with features and capabilities. This meant if we wanted to prototype something slightly off the beaten path, Express would not get in our way. This sounded like a good tool to have in the toolbox.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>After taking the course, I learned how Express accomplishes those goals. Express Routes helps us map HTTP methods (GET/POST/PUT/DELETE) to JavaScript code via "Routes", and for each route we can compose multiple JavaScript modules in the form of "Middleware". With this mechanism we can assemble arbitrary web API by chaining middleware modules like LEGO pieces to respond to HTTP methods. And... that's basically the entirety of core Express. Everything else is optional, so we only need to pull in what we need (in the form of middlware modules) for a particular project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>When introducing Routes in Express, our little learning JavaScript handler functions are actually fully qualified Middleware, but we didn't know it yet. What I did notice is that it had the signature of three parameters: <code>(request, response, next)</code>. The Routes course talked about reading <code>request</code> to build our <code>response</code>, but it never talked about <code>next</code>. Students who are curious about them and striking out to search on their own as I did would <a rel="noreferrer noopener" href="https://expressjs.com/en/guide/routing.html" target="_blank">find information about "chaining"</a>, but it wouldn't make sense until we learned Middleware. I thought it would have been nice if the course would say "we'll learn about <code>next</code> later, when we learn about Middleware" or something to that effect.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>My gripe with this course is in its quiz sections. We are given partial chunk of JavaScript and told to fill in certain things. When we click "Check Work" we trigger some validation code to see if we did it right. If we did it wrong, we might get an error message to help us on our way. But sometimes the only feedback we receive is that our answer is incorrect, with no further feedback. Unlike earlier Node course exercises, we were not given a command prompt to run "node app.js" and see our output. This meant we could not see the test input, we could not see our program's behavior, and we could not debug with <code>console.log()</code>. I tried to spin up my own Node.js Docker container to try running the sample code, but we weren't given entire programs to run and we weren't given the test input so that was a bust.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I eventually found a workaround: use exceptions. Instead of <code>console.log('debug message')</code> I could use <code>throw Error('debug message')</code> and that would show up on the Codecademy UI. This is far less than ideal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I got past the Route section, I proceeded to Middleware. Most of this unit was focused on showing us how various Middleware mechanisms allow us to reduce code duplication. My gripe with this section is that the course made us do useless repetitive work before telling us to replace them with much more elegant Middleware modules. I understand this is how the course author chose to make their point, but I'm grumpy at useless make-work that I would delete a few minutes later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>By the end of the course, we know Express basics of Route and Middleware and got a little bit of practice building routes from freely available middleware modules. The course ends by telling us there are a lot of Express middleware out there. I decided to <a href="https://newscrewdriver.com/2022/11/17/notes-on-express-getting-started-guide/">look into Express documentation</a> for some starting points.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

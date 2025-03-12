@@ -1,0 +1,47 @@
+---
+layout: post
+title: Hackaday Badge Nyan Cat Bugs
+date: 2018-11-12 09:00:14.000000000 +00:00
+type: post
+post_id: '17127'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hackaday Retrocomputing BASIC Badge
+tags:
+- Nyan Cat
+- Supercon
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1542042095'
+  _publicize_job_id: '24186592618'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/11/12/hackaday-badge-nyan-cat-bugs/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>I had a great time at 2018 Hackaday Superconference and I think Nyan Cat was a success as part of the <a href="https://hackaday.io/project/161859-2018-hackaday-superconference-badge">conference badge</a>. I'm happy with it, even though I found two minor problems with my Nyan Cat app during the weekend.</p>
+<p>The first problem was that it does not tell the badge it is running, which is required to prevent automatic power-down. The auto-sleep feature was added after my code was merged into master, shortly before the badges started getting flashed <em>en masse</em>. I knew this power saving feature was going in but I was busy with badge production. So I didn't have the chance to add code to keep the badge from going to sleep while Nyan Cat is running. My life was filled with rows and rows of badges.</p>
+<p><img class=" size-full wp-image-17138 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/11/acrylic-back-installation.jpg" alt="Acrylic back installation" width="800" height="544"></p>
+<p>What this means is that Nyan Cat couldn't just keep running on a badge forever. The badge will go to sleep and need to be awakened for animation to resume.</p>
+<p>Somewhat related to the above, there's a problem with timer synchronization upon wake. It appears that when the badge is asleep, the main timer still advances at some rate. I believe this is a side effect of <code>loop_badge()</code> in <a href="https://github.com/Hack-a-Day/2018-Supercon-Badge/blob/master/firmware/badge-supercon18.X/src/badge.c">badge.c</a>. Called by timer #5 every 15 milliseconds to check the status of the power button. During this check, the main system timer (running on timer #1) clicks upwards even though the rest of the badge is asleep.</p>
+<p>What this means is that, if the badge is running Nyan Cat when it goes into low power mode, the timer will advance even though the animation &amp; music does not. As a result, when the badge wakes up, the loops in charge of animation and timing will frantically try to catch up. It only takes a second or two to get back in sync, but in that brief moment we get a comically distorted kitty running and singing at warp speed.</p>
+<p>This second problem can be reproduced by:</p>
+<ol>
+<li>Launch Nyan Cat with 'nya' to see and hear dancing singing pop tart cat.</li>
+<li>Push the power button to put the badge in low power mode.</li>
+<li>Wait about 30 seconds.</li>
+<li>Push the button again to wake up the badge.</li>
+<li>See and hear cat in hyperdrive for a few seconds before slowing down to normal speed.</li>
+</ol>
+<p>I might go back and fix these bugs in the future, but they're not horrendous embarrassments (and Nyan Cat in hyperdrive is pretty hilarious) so I'm content to leave them as-is for now.</p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/162253-nyan-cat-badge-demo-2018-supercon">Hackaday.io</a>)</body></html></p>

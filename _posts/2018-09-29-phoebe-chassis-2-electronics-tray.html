@@ -1,0 +1,41 @@
+---
+layout: post
+title: Phoebe Chassis 2 Electronics Tray
+date: 2018-09-29 09:00:06.000000000 +00:00
+type: post
+post_id: '16860'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Phoebe TurtleBot
+tags: []
+meta:
+  _rest_api_client_id: "-1"
+  _rest_api_published: '1'
+  _wp_old_date: '2018-09-30'
+  timeline_notification: '1538242004'
+  _publicize_job_id: '22664191625'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:22:25'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/09/29/phoebe-chassis-2-electronics-tray/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Phoebe's first chassis stacked vertically: motors and wheels on the bottom, electronics in the middle, and LIDAR up top. That had to change for chassis 2 due to the desire to lower height of LIDAR for better obstacle visibility. The electronics were squeezed to the front where they now occupy a tray dedicated to all electronics components. This tray was originally separated because the chassis would otherwise be too big to print on my printer. But as it turns out the separation also made it more convenient to iterate through ways to install electronics without having to reprint everything.</p>
+<p>The unpredictability came from wiring: I didn't want to cut wires attached to components (the LIDAR, the motor+encoder, and battery) to length, so there needs to be room to coil extra wire. I also needed to run power wires to voltage regulators. One producing 3 Volts for LIDAR spin motor, a second one adjusted to 5 volts for Raspberry Pi. The Roboclaw handles battery power directly to the motors, and has its own voltage regulator to drive its internal logic circuits plus motor encoders.</p>
+<p><img class=" size-full wp-image-16861 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-chassis-2-electronics-tray-iterations.jpg" alt="Phoebe Chassis 2 Electronics Tray Iterations" width="1024" height="568"></p>
+<p>It took two iterations to get everything to fit nicely, but once I started driving Phoebe chassis 2 around I found a new problem: <a href="https://en.wikipedia.org/wiki/Approach_and_departure_angles">approach angle</a>. Chassis 2 has a higher ground clearance relative to its predecessor, and I held the same ground clearance for the electronics tray. However, because the tray is hanging out in front, having the same clearance is not enough when transitioning between different floor heights. When going from linoleum to carpet, thick carpet can get caught on the tray's front lip preventing further forward progress. And when transition from carpet to linoleum, the front lip contacts the linoleum as the rear caster is still sitting on carpet. They lift the two drive wheels off the ground and Phoebe is stuck, helplessly spinning drive wheels.</p>
+<p>The solution is to angle the tray upwards so the bottom of the tray becomes a skid plate. This helps transitioning from linoleum to carpet, and does not pull the drive wheels off the ground when going from carpet to linoleum.</p>
+<p><img class=" size-full wp-image-16892 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-v2-side-view-isometric-with-arrow.png" alt="phoebe-v2-side-view-isometric with arrow" width="1372" height="523"></p>
+<p>And thus we inadvertently find the third benefit of printing the electronics tray as a separate piece: we can print it at a different angle, with its flat bottom on the print bed, avoiding the need for print supports to generate the sloped surface.</p>
+<p>With these changes, Phoebe can now roam through my entire house, freely traversing across the various terrains of a normal household.</p>
+<p><img class="alignnone size-full wp-image-16863" src="https://newscrewdriver.com/wp-content/uploads/2018/09/phoebe-chassis-2-carpet-to-linoleum.jpg" alt="Phoebe Chassis 2 Carpet to Linoleum" width="1024" height="549"></p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/161085-phoebe-turtlebot/log/153478-phoebe-chassis-2-electronics-tray">Hackaday.io</a>)</p>
+<p></body></html></p>

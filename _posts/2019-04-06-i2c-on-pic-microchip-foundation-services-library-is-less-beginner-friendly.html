@@ -1,0 +1,50 @@
+---
+layout: post
+title: 'I2C on PIC: Microchip Foundation Services Library Is Less Beginner-Friendly'
+date: 2019-04-06 12:30:42.000000000 +00:00
+type: post
+post_id: '18252'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- PIC Microcontrollers
+tags:
+- VFD
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29470423883'
+  timeline_notification: '1554579067'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:09'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/04/06/i2c-on-pic-microchip-foundation-services-library-is-less-beginner-friendly/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body></p>
+<p>About a year and a half ago I poked my head into the world of I²C programming with my PIC16F18345 chip. I was pleasantly surprised the MCC boilerplate code <a href="https://newscrewdriver.com/2017/09/18/i2c-on-pic-microchip-mcc-boilerplate-is-a-pretty-good-tutorial-in-itself/">actually included an example implementation</a> emulating an I²C EEPROM. That turned out to be a great way for me to get started.</p>
+<p>Now that I have <a href="https://newscrewdriver.com/2019/04/05/dusting-off-past-pic-led-driver-projects-for-potential-vfd-driver/">another PIC project in mind</a>, I retraced my steps and saw this:</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/04/i2c-driver-will-be-removed-soon.png" target="_blank" rel="noopener"><img class=" size-full wp-image-18255 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/04/i2c-driver-will-be-removed-soon.png" alt="I2C driver will be removed soon" width="1530" height="517"></a></p>
+<blockquote><p>
+<code>In file included from mcc_generated_files/mcc.h:55:</code><br />
+<code>mcc_generated_files/i2c1.h:55:2: warning: "This version of the I2C driver will be removed soon and the correct driver to use is the Foundation Services driver" [-W#warnings]</code><br />
+<code>#warning "This version of the I2C driver will be removed soon and the correct driver to use is the Foundation Services driver"</code>
+</p></blockquote>
+<p>Looks like what I had used before is on its way out.</p>
+<p>Since this is a new project, I thought I might as well check out what the new shiny object has to offer. Reading around the web, I found complaints that the previous MCC I²C code would work when conditions are ideal, but it was not very good at letting developers write code to handle error conditions. This might not be important in hobbyist projects like mine, but it was of great importance to people trying to engineer real products.</p>
+<p>I added the Foundation Services Library module for my PIC's MSSP. After code generation was complete, I went into the generated header files and saw a lot more functions declared than previous boilerplate code. There were a few related to overflow and bus collision errors, which I assume were there to address complaints about error handling capability.</p>
+<p>Unfortunately, there is no longer a friendly example implementation to reference. There are a lot of declarations but no information on how to use those functions. Microchip's claim that the Foundation Services Library code is self-documenting has been wholeheartedly laughed at by other forum users. But the forums did point me to <a href="https://www.microchip.com/mplab/mplab-code-configurator/click-into-mcc">Microchip's  MikroElektronika Click Library</a> which interfaces between those <a href="https://www.mikroe.com/click">nifty little Click modules</a> to a PIC using Foundation Services Library. The trick is finding one that most closely matches what I'm trying to do. Many Click modules are I²C slaves controlled by a PIC acting as master, I wanted my PIC to act as I²C slave accepting commands. A first pass through the Click library found only the <a href="https://www.mikroe.com/usb-i2c-click">USB-I2C Click module</a>, so I installed sample code corresponding to that module and tried to build it.</p>
+<p><a href="https://newscrewdriver.com/wp-content/uploads/2019/04/unknown-type-name-interrupthandler.png" target="_blank" rel="noopener"><img class=" size-full wp-image-18254 alignnone" src="https://newscrewdriver.com/wp-content/uploads/2019/04/unknown-type-name-interrupthandler.png" alt="unknown type name interruptHandler" width="1602" height="486"></a></p>
+<blockquote><p>
+<code>In file included from mcc_generated_files/USBI2C_example.c:36:</code><br />
+<code>mcc_generated_files/drivers/i2c_slave.h:54:34: error: unknown type name 'interruptHandler'</code><br />
+<code>void i2c_slave_setReadIntHandler(interruptHandler handler);</code>
+</p></blockquote>
+<p>Sample code that fails to compile is... <em><strong>not</strong></em> the height of beginner friendliness.</p>
+<p>After 30 minutes of hunting around, I failed to find a solution to this problem and decided to return to the old deprecated I²C driver. It may not be the newest and shiniest thing, but it does compile and run.</body></html></p>

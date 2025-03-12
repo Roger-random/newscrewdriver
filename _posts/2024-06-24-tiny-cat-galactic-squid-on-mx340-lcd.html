@@ -1,0 +1,52 @@
+---
+layout: post
+title: Tiny Cat &amp; Galactic Squid on MX340 LCD
+date: 2024-06-24 14:53:35.000000000 +00:00
+type: post
+post_id: '43889'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43890'
+  wordads_ufa: u:wpcom-ufa-v4:1719278093
+  firehose_sent: '1719266018'
+  _publicize_job_id: '95708758844'
+  timeline_notification: '1719266019'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-25 01:15:39'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/24/tiny-cat-galactic-squid-on-mx340-lcd/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've verified that I now have <a href="https://newscrewdriver.com/2024/06/23/mx340-control-panel-under-rp2040-control/">full CircuitPython programmatic control</a> over all input and output functionality available within the control panel of a Canon Pixma MX340 multi-function inkjet. The point of the exercise was to see if I could get this far. I would love to repurpose this control panel for a future project, but that is secondary. The perfect project would be one that needs a small LCD, numeric keypad, and a handful of task-dedicated buttons and LEDs. While I wait for such a project to come up, I could have some fun with a less serious project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":26715,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/05/jub_gif2_seamless.gif?w=800" alt="" class="wp-image-26715"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>My friend Emily created <em>Cat and Galactic Squid</em> for me to <a href="https://newscrewdriver.com/2021/05/25/cat-and-galactic-squid/">use as demonstration content</a> of my ESP32 composite video output library. I love this colorfully cheerful animation and have used it as test subject for several other projects. However, the MX340 LCD is monochrome and has only 196x34 pixels so I could not use the original cat &amp; squid directly. I had to downscale it in an image editor, and manually fix up all the broken edges from such drastic down-sampling. And while I'm switching to monochrome, the cat is now modeled after one of Emily's current cats "Hobie" with a suitable black and white tuxedo pattern. Getting the handful of pixels to remotely resemble a cat required that I go online to search for "pixel art cat" for some guidance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43904,"width":"270px","sizeSlug":"full","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/tinycatsquid.bmp" alt="" class="wp-image-43904" style="width:270px"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>There weren't enough pixels to convey movement, so cat and squid would remain static. Neither were there enough pixels for that Saturn-like planet and a galaxy in the background, so the simplified version will only have vaguely circular dots of different diameters moving at different speeds for a parallax effect. Ideally I could use CircuitPython's sprite bitmap compositing engine <code>displayio</code> to put all these elements together. Unfortunately <a href="https://newscrewdriver.com/2024/06/05/these-arent-the-frame-buffers-youre-looking-for/">I couldn't figure out how to make this LCD compatible</a> so I wrote my own crude compositing routine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I originally thought I'd write this as an entirely separate MX340 demo app, but I realized I could incorporate it into the existing key echo feedback test app: a "screen saver"! Monochrome LCDs don't really have burn-in issues that need saving, but it's an user experience paradigm I can leverage. I switch to this animation if there aren't any key presses for a while, and switch back as soon as a key is pressed. Integrating cat &amp; squid was a nice bonus bit of CircuitPython practice.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center"><a href="https://github.com/Roger-random/canon_mx340/tree/main/control_panel_circuitpython">https://github.com/Roger-random/canon_mx340/tree/main/control_panel_circuitpython</a></p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,54 @@
+---
+layout: post
+title: Micro Servo Angular Position Inconsistency
+date: 2021-03-28 12:30:00.000000000 +00:00
+type: post
+post_id: '25788'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Micro Servo
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '25793'
+  timeline_notification: '1616959812'
+  _publicize_job_id: '56498268765'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:30'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/03/28/micro-servo-angular-position-inconsistency/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got my little rover <a href="https://newscrewdriver.com/2021/03/27/micro-sawppy-beta-3-is-moving/">Micro Sawppy Beta 3 (MSB3) up and running</a> controlled by a wired joystick. This joystick was very simple and affordable but it also had poor proportional response. It was not significantly different from using a digital directional pad, Atari 2600 style. It induced some pretty abrupt movements as I tried to drive MSB3 around, but as a silver lining, it also exposed a problem that went un-noticed in the much gentler MSB1: micro servo angular position isn't consistent.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To get a better look at this problem, I dug up one of my <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/23/esp-idf-up-and-running-on-ubuntu/" target="_blank">earlier ESP32 test projects</a> that turned it into a simple servo tester. I plugged all four micro servo motors into the board, so they all receive the same PWM control signal. I then adjusted the signal so they all pointed straight ahead. A little mechanical trim adjustments were needed to get the title image where all wheels were physically aligned.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then turned the knob on my servo tester and watched all four servos move in not-quite-unison. As we get further and further off center, we can see the steering angles start to vary from one servo to the next even though they are all receiving the same control signal.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":25794,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/03/msb3-steering-servo-varying-angles.jpg?w=1024" alt="" class="wp-image-25794"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I did not see this problem on MSB1 or the cardboard box rover testbed. For MSB1 it might have been related to the fact it used different control electronics, which didn't fling these servos from one extreme to the other. But a likely contribution is the possibility servos have better consistency within the same batch. All four MSB1 steering servos are from the same batch. The cardboard box rover testbed steering servos are from a different batch than MSB1, but all four are from the same batch.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In contrast, MSB3 has steering servos from different vendors, and different batches. (One of them is even a metal gear MG90S instead of the plastic gear SG90 of the other three.) This came about because I had been <a href="https://newscrewdriver.com/2020/12/29/notes-on-micro-servo-electronics/" target="_blank" rel="noreferrer noopener">testing different servos</a> earlier, but somehow I didn't notice the angular position discrepancy until now.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a practical matter, I think this variation is not ideal but within acceptable bounds. This lack of accuracy will merely be noted as another luxury we traded off to lower parts cost of a Micro Sawppy rover. So I'll leave it and move on as there are <a href="https://newscrewdriver.com/2021/03/29/switching-from-jumper-to-wire-for-sawppy-esp32-power-disconnect/">lots more tinkering still ahead</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

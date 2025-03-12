@@ -1,0 +1,56 @@
+---
+layout: post
+title: Logic Analyzer on Sanyo LC75853N Key Scan Input
+date: 2022-05-17 12:30:00.000000000 +00:00
+type: post
+post_id: '30346'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- LC75853N
+- Saleae
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30375'
+  timeline_notification: '1652815804'
+  _publicize_job_id: '72632269351'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/17/logic-analyzer-on-sanyo-lc75853n-key-scan-input/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm <a href="https://newscrewdriver.com/2022/05/16/logic-analyzer-on-sanyo-lc75853n-lcd-control/">learning to understand</a> control communications for a Sanyo LC75853N, which drives the LCD in the stock tape deck head unit of a 1998 Toyota Camry LE. My goal is to control the faceplate independent of the rest of the head unit, which means learning about Sanyo's proprietary CCB (computer control bus) protocol. CCB resembles some parts of SPI and some parts of I<sub>2</sub>C but is neither of them. I was primarily focused on the LCD output, but in setting up my logic analyzer to look at LCD output control, I also have everything to examine keypress input.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30350,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/05/sanyo-lc75853n-reports-power-button-volume-knob-press.jpg" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/sanyo-lc75853n-reports-power-button-volume-knob-press.jpg?w=1024" alt="" class="wp-image-30350"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here is the Saleae logic analyzer output for the chip reporting that the volume knob was pressed, which is designed as the on/off toggle for this tape deck. The controller toggled LCD-CLK 32 times during this data transmission. Datasheet says the first 30 bits represent state for each of the scanned keys, followed by one bit representing sleep state, and one bit of padding whose state is irrelevant. Here the 0x08 represents the single scanned key that corresponds to the knob being pressed.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Before that happened, though, were several events of note. When a CCB peripheral wants to report data to the controller, it pulls the DO line low. (Spec sheet says DO has a 1k - 10k pull-up resistor.) It then waits for the controller to emit a peripheral address and then raise CE.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>If the controller emitted the peripheral's address, then it can start using DO to report bits upon each CLK pulse.</li>
+<li>If the controller emitted another peripheral's address, then it releases DO (letting it be pulled high again) and wait until CE is low, at which point it pulls DO low again.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>When I read this part of the spec, I was confused at how the LC75853N would know whether to transmit or to receive when its address was called. Eventually I found the answer: it has two different addresses! Address 0x42 receives LCD data from the controller, and address 0x43 reports key scan data to the controller. I had missed the difference when I looked at the logic analyzer output earlier, 0x42 looked a lot like 0x43 when I was skimming through output. But it's plainly there once I was paying attention. Address is transmitted on DI from the least significant bit first: 1100 0010.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Counting buttons on this faceplate, I don't think it wired up all 30 possible key scans. But aside from the power button (pressing volume knob) logged here, I don't know what they are. I might map them once I can perform CCB communication to read these key press reports. And if I fail to do that... I guess I wouldn't care anyway. <a href="https://newscrewdriver.com/2022/05/18/successful-arduino-test-of-lc75853n-control/">Onward to the Arduino</a>!</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

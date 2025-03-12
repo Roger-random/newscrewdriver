@@ -1,0 +1,121 @@
+---
+layout: post
+title: Notes from ZFS Adventures for TrueNAS Replication
+date: 2023-02-11 12:30:00.000000000 +00:00
+type: post
+post_id: '22096'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Software Tools
+tags:
+- Linux
+- TrueNAS
+- Ubuntu
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '33107'
+  timeline_notification: '1676147422'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1676147604
+  _publicize_job_id: '81420720083'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:41'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/11/notes-from-zfs-adventures-for-truenas-replication/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My collection of old small SSDs played a game of musical chairs to free up a drive for my TrueNAS replication machine, the process of which was <a href="https://newscrewdriver.com/2023/02/10/notes-on-linux-disk-tools/">an opportunity for hands-on time with some Linux disk administration tools</a>. Now that I have my system drive up and running on Ubuntu Server 22.04 LTS, it's time to wade into the <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/ZFS" target="_blank">land of ZFS</a> again. It's been long enough that I had to refer to documentation to rediscover what I need to do, so I'm taking down these notes for <s>if</s> when I need to do it again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Installation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>ZFS tools are not installed by default on Ubuntu 22.04. There seems to be two separate packages for ZFS. I don't understand the tradeoffs between those two options, I chose to <code>sudo apt install zfsutils-linux</code> because that's what <a href="https://ubuntu.com/tutorials/setup-zfs-storage-pool#2-installing-zfs" target="_blank" rel="noreferrer noopener">Ubuntu's ZFS tutorial</a> used.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Creation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since my drive was already setup to be a replication storage drive, I didn't have to create a new ZFS pool from scratch. If I did, though, here are the steps (excerpts from the Ubuntu tutorial linked above):</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>Either "fdisk -l" or "lsblk" to list all the storage devices attached to the machine.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Find the target device name (example: /dev/sdb) and choose a pool name (example: myzfs)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"zpool create myzfs /dev/sdb" would create a new storage pool with a single device. Many ZFS advantages require multiple disks, but for TrueNAS replication I just output to a single drive.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once a pool exists, we need to create our first dataset on that pool.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>"zfs create myzfs/myset" to create a dataset "myset" on pool "myzfs"</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>Optional: "zfs set compress=lz4 myzfs/mydataset" to enable LZ4 compression on specified dataset.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Maintenance</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>"zpool scrub myzfs" to check integrity of data on disk. With a single drive it wouldn't be possible to automatically repair any errors, but at least we would know that problems exist.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"zpool export myzfs" is the <a href="https://forums.freebsd.org/threads/zfs-on-backup-usb-drive.33812/" target="_blank" rel="noreferrer noopener">closest thing I found to "ejecting" a ZFS pool</a>. Ideally, we do this before we move a pool to another machine.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"zpool import myzfs" brings an existing ZFS pool onto the system. Ideally this pool had been "export"-ed from the previous machine, but as I found out when my USB enclosure died, this was not strictly required. I was able to import it into my new replication machine. (I don't know what risks I took when I failed to export.)</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>"zfs list -t snapshot" to show all ZFS snapshots on record.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">TrueNAS Replication</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The big unknown for me is figuring out permissions for a non-root replication user. So far, I've only had luck doing this on root account of the replication target, which is bad for many reasons. But every time I tried to use a non-root account, replication fails with error <code>umount: only root can use "--types" option</code></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<!-- wp:list-item --></p>
+<li>On TrueNAS: System/SSH Keypairs. "Add" to generate a new pair of private/public key. Copy the public key.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>On replication target: add that public key to /root/.ssh/authorized_keys</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>On TrueNAS: System/SSH Connections. "Add" to create a new connection. Enter a name and IP address, and select the keypair generated earlier. Click "Discover Remote Host Key" which is our first test to see if SSH is setup correctly.</li>
+<p><!-- /wp:list-item --></p>
+<p><!-- wp:list-item --></p>
+<li>On TrueNAS: Tasks/Replication Tasks. "Add" to create a replication job using the newly created SSH connection to push replication data to the zfs dataset we just created.</li>
+<p><!-- /wp:list-item -->
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Monitor Disk Activity</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The problem with an automated task going directly to root is that I couldn't tell what (if anything) was happening. There are several Linux tools to monitor disk activity. I first tried "iotop" but unhappy with the fact it required admin privileges and that is not considered a bug. ("Please stop opening bugs on this.") Looking for an alternative, <a rel="noreferrer noopener" href="https://www.opsdash.com/blog/disk-monitoring-linux.html" target="_blank">I found this list</a> and decided dstat was the best fit for my needs. It is not installed on Ubuntu Server by default, but I could run <code>sudo apt install pcp</code> to install, followed by <code>dstat -cd --disk-util --disk-tps</code> to see activity level of all disks.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

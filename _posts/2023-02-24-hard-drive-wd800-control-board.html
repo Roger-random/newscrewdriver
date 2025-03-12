@@ -1,0 +1,69 @@
+---
+layout: post
+title: Hard Drive (WD800) Control Board
+date: 2023-02-24 12:30:00.000000000 +00:00
+type: post
+post_id: '35363'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35364'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1677789441
+  _publicize_job_id: '81799124599'
+  timeline_notification: '1677270648'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/24/hard-drive-wd800-control-board/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Putting a <a href="https://newscrewdriver.com/2023/02/23/hard-drive-wd800-motor-control-on-oscilloscope/">hard drive spindle motor's control signals under an oscilloscope</a> was instructive, even if I don't yet understand everything that's going on. Perhaps I could find some documentation to demystify the magic? I looked for hints on the hard drive control circuit board, which told us this 80GB drive dated from 2002 via "WDC (C) 2002" printed in the lower-left corner.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35368,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-pcb-st-l6278.jpg?w=1024" alt="" class="wp-image-35368"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Motor control wires led to this chip, which has a ST Microelectronics logo. Unfortunately, putting these visible identifiers "L6278 17E H99SF0335" into <a rel="noreferrer noopener" href="https://www.st.com/" target="_blank">ST.com site search</a> came up empty. Either my search skills are pathetic, ST website database doesn't go back that far, or this chip is something ST made exclusively for Western Digital under a proprietary contract. What's certain is that I'm not going to learn more about this particular brushless motor controller. Oh well, I'll continue my sightseeing tour.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35370,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-pcb-marvell-88c5540-lfe.jpg?w=1024" alt="" class="wp-image-35370"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Next chip over has a Marvell logo. And just like the ST chip, <a href="https://www.marvell.com/search.html" target="_blank" rel="noreferrer noopener">searching</a> for "88C5540-LFE G472261.2 0339 B2S" came up empty.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35372,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-pcb-infineon-tle4417.jpg?w=1024" alt="" class="wp-image-35372"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Infineon TLE4417 is not listed on their own web site, but other sites (mostly trying to sell me some chips) say it is a voltage regulator.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":35374,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-pcb-wdc-wd70c22.jpg?w=1024" alt="" class="wp-image-35374"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>If true, it makes sense to have voltage regulation close to the main controller: a WDC WD70C22.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":35376,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/02/wd800-pcb-samsung-k4s161622e-tc60.jpg?w=1024" alt="" class="wp-image-35376"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>A controller needs some working memory, which is where this Samsung K4S161622E-TC60 DRAM chip comes in.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I didn't learn very much on this pass, but as I learn more about electronics, I hope future examinations will be more instructive and less of a just-for-fun sightseeing tour like this one. That is yet to be seen, in the meantime I retread familiar ground to <a href="https://newscrewdriver.com/2023/02/25/western-digital-wd800-mechanical-bits/">take apart this hard drive's mechanical components</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[UPDATE: Sprite <a rel="noreferrer noopener" href="http://spritesmods.com/?art=hddhack" target="_blank">took a stab at hard drive controller hacking</a> some time back. Lack of datasheet documentation was a deal-breaking barrier for me, but not for the experienced hardware hacker.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

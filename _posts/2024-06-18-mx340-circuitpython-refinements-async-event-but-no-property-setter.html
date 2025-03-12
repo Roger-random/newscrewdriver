@@ -1,0 +1,103 @@
+---
+layout: post
+title: 'MX340 CircuitPython Refinements: Async Event  But No Property Setter?'
+date: 2024-06-18 22:36:18.000000000 +00:00
+type: post
+post_id: '43829'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  firehose_sent: '1718775380'
+  wordads_ufa: u:wpcom-ufa-v4:1719266320
+  _thumbnail_id: '43612'
+  timeline_notification: '1718775381'
+  _publicize_job_id: '95555917631'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-24 22:00:38'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/18/mx340-circuitpython-refinements-async-event-but-no-property-setter/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've been writing CircuitPython code to interface with the NEC K13988 chip on board a salvaged Canon MX340 multi-function inkjet control panel. At first I only intended to explore if it was even possible to repurpose the panel. Now that I'm confident it is possible, I <a href="https://newscrewdriver.com/2024/06/17/updated-goals-for-mx340-circuitpython-project/">decided my follow-up would be to factor my code to extract a reusable library</a> that could potentially support multiple projects. As expected, the task of making the code neater taught some valuable lessons.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Asynchronous Event</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I had a few asynchronous tasks declared and running, each handling one aspect of K13988 interface, but sometimes they stepped on each other's work. <a href="https://newscrewdriver.com/2024/06/06/circuitpython-asyncio-lock-prevents-interleaving-data-transmission/">I learned about <code>Lock()</code></a> earlier but I had additional synchronization needs that didn't fit a <code>Lock()</code>. Some pieces of code needed to wait for certain other startup conditions to be met before it ran. For example, I needed to wait for the K13988 to wake up enough to send data bytes before I could successfully transmit commands to it.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the constructor, I set a boolean:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>self.in_startup = True</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And in my data transmission code, I check that boolean value in a loop:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>while self.in_startup:
+    await asyncio.sleep(0)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That would put data transmission on hold until I receive my first byte from K13988, at which point I could flip that boolean value:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code># First successful read complete, exit startup mode
+self.in_startup = False</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This worked, and I guess it isn't terrible. But there was a better way. When I read through Python documentation during my study session, I discovered this pattern fit <a href="https://docs.circuitpython.org/projects/asyncio/en/latest/api.html#events"><code>Event</code> from the <code>asyncio</code> library</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Using events, I declare one in the constructor:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>self.transmit_startup = asyncio.Event()</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>And in my data transmission code, I will wait for this event before proceeding:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>await self.transmit_startup.wait()</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Permission to proceed will happen once I receive my first byte from K13988:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code># First successful read complete, exit startup mode
+self.transmit_startup.set()</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>This was a simple case, and I'm glad it helped me learn to add to my toolbox so I am ready to tackle more complicated scenarios in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">No Async Property Setter?</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>This control panel has four LEDs. Two are wired directly to main logic board connector pins, two are controlled by K13988. I thought I would add Python property setters for those two LEDs, following precedence of setting a <a href="https://docs.circuitpython.org/en/latest/shared-bindings/digitalio/">CircuitPython <code>digitalio</code></a> output pin <code>value</code>. But it seems like I can't expose a property setter to turn a LED on like this:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>k13988.in_use_led = True</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>The problem is that such LED update would require <a href="https://newscrewdriver.com/2024/01/15/canon-pixma-mx340-control-panel-led-bit-flags/">sending two command bytes to K13988</a>, and that is an asynchronous operation which meant I have to somehow declare <code>async</code> on the property setter and somehow use <code>await</code> in the caller. If there's a Python syntax to declare such a thing, I couldn't find it. For now the best I can do is to implement an explicit method to set LED:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>await k13988.in_use_led(True)</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Not terrible, just not as straightforward. I can live with this while I learn more asynchronous Python and maybe I will learn something that'll let me come back to fix this later. In the meantime I have <a href="https://newscrewdriver.com/2024/06/19/mx340-circuitpython-internals-and-context-manager/">more cleanup work to do</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

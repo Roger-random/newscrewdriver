@@ -1,0 +1,56 @@
+---
+layout: post
+title: CL84209 Handset LCD Segment Map
+date: 2022-06-11 12:30:00.000000000 +00:00
+type: post
+post_id: '30767'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- CL84209
+- LCD Segment Map
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30769'
+  _publicize_job_id: '73552493015'
+  timeline_notification: '1654975814'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:01'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/06/11/cl84209-handset-lcd-segment-map/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Now that I'm properly driving this salvaged LCD, using <a href="https://newscrewdriver.com/2022/06/10/lcd-driver-has-own-voltage-boost-converter-after-all/">its own voltage boost converter</a>, I'll map out its custom segments. The two lines of 15-character text uses the <a href="https://newscrewdriver.com/2022/06/06/cl84209-base-station-lcd-character-set/" target="_blank" rel="noreferrer noopener">same character set</a> as the LCD used in the base station of this AT&amp;T CL84209 cordless phone system, but <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/05/handset-lcd-versus-base-station-lcd-cl84209/" target="_blank">one space off from each other</a>. On the lower half of the screen, this handset LCD has a different set of segments than the base station LCD. Fortunately, as they both respond to the same control protocol, I could use the same ESP8266 Arduino program to interactively select individual segments and write down which segment respond to which bits.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30772,"sizeSlug":"large","linkDestination":"media"} --></p>
+<figure class="wp-block-image aligncenter size-large"><a href="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-handset-segment-map.png" target="_blank" rel=" noreferrer noopener"><img src="https://newscrewdriver.com/wp-content/uploads/2022/06/cl84209-lcd-handset-segment-map.png?w=1024" alt="" class="wp-image-30772"></a></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Comparing with the base station LCD segment map, there are some differences with obvious causes. For example, a battery gauge makes sense for the battery-powered handset. The battery outline segment (12) was an extremely informative element when I <a href="https://newscrewdriver.com/2022/06/01/examining-control-data-for-lcd-at-i2c-address-0x3e/">analyzed the digital control traffic</a>, because it had been blinking on/off to signal low supply voltage and seeing that bit toggling on and off helped me zero in on the segment control bits. And now that I'm thinking about it, perhaps a blinking outline explains why 64 (outline around count of messages) and 100 (the actual "MSG#" text) are two separate segments. This was a design decision that puzzled me when looking at the base station LCD, but now I understand it gives the option of keeping "MSG#" on while the border blinks.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This handset LCD has a few additional custom segments, but two fewer 7-segment numeric digits. However, the hour tens digit of its clock area is thankfully a fully controllable 7-segment display, versus the base station LCD where all three horizontal lines were the same segment drastically limiting the digits it could display.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Numbering-wise, I see the "use 5 bits then skip 3" pattern. For example: 8, 9, 10, 11, 12 were used, then 13, 14, and 15 were skipped. I assume this has something to do with the segment/common convenience of wiring but couldn't guess more without the chart <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/21/segmented-lcd-on-tape-deck-faceplate-toyota-86120-08010/" target="_blank">like I had for Sanyo LC75853</a>. Like the base station LCD, this handset LCD also skipped a byte entirely. Except in this case, it skipped the first byte (the first used bit was bit 8) instead of the final byte.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting together this segment map concludes the software side of exploring this LCD, I will now resume physical/mechanical exploration by <a href="https://newscrewdriver.com/2022/06/12/cl84209-handset-lcd-disassembly/">taking apart this display assembly</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this investigation is <a href="https://github.com/Roger-random/lcd_cl84209">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

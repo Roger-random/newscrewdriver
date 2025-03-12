@@ -1,0 +1,46 @@
+---
+layout: post
+title: Magnetometer API Privacy Concerns
+date: 2023-03-29 12:30:00.000000000 +00:00
+type: post
+post_id: '35961'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+- JavaScript
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '35951'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1680207617
+  _publicize_job_id: '82743767438'
+  timeline_notification: '1680118224'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:36'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/03/29/magnetometer-api-privacy-concerns/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Many Android phones have an integrated magnetometer available to native apps. Chrome browser for Android also makes that capability available to web apps, but right now it is hidden by default as a feature preview. Once I enabled that feature, I was able to follow some sample code online and <a href="https://newscrewdriver.com/2023/03/28/magnetometer-api-in-android-chrome-browser/">quickly obtain access to magnetometer data</a> in my own web app. That was so easy! Why was it blocked by default?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Apparently, the answer (or at least a part of it) was that it was <em>too </em>easy. Making magnetometer and other hardware sensor data freely available to web apps would feed into <a href="https://en.wikipedia.org/wiki/Device_fingerprint#Hardware_properties">hardware-based browser fingerprinting</a>. Even though magnetometer data by itself might be innocuous, it could be combined with other seemingly-innocent data to uniquely identify users thereby piercing privacy protections. This is bad, and <a href="https://www.zdnet.com/article/apple-declined-to-implement-16-web-apis-in-safari-due-to-privacy-concerns/">purportedly why Apple has so far declined to support sensor APIs</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That article was in 2020, though, and the web moves fast. When I read up on magnetometer API on MDN (Mozilla Developer Network) I encountered an entire section on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Sensor_APIs#permissions_and_permissions_policy">obtaining user permission to read hardware sensor data</a>. Since I didn't have to do any of that for my own test app to obtain magnetometer data, I guess this requirement is only present in Mozilla's own Firefox browser. Or perhaps it was merely a proposal hoping to satisfy Apple's official objection to supporting sensor API.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I found no mention of Mozilla's permission management framework in the official magnetometer API specification. There's a "<a href="https://www.w3.org/TR/magnetometer/#security-and-privacy">Security and Privacy Considerations</a>" section but it's pretty thin and I don't see how it would address fingerprinting concerns. For what it's worth, "limiting maximum sample frequency" was listed as a potential mitigation, and Chrome 111 only allows up to 10Hz.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Today users like myself have to explicitly activate this experimental feature. And at the top of "chrome://flags" page where we do so, there's an explicit warning that enabling experimental features could compromise privacy. In theory, people opting-in to magnetometer today is aware of potential abuse, but that risk has to be addressed before it's rolled out to everyone. In the meantime, I have opted in and <a href="https://newscrewdriver.com/2023/03/30/visualizing-magnetometer-data-with-three-js/">I'm going to have some fun</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

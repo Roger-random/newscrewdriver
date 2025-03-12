@@ -1,0 +1,54 @@
+---
+layout: post
+title: Tracking History of a Node-RED Project
+date: 2020-09-19 12:30:00.000000000 +00:00
+type: post
+post_id: '22418'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- Node-RED
+meta:
+  _publicize_job_id: '49003961803'
+  _thumbnail_id: '22439'
+  timeline_notification: '1600543842'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1669797317
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:27:51'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/09/19/tracking-history-of-a-node-red-project/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Exploring Node-RED has been a lot of fun, working with both the freedoms and limitations of a different way of programming. It was novel enough that a very important part of software development workflow didn't occur me until <a href="https://newscrewdriver.com/2020/09/18/packing-bubble-squish-test-data/">I had a nontrivial program</a>: Without source code text files, how do I handle source control? Thankfully it turns out there are still text files behind the scenes of graphical flows, and I can use them with <code>git</code> just like any other software development work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There are two options: doing it automatically via integrated git client, or manually. The procedure to setup integrated git client is <a rel="noreferrer noopener" href="https://nodered.org/docs/user-guide/projects" target="_blank">outline in Node-RED documentation</a> but I'm not sure I'm ready to trust that just yet. There's an additional twist: it requires that I have my git credentials sitting on the computer running Node-RED, which isn't something I'm necessarily willing to do. I keep a strict watch over the small set of computers authorized with my git credentials for software work. In contrast, a computer running Node-RED is likely only running Node-RED and not used for any other development. (This is especially true when Node-RED is only running in a FreeBSD Jail on my home FreeNAS server, or a Raspberry Pi.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a side note, the git integration instructions did explicitly confirm something I had suspected but hadn't found confirmation before: "<em>Node-RED only runs one project at any time."</em> This makes the FreeBSD Jail approach even more interesting, because running multiple isolated Node-RED projects on a single physical machine can be done by keeping each in their own jails.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Back to source control: for the immediate future, I'll use a manual workflow. Under Node-RED's main menu is the "Export" option. I can click "all flows" to include every tab, click "formatted" to make it readable, and click "Download" to receive a text file (in JSON, naturally) representing my Node-RED project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":22426,"sizeSlug":"large"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2020/08/image-1.png?w=960" alt="" class="wp-image-22426"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>By doing this on one of my machines configured for git access, I can put this file in a git repository for commit and push operations. Regretfully, the file is not terribly readable in its native form, and the GitHub text diff mode is cluttered with a lot of noise. There are many generated id fields linking things together, and those ID tend to change from one download to the next. However, it is far better than nothing and at least all the important changes are also visible within the noisy churn.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To verify that I could restore a project, I set up Node-RED on another computer and imported the flows. All the nodes in my visible flow appear to have survived the transition, but I've run into some sort of problem with the configuration nodes. Serial communication nodes lost their COM port information like baud rate, timeout, and line termination. This is odd, as I could see that information in the exported JSON. Similarly, my dashboard layout has been lost in the transition. Hopefully this is only a matter of a beginner's mistake somewhere. For now it is relatively easy to manually restore that information, but this would quickly become a big headache as a project grows in size.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>[I have no idea why anyone would want it, but if someone desires my air bubble packing material squish test flow, <a rel="noreferrer noopener" href="https://github.com/Roger-random/noderedtests/blob/master/squishtest3DP.json" target="_blank">it is publicly available on GitHub</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

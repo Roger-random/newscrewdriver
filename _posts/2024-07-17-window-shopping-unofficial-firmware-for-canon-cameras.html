@@ -1,0 +1,45 @@
+---
+layout: post
+title: Window Shopping Unofficial Firmware for Canon Cameras
+date: 2024-07-17 12:30:00.000000000 +00:00
+type: post
+post_id: '44269'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Window Shopping
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '39429'
+  firehose_sent: '1721244630'
+  _publicize_job_id: '96319268236'
+  timeline_notification: '1721244631'
+  _elasticsearch_data_sharing_indexed_on: '2024-07-18 21:55:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/07/17/window-shopping-unofficial-firmware-for-canon-cameras/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>My project <a href="https://newscrewdriver.com/tag/thermal-memento/">turning an Adafruit Memento camera into a thermal camera</a> was fun, but it didn't utilize any of <a href="https://newscrewdriver.com/2024/07/05/adafruit-memento-a-k-a-pycamera-photography-parameters/">Memento's programmable photography features</a>. This is fine because I felt the advantage of Adafruit hardware is the ability to mix in more hardware for fun as I did. Besides, if a project's goal lies strictly within within the realm of photography, they might be better served by using a commercial camera product running an unofficial firmware project.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Modern digital cameras run on microcontrollers and motivated enthusiasts have found ways into those systems. I have historically purchased Canon cameras, so unofficial firmware projects most relevant to me are <a href="https://chdk.fandom.com">CHDK</a> for Canon PowerShot point-and-shoot cameras and <a href="https://magiclantern.fm">Magic Lantern</a> for Canon's EOS interchangeable lens cameras. I read through FAQ for both and learned that's not <em>exactly </em>correct. Each project is actually specific to the operating system Canon runs on their cameras, and occasionally Canon would release an interchangeable lens camera running their point-and-shoot operating system (or is that vice versa?) for reasons known only to Canon.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Magic Lantern builds on the work pioneered by CHDK and Magic Latern's author fully credits the CHDK team for paving the way. Apparently CHDK bootstrapped starting from obtaining control over a camera status LED and using it to blink out data that told the team where to go from there. That's an amazing tale of hardware hacking. This relationship also means both projects use the same software architecture. Canon's camera firmware is not overwritten by these projects, the downloaded file lives on the memory card. And that CHDK/ML download has to match a specific version of Canon camera firmware.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>These facts tell me CHDK/ML found a way to run their code on the memory card. And once they obtained execution control, they call routines in Canon's firmware to perform actual tasks. The upside of this approach means actual hardware interfacing is handled by Canon driver code, reducing the chance of a bug causing irreversible damage. And this approach is also how CHDK/ML can expose features not present in original Canon firmware, by calling Canon routines with parameters that the factory firmware chose not to utilize. The downside of this approach is that CHDK/ML is limited to features that can be composed from existing building blocks. A hypothetical example: I can snap a picture and save it with custom JPEG compression parameters, but I can't save to an entirely different image format Canon doesn't support. Like WEBP, not that I'd want WEBP anyway.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And to bring the discussion full circle: both CHDK and ML offer scripting engines so we can write and run small programs. CHDK <a href="https://chdk.fandom.com/wiki/CHDK_1.6_User_Manual#Scripting_.28program_your_camera.29">supports uBASIC and LUA</a>, while ML <a href="https://wiki.magiclantern.fm/camera_help#scripts">seems to have just Lua</a>. Skimming through the documentation, the scripting API is focused on photo and video and little else. It's no CircuitPython, but that's expected and perfectly fine for projects in that domain. This all looks interesting enough for me to <a href="https://newscrewdriver.com/2024/07/18/canon-powershot-sd1100-is-lens-error/">see if I have a CHDK/ML-compatible camera</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

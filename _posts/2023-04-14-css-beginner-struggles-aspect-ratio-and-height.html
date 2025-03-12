@@ -1,0 +1,104 @@
+---
+layout: post
+title: 'CSS Beginner Struggles: aspect-ratio and height'
+date: 2023-04-14 12:30:00.000000000 +00:00
+type: post
+post_id: '36235'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- CSS
+tags:
+- Compass
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '36104'
+  _oembed_c4e2c363de2fae3a5ac518626214b7f0: '<div class="embed-codepen"><iframe title="Compass"
+    id="cp_embed_vYVNGjg" src="https://codepen.io/roger-random/embed/preview/vYVNGjg?default-tabs=css%2Cresult&amp;height=300&amp;host=https%3A%2F%2Fcodepen.io&amp;slug-hash=vYVNGjg"
+    scrolling="no" frameborder="0" height="300" allowtransparency="true" class="cp_embed_iframe"
+    style="width: 100%; overflow: hidden;"></iframe></div>'
+  _oembed_time_c4e2c363de2fae3a5ac518626214b7f0: '1681235950'
+  _oembed_01c80d42bf4de9eff7127716d3a1d039: '<div class="embed-codepen"><iframe title="Compass"
+    id="cp_embed_vYVNGjg" src="https://codepen.io/roger-random/embed/preview/vYVNGjg?default-tabs=css%2Cresult&amp;height=300&amp;host=https%3A%2F%2Fcodepen.io&amp;slug-hash=vYVNGjg"
+    scrolling="no" frameborder="0" height="300" allowtransparency="true" class="cp_embed_iframe"
+    style="width: 100%; overflow: hidden;"></iframe></div>'
+  _oembed_time_01c80d42bf4de9eff7127716d3a1d039: '1681235952'
+  timeline_notification: '1681500622'
+  _publicize_job_id: '83201129769'
+  _oembed_54e13065c9367120899712df2c130199: '<div class="embed-codepen"><iframe title="Compass"
+    id="cp_embed_vYVNGjg" src="https://codepen.io/roger-random/embed/preview/vYVNGjg?default-tabs=css%2Cresult&amp;height=300&amp;host=https%3A%2F%2Fcodepen.io&amp;slug-hash=vYVNGjg"
+    scrolling="no" frameborder="0" height="300" allowtransparency="true" class="cp_embed_iframe"
+    style="width: 100%; overflow: hidden;"></iframe></div>'
+  _oembed_time_54e13065c9367120899712df2c130199: '1681500622'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1681615082
+  _oembed_ba26c8e961db1678ede6a1879f234c61: '<div class="embed-codepen"><iframe title="Compass"
+    id="cp_embed_vYVNGjg" src="https://codepen.io/roger-random/embed/preview/vYVNGjg?default-tabs=css%2Cresult&amp;height=300&amp;host=https%3A%2F%2Fcodepen.io&amp;slug-hash=vYVNGjg"
+    scrolling="no" frameborder="0" height="300" allowtransparency="true" class="cp_embed_iframe"
+    style="width: 100%; overflow: hidden;"></iframe></div>'
+  _oembed_time_ba26c8e961db1678ede6a1879f234c61: '1682052277'
+  _oembed_2c1e6b1644b85c0990c9e773fe37f863: '<div class="embed-codepen"><iframe title="Compass"
+    id="cp_embed_vYVNGjg" src="https://codepen.io/roger-random/embed/preview/vYVNGjg?default-tabs=css%2Cresult&amp;height=300&amp;host=https%3A%2F%2Fcodepen.io&amp;slug-hash=vYVNGjg"
+    scrolling="no" frameborder="0" height="300" allowtransparency="true" class="cp_embed_iframe"
+    style="width: 100%; overflow: hidden;"></iframe></div>'
+  _oembed_time_2c1e6b1644b85c0990c9e773fe37f863: '1708471286'
+  _oembed_160a73cf0667252d24f74998cc999b77: '<div class="embed-codepen"><iframe title="Compass"
+    id="cp_embed_vYVNGjg" src="https://codepen.io/roger-random/embed/preview/vYVNGjg?default-tabs=css%2Cresult&amp;height=300&amp;host=https%3A%2F%2Fcodepen.io&amp;slug-hash=vYVNGjg"
+    scrolling="no" frameborder="0" height="300" allowtransparency="true" class="cp_embed_iframe"
+    style="width: 100%; overflow: hidden;"></iframe></div>'
+  _oembed_time_160a73cf0667252d24f74998cc999b77: '1711446395'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/04/14/css-beginner-struggles-aspect-ratio-and-height/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Reviewing CSS <a href="https://newscrewdriver.com/2023/04/13/notes-on-web-dev-learn-css/">from web.dev's "Learn CSS!" course</a> provided a refresher on a lot of material and also introduced me to new material I hadn't seen before. I had hoped for a bit of "aha" insight to help me with CSS struggles in my project, but that didn't happen. The closest was a particular piece of information (Flexbox for laying out along one dimension, Grid for two dimensions) that told me I'm on the right track using Flexbox.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>A recurring theme with my CSS frustration is the fact height and width are not treated the same way in HTML layout. I like to think of them as peers, two equal and orthogonal dimensions, but that's not how things work here. It traces back to HTML fundamentals of laying out text for reading text in a left-to-right, top-to bottom languages like English. Like a typesetter, the layout is specified in terms of width. Column width, margin width, etc. Those were the parameters that fed into layout. Height of a paragraph is then determined by the length of text that could fit within specified width. Thus, height is an output result, not an input parameter, of the layout process.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>For my Compass web app, I had a few text elements I knew I wanted to lay out. Header, footer, sensor values, etc. After they have all been allocated screen real estate, I wanted my compass needle to be the largest square that could fit within the remaining space. That last part is the problem: while we have ways to denote "all remaining space" for width, there's no such equivalent for height because height is a function of width and content. This results in unresolvable circular logic when my content (square compass) is a function of height, but the height is a function of my content.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could get most of the way to my goal with liberal application of "<code>height: 100%</code>" in my CSS rules. It does not appear to inherit/cascade, so I have to specify "<code>height: 100%</code>" on every element down the DOM hierarchy. If I don't, height of that element collapses to zero because my compass doesn't have an inherent height of its own.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I get to my compass, I could declare it to be a square with <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio"><code>aspect-ratio</code></a>. But when I did so, I find that aspect-ratio does its magic by changing element height to satisfy specified aspect ratio. When my remaining space is wider than it is tall, aspect-ratio expands height so it matches width. This is consistent with how the rest of HTML layout treats width vs. height, and it accomplishes the specified aspect ratio. But now it is too tall to fit within remaining space!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Trying to reign that in, I played with "<code>height: 100%</code>", "max-<code>height: 100%</code>", and varying combinations of similar CSS rules. They could affect CSS-specified height values, but seems to have no effect on height change from aspect-ratio. Setting aspect-ratio means height is changed to fit available width and I found no way to declare the reverse in CSS: change width to fit within available height.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>From web.dev I saw Codepen.io offered ability to have code snippets in a webpage, so here's a test to see how it works on my own blog. I pulled the HTML, CSS, and minimal JavaScript representing a Three.js &lt;canvas&gt; into a pen so I could fiddle with this specific problem independent of the rest of the app. I think I've embedded it below but <a href="https://codepen.io/roger-random/pen/vYVNGjg">here's a link</a> if the embed doesn't work.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:embed {"url":"https://codepen.io/roger-random/pen/vYVNGjg","type":"rich","providerNameSlug":"codepen"} --></p>
+<figure class="wp-block-embed is-type-rich is-provider-codepen wp-block-embed-codepen">
+<div class="wp-block-embed__wrapper">
+https://codepen.io/roger-random/pen/vYVNGjg
+</div>
+</figure>
+<p><!-- /wp:embed --></p>
+<p><!-- wp:paragraph --></p>
+<p>After preserving a snapshot of my headache in Codepen, I returned to Compass app which still had a problem that needed solving. Unable to express my intent via CSS, I turned to code. I <a href="https://github.com/Roger-random/compass/commit/a3e5f21f3f4d402a35701f7ec132d98f69bb3e46">abandoned using aspect-ratio</a> and resized my Three.js canvas to a square whose size is calculated via:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>Math.floor(Math.min(clientWidth, clientHeight));</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Taking width or height, whichever is smaller, and then rounding down. I have to round down to the nearest whole number otherwise scroll bars pop up, and I don't want scroll bars. I hate solving a layout problem with code, but it'll have to do for now. Hopefully sometime in the future I will have a better grasp of CSS and can write the proper stylesheet to accomplish my goal. In the meantime, I look for other ways to make layout more predictable such as <a href="https://newscrewdriver.com/2023/04/15/compass-web-app-going-full-screen/">making my app full screen</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">The source code for my project is <a href="https://github.com/Roger-random/compass">publicly available on GitHub</a>, though it no longer uses <code>aspect-ratio</code> as per the workaround described at the end of this poist.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,82 @@
+---
+layout: post
+title: Notes on "Data Oriented Design" Textbook
+date: 2022-07-03 12:30:00.000000000 +00:00
+type: post
+post_id: '31140'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- Books
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '31142'
+  _publicize_job_id: '74320218610'
+  timeline_notification: '1656876627'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/07/03/notes-on-data-oriented-design-textbook/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I spent a lot of time <a href="https://newscrewdriver.com/2022/07/02/notes-on-hardspaceshipbreaker-release/">playing <em>Hardspace:Shipbreaker</em></a> because I enjoyed the game, and I learned about it as <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/01/01/spaceship-teardowns-in-hardspace-shipbreaker/" target="_blank">an example of Unity's Data Oriented Technology Stack (DOTS) in action</a>. I was curious about the <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/12/30/unity-dots-data-oriented-technology-stack/" target="_blank">promised benefits of DOTS</a> and wanted to know more about it. Unity's learning portal has published several guides relating to the topic including <em><a rel="noreferrer noopener" href="https://learn.unity.com/course/dots-best-practices" target="_blank">DOTS Best Practices</a></em>. Among the list of pointers to various background primers is the book <a rel="noreferrer noopener" href="https://amzn.to/3byMSQX" target="_blank"><em>Data-Oriented Design</em> by Richard Fabian</a>. (*) The physical book and/or its various digital editions give a full treatment of the topic, but for those who just want to skim through to see the basic concepts, the author has actually made the <a rel="noreferrer noopener" href="https://www.dataorienteddesign.com/dodbook/" target="_blank">raw text available online</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>And by "raw text" I mean that almost literally. This is a bare-bones site ("HTML 1.0") with just contents in paragraphs. (Yes, HTML <code>&lt;P&gt;</code> tags.) Tables of information are in actual <code>&lt;TABLE&gt;</code> which sees little use on modern HTML sites. The CSS style sheet is used for its original purpose: declare styling on text with no layout or funny business with <code>&lt;div&gt;</code> mutations. The only images I see are actually code listings a.k.a. pictures of more text. I enjoyed reading such a feed of raw knowledge and here are a few notes.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If I were to summarize the book, I would go with "Why Game Developers Should Learn from Database Gurus." To be clear, this is not a book about databases, but it discusses many concepts from the world of databases because they are obviously data oriented in nature. Plus, databases have a tremendous history developing methods to work in parallel, taking advantage of multicore processors where most modern applications struggle to do the same. This requires certain ways of thinking about problems, and we can learn from those lessons.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>While it would be silly to say every game should be built on SQL queries, it makes sense to consider data-oriented approaches for certain domains. After all, databases underlie a lot of what we do with computers. So many computer applications are merely custom variations of <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete" target="_blank">database CRUD pattern</a> that we now have products like <a rel="noreferrer noopener" href="https://www.honeycode.aws/" target="_blank">Amazon Honeycode</a> built around the concept of letting people create CRUD apps without code. For core game loop data, a general database would incur too much overhead. But we can tailor game code to adopt database concepts where it makes sense to improve game performance.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This book has a focus on game development, which I was surprised by given the lack of mention in the title or in some of the abstracts. It does talk about Unity at places, but only because Unity is a game engine. This book predates Unity's currently ongoing DOTS overhaul, so DOTS is not mentioned. Code examples are in C/C++ and not the C# used by Unity, but as they are there mostly to illustrate concepts, the specific programming language is less important.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The text starts with a lot of thick theoretical foundations that I found difficult to chew through, with many words I found ambiguous. Things didn't start to click for me until some concrete examples were shown. There were examples of how object-oriented programming becomes unwieldy in large projects, and I find myself nodding a lot from my own career experience. Data-oriented design approaches were then given as examples of how many of those problems can be solved, and they certainly sound good in theory! But I have yet to see them in practice for large projects and, more importantly, this book didn't spend any time talking about how DOD might stumble into its own unwieldy problems. I don't know how to avoid them if I don't even know what they look like! Another way to present my wariness is this table:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">Development Approach</th>
+<th class="has-text-align-center" data-align="center">Greatness in Theory</th>
+<th class="has-text-align-center" data-align="center">Hurdles in Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">Object-Oriented Design</td>
+<td class="has-text-align-center" data-align="center">Discussed</td>
+<td class="has-text-align-center" data-align="center">Discussed</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">Data-Oriented Design</td>
+<td class="has-text-align-center" data-align="center">Discussed</td>
+<td class="has-text-align-center" data-align="center">...?</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>After reading this book, I'm convinced enough of merits to give data-oriented design a try, but I will have to keep my eyes open for where it stumbles. Because I've been writing code long enough to be sure of one thing: every nifty new solution to existing problems will bring its own new and unique problems. In time, with practice, I'm sure I'll learn where DOD is the wrong tool for the job. The good news is that, thanks to the generalized nature of this book, I don't necessarily have to try applying these concepts inside Unity. Which is good because Unity is still <a href="https://newscrewdriver.com/2022/07/04/mid-2022-snapshot-of-unity-dots-transition/">rolling through a multi-year transition</a> to DOD.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

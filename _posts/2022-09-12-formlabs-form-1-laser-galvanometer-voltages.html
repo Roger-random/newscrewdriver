@@ -1,0 +1,84 @@
+---
+layout: post
+title: FormLabs Form 1+ Laser Galvanometer Voltages
+date: 2022-09-12 12:30:00.000000000 +00:00
+type: post
+post_id: '32543'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 3D Printing Hardware
+tags:
+- Form 1+
+- FormLabs
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '32544'
+  _publicize_job_id: '76664618292'
+  timeline_notification: '1663011026'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:32:57'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/09/12/formlabs-form-1-laser-galvanometer-voltages/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I'm learning what I can from a broken FormLabs Form 1+ laser resin 3D printer, and it was instructive to <a href="https://newscrewdriver.com/2022/09/11/formlabs-form-1-laser-galvanometer-control/">probe voltage of wires</a> between its (apparently functioning) mainboard and its <a href="https://newscrewdriver.com/2022/09/08/formlabs-form-1-next-steps/" target="_blank" rel="noreferrer noopener">(definitel</a><a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/09/08/formlabs-form-1-next-steps/" target="_blank">y</a><a href="https://newscrewdriver.com/2022/09/08/formlabs-form-1-next-steps/"> toasted)</a> galvanometer control board. Since I had my tools ready, I thought I'd take a look at voltages of wires leading to those galvanometers themselves. Even though <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/07/22/formlabs-form-1-printed-a-shapeless-blob/" target="_blank">they're not moving anymore</a> I had little to lose and hoped to learn something.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There weren't many markings on these galvanometers. There are two stickers on both. On a flat end is a sticker with "ct-pass" probably for quality assurance during production. On the side of the cylinder is another sticker. One read "1411-0765 X" and the other "1411-0985 Y" Given that the X and Y axis are labeled, these are probably not part numbers. But what else would they be? Maybe something from the calibration process? I might see more markings if I remove these galvanometers from their aluminum mount, but I didn't want to do that just yet. In the remote chance I could get things working, removing the galvanometers would ruin their factory direction calibration because I wouldn't be able to put them back exactly in the same place.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Electrically speaking, from <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/Galvanometer" target="_blank">galvanometer Wikipedia page</a> I knew a coil of wire to be involved, and there should be some way to read current position for closed-loop control. Examining the thin circuit board hosting the connector, I see the white and red wires on one end routed to one side together, a candidate for coil wires. Remaining four wires were routed together in a different direction, and I guess they are involved with position sensing in some way. Perhaps a high-resolution <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/06/08/quadrature-encoder-rotary-knob-with-detent/" target="_blank">quadrature encoder</a>? Or perhaps the four wires communicate position digitally via I2C or SPI? I did see a lot of <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/09/09/form-1-galvanometer-control-board-ic-roll-call/" target="_blank">chips on the control board</a> communicate using SPI.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Turning the system on, I measured the following standby voltage values:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table {"align":"center"} --></p>
+<figure class="wp-block-table aligncenter">
+<table>
+<thead>
+<tr>
+<th>Wire Color</th>
+<th>Volts DC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yellow</td>
+<td>-0.044</td>
+</tr>
+<tr>
+<td>Red</td>
+<td>-0.026</td>
+</tr>
+<tr>
+<td>White</td>
+<td>+1.328</td>
+</tr>
+<tr>
+<td>Black</td>
+<td>0.015</td>
+</tr>
+<tr>
+<td>Red</td>
+<td>0.015</td>
+</tr>
+<tr>
+<td>White</td>
+<td>0.040</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>Not terribly informative by themselves, sadly. I didn't want to probe these voltages while the laser is shining, out of concern for my eyeballs. But I was curious to test my hypothesis of position sensing. Using fine-tipped tweezers, I rotated the output shaft while watching voltage values. The yellow wire showed a tiny change that correlated to shaft position: from -0.014V to -0.078V. The adjacent red wire showed a larger range, from 0.044V to -0.235V, also correlated to shaft position. Both of these are tiny changes in voltage, but the fact there's a repeatable correlation of voltage rules out quadrature encoder or digital data communication. This is an analog position sensor of some type. If it were like potentiometers I've dealt with, then at one end of the range of motion either yellow or red wire should get up to +1.328V provided by a white wire. But it didn't, so something else is going on. These observations aren't enough for me to fully understand workings of this board, but enough for me to <a href="https://newscrewdriver.com/2022/09/13/guesses-on-formlabs-form-1-galvanometer-control-board/">formulate a few guesses</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

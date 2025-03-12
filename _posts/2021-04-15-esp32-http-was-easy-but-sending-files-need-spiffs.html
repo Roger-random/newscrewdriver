@@ -1,0 +1,51 @@
+---
+layout: post
+title: ESP32 HTTP Was Easy But Sending Files Need SPIFFS
+date: 2021-04-15 12:30:00.000000000 +00:00
+type: post
+post_id: '26129'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- ESP32
+- Sawppy the Rover
+tags:
+- Micro Sawppy
+- Rover
+- Sawppy
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '26019'
+  _publicize_job_id: '57204047196'
+  timeline_notification: '1618515076'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:29:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/04/15/esp32-http-was-easy-but-sending-files-need-spiffs/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I got my ESP32 <a href="https://newscrewdriver.com/2021/04/14/notes-on-getting-esp32-on-wifi/">on my local home WiFi network</a>, but it doesn't respond to anything yet. The next step is to write code so it could act as a static web server, sending files stored in ESP32 flash memory to clients requesting them via HTTP GET. The good news is that <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/protocols/esp_http_server.html" target="_blank">setting up a HTTP server</a> was really easy, and I quickly got it up and running to serve a "Hello World" string hard-coded in my ESP32 source code.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I briefly considered calling this situation good enough and move on. I could embed my HTML/CSS/JavaScript files as hard-coded strings inside my C files. But doing so meant reviewing those files to make sure they don't have conflicts with C string syntax, and that's something I'd have to do every time I wanted to update any of those files. This is quite clumsy. What I really want is to keep those files to be served over HTTP separate from my C code, so that they could be updated independently of code and I don't have to review them for C string incompatibility.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Doing this requires carving out a portion of an ESP32's flash memory storage for a simple file storage system called <a rel="noreferrer noopener" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html" target="_blank">SPIFFS</a>. Allocation of flash storage is declared in a partition file, which is a list of comma-separated values (CSV) of partition information like size, offset, and assigned purpose. PlatformIO ESP-IDF project template includes a default partition file but it had no provision for a SPIFFS partition. I need to add one to my project to override that default. I found <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/blob/master/examples/storage/spiffs/partitions_example.csv" target="_blank">an example partition file</a> as my starting point, copying it into my project and making only minor changes. (I didn't need quite as large of a SPIFFS partition.) If I were using ESP-IDF directly, I believe I would use the <code>menuconfig</code> tool to point to my partition file. But as I'm <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/02/24/using-platformio-for-esp-idf-development/" target="_blank">using ESP-IDF indirectly via PlatformIO</a>, I specified my partition file location <a href="https://docs.platformio.org/en/latest/platforms/espressif32.html#partition-tables">using a parameter in the <code>platformio.ini</code> configuration file</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Once I have a partition, I need to put my files in it. Apparently it's not as simple as using a USB flash drive, I have to build the entire data partition (like building a disk image for a PC) and upload the whole thing. There are ESP-IDF command line tools to build SPIFFS partition, I decided to go with PlatformIO route by specifying <a rel="noreferrer noopener" href="https://docs.platformio.org/en/latest/projectconf/section_platformio.html#data-dir" target="_blank">the <code>platformio.ini</code> parameter <code>data-dir</code></a>. I could point it at my Node.js working directory, which is great because that meant I only had one copy of these files in my code repository. Eliminating the task of keeping multiple copies in sync. From the PlatformIO UI I could then use "Platform/Build Filesystem Image" followed by "Platform/Upload Filesystem Image". I haven't figured out if this is necessarily separate from code update or if there's a way to do both at the same time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Putting files in SPIFFS isn't useful until I have code to read those files. I followed the links to Espressif <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/tree/1cb31e5/examples/storage/spiffs" target="_blank">code example for reading and writing to SPIFFS</a>. And ugh... I haven't had to deal with <a rel="noreferrer noopener" href="https://github.com/espressif/esp-idf/blob/master/examples/storage/spiffs/main/spiffs_example_main.c" target="_blank">old school C file input/output API</a> in quite some time. I briefly considered the effort to keep things memory efficient by breaking these file I/O actions up into small pieces, but I don't need that kind of sophistication just yet. In order to simplify code, and because I have RAM to spare at the moment, I allocated a large buffer so all the operations to read from SPIFFS and send via HTTP can be done in a single pass. Which worked well for sending data to the control client, but now I need to <a href="https://newscrewdriver.com/2021/04/16/shiny-new-esp32-websocket-support/">listen to control commands coming back</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center"> [Code for this project is <a href="https://github.com/Roger-random/Sawppy_Rover/tree/main/esp32_sawppy/lib/wifi">publicly available on GitHub</a>.]</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,45 @@
+---
+layout: post
+title: Integrating Transplanted CNC Z-Axis
+date: 2019-10-03 12:30:33.000000000 +00:00
+type: post
+post_id: '19818'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- XY Stage
+meta:
+  _thumbnail_id: '19811'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '35960895942'
+  timeline_notification: '1570131061'
+  _oembed_c82377c588927c765b96a3c2b49d6d44: <div class="embed-twitter"><blockquote
+    class="twitter-tweet" data-width="500" data-dnt="true"><p lang="en" dir="ltr">Status
+    LEDs are also fun to watch. Direction (top) and pulse (bottom) for X (red), Y
+    (green), and Z (blue) axis. <a href="https://t.co/YWi89HXZk3">pic.twitter.com/YWi89HXZk3</a></p>&mdash;
+    Roger Cheng (@Regorlas) <a href="https://twitter.com/Regorlas/status/1178894852659937280?ref_src=twsrc%5Etfw">October
+    1, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js"
+    charset="utf-8"></script></div>
+  _oembed_time_c82377c588927c765b96a3c2b49d6d44: '1570351115'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:25:43'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/10/03/integrating-transplanted-cnc-z-axis/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>Bolting on a <a href="https://newscrewdriver.com/2019/10/02/a-new-home-for-cnc-z-axis/">transplanted Z-axis assembly</a> gives us a screw driven linear actuator with open-loop control via stepper motor, plus a switch for finding home position. Electrically this assembly is identical to the belt drive assembly <a href="https://newscrewdriver.com/2019/09/28/wiring-z-axis-assembly-to-stepper-driver/">we had wired up earlier</a>, this second round of electrical integration consisted only of crimping some connectors on new wires.</p>
+<p>For hardware configuration, the first stop is always to punch in part numbers to see what we get. We can tell this stepper motor is in a standard NEMA 17 form factor, but we needed to search on its part number <a href="https://duckduckgo.com/?q=sm42ht47-1684b">SM42HT47-1684B</a> to discover specs such as maximum current per phase. (1.68A) We conservatively capped our driver to a low value of 1.0A just to be safe, leaving room to increase if we need to.</p>
+<p>The steps per revolution for this motor was unstated, so we'll start with the assumption 200 steps per revolution typical of such motors and adjust as needed. We then measured the lead screw on this Z-axis. Since everything else on this machine is metric, we used metric measurements and it appeared to be 2mm per revolution. This maps the motor neatly into 100 whole steps per mm.</p>
+<p>A test run with whole steps sounded very rough, so we increased the stepping up to 4 microsteps and a corresponding adjustment in Grbl to 400 microsteps per mm. This gave us smoother movement at the loss of some holding torque. We won't know if that loss would be a problem until we start putting some heavier tools on that spindle holder.</p>
+<p>In the meantime, we'll start testing the same way we <a href="https://newscrewdriver.com/2019/09/18/quick-fabrication-for-servo-z-axis/">tested the servo Z-axis</a>: use it as <a href="https://newscrewdriver.com/2019/10/06/pen-plotting-with-third-iteration-z-axis/">a pen plotter</a>. Only this time we'll have a stepper controlled screw drive Z-axis.</p>
+<p></body></html></p>

@@ -1,0 +1,71 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel Chip Enable (NEC K13988)
+date: 2023-12-25 12:30:00.000000000 +00:00
+type: post
+post_id: '41227'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags:
+- inkjet
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41186'
+  firehose_sent: '1703536474'
+  wordads_ufa: s:wpcom-ufa-v4:1703623603
+  _publicize_job_id: '90570685496'
+  timeline_notification: '1703536476'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:23'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/12/25/canon-pixma-mx340-control-panel-chip-enable-nec-k13988/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I have hooked up my oscilloscope to the control panel circuit board of a Canon MX340 multi-function inkjet, watching communication between the inkjet main board and the control panel. <a href="https://newscrewdriver.com/2023/12/24/canon-pixma-mx340-control-panel-lcd-updates-under-oscilloscope/">Updating information shown on the LCD screen</a> involved too much data for me to decipher on the oscilloscope, far more than the amount of data <a href="https://newscrewdriver.com/2023/12/23/canon-pixma-mx340-control-panel-button-presses-under-oscilloscope/" target="_blank" rel="noreferrer noopener">reporting button status</a>. But there's one more communication wire between the main board and control panel, with comparatively little activity. I think this third wire is "Chip Enable" for a NEC K13988 chip on the control panel.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41190,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-plugged-in.png?w=826" alt="" class="wp-image-41190"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's an oscilloscope capture of the first second and a half after I plugged the printer in. There was a bit of activity on all three communication wires in the final 100ms of this chart.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41231,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-plugged-in-10ms.png?w=826" alt="" class="wp-image-41231"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Zooming in, channel 1 (yellow line) has been established as the wire used by the mainboard to send LCD screen updates. It makes sense for the main board wire to be the first to rise up to 3.3V and the last to fall in this sequence. Channels 2 and 3 came up to 3.3V together and shortly after that, channel 2 showed a pulse representing data sent from K13988 to main board. After that, things go quiet again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41232,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-plugged-in-10us.png?w=826" alt="" class="wp-image-41232"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>But "2 and 3 together" is not literally simultaneous. Zooming much further in, I can see channel 3 started rising first and channel 2 didn't start rising until after channel 3 rose above 1.6V. A similar thing happens when the printer wakes up out of stand by.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":41234,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2023/12/canon-pixma-mx340-control-board-standing-by-50us.png?w=826" alt="" class="wp-image-41234"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the other end of the process, here's a trace when the printer goes into standby. A few bytes of data were communicated between the main board and the K13988. Then channel 3 drops to ground, followed by channel 2 dropping to 2.5V.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>All of the above activity are consistent with a "Chip Enable" signal on channel 3. Upon plugging in the printer, the main board wakes up the control panel's NEC K13988 chip. After hearing acknowledgement data from the K13988, the main board drops it off to sleep. When the user presses the power button to bring the system out of standby, pin 3 wakes up the NEC K13988 and stays at 3.3V DC until time to go to sleep again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>If this hypothesis is correct, that is great news. It meant I don't have to worry too much about that particular wire as <a href="https://newscrewdriver.com/2023/12/26/canon-pixma-mx340-control-panel-communication-appears-to-be-serial/">I try to decode data on the other two lines</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here for the starting point</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: Arduino Library Versioning For ESP_8_BIT_Composite
+date: 2021-12-05 12:30:00.000000000 +00:00
+type: post
+post_id: '27753'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Arduino
+tags:
+- Composite Video
+- ESP32
+- ESP_8_BIT
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27729'
+  _publicize_job_id: '66163639316'
+  timeline_notification: '1638736212'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:31'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/12/05/arduino-library-versioning-for-esp_8_bit_composite/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I think <a href="https://newscrewdriver.com/2021/12/04/screen-rotation-support-for-esp_8_bit_composite-arduino-library/">adding <code>setRotation()</code> support to my <code>ESP_8_BIT_Composite</code> library</a> was a good technical exercise, but I made a few mistakes on the administrative side. These are the kind of lessons I expected to learn when I decided to <a rel="noreferrer noopener" href="https://newscrewdriver.com/2021/05/09/esp_8_bit-color-composite-video-out-on-arduino-library-manager/" target="_blank">publish my project as an Arduino library</a>, but they are nevertheless a bit embarrassing as these lessons are happening in public view.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first error was not following <a rel="noreferrer noopener" href="https://semver.org/" target="_blank">sematic versioning rules</a>. Adding support for <code>setRotation()</code> is an implementation of missing functionality, it did not involve any change in API surface area. The way I read versioning rules, the <code>setRotation()</code> update should have been an increase in patch version number from v1.2.0 to v1.2.1, not an increase in minor version from v1.2.0 to v1.3.0. I guess I thought it deserved the minor version change because I changed behavior... but by that rule every bug fix is a change in behavior. If every bug fix is a minor version change, then when would we ever increase the patch number? (Never, as far as I can tell.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Unfortunately, since I've already made that mistake, I can't go back. Because that would violate another versioning rule: the numbers always increase and never decrease.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The next mistake was with a file <code>library.properties</code> in the repository, which <a rel="noreferrer noopener" href="https://arduino.github.io/arduino-cli/0.20/library-specification/" target="_blank">describes my library</a> for the Arduino Library Manager. I tagged and released v1.3.0 on GitHub but I didn't update the version number in <code>library.properties</code> to match. With this oversight, the automated tools for Arduino library update didn't pick up v1.3.0. To fix this, I updated <code>library.properties</code> to v1.3.1 and re-tagged and re-released everything as v1.3.1 on GitHub. Now <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/libraries/esp_8_bit-color-composite-video-library/" target="_blank">v1.3.1 shows up</a> as an updated version in a way v1.3.0 did not.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

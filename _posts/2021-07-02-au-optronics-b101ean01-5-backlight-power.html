@@ -1,0 +1,64 @@
+---
+layout: post
+title: AU Optronics B101EAN01.5 Backlight Power
+date: 2021-07-02 12:30:00.000000000 +00:00
+type: post
+post_id: '27394'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- Acer
+- AU Optronics
+- B101EAN01.5
+- Backlight
+- SW5-012
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '27314'
+  _publicize_job_id: '60288399402'
+  timeline_notification: '1625254274'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:17'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2021/07/02/au-optronics-b101ean01-5-backlight-power/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've pulled the LED backlight illumination panel out of an AU Optronics B101EAN01.5 LCD panel, which was in turn salvaged from an Acer Aspire Switch 10 (SW5-012) tablet/laptop convertible. I want to see if I can get it to light up. Using my multimeter I found test points corresponding to all six control lines on the backlight, and <a href="https://newscrewdriver.com/2021/07/01/au-optronics-b101ean01-5-backlight-wiring/">soldered wires to all of them</a>. The next task is to determine what these wires are.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27312,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-37-display-backlight-six-wires-crimped-in-order.jpg?w=1024" alt="" class="wp-image-27312"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other end of those wires were crimped and assembled into a six-pin connector with 0.1" spacing. I first arranged them in whatever happened to be convenient, but then I changed my mind and rearranged them to be in the same order as that on the backlight cable. From top to bottom: Power, ground, FB1, FB2, FB3, and FB4.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>This gave me something suitable for breadboard exploration. I have two hypothesis about what the FB connectors are. Since power and ground were already identified, I thought maybe these are <a rel="noreferrer noopener" href="https://en.wikipedia.org/wiki/MOSFET" target="_blank">control lines (gates) for MOSFETs</a> in line with each string, which implies I could turn on a LED string by pulling its signal high. But if I look at <a href="https://newscrewdriver.com/2021/06/06/investigating-ti-tps61187-wled-driver/">precedence set by the LG LP133WF2(SP)(A1) panel</a> I took apart earlier, these could be four current sinks for four LED strings.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To test both concepts simultaneously, my breadboard exploration wired one string to a pull-up resistor in case FB is a MOSFET gate, and another string to a pull-down resistor in case it is LED current sink.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27313,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-38-display-backlight-breadboard-pull-up-and-down.jpg?w=1024" alt="" class="wp-image-27313"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>I started seeing a dim glow when I turned the power supply up to 17V. To determine which hypothesis was correct, I removed the pull-down resistor and it went dark. So FB1 through FB4 are current sinks for four strings. As a double-check, I calculated voltage drop across the pull-down resistor and calculated the current flow to be 1.4mA. This is far too high for a MOSFET gate but completely consistent with current-limiting resistor for a dimly lit LED.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":27314,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2021/06/acer-aspire-switch-10-39-display-backlight-revived.jpg?w=1024" alt="" class="wp-image-27314"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Hooking up a current-limiting resistor to each of FB1 through FB4, the backlight has dim but usable illumination starting at about a 15.6V drop across an individual LED string. Whenever I find a project for this light, I will need to either solder more permanent current-limiting resistors, or find an intelligent LED controller with a more efficient current-limiting control scheme.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>There is one remaining mystery: If the VOUT wire is voltage source, and FB1 through FB4 are current sinks, why is there a line connected to the ground plane on the control circuit board? It feels like there's another aspect of this backlight I have yet to discover. Or possibly destroyed by clumsy overvoltage on my part. Either way, it doesn't seem to be critical for illuminating this backlight, so I'll leave that mystery for another day.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

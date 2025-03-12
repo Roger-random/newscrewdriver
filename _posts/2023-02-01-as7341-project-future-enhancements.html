@@ -1,0 +1,79 @@
+---
+layout: post
+title: AS7341 Project Future Enhancements
+date: 2023-02-01 12:30:00.000000000 +00:00
+type: post
+post_id: '34758'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- AS7341
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '34765'
+  timeline_notification: '1675283410'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1675377088
+  _publicize_job_id: '81115620707'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:34:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2023/02/01/as7341-project-future-enhancements/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>With <a href="https://newscrewdriver.com/2023/01/31/compact-assembly-of-as7341-and-esp32-boards/">my AS7341+ESP32 assembly all tidied up</a>, alongside my web app project for interacting with them, I think this is a good point to declare version 1.0 complete and move on to something else. Naturally I have more ideas, but today I'm just going to write them down as ideas for later.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Color Accuracy</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>The most obvious point of improvement is a better <a href="https://newscrewdriver.com/2023/01/29/approximate-color-from-as7341-spectral-data/" target="_blank" rel="noreferrer noopener">translation from detected wavelengths to human-perceived color</a>. I think this would require at least a few days of study (possibly more) before I can be conversant in the topic and maybe understand that Python code sample I found.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Beyond the theoretical math, there are hardware component to better color: the AS7341 has many additional capabilities that I have not used in my little exploratory app. While the eight sensors for specific wavelengths get the attention, the other sensors weren't there just for fun. They also have a role in color accuracy as per <a href="https://newscrewdriver.com/2023/01/01/ams-as7341-calibration-application-note/">AS7341 application node on color calibration</a>. Those channels provide information on various distortions that may be affecting those eight wavelength sensors.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The clear channel shows the sensor response without a color filter, and the NIR channel shows raw silicon sensor response without even an infrared filter. When any of these sensors return a strong reading, that means enough of their respective types of light are likely "bleeding" into the other color sensors. Flicker detection is likewise also involved because flickering light patterns would impact sensor readings. All of these factors should need to be compensated before feeding into color space conversion.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Temperature Compensation</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>I haven't used AS7341's temperature compensation feature beyond its default behavior of running once upon powerup. Ambient temperature changes would affect sensor behavior, which is true of all sensors. Or to paraphrase what I've heard from <a href="https://embedded.fm/about-us">veteran embedded engineer Elicia White</a>: "Every sensor is a temperature sensor. Some even sense other things."</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Auto Gain Control</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>A little tangential to the topic of color accuracy, this sensor seems to have some sort of auto gain control to ensure sensors get a good range of values without going too far into saturation. Ideally, I can add an "Auto Gain" checkbox to my app and let the sensor take care of gain control automatically, but that isn't as easy as it looked at first glance. This feature was not exposed in the Adafruit library and my effort to explore it with <code>twi_nonblock</code> API produced behavior I didn't understand.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Web App Evolution</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Orthogonal to anything I might do to improve AS7341 performance, I might choose to evolve just the web app itself. This first version was written directly in HTML/CSS/JavaScript, the only library I used was Chart.js to plot the bar graph. This process is fine for a simple app but will get more cumbersome for larger projects. So even though this app is fine for its scale, I might use it as "Hello World" exploration of tools that help manage larger projects. Like learning how to use NPM to manage dependencies like Chart.js. Or using TypeScript to tame some of JavaScript's wild and annoying sides. Or convert it to use an application framework like Angular. That would be sheer overkill for such a small app, but I have big web app project ideas and I need someplace small to start learning.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">ESP32 Evolution</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Or I might focus on the ESP32 side of things. Top of the list here is using it as a learning project for ESPAsyncWebServer, which has more of the features I might want over the current <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/16/esp32-webserver-made-as7341-accessible-via-http-get/" target="_blank">basic WebServer implementation</a>. Before that, though, I'll probably switch over to using PlatformIO so I can upload HTML/CSS/JavaScript files to SPIFFS and serve from there, instead of the current <a rel="noreferrer noopener" href="https://newscrewdriver.com/2023/01/19/esp32-arduino-web-server-no-file-upload/" target="_blank">unnecessarily cumbersome process</a> of converting them over to hex values in a header file.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:heading --></p>
+<h2 class="wp-block-heading">Platform Migration</h2>
+<p><!-- /wp:heading --></p>
+<p><!-- wp:paragraph --></p>
+<p>Or a future path would not involve the web app at all. It's totally possible for a future project idea to be done entirely onboard the ESP32, porting my browser-side JavaScript code to C on the ESP32. It all depends on what motivates me to create enhancements in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Which may be triggered by something like <a href="https://newscrewdriver.com/2023/02/02/as7341-project-postscript-smux-mystery-solved/">discovering information I had mistakenly overlooked</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

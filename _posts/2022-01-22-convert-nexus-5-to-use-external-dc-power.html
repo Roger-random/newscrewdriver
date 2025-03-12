@@ -1,0 +1,57 @@
+---
+layout: post
+title: Convert Nexus 5 To Use External DC Power
+date: 2022-01-22 12:30:00.000000000 +00:00
+type: post
+post_id: '28275'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Hardware Platforms
+tags:
+- MP1584
+- Nexus 5
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28259'
+  _publicize_job_id: '68019402150'
+  timeline_notification: '1642883408'
+  _edit_last: '98499281'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667121770
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/01/22/convert-nexus-5-to-use-external-dc-power/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I just <a href="https://newscrewdriver.com/2022/01/21/nexus-5-bl-t9-battery-teardown/">took apart a BL-T9 battery module</a> from my old Nexus 5 cell phone. I had removed it as a precaution since its internal chemical situation had degraded, puffing up and pushing itself out of the phone. Even though the phone still seemed to work (or at least it would boot up) a puffed-up lithium-ion polymer battery is not a good situation.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But now I have an otherwise functional cell phone without a battery. It would be a shame to toss it in the e-waste, but it needs a power source to do more than just gathering dust. The first experiment was to see if the phone would run on USB power with the battery removed, and that was a bust. Trying to turn the phone on would show the low battery icon and then the screen goes dark again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I then <a rel="noreferrer noopener" href="https://amzn.to/3GCPJmB" target="_blank">looked online for a replacement battery</a>. (*) They range from a very poorly reviewed $10 unit on Amazon, up through the $35-$50 range. But did I want to spend that money? I don't really need this device to be portable and battery-powered anyway. It's more likely to go the way of my HP Stream 7 and become an always-on externally powered display, something <a rel="noreferrer noopener" href="https://newscrewdriver.com/2020/05/06/esa-iss-tracker-on-nexus-5/" target="_blank">I've tried earlier</a> and plan to revisit in the future.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With my HP Stream 7 power experiments fresh on my mind, I decided to convert this device to run on external DC power as well. It won't have a battery to buffer spikes in power draw, but that might be fine. An Android phone has lower power demand than a Windows tablet. For starters, I wouldn't be plugging in external USB peripherals. Also with the HP experience in mind, I expect there are device drivers in its Android system image that expects to communicate with the chip in the battery module. So I'll keep that module in the circuit and solder a JST-RCY connector where the battery cell terminals used to be. As a quick test, and one last farewell to the old puffy battery cell, I connected it to the JST-RCY connector. This electrically replicated original arrangement so I could verify everything still worked. I pushed the power button and there was no response. Oh no!</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>I mentally explored some possibilities: perhaps there is a thermal fuse on board the circuit board that killed the connection when it sensed the heat of my soldering iron. Or perhaps the chip would refuse to power up if the battery voltage ever sank to zero. As an experiment I plugged in USB power again, and I was presented with the battery charging animation. Pushing the power button now booted up the phone. Conclusion: if the battery had been disconnected and reconnected, a Nexus 5 requires USB power to jump start the cold boot process.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>With the system verified to function (and learning the cold startup procedure with USB power) I disconnected the puffy battery for disposal. I replaced it with a <a rel="noreferrer noopener" href="https://amzn.to/3qAykoX" target="_blank">MP1584EN DC voltage buck converter module</a> (*) I adjusted to output 4.2V simulating a fully charged battery. I also added an electrolytic capacitor in the hope of buffering spikes in power draw. After using USB power for cold start, the Nexus 5 was content to run in this configuration for over a week. Perfectly happy to believe it was running on a huge battery the whole time.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">(*) Disclosure: As an Amazon Associate I earn from qualifying purchases.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

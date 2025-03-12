@@ -1,0 +1,39 @@
+---
+layout: post
+title: Investigating Dustbuster Battery Degradation
+date: 2017-12-12 20:35:20.000000000 +00:00
+type: post
+post_id: '15605'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Dustbuster Upgrade
+tags: []
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '12452684783'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:20:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2017/12/12/investigating-dustbuster-battery-degradation/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>When embarking on a project to repair something, it's always helpful to understand and articulate what went wrong so we have confidence we're fixing the right thing. The starting point for this project is seeing this old Black &amp; Decker <a href="http://www.blackanddecker.com/products/home-cleaning/vacuums/handheld-vacuums/96-dustbuster-hand-vac/bdh9600chv">BDH9600CHV</a> Dustbuster trying to do its job: It couldn't spin its motors fast enough to generate vacuum to pick up household debris. The most obvious suspect is the battery pack, so let's examine the batteries.</p>
+<p><img class=" size-full wp-image-15607 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/12/dustbuster-screws.jpg" alt="Dustbuster screws.jpg" width="1024" height="546"></p>
+<p>Five small screws held the two halves of the vacuum enclosure together. Once the screws were removed, the two halves separated easily without any additional glue or plastic clips to worry about. The internals were as expected - a battery pack, hooked up to a switch, and wired to the motor driving the vacuum vanes.</p>
+<p>The battery pack is built from eight <a href="https://en.wikipedia.org/wiki/Nickel%E2%80%93cadmium_battery">nickel-cadmium</a> (Ni-Cad) battery cells. Six arrayed around the motor, and two more tucked in the handle. The first hypothesis is that some of the cells have died. The cell voltage levels were probed as the motor spun, looking for any cells that has sunk to zero volts or possibly a <a href="https://en.wikipedia.org/wiki/Rechargeable_battery#Damage_from_cell_reversal">cell-reversal</a> situation. All eight cells delivered under 1 volt but well above zero, disproving the initial "dead cell" hypothesis.</p>
+<p>The next hypothesis is <a href="https://en.wikipedia.org/wiki/Memory_effect">battery memory effect</a>. Technically the term applies to a very specific issue with Ni-Cad battery, but in popular use the term has become an umbrella for several different conditions that afflict Ni-Cad batteries.</p>
+<p>The most promising item under the umbrella was "Voltage depression due to long-term over-charging". The voltage has already been verified to be low but not zero. There should be a charging control circuit to prevent over-charging, perhaps that failed? A search came up empty: there didn't seem to be a charge controller at all. The batteries seemed to be connected directly to the output of the charging stand AC power adapter.</p>
+<p>The nominal voltage of this battery pack is 8 * 1.2V = 9.6V. The maximum output of this Dustbuster's AC to DC adapter? 24V. Ouch! That's significantly over nominal and the battery pack has been held at that level for years.</p>
+<p>These circumstances imply this battery pack has indeed suffered under long-term over-charging. Explaining why it now deliver depressed voltage levels.</p>
+<p><img class=" size-full wp-image-15606 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2017/12/24v-dc.jpg" alt="24V DC" width="846" height="1024"></p>
+<p>(Cross-posted to <a href="https://hackaday.io/project/28684-dustbuster-upgrade/log/71945-investigating-battery-degradation">Hackaday.io</a>)</p>
+<p></body></html></p>

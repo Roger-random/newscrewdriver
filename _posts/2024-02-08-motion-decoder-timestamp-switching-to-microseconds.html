@@ -1,0 +1,67 @@
+---
+layout: post
+title: Motion Decoder Timestamp Switching to Microseconds
+date: 2024-02-08 12:37:28.000000000 +00:00
+type: post
+post_id: '41885'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41824'
+  timeline_notification: '1707424651'
+  firehose_sent: '1707424650'
+  wordads_ufa: s:wpcom-ufa-v4:1707546059
+  _publicize_job_id: '91799357444'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:46'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/02/08/motion-decoder-timestamp-switching-to-microseconds/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I want to decode motion reported by the rotation quadrature encoder inside a Canon Pixma MX340 multi-function inkjet. My first attempt <a href="https://newscrewdriver.com/2024/02/07/motion-decoder-fail-zero-delta-between-two-samples/">comparing encoder count differences proved to be a failure</a>, so I will have to incorporate those lessons before trying again.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first lesson is that making decisions on changes between two iterations of a loop makes the code dependent on microcontroller execution speed. This is an unreliable metric because behavior would change if I compile it to run on different hardware. And even if the hardware is unchanged, doing different things within an iteration (like printing data out to serial port) would consume more or less time than than a different iteration. For some projects, such variability doesn't matter much, but it has proven to matter greatly here.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>To solve the loop iteration-to-iteration variability problem, I need to switch to a system where calculations are based on a measure of time. Arduino uses <code><a href="https://www.arduino.cc/reference/en/language/functions/time/millis/" target="_blank" rel="noreferrer noopener">millis()</a></code> for time stamps in many examples, so I'll start with milliseconds as my time stamp against encoder readings. And for reference, I'll also count how many loop iterations were spent at each encoder position. My earlier failure told me this number is occasionally greater than one even when the system is moving, I wanted to know more.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Here's the output for machine startup:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>timestamp,position,count<br>0,0,878490<br>10604,2,95584<br>11758,4,1871<br>11782,6,341550<br>15905,7,1<br>15906,8,1<br>15906,10,1<br>15907,13,1<br>15907,15,1<br>15908,19,1<br>15908,23,1<br><br>[...]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>As expected, a lot of time was spent near position zero as the machine powered up. But as soon as the paper feed motor started turning in earnest, encoder position count started changing more dramatically changing once per encoder poll iteration. Critically, both were changing faster than the millisecond time stamp counter. Position 8 and 10 were both stamped with 15906. Position changed from 13 to 15 within the same millisecond, etc.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Now I know the Arduino sketch is running fast enough to keep up at some speed faster than 1 kHz, which I wasn't sure about before. This is actually excellent news. The timestamp issue is thankfully easy to resolve, because Arduino framework also provides <code>micros()</code> so it was easy to <a href="https://www.arduino.cc/reference/en/language/functions/time/micros/" target="_blank" rel="noreferrer noopener">switch to microseconds</a> for my time stamps.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>timestamp,position,count<br>16,0,448737<br>6489548,1,1<br>6490076,2,1<br>6490688,5,1<br>6491300,8,1<br>6491912,12,1<br>6492540,17,1<br>6493220,21,1<br>6493876,25,1<br><br>[...]</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>That looks much better. It's not literally 1000 times better because, as Arduino documentation stated, <code>micros()</code> doesn't always deliver microsecond resolution. For ATmega328-based Arduino boards like the Nano I'm using, the resolution is limited to four microseconds when running at 16MHz. And looking at my output, the timestamps are indeed all multiples of 4. Still a huge improvement but it made me wonder: <a href="https://newscrewdriver.com/2024/02/09/options-for-improving-timestamp-precision/">can I do even better</a>?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Captured CSV and Excel worksheets are included in the <a href="https://github.com/Roger-random/canon_mx340" target="_blank" rel="noreferrer noopener">companion GitHub repository</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

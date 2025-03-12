@@ -1,0 +1,70 @@
+---
+layout: post
+title: Successful Arduino Test of LC75853N Control
+date: 2022-05-18 12:30:00.000000000 +00:00
+type: post
+post_id: '30355'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Investigations
+tags:
+- 86120-08010
+- Arduino
+- LC75853N
+- Saleae
+- Segmented LCD
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '30380'
+  _publicize_job_id: '72671324313'
+  timeline_notification: '1652902207'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:31:49'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/05/18/successful-arduino-test-of-lc75853n-control/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Using a Saleae Logic 8 Analyzer, I've examined the communication protocol between the mainboard and faceplate of a car tape deck. <a href="https://newscrewdriver.com/2022/05/17/logic-analyzer-on-sanyo-lc75853n-key-scan-input/">These signals match expectations</a> of a Sanyo LC75853N LCD controller which uses Sanyo's proprietary CCB (Computer Control Bus) protocol. CCB has some resemblance to SPI and I2C but is neither, though <a rel="noreferrer noopener" href="https://newscrewdriver.com/2022/05/15/sanyo-ccb-close-enough-to-spi-for-logic-analyzer/" target="_blank">close enough to SPI</a> for me to use the SPI analyzer mode on a Saleae analyzer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>But "close enough" won't be good enough for the next step: take an Arduino Nano and write code to talk to the LCD controller via CCB, copying the data waveform behavior I saw as closely as I can. <a rel="noreferrer noopener" href="https://docs.arduino.cc/learn/communication/spi" target="_blank">Arduino has a library for SPI</a> that assumes control of the enable pin, which has different behavior under CCB so that would not work here. I investigated using the <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/language/functions/advanced-io/shiftin/" target="_blank"><code>shiftIn()</code></a> and <a rel="noreferrer noopener" href="https://www.arduino.cc/reference/en/language/functions/advanced-io/shiftout/" target="_blank"><code>shiftOut()</code></a> routines, which is part of the standard Arduino library. They are software implementations of a clocked serial data transfer routine, but unfortunately their clock signal behavior is different from what I saw of CCB under the logic analyzer. (Active-low vs. active-high.) In order to emulate behavior of the tape deck mainboard, I would have to write my own software implementation of CCB serial data transfer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30376,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-faceplate-with-minimal-wires-for-arduino-ccb-experiment.jpg?w=1024" alt="" class="wp-image-30376"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>On the hardware side, I could no longer avoid soldering to small surface-mount connector pins on the back of the faceplate. I started simple by soldering the four data communication wires: LCD-DO, LCD-DI, LCD-CLK, and LCD-CE. Probing the circuit board with my meter, the only alternative soldering points were directly to the LC75853N, and those pins are even smaller. However, I found alternatives for ACC5V and GND: those were directly connected to the volume control potentiometer, which has nice big through-hole pins for me to solder to. I soldered these wires to a small prototype board with header pins, which then plugged into a breadboard alongside my Arduino Nano.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>As a "Hello World" for CCB, I wrote code to replicate the control signals as closely as I could. I won't try to replicate the exact timing of every pulse captured by my logic analyzer because (1) Arduino doesn't make that level of control easy and (2) the CBB spec has no explicit requirement for precise timing anyway. However, I aim to make sure relationship between every clock, data, and enable pin high/low transition is preserved. I can verify this by capturing my Arduino output and compared the output to what I captured from the tape deck mainboard, look for where they are different, and fix differences over several iterations. Finally, I was satisfied the data waveforms look the same (minus the timing caveat above) and connected the faceplate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30380,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/toyota-86120-08010-arduino-lcd-playback-fm-1-ch-1-87.9.jpg?w=1024" alt="" class="wp-image-30380"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>These are almost the same LCD segments that are visible when I captured the data communication between mainboard and faceplate.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"align":"center","id":30338,"sizeSlug":"large","linkDestination":"none"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2022/05/saleae-logic-8-on-toyota-audio-head-unit.jpg?w=1024" alt="" class="wp-image-30338"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The only difference I see is "ST" in the upper right, which lights up when the FM tuner has a good enough signal to obtain stereo audio. Since this tape deck didn't have an antenna attached, "ST" blinks on and off. Apparently, I had taken this picture when "ST" was on, and the recorded control signal I played back on an Arduino was when it was off. This is close enough to call my first test a success.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The other visible difference was the backlight: illuminated when I captured the data control message, but dark when I played it back. I had hoped the backlight was under LC75853N control somehow, but it looks like those LEDs are <a href="https://newscrewdriver.com/2022/05/19/two-separate-sets-of-faceplate-illumination-toyota-86120-08010/">actually separately controlled</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">Source code for this investigation is <a href="https://github.com/Roger-random/Sanyo_LC75853N">publicly available on GitHub</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

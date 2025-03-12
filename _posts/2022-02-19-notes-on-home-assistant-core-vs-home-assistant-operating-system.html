@@ -1,0 +1,56 @@
+---
+layout: post
+title: Notes on Home Assistant Core vs Home Assistant Operating System
+date: 2022-02-19 12:30:00.000000000 +00:00
+type: post
+post_id: '28650'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags:
+- ESPHome
+- Home Assistant
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '28629'
+  _publicize_job_id: '69217469222'
+  timeline_notification: '1645302613'
+  wordads_ufa: s:wpcom-ufa-v3-beta:1667464581
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:30:54'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2022/02/19/notes-on-home-assistant-core-vs-home-assistant-operating-system/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>Once I <a href="https://newscrewdriver.com/2022/02/18/window-shopping-home-assistant/">decided to try Home Assistant</a>, the next decision is <em>how</em> to run it. Installation documentation <a rel="noreferrer noopener" href="https://www.home-assistant.io/installation/" target="_blank">listed many options</a>. Since I'm in the kick-the-tires trial stage, I am not yet ready to dedicate a computer to the task (not even a Raspberry Pi) so I quickly focused on running Home Assistant inside a virtualized environment on my home server. But even then, that left me with two options: run <em>Home Assistant Core</em> in a Docker container, or run <em>Home Assistant Operating System</em> in a virtual machine.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Reading into more details, I was surprised to learn that both cases run <em>Home Assistant Core</em> in a Docker container. The difference is that <em>Home Assistant Operating System</em> also includes a "<a rel="noreferrer noopener" href="https://developers.home-assistant.io/docs/supervisor/" target="_blank">Supervisor</a>" module that helps manage the Docker instance, doing things like automatic updates (and rollback in case of failure), making backups, and setting up additional Docker instances for Home Assistant add-ons. (ESPHome dashboard is one such addon.) If I opt out of supervisor to run <em>Home Assistant Core</em> on my existing Docker host, I will have to handle my own updates, backups, and add-ons.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Since I already had a backup solution for data used by Docker containers running on my server, I decided to start by running <em>Home Assistant Core</em> directly. After running in this fashion for a week, I've learned a few facts in favor of running <em>Home Assistant Operating System</em> on a physical computer:</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:list --></p>
+<ul>
+<li>
+<em>Home Assistant Core</em> updates <em>very </em>frequently, three updates in the first week of playing with it. Thanks to Docker it's no great hardship to pull a new image and restart, but it'd be nice to have automatic rollback in case of failure.</li>
+<li>When browsing the wide selection of Home Assistant integrations, there's usually a little "Add Integration" button that held the promise to automatically set everything up for us. When the thing is an addon that requires running its own Docker container (like the ESPHome dashboard) the promise goes unfulfilled because we'd need the supervisor module for that.</li>
+<li>When managed by the supervisor, addons like ESPHome can be integrated into the Home Assistant user interface. Versus opening up a separate browser tab when running in a Docker container I manage manually. This also means an addon can integrate with Home Assistant permissions so there's no need to set up a separate username and password for access control.</li>
+<li>Some addons like the ESPHome dashboard requires hardware access. In the case of ESPHome, a USB cable is required for flashing initial firmware on an ESP8266/ESP32. Further updates can be done over the network, but that first one needs a cable. Some Docker hosting environments allow routing a physical USB port to the Docker instance, but mine does not.</li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p>I could work around these problems so none of them are deal-breakers. But if I like Home Assistant enough to keep it around, I will seriously consider running it on its own physical hardware. Whether that'd be a Raspberry Pi or something else is to be determined.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>In the meantime, I will continue running Home Assistant Core in a container. The documentation even gave us a <code>docker-compose.yml</code> file all ready to go, but I was <a href="https://newscrewdriver.com/2022/02/20/notes-on-home-assistant-core-docker-compose-file/">skeptical about running it as-is</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

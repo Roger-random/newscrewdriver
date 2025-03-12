@@ -1,0 +1,41 @@
+---
+layout: post
+title: Neato Robot ROS Package Expects Specific Response But Responses Actually Differ
+  Between Neato Units
+date: 2019-03-29 12:30:24.000000000 +00:00
+type: post
+post_id: '18195'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+- ROS
+tags:
+- Neato
+meta:
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '29182843205'
+  timeline_notification: '1553887864'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:24:05'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2019/03/29/neato-robot-ros-package-expects-specific-response-but-responses-actually-differ-between-neato-units/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body><br />
+<img class=" size-full wp-image-17966 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2019/02/neato-mini-usb-cable-connection-to-laptop.jpg" alt="Neato mini USB cable connection to laptop" width="1600" height="813"></p>
+<p>I got the <a href="https://newscrewdriver.com/2019/03/26/existing-neato-robot-ros-package-will-need-some-updating/">outdated <code>neato_robot</code> ROS package</a> mostly working just by <a href="https://newscrewdriver.com/2019/03/27/neato-robot-ros-package-runs-after-adding-serial-communication-timeout/">adding a timeout</a> to its serial communications. But this only masked the symptom of an unknown problem with no understanding of why it failed. To understand what happened, I removed the timeout and add the <a href="https://docs.python.org/2/library/pdb.html">standard Python debugging library</a> to see where it had hung.</p>
+<blockquote><p><code>import pdb; pdb.set_trace()</code></p></blockquote>
+<p>I found the hang was <a href="https://github.com/mikeferguson/neato_robot/blob/hydro-devel/neato_driver/src/neato_driver/neato_driver.py"><code>getMotors()</code> in <code>neato_driver.py</code></a>. It is waiting for my Neato to return all the motor parameters specified in the list <code>xv11_motor_info</code>. This list appears to reflect data returned by author's Neato robot vacuum, but my Neato returns a much shorter list with only a partial overlap. Hence <code>getMotors()</code> waits forever for data that will never come. This is a downside of writing ROS code without full information from hardware maker: We could write code that works on our own Neato, but we would have no idea how responses differ across different robot vacuums, or how to write code to accommodate those variations.</p>
+<p>Turning attention back to this code,  <code>self.state[]</code> is supposed to be filled with responses to the kind of data listed in <code>xv11_motor_info</code>.  Once I added a timeout, though, <a href="https://github.com/mikeferguson/neato_robot/blob/hydro-devel/neato_driver/src/neato_driver/neato_driver.py"><code>getMotors()</code></a> breaks out of its <code>for</code> loop with incomplete data in <code>self.state[]</code>.  How would this missing information manifest? What behavior does it change for the robot?</p>
+<p>Answer: it doesn't affect behavior at all. At the end of <a href="https://github.com/mikeferguson/neato_robot/blob/hydro-devel/neato_driver/src/neato_driver/neato_driver.py"><code>getMotors()</code></a>we see that it only really cared about two parameters: <code>LeftWheel_PositionInMM</code> and <code>RightWheel_PositionInMM</code>. Remainder parameters are actually ignored. Happily, the partial overlap between author's Neato and my Neato does include these two critical parameters, and that's why I was able to obtain <code>/odom</code> data running on my Neato after adding a timeout. (Side note: I have only looked to see there is data - I have not yet checked to see if <code>/odom</code> data reflects actual robot odometry.)</p>
+<p>Next I need to see if there are other similar problems in this code. I changed <code>xv11_motor_info</code> list of parameters to match those returned by my Neato. Now <code>getMotors()</code> will work as originally intended and cycle through all the parameters returned by my Neato (even though it only needs two of them.) If this change to <code>neato_robot</code> package still hangs without a timeout, I know there are similar problems hiding elsewhere in this package. If my modification allow it to run without a timeout, I'll know there aren't any others I need to go hunt for.</p>
+<p>Experiment result: success! There are no other hangs requiring a timeout to break out of their loop. This was encouraging, so I removed <code>import pdb</code>.</p>
+<p>Unfortunately, that removal caused the code to hang again. Unlike the now-understood problem, adding a timeout does not restore functionality. Removal of debugger package isn't <em><strong>supposed</strong> </em>to affect behavior, but when it does, it usually implies a threading or related timing issue in the code. This one will be annoying as the hang only manifests without Python's debugging library, which meant I'd have to track it down without debugger support.</body></html></p>

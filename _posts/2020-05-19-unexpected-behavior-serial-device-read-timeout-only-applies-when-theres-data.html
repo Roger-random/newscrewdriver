@@ -1,0 +1,40 @@
+---
+layout: post
+title: 'Unexpected Behavior: Serial Device Read Timeout Only Applies When There''s
+  Data'
+date: 2020-05-19 12:30:23.000000000 +00:00
+type: post
+post_id: '21170'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Programming Languages
+tags:
+- async/await
+- UWP
+meta:
+  _thumbnail_id: '21541'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  timeline_notification: '1589916669'
+  _publicize_job_id: '44446311834'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:26:55'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2020/05/19/unexpected-behavior-serial-device-read-timeout-only-applies-when-theres-data/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After playing with the Custom Serial Device Access demonstration application to <a href="https://newscrewdriver.com/2020/05/18/3d-printer-as-serial-communication-test-device/">read a 3D printer's greeting message</a>, I created a blank C# application from the Universal Windows Platform application template in Visual Studio and copy/pasted the minimum bits of code to read that same printer greeting message and send it to text on screen.</p>
+<p>The sample application only showed a small selection of text, but I wanted to read the entire message in my test application. This is where I ran into an unexpected behavior. I had set the <a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication.serialdevice.readtimeout"><code>SerialDevice.ReadTimeout</code> property</a> to various <code>TimeSpan</code> on the scale of a few seconds. Sometimes I would get the timeout behavior I expected, returning with some amount of data less than buffer size. But other times my read operation hangs indefinitely past the timeout period.</p>
+<p>I thought I did something wrong with the async/await pattern causing me to await forever, but I cut the code way back to the minimum while still following the precedence of the sample app, and it was still happening unpredictably. Examining the data that was returned, it looked like the same greeting message I saw when I connected via PuTTY serial terminal, nothing to indicate a problem.</p>
+<p>Eventually I figured out the factor wasn't anything in the data I have read, but the data I have <em>not yet</em> read. Specifically, the hanging behavior occurs when there is no further data at all from the serial port waiting to be read. If there was even just one byte, everything is fine: the platform will pull that byte from the serial port, put it in my allocated buffer (I experimented with 1 kilobyte size buffer, 2 KB, 4KB, it didn't matter) and return to me after the timeout period. But if there are no bytes at all, it hangs waiting.</p>
+<p>I suppose this makes some sort of sense, it's just not what I had expected. The <a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication.serialdevice.readtimeout">documentation for </a><code><a href="https://docs.microsoft.com/en-us/uwp/api/windows.devices.serialcommunication.serialdevice.readtimeout">ReadTimeout</a></code> mentions that there's an underlying Win32 data structure <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddser/ns-ntddser-_serial_timeouts"><code>SERIAL_TIMEOUTS</code></a> dictating underlying behavior. A quick glance through that page failed to find anything that corresponds to what I think is happening, which worries me somewhat. Fortunately, there are <a href="https://newscrewdriver.com/2020/05/20/what-to-do-when-await-waits-too-long/">ways to break out of an await</a> that has waited longer than desired.</p>
+<p>[<a href="https://github.com/Roger-random/UWPTest/tree/master/Hello3DP">This <code>Hello3DP</code> programming exercise is publicly available on GitHub</a>]</p>
+<p></body></html></p>

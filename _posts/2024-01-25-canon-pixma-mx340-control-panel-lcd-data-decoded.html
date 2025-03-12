@@ -1,0 +1,101 @@
+---
+layout: post
+title: Canon Pixma MX340 Control Panel LCD Data Decoded
+date: 2024-01-25 12:30:00.000000000 +00:00
+type: post
+post_id: '41719'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Teardown
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '41679'
+  firehose_sent: '1706214609'
+  wordads_ufa: s:wpcom-ufa-v4:1706307200
+  _publicize_job_id: '91404979217'
+  timeline_notification: '1706214611'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:37:40'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/01/25/canon-pixma-mx340-control-panel-lcd-data-decoded/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I am examining communication between NEC K13988 chip and LCD embedded controller on board the control panel of a Canon Pixma MX340 multi-function inkjet. There are five wires between them, and I have <a href="https://newscrewdriver.com/2024/01/24/canon-pixma-mx340-control-panel-lcd-pin-assignment/">candidate roles for all five</a> after running the printer and looking at their behavior with a Saleae Logic 8 analyzer. Armed with this information, I can configure the Saleae Logic SPI decoder module.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Selecting channel numbers for data, clock, and enable was straightforward. I had to go back and look at the waveform some more to determine the next few options: enable is low when active and there are 8 bits per transfer. Clock is also low when active, and data is valid on clock trailing edge. (With active low clock, trailing edge is the low-to-high transition.)</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>That left one unknown: does this system transfer most significant bit first, or least significant bit first? Saleae SPI decoder says most significant bit (MSB) first is standard, so I tried that first. I compared decoded data against <a href="https://newscrewdriver.com/2023/12/30/canon-pixma-mx340-control-panel-lcd-screen-update-first-look/" target="_blank" rel="noreferrer noopener">what I saw before</a> and <a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/" target="_blank" rel="noreferrer noopener">saw no resemblance</a>. I then flipped the decoder over to treat least significant bits (LSB) first, and jackpot! Decoded data matches byte-for-byte.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Looking at scenarios for system power-up, LCD screen update, and LCD sleep/wake, the pattern is clear. Every time the main board sent a two-byte command to the K13988 where the first byte is 0x04, the K13988 passes the second byte on to the LCD as a command. For LCD update bulk transfers, where the first byte is 0x06 and second byte is length of transfer, the command itself is not passed along but all bytes transferred afterwards are passed on to the LCD as data.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>The question this raises is: do I have the correct setting? Perhaps the asynchronous serial communication between main board and K13988 was supposed to be decoded as MSB first, and the match here is merely a "two wrongs made a right" situation. I thought about it and decided the octal number pattern visible in <a href="https://newscrewdriver.com/2024/01/14/canon-pixma-mx340-control-panel-button-press-report-values/" target="_blank" rel="noreferrer noopener">button matrix scan code report</a> wouldn't exist if decoded as MSB first, so LSB first must be the correct setting.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:table --></p>
+<figure class="wp-block-table">
+<table>
+<thead>
+<tr>
+<th class="has-text-align-center" data-align="center">LCD Pin</th>
+<th class="has-text-align-center" data-align="center">K13988 Pin</th>
+<th class="has-text-align-center" data-align="center">Role</th>
+<th class="has-text-align-center" data-align="center">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="has-text-align-center" data-align="center">1</td>
+<td class="has-text-align-center" data-align="center">28</td>
+<td class="has-text-align-center" data-align="center">SPI Chip Select</td>
+<td class="has-text-align-center" data-align="center">Active Low</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">2</td>
+<td class="has-text-align-center" data-align="center">26</td>
+<td class="has-text-align-center" data-align="center">Chip Enable</td>
+<td class="has-text-align-center" data-align="center">Active High</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">3</td>
+<td class="has-text-align-center" data-align="center">27</td>
+<td class="has-text-align-center" data-align="center">Command/Data</td>
+<td class="has-text-align-center" data-align="center">Low = command<br>High = data<br><br>Valid on first clock trailing edge<br>(low-to-high transition)</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">4</td>
+<td class="has-text-align-center" data-align="center">9</td>
+<td class="has-text-align-center" data-align="center">SPI Clock</td>
+<td class="has-text-align-center" data-align="center">Active Low<br><br>8 bits per transfer</td>
+</tr>
+<tr>
+<td class="has-text-align-center" data-align="center">5</td>
+<td class="has-text-align-center" data-align="center">10</td>
+<td class="has-text-align-center" data-align="center">SPI MOSI Data</td>
+<td class="has-text-align-center" data-align="center">Least significant bit first<br><br>Valid on every clock trailing edge<br>(low-to-high transition)</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p><!-- /wp:table --></p>
+<p><!-- wp:paragraph --></p>
+<p>It's great when observations from different parts of the system align! It gives me confidence my notes here aren't entirely gibberish. As a practical matter I don't expect to put this knowledge to use, since I don't plan to extract this LCD screen from its control panel assembly. I can only imagine one scenario where it might make sense to do so: if I want to update this LCD at a higher frame rate, I can decouple it from the K13988 and hook it up to something else with higher SPI clock speed. I doubt that will happen. I'm more likely to use another display, especially if I have its datasheet to know how much higher I can run the SPI clock. I lack such technical information for this screen. I only have information on what I can characterize based on change in measurable behavior, and it's time to <a href="https://newscrewdriver.com/2024/01/26/canon-pixma-mx340-control-panel-round-2-summary/">wrap it up with a summary</a>.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:separator --></p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<!-- /wp:separator --></p>
+<p><!-- wp:paragraph {"align":"center"} --></p>
+<p class="has-text-align-center">This teardown ran far longer than I originally thought it would. <a href="https://newscrewdriver.com/2023/11/14/canon-pixma-mx340-pre-teardown-overview/" target="_blank" rel="noreferrer noopener">Click here to rewind back to where this adventure started</a>.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>

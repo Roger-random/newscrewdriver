@@ -1,0 +1,37 @@
+---
+layout: post
+title: Tiny Increase In Wheel Hub Gear Lash Gave Huge Increase In Usability
+date: 2018-04-07 09:32:51.000000000 +00:00
+type: post
+post_id: '15821'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- SGVHAK Rover
+tags:
+- Rover
+meta:
+  timeline_notification: '1523118774'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '16561035794'
+  _elasticsearch_data_sharing_indexed_on: '2024-11-18 13:21:02'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2018/04/07/tiny-increase-in-wheel-hub-gear-lash-gave-huge-increase-in-usability/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<html><body>
+<p>After initial tests of the first two wheels, we have enough information to think our 3D printed gears are meshing too tightly. They are catching on each other which briefly require more motor power to continue rotating. This occasional spikes of power is making it difficult for our motor controller to keep speed steady and predictable.</p>
+<p>To resolve this, a new set of gears have been 3D-printed with a slightly larger gap (<a href="https://en.wikipedia.org/wiki/Backlash_(engineering)">gear lash</a>) between them. The initial gears were printed with 0.3mm which was enough to compensate for imperfection inherent in hobbyist level 3D printers. This allowed assembly and start them turning, but as we found out, not smoothly. The latest gears were printed with the <a href="https://github.com/DavidMFlynn/RoverWheel/commit/e17b6c1c77b9dd4c15fffe8ae2a7bd4449f9a438#diff-4b535c26e93db5489427176464cc58f8">parameter set to 0.5mm</a>. This will give up some precision, but we hope to get more predictable operation in return.</p>
+<p>When the new gears were assembled, the smoother movement was immediately obvious. It ran better straight out of the 3D printer than the old tighter gears ever did. Even when the old gears were lubricated and had some time to wear in. As expected, there was greater slop to go along with this change. Rotating the wheel by hand implied the rover might rock back and forth about 1-2 mm within this gap, roughly as much as what we'd expect to be absorbed by the rubber tires. The precision has indeed decreased, but probably not enough to affect driving dynamics.</p>
+<p>We hooked the new gearbox up to the RoboClaw motor controller to try Ion Studio's automatic PID tuning again. We hoped the old gearbox's unpredictable motion was why the software froze up trying to auto tune. Sadly the software still froze up and auto-tuning remains out of reach. However, the good news is that the smoother motion made manual PID tuning much easier and we've obtained some decent values to use as starting point. (RoboClaw position P=2400, I=0, D=1500, Deadzone=1)</p>
+<p>We now have a wheel motor that can start turning reliably and smoothly, hold speed within an acceptable range, and decelerate to stop at a specified position. This was a hit-and-miss proposition with the old gears but the new gears make it look easy. Here's a short clip showing the new wheel executing command to make one complete revolution and stop exactly where it started. No hesitation, no oscillation. Good stuff!</p>
+<p><img class=" size-full wp-image-15825 aligncenter" src="https://newscrewdriver.com/wp-content/uploads/2018/01/wheel-rotation.gif" alt="Wheel-Rotation" width="480" height="480"></p>
+<p></body></html></p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: I Needed Two Stop Bits To Talk To NEC K13988
+date: 2024-06-01 12:30:00.000000000 +00:00
+type: post
+post_id: '43591'
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Projects
+tags: []
+meta:
+  _last_editor_used_jetpack: block-editor
+  _thumbnail_id: '43592'
+  _publicize_job_id: '95091714178'
+  firehose_sent: '1717270216'
+  timeline_notification: '1717270217'
+  _elasticsearch_data_sharing_indexed_on: '2024-06-01 19:30:16'
+author:
+  login: inkarc
+  email: luxo.lamp@gmail.com
+  display_name: Roger Cheng
+  first_name: Roger
+  last_name: Cheng
+permalink: "/2024/06/01/i-needed-two-stop-bits-to-talk-to-nec-k13988/"
+---
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><br />
+<!-- wp:paragraph --><html><body></p>
+<p>I've got an Adafruit KB2040 microcontroller connected to a control panel salvaged from a Canon MX340 multi-function inkjet. Using CircuitPython <code>busio.uart</code>, I'm trying to emulate MX340 main logic board with my KB2040, communicating with the NEC K13988 chip on board the control panel hoping to access its capabilities. I saw <a href="https://newscrewdriver.com/2024/05/31/circuitpython-busio-uart-up-and-running-mostly/">some initial success</a>, but I had to retry many data transmissions which hinted something was amiss. I forged onward to get more data about what might be wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43597,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-displaying-random-noise.jpg?w=800" alt="" class="wp-image-43597"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>The first experiment was to <a href="https://newscrewdriver.com/2024/01/03/canon-pixma-mx340-control-panel-data-communication-lcd-deactivation/">test my hypothesis</a> that the first LCD update sent by MX340 main board was a "clear screen" sequence. I sent <code>0x04 0xF5</code>, the command I suspect to be "start displaying data from frame buffer", but without transmitting the clear screen sequence of zeroes. I was rewarded by an awakened LCD displaying gibberish, proving the command and "clear screen" data hypothesis.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Pulling up my notes on decoding LCD frame buffer data, I followed that pattern to transmit a single stripe of <code>0x55</code> as frame data. Hexadecimal <code>0x55</code> translates to binary <code>0b01010101</code> and I expected this to show up as four horizontal lines across the screen. The first few attempts failed, with no visible change and no <code>0x20</code> acknowledgement byte. Then a transmission went through with visible change and <code>0x20</code> acknowledgement, but it looks wrong.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43599,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/06/canon-mx340-lcd-displaying-flawed-horizontal-line.jpg?w=800" alt="" class="wp-image-43599"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Instead of four horizontal lines all the way across, the line is broken as it hopped up and down across the screen. The fact that it came up on screen at all told me I'm very, very close but there's definitely a problem. At every byte (vertical slice of 8 pixels) there was supposed to be an alternating sequence of bright and dark, but I see several sections where two white pixels separate black pixels, and less frequently two dark pixels side by side without a white pixel separating them.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>What might cause these off-by-one-bit errors? My first guess was that the baud rate sent by KB2040 was a tiny bit off from what the control panel expected, so I tried 250001 baud and 249999 baud but that just made things worse. Even parity and 8 data bits had to be correct or I wouldn't have gotten this far, leaving stop bits as the final parameter. I changed my <code>busio.uart</code> configuration from 1 stop bit to 2 stop bits and that seemed to have been the answer.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":43592,"sizeSlug":"large","linkDestination":"none","align":"center"} --></p>
+<figure class="wp-block-image aligncenter size-large"><img src="https://newscrewdriver.com/wp-content/uploads/2024/05/canon-mx340-lcd-displaying-correct-horizontal-lines.jpg?w=1024" alt="" class="wp-image-43592"></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Running with 250000 8E2, I could reliably send five full stripes of 0x55 for a screen full of clean horizontal lines. This makes sense in hindsight. When I <a href="https://newscrewdriver.com/2023/12/29/canon-pixma-mx340-control-panel-button-status-report/">examined logic analyzer trace one byte at a time</a>, I wouldn't have seen anything obviously differentiating between 2 stop bits or just 1 stop bit and delay between each byte of transmission. A mistake that went unnoticed until now. However, I still see the occasional transmit failure, so there might be another bug still lurking. I hope to get more data about it as I continue my experiments.</p>
+<p><!-- /wp:paragraph --><br />
+</body></html></p>
