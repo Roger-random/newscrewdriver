@@ -4,3 +4,4 @@
 
 layout: home
 ---
+This is a placeholder page while I figure out how to use Jekyll with GitHub Pages
